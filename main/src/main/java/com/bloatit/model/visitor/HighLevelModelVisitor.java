@@ -47,7 +47,7 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
     public abstract T visitAbstract(Software model);
 
     public abstract T visitAbstract(Transaction model);
-    
+
     public abstract T visitAbstract(MoneyWithdrawal model);
 
     @Override
@@ -149,7 +149,7 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
     public final T visit(final Release model) {
         return visitAbstract(model);
     }
-    
+
     @Override
     public final T visit(final MoneyWithdrawal model) {
         return visitAbstract(model);

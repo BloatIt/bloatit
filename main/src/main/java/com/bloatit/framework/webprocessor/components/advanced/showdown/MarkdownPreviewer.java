@@ -29,8 +29,8 @@ public class MarkdownPreviewer extends HtmlLeaf {
     private final HtmlDiv output;
 
     public MarkdownPreviewer(final MarkdownEditor source) {
-        HtmlDiv previewer = new HtmlDiv("md_previewer");
-        HtmlSpan mdTitle = new HtmlSpan("title");
+        final HtmlDiv previewer = new HtmlDiv("md_previewer");
+        final HtmlSpan mdTitle = new HtmlSpan("title");
         previewer.add(mdTitle);
 
         mdTitle.addText(Context.tr("Markdown preview"));

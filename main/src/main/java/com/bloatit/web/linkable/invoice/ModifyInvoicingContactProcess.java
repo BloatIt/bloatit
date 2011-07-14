@@ -21,7 +21,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
@@ -50,13 +49,13 @@ public class ModifyInvoicingContactProcess extends WebProcess {
     }
 
     @Override
-    protected synchronized Url doProcess(final ElveosUserToken userToken) {
+    protected synchronized Url doProcess() {
         url.getParentProcess().addChildProcess(this);
         return new ModifyContactPageUrl(this);
     }
 
     @Override
-    protected synchronized Url doProcessErrors(final ElveosUserToken userToken) {
+    protected synchronized Url doProcessErrors() {
         return session.getLastVisitedPage();
     }
 
@@ -73,7 +72,7 @@ public class ModifyInvoicingContactProcess extends WebProcess {
         return actor;
     }
 
-    public void setActor(Actor<?> actor) {
+    public void setActor(final Actor<?> actor) {
         this.actor = actor;
     }
 

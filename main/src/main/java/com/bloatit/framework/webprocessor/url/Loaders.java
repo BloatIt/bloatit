@@ -305,7 +305,7 @@ public final class Loaders {
             try {
                 @SuppressWarnings("rawtypes") final DaoIdentifiableQuery<?> daoIdentifiableQuery = new DaoIdentifiableQuery();
                 daoIdentifiableQuery.idEquals(Integer.valueOf(data));
-                Object uniqueResult = daoIdentifiableQuery.uniqueResult();
+                final Object uniqueResult = daoIdentifiableQuery.uniqueResult();
                 if (uniqueResult == null) {
                     throw new ConversionErrorException("No identifiable matching the id");
                 }

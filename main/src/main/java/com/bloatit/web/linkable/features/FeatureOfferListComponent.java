@@ -30,13 +30,12 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.web.url.MakeOfferPageUrl;
 
 public class FeatureOfferListComponent extends HtmlDiv {
-    protected FeatureOfferListComponent(final Feature feature, ElveosUserToken userToken) {
+    protected FeatureOfferListComponent(final Feature feature) {
         super();
         PageIterable<Offer> offers = new EmptyPageIterable<Offer>();
         offers = feature.getOffers();
@@ -70,7 +69,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 }
 
                 if (nbUnselected > 0) {
-                    generateUnselectedOfferList(feature, userToken, offers, nbUnselected, selectedOffer, offersBlock);
+                    generateUnselectedOfferList(feature, offers, nbUnselected, selectedOffer, offersBlock);
                 }
 
                 block.addInRightColumn(noOffer);
@@ -115,10 +114,10 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                                                    currency.toString())));
                     }
                     // Generating the right column
-                    block.addInRightColumn(new OfferBlock(selectedOffer, true, userToken));
+                    block.addInRightColumn(new OfferBlock(selectedOffer, true));
                 }
 
-                generateUnselectedOfferList(feature, userToken, offers, nbUnselected, selectedOffer, offersBlock);
+                generateUnselectedOfferList(feature, offers, nbUnselected, selectedOffer, offersBlock);
                 break;
             }
             case DEVELOPPING:
@@ -129,18 +128,18 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 if (selectedOffer != null && selectedOffer.hasRelease()) {
                     block.addInLeftColumn(new HtmlParagraph(tr("Test the last release and report bugs.")));
                 }
-                block.addInRightColumn(new OfferBlock(selectedOffer, true, userToken));
+                block.addInRightColumn(new OfferBlock(selectedOffer, true));
 
-                generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock, userToken);
+                generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
 
                 break;
             case FINISHED:
                 offersBlock.add(new HtmlTitle(tr("Finished offer"), 1));
                 offersBlock.add(block = new BicolumnOfferBlock(true));
                 block.addInLeftColumn(new HtmlParagraph(tr("This offer is finished.")));
-                block.addInRightColumn(new OfferBlock(selectedOffer, true, userToken));
+                block.addInRightColumn(new OfferBlock(selectedOffer, true));
 
-                generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock, userToken);
+                generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
                 break;
             case DISCARDED:
                 offersBlock.add(new HtmlTitle(tr("Feature discarded ..."), 1));
@@ -152,9 +151,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
     }
 
     private void generateUnselectedOfferList(final Feature feature,
-                                             ElveosUserToken userToken,
-                                             PageIterable<Offer> offers,
-                                             int nbUnselected,
+                                             final PageIterable<Offer> offers,
+                                             final int nbUnselected,
                                              final Offer selectedOffer,
                                              final HtmlDiv offersBlock) {
         // UnSelected
@@ -166,16 +164,13 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         for (final Offer offer : offers) {
             if (offer != selectedOffer) {
-                unselectedBlock.addInRightColumn(new OfferBlock(offer, false, userToken));
+                unselectedBlock.addInRightColumn(new OfferBlock(offer, false));
             }
         }
     }
 
-    private void generateOldOffersList(final PageIterable<Offer> offers,
-                                       final int nbUnselected,
-                                       final Offer selectedOffer,
-                                       final HtmlDiv offersBlock,
-                                       ElveosUserToken userToken) {
+    private void
+            generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock) {
         // UnSelected
         offersBlock.add(new HtmlTitle(trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
         final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
@@ -184,7 +179,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         for (final Offer offer : offers) {
             if (offer != selectedOffer) {
-                unselectedBlock.addInRightColumn(new OfferBlock(offer, false, userToken));
+                unselectedBlock.addInRightColumn(new OfferBlock(offer, false));
             }
         }
     }

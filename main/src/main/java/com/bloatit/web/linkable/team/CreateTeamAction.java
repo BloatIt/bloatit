@@ -27,7 +27,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
@@ -46,8 +45,12 @@ public final class CreateTeamAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a team name"))
-    @MinConstraint(min = 2, message = @tr("The team unique name size has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 50, message = @tr("The team unique name size has to be inferior to %constraint% your text is %valueLength% characters long."))
+    @MinConstraint(
+        min = 2,
+        message = @tr("The team unique name size has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(
+        max = 50,
+        message = @tr("The team unique name size has to be inferior to %constraint% your text is %valueLength% characters long."))
     private final String login;
 
     @RequestParam(role = Role.POST)
@@ -59,7 +62,9 @@ public final class CreateTeamAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 4, message = @tr("The description size has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 5000, message = @tr("The description size has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(
+        max = 5000,
+        message = @tr("The description size has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String description;
 
     @RequestParam(role = Role.POST)
@@ -95,7 +100,7 @@ public final class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new CreateTeamPageUrl();
     }
 

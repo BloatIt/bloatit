@@ -26,10 +26,11 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtBug;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 /**
  * This is a bug report. A bug report is associated with a milestone. it is
@@ -144,13 +145,14 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtBug.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.get(getAuthToken().getAsTeam()),
-                                                               getAuthToken().getMember().getDao(),
+                                                               DaoGetter.get(AuthToken.getAsTeam()),
+                                                               AuthToken.getMember().getDao(),
                                                                text);
         getDao().addComment(comment);
         return Comment.create(comment);
     }
 
+    @Override
     public void delete() throws UnauthorizedOperationException {
         if (isDeleted()) {
             return;
@@ -161,7 +163,7 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
         }
 
         // Delete all comments from the bug
-        for (Comment comment : getComments()) {
+        for (final Comment comment : getComments()) {
             comment.delete();
         }
 

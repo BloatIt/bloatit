@@ -27,8 +27,6 @@ import com.bloatit.model.lists.SoftwareList;
  */
 public final class SoftwareManager {
 
-
-
     /**
      * Desactivated constructor on utility class.
      */
@@ -54,10 +52,10 @@ public final class SoftwareManager {
     public static PageIterable<Software> getAll() {
         return new SoftwareList(DBRequests.getAll(DaoSoftware.class));
     }
-    
+
     /**
      * Tells if a name exists.
-     *
+     * 
      * @param name the name
      * @return <code>true</code>, if it exists, <code>false</code> otherwise.
      */

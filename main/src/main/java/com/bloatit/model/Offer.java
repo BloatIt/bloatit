@@ -29,10 +29,11 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 public final class Offer extends Kudosable<DaoOffer> {
 
@@ -88,12 +89,10 @@ public final class Offer extends Kudosable<DaoOffer> {
         final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                                            amount,
                                                            DaoDescription.createAndPersist(getDao().getMember(),
-                                                                                           DaoGetter.get(getAuthToken().getAsTeam()),
+                                                                                           DaoGetter.get(AuthToken.getAsTeam()),
                                                                                            local,
                                                                                            "RFU",
-                                                                                           description),
-                                                           getDao(),
-                                                           secondBeforeValidation);
+                                                                                           description), getDao(), secondBeforeValidation);
         getDao().addMilestone(daoMilestone);
         return Milestone.create(daoMilestone);
     }
@@ -174,16 +173,16 @@ public final class Offer extends Kudosable<DaoOffer> {
         // Delete all subcomponents of the offer.
         // Because milestones are not userContents, we delete all subcomponents
         // of milestones directly.
-        for (Milestone milestone : getMilestones()) {
-            for (Bug bug : milestone.getBugs()) {
+        for (final Milestone milestone : getMilestones()) {
+            for (final Bug bug : milestone.getBugs()) {
                 bug.delete();
             }
 
-            for (Translation translation : milestone.getDescriptionEntity().getTranslations()) {
+            for (final Translation translation : milestone.getDescriptionEntity().getTranslations()) {
                 translation.delete();
             }
 
-            for (Release release : milestone.getReleases()) {
+            for (final Release release : milestone.getReleases()) {
                 release.delete();
             }
         }

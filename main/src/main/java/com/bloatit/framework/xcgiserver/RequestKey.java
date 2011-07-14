@@ -11,9 +11,13 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
- * The class {@link SessionKey} represent a unique identifier for a session.
+ * The class {@link RequestKey} represent a unique identifier for a session.
  */
-public class SessionKey {
+public class RequestKey {
+
+    public enum Source {
+        COOKIE, TOKEN, GENERATED
+    }
 
     private static final int SHA515_HEX_LENGTH = 128;
     private static final int RANDOM_SIZE = 512;
@@ -21,28 +25,30 @@ public class SessionKey {
 
     private String id;
     private final String ipAddress;
+    private final Source source;
 
     /**
      * Create a key using already existing id and ip address.
      * 
      * @param id the id of this session. It must be non null, and
-     *            {@value SessionKey#SHA515_HEX_LENGTH} char long.
+     *            {@value RequestKey#SHA515_HEX_LENGTH} char long.
      * @param ipAddress can be null. If it is less than 7 chars long it is
      *            considered has null (because invalid).
      * @throws WrongSessionKeyFormatException
      */
-    public SessionKey(final String id, final String ipAddress) throws WrongSessionKeyFormatException {
-
-        this(id, ipAddress, 0);
-
+    public RequestKey(final String id, final String ipAddress, final Source source) throws WrongSessionKeyFormatException {
+        this(id, ipAddress, source, 0);
         if (id.length() != SHA515_HEX_LENGTH) {
             Log.framework().error("The id must be a 128 char long hex-encoded sha512 string.");
             throw new WrongSessionKeyFormatException("The id must be a 128 char long hex-encoded sha512 string.");
         }
+        if (source == Source.GENERATED) {
+            throw new BadProgrammerException("To generate a new RequestKey use the RequestKey(final String ipAdress) constructor.");
+        }
 
     }
 
-    private SessionKey(final String id, final String ipAddress, int plop) {
+    private RequestKey(final String id, final String ipAddress, final Source source, final int plop) {
         if (ipAddress != null && ipAddress.length() < 7) {
             this.ipAddress = null;
         } else {
@@ -51,6 +57,7 @@ public class SessionKey {
         if (id == null) {
             throw new NonOptionalParameterException();
         }
+        this.source = source;
         this.id = id;
     }
 
@@ -59,13 +66,13 @@ public class SessionKey {
      * <i>ipAddress</i>.
      * 
      * @param ipAdress the ip address of the user identified by this
-     *            {@link SessionKey}.
+     *            {@link RequestKey}.
      */
-    public SessionKey(final String ipAdress) {
-        this(generateRandomId(), ipAdress, 0);
+    public RequestKey(final String ipAdress) {
+        this(generateRandomId(), ipAdress, Source.GENERATED, 0);
     }
 
-    private static String generateRandomId() {
+    public static String generateRandomId() {
         UUID.randomUUID().toString();
         try {
             final byte[] bytes = new byte[RANDOM_SIZE];
@@ -97,12 +104,17 @@ public class SessionKey {
         return id;
     }
 
+    public Source getSource() {
+        return source;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((ipAddress == null) ? 0 : ipAddress.hashCode());
+        result = prime * result + ((source == null) ? 0 : source.hashCode());
         return result;
     }
 
@@ -117,7 +129,7 @@ public class SessionKey {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final SessionKey other = (SessionKey) obj;
+        final RequestKey other = (RequestKey) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;
@@ -132,28 +144,10 @@ public class SessionKey {
         } else if (!ipAddress.equals(other.ipAddress)) {
             return false;
         }
+        if (source != other.source) {
+            return false;
+        }
         return true;
     }
 
-    public class WrongSessionKeyFormatException extends Exception {
-
-        private static final long serialVersionUID = 8838570906510336129L;
-
-        public WrongSessionKeyFormatException() {
-            super();
-        }
-
-        public WrongSessionKeyFormatException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-        public WrongSessionKeyFormatException(String message) {
-            super(message);
-        }
-
-        public WrongSessionKeyFormatException(Throwable cause) {
-            super(cause);
-        }
-
-    }
 }

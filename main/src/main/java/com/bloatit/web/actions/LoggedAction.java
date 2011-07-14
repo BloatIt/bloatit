@@ -22,8 +22,8 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.LoggedActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -50,7 +50,7 @@ public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
 
     @RequestParam(name = Session.SECURE_TOKEN_NAME)
-    private String secure;
+    private final String secure;
 
     public LoggedAction(final LoggedActionUrl url) {
         super(url);
@@ -59,12 +59,12 @@ public abstract class LoggedAction extends ElveosAction {
     }
 
     @Override
-    protected final Url doProcess(final ElveosUserToken userToken) {
-        if (userToken.isAuthenticated() && session.getShortKey().equals(secure)) {
-            return doProcessRestricted(userToken.getMember());
+    protected final Url doProcess() {
+        if (AuthToken.isAuthenticated() && session.getShortKey().equals(secure)) {
+            return doProcessRestricted(AuthToken.getMember());
         }
         // if session.getShortKey() != secure
-        if (userToken.isAuthenticated()) {
+        if (AuthToken.isAuthenticated()) {
             session.notifyError(Context.tr("Messed up link. To make sure you are not a villain, you have re-login."));
         } else {
             session.notifyWarning(getRefusalReason());
@@ -75,9 +75,9 @@ public abstract class LoggedAction extends ElveosAction {
     }
 
     @Override
-    protected final Url checkRightsAndEverything(final ElveosUserToken userToken) {
-        if (userToken.isAuthenticated()) {
-            return checkRightsAndEverything(userToken.getMember());
+    protected final Url checkRightsAndEverything() {
+        if (AuthToken.isAuthenticated()) {
+            return checkRightsAndEverything(AuthToken.getMember());
         }
 
         // If member is null, let the Logged action do its work (return to the
@@ -106,7 +106,7 @@ public abstract class LoggedAction extends ElveosAction {
      * Called when some RequestParams contain erroneous parameters.
      */
     @Override
-    protected abstract Url doProcessErrors(ElveosUserToken userToken);
+    protected abstract Url doProcessErrors();
 
     /**
      * <b>Do not forget to localize</p>

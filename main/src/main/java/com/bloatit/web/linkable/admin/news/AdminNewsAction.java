@@ -8,7 +8,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.NewsFeed;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -22,11 +21,11 @@ public class AdminNewsAction extends AdminAction {
     @RequestParam(role = Role.POST)
     @MinConstraint(min = 10, message = @tr("News feed message must be more than %constraint% characters."))
     @MaxConstraint(max = 140, message = @tr("News feed message must be less than %constraint% characters."))
-    private String message;
+    private final String message;
 
-    private AdminNewsActionUrl url;
+    private final AdminNewsActionUrl url;
 
-    public AdminNewsAction(AdminNewsActionUrl url) {
+    public AdminNewsAction(final AdminNewsActionUrl url) {
         super(url);
         this.url = url;
         this.message = url.getMessage();
@@ -40,12 +39,12 @@ public class AdminNewsAction extends AdminAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new AdminNewsPageUrl();
     }
 

@@ -29,10 +29,9 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.RecoverPasswordActionUrl;
@@ -78,8 +77,8 @@ public class RecoverPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(final ElveosUserToken token) {
-        session.authenticate(new AuthenticatedUserToken(member));
+    protected Url doProcess() {
+        AuthToken.authenticate(member);
         try {
             member.setPassword(newPassword);
         } catch (final UnauthorizedOperationException e) {
@@ -90,7 +89,7 @@ public class RecoverPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken token) {
+    protected Url doProcessErrors() {
         if (StringUtils.isEmpty(login) || StringUtils.isEmpty(resetKey)) {
             session.notifyWarning(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
             return new PageNotFoundUrl();
@@ -99,7 +98,7 @@ public class RecoverPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(final ElveosUserToken token) {
+    protected Url checkRightsAndEverything() {
         if (!newPassword.equals(checkNewPassword)) {
             session.notifyWarning(Context.tr("Password doesn't match confirmation."));
             url.getNewPasswordParameter().addErrorMessage(Context.tr("New password doesn't match with confirmation."));

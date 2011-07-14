@@ -29,7 +29,7 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
 import com.bloatit.framework.xcgiserver.HttpResponse;
-import com.bloatit.framework.xcgiserver.SessionKey.WrongSessionKeyFormatException;
+import com.bloatit.framework.xcgiserver.RequestKey;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 public abstract class WebProcessor implements XcgiProcessor {
@@ -39,36 +39,29 @@ public abstract class WebProcessor implements XcgiProcessor {
     }
 
     @Override
-    public final boolean process(final HttpHeader httpHeader, final HttpPost post, final HttpResponse response) throws IOException {
-        final Session session = findSession(httpHeader);
-
+    public final boolean process(final RequestKey key, final HttpHeader httpHeader, final HttpPost post, final HttpResponse response)
+            throws IOException {
         try {
-            // TODO masquer la clef de session.
-            ModelAccessor.open(session.getKey().getId());
-            Context.reInitializeContext(httpHeader, session);
-
-            // Access log
-            // Make sure bash injection is not possible.
-            final String memberId = session.getUserToken().isAuthenticated() ? session.getUserToken().getMember().getId().toString() : "-1";
-            final String sessionKey = Hash.shortHash(session.getShortKey());
-            Log.framework().info("Access:Context: " + //
-                    "USER_ID='" + memberId + //
-                    "'; KEY='" + sessionKey + //
-                    "'; LANG='" + Context.getLocalizator().getLocale() + "'");
-
-            final String pageCode = httpHeader.getPageName();
-
             // Merge post and get parameters.
             final Parameters parameters = new Parameters();
             parameters.putAll(httpHeader.getGetParameters());
             parameters.putAll(post.getParameters());
 
+            ModelAccessor.open();
+            final Session session = SessionManager.getOrCreateSession(key);
+            Context.reInitializeContext(httpHeader, session);
+            accessLog(session);
+
             try {
+
                 // If pagename contains upper case char then redirect to the
                 // same page with lower case.
+                final String pageCode = httpHeader.getPageName();
                 if (pageCode.matches(".*[A-Z].*")) {
                     response.writeRedirect(createLowerCaseUrl(httpHeader.getLanguage(), httpHeader.getQueryString(), pageCode));
                 } else {
+
+                    ModelAccessor.authenticate(key);
 
                     // Normal case !
                     final Linkable linkable = constructLinkable(pageCode, parameters, session);
@@ -95,8 +88,9 @@ public abstract class WebProcessor implements XcgiProcessor {
             } catch (final RedirectException e) {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(e.getUrl().urlString());
+            } finally {
+                ModelAccessor.close();
             }
-            ModelAccessor.close();
 
         } catch (final RuntimeException e) {
             response.writeException(e);
@@ -109,6 +103,15 @@ public abstract class WebProcessor implements XcgiProcessor {
             throw e;
         }
         return true;
+    }
+
+    private void accessLog(final Session session) {
+        final String memberId = session.getMemberId() != null ? session.getMemberId().toString() : "-1";
+        final String sessionKey = Hash.shortHash(session.getShortKey());
+        Log.framework().info("Access:Context: " + //
+                "USER_ID='" + memberId + //
+                "'; KEY='" + sessionKey + //
+                "'; LANG='" + Context.getLocalizator().getLocale() + "'");
     }
 
     private String createLowerCaseUrl(final String language, final String queryString, final String pageCode) {
@@ -125,31 +128,5 @@ public abstract class WebProcessor implements XcgiProcessor {
     }
 
     public abstract Linkable constructLinkable(final String pageCode, final Parameters postGetParameters, final Session session);
-
-    /**
-     * Return the session for the user. Either an existing session or a new
-     * session.
-     * 
-     * @param header
-     * @return the session matching the user
-     */
-    private Session findSession(final HttpHeader header) {
-        final String key = header.getHttpCookie().get("session_key");
-        Session sessionByKey = null;
-        try {
-            if (key != null && (sessionByKey = SessionManager.getByKey(key, header.getRemoteAddr())) != null) {
-                if (sessionByKey.isExpired()) {
-                    SessionManager.destroySession(sessionByKey);
-                    // A new session will be create
-                } else {
-                    sessionByKey.resetExpirationTime();
-                    return sessionByKey;
-                }
-            }
-        } catch (final WrongSessionKeyFormatException e) {
-            // Just don't restore session
-        }
-        return SessionManager.createSession(header.getRemoteAddr());
-    }
 
 }

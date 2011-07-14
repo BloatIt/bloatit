@@ -52,11 +52,11 @@ public class InvoicingContactTab extends HtmlTab {
         master.add(modify);
         Url redirectUrl;
         if (actor.isTeam()) {
-            TeamPageUrl teampPageUrl = new TeamPageUrl((Team) actor);
+            final TeamPageUrl teampPageUrl = new TeamPageUrl((Team) actor);
             teampPageUrl.setActiveTabKey(TeamPage.INVOICING_TAB);
             redirectUrl = teampPageUrl;
         } else {
-            MemberPageUrl memberPageUrl = new MemberPageUrl((Member) actor);
+            final MemberPageUrl memberPageUrl = new MemberPageUrl((Member) actor);
             memberPageUrl.setActiveTabKey(MemberPage.INVOICING_TAB);
             redirectUrl = memberPageUrl;
         }
@@ -66,7 +66,7 @@ public class InvoicingContactTab extends HtmlTab {
         Contact contact;
         try {
             contact = actor.getContact();
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new ShallNotPassException(e);
         }
 
@@ -110,7 +110,7 @@ public class InvoicingContactTab extends HtmlTab {
         return master;
     }
 
-    private String emptyIfNull(String input) {
+    private String emptyIfNull(final String input) {
         if (input == null) {
             return "";
         }

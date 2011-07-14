@@ -17,7 +17,7 @@ public class OptionalConstraint<V> extends Constraint<V> {
     }
 
     @Override
-    protected void updateFormater(final MessageFormater formater, V value) {
+    protected void updateFormater(final MessageFormater formater, final V value) {
         // Nothing to do.
     }
 }

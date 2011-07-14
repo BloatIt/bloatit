@@ -5,7 +5,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.NewsFeed;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -17,11 +16,11 @@ import com.bloatit.web.url.AdminNewsRestoreActionUrl;
 public class AdminNewsRestoreAction extends AdminAction {
 
     @RequestParam(role = Role.GET)
-    private NewsFeed target;
+    private final NewsFeed target;
 
-    private AdminNewsRestoreActionUrl url;
+    private final AdminNewsRestoreActionUrl url;
 
-    public AdminNewsRestoreAction(AdminNewsRestoreActionUrl url) {
+    public AdminNewsRestoreAction(final AdminNewsRestoreActionUrl url) {
         super(url);
         this.url = url;
         this.target = url.getTarget();
@@ -35,7 +34,7 @@ public class AdminNewsRestoreAction extends AdminAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         if (!target.isDeleted()) {
             session.notifyWarning("Canot restore a non deleted message.");
             return new AdminNewsPageUrl();
@@ -44,7 +43,7 @@ public class AdminNewsRestoreAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new AdminNewsPageUrl();
     }
 

@@ -8,7 +8,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationPage.ErrorType;
@@ -22,7 +21,7 @@ public class ExceptionAdministrationAction extends AdminAction {
     @RequestParam(role = Role.GET)
     private final ErrorType level;
 
-    public ExceptionAdministrationAction(ExceptionAdministrationActionUrl url) {
+    public ExceptionAdministrationAction(final ExceptionAdministrationActionUrl url) {
         super(url);
         this.level = url.getLevel();
     }
@@ -43,12 +42,12 @@ public class ExceptionAdministrationAction extends AdminAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return NO_ERROR;
     }
 

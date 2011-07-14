@@ -3,7 +3,7 @@ package com.bloatit.model;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RestrictedObject;
 import com.bloatit.model.visitor.HighLevelModelVisitor;
 
@@ -36,30 +36,28 @@ public class Rights {
     }
 
     private final OwningState owningState;
-    private final AuthenticatedUserToken token;
     private Team currentTeam;
 
-    public Rights(final AuthenticatedUserToken token, final IdentifiableInterface identifiable) {
-        this.token = token;
+    public Rights(final IdentifiableInterface identifiable) {
         currentTeam = null;
-        if (token == null || !token.isAuthenticated()) {
+        if (!AuthToken.isAuthenticated()) {
             owningState = OwningState.NOBODY;
         } else {
-            if (token.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {
-                if (token.getAsTeam() != null) {
-                    currentTeam = token.getAsTeam();
+            if (AuthToken.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {
+                if (AuthToken.getAsTeam() != null) {
+                    currentTeam = AuthToken.getAsTeam();
                 } else {
                     currentTeam = identifiable.accept(new GetCreatedByTeamVisitor());
                 }
 
-                final Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(token.getMember()));
+                final Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(AuthToken.getMember()));
                 if (accept != null && accept) {
                     owningState = OwningState.TEAM_OWNER;
                 } else {
                     owningState = OwningState.AUTHENTICATED;
                 }
             } else {
-                if (identifiable.accept(new IsOwnerVisitor(token.getMember()))) {
+                if (identifiable.accept(new IsOwnerVisitor(AuthToken.getMember()))) {
                     owningState = OwningState.OWNER;
                 } else {
                     owningState = OwningState.AUTHENTICATED;
@@ -91,19 +89,19 @@ public class Rights {
     // Team Rights
 
     public boolean hasModifyTeamRight() {
-        return token != null && token.isAuthenticated() && currentTeam != null && hasModifyTeamRight(token.getMember(), currentTeam);
+        return AuthToken.isAuthenticated() && currentTeam != null && hasModifyTeamRight(AuthToken.getMember(), currentTeam);
     }
 
     public boolean hasConsultTeamRight() {
         if (isTeamOwner()) {
-            return token != null && token.isAuthenticated() && currentTeam != null && hasConsultTeamRight(token.getMember(), currentTeam);
+            return AuthToken.isAuthenticated() && currentTeam != null && hasConsultTeamRight(AuthToken.getMember(), currentTeam);
         }
         return false;
     }
 
     public boolean hasBankTeamRight() {
         if (isTeamOwner()) {
-            return token != null && token.isAuthenticated() && currentTeam != null && hasBankTeamRight(token.getMember(), currentTeam);
+            return AuthToken.isAuthenticated() && currentTeam != null && hasBankTeamRight(AuthToken.getMember(), currentTeam);
         }
         return false;
     }
@@ -166,7 +164,7 @@ public class Rights {
     }
 
     private final boolean hasUserPrivilege(final DaoMember.Role role) {
-        return token != null && token.isAuthenticated() && token.getMember().getRole() == role;
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getRole() == role;
     }
 
     // ///////////////////////////////////////

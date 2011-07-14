@@ -275,7 +275,7 @@ public class ConfigurationManager {
                 throw new BadProgrammerException("Error loading the property " + key + ". Array in configuration files must en with ].");
             }
             elem = elem.substring(1, elem.length() - 1);
-            String[] array = elem.split(",");
+            final String[] array = elem.split(",");
             if (array.length == 0) {
                 throw new BadProgrammerException("Error loading the property " + key + ". Array cannot be empty.");
             }

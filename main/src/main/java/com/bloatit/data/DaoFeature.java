@@ -317,8 +317,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the new {@link DaoContribution}
      * @throws NotEnoughMoneyException the not enough money exception
      */
-    public DaoContribution
-            addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public DaoContribution addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment)
+            throws NotEnoughMoneyException {
         if (amount == null) {
             throw new NonOptionalParameterException();
         }

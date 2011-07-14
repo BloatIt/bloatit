@@ -16,7 +16,6 @@
 //
 package com.bloatit.framework.webprocessor.context;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 public interface User {
@@ -31,5 +30,5 @@ public interface User {
 
     public abstract ActivationState getActivationState();
 
-    public abstract Serializable getId();
+    public abstract Integer getId();
 }

@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoMilestone;
@@ -32,6 +31,7 @@ import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MilestoneContributionAmountList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMilestone;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
@@ -113,7 +113,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
      */
     public Bug addBug(final String title, final String description, final Locale locale, final Level errorLevel)
             throws UnauthorizedOperationException {
-        final Bug bug = new Bug(getAuthToken().getMember(), getAuthToken().getAsTeam(), this, title, description, locale, errorLevel);
+        final Bug bug = new Bug(AuthToken.getMember(), AuthToken.getAsTeam(), this, title, description, locale, errorLevel);
         getDao().addBug(bug.getDao());
         return bug;
     }
@@ -148,7 +148,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     public Release addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
             throws UnauthorizedOperationException {
         tryAccess(new RgtMilestone.Release(), Action.WRITE);
-        final Release release = new Release(getOffer().getMember(), getAuthToken().getAsTeam(), this, description, version, locale);
+        final Release release = new Release(getOffer().getMember(), AuthToken.getAsTeam(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);
         }

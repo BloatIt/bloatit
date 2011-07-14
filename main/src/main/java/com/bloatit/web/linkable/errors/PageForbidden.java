@@ -11,7 +11,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
@@ -28,7 +27,7 @@ public class PageForbidden extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final HtmlDiv box = new HtmlDiv("forbidden_error");
         layout.addLeft(box);
@@ -57,7 +56,7 @@ public class PageForbidden extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return PageForbidden.generateBreadcrumb();
     }
 

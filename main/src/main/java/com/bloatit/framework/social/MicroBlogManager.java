@@ -10,9 +10,9 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 public class MicroBlogManager {
     public static ArrayList<MicroBlog> microblogs;
 
-    public MicroBlogManager(String[] microBlogs, String password) {
+    public MicroBlogManager(final String[] microBlogs, final String password) {
         microblogs = new ArrayList<MicroBlog>();
-        String[] rawMbList = microBlogs;
+        final String[] rawMbList = microBlogs;
 
         for (String mb : rawMbList) {
             mb = mb.trim();
@@ -20,7 +20,7 @@ public class MicroBlogManager {
                 throw new BadProgrammerException("The property 'micro.blogs' must be a list of list: [[realm1& login1& url1],[realm2& login2& url2]]");
             }
             mb = mb.substring(1, mb.length() - 1);
-            String[] split = mb.split("&");
+            final String[] split = mb.split("&");
             if (split.length != 3) {
                 throw new BadProgrammerException("Each element in the 'micro.blogs' property should have 3 items : [[realm1& login1& url1],[realm2& login2& url2]]");
             }
@@ -28,16 +28,16 @@ public class MicroBlogManager {
         }
     }
 
-    public void post(String message) {
-        for (MicroBlog mb : microblogs) {
+    public void post(final String message) {
+        for (final MicroBlog mb : microblogs) {
             mb.post(message);
         }
     }
 
     public static String[] getMicroBlogNames() {
-        String[] result = new String[microblogs.size()];
+        final String[] result = new String[microblogs.size()];
         int i = 0;
-        for (MicroBlog mb : microblogs) {
+        for (final MicroBlog mb : microblogs) {
             result[i++] = mb.getRealm();
         }
         return result;

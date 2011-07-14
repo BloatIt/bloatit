@@ -21,7 +21,6 @@ import java.util.Date;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.FileMetadataList;
-import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtUserContent;
 import com.bloatit.model.right.UnauthorizedOperationException;

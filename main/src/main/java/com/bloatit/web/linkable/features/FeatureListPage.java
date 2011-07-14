@@ -32,7 +32,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.WebConfiguration;
@@ -90,7 +89,7 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         // Search block
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -156,7 +155,7 @@ public final class FeatureListPage extends ElveosPage {
                 final FeatureListPageUrl popularitySortUrl = url.clone();
                 popularitySortUrl.setSort(SORT_BY_POPULARITY);
                 final HtmlLink popularitySort = popularitySortUrl.getHtmlLink(Context.tr("popularity"));
-                if (sort.equals(SORT_BY_POPULARITY) || (sort.equals(SORT_BY_RELEVANCE) && searchString.isEmpty()) ) {
+                if (sort.equals(SORT_BY_POPULARITY) || (sort.equals(SORT_BY_RELEVANCE) && searchString.isEmpty())) {
                     popularitySort.setCssClass("selected");
                 }
 
@@ -226,7 +225,7 @@ public final class FeatureListPage extends ElveosPage {
         // Feature list
         final FeatureList results = searchResult();
         if (results.size() > 0) {
-            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem(userToken);
+            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem();
             final FeatureListPageUrl clonedUrl = url.clone();
             pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, results, clonedUrl, clonedUrl.getPagedFeatureListUrl());
             layout.addLeft(pagedFeatureList);
@@ -257,16 +256,14 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     private static class FeaturesListItem implements HtmlRenderer<Feature> {
-        private final ElveosUserToken userToken;
 
-        public FeaturesListItem(final ElveosUserToken userToken) {
+        public FeaturesListItem() {
             super();
-            this.userToken = userToken;
         }
 
         @Override
         public XmlNode generate(final Feature feature) {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL, userToken);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL);
         }
     };
 
@@ -285,13 +282,13 @@ public final class FeatureListPage extends ElveosPage {
         }
 
         if (sort.equals(SORT_BY_RELEVANCE)) {
-            //Use relevance sort only if there is a search
-            if(searchString.isEmpty()) {
+            // Use relevance sort only if there is a search
+            if (searchString.isEmpty()) {
                 search.setSortMethod(SortMethod.SORT_BY_POPULARITY);
             } else {
                 search.setSortMethod(SortMethod.SORT_BY_RELEVANCE);
             }
-                    
+
         } else if (sort.equals(SORT_BY_CONTRIBUTION)) {
             search.setSortMethod(SortMethod.SORT_BY_CONTRIBUTION);
         } else if (sort.equals(SORT_BY_PROGRESS)) {
@@ -315,7 +312,7 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return FeatureListPage.generateBreadcrumb();
     }
 }

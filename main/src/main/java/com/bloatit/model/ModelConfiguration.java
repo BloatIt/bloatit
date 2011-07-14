@@ -61,7 +61,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private String linkeosCity;
     private String linkeosCountry;
     private String linkeosLegalIdentification;
-    
+
     private ModelConfiguration() {
         super();
         load();
@@ -228,13 +228,10 @@ public class ModelConfiguration extends ReloadableConfiguration {
         linkeosCity = properties.getString("linkeos.city");
         linkeosCountry = properties.getString("linkeos.country");
         linkeosLegalIdentification = properties.getString("linkeos.legal_identification");
-       
+
         linkeosTaxesIdentification = properties.getString("linkeos.taxes_identification");
         linkeosTaxesRate = properties.getBigDecimal("linkeos.taxes_rate");
 
-        
-        
-        
         invoiceLinkeosLogo = properties.getString("invoice.linkeos.logo");
     }
 
@@ -255,7 +252,6 @@ public class ModelConfiguration extends ReloadableConfiguration {
     public static BigDecimal getLinkeosTaxesRate() {
         return configuration.linkeosTaxesRate;
     }
-
 
     public static String getLinkeosTaxIdentification() {
         return configuration.linkeosTaxesIdentification;

@@ -20,7 +20,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
@@ -67,7 +66,7 @@ public final class AddAttachementAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return Context.getSession().getLastVisitedPage();
     }
 

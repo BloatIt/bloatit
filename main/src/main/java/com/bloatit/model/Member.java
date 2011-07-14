@@ -50,6 +50,7 @@ import com.bloatit.model.lists.TeamList;
 import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.RightManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -147,7 +148,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public boolean acceptInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
-        if (!invitation.getReceiver().getId().equals(getAuthToken().getMember().getId())) {
+        if (!invitation.getReceiver().getId().equals(AuthToken.getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
 
@@ -173,7 +174,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public void refuseInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
-        if (!invitation.getReceiver().getId().equals(getAuthToken().getMember().getId())) {
+        if (!invitation.getReceiver().getId().equals(AuthToken.getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
         invitation.refuse();
@@ -519,8 +520,8 @@ public final class Member extends Actor<DaoMember> implements User {
         final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + RESET_SALT;
         return DigestUtils.sha256Hex(digest);
     }
-    
-    public PageIterable<ExternalService> getExternalServices(){
+
+    public PageIterable<ExternalService> getExternalServices() {
         return new ListBinder<ExternalService, DaoExternalService>(getDao().getAuthorizedExternalServices());
     }
 
@@ -632,6 +633,5 @@ public final class Member extends Actor<DaoMember> implements User {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
 
 }

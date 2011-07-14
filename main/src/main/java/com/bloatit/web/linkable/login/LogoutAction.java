@@ -14,11 +14,10 @@ package com.bloatit.web.linkable.login;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
@@ -40,10 +39,13 @@ public final class LogoutAction extends LoggedAction {
     @Override
     public Url doProcessRestricted(final Member me) {
         final Url prefUrl = session.pickPreferredPage();
+        AuthToken.logOut();
         SessionManager.destroySession(session);
-        final Session newSess = SessionManager.createSession(Context.getHeader().getRemoteAddr());
-        Context.reInitializeContext(Context.getHeader(), newSess);
-        newSess.notifyGood(Context.tr("Logout success."));
+        // TODO
+        // final Session newSess =
+        // SessionManager.getOrCreateSession(Context.getHeader());
+        // Context.reInitializeContext(Context.getHeader(), newSess);
+        session.notifyGood(Context.tr("Logout success."));
         return prefUrl;
     }
 
@@ -53,7 +55,7 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessErrors(final ElveosUserToken userToken) {
+    public Url doProcessErrors() {
         return new IndexPageUrl();
     }
 

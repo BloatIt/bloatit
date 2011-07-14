@@ -27,7 +27,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
-import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
@@ -46,7 +46,7 @@ public final class MetaBugsListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final List<MetaBug> bugList = MetaBugManager.getOpenBugs();
 
@@ -54,7 +54,7 @@ public final class MetaBugsListPage extends ElveosPage {
 
         for (final MetaBug bug : bugList) {
             final HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
-            if (getSession().getUserToken().isAuthenticated()) {
+            if (AuthToken.isAuthenticated()) {
                 final HtmlDiv editBox = new HtmlDiv("float_right");
                 bugBox.add(editBox);
                 editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));
@@ -89,7 +89,7 @@ public final class MetaBugsListPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return MetaBugsListPage.generateBreadcrumb();
     }
 

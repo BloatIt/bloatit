@@ -218,9 +218,9 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * @param comment The text describing the goal of the form field
      */
     public final void setComment(final String comment) {
-       setComment(new HtmlText(comment));
+        setComment(new HtmlText(comment));
     }
-    
+
     public void setComment(final XmlNode comment) {
         final HtmlDiv commentBlock = new HtmlDiv("comment");
         commentBlock.add(comment);

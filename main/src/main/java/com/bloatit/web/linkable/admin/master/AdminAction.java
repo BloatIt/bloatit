@@ -24,6 +24,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AdminActionUrl;
@@ -63,7 +64,7 @@ public abstract class AdminAction extends LoggedAction {
 
     @Override
     protected final String getRefusalReason() {
-        if (session.getUserToken().isAuthenticated()) {
+        if (AuthToken.isAuthenticated()) {
             return Context.tr("You must be logged as an admin to access this page");
         }
         return Context.tr("You must be logged to access an admin page");

@@ -80,6 +80,16 @@ public final class DaoExternalService extends DaoIdentifiable {
         service.authorize(accessToken, refreshToken, expirationDate);
     }
 
+    public static DaoExternalService getServiceByKey(final String authorizationToken) {
+        final DaoExternalService service = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getByToken")
+                                                                              .setString("token", authorizationToken)
+                                                                              .uniqueResult();
+        if (!service.isValid()) {
+            return null;
+        }
+        return service;
+    }
+
     // ======================================================================
     // Construction
     // ======================================================================
@@ -297,5 +307,4 @@ public final class DaoExternalService extends DaoIdentifiable {
     protected DaoExternalService() {
         super();
     }
-
 }

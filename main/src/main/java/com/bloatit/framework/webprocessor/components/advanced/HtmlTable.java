@@ -21,7 +21,6 @@ import java.util.List;
 
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
@@ -52,11 +51,10 @@ public class HtmlTable extends HtmlGenericElement {
             if (getModel().getLineCss() != null) {
                 tr.setCssClass(getModel().getLineCss());
             }
-            
+
             if (getModel().getLineId() != null) {
                 tr.setId(getModel().getLineId());
             }
-            
 
             for (int i = 0; i < columnCount; i++) {
                 final HtmlGenericElement td = new HtmlGenericElement("td");
@@ -98,15 +96,13 @@ public class HtmlTable extends HtmlGenericElement {
     public static abstract class HtmlTableModel {
         public abstract int getColumnCount();
 
-        
-
         public abstract XmlNode getHeader(int column);
 
         public abstract XmlNode getBody(int column);
 
         /**
          * Switch to next line and indicate if the next line exist
-         *
+         * 
          * @return true if there is more line
          */
         public abstract boolean next();
@@ -125,16 +121,16 @@ public class HtmlTable extends HtmlGenericElement {
         public String getLineCss() {
             return null;
         }
-        
+
         public String getLineId() {
             return null;
         }
 
-        public int getColspan(int column) {
+        public int getColspan(final int column) {
             return 1;
         }
 
-        public String getId(int column) {
+        public String getId(final int column) {
             return null;
         }
 
@@ -190,7 +186,7 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         @Override
-        public String getId(int column) {
+        public String getId(final int column) {
             return lines.get(currentLine).getCells().get(column).getId();
         }
 
@@ -203,7 +199,8 @@ public class HtmlTable extends HtmlGenericElement {
         public String getLineCss() {
             return lines.get(currentLine).getCssClass();
         }
-        
+
+        @Override
         public String getLineId() {
             return lines.get(currentLine).getId();
         }
@@ -215,13 +212,13 @@ public class HtmlTable extends HtmlGenericElement {
             public HtmlTableLine() {
                 super("tr");
             }
-            
-            
+
             final public String getCssClass() {
                 return css;
             }
-            
-            final public HtmlElement setCssClass(String css) {
+
+            @Override
+            final public HtmlElement setCssClass(final String css) {
                 this.css = css;
                 return this;
             }
@@ -260,15 +257,17 @@ public class HtmlTable extends HtmlGenericElement {
                 return 1;
             }
 
-            public HtmlElement setId(String id) {
+            @Override
+            public HtmlElement setId(final String id) {
                 this.id = id;
                 return this;
             }
 
+            @Override
             public String getId() {
                 return id;
             }
-            
+
             @Override
             public boolean selfClosable() {
                 return false;
@@ -286,7 +285,6 @@ public class HtmlTable extends HtmlGenericElement {
                 return new PlaceHolderElement();
             }
 
-            
         }
 
     }

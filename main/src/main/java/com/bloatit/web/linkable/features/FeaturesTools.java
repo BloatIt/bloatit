@@ -34,13 +34,13 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Image;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlProgressBar;
@@ -115,13 +115,11 @@ public class FeaturesTools {
         return master;
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
-        return generateProgress(feature, userToken, BigDecimal.ZERO);
+    public static HtmlDiv generateProgress(final Feature feature) throws UnauthorizedOperationException {
+        return generateProgress(feature, BigDecimal.ZERO);
     }
 
-    public static HtmlDiv
-            generateProgress(final Feature feature, final ElveosUserToken userToken, final BigDecimal futureAmount)
-                                                                                                                   throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final BigDecimal futureAmount) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
 
@@ -131,8 +129,8 @@ public class FeaturesTools {
             float myProgressValue = 0;
             float futureProgressValue = 0;
 
-            if (Context.getSession().getUserToken().isAuthenticated()) {
-                myProgressValue = feature.getMemberProgression(userToken.getMember());
+            if (AuthToken.isAuthenticated()) {
+                myProgressValue = feature.getMemberProgression(AuthToken.getMember());
                 if (myProgressValue > 0.0f && myProgressValue < 5f) {
                     myProgressValue = 5f;
 

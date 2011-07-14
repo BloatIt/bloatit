@@ -23,7 +23,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtTranslation;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 public final class Translation extends Kudosable<DaoTranslation> {
 
@@ -126,7 +125,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
         }
         return wholeText.substring(0, i - 1) + "…";
     }
-    
+
     // ////////////////////////////////////////////////////////////////////////
     // kudosable configuration
     // ////////////////////////////////////////////////////////////////////////

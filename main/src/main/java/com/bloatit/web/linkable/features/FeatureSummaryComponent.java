@@ -42,12 +42,12 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Image;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlAuthorLink;
@@ -67,7 +67,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     private final Feature feature;
 
-    protected FeatureSummaryComponent(final Feature feature, final ElveosUserToken userToken) {
+    protected FeatureSummaryComponent(final Feature feature) {
         super();
         this.feature = feature;
 
@@ -107,7 +107,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 }
                 featureSummary.add(featureSummaryTop);
 
-                JsShowHide shareBlockShowHide = new JsShowHide(false);
+                final JsShowHide shareBlockShowHide = new JsShowHide(false);
 
                 // ////////////////////
                 // Div feature_summary_bottom
@@ -164,14 +164,14 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                             featureSummaryPopularity.add(featurePopularityNone);
                         }
                         // Delete the feature
-                        if (userToken.isAuthenticated() && userToken.getMember().getRights().hasAdminUserPrivilege()) {
+                        if (AuthToken.isAuthenticated() && AuthToken.getMember().getRights().hasAdminUserPrivilege()) {
                             featureSummaryPopularity.add(new FeatureModerationPageUrl(feature).getHtmlLink(Context.tr("Moderate")));
                         }
                     }
                     featureSummaryBottom.add(featureSummaryPopularity);
 
                     HtmlDiv featureSummaryProgress;
-                    featureSummaryProgress = generateProgressBlock(feature, userToken);
+                    featureSummaryProgress = generateProgressBlock(feature);
                     featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////
@@ -196,8 +196,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 feature_summary_share_external.add(generateLinkedInShareItem());
                 feature_summary_share_external.add(generatePlusoneShareItem());
 
-
-
                 shareBlockShowHide.addListener(feature_summary_share_external);
                 shareBlockShowHide.apply();
             }
@@ -210,17 +208,17 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     private XmlNode generateIdenticaShareItem() {
-        HtmlDiv item = new HtmlDiv("share_item");
+        final HtmlDiv item = new HtmlDiv("share_item");
 
-        HtmlDiv identicaBlock = new HtmlDiv("identica");
+        final HtmlDiv identicaBlock = new HtmlDiv("identica");
         item.add(identicaBlock);
 
         identicaBlock.addAttribute("style", "background-color: white;border: 1px solid #ddd;display:inline-block;");
 
-        HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://identi.ca//index.php?action=bookmarklet',e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20"
+        final HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://identi.ca//index.php?action=bookmarklet',e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20"
                 + new FeaturePageAliasUrl(feature).externalUrlString()
                 + "';function%20a(){if(!w.open(g,'t','toolbar=0,resizable=0,scrollbars=1,status=1,width=450,height=200')){l.href=g;}}a();})()");
-        HtmlImage backgroundImage = new HtmlImage(new Image("/resources/commons/img/share/identica.png"), "identi.ca");
+        final HtmlImage backgroundImage = new HtmlImage(new Image("/resources/commons/img/share/identica.png"), "identi.ca");
         backgroundImage.addAttribute("style", "border:none;");
         actionLink.add(backgroundImage);
 
@@ -230,14 +228,14 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     private XmlNode generateTwitterShareItem() {
-        HtmlDiv item = new HtmlDiv("share_item");
+        final HtmlDiv item = new HtmlDiv("share_item");
 
-        HtmlLink actionLink = new HtmlLink("http://twitter.com/share", "Tweet");
+        final HtmlLink actionLink = new HtmlLink("http://twitter.com/share", "Tweet");
         item.add(actionLink);
         actionLink.setCssClass("twitter-share-button");
         actionLink.addAttribute("data-count", "horizontal");
-        
-        HtmlScript script = new HtmlScript();
+
+        final HtmlScript script = new HtmlScript();
         item.add(script);
         script.addAttribute("src", "http://platform.twitter.com/widgets.js");
 
@@ -245,39 +243,36 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     private XmlNode generateLinkedInShareItem() {
-        HtmlDiv item = new HtmlDiv("share_item");
+        final HtmlDiv item = new HtmlDiv("share_item");
 
-                
-        HtmlScript script = new HtmlScript();
+        final HtmlScript script = new HtmlScript();
         item.add(script);
         script.addAttribute("src", "http://platform.linkedin.com/in.js");
-        
-        HtmlScript script2 = new HtmlScript();
+
+        final HtmlScript script2 = new HtmlScript();
         item.add(script2);
         script2.addAttribute("type", "IN/Share");
         script2.addAttribute("data-counter", "right");
-        
+
         return item;
     }
-    
-    private XmlNode generatePlusoneShareItem() {
-        HtmlDiv item = new HtmlDiv("share_item");
 
-        HtmlScript script = new HtmlScript();
+    private XmlNode generatePlusoneShareItem() {
+        final HtmlDiv item = new HtmlDiv("share_item");
+
+        final HtmlScript script = new HtmlScript();
         item.add(script);
         script.addAttribute("src", "https://apis.google.com/js/plusone.js");
         script.append("{lang: '" + Context.getLocalizator().getCode() + "'}");
 
-        HtmlGenericElement element = new HtmlGenericElement("g:plusone");
+        final HtmlGenericElement element = new HtmlGenericElement("g:plusone");
         item.add(element);
         element.addAttribute("size", "medium");
 
         return item;
     }
 
-
-
-    private HtmlDiv generateProgressBlock(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
@@ -285,7 +280,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
             final HtmlDiv featureSummaryProgressAndState = new HtmlDiv("feature_summary_progress_and_state");
             {
-                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature, userToken));
+                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature));
                 featureSummaryProgressAndState.add(FeaturesTools.generateState(feature));
             }
 
@@ -410,7 +405,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             element.add(link);
         }
 
-        if (selectedOffer.getAuthor().equals(Context.getSession().getUserToken().getMember())) {
+        if (selectedOffer.getAuthor().equals(AuthToken.getMember())) {
             final HtmlLink link = new CreateReleasePageUrl(currentMilestone).getHtmlLink(Context.tr("Add a release"));
             link.setCssClass("button");
             element.add(link);

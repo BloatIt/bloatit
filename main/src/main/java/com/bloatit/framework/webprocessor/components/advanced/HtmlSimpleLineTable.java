@@ -13,8 +13,8 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
  * A simple table that gets constructed simply by adding elements
  */
 public class HtmlSimpleLineTable extends HtmlLeaf {
-    private HtmlGenericElement body = new HtmlGenericElement("tbody");
-    private PlaceHolderElement headerPh = new PlaceHolderElement();
+    private final HtmlGenericElement body = new HtmlGenericElement("tbody");
+    private final PlaceHolderElement headerPh = new PlaceHolderElement();
 
     public HtmlSimpleLineTable() {
         super("table");
@@ -22,10 +22,10 @@ public class HtmlSimpleLineTable extends HtmlLeaf {
         add(body);
     }
 
-    public void addLine(Object... line) {
-        HtmlGenericElement tr = new HtmlGenericElement("tr");
+    public void addLine(final Object... line) {
+        final HtmlGenericElement tr = new HtmlGenericElement("tr");
         body.add(tr);
-        for (Object elem : line) {
+        for (final Object elem : line) {
             XmlNode element;
             if (elem == null) {
                 tr.add(new HtmlGenericElement("td"));
@@ -47,12 +47,12 @@ public class HtmlSimpleLineTable extends HtmlLeaf {
         }
     }
 
-    public void addHeader(String... header) {
-        HtmlGenericElement thead = new HtmlGenericElement("thead");
+    public void addHeader(final String... header) {
+        final HtmlGenericElement thead = new HtmlGenericElement("thead");
         headerPh.add(thead);
-        HtmlGenericElement tr = new HtmlGenericElement("tr");
+        final HtmlGenericElement tr = new HtmlGenericElement("tr");
         thead.add(tr);
-        for (String elem : header) {
+        for (final String elem : header) {
             tr.add(new HtmlGenericElement("th").addText(elem));
         }
     }

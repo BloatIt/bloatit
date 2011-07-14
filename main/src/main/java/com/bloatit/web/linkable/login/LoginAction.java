@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.login;
 
+import javassist.NotFoundException;
+
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -20,12 +22,10 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
-import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
-import com.bloatit.model.managers.LoginManager;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -57,43 +57,42 @@ public final class LoginAction extends ElveosAction {
     }
 
     @Override
-    public Url doProcess(final ElveosUserToken userToken) {
-        UserToken token = null;
-        token = LoginManager.loginByPassword(login.trim(), password);
-
-        if (token != null && token.isAuthenticated()) {
-            session.authenticate(token);
+    public Url doProcess() {
+        try {
+            AuthToken.authenticate(login, password);
             session.notifyGood(Context.tr("Login success."));
             Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
-        }
+        } catch (final NotFoundException e) {
 
-        // We check if member is non existing or not validated
-        final Member m = MemberManager.getMemberByLogin(login);
-        if (m != null && m.getActivationState() == ActivationState.VALIDATING) {
-            session.notifyWarning(Context.tr("Your account has not been validated yet. Please check your emails."));
+            // We check if member is non existing or not validated
+            final Member m = MemberManager.getMemberByLogin(login);
+            if (m != null && m.getActivationState() == ActivationState.VALIDATING) {
+                session.notifyWarning(Context.tr("Your account has not been validated yet. Please check your emails."));
+                transmitParameters();
+                return new LoginPageUrl();
+            }
+
+            AuthToken.unAuthenticate();
+            final HtmlLink link = new LostPasswordPageUrl().getHtmlLink();
+            final HtmlMixedText mixed = new HtmlMixedText(Context.tr("Login failed. Wrong login or password. Password lost ? <0::Recover it>."), link);
+            session.notifyWarning(mixed);
+
+            url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
+            url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));
             transmitParameters();
             return new LoginPageUrl();
         }
 
-        session.setAnonymousUserToken();
-        final HtmlLink link = new LostPasswordPageUrl().getHtmlLink();
-        final HtmlMixedText mixed = new HtmlMixedText(Context.tr("Login failed. Wrong login or password. Password lost ? <0::Recover it>."), link);
-        session.notifyWarning(mixed);
+    }
 
-        url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
-        url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));
-        transmitParameters();
+    @Override
+    protected Url doProcessErrors() {
         return new LoginPageUrl();
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
-        return new LoginPageUrl();
-    }
-
-    @Override
-    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything() {
         return NO_ERROR; // Nothing else to check
     }
 

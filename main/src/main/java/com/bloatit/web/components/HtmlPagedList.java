@@ -188,14 +188,14 @@ public class HtmlPagedList<T> extends HtmlDiv {
         return generateLink(i, iString, longBlock, null);
     }
 
-    private XmlNode generateLink(final int page, final String text, final boolean longBlock, String rel) {
+    private XmlNode generateLink(final int page, final String text, final boolean longBlock, final String rel) {
         final String iString = Integer.valueOf(page).toString();
         final String css = (longBlock ? "long_block" : "short_block");
         if (page != currentPage) {
             url.setCurrentPage(page);
             url.setPageSize(pageSize);
 
-            HtmlLink htmlLink = currentUrl.getHtmlLink(text);
+            final HtmlLink htmlLink = currentUrl.getHtmlLink(text);
             htmlLink.setCssClass(css);
 
             if (rel != null) {

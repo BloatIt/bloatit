@@ -28,13 +28,13 @@ import com.bloatit.web.url.FeaturePageUrl;
  */
 @ParamContainer("moderatefeature/%feature%")
 public class FeatureModerationPage extends AdminPage {
-    private FeatureModerationPageUrl url;
+    private final FeatureModerationPageUrl url;
 
     @NonOptional(@tr("You have to specify the feature you want to delete."))
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the feature number: ''%value%''."))
     private final Feature feature;
 
-    public FeatureModerationPage(FeatureModerationPageUrl url) {
+    public FeatureModerationPage(final FeatureModerationPageUrl url) {
         super(url);
         this.url = url;
         this.feature = url.getFeature();
@@ -42,16 +42,16 @@ public class FeatureModerationPage extends AdminPage {
 
     @Override
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
-        TwoColumnLayout master = new TwoColumnLayout(true, url);
+        final TwoColumnLayout master = new TwoColumnLayout(true, url);
         master.addLeft(new HtmlTitle(Context.tr("Feature moderation"), 1));
 
-        HtmlParagraph warning = new HtmlParagraph();
+        final HtmlParagraph warning = new HtmlParagraph();
         warning.addText(Context.tr("Are you sure you want to delete this feature ?"));
         master.addLeft(warning);
 
-        HtmlLink ok = new FeatureModerationActionUrl(getSession().getShortKey(), feature).getHtmlLink(Context.tr("Delete"));
+        final HtmlLink ok = new FeatureModerationActionUrl(getSession().getShortKey(), feature).getHtmlLink(Context.tr("Delete"));
         ok.setCssClass("button");
-        HtmlLink cancel = new FeaturePageUrl(feature, FeatureTabPane.TabKey.description).getHtmlLink(Context.tr("Cancel"));
+        final HtmlLink cancel = new FeaturePageUrl(feature, FeatureTabPane.TabKey.description).getHtmlLink(Context.tr("Cancel"));
         cancel.setCssClass("button");
 
         master.addLeft(ok);
@@ -61,8 +61,8 @@ public class FeatureModerationPage extends AdminPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
-        Breadcrumb br = FeaturePage.generateBreadcrumb(feature);
+    protected Breadcrumb createBreadcrumb(final Member member) {
+        final Breadcrumb br = FeaturePage.generateBreadcrumb(feature);
         br.pushLink(new FeatureModerationPageUrl(feature).getHtmlLink("Moderate"));
         return br;
     }

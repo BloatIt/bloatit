@@ -46,12 +46,12 @@ public class KudosableAuthorBlock extends UserContentAuthorBlock {
                     commentPopularity.addText(" (");
 
                     // Useful
-                    final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),kudosable, true);
+                    final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), kudosable, true);
                     final HtmlLink usefullLink = usefullUrl.getHtmlLink(tr("Useful"));
                     usefullLink.setCssClass("useful");
 
                     // Useless
-                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),kudosable, false);
+                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), kudosable, false);
                     final HtmlLink uselessLink = uselessUrl.getHtmlLink(tr("Useless"));
                     uselessLink.setCssClass("useless");
 

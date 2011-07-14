@@ -20,6 +20,7 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtComment;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
@@ -107,8 +108,8 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtComment.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.get(getAuthToken().getAsTeam()),
-                                                               getAuthToken().getMember().getDao(),
+                                                               DaoGetter.get(AuthToken.getAsTeam()),
+                                                               AuthToken.getMember().getDao(),
                                                                text);
         getDao().addChildComment(comment);
         return Comment.create(comment);
@@ -134,10 +135,10 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
-        
+
         super.delete();
 
-        for (Comment comment : getComments()) {
+        for (final Comment comment : getComments()) {
             comment.delete();
         }
     }

@@ -12,8 +12,6 @@
 
 package com.bloatit.model;
 
-
-
 /**
  * A container for images in the bloatit website
  */

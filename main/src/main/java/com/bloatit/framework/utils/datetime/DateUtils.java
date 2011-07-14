@@ -96,5 +96,5 @@ public class DateUtils {
     public static boolean isInTheFuture(final Date date) {
         return date.after(now());
     }
-    
+
 }

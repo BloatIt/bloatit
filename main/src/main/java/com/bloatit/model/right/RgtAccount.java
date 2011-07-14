@@ -25,40 +25,40 @@ import com.bloatit.model.Account;
 public class RgtAccount extends RightManager {
 
     /**
-     * The Class Transaction is a {@link RightManager.ReadOnlyBankData} accessor for the
-     * Transaction property.
+     * The Class Transaction is a {@link RightManager.ReadOnlyBankData} accessor
+     * for the Transaction property.
      */
     public static class Transaction extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Amount is a {@link RightManager.ReadOnlyBankData} accessor for the Amount
-     * property.
+     * The Class Amount is a {@link RightManager.ReadOnlyBankData} accessor for
+     * the Amount property.
      */
     public static class Amount extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class LastModificationDate is a {@link RightManager.ReadOnlyBankData} accessor for
-     * the LastModificationDate property.
+     * The Class LastModificationDate is a {@link RightManager.ReadOnlyBankData}
+     * accessor for the LastModificationDate property.
      */
     public static class LastModificationDate extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class CreationDate is a {@link RightManager.ReadOnlyBankData} accessor for the
-     * CreationDate property.
+     * The Class CreationDate is a {@link RightManager.ReadOnlyBankData}
+     * accessor for the CreationDate property.
      */
     public static class CreationDate extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Actor is a {@link RightManager.ReadOnlyBankData} accessor for the Actor
-     * property.
+     * The Class Actor is a {@link RightManager.ReadOnlyBankData} accessor for
+     * the Actor property.
      */
     public static class Actor extends ReadOnlyBankData {
         // nothing this is just a rename.

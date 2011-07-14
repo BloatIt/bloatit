@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
@@ -115,7 +114,7 @@ public final class CreateSoftwareAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new CreateSoftwarePageUrl();
     }
 

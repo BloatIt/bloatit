@@ -47,7 +47,7 @@ import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtFeature;
 import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -91,9 +91,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @param locale the locale in which this feature is written
      * @param title the title of the feature
      * @param description the description of the feature
-     * @param software the software
-     *            {@link FeatureManager#canCreate(AuthenticatedUserToken)} to
-     *            make sure you can create a new feature.
+     * @param software the software {@link FeatureManager#canCreate(AuthToken)}
+     *            to make sure you can create a new feature.
      * @see DaoFeature
      */
     public FeatureImplementation(final Member author,
@@ -144,15 +143,15 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public Contribution addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         tryAccess(new RgtFeature.Contribute(), Action.WRITE);
         // For exception safety keep the order.
-        if (getAuthToken().getAsTeam() != null) {
-            if (getAuthToken().getAsTeam().getUserTeamRight(getAuthToken().getMember()).contains(UserTeamRight.BANK)) {
-                Log.model().trace("Doing a contribution in the name of a team: " + getAuthToken().getAsTeam().getId());
+        if (AuthToken.getAsTeam() != null) {
+            if (AuthToken.getAsTeam().getUserTeamRight(AuthToken.getMember()).contains(UserTeamRight.BANK)) {
+                Log.model().trace("Doing a contribution in the name of a team: " + AuthToken.getAsTeam().getId());
             } else {
                 throw new UnauthorizedOperationException(SpecialCode.TEAM_CONTRIBUTION_WITHOUT_BANK);
             }
         }
-        final DaoContribution contribution = getDao().addContribution(getAuthToken().getMember().getDao(),
-                                                                      DaoGetter.get(getAuthToken().getAsTeam()),
+        final DaoContribution contribution = getDao().addContribution(AuthToken.getMember().getDao(),
+                                                                      DaoGetter.get(AuthToken.getAsTeam()),
                                                                       amount,
                                                                       comment);
         setStateObject(getStateObject().eventAddContribution());
@@ -167,8 +166,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                           final Date dateExpire,
                           final int secondsBeforeValidation) throws UnauthorizedOperationException {
         tryAccess(new RgtFeature.Offer(), Action.WRITE);
-        final Offer offer = new Offer(getAuthToken().getMember(),
-                                      getAuthToken().getAsTeam(),
+        final Offer offer = new Offer(AuthToken.getMember(),
+                                      AuthToken.getAsTeam(),
                                       this,
                                       amount,
                                       description,
@@ -186,7 +185,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         tryAccess(new RgtFeature.Offer(), Action.WRITE);
 
         // Warning: This does not works when the offer is created by a team
-        if (!offer.getMember().equals(getAuthToken().getMember())) {
+        if (!offer.getMember().equals(AuthToken.getMember())) {
             throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
         }
         getDao().addOffer(offer.getDao());
@@ -208,8 +207,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtFeature.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.get(getAuthToken().getAsTeam()),
-                                                               getAuthToken().getMember().getDao(),
+                                                               DaoGetter.get(AuthToken.getAsTeam()),
+                                                               AuthToken.getMember().getDao(),
                                                                text);
         getDao().addComment(comment);
         return Comment.create(comment);
@@ -302,15 +301,15 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
         super.delete();
 
-        for (Comment comment : getComments()) {
+        for (final Comment comment : getComments()) {
             comment.delete();
         }
 
-        for (Offer offer : getOffers()) {
+        for (final Offer offer : getOffers()) {
             offer.delete();
         }
 
-        for (Translation translation : getDescription().getTranslations()) {
+        for (final Translation translation : getDescription().getTranslations()) {
             translation.delete();
         }
     }

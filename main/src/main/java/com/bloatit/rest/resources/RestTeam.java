@@ -107,7 +107,7 @@ public class RestTeam extends RestElement<Team> {
      * <p>
      * Finds the RestTeam matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestTeam
      */
     @REST(name = "teams", method = RequestMethod.GET)

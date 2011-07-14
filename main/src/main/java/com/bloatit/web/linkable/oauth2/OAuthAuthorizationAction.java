@@ -20,20 +20,19 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.framework.xcgiserver.HttpBloatitRequest;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.OAuthAuthorizationActionUrl;
 
 @ParamContainer("oauth/doauthorization")
 public class OAuthAuthorizationAction extends LoggedAction {
-    
+
     /**
      * REQUIRED. Value MUST be set to "code".
      */
     @RequestParam(name = "response_type")
     @NonOptional(@tr("OAuth request need a %param% parameter."))
-    private String responseType;
+    private final String responseType;
 
     /**
      * REQUIRED. The client identifier as described in Section 2.3.
@@ -58,7 +57,7 @@ public class OAuthAuthorizationAction extends LoggedAction {
      */
     @Optional
     @RequestParam(name = "scope")
-    private String scope;
+    private final String scope;
 
     /**
      * OPTIONAL. An opaque value used by the client to maintain state between
@@ -67,7 +66,7 @@ public class OAuthAuthorizationAction extends LoggedAction {
      */
     @RequestParam(name = "state")
     @Optional
-    private String state;
+    private final String state;
 
     private final OAuthAuthorizationActionUrl url;
 
@@ -122,7 +121,7 @@ public class OAuthAuthorizationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new UrlString(redirectUri);
     }
 

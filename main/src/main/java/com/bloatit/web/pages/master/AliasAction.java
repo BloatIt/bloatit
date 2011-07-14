@@ -12,38 +12,35 @@
 package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.actions.ElveosAction;
-
 
 public abstract class AliasAction extends ElveosAction {
 
     private final Url redirectUrl;
 
-    public AliasAction(final Url url, Url redirectUrl) {
+    public AliasAction(final Url url, final Url redirectUrl) {
         super(url);
         this.redirectUrl = redirectUrl;
     }
-    
+
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken token) {
+    protected Url checkRightsAndEverything() {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken token) {
+    protected Url doProcess() {
         // TODO: add a system to make a Move Permanently code
         return redirectUrl;
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken token) {
+    protected Url doProcessErrors() {
         return null;
     }
 
     @Override
     protected void transmitParameters() {
     }
-
 
 }

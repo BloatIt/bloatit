@@ -1,6 +1,5 @@
 package com.bloatit.framework.webprocessor.url.constraints;
 
-
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.MessageFormater;

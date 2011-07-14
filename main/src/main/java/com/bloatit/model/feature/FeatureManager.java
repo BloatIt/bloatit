@@ -21,7 +21,7 @@ import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureImplementation;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 
 /**
  * The Class FeatureManager is a class with only static member. Use it to do
@@ -38,7 +38,7 @@ public final class FeatureManager {
 
     /**
      * Gets the all features stored in the DB.
-     *
+     * 
      * @return the features
      */
     public static PageIterable<Feature> getFeatures() {
@@ -47,7 +47,7 @@ public final class FeatureManager {
 
     /**
      * Gets the feature by id.
-     *
+     * 
      * @param id the id of the feature we are looking for.
      * @return the feature or null if not found.
      */
@@ -55,13 +55,13 @@ public final class FeatureManager {
         return getFeatureImplementationById(id);
     }
 
-    public static int getFeatureCount(){
+    public static int getFeatureCount() {
         return DBRequests.count(DaoFeature.class);
     }
 
     /**
      * Gets the featureImplementation by id.
-     *
+     * 
      * @param id the id of the feature
      * @return the feature or null if not found
      */
@@ -71,7 +71,7 @@ public final class FeatureManager {
 
     /**
      * Gets the number of feature.
-     *
+     * 
      * @return the number of feature.
      */
     public static int getFeaturesCount() {
@@ -81,13 +81,13 @@ public final class FeatureManager {
     // Can create if authenticated.
     /**
      * Tells if a user can create a feature.
-     *
+     * 
      * @param userToken the auth token representing the user wanting to create a
      *            feature.
      * @return true, if successful
      */
-    public static boolean canCreate(final AuthenticatedUserToken userToken) {
-        return userToken.isAuthenticated();
+    public static boolean canCreate(final AuthToken userToken) {
+        return AuthToken.isAuthenticated();
     }
 
 }

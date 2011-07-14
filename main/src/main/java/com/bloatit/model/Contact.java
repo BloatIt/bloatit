@@ -31,17 +31,15 @@ public final class Contact {
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-
-
     /**
      * Find a bug in the cache or create an new one.
-     *
+     * 
      * @param dao the dao
      * @return null if dao is null. Else return the new invoicing contact.
      */
     @SuppressWarnings("synthetic-access")
     public static Contact create(final DaoContact dao) {
-        if(dao == null) {
+        if (dao == null) {
             return null;
         }
         return new Contact(dao);
@@ -49,15 +47,14 @@ public final class Contact {
 
     /**
      * Instantiates a new invoicing contact.
-     *
+     * 
      * @param dao the dao
      */
     private Contact(final DaoContact dao) {
         this.dao = dao;
     }
 
-
-    public void setName(String name) {
+    public void setName(final String name) {
         getDao().setName(name);
     }
 
@@ -65,14 +62,11 @@ public final class Contact {
         return getDao().getName();
     }
 
-    
-    
-    
     /**
      * @param taxIdentification
      * @see com.bloatit.data.DaoContact#setTaxIdentification(java.lang.String)
      */
-    public void setTaxIdentification(String taxIdentification) {
+    public void setTaxIdentification(final String taxIdentification) {
         dao.setTaxIdentification(taxIdentification);
     }
 
@@ -96,7 +90,7 @@ public final class Contact {
      * @param street
      * @see com.bloatit.data.DaoContact#setStreet(java.lang.String)
      */
-    public void setStreet(String street) {
+    public void setStreet(final String street) {
         dao.setStreet(street);
     }
 
@@ -112,7 +106,7 @@ public final class Contact {
      * @param extras
      * @see com.bloatit.data.DaoContact#setExtras(java.lang.String)
      */
-    public void setExtras(String extras) {
+    public void setExtras(final String extras) {
         dao.setExtras(extras);
     }
 
@@ -128,7 +122,7 @@ public final class Contact {
      * @param postalCode
      * @see com.bloatit.data.DaoContact#setPostalCode(java.lang.String)
      */
-    public void setPostalCode(String postalCode) {
+    public void setPostalCode(final String postalCode) {
         dao.setPostalCode(postalCode);
     }
 
@@ -144,7 +138,7 @@ public final class Contact {
      * @param city
      * @see com.bloatit.data.DaoContact#setCity(java.lang.String)
      */
-    public void setCity(String city) {
+    public void setCity(final String city) {
         dao.setCity(city);
     }
 
@@ -160,7 +154,7 @@ public final class Contact {
      * @param country
      * @see com.bloatit.data.DaoContact#setCountry(java.lang.String)
      */
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         dao.setCountry(country);
     }
 
@@ -176,7 +170,7 @@ public final class Contact {
      * @param legalId
      * @see com.bloatit.data.DaoContact#setLegalId(java.lang.String)
      */
-    public void setLegalId(String legalId) {
+    public void setLegalId(final String legalId) {
         dao.setLegalId(legalId);
     }
 
@@ -192,7 +186,7 @@ public final class Contact {
      * @param taxRate
      * @see com.bloatit.data.DaoContact#setTaxRate(java.math.BigDecimal)
      */
-    public void setTaxRate(BigDecimal taxRate) {
+    public void setTaxRate(final BigDecimal taxRate) {
         dao.setTaxRate(taxRate);
     }
 
@@ -208,7 +202,7 @@ public final class Contact {
      * @param invoiceIdTemplate
      * @see com.bloatit.data.DaoContact#setInvoiceIdTemplate(java.lang.String)
      */
-    public void setInvoiceIdTemplate(String invoiceIdTemplate) {
+    public void setInvoiceIdTemplate(final String invoiceIdTemplate) {
         dao.setInvoiceIdTemplate(invoiceIdTemplate);
     }
 
@@ -224,7 +218,7 @@ public final class Contact {
      * @param invoiceIdNumber
      * @see com.bloatit.data.DaoContact#setInvoiceIdNumber(java.math.BigDecimal)
      */
-    public void setInvoiceIdNumber(BigDecimal invoiceIdNumber) {
+    public void setInvoiceIdNumber(final BigDecimal invoiceIdNumber) {
         dao.setInvoiceIdNumber(invoiceIdNumber);
     }
 
@@ -232,28 +226,24 @@ public final class Contact {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
     // ///////////////////////////
     // Unprotected methods
 
     /**
      * This method is used only in the authentication process. You should never
      * used it anywhere else.
-     *
+     * 
      * @return the actor unprotected
      * @see #getActor()
      */
-//    final Actor<?> getActorUnprotected() {
-//        return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
-//    }
+    // final Actor<?> getActorUnprotected() {
+    // return (Actor<?>) getDao().getActor().accept(new
+    // DataVisitorConstructor());
+    // }
 
     private DaoContact getDao() {
         return dao;
     }
-
-    
-
-    
-
 
 }

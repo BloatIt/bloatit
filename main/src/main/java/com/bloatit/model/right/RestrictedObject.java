@@ -17,60 +17,16 @@
 
 package com.bloatit.model.right;
 
-import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
-import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
-
 /**
  * A restricted object is an object that contains some properties which accesses
  * are restricted to some users.
  */
 public abstract class RestrictedObject implements RestrictedInterface {
 
-    /** The token. */
-    private AuthenticatedUserToken token = null;
-
     /**
      * Instantiates a new restricted object.
      */
     public RestrictedObject() {
         super();
-    }
-
-    @Override
-    public void authenticate(final AuthenticatedUserToken token) {
-        this.token = token;
-    }
-
-    private void automaticAuthentication() {
-        final Session session = Context.getSession();
-        if (token == null && session != null && session.getUserToken().isAuthenticated()) {
-            authenticate((AuthenticatedUserToken) session.getUserToken());
-        }
-    }
-
-    /**
-     * Gets the auth token.
-     * 
-     * @return the auth token
-     * @throws UnauthorizedOperationException the unauthorized operation
-     *             exception
-     */
-    protected final AuthenticatedUserToken getAuthToken() throws UnauthorizedOperationException {
-        automaticAuthentication();
-        if (token != null) {
-            return token;
-        }
-        throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
-    }
-
-    /**
-     * Gets the auth token unprotected.
-     * 
-     * @return the auth token unprotected
-     */
-    protected final AuthenticatedUserToken getAuthTokenUnprotected() {
-        automaticAuthentication();
-        return token;
     }
 }

@@ -29,7 +29,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
@@ -64,11 +63,11 @@ public final class ModifyContactPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError(final ElveosUserToken userToken) throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
         if (url.getMessages().hasMessage()) {
             throw new RedirectException(Context.getSession().pickPreferredPage());
         }
-        return createBodyContent(userToken);
+        return createBodyContent();
     }
 
     @Override

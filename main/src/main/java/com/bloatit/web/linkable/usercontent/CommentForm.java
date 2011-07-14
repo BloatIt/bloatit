@@ -23,7 +23,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.CreateCommentActionUrl;
 
 public class CommentForm extends HtmlDiv {
@@ -32,7 +32,7 @@ public class CommentForm extends HtmlDiv {
     private static final int NB_ROWS = 10;
     public static final int FILE_MAX_SIZE_MIO = 2;
 
-    public CommentForm(final CreateCommentActionUrl targetUrl, final ElveosUserToken userToken) {
+    public CommentForm(final CreateCommentActionUrl targetUrl) {
         super("new_comment_block");
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
         add(form);
@@ -46,7 +46,7 @@ public class CommentForm extends HtmlDiv {
         commentInput.setComment(Context.tr("Add a new comment. If you want to reply to a previous comment, use the reply link."));
 
         form.add(new AsTeamField(targetUrl,
-                                 userToken.getMember(),
+                                 AuthToken.getMember(),
                                  UserTeamRight.TALK,
                                  Context.tr("In the name of"),
                                  Context.tr("Write this comment in the name of this team.")));

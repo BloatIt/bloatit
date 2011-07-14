@@ -357,7 +357,7 @@ public class InvoicePdfGenerator {
         table.addCell(createTableBodyCell(price));
 
         table.setWidthPercentage(100);
-        final float[] widths = {300f, 66f, 120f, 85f };
+        final float[] widths = { 300f, 66f, 120f, 85f };
         table.setWidths(widths);
 
         setLeft(430, table);
@@ -376,7 +376,7 @@ public class InvoicePdfGenerator {
         table.addCell(createTableBodyCell(amountTaxesIncluded));
 
         table.setWidthPercentage(100);
-        final float[] widths = {186f, 85f };
+        final float[] widths = { 186f, 85f };
         table.setWidths(widths);
 
         setAt(TAXES_TABLE_LEFT, 375, table);

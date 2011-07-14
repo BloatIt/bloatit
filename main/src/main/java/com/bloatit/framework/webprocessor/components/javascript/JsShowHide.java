@@ -34,8 +34,7 @@ public class JsShowHide {
     private final boolean state;
     private boolean hasFallback;
 
-
-    public void setHasFallback(boolean b) {
+    public void setHasFallback(final boolean b) {
         this.hasFallback = b;
     }
 
@@ -68,7 +67,7 @@ public class JsShowHide {
         for (final HtmlBranch actuator : actuators) {
 
             final String effectCall = "toggle()";
-            HtmlScript script = new HtmlScript();
+            final HtmlScript script = new HtmlScript();
 
             script.append("$(function() {\n" + "        function runEffect() {\n");
 
@@ -79,7 +78,7 @@ public class JsShowHide {
             script.append("        $( \"#" + actuator.getId() + "\" ).click(function() {\n" + "            runEffect();\n"
                     + "            return false;\n" + "        });\n");
 
-            if(!state) {
+            if (!state) {
                 for (final HtmlElement listener : listeners) {
                     script.append("$( \"#" + listener.getId() + "\" ).hide();\n");
                 }
@@ -120,7 +119,5 @@ public class JsShowHide {
 
         });
     }
-
-
 
 }

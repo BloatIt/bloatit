@@ -16,10 +16,9 @@
 //
 package com.bloatit.framework.restprocessor;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -34,6 +33,7 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.RequestKey;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 /**
@@ -77,7 +77,8 @@ public abstract class RestServer implements XcgiProcessor {
      * @throws IOException if there is an error while writing to the socket.
      */
     @Override
-    public final boolean process(final HttpHeader httpHeader, final HttpPost post, final HttpResponse response) throws IOException {
+    public final boolean process(final RequestKey key, final HttpHeader httpHeader, final HttpPost post, final HttpResponse response)
+            throws IOException {
 
         // TODO when the authentication will be supported do not forget to log
         // make sure bash injection is not possible.
@@ -105,37 +106,35 @@ public abstract class RestServer implements XcgiProcessor {
         final String restResource = httpHeader.getPageName();
         Log.rest().trace("Received a rest request for resource: " + restResource);
 
-        try {
-            ModelAccessor.open(null);
-            RequestMethod requestMethod;
-            final String requestMethodString = httpHeader.getRequestMethod();
-            if (requestMethodString == null) {
-                Log.web().warn("Received a rest request with no method. Should be either GET, POST, PUT or DELETE");
-                return true;
-            }
-
-            try {
-                requestMethod = RequestMethod.valueOf(requestMethodString);
-            } catch (final IllegalArgumentException e) {
-                Log.web().warn("Received a rest request with an invalid method: " + requestMethodString
-                        + ". Should be either GET, POST, PUT or DELETE");
-                return true;
-            }
-
-            final Parameters parameters = httpHeader.getGetParameters();
-            parameters.putAll(post.getParameters());
-
-            try {
-                final Object result = doProcess(restResource, requestMethod, parameters);
-                final RestResource rr = new RestResource(result, httpHeader.getRequestUri(), getJAXClasses());
-                response.writeRestResource(rr);
-            } catch (final RestException e) {
-                response.writeRestError(e);
-            }
+        RequestMethod requestMethod;
+        final String requestMethodString = httpHeader.getRequestMethod();
+        if (requestMethodString == null) {
+            Log.web().warn("Received a rest request with no method. Should be either GET, POST, PUT or DELETE");
             return true;
+        }
+
+        try {
+            requestMethod = RequestMethod.valueOf(requestMethodString);
+        } catch (final IllegalArgumentException e) {
+            Log.web().warn("Received a rest request with an invalid method: " + requestMethodString + ". Should be either GET, POST, PUT or DELETE");
+            return true;
+        }
+
+        final Parameters parameters = httpHeader.getGetParameters();
+        parameters.putAll(post.getParameters());
+
+        try {
+            ModelAccessor.open();
+            ModelAccessor.authenticate(key);
+            final Object result = doProcess(restResource, requestMethod, parameters);
+            final RestResource rr = new RestResource(result, httpHeader.getRequestUri(), getJAXClasses());
+            response.writeRestResource(rr);
+        } catch (final RestException e) {
+            response.writeRestError(e);
         } finally {
             ModelAccessor.close();
         }
+        return true;
     }
 
     /**
@@ -373,8 +372,8 @@ public abstract class RestServer implements XcgiProcessor {
                 + "] does not exist");
     }
 
-    private Object
-            invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params) throws RestException {
+    private Object invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params)
+            throws RestException {
         return invoke(requestMethod, result.getClass(), result, path, params);
     }
 
@@ -386,9 +385,8 @@ public abstract class RestServer implements XcgiProcessor {
      * @see #invokeStatic(RequestMethod, String, Parameters)
      * @see #invokeMethod(RequestMethod, Object, String, Parameters)
      */
-    private Object
-            invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
-                                                                                                                                            throws RestException {
+    private Object invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
+            throws RestException {
         for (final Method m : clazz.getMethods()) {
             if (m.isAnnotationPresent(REST.class)) {
                 final REST annotation = m.getAnnotation(REST.class);

@@ -19,6 +19,7 @@ package com.bloatit.framework.model;
 import java.util.concurrent.Semaphore;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.xcgiserver.RequestKey;
 
 /**
  * Thread safe class. It calls to the model initialization and open close
@@ -95,10 +96,21 @@ public class ModelAccessor {
     /**
      * @see com.bloatit.framework.model.Model#open()
      */
-    public static void open(final String id) {
+    public static void open() {
         try {
             mutex.acquire();
-            model.open(id);
+            model.open();
+        } catch (final InterruptedException e) {
+            throw new BadProgrammerException(e);
+        } finally {
+            mutex.release();
+        }
+    }
+
+    public static void authenticate(final RequestKey key) {
+        try {
+            mutex.acquire();
+            model.authenticate(key);
         } catch (final InterruptedException e) {
             throw new BadProgrammerException(e);
         } finally {

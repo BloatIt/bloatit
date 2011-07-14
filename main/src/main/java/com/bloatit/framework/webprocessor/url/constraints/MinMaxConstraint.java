@@ -20,7 +20,7 @@ public abstract class MinMaxConstraint<V extends Comparable<V>> extends Constrai
     protected void updateFormater(final MessageFormater formater, final V value) {
         formater.addParameter("%constraint%", String.valueOf(minMax));
 
-        if (((Object)value) instanceof String) {
+        if (((Object) value) instanceof String) {
             formater.addParameter("%valueLength%", String.valueOf(String.class.cast(value).length()));
         }
 
@@ -31,7 +31,7 @@ public abstract class MinMaxConstraint<V extends Comparable<V>> extends Constrai
         if (value == null) {
             return true;
         }
-        
+
         // Weird hack :
         final Object hacked = value;
 

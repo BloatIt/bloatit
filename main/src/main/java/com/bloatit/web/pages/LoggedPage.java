@@ -15,8 +15,8 @@ package com.bloatit.web.pages;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.url.LoginPageUrl;
@@ -44,9 +44,9 @@ public abstract class LoggedPage extends ElveosPage {
      * </i> to display a warning to the user
      */
     @Override
-    protected final HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
-        if (getSession().getUserToken().isAuthenticated()) {
-            return createRestrictedContent(userToken.getMember());
+    protected final HtmlElement createBodyContent() throws RedirectException {
+        if (AuthToken.isAuthenticated()) {
+            return createRestrictedContent(AuthToken.getMember());
         }
         getSession().notifyWarning(getRefusalReason());
         getSession().setTargetPage(getUrl());
@@ -90,9 +90,9 @@ public abstract class LoggedPage extends ElveosPage {
     public abstract String getRefusalReason();
 
     @Override
-    protected final Breadcrumb createBreadcrumb(final ElveosUserToken token) {
-        if (token.isAuthenticated()) {
-            return createBreadcrumb(token.getMember());
+    protected final Breadcrumb createBreadcrumb() {
+        if (AuthToken.isAuthenticated()) {
+            return createBreadcrumb(AuthToken.getMember());
         }
         return createBreadcrumb((Member) null);
     }

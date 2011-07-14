@@ -51,7 +51,7 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
      * @return true, if successful
      */
     protected final boolean canAccess(final GenericAccessor<?> accessor, final Action action) {
-        return accessor.canAccess(new Rights(getAuthTokenUnprotected(), this), action);
+        return accessor.canAccess(new Rights(this), action);
     }
 
     /**
@@ -62,12 +62,12 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
      * @throws U the unauthorized operation exception
      */
     final <U extends UnauthorizedOperationException> void tryAccess(final GenericAccessor<U> accessor, final Action action) throws U {
-        accessor.tryAccess(new Rights(getAuthTokenUnprotected(), this), action);
+        accessor.tryAccess(new Rights(this), action);
     }
 
     @Override
     public Rights getRights() {
-        return new Rights(getAuthTokenUnprotected(), this);
+        return new Rights(this);
     }
 
     /**

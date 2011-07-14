@@ -27,7 +27,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
@@ -177,7 +176,7 @@ public final class OfferAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         if (feature != null) {
             transmitParameters();
             final MakeOfferPageUrl redirectUrl = new MakeOfferPageUrl(feature);

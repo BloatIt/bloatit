@@ -146,7 +146,8 @@ public class RestMember extends RestElement<Member> {
      * @statusCode 406 if the password does not match requirements
      */
     @REST(name = "members", method = RequestMethod.PUT, params = { "login", "password", "email", "language", "country" })
-    public static RestMember createMember(String login, String password, String email, String language, String country) throws RestException {
+    public static RestMember createMember(final String login, final String password, final String email, final String language, final String country)
+            throws RestException {
         if (language.length() != 2 || country.length() != 2) {
             throw new RestException(StatusCode.ERROR_400_BAD_REQUEST, "Country and language must represent a valid country/language code.");
         }

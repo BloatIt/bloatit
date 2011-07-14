@@ -235,14 +235,14 @@ public abstract class RightManager {
             return new UnauthorizedOperationException(action);
         }
     }
-    
+
     public static class AdminOnly extends Accessor {
         @Override
         protected boolean can(final Rights object, final Action action) {
             return false;
         }
     }
-    
+
     public static class Authenticated extends Accessor {
         @Override
         protected boolean can(final Rights object, final Action action) {

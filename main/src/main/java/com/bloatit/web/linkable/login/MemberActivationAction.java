@@ -18,10 +18,9 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
@@ -51,7 +50,7 @@ public final class MemberActivationAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(final ElveosUserToken userToken) {
+    protected Url doProcess() {
         final Member member = MemberManager.getMemberByLogin(login);
 
         final Url to = new IndexPageUrl();
@@ -61,7 +60,7 @@ public final class MemberActivationAction extends ElveosAction {
                 if (member.activate(key)) {
 
                     // Auto login after activation
-                    session.authenticate(new AuthenticatedUserToken(member));
+                    AuthToken.authenticate(member);
                     session.notifyGood(Context.tr("Activation sucess, you are now logged."));
 
                 } else {
@@ -85,12 +84,12 @@ public final class MemberActivationAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new IndexPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything() {
         return NO_ERROR; // Nothing else to check
     }
 

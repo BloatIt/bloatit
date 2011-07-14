@@ -33,7 +33,7 @@ public abstract class Resource implements Linkable {
     protected static final Url NO_ERROR = null;
 
     private final static String FILE_STORAGE_DIRECTORY = FrameworkConfiguration.getRessourcesDirStorage();
-    
+
     public Resource(final Url url) throws PageNotFoundException {
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();
@@ -81,7 +81,7 @@ public abstract class Resource implements Linkable {
      * The url system perform some checks on constraints. You may want to add
      * more specific constraint checking by overriding this method.
      * </p>
-     *
+     * 
      * @return null if there is no error, the url where you want to be
      *         redirected otherwise.
      */

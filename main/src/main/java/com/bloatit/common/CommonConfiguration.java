@@ -25,7 +25,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- *
+ * 
  * @author thomas
  */
 public class CommonConfiguration {
@@ -43,16 +43,16 @@ public class CommonConfiguration {
     }
 
     private void loadConfiguration() {
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("build.properties");
-        if(resourceAsStream == null){
+        final InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("build.properties");
+        if (resourceAsStream == null) {
             throw new BadProgrammerException("Cannot locate the 'build.properties' configuration file.");
         }
         // ConfigurationManager
         try {
-            Properties buildProperties = new Properties();
+            final Properties buildProperties = new Properties();
             buildProperties.load(resourceAsStream);
             projectVersion = buildProperties.getProperty("project.version");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new BadProgrammerException("Cannot locate a configuration file.");
         }
     }

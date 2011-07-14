@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
@@ -98,28 +97,28 @@ public final class ModifySoftwareAction extends LoggedAction {
 
         boolean error = false;
 
-        
         if (isEmpty(description.trim())) {
             error = true;
             session.notifyError(Context.tr("Cannot delete software's description."));
             url.getDescriptionParameter().addErrorMessage(Context.tr("Cannot delete software's description."));
         }
-        
+
         if (isEmpty(softwareName.trim())) {
             error = true;
             session.notifyError(Context.tr("Cannot delete software's name."));
             url.getSoftwareNameParameter().addErrorMessage(Context.tr("Cannot delete software's name."));
         } else if (!softwareName.equals(software.getName()) && SoftwareManager.nameExists(softwareName)) {
             error = true;
-            SoftwarePageUrl existingSoftware = new SoftwarePageUrl(SoftwareManager.getByName(softwareName));
-            session.notifyError(new HtmlMixedText(Context.tr("This software's name is already used: <0::>."), existingSoftware.getHtmlLink(softwareName)));
+            final SoftwarePageUrl existingSoftware = new SoftwarePageUrl(SoftwareManager.getByName(softwareName));
+            session.notifyError(new HtmlMixedText(Context.tr("This software's name is already used: <0::>."),
+                                                  existingSoftware.getHtmlLink(softwareName)));
             url.getSoftwareNameParameter().addErrorMessage(Context.tr("This software's name is already used."));
         }
-        
+
         if (error) {
             return new ModifySoftwarePageUrl(software);
         }
-        
+
         return NO_ERROR;
     }
 
@@ -130,7 +129,7 @@ public final class ModifySoftwareAction extends LoggedAction {
         if (!isEmpty(description.trim()) && !description.equals(software.getDescription().getDefaultTranslation().getText())) {
             try {
                 software.getDescription().getDefaultTranslation().setText(description, me);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new BadProgrammerException("Fail to update software description");
             }
             session.notifyGood(Context.tr("Software's description changed."));
@@ -138,15 +137,14 @@ public final class ModifySoftwareAction extends LoggedAction {
 
         // Name
         if (!isEmpty(softwareName.trim()) && !softwareName.equals(software.getName())) {
-            
-            
+
             try {
                 software.setName(softwareName);
                 session.notifyGood(Context.tr("Software's name changed."));
-            } catch (DuplicateDataException e) {
+            } catch (final DuplicateDataException e) {
                 throw new BadProgrammerException("Fail to change the software name", e);
             }
-            
+
         }
 
         if (image != null) {
@@ -168,7 +166,7 @@ public final class ModifySoftwareAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         if (software != null) {
             return new ModifySoftwarePageUrl(software);
         }

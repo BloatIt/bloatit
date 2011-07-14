@@ -109,7 +109,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the money raised.
-     *
+     * 
      * @return the money raised
      */
     public static BigDecimal getMoneyRaised() {
@@ -117,11 +117,10 @@ public class DaoContribution extends DaoUserContent {
         return (BigDecimal) q.uniqueResult();
     }
 
-
     /**
      * Create a new contribution. Update the internal account of the author
      * (block the value that is reserved to this contribution)
-     *
+     * 
      * @param member the person making the contribution. (Use
      *            DaoUserContent#setAsTeam() to make a contribution in the name
      *            of team)
@@ -154,7 +153,7 @@ public class DaoContribution extends DaoUserContent {
      * not enough money then throw and set the state to canceled. After that if
      * all the money is transfered, the state of this contribution is become
      * VALIDATED.
-     *
+     * 
      * @param offer the offer that is accepted.
      * @param percent integer ]0,100]. It is the percent of the total amount and
      *            not a percent of what is remaining. It is the percent of the
@@ -232,7 +231,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the amount is the quantity of money put in this contribution.
-     *
+     * 
      * @return the amount is the quantity of money put in this contribution
      */
     public BigDecimal getAmount() {
@@ -241,7 +240,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the state.
-     *
+     * 
      * @return the state
      */
     public State getState() {
@@ -250,7 +249,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the comment.
-     *
+     * 
      * @return the comment
      */
     public String getComment() {
@@ -259,7 +258,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the feature.
-     *
+     * 
      * @return the feature
      */
     public DaoFeature getFeature() {
@@ -270,7 +269,6 @@ public class DaoContribution extends DaoUserContent {
     public void setIsDeleted(final Boolean isDeleted) {
         throw new IllegalStateException("You cannot delete a contribution. Use Cancel instead.");
     }
-
 
     // ======================================================================
     // Visitor.
@@ -355,7 +353,5 @@ public class DaoContribution extends DaoUserContent {
         }
         return true;
     }
-
-
 
 }

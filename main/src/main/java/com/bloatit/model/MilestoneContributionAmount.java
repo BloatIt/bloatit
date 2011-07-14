@@ -52,7 +52,7 @@ public final class MilestoneContributionAmount extends Identifiable<DaoMilestone
 
     /**
      * Find a bug in the cache or create an new one.
-     *
+     * 
      * @param dao the dao
      * @return null if dao is null. Else return the new invoice.
      */
@@ -63,7 +63,7 @@ public final class MilestoneContributionAmount extends Identifiable<DaoMilestone
 
     /**
      * Instantiates a new invoice.
-     *
+     * 
      * @param dao the dao
      */
     private MilestoneContributionAmount(final DaoMilestoneContributionAmount dao) {

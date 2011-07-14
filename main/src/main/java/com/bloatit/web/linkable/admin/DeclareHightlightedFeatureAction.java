@@ -19,7 +19,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
@@ -63,7 +62,7 @@ public final class DeclareHightlightedFeatureAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new HightlightedFeatureAdminPageUrl();
     }
 

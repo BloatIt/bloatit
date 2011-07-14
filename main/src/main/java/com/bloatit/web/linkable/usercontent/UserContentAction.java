@@ -33,7 +33,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.UserContentActionUrl;
@@ -126,11 +126,11 @@ public abstract class UserContentAction extends LoggedAction {
                     transmitParameters();
                     return doProcessErrors();
                 }
-                ((AuthenticatedUserToken) Context.getSession().getUserToken()).setAsTeam(team);
+                AuthToken.setAsTeam(team);
             }
             return doDoProcessRestricted(me, team);
         } finally {
-            ((AuthenticatedUserToken) Context.getSession().getUserToken()).setAsTeam(null);
+            AuthToken.setAsTeam(null);
         }
     }
 

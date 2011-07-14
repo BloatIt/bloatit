@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
@@ -48,7 +47,7 @@ public final class LoginPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
 
@@ -108,7 +107,7 @@ public final class LoginPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return LoginPage.generateBreadcrumb();
     }
 

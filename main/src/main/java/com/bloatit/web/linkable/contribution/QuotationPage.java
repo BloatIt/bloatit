@@ -27,7 +27,7 @@ public abstract class QuotationPage extends LoggedPage {
 
     @Optional("false")
     @RequestParam(name = "show_fees_detail")
-    private Boolean showFeesDetails;
+    private final Boolean showFeesDetails;
 
     protected QuotationPage(final QuotationPageUrl url) {
         super(url);

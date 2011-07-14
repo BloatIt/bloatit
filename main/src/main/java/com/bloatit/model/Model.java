@@ -16,12 +16,16 @@
 //
 package com.bloatit.model;
 
+import javassist.NotFoundException;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.xcgiserver.RequestKey;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.TaskUpdateDevelopingState;
+import com.bloatit.model.right.AuthToken;
 
 public class Model implements com.bloatit.framework.model.Model {
     public Model() {
@@ -38,7 +42,7 @@ public class Model implements com.bloatit.framework.model.Model {
         Log.model().trace("Launching the Model.");
         ModelConfiguration.loadConfiguration();
 
-        open(null);
+        open();
         // Find the feature with selected offer that should pass into validated.
         final PageIterable<Feature> featuresToValidate = new FeatureList(DBRequests.featuresThatShouldBeValidated());
         for (final Feature feature : featuresToValidate) {
@@ -78,13 +82,10 @@ public class Model implements com.bloatit.framework.model.Model {
      * @see com.bloatit.model.AbstractModelManager#open()
      */
     @Override
-    public void open(final String id) {
+    public void open() {
         Log.model().trace("Open a new transaction.");
+        AuthToken.unAuthenticate();
         DataManager.open();
-        
-        if (id != null) {
-            
-        }
     }
 
     /*
@@ -102,5 +103,26 @@ public class Model implements com.bloatit.framework.model.Model {
     public void rollback() {
         CacheManager.clear();
         DataManager.rollback();
+    }
+
+    @Override
+    public void authenticate(final RequestKey key) {
+        try {
+            switch (key.getSource()) {
+                case COOKIE:
+                    AuthToken.authenticate(key);
+                    break;
+                case TOKEN:
+                    AuthToken.authenticate(key.getId());
+                    break;
+                case GENERATED:
+                    // No authentication on just generated key ...
+                    break;
+                default:
+                    break;
+            }
+        } catch (final NotFoundException e) {
+            Log.model().trace("authentication error.", e);
+        }
     }
 }

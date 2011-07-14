@@ -113,7 +113,7 @@ public class Mail {
      *            uri.
      * @param filename the displayed name of the file
      */
-    public void addAttachment(String uri, String filename) {
+    public void addAttachment(final String uri, final String filename) {
         this.uri = uri;
         this.filename = filename;
     }

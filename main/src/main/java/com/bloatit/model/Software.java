@@ -20,15 +20,12 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoSoftware;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.DuplicateDataException;
-import com.bloatit.model.right.RgtTeam;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 public final class Software extends Identifiable<DaoSoftware> {
 
@@ -56,8 +53,8 @@ public final class Software extends Identifiable<DaoSoftware> {
     /**
      * Create a new software. The right management for creating a feature is
      * specific. (The Right management system is not working in this case). You
-     * have to use the {@link FeatureManager#canCreate(AuthenticatedUserToken)}
-     * to make sure you can create a new feature.
+     * have to use the {@link FeatureManager#canCreate(AuthToken)} to make sure
+     * you can create a new feature.
      */
     public Software(final String name, final Member author, final Locale locale, final String description) {
         this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), null, locale, " ", description)));
@@ -105,12 +102,12 @@ public final class Software extends Identifiable<DaoSoftware> {
     }
 
     public void setName(final String name) throws DuplicateDataException {
-        if(SoftwareManager.nameExists(name)) {
+        if (SoftwareManager.nameExists(name)) {
             throw new DuplicateDataException(Action.WRITE);
         }
         getDao().setName(name);
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////

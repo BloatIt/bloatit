@@ -155,7 +155,7 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
             return new RestTeam(model.getTeam());
         } catch (final UnauthorizedOperationException e) {
             return null;
-        } 
+        }
     }
 
     /**
@@ -167,7 +167,7 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
             return new RestMember(model.getSender());
         } catch (final UnauthorizedOperationException e) {
             return null;
-        } 
+        }
     }
 
     // ---------------------------------------------------------------------------------------

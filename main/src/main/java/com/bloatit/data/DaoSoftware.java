@@ -27,7 +27,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -36,8 +35,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -94,7 +91,7 @@ public class DaoSoftware extends DaoIdentifiable {
     public static boolean nameExists(final String name) {
         return getByName(name) != null;
     }
-    
+
     /**
      * @param name is the name of the software we are looking for.
      * @return true if the software exist. false otherwise.
@@ -140,7 +137,7 @@ public class DaoSoftware extends DaoIdentifiable {
     protected void addFeature(final DaoFeature feature) {
         this.features.add(feature);
     }
-    
+
     protected void removeFeature(final DaoFeature feature) {
         this.features.remove(feature);
     }
@@ -160,7 +157,7 @@ public class DaoSoftware extends DaoIdentifiable {
     public void setName(final String name) {
         this.name = name;
     }
-    
+
     // ======================================================================
     // Getters
     // ======================================================================

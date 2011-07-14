@@ -20,7 +20,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.actions.LoggedAction;
@@ -85,7 +84,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
             process.getActor().getContact().setPostalCode(postalCode);
             process.getActor().getContact().setCity(city);
             process.getActor().getContact().setCountry(country);
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
         }
 
@@ -98,7 +97,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new ModifyContactPageUrl(process);
     }
 

@@ -34,10 +34,10 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.InvoicingContactTab;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -92,11 +92,11 @@ public final class MemberPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
         boolean myPage;
-        if (getSession().getUserToken().isAuthenticated() && member != null && member.equals(getSession().getUserToken().getMember())) {
+        if (AuthToken.isAuthenticated() && member != null && member.equals(AuthToken.getMember())) {
             myPage = true;
         } else {
             myPage = false;
@@ -134,16 +134,16 @@ public final class MemberPage extends ElveosPage {
             throw new ShallNotPassException("Cannot access member team information", e);
         }
         layout.addRight(teamBlock);
-        if (userToken.isAuthenticated() && member.canGetInternalAccount()) {
+        if (AuthToken.isAuthenticated() && member.canGetInternalAccount()) {
             layout.addRight(new SideBarDocumentationBlock("internal_account"));
             layout.addRight(new SideBarLoadAccountBlock(null));
-            layout.addRight(new SideBarWithdrawMoneyBlock(userToken.getMember()));
+            layout.addRight(new SideBarWithdrawMoneyBlock(AuthToken.getMember()));
         }
 
         return layout;
     }
 
-    private HtmlElement generateMemberPageMain(boolean myPage) {
+    private HtmlElement generateMemberPageMain(final boolean myPage) {
         final HtmlDiv master = new HtmlDiv("member_page");
 
         if (member.canAccessUserInformations(Action.WRITE)) {
@@ -262,7 +262,7 @@ public final class MemberPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return MemberPage.generateBreadcrumb(member);
     }
 

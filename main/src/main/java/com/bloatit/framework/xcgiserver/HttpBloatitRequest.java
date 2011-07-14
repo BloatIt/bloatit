@@ -55,7 +55,7 @@ public class HttpBloatitRequest implements HttpServletRequest {
         }
     }
 
-    private Map<String, Object> attributes = new HashMap<String, Object>();
+    private final Map<String, Object> attributes = new HashMap<String, Object>();
     private String characterEncoding;
     private final HttpHeader header;
     private final Parameters parameter;

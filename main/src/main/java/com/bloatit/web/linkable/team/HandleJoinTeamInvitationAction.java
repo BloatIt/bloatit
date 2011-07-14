@@ -23,7 +23,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -83,7 +82,7 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
                     session.notifyGood(Context.tr("You are now a member of team ''{0}''.", team.getDisplayName()));
                 } else {
                     session.notifyWarning(Context.tr("You cannot join the team ''{0}'', maybe you already have discarded this invitation.",
-                                                 team.getDisplayName()));
+                                                     team.getDisplayName()));
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen
@@ -107,7 +106,7 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return session.getLastVisitedPage();
     }
 

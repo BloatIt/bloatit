@@ -110,56 +110,56 @@ public final class Invoice extends Identifiable<DaoInvoice> {
     private static DaoInvoice generateInvoice(final Actor<?> recipientActor, final BigDecimal totalPrice, final String deliveryName)
             throws UnauthorizedPrivateAccessException {
 
-        String invoiceType = "Elveos's fee invoice";
+        final String invoiceType = "Elveos's fee invoice";
 
         BigDecimal internalInvoiceNumber = BigDecimal.ZERO;
 
-        BigDecimal lastInternalInvoiceNumber = DaoInvoice.getMaxInvoiceNumber();
+        final BigDecimal lastInternalInvoiceNumber = DaoInvoice.getMaxInvoiceNumber();
         if (lastInternalInvoiceNumber != null) {
             internalInvoiceNumber = lastInternalInvoiceNumber.add(BigDecimal.ONE);
         }
 
-        String invoiceId = generateInvoiceId(ModelConfiguration.getLinkeosInvoiceTemplate(), internalInvoiceNumber);
+        final String invoiceId = generateInvoiceId(ModelConfiguration.getLinkeosInvoiceTemplate(), internalInvoiceNumber);
 
-        String sellerName = ModelConfiguration.getLinkeosName();
-        String sellerStreet = ModelConfiguration.getLinkeosStreet();
-        String sellerExtras = ModelConfiguration.getLinkeosExtras();
-        String sellerCity = ModelConfiguration.getLinkeosCity();
-        String sellerCountry = ModelConfiguration.getLinkeosCountry();
-        String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
-        String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
+        final String sellerName = ModelConfiguration.getLinkeosName();
+        final String sellerStreet = ModelConfiguration.getLinkeosStreet();
+        final String sellerExtras = ModelConfiguration.getLinkeosExtras();
+        final String sellerCity = ModelConfiguration.getLinkeosCity();
+        final String sellerCountry = ModelConfiguration.getLinkeosCountry();
+        final String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
+        final String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
 
         final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
-        BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
+        final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
-        String receiverName = recipientActor.getContact().getName();
-        String receiverStreet = recipientActor.getContact().getStreet();
-        String receiverExtras = recipientActor.getContact().getExtras();
-        String receiverCity = recipientActor.getContact().getPostalCode() + " " + recipientActor.getContact().getCity();
-        String receiverCountry = recipientActor.getContact().getCountry();
-        Date invoiceDate = DateUtils.now();
+        final String receiverName = recipientActor.getContact().getName();
+        final String receiverStreet = recipientActor.getContact().getStreet();
+        final String receiverExtras = recipientActor.getContact().getExtras();
+        final String receiverCity = recipientActor.getContact().getPostalCode() + " " + recipientActor.getContact().getCity();
+        final String receiverCountry = recipientActor.getContact().getCountry();
+        final Date invoiceDate = DateUtils.now();
 
-        InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
-                                                                   invoiceId,
-                                                                   sellerName,
-                                                                   sellerStreet,
-                                                                   sellerExtras,
-                                                                   sellerCity,
-                                                                   sellerCountry,
-                                                                   receiverName,
-                                                                   receiverStreet,
-                                                                   receiverExtras,
-                                                                   receiverCity,
-                                                                   receiverCountry,
-                                                                   invoiceDate,
-                                                                   deliveryName,
-                                                                   priceExcludingTax,
-                                                                   taxRate,
-                                                                   taxAmount,
-                                                                   totalPrice,
-                                                                   sellerLegalId,
-                                                                   sellerTaxId);
+        final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
+                                                                         invoiceId,
+                                                                         sellerName,
+                                                                         sellerStreet,
+                                                                         sellerExtras,
+                                                                         sellerCity,
+                                                                         sellerCountry,
+                                                                         receiverName,
+                                                                         receiverStreet,
+                                                                         receiverExtras,
+                                                                         receiverCity,
+                                                                         receiverCountry,
+                                                                         invoiceDate,
+                                                                         deliveryName,
+                                                                         priceExcludingTax,
+                                                                         taxRate,
+                                                                         taxAmount,
+                                                                         totalPrice,
+                                                                         sellerLegalId,
+                                                                         sellerTaxId);
 
         return DaoInvoice.createAndPersist(recipientActor.getDao(),
                                            pdfGenerator.getPdfUrl(),
@@ -186,28 +186,28 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                            sellerTaxId);
     }
 
-    private static String generateInvoiceId(String linkeosInvoiceTemplate, BigDecimal internalInvoiceNumber) {
-        Pattern p = Pattern.compile("^(.*)\\{invoice_number\\|length=([0-9]+)}(.*)$");
-        Matcher m = p.matcher(linkeosInvoiceTemplate);
-        
+    private static String generateInvoiceId(final String linkeosInvoiceTemplate, final BigDecimal internalInvoiceNumber) {
+        final Pattern p = Pattern.compile("^(.*)\\{invoice_number\\|length=([0-9]+)}(.*)$");
+        final Matcher m = p.matcher(linkeosInvoiceTemplate);
+
         if (m.matches()) {
-            
-            int size = Integer.valueOf(m.group(2));
-            int intValue = internalInvoiceNumber.intValue();
+
+            final int size = Integer.valueOf(m.group(2));
+            final int intValue = internalInvoiceNumber.intValue();
 
             String format = "";
             for (int i = 0; i < size; i++) {
                 format += "0";
             }
-            
-            NumberFormat nf = new DecimalFormat(format);
+
+            final NumberFormat nf = new DecimalFormat(format);
 
             return m.group(1) + nf.format(intValue) + m.group(3);
         }
 
         return linkeosInvoiceTemplate;
     }
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

@@ -156,7 +156,7 @@ public final class Header extends HtmlElement {
 
     /**
      * Adds a new css link to the page
-     *
+     * 
      * @param css the string describing the name of the css
      */
     protected void addCss(final String css) {
@@ -182,7 +182,7 @@ public final class Header extends HtmlElement {
      * <li>Absolute URI (http://host.com/script.js), and will be left as is.
      * Absolute URI MUST start with http:// or https://</li>
      * </p>
-     *
+     * 
      * @param js a string describing the URI of the js link, either relative to
      *            the application or absolute (and starting with http://)
      */

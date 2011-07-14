@@ -40,7 +40,6 @@ import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
@@ -93,7 +92,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateOfferForm(loggedUser));
 
-        layout.addRight(new SideBarFeatureBlock(feature, new AuthenticatedUserToken(loggedUser)));
+        layout.addRight(new SideBarFeatureBlock(feature));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
@@ -103,7 +102,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
         if (offer != null) {
-            offerPageContainer.add(new OfferBlock(offer, true, new AuthenticatedUserToken(me)));
+            offerPageContainer.add(new OfferBlock(offer, true));
         }
 
         // Create offer form
@@ -182,9 +181,9 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();
         final FieldData percentFatalData = offerActionUrl.getPercentFatalParameter().pickFieldData();
         final FieldData percentMajorData = offerActionUrl.getPercentMajorParameter().pickFieldData();
-        boolean percentMajorChanged = !(offerActionUrl.getPercentMajorParameter().getDefaultSuggestedValue().equals(percentMajorData.getSuggestedValue()));
-        boolean percentFatalChanged = !(offerActionUrl.getPercentFatalParameter().getDefaultSuggestedValue().equals(percentFatalData.getSuggestedValue()));
-        boolean daysBeforeValidationChanged = !(offerActionUrl.getDaysBeforeValidationParameter().getDefaultSuggestedValue().equals(nbDaysData.getSuggestedValue()));
+        final boolean percentMajorChanged = !(offerActionUrl.getPercentMajorParameter().getDefaultSuggestedValue().equals(percentMajorData.getSuggestedValue()));
+        final boolean percentFatalChanged = !(offerActionUrl.getPercentFatalParameter().getDefaultSuggestedValue().equals(percentFatalData.getSuggestedValue()));
+        final boolean daysBeforeValidationChanged = !(offerActionUrl.getDaysBeforeValidationParameter().getDefaultSuggestedValue().equals(nbDaysData.getSuggestedValue()));
 
         final JsShowHide showHideValidationDetails = new JsShowHide(percentMajorChanged || percentFatalChanged || daysBeforeValidationChanged);
         showHideValidationDetails.setHasFallback(false);

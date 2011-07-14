@@ -37,7 +37,7 @@ public class Hash {
         }
         return Base64.encodeBase64String(value);
     }
-    
+
     public static String shortHash(final String value) {
         return DigestUtils.sha512Hex(value).substring(10, 20);
     }

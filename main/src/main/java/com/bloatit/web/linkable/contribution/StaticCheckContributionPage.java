@@ -34,7 +34,6 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
@@ -71,7 +70,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount(), new AuthenticatedUserToken(loggedUser)));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
         return layout;
     }
 

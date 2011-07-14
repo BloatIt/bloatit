@@ -46,7 +46,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
      */
     private static final Timer timer = new Timer();
 
-    private Id myId;
+    private final Id myId;
 
     /**
      * An id = 1 planed task.
@@ -77,7 +77,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     @Override
     public void run() {
         try {
-            ModelAccessor.open(null);
+            ModelAccessor.open();
             Log.model().info("Launching a " + getClass().getSimpleName());
             doRun();
         } catch (final RuntimeException ex) {
@@ -89,7 +89,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     }
 
     private void remove(final PlannedTask plannedTask, final Id id) {
-        tasks.remove(id); 
+        tasks.remove(id);
         plannedTask.cancel();
     }
 

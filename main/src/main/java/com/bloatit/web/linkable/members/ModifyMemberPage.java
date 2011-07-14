@@ -48,7 +48,7 @@ import com.bloatit.web.url.ModifyMemberPageUrl;
 
 @ParamContainer(value = "member/modify", protocol = Protocol.HTTPS)
 public class ModifyMemberPage extends LoggedPage {
-    private ModifyMemberPageUrl url;
+    private final ModifyMemberPageUrl url;
 
     public ModifyMemberPage(final ModifyMemberPageUrl url) {
         super(url);

@@ -23,7 +23,6 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Translation;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -54,7 +53,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     // "feature_summary"
-    public HtmlFeatureSummary(final Feature feature, final Compacity compacity, final ElveosUserToken userToken) {
+    public HtmlFeatureSummary(final Feature feature, final Compacity compacity) {
         super(compacity.getCssClass());
         this.feature = feature;
         if (feature == null) {
@@ -67,10 +66,10 @@ public final class HtmlFeatureSummary extends HtmlDiv {
         try {
             switch (compacity) {
                 case NORMAL:
-                    generateNormalStructure(userToken);
+                    generateNormalStructure();
                     break;
                 case COMPACT:
-                    generateCompactStructure(userToken);
+                    generateCompactStructure();
                     break;
                 case LINE:
                     throw new NotImplementedException();
@@ -85,11 +84,11 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     /**
-     * @param me 
-     * @param userToken 
+     * @param me
+     * @param userToken
      * @throws UnauthorizedOperationException
      */
-    private void generateCompactStructure(final ElveosUserToken userToken) throws UnauthorizedOperationException {
+    private void generateCompactStructure() throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             featureSummaryTop.add(generateTitle());
@@ -108,7 +107,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
 
             final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
             {
-                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature, userToken);
+                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature);
                 featureummaryProgress.add(FeaturesTools.generateDetails(feature, false));
                 featureSummaryCenter.add(featureummaryProgress);
             }
@@ -120,10 +119,10 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     /**
-     * @param me 
+     * @param me
      * @throws UnauthorizedOperationException
      */
-    private void generateNormalStructure(final ElveosUserToken userToken) throws UnauthorizedOperationException {
+    private void generateNormalStructure() throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
@@ -149,7 +148,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
             final HtmlDiv featureSummaryBottomCenter = new HtmlDiv("feature_summary_bottom_center");
             {
 
-                featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature, userToken));
+                featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature));
 
                 featureSummaryBottomCenter.add(FeaturesTools.generateDetails(feature, false));
                 featureSummaryBottomCenter.add(FeaturesTools.generateState(feature));
@@ -180,17 +179,17 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      */
     private XmlNode generateTitle() throws UnauthorizedOperationException {
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
-        
+
         final HtmlTitle title = new HtmlTitle(1);
         title.setCssClass("feature_title");
-        
+
         if (feature.getSoftware() != null) {
-        	final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
+            final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
             softwareSpan.addText(feature.getSoftware().getName());
             title.add(softwareSpan);
             title.addText(" – ");
         }
-        
+
         title.add(new FeaturePageUrl(feature, TabKey.description).getHtmlLink(translatedDescription.getTitle()));
 
         return title;

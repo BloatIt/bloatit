@@ -26,11 +26,11 @@ public class UserContentAuthorBlock extends HtmlDiv {
         super.add(commentInfo);
         super.add(new HtmlClearer());
 
-        HtmlAuthorLink authorLink = new HtmlAuthorLink(content);
+        final HtmlAuthorLink authorLink = new HtmlAuthorLink(content);
         if (content.getAsTeam() != null) {
             final HtmlSpan userSpan = new HtmlSpan("usercontent_by_user");
             userSpan.add(new MemberPageUrl(content.getMember()).getHtmlLink(content.getMember().getDisplayName()));
-            HtmlMixedText authorMixed = new HtmlMixedText(tr("In the name of <0::> by <1::>"), authorLink, userSpan);
+            final HtmlMixedText authorMixed = new HtmlMixedText(tr("In the name of <0::> by <1::>"), authorLink, userSpan);
             commentInfo.add(authorMixed);
         } else {
             commentInfo.addText(tr("By "));

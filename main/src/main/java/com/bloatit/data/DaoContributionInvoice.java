@@ -225,24 +225,31 @@ public class DaoContributionInvoice extends DaoInvoice {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoContributionInvoice other = (DaoContributionInvoice) obj;
+        }
+        final DaoContributionInvoice other = (DaoContributionInvoice) obj;
         if (contribution == null) {
-            if (other.contribution != null)
+            if (other.contribution != null) {
                 return false;
-        } else if (!contribution.equals(other.contribution))
+            }
+        } else if (!contribution.equals(other.contribution)) {
             return false;
+        }
         if (milestone == null) {
-            if (other.milestone != null)
+            if (other.milestone != null) {
                 return false;
-        } else if (!milestone.equals(other.milestone))
+            }
+        } else if (!milestone.equals(other.milestone)) {
             return false;
+        }
         return true;
     }
 

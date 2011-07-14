@@ -36,7 +36,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.url.TestPageUrl;
@@ -52,7 +51,7 @@ public final class TestPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(tr("Html testing page"), 1);
         pageTitle.add(new HtmlTitleBlock(tr("Common markups"), 2).add(variousElements()));
         pageTitle.add(new HtmlTitleBlock(tr("Formulaires"), 2).add(generateForm()));
@@ -150,7 +149,7 @@ public final class TestPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return TestPage.generateBreadcrumb();
     }
 

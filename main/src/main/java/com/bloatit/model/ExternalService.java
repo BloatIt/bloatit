@@ -67,7 +67,7 @@ public class ExternalService extends Identifiable<DaoExternalService> {
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Setters
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     public final void authorize(final String accessToken, final String refreshToken, final Date expirationDate) {
         getDao().authorize(accessToken, refreshToken, expirationDate);
     }

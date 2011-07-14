@@ -33,15 +33,16 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-import com.bloatit.model.Actor;
-
 /**
  * Represent a invoicing.
  */
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@NamedQueries(value = {@NamedQuery(cacheable = true, name = "invoice.max_invoice_number", query = "SELECT MAX(internalInvoiceNumber) FROM DaoInvoice") })
+@NamedQueries(value = { @NamedQuery(
+    cacheable = true,
+    name = "invoice.max_invoice_number",
+    query = "SELECT MAX(internalInvoiceNumber) FROM DaoInvoice") })
 public class DaoInvoice extends DaoIdentifiable {
 
     // Seller
@@ -59,7 +60,6 @@ public class DaoInvoice extends DaoIdentifiable {
     @Column(columnDefinition = "TEXT")
     @Basic(optional = true)
     private String sellerTaxIdentification;
-
 
     /**
      * Tax identification, VAT ...
@@ -116,8 +116,7 @@ public class DaoInvoice extends DaoIdentifiable {
     @Basic(optional = false)
     private String sellerCountry;
 
-
-    //Receiver
+    // Receiver
     @ManyToOne(optional = false)
     private DaoActor receiverActor;
 
@@ -128,7 +127,6 @@ public class DaoInvoice extends DaoIdentifiable {
     @Basic(optional = false)
     private String receiverName;
 
-    
     @Basic(optional = false)
     private String receiverStreet;
 
@@ -180,7 +178,7 @@ public class DaoInvoice extends DaoIdentifiable {
                          final String sellerLegalId,
                          final String sellerTaxIdentification) {
         super();
-        
+
         checkOptionnal(recipientActor,
                        invoiceFile,
                        invoiceType,
@@ -201,8 +199,7 @@ public class DaoInvoice extends DaoIdentifiable {
                        totalPrice,
                        sellerLegalId,
                        sellerTaxIdentification);
-        
-        
+
         this.invoiceFile = invoiceFile;
         this.invoiceType = invoiceType;
         this.invoiceId = invoiceId;
@@ -226,8 +223,6 @@ public class DaoInvoice extends DaoIdentifiable {
         this.internalInvoiceNumber = internalInvoiceNumber;
         this.sellerLegalId = sellerLegalId;
         this.sellerTaxIdentification = sellerTaxIdentification;
-
-        
 
     }
 
@@ -359,60 +354,81 @@ public class DaoInvoice extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoInvoice other = (DaoInvoice) obj;
+        }
+        final DaoInvoice other = (DaoInvoice) obj;
 
         if (receiverName == null) {
-            if (other.receiverName != null)
+            if (other.receiverName != null) {
                 return false;
-        } else if (!receiverName.equals(other.receiverName))
+            }
+        } else if (!receiverName.equals(other.receiverName)) {
             return false;
+        }
         if (receiverTaxIdentification == null) {
-            if (other.receiverTaxIdentification != null)
+            if (other.receiverTaxIdentification != null) {
                 return false;
-        } else if (!receiverTaxIdentification.equals(other.receiverTaxIdentification))
+            }
+        } else if (!receiverTaxIdentification.equals(other.receiverTaxIdentification)) {
             return false;
+        }
         if (deliveryName == null) {
-            if (other.deliveryName != null)
+            if (other.deliveryName != null) {
                 return false;
-        } else if (!deliveryName.equals(other.deliveryName))
+            }
+        } else if (!deliveryName.equals(other.deliveryName)) {
             return false;
+        }
         if (invoiceFile == null) {
-            if (other.invoiceFile != null)
+            if (other.invoiceFile != null) {
                 return false;
-        } else if (!invoiceFile.equals(other.invoiceFile))
+            }
+        } else if (!invoiceFile.equals(other.invoiceFile)) {
             return false;
+        }
         if (invoiceId == null) {
-            if (other.invoiceId != null)
+            if (other.invoiceId != null) {
                 return false;
-        } else if (!invoiceId.equals(other.invoiceId))
+            }
+        } else if (!invoiceId.equals(other.invoiceId)) {
             return false;
+        }
         if (priceExcludingTax == null) {
-            if (other.priceExcludingTax != null)
+            if (other.priceExcludingTax != null) {
                 return false;
-        } else if (!priceExcludingTax.equals(other.priceExcludingTax))
+            }
+        } else if (!priceExcludingTax.equals(other.priceExcludingTax)) {
             return false;
+        }
         if (sellerName == null) {
-            if (other.sellerName != null)
+            if (other.sellerName != null) {
                 return false;
-        } else if (!sellerName.equals(other.sellerName))
+            }
+        } else if (!sellerName.equals(other.sellerName)) {
             return false;
+        }
         if (sellerTaxIdentification == null) {
-            if (other.sellerTaxIdentification != null)
+            if (other.sellerTaxIdentification != null) {
                 return false;
-        } else if (!sellerTaxIdentification.equals(other.sellerTaxIdentification))
+            }
+        } else if (!sellerTaxIdentification.equals(other.sellerTaxIdentification)) {
             return false;
+        }
         if (totalPrice == null) {
-            if (other.totalPrice != null)
+            if (other.totalPrice != null) {
                 return false;
-        } else if (!totalPrice.equals(other.totalPrice))
+            }
+        } else if (!totalPrice.equals(other.totalPrice)) {
             return false;
+        }
         return true;
     }
 

@@ -27,7 +27,6 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
@@ -83,7 +82,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         // The feature page is composed of 3 parts:
         // - The summary
         // - The tab panel
@@ -91,14 +90,14 @@ public final class FeaturePage extends ElveosPage {
 
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        layout.addLeft(new FeatureSummaryComponent(feature, userToken));
-        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, userToken));
+        layout.addLeft(new FeatureSummaryComponent(feature));
+        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature));
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
             commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
-            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), feature), userToken));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), feature)));
         }
         layout.addLeft(commentsBlock);
 
@@ -164,7 +163,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.bugs) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }

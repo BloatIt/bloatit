@@ -145,8 +145,8 @@ public class Quotation extends QuotationEntry {
 
     }
 
-    public static String padding(String output) {
-        StringBuilder o = new StringBuilder();
+    public static String padding(final String output) {
+        final StringBuilder o = new StringBuilder();
         o.append(output);
         while (output.length() < 40) {
             o.append(' ');

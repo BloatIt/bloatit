@@ -29,7 +29,7 @@ public class DaoNewsFeed extends DaoIdentifiable {
     private Date creationDate;
 
     @Basic(optional = false)
-    @Field(store = Store.YES, index=Index.UN_TOKENIZED)
+    @Field(store = Store.YES, index = Index.UN_TOKENIZED)
     private boolean isDeleted;
 
     // ======================================================================

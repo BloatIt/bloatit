@@ -23,7 +23,7 @@ public class SideBarElveosButtonBlock extends SideBarElementLayout {
 
     private final Feature feature;
 
-    public SideBarElveosButtonBlock(Feature feature) {
+    public SideBarElveosButtonBlock(final Feature feature) {
 
         this.feature = feature;
         add(new HtmlTitle(Context.tr("Link it in your site"), 1));
@@ -32,48 +32,44 @@ public class SideBarElveosButtonBlock extends SideBarElementLayout {
     }
 
     private XmlNode generateForm() {
-        HtmlDiv item = new HtmlDiv("elveos_button_generator");
+        final HtmlDiv item = new HtmlDiv("elveos_button_generator");
 
-        HtmlDiv outputExample = new HtmlDiv();
+        final HtmlDiv outputExample = new HtmlDiv();
         outputExample.setId("elveos_button_generator_output_example");
         item.add(outputExample);
 
-        HtmlLink configureSize = new HtmlLink("#", Context.tr("+ configure size"));
+        final HtmlLink configureSize = new HtmlLink("#", Context.tr("+ configure size"));
         configureSize.setCssClass("elveos_button_generator_configure_link");
         item.add(configureSize);
 
-        HtmlTextArea outputCode = new HtmlTextArea("elveos_button_generator_output", 2, 50);
+        final HtmlTextArea outputCode = new HtmlTextArea("elveos_button_generator_output", 2, 50);
         outputCode.setId("elveos_button_generator_output");
         item.add(outputCode);
 
-
-
-        HtmlDiv sizeBlock = new HtmlDiv();
+        final HtmlDiv sizeBlock = new HtmlDiv();
         item.add(sizeBlock);
 
-        JsShowHide jsShowHide = new JsShowHide(false);
+        final JsShowHide jsShowHide = new JsShowHide(false);
         jsShowHide.addActuator(configureSize);
         jsShowHide.addListener(sizeBlock);
         jsShowHide.apply();
 
-        HtmlDiv lengthBlock = new HtmlDiv("elveos_button_generator_configure_length");
+        final HtmlDiv lengthBlock = new HtmlDiv("elveos_button_generator_configure_length");
         sizeBlock.add(lengthBlock);
-        HtmlRadioButtonGroup lengthRadioGroup = new HtmlRadioButtonGroup("elveos_button_length");
+        final HtmlRadioButtonGroup lengthRadioGroup = new HtmlRadioButtonGroup("elveos_button_length");
         lengthRadioGroup.addRadioButton("long", tr("Text and logo"));
         lengthRadioGroup.addRadioButton("short", tr("Logo only"));
         lengthRadioGroup.setDefaultValue("long");
         lengthBlock.add(lengthRadioGroup);
 
-        HtmlDiv heightBlock = new HtmlDiv("elveos_button_generator_configure_heigth");
+        final HtmlDiv heightBlock = new HtmlDiv("elveos_button_generator_configure_heigth");
         sizeBlock.add(heightBlock);
-        HtmlRadioButtonGroup heightRadioGroup = new HtmlRadioButtonGroup("elveos_button_height");
+        final HtmlRadioButtonGroup heightRadioGroup = new HtmlRadioButtonGroup("elveos_button_height");
         heightRadioGroup.addRadioButton("small", tr("Small"));
         heightRadioGroup.addRadioButton("medium", tr("Medium"));
         heightRadioGroup.addRadioButton("big", tr("Big"));
         heightRadioGroup.setDefaultValue("small");
         heightBlock.add(heightRadioGroup);
-
-
 
         return item;
     }

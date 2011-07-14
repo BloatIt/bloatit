@@ -238,7 +238,7 @@ public class DaoMember extends DaoActor {
     private final List<DaoTeamMembership> teamMembership = new ArrayList<DaoTeamMembership>(0);
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<DaoExternalService> authorizedExternalServices = new ArrayList<DaoExternalService>();
+    private final List<DaoExternalService> authorizedExternalServices = new ArrayList<DaoExternalService>();
 
     // ======================================================================
     // Static HQL requests
@@ -856,12 +856,11 @@ public class DaoMember extends DaoActor {
     public String getEmailToActivate() {
         return this.emailToActivate;
     }
-    
-    
-    public PageIterable<DaoExternalService> getAuthorizedExternalServices(){
+
+    public PageIterable<DaoExternalService> getAuthorizedExternalServices() {
         return new MappedList<DaoExternalService>(authorizedExternalServices);
     }
-    
+
     public EnumSet<RightLevel> getExternalServiceRights(final String token) {
         final DaoExternalService externalService = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getByToken")
                                                                                       .setString("token", token)

@@ -22,7 +22,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
@@ -48,8 +47,8 @@ public class PageNotFound extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+    protected HtmlElement createBodyContent() throws RedirectException {
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final HtmlDiv box = new HtmlDiv("page_not_found");
         layout.addLeft(box);
 
@@ -57,14 +56,14 @@ public class PageNotFound extends ElveosPage {
         box.add(errorTitle);
 
         final HtmlParagraph error = new HtmlParagraph();
-        String tr = Context.tr("The page you are looking for is not here. Maybe you can try heading back to the <0::Home page>.");
-        HtmlMixedText mixed = new HtmlMixedText(tr, new IndexPageUrl().getHtmlLink());
+        final String tr = Context.tr("The page you are looking for is not here. Maybe you can try heading back to the <0::Home page>.");
+        final HtmlMixedText mixed = new HtmlMixedText(tr, new IndexPageUrl().getHtmlLink());
         error.add(mixed);
         box.add(error);
 
         final HtmlParagraph bug = new HtmlParagraph();
-        String tr2 = Context.tr("If you ended up here because of a bug, please report it using the box on the right of the screen.");
-        HtmlMixedText mixedExplain = new HtmlMixedText(tr2, new IndexPageUrl().getHtmlLink());
+        final String tr2 = Context.tr("If you ended up here because of a bug, please report it using the box on the right of the screen.");
+        final HtmlMixedText mixedExplain = new HtmlMixedText(tr2, new IndexPageUrl().getHtmlLink());
         bug.add(mixedExplain);
         box.add(bug);
 
@@ -77,7 +76,7 @@ public class PageNotFound extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return PageNotFound.generateBreadcrumb();
     }
 

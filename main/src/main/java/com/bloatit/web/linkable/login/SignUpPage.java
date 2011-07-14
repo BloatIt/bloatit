@@ -28,7 +28,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
@@ -53,7 +52,7 @@ public final class SignUpPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
         layout.addRight(new SideBarDocumentationBlock("privacy"));
@@ -85,14 +84,12 @@ public final class SignUpPage extends ElveosPage {
         passwordInput.setComment(Context.tr("7 characters minimum."));
         form.add(passwordInput);
 
-
         // Password check
         final FieldData passwordCheckFieldData = targetUrl.getPasswordCheckParameter().pickFieldData();
         final HtmlPasswordField passwordCheckInput = new HtmlPasswordField(passwordCheckFieldData.getName(), tr("Reenter your password"));
         passwordCheckInput.addErrorMessages(passwordCheckFieldData.getErrorMessages());
         passwordCheckInput.addAttribute("autocomplete", "off");
         form.add(passwordCheckInput);
-
 
         // Email
         final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
@@ -143,7 +140,7 @@ public final class SignUpPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return SignUpPage.generateBreadcrumb();
     }
 

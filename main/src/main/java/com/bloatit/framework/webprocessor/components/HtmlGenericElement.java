@@ -38,8 +38,8 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
  * </p>
  */
 public class HtmlGenericElement extends HtmlBranch {
-    private List<String> customCss = new ArrayList<String>();
-    private List<String> customJs = new ArrayList<String>();
+    private final List<String> customCss = new ArrayList<String>();
+    private final List<String> customJs = new ArrayList<String>();
 
     public HtmlGenericElement(final String tag) {
         super(tag);

@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class AccountTest extends ModelTestUnit {
@@ -15,34 +16,34 @@ public class AccountTest extends ModelTestUnit {
     public void testCanAccessTransaction() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
-        tomAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(tomAccount.canAccessTransaction());
 
-        tomAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(tomAccount.canAccessTransaction());
 
-        tomAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(tomAccount.canAccessTransaction());
 
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
-        publicGroupAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(publicGroupAccount.canAccessTransaction());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(publicGroupAccount.canAccessTransaction());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(publicGroupAccount.canAccessTransaction());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(publicGroupAccount.canAccessTransaction());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(publicGroupAccount.canAccessTransaction());
     }
 
@@ -50,34 +51,34 @@ public class AccountTest extends ModelTestUnit {
     public void testCanAccessAmount() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
-        tomAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(tomAccount.canAccessAmount());
 
-        tomAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(tomAccount.canAccessAmount());
 
-        tomAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(tomAccount.canAccessAmount());
 
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
-        publicGroupAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(publicGroupAccount.canAccessAmount());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(publicGroupAccount.canAccessAmount());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(publicGroupAccount.canAccessAmount());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(publicGroupAccount.canAccessAmount());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(publicGroupAccount.canAccessAmount());
     }
 
@@ -85,34 +86,34 @@ public class AccountTest extends ModelTestUnit {
     public void testCanAccessActor() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
-        tomAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(tomAccount.canAccessActor());
 
-        tomAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(tomAccount.canAccessActor());
 
-        tomAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(tomAccount.canAccessActor());
 
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
-        publicGroupAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(publicGroupAccount.canAccessActor());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(publicGroupAccount.canAccessActor());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(publicGroupAccount.canAccessActor());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(publicGroupAccount.canAccessActor());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(publicGroupAccount.canAccessActor());
     }
 
@@ -120,34 +121,34 @@ public class AccountTest extends ModelTestUnit {
     public void testCanAccessCreationDate() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
-        tomAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(tomAccount.canAccessCreationDate());
 
-        tomAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(tomAccount.canAccessCreationDate());
 
-        tomAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(tomAccount.canAccessCreationDate());
 
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
-        publicGroupAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(publicGroupAccount.canAccessCreationDate());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(publicGroupAccount.canAccessCreationDate());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(publicGroupAccount.canAccessCreationDate());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(publicGroupAccount.canAccessCreationDate());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(publicGroupAccount.canAccessCreationDate());
     }
 
@@ -155,34 +156,34 @@ public class AccountTest extends ModelTestUnit {
     public void testCanAccessLastModificationDate() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
-        tomAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(tomAccount.canAccessLastModificationDate());
 
-        tomAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(tomAccount.canAccessLastModificationDate());
 
-        tomAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(tomAccount.canAccessLastModificationDate());
 
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
-        publicGroupAccount.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(publicGroupAccount.canAccessLastModificationDate());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(publicGroupAccount.canAccessLastModificationDate());
 
         // Has the bank rights
-        publicGroupAccount.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(publicGroupAccount.canAccessLastModificationDate());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(publicGroupAccount.canAccessLastModificationDate());
 
         // Does not have the bank rights
-        publicGroupAccount.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(publicGroupAccount.canAccessLastModificationDate());
     }
 
@@ -192,7 +193,7 @@ public class AccountTest extends ModelTestUnit {
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
 
         try {
-            tomAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             tomAccount.getLastModificationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -200,7 +201,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             tomAccount.getLastModificationDate();
             assertEquals(tomAccount.getLastModificationDate(), db.getTom().getInternalAccount().getLastModificationDate());
         } catch (final UnauthorizedOperationException e) {
@@ -208,7 +209,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             tomAccount.getLastModificationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -218,7 +219,7 @@ public class AccountTest extends ModelTestUnit {
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
         try {
-            publicGroupAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             publicGroupAccount.getLastModificationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -227,7 +228,7 @@ public class AccountTest extends ModelTestUnit {
 
         try {
             // Has the bank rights
-            publicGroupAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             publicGroupAccount.getLastModificationDate();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -235,7 +236,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Has the bank rights
         try {
-            publicGroupAccount.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             publicGroupAccount.getLastModificationDate();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -243,7 +244,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             publicGroupAccount.getLastModificationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -252,7 +253,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             publicGroupAccount.getLastModificationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -266,7 +267,7 @@ public class AccountTest extends ModelTestUnit {
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
 
         try {
-            tomAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             tomAccount.getAmount();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -274,7 +275,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             tomAccount.getAmount();
             assertEquals(tomAccount.getAmount(), db.getTom().getInternalAccount().getAmount());
         } catch (final UnauthorizedOperationException e) {
@@ -282,7 +283,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             tomAccount.getAmount();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -292,7 +293,7 @@ public class AccountTest extends ModelTestUnit {
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
         try {
-            publicGroupAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             publicGroupAccount.getAmount();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -301,7 +302,7 @@ public class AccountTest extends ModelTestUnit {
 
         try {
             // Has the bank rights
-            publicGroupAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             publicGroupAccount.getAmount();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -309,7 +310,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Has the bank rights
         try {
-            publicGroupAccount.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             publicGroupAccount.getAmount();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -317,7 +318,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             publicGroupAccount.getAmount();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -326,7 +327,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             publicGroupAccount.getAmount();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -340,7 +341,7 @@ public class AccountTest extends ModelTestUnit {
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
 
         try {
-            tomAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             tomAccount.getTransactions();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -348,7 +349,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             tomAccount.getTransactions();
             // It is easier to just test the size ...
             assertEquals(tomAccount.getTransactions().size(), db.getTom().getInternalAccount().getTransactions().size());
@@ -357,7 +358,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             tomAccount.getTransactions();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -367,7 +368,7 @@ public class AccountTest extends ModelTestUnit {
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
         try {
-            publicGroupAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             publicGroupAccount.getTransactions();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -376,7 +377,7 @@ public class AccountTest extends ModelTestUnit {
 
         try {
             // Has the bank rights
-            publicGroupAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             publicGroupAccount.getTransactions();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -384,7 +385,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Has the bank rights
         try {
-            publicGroupAccount.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             publicGroupAccount.getTransactions();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -392,7 +393,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             publicGroupAccount.getTransactions();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -401,7 +402,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             publicGroupAccount.getTransactions();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -415,7 +416,7 @@ public class AccountTest extends ModelTestUnit {
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
 
         try {
-            tomAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             tomAccount.getActor();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -423,7 +424,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             tomAccount.getActor();
             // It is easier to just test the ids.
             assertEquals(tomAccount.getActor().getId(), db.getTom().getInternalAccount().getActor().getId());
@@ -432,7 +433,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             tomAccount.getActor();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -442,7 +443,7 @@ public class AccountTest extends ModelTestUnit {
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
         try {
-            publicGroupAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             publicGroupAccount.getActor();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -451,7 +452,7 @@ public class AccountTest extends ModelTestUnit {
 
         try {
             // Has the bank rights
-            publicGroupAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             publicGroupAccount.getActor();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -459,7 +460,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Has the bank rights
         try {
-            publicGroupAccount.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             publicGroupAccount.getActor();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -467,7 +468,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             publicGroupAccount.getActor();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -476,7 +477,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             publicGroupAccount.getActor();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -490,7 +491,7 @@ public class AccountTest extends ModelTestUnit {
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
 
         try {
-            tomAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             tomAccount.getCreationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -498,7 +499,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             tomAccount.getCreationDate();
             assertEquals(tomAccount.getCreationDate(), db.getTom().getInternalAccount().getCreationDate());
         } catch (final UnauthorizedOperationException e) {
@@ -506,7 +507,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            tomAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             tomAccount.getCreationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -516,7 +517,7 @@ public class AccountTest extends ModelTestUnit {
         // A Team account
         final InternalAccount publicGroupAccount = InternalAccount.create(db.getPublicGroup().getInternalAccount());
         try {
-            publicGroupAccount.authenticate(null);
+            AuthToken.unAuthenticate();
             publicGroupAccount.getCreationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -525,7 +526,7 @@ public class AccountTest extends ModelTestUnit {
 
         try {
             // Has the bank rights
-            publicGroupAccount.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             publicGroupAccount.getCreationDate();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -533,7 +534,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Has the bank rights
         try {
-            publicGroupAccount.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             publicGroupAccount.getCreationDate();
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -541,7 +542,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             publicGroupAccount.getCreationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -550,7 +551,7 @@ public class AccountTest extends ModelTestUnit {
 
         // Does not have the bank rights
         try {
-            publicGroupAccount.authenticate(loser);
+            AuthToken.authenticate(loser);
             publicGroupAccount.getCreationDate();
             fail();
         } catch (final UnauthorizedOperationException e) {

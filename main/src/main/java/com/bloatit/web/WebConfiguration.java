@@ -177,7 +177,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgAccountWithdraw() {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgAccountWithdraw;
     }
-    
+
     public static BigDecimal getDefaultChargingAmount() {
         return configuration.defaultChargingAmount;
     }
@@ -206,7 +206,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgMessage = properties.getString("bloatit.img.message");
         imgAccountCharge = properties.getString("bloatit.img.account.charge");
         imgAccountWithdraw = properties.getString("bloatit.img.account.withdraw");
-        
+
         // OTHERS
         defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");
     }

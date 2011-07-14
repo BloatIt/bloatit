@@ -36,7 +36,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.FileMetadataManager;
@@ -53,11 +52,11 @@ public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(
-min = 7,
-                   message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
+        min = 7,
+        message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
-                   max = 15,
-                   message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
+        max = 15,
+        message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String password;
 
     @RequestParam(role = Role.POST)
@@ -67,29 +66,31 @@ min = 7,
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(
-min = 7,
-                   message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
+        min = 7,
+        message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
-                   max = 15,
-                   message = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
+        max = 15,
+        message = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
     @Optional
-    @MinConstraint(min = 4,
-                   message = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 255,
-                   message = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(
+        min = 4,
+        message = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(
+        max = 255,
+        message = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String email;
 
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(
-                   min = 1,
-                   message = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."))
+        min = 1,
+        message = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
-                   max = 30,
-                   message = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
+        max = 30,
+        message = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String fullname;
 
     @RequestParam(role = Role.POST)
@@ -292,7 +293,7 @@ min = 7,
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new ModifyMemberPageUrl();
     }
 

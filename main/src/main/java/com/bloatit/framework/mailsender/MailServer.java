@@ -169,14 +169,14 @@ public class MailServer extends Thread {
             message.setSubject(mail.getSubject());
 
             if (mail.hasAttachment()) {
-                MimeBodyPart messageBodyPart = new MimeBodyPart();
+                final MimeBodyPart messageBodyPart = new MimeBodyPart();
                 messageBodyPart.setText(mail.getContent());
-                Multipart multipart = new MimeMultipart();
+                final Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
 
                 // Attachment
-                MimeBodyPart attachmentPart = new MimeBodyPart();
-                DataSource source = new FileDataSource(mail.getAttachment());
+                final MimeBodyPart attachmentPart = new MimeBodyPart();
+                final DataSource source = new FileDataSource(mail.getAttachment());
                 attachmentPart.setDataHandler(new DataHandler(source));
                 attachmentPart.setFileName(mail.getAttachmentName());
 

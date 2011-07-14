@@ -21,14 +21,15 @@ import org.junit.Before;
 
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.model.ModelAccessor;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.right.AuthToken;
 
 public class ModelTestUnit {
-    protected AuthenticatedUserToken yoAuthToken;
-    protected AuthenticatedUserToken tomAuthToken;
-    protected AuthenticatedUserToken fredAuthToken;
-    protected AuthenticatedUserToken adminAuthToken;
-    protected AuthenticatedUserToken loser;
+    protected Member memberYo;
+    protected Member memberTom;
+    protected Member memeberFred;
+    protected Member memberAdmin;
+    protected Member loser;
     
     private static boolean firstInit = true;
     protected static SimpleTestDB db;
@@ -41,12 +42,12 @@ public class ModelTestUnit {
             ModelAccessor.initialize(new Model());
             firstInit = false;
         }
-        ModelAccessor.open(null);
-        yoAuthToken = new AuthenticatedUserToken("Yoann", "plop");
-        tomAuthToken = new AuthenticatedUserToken("Thomas", "password");
-        fredAuthToken = new AuthenticatedUserToken("Fred", "other");
-        loser = new AuthenticatedUserToken("loser", "loser");
-        adminAuthToken = new AuthenticatedUserToken("admin", "admin");
+        ModelAccessor.open();
+        memberYo = MemberManager.getMemberByLogin("Yoann");
+        memberTom = MemberManager.getMemberByLogin("Thomas");
+        memeberFred = MemberManager.getMemberByLogin("Fred");
+        loser = MemberManager.getMemberByLogin("loser");
+        memberAdmin = MemberManager.getMemberByLogin("admin");
     }
 
     @After

@@ -28,7 +28,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Image;
 import com.bloatit.model.feature.FeatureManager;
@@ -36,6 +35,7 @@ import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.model.managers.ReleaseManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.components.MoneyDisplayComponent;
@@ -64,7 +64,7 @@ public final class IndexPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
@@ -76,7 +76,7 @@ public final class IndexPage extends ElveosPage {
             presentationLink.add(image);
             globalDescription.add(presentationLink);
 
-            generateCounts(userToken, globalDescription);
+            generateCounts(globalDescription);
 
         }
         element.add(globalDescription);
@@ -98,7 +98,7 @@ public final class IndexPage extends ElveosPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2);
                         if (highlightFeature != null) {
-                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, userToken));
+                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature));
                         }
                     }
                     featureListRow.add(featureListLeftCase);
@@ -107,7 +107,7 @@ public final class IndexPage extends ElveosPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2 + 1);
                         if (highlightFeature != null) {
-                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, userToken));
+                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature));
                         }
                     }
                     featureListRow.add(featureListRightCase);
@@ -117,9 +117,9 @@ public final class IndexPage extends ElveosPage {
         }
 
         twoColumnLayout.addLeft(featureList);
-        
+
         // A link to all the features available on elveos website
-        HtmlLink allFeatures = new FeatureListPageUrl().getHtmlLink(Context.tr("View all feature requests"));
+        final HtmlLink allFeatures = new FeatureListPageUrl().getHtmlLink(Context.tr("View all feature requests"));
         allFeatures.setCssClass("button all_features_button");
         twoColumnLayout.addLeft(allFeatures);
 
@@ -135,16 +135,14 @@ public final class IndexPage extends ElveosPage {
         return element;
     }
 
-
-
     /**
      * @return a block indicating the number of elements created on the website
      *         over the course of its life
      */
-    private SideBarElementLayout getWebsiteActivity(ElveosUserToken userToken) {
+    private SideBarElementLayout getWebsiteActivity() {
         final SideBarElementLayout leftSummary = new SideBarElementLayout();
 
-        generateCounts(userToken, leftSummary);
+        generateCounts(leftSummary);
 
         return leftSummary;
     }
@@ -167,11 +165,11 @@ public final class IndexPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return generateBreadcrumb();
     }
 
-    private void generateCounts(ElveosUserToken userToken, final HtmlDiv parent) {
+    private void generateCounts(final HtmlDiv parent) {
         final HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
         parent.add(summaryBox);
 
@@ -186,8 +184,8 @@ public final class IndexPage extends ElveosPage {
             moneyRaised = BigDecimal.ZERO;
         }
 
-        if (userToken.isAuthenticated()) {
-            final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false, userToken.getMember());
+        if (AuthToken.isAuthenticated()) {
+            final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false, AuthToken.getMember());
             final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
             final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
             summaryBox.add(contributionRaised);

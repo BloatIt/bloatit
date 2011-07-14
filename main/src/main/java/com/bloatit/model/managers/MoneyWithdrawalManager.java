@@ -32,7 +32,7 @@ public class MoneyWithdrawalManager {
      * @param state the state of the money withdrawals to find
      * @return a list of money withdrawals that match <code>state</code>
      */
-    public static MoneyWithdrawalList getByState(State state) {
+    public static MoneyWithdrawalList getByState(final State state) {
         return new MoneyWithdrawalList(DaoMoneyWithdrawal.getByState(state));
     }
 }

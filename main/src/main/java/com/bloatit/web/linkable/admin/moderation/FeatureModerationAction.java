@@ -8,7 +8,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -24,7 +23,7 @@ public class FeatureModerationAction extends AdminAction {
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the feature number: ''%value%''."))
     private final Feature feature;
 
-    public FeatureModerationAction(FeatureModerationActionUrl url) {
+    public FeatureModerationAction(final FeatureModerationActionUrl url) {
         super(url);
         this.feature = url.getFeature();
     }
@@ -37,12 +36,12 @@ public class FeatureModerationAction extends AdminAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         if (feature == null) {
             session.notifyError("I need a feature to delete");
             return new PageNotFoundUrl();

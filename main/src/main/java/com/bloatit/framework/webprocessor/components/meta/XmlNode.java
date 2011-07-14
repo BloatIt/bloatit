@@ -18,7 +18,7 @@ import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream
  * </p>
  */
 public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
-    
+
     @Override
     public XmlNode clone() {
         throw new NotImplementedException();

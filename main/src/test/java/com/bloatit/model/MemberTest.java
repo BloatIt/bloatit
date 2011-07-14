@@ -32,7 +32,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
@@ -47,12 +47,12 @@ public class MemberTest extends ModelTestUnit {
         daouser.setActivationState(ActivationState.ACTIVE);
         final Member user = Member.create(daouser);
 
-        user.authenticate(new AuthenticatedUserToken(user));
+        AuthToken.authenticate(user);
         user.addToPublicTeam(TeamManager.getByName("publicGroup"));
         assertTrue(user.isInTeam(TeamManager.getByName("publicGroup")));
 
         assertTrue(yo.isInTeam(TeamManager.getByName("publicGroup")));
-        yo.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         try {
             yo.addToPublicTeam(TeamManager.getByName("publicGroup"));
             fail();
@@ -61,7 +61,7 @@ public class MemberTest extends ModelTestUnit {
         }
 
         try {
-            yo.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             // A user can only add himself to a public group.
             yo.addToPublicTeam(TeamManager.getByName("publicGroup"));
             fail();
@@ -75,14 +75,14 @@ public class MemberTest extends ModelTestUnit {
     public void testRemoveFromGroup() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
-        yo.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         yo.kickFromTeam(TeamManager.getByName("publicGroup"), yo);
         assertFalse(yo.isInTeam(TeamManager.getByName("publicGroup")));
 
         try {
-            yo.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             // A user can only remove himself from a group.
-            yo.kickFromTeam(TeamManager.getByName("publicGroup"), fredAuthToken.getMember());
+            yo.kickFromTeam(TeamManager.getByName("publicGroup"), memeberFred);
             fail();
         } catch (final Exception e) {
             assertTrue(true);
@@ -99,11 +99,11 @@ public class MemberTest extends ModelTestUnit {
     public void testGetKarma() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
-        yo.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertEquals(0, yo.getKarma());
-        yo.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertEquals(0, yo.getKarma());
-        yo.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertEquals(0, yo.getKarma());
     }
 
@@ -111,11 +111,11 @@ public class MemberTest extends ModelTestUnit {
     public void testSetFullName() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
-        yo.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertEquals(0, yo.getKarma());
-        yo.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertEquals(0, yo.getKarma());
-        yo.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertEquals(0, yo.getKarma());
     }
 
@@ -123,11 +123,11 @@ public class MemberTest extends ModelTestUnit {
     public void testGetFullname() {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
-        yo.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertEquals("Yoann Plénet", yo.getFullname());
-        yo.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertEquals("Yoann Plénet", yo.getFullname());
-        yo.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertEquals("Yoann Plénet", yo.getFullname());
     }
 
@@ -135,11 +135,11 @@ public class MemberTest extends ModelTestUnit {
     public void testSetFullname() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
-        yo.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         yo.setFullname("Plénet Yoann");
 
         try {
-            yo.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             yo.setFullname("plop");
             fail();
         } catch (final Exception e) {
@@ -153,11 +153,11 @@ public class MemberTest extends ModelTestUnit {
     public void testSetPassword() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
-        yo.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         yo.setPassword("Coucou");
 
         try {
-            new AuthenticatedUserToken("Yoann", "Coucou");
+            AuthToken.authenticate("Yoann", "Coucou");
         } catch (final NotFoundException e) {
             fail();
         }
@@ -169,10 +169,10 @@ public class MemberTest extends ModelTestUnit {
 
         assertEquals("Mon titre", yo.getFeatures(false).iterator().next().getTitle());
 
-        yo.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertEquals("Mon titre", yo.getFeatures(false).iterator().next().getTitle());
 
-        yo.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertEquals("Mon titre", yo.getFeatures(false).iterator().next().getTitle());
     }
 
@@ -188,14 +188,14 @@ public class MemberTest extends ModelTestUnit {
         }
 
         try {
-            yo.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             assertEquals(1, yo.getKudos().size());
         } catch (final UnauthorizedPrivateAccessException e) {
             fail();
         }
 
         try {
-            yo.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             assertEquals(1, yo.getKudos().size());
             fail();
         } catch (final UnauthorizedPrivateAccessException e) {

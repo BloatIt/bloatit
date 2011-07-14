@@ -30,12 +30,10 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
-import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.CreateSoftwareActionUrl;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.ModifySoftwareActionUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;
@@ -45,13 +43,14 @@ import com.bloatit.web.url.ModifySoftwarePageUrl;
  */
 @ParamContainer("softwares/%software%/modify")
 public final class ModifySoftwarePage extends LoggedPage {
-    //TODO : mutualize with others DESCRIPTION_INPUT_NB_LINES et DESCRIPTION_INPUT_NB_COLUMNS
+    // TODO : mutualize with others DESCRIPTION_INPUT_NB_LINES et
+    // DESCRIPTION_INPUT_NB_COLUMNS
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
     @RequestParam(role = Role.PAGENAME)
     @NonOptional(@tr("You must specify the software to modify"))
-    private Software software;
+    private final Software software;
 
     private final ModifySoftwarePageUrl url;
 

@@ -23,7 +23,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.LoggedPage;
@@ -51,11 +50,11 @@ public final class ContributionInvoicingInformationsPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError(final ElveosUserToken userToken) throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
         if (url.getMessages().hasMessage()) {
             throw new RedirectException(Context.getSession().pickPreferredPage());
         }
-        return createBodyContent(userToken);
+        return createBodyContent();
     }
 
     @Override
@@ -67,7 +66,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedPage {
     }
 
     private HtmlElement generateInvoicingInformationsForm(final Member member) {
-        final HtmlTitleBlock group = new HtmlTitleBlock("Additional invoicing informations", 1);
+        new HtmlTitleBlock("Additional invoicing informations", 1);
 
         // Create contact form
         final ContributionInvoicingInformationsActionUrl contributionInvoicingInformationActionUrl = new ContributionInvoicingInformationsActionUrl(getSession().getShortKey(),

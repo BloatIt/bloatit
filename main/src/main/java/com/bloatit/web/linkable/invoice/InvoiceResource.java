@@ -42,7 +42,7 @@ public final class InvoiceResource extends Resource {
     private File file;
     private String invoiceNumber;
 
-    public InvoiceResource(final InvoiceResourceUrl url) throws PageNotFoundException  {
+    public InvoiceResource(final InvoiceResourceUrl url) throws PageNotFoundException {
         super(url);
         this.invoice = url.getInvoice();
     }

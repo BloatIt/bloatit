@@ -35,22 +35,22 @@ public class FeatureSearch extends Search<DaoFeature> {
         sortMethod = SortMethod.SORT_BY_RELEVANCE;
         configure(DaoFeature.class, new String[] { //
                                                    // feature description
-                                                  "description.translations.text.content",
-                                                  "description.translations.title",
-                                                  
-                                                  // Feature state
-                                                  "featureState",
-                                                  "progress",
-                                                  "popularity",
-                                                  
-                                                  // Comment
-                                                  "comments.text.content",
-                                                  "comments.children.text.content",
-                                                  
-                                                  // offers descriptions
-                                                  "offers.milestones.description.translations.title",
-                                                  "offers.milestones.description.translations.text.content",
-                                                   }, searchText);
+                          "description.translations.text.content",
+                          "description.translations.title",
+
+                          // Feature state
+                          "featureState",
+                          "progress",
+                          "popularity",
+
+                          // Comment
+                          "comments.text.content",
+                          "comments.children.text.content",
+
+                          // offers descriptions
+                          "offers.milestones.description.translations.title",
+                          "offers.milestones.description.translations.text.content", },
+                  searchText);
         // Remove deleted content from search.
         addFilterTerm("isDeleted", "TRUE");
     }

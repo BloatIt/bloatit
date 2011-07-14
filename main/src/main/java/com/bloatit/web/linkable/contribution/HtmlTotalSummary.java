@@ -18,8 +18,6 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
-import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
-import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -65,13 +63,13 @@ public class HtmlTotalSummary extends HtmlTable {
         private final StringBuilder quotationEntryString = new StringBuilder();
 
         public HtmlTotalSummaryModel(final StandardQuotation quotation,
-                                     boolean showFeesDetails,
-                                     QuotationPageUrl myUrl,
-                                     BigDecimal staticAmount,
-                                     HtmlElement variableField,
-                                     HtmlBranch scriptContainer) {
+                                     final boolean showFeesDetails,
+                                     final QuotationPageUrl myUrl,
+                                     final BigDecimal staticAmount,
+                                     final HtmlElement variableField,
+                                     final HtmlBranch scriptContainer) {
             // Subtotal
-            HtmlTableLine subtotalLine = new HtmlTableLine();
+            final HtmlTableLine subtotalLine = new HtmlTableLine();
             addLine(subtotalLine);
             subtotalLine.setCssClass("quotation_total_line");
 
@@ -82,7 +80,7 @@ public class HtmlTotalSummary extends HtmlTable {
                 }
             });
 
-            HtmlTableCell quotationSubTotalTTC = new HtmlTableCell("money") {
+            final HtmlTableCell quotationSubTotalTTC = new HtmlTableCell("money") {
                 @Override
                 public XmlNode getBody() {
                     return new HtmlText(Context.getLocalizator().getCurrency(quotation.subTotalTTCEntry.getValue()).getTwoDecimalEuroString());
@@ -97,7 +95,7 @@ public class HtmlTotalSummary extends HtmlTable {
             final HtmlLink showDetailLink = showDetailUrl.getHtmlLink(tr("fees details"));
 
             // FeesHT
-            HtmlTableLine feesHTLine = new HtmlTableLine();
+            final HtmlTableLine feesHTLine = new HtmlTableLine();
             addLine(feesHTLine);
             feesHTLine.setCssClass("quotation_total_line_ht");
             {
@@ -111,7 +109,7 @@ public class HtmlTotalSummary extends HtmlTable {
                     }
                 });
 
-                HtmlTableCell quotationFeeHt = new HtmlTableCell("money") {
+                final HtmlTableCell quotationFeeHt = new HtmlTableCell("money") {
                     @Override
                     public XmlNode getBody() {
                         return new HtmlText(Context.getLocalizator().getCurrency(quotation.feesHT.getValue()).getTwoDecimalEuroString());
@@ -132,7 +130,7 @@ public class HtmlTotalSummary extends HtmlTable {
                 feesDetailLabel.add(new HtmlDiv().addText(tr("Elveos's commission")));
             }
 
-            HtmlTableCell cellDetailsLabel = new HtmlTableCell("label") {
+            final HtmlTableCell cellDetailsLabel = new HtmlTableCell("label") {
                 @Override
                 public XmlNode getBody() {
                     return feesDetailLabel;
@@ -152,7 +150,7 @@ public class HtmlTotalSummary extends HtmlTable {
                 feesDetailMoney.add(htmlDiv2.addText(Context.getLocalizator().getCurrency(quotation.commission.getValue()).getTwoDecimalEuroString()));
             }
 
-            HtmlTableCell cellDetailsMoney = new HtmlTableCell("money") {
+            final HtmlTableCell cellDetailsMoney = new HtmlTableCell("money") {
                 @Override
                 public XmlNode getBody() {
                     return feesDetailMoney;
@@ -167,7 +165,7 @@ public class HtmlTotalSummary extends HtmlTable {
             showHideFees.apply();
 
             // FeesTTC
-            HtmlTableLine feesTTCLine = new HtmlTableLine();
+            final HtmlTableLine feesTTCLine = new HtmlTableLine();
             addLine(feesTTCLine);
             feesTTCLine.setCssClass("quotation_total_line");
             {
@@ -183,7 +181,7 @@ public class HtmlTotalSummary extends HtmlTable {
                     }
                 });
 
-                HtmlTableCell quotationFeeTTC = new HtmlTableCell("money") {
+                final HtmlTableCell quotationFeeTTC = new HtmlTableCell("money") {
                     @Override
                     public XmlNode getBody() {
                         return new HtmlText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getTwoDecimalEuroString());
@@ -194,7 +192,7 @@ public class HtmlTotalSummary extends HtmlTable {
             }
 
             // Total HT
-            HtmlTableLine totalHTLine = new HtmlTableLine();
+            final HtmlTableLine totalHTLine = new HtmlTableLine();
             addLine(totalHTLine);
             totalHTLine.setCssClass("quotation_total_line_ht");
 
@@ -205,7 +203,7 @@ public class HtmlTotalSummary extends HtmlTable {
                 }
             });
 
-            HtmlTableCell quotationTotalHT = new HtmlTableCell("money") {
+            final HtmlTableCell quotationTotalHT = new HtmlTableCell("money") {
                 @Override
                 public XmlNode getBody() {
                     return new HtmlText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getTwoDecimalEuroString());
@@ -215,7 +213,7 @@ public class HtmlTotalSummary extends HtmlTable {
             totalHTLine.addCell(quotationTotalHT);
 
             // Total TTC
-            HtmlTableLine totalTTCLine = new HtmlTableLine();
+            final HtmlTableLine totalTTCLine = new HtmlTableLine();
             addLine(totalTTCLine);
             totalTTCLine.setCssClass("quotation_total_line_total");
 
@@ -226,7 +224,7 @@ public class HtmlTotalSummary extends HtmlTable {
                 }
             });
 
-            HtmlTableCell quotationTotalTTC = new HtmlTableCell("money") {
+            final HtmlTableCell quotationTotalTTC = new HtmlTableCell("money") {
                 @Override
                 public XmlNode getBody() {
                     return new HtmlText(Context.getLocalizator().getCurrency(quotation.totalTTC.getValue()).getTwoDecimalEuroString());

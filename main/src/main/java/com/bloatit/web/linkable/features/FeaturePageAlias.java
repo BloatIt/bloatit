@@ -29,7 +29,6 @@ public final class FeaturePageAlias extends AliasAction {
     @NonOptional(@tr("You have to specify a feature number."))
     private Feature feature;
 
-
     public FeaturePageAlias(final FeaturePageAliasUrl url) {
         super(url, new FeaturePageUrl(url.getFeature(), TabKey.description));
     }

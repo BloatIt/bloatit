@@ -18,7 +18,6 @@ package com.bloatit.web.actions;
 
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 
 public abstract class WebProcess extends ElveosAction {
 
@@ -74,7 +73,7 @@ public abstract class WebProcess extends ElveosAction {
     }
 
     @Override
-    protected synchronized Url checkRightsAndEverything(final ElveosUserToken token) {
+    protected synchronized Url checkRightsAndEverything() {
         return NO_ERROR;
     }
 

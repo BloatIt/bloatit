@@ -41,19 +41,19 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
 
     @RequestParam(role = RequestParam.Role.POST)
     @Optional("NO_FILTER")
-    private DisplayableFeatureState filterByState;
+    private final DisplayableFeatureState filterByState;
 
     @RequestParam(role = RequestParam.Role.POST)
     @Optional("NO_FILTER")
-    private DisplayableFilterType filterSelectedOffer;
+    private final DisplayableFilterType filterSelectedOffer;
 
     @RequestParam(role = RequestParam.Role.POST)
     @Optional("NO_FILTER")
-    private DisplayableFilterType filterHasOffer;
+    private final DisplayableFilterType filterHasOffer;
 
     @RequestParam(role = RequestParam.Role.POST)
     @Optional("NO_FILTER")
-    private DisplayableFilterType filterHasContribution;
+    private final DisplayableFilterType filterHasContribution;
 
     private final FeatureAdminPageUrl url;
 

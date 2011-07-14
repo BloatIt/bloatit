@@ -29,8 +29,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.Actor;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
@@ -87,10 +85,8 @@ public final class CheckContributeAction extends UserContentAction {
             session.notifyWarning(tr("The contribution's amount is locked during the payment process."));
         }
 
-        Actor<?> actor = me;
         if (process.getTeam() != null) {
-            actor = process.getTeam();
-            // TODO correct me !
+            process.getTeam();
         }
 
         return new CheckContributePageUrl(process);
@@ -108,7 +104,7 @@ public final class CheckContributeAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         if (process == null) {
             return new IndexPageUrl();
         }

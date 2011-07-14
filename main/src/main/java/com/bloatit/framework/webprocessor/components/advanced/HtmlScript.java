@@ -25,7 +25,7 @@ public class HtmlScript extends HtmlLeaf {
         addAttribute("type", "text/javascript");
     }
 
-    public HtmlScript append(String script) {
+    public HtmlScript append(final String script) {
         add(new XmlText(script));
         return this;
     }

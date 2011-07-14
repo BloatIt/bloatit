@@ -229,7 +229,7 @@ public class AccountComponent extends HtmlPageComponent {
     private static class MoneyWithdrawalLine extends HtmlTableLine {
 
         private final MoneyWithdrawal moneyWithdrawal;
-        private boolean failed;
+        private final boolean failed;
 
         public MoneyWithdrawalLine(final MoneyWithdrawal moneyWithdrawal) throws UnauthorizedOperationException {
             this.moneyWithdrawal = moneyWithdrawal;
@@ -291,7 +291,6 @@ public class AccountComponent extends HtmlPageComponent {
             return title;
         }
     }
-
 
     private static class ChargeAccountLine extends HtmlTableLine {
 

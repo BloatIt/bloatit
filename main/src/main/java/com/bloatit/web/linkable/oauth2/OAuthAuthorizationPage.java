@@ -28,21 +28,21 @@ public class OAuthAuthorizationPage extends LoggedPage {
      */
     @RequestParam(name = "response_type")
     @NonOptional(@tr("OAuth request need a %param% parameter."))
-    private String responseType;
+    private final String responseType;
 
     /**
      * REQUIRED. The client identifier as described in Section 2.3.
      */
     @RequestParam(name = "client_id")
     @NonOptional(@tr("OAuth request need a %param% parameter."))
-    private String clientId;
+    private final String clientId;
 
     /**
      * OPTIONAL, as described in Section 3.1.2.
      */
     @RequestParam(name = "redirect_uri")
     @Optional
-    private String redirectUri;
+    private final String redirectUri;
 
     /**
      * OPTIONAL. The scope of the access request expressed as a list of
@@ -53,7 +53,7 @@ public class OAuthAuthorizationPage extends LoggedPage {
      */
     @Optional
     @RequestParam(name = "scope")
-    private String scope;
+    private final String scope;
 
     /**
      * OPTIONAL. An opaque value used by the client to maintain state between
@@ -62,7 +62,7 @@ public class OAuthAuthorizationPage extends LoggedPage {
      */
     @RequestParam(name = "state")
     @Optional
-    private String state;
+    private final String state;
 
     public OAuthAuthorizationPage(final OAuthAuthorizationPageUrl url) {
         super(url);
@@ -81,7 +81,7 @@ public class OAuthAuthorizationPage extends LoggedPage {
         div.add(new HtmlParagraph(Context.tr("Dear {0}, are you sure you want to grant ''{1}'' the right to access your Elveos account ?",
                                              loggedUser.getDisplayName(),
                                              clientId)));
-        
+
         div.add(new HtmlLink(redirectUri, Context.tr("No")));
         final OAuthAuthorizationActionUrl targetUrl = new OAuthAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId);
         targetUrl.setRedirectUri(redirectUri);

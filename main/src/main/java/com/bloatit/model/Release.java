@@ -96,10 +96,10 @@ public class Release extends UserContent<DaoRelease> {
         if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
-        
+
         super.delete();
 
-        for (Comment comment : getComments()) {
+        for (final Comment comment : getComments()) {
             comment.delete();
         }
     }

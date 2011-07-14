@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.admin.master.AdminAction;
 import com.bloatit.web.url.ConfigurationAdminActionUrl;
@@ -56,7 +55,7 @@ public class ConfigurationAdminAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return null;
     }
 

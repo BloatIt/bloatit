@@ -29,15 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.amber.oauth2.common.exception.OAuthProblemException;
-import org.apache.amber.oauth2.common.exception.OAuthSystemException;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.oauth.OAuthAuthorizationAction;
 import com.bloatit.framework.utils.parameters.Parameters;
-import com.bloatit.framework.webprocessor.context.SessionManager;
+import com.bloatit.framework.xcgiserver.RequestKey.Source;
 import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 
 public final class XcgiServer {
@@ -61,7 +57,7 @@ public final class XcgiServer {
     }
 
     public void initialize() throws IOException {
-        SessionManager.loadSessions();
+        // SessionManager.loadSessions();
         Log.framework().info("Init: Start BloatIt serveur");
 
         Log.framework().info("-> initializing all processors");
@@ -147,32 +143,6 @@ public final class XcgiServer {
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
 
-            // TEST //
-            final Parameters parameters = new Parameters();
-            parameters.putAll(header.getGetParameters());
-            parameters.putAll(post.getParameters());
-            final HttpBloatitRequest r = new HttpBloatitRequest(header, parameters);
-            if (header.getRequestUri().matches("/.*/oauth/tmp_token.*")) {
-                try {
-                    System.err.println(OAuthAuthorizationAction.doGet(r));
-                } catch (final OAuthSystemException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (final OAuthProblemException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            if (header.getRequestUri().matches("/.*/oauth/request_token.*")) {
-                try {
-                    OAuthAuthorizationAction.doPost(r);
-                } catch (final OAuthSystemException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            // TEST //
-
             Log.framework().debug(env);
 
             // LOGGING REQUESTS
@@ -196,13 +166,12 @@ public final class XcgiServer {
             request.append("'; SERVER_ADDR='");
             request.append(header.getServerAddr());
             request.append('"');
-            Log.framework().info(request.toString().replaceAll("\\\\|\"", ""));
-
-            SessionManager.clearExpiredSessions();
+            Log.framework().info(request.toString());
 
             try {
                 for (final XcgiProcessor processor : getProcessors()) {
-                    if (processor.process(header, post, new HttpResponse(parser.getResponseStream(), header))) {
+                    if (processor.process(createKey(header, header.getGetParameters()), header, post, new HttpResponse(parser.getResponseStream(),
+                                                                                                                       header))) {
                         break;
                     }
                 }
@@ -218,6 +187,23 @@ public final class XcgiServer {
             }
 
             Log.framework().debug("Page generated in " + timer.elapsed() + " ms");
+        }
+
+        private RequestKey createKey(final HttpHeader header, final Parameters parameters) {
+            RequestKey key;
+            final String ipAddress = header.getRemoteAddr();
+            try {
+                if (header.getHttpCookie().containsKey("session_key")) {
+                    key = new RequestKey(header.getHttpCookie().get("session_key"), ipAddress, Source.COOKIE);
+                } else if (parameters.containsKey("token")) {
+                    key = new RequestKey(parameters.look("token").getSimpleValue(), ipAddress, Source.TOKEN);
+                } else {
+                    key = new RequestKey(ipAddress);
+                }
+            } catch (final WrongSessionKeyFormatException e) {
+                key = new RequestKey(ipAddress);
+            }
+            return key;
         }
 
         private XcgiParser getXCGIParser(final InputStream is, final OutputStream os) throws IOException {

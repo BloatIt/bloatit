@@ -110,7 +110,7 @@ public class DaoContact {
         return this.taxIdentification;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -118,7 +118,7 @@ public class DaoContact {
         return street;
     }
 
-    public void setStreet(String street) {
+    public void setStreet(final String street) {
         this.street = street;
     }
 
@@ -126,7 +126,7 @@ public class DaoContact {
         return extras;
     }
 
-    public void setExtras(String extras) {
+    public void setExtras(final String extras) {
         this.extras = extras;
     }
 
@@ -134,7 +134,7 @@ public class DaoContact {
         return postalCode;
     }
 
-    public void setPostalCode(String postalCode) {
+    public void setPostalCode(final String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -142,7 +142,7 @@ public class DaoContact {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(final String city) {
         this.city = city;
     }
 
@@ -150,7 +150,7 @@ public class DaoContact {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
@@ -158,7 +158,7 @@ public class DaoContact {
         return legalId;
     }
 
-    public void setLegalId(String legalId) {
+    public void setLegalId(final String legalId) {
         this.legalId = legalId;
     }
 
@@ -166,7 +166,7 @@ public class DaoContact {
         return taxRate;
     }
 
-    public void setTaxRate(BigDecimal taxRate) {
+    public void setTaxRate(final BigDecimal taxRate) {
         this.taxRate = taxRate;
     }
 
@@ -174,7 +174,7 @@ public class DaoContact {
         return invoiceIdTemplate;
     }
 
-    public void setInvoiceIdTemplate(String invoiceIdTemplate) {
+    public void setInvoiceIdTemplate(final String invoiceIdTemplate) {
         this.invoiceIdTemplate = invoiceIdTemplate;
     }
 
@@ -182,7 +182,7 @@ public class DaoContact {
         return invoiceIdNumber;
     }
 
-    public void setInvoiceIdNumber(BigDecimal invoiceIdNumber) {
+    public void setInvoiceIdNumber(final BigDecimal invoiceIdNumber) {
         this.invoiceIdNumber = invoiceIdNumber;
     }
 
@@ -220,69 +220,94 @@ public class DaoContact {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoContact other = (DaoContact) obj;
+        }
+        final DaoContact other = (DaoContact) obj;
         if (city == null) {
-            if (other.city != null)
+            if (other.city != null) {
                 return false;
-        } else if (!city.equals(other.city))
+            }
+        } else if (!city.equals(other.city)) {
             return false;
+        }
         if (country == null) {
-            if (other.country != null)
+            if (other.country != null) {
                 return false;
-        } else if (!country.equals(other.country))
+            }
+        } else if (!country.equals(other.country)) {
             return false;
+        }
         if (extras == null) {
-            if (other.extras != null)
+            if (other.extras != null) {
                 return false;
-        } else if (!extras.equals(other.extras))
+            }
+        } else if (!extras.equals(other.extras)) {
             return false;
+        }
         if (invoiceIdNumber == null) {
-            if (other.invoiceIdNumber != null)
+            if (other.invoiceIdNumber != null) {
                 return false;
-        } else if (!invoiceIdNumber.equals(other.invoiceIdNumber))
+            }
+        } else if (!invoiceIdNumber.equals(other.invoiceIdNumber)) {
             return false;
+        }
         if (invoiceIdTemplate == null) {
-            if (other.invoiceIdTemplate != null)
+            if (other.invoiceIdTemplate != null) {
                 return false;
-        } else if (!invoiceIdTemplate.equals(other.invoiceIdTemplate))
+            }
+        } else if (!invoiceIdTemplate.equals(other.invoiceIdTemplate)) {
             return false;
+        }
         if (legalId == null) {
-            if (other.legalId != null)
+            if (other.legalId != null) {
                 return false;
-        } else if (!legalId.equals(other.legalId))
+            }
+        } else if (!legalId.equals(other.legalId)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         if (postalCode == null) {
-            if (other.postalCode != null)
+            if (other.postalCode != null) {
                 return false;
-        } else if (!postalCode.equals(other.postalCode))
+            }
+        } else if (!postalCode.equals(other.postalCode)) {
             return false;
+        }
         if (street == null) {
-            if (other.street != null)
+            if (other.street != null) {
                 return false;
-        } else if (!street.equals(other.street))
+            }
+        } else if (!street.equals(other.street)) {
             return false;
+        }
         if (taxIdentification == null) {
-            if (other.taxIdentification != null)
+            if (other.taxIdentification != null) {
                 return false;
-        } else if (!taxIdentification.equals(other.taxIdentification))
+            }
+        } else if (!taxIdentification.equals(other.taxIdentification)) {
             return false;
+        }
         if (taxRate == null) {
-            if (other.taxRate != null)
+            if (other.taxRate != null) {
                 return false;
-        } else if (!taxRate.equals(other.taxRate))
+            }
+        } else if (!taxRate.equals(other.taxRate)) {
             return false;
+        }
         return true;
     }
 

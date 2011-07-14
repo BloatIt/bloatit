@@ -25,7 +25,8 @@ import com.bloatit.model.UserContent;
 public class RgtUserContent extends RightManager {
 
     /**
-     * The Class File is a {@link RightManager.Public} accessor for the File property.
+     * The Class File is a {@link RightManager.Public} accessor for the File
+     * property.
      */
     public static class File extends Public {
         // nothing this is just a rename.
