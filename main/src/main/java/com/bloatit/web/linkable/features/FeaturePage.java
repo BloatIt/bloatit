@@ -69,25 +69,16 @@ public final class FeaturePage extends ElveosPage {
         return true;
     }
 
-    @Override
-    protected String createPageTitle() {
-        if (feature != null) {
-            return feature.getTitle();
-        }
-        return Context.tr("feature not found.");
-    }
-
     public Feature getFeature() {
         return feature;
     }
 
+    /**
+     * The feature page body content is composed of 3 parts : <li>The summary</li>
+     * <li>The tab panel</li> <li>The comments</li>
+     */
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        // The feature page is composed of 3 parts:
-        // - The summary
-        // - The tab panel
-        // - The comments
-
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
         layout.addLeft(new FeatureSummaryComponent(feature));
@@ -181,6 +172,18 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
+    protected String createPageTitle() {
+        if (feature != null) {
+            if (feature.getSoftware() == null) {
+                return feature.getTitle();
+            } else {
+                return Context.tr("{0} - {1}", feature.getTitle(), feature.getSoftware());
+            }
+        }
+        return Context.tr("feature not found.");
+    }
+
+    @Override
     protected String getPageDescription() {
         String title = feature.getTitle();
         if (title.endsWith(".") || title.endsWith(":") || title.endsWith("!") || title.endsWith("?")) {
@@ -188,14 +191,12 @@ public final class FeaturePage extends ElveosPage {
         }
         String str = null;
         if (feature.getSoftware() != null) {
-            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0} in {1}",
+            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {1} - {0}",
                              title,
                              feature.getSoftware().getName());
         } else {
             str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0}", title);
         }
-
         return HtmlUtils.htmlEscape(str);
     }
-
 }

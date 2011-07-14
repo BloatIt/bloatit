@@ -174,7 +174,6 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         if (!messages.isEmpty()) {
             inputBlock.getInputElement().setCssClass("has_error");
         }
-
     }
 
     /**

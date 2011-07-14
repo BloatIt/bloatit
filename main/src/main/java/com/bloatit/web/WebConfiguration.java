@@ -48,6 +48,8 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgMessage;
     private String imgAccountCharge;
     private String imgAccountWithdraw;
+    private String imgTwitterIcon;
+    private String imgIdenticaIcon;
     private BigDecimal defaultChargingAmount;
 
     private WebConfiguration() {
@@ -178,6 +180,14 @@ public class WebConfiguration extends ReloadableConfiguration {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgAccountWithdraw;
     }
 
+    public static String getImgTwitterIcon() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgTwitterIcon;
+    }
+
+    public static String getImgIdenticaIcon() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgIdenticaIcon;
+    }
+
     public static BigDecimal getDefaultChargingAmount() {
         return configuration.defaultChargingAmount;
     }
@@ -206,6 +216,8 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgMessage = properties.getString("bloatit.img.message");
         imgAccountCharge = properties.getString("bloatit.img.account.charge");
         imgAccountWithdraw = properties.getString("bloatit.img.account.withdraw");
+        imgTwitterIcon = properties.getString("bloatit.img.identica.icon");
+        imgIdenticaIcon = properties.getString("bloatit.img.twitter.icon");
 
         // OTHERS
         defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");

@@ -39,6 +39,7 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.components.MoneyDisplayComponent;
+import com.bloatit.web.components.NewsFeedSideBlock;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -131,7 +132,8 @@ public final class IndexPage extends ElveosPage {
 
         // Adding doc
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
-
+        twoColumnLayout.addRight(new NewsFeedSideBlock());
+        
         return element;
     }
 

@@ -161,3 +161,34 @@
     font-family: @title_fonts;
     font-size: 1.1em;
 }
+
+.news_feed {
+    .feed_icons {
+        float: right;
+    }
+
+    .feed_icon{
+        max-height: 23px;
+        margin-right: 2px;
+        margin-left: 2px;
+    }
+    
+    .feed_list {
+        li {
+            border-bottom: 1px solid @light_border_color;
+        }
+        
+        li:last-of-type {
+            border: none;
+            margin-bottom: -15px;
+        }
+    
+        .feed_item {
+            margin-bottom: 5px; 
+            .item_date {
+                font-size: 0.8em;
+                color: @average_grey;
+            }
+        }
+    }
+}
