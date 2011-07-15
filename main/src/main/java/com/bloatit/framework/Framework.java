@@ -24,6 +24,7 @@ import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.model.Model;
 import com.bloatit.framework.model.ModelAccessor;
+import com.bloatit.framework.webprocessor.context.SessionCleanerTask;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 import com.bloatit.framework.xcgiserver.XcgiServer;
@@ -55,6 +56,7 @@ public class Framework {
             mailServer.initialize();
             scgiServer.initialize();
             ModelAccessor.initialize(model);
+            new SessionCleanerTask();
         } catch (final ExternalErrorException e) {
             Log.framework().fatal("Error loading configuration file", e);
             return false;

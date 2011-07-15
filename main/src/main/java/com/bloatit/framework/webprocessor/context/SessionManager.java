@@ -38,8 +38,6 @@ import com.bloatit.framework.xcgiserver.WrongSessionKeyFormatException;
 public final class SessionManager {
     private static Map<String, Session> activeSessions = new HashMap<String, Session>();
     private static Map<String, Session> temporarySessions = new HashMap<String, Session>();
-    /** Time to next cleaning up in seconds **/
-    private static long nextCleanExpiredSession = 0;
 
     private SessionManager() {
         // desactivate CTOR
@@ -135,7 +133,7 @@ public final class SessionManager {
                     sessionDump.append(session.getValue().getMemberLocale().getLanguage());
                     sessionDump.append(' ');
                     sessionDump.append(session.getValue().getMemberLocale().getCountry());
-                    
+
                     sessionDump.append('\n');
 
                     fileOutputStream.write(sessionDump.toString().getBytes());
@@ -217,20 +215,19 @@ public final class SessionManager {
         }
     }
 
-    private static synchronized void restoreSession(final String key, final String shortKey, final String ipAddress, final int memberId, final String language, final String country)
-            throws WrongSessionKeyFormatException {
+    private static synchronized void restoreSession(final String key,
+                                                    final String shortKey,
+                                                    final String ipAddress,
+                                                    final int memberId,
+                                                    final String language,
+                                                    final String country) throws WrongSessionKeyFormatException {
         final Session session = new Session(key, shortKey, ipAddress, memberId, language, country);
         activeSessions.put(key, session);
     }
 
-    private static synchronized void clearExpiredSessions() {
-        if (nextCleanExpiredSession < Context.getResquestTime()) {
-            performClearExpiredSessions();
-            nextCleanExpiredSession = Context.getResquestTime() + FrameworkConfiguration.getSessionCleanTime() * DateUtils.SECOND_PER_DAY;
-        }
-    }
-
-    private static synchronized void performClearExpiredSessions() {
+    static synchronized void clearExpiredSessions() {
+        int activeSessionsCountBefore = activeSessions.size();
+        
         final Iterator<Session> it = activeSessions.values().iterator();
         while (it.hasNext()) {
             final Session session = it.next();
@@ -239,6 +236,9 @@ public final class SessionManager {
                 it.remove();
             }
         }
+        
+        int activeSessionsCountAfter = activeSessions.size();
+        Log.framework().info("Clean expired session: "+activeSessionsCountBefore+" -> "+ activeSessionsCountAfter);
     }
 
     public static synchronized void storeTemporarySession(final String key, final Session session) {
