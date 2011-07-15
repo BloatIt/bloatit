@@ -24,6 +24,7 @@ import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.model.Model;
 import com.bloatit.framework.model.ModelAccessor;
+import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 import com.bloatit.framework.xcgiserver.XcgiServer;
 
@@ -90,7 +91,7 @@ public class Framework {
     }
 
     private void shutdown() {
-        // SessionManager.saveSessions();
+        SessionManager.saveSessions();
         scgiServer.stop();
         MailServer.getInstance().quickStop();
         ModelAccessor.shutdown();

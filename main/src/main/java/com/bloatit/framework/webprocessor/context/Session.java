@@ -87,12 +87,34 @@ public final class Session {
         resetExpirationTime();
     }
 
+    /**
+     * Restore session
+     *
+     * @param key
+     * @param ipAddress
+     * @param country 
+     * @param language 
+     */
+    protected Session(final String key, final String shortKey, final String ipAddress, final Integer memberId, String language, String country) {
+        this.key = key;
+        this.shortKey = shortKey;
+        this.ipAddress = ipAddress;
+        this.memberId = memberId;
+        this.memberLocale = new Locale(language, country);
+
+        resetExpirationTime();
+    }
+
     public synchronized String getKey() {
         return key;
     }
 
     public synchronized String getShortKey() {
         return shortKey;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
     }
 
     public synchronized void logIn(final Integer memberId, final Locale memberLocale) {
@@ -292,4 +314,5 @@ public final class Session {
     public boolean isValid(final String ipAddress) {
         return !isExpired() && (this.ipAddress == ipAddress || (this.ipAddress != null && this.ipAddress.equals(ipAddress)));
     }
+
 }
