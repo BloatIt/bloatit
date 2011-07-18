@@ -27,14 +27,14 @@ public class OAuthAuthorizationPage extends LoggedPage {
      * REQUIRED. Value MUST be set to "code".
      */
     @RequestParam(name = "response_type")
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private final String responseType;
 
     /**
      * REQUIRED. The client identifier as described in Section 2.3.
      */
     @RequestParam(name = "client_id")
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private final String clientId;
 
     /**
@@ -78,16 +78,20 @@ public class OAuthAuthorizationPage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         // TODO make this page pretty(er) !
         final HtmlDiv div = new HtmlDiv("oauth_question");
-        div.add(new HtmlParagraph(Context.tr("Dear {0}, are you sure you want to grant ''{1}'' the right to access your Elveos account ?",
+        div.add(new HtmlParagraph(Context.tr("{0}, are you sure you want to grant ''{1}'' the right to access your Elveos account ?",
                                              loggedUser.getDisplayName(),
                                              clientId)));
 
-        div.add(new HtmlLink(redirectUri, Context.tr("No")));
+        HtmlLink noLink = new HtmlLink(redirectUri, Context.tr("No"));
+        noLink.setCssClass("button_bad");
+        div.add(noLink);
         final OAuthAuthorizationActionUrl targetUrl = new OAuthAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId);
         targetUrl.setRedirectUri(redirectUri);
         targetUrl.setScope(scope);
         targetUrl.setState(state);
-        div.add(new HtmlLink(targetUrl.urlString(), Context.tr("Yes, I trust {0}", clientId)));
+        HtmlLink yesLink = new HtmlLink(targetUrl.urlString(), Context.tr("Yes, I trust {0}", clientId));
+        yesLink.setCssClass("button_good");
+        div.add(yesLink);
         return div;
     }
 
