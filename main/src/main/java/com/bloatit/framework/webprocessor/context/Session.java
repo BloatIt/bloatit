@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.datetime.DateUtils;
@@ -87,12 +88,34 @@ public final class Session {
         resetExpirationTime();
     }
 
+    /**
+     * Restore session
+     *
+     * @param key
+     * @param ipAddress
+     * @param country 
+     * @param language 
+     */
+    protected Session(final String key, final String shortKey, final String ipAddress, final Integer memberId, String language, String country) {
+        this.key = key;
+        this.shortKey = shortKey;
+        this.ipAddress = ipAddress;
+        this.memberId = memberId;
+        this.memberLocale = new Locale(language, country);
+
+        resetExpirationTime();
+    }
+
     public synchronized String getKey() {
         return key;
     }
 
     public synchronized String getShortKey() {
         return shortKey;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
     }
 
     public synchronized void logIn(final Integer memberId, final Locale memberLocale) {
@@ -136,7 +159,7 @@ public final class Session {
     }
 
     public synchronized boolean isExpired() {
-        return Context.getResquestTime() > expirationTime;
+        return DateUtils.now().getTime()/ DateUtils.MILLISECOND_PER_SECOND > expirationTime;
     }
 
     public synchronized void setLastStablePage(final Url p) {
@@ -292,4 +315,5 @@ public final class Session {
     public boolean isValid(final String ipAddress) {
         return !isExpired() && (this.ipAddress == ipAddress || (this.ipAddress != null && this.ipAddress.equals(ipAddress)));
     }
+
 }

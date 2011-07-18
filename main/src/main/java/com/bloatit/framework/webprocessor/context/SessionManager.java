@@ -11,10 +11,20 @@
  */
 package com.bloatit.framework.webprocessor.context;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
@@ -28,8 +38,6 @@ import com.bloatit.framework.xcgiserver.WrongSessionKeyFormatException;
 public final class SessionManager {
     private static Map<String, Session> activeSessions = new HashMap<String, Session>();
     private static Map<String, Session> temporarySessions = new HashMap<String, Session>();
-    /** Time to next cleaning up in seconds **/
-    private static long nextCleanExpiredSession = 0;
 
     private SessionManager() {
         // desactivate CTOR
@@ -95,137 +103,131 @@ public final class SessionManager {
         return key;
     }
 
-    // public static synchronized void saveSessions() {
-    // com.bloatit.data.SessionManager.beginWorkUnit();
-    //
-    // final String dir = System.getProperty("user.home") +
-    // "/.local/share/bloatit/";
-    // final String dump = dir + "/sessions.dump";
-    //
-    // if (new File(dir).mkdirs()) {
-    // Log.framework().debug("Creating a new dir: " + dir);
-    // }
-    //
-    // FileOutputStream fileOutputStream = null;
-    // try {
-    // fileOutputStream = new FileOutputStream(new File(dump));
-    //
-    // for (final Entry<SessionKey, Session> session :
-    // activeSessions.entrySet()) {
-    //
-    // if (session.getValue().getUserToken().isAuthenticated()) {
-    // final StringBuilder sessionDump = new StringBuilder();
-    //
-    // sessionDump.append(session.getKey().getId());
-    // sessionDump.append(' ');
-    // sessionDump.append(session.getKey().getIpAddress());
-    // sessionDump.append(' ');
-    // sessionDump.append(session.getValue().getUserToken().getMember().getId());
-    // sessionDump.append('\n');
-    //
-    // fileOutputStream.write(sessionDump.toString().getBytes());
-    // }
-    // }
-    //
-    // fileOutputStream.close();
-    //
-    // } catch (final IOException e) {
-    // Log.framework().error("Failed to save sessions.", e);
-    // } finally {
-    // if (fileOutputStream != null) {
-    // try {
-    //
-    // fileOutputStream.close();
-    // } catch (final IOException e) {
-    // Log.framework().error("Failed to close the file after an other exception.",
-    // e);
-    // }
-    // }
-    // com.bloatit.data.SessionManager.endWorkUnitAndFlush();
-    // }
-    //
-    // }
-    //
-    // public static synchronized void loadSessions() {
-    // com.bloatit.data.SessionManager.beginWorkUnit();
-    //
-    // final String dump = FrameworkConfiguration.getSessionDumpfile();
-    // BufferedReader br = null;
-    //
-    // try {
-    // // Open the file that is the first
-    // // command line parameter
-    // FileInputStream fstream;
-    // fstream = new FileInputStream(dump);
-    //
-    // // Get the object of DataInputStream
-    // final DataInputStream in = new DataInputStream(fstream);
-    // br = new BufferedReader(new InputStreamReader(in));
-    // String strLine;
-    // // Read File Line By Line
-    // while ((strLine = br.readLine()) != null) {
-    // // Print the content on the console
-    // final String[] split = strLine.split(" ");
-    //
-    // if (split.length == 3) {
-    // try {
-    // restoreSession(split[0], split[1], Integer.valueOf(split[2]));
-    // } catch (WrongSessionKeyFormatException e) {
-    // // Just ignore session
-    // }
-    // }
-    //
-    // }
-    //
-    // // Close the streams
-    // in.close();
-    // br.close();
-    //
-    // if (new File(dump).delete()) {
-    // Log.framework().info("deleting dump file: " + dump);
-    // } else {
-    // Log.framework().error("Cannot delete dump file: " + dump);
-    // }
-    //
-    // } catch (final IOException e) {
-    // if (br != null) {
-    // try {
-    // br.close();
-    // } catch (final IOException e1) {
-    // Log.framework().error(e1);
-    // }
-    // }
-    //
-    // // Failed to restore sessions
-    // Log.framework().error("Failed to restore sessions.", e);
-    // } finally {
-    // com.bloatit.data.SessionManager.endWorkUnitAndFlush();
-    // }
-    // }
-    //
-    // private static synchronized void restoreSession(final String id, final
-    // String ipAddress, final int memberId)
-    // throws WrongSessionKeyFormatException {
-    // final SessionKey key = new SessionKey(id, ipAddress.equals("null") ? null
-    // : ipAddress);
-    // final Session session = new Session(key);
-    // try {
-    // // TODO remove back reference to AuthenticatedUserToken
-    // session.authenticate(new AuthenticatedUserToken(memberId));
-    // } catch (final NotFoundException e) {
-    // Log.framework().error("Session not found", e);
-    // }
-    // activeSessions.put(key, session);
-    // }
+    public static synchronized void saveSessions() {
+        com.bloatit.data.SessionManager.beginWorkUnit();
 
-    private static synchronized void clearExpiredSessions() {
-        if (nextCleanExpiredSession < Context.getResquestTime()) {
-            performClearExpiredSessions();
-            nextCleanExpiredSession = Context.getResquestTime() + FrameworkConfiguration.getSessionCleanTime() * DateUtils.SECOND_PER_DAY;
+        final String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
+        final String dump = dir + "/sessions.dump";
+
+        if (new File(dir).mkdirs()) {
+            Log.framework().debug("Creating a new dir: " + dir);
+        }
+
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(new File(dump));
+
+            for (final Entry<String, Session> session : activeSessions.entrySet()) {
+
+                if (session.getValue().getMemberId() != null) {
+                    final StringBuilder sessionDump = new StringBuilder();
+
+                    sessionDump.append(session.getValue().getKey());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getValue().getShortKey());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getValue().getIpAddress());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getValue().getMemberId());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getValue().getMemberLocale().getLanguage());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getValue().getMemberLocale().getCountry());
+
+                    sessionDump.append('\n');
+
+                    fileOutputStream.write(sessionDump.toString().getBytes());
+                }
+            }
+
+            fileOutputStream.close();
+
+        } catch (final IOException e) {
+            Log.framework().error("Failed to save sessions.", e);
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+
+                    fileOutputStream.close();
+                } catch (final IOException e) {
+                    Log.framework().error("Failed to close the file after an other exception.", e);
+                }
+            }
+            com.bloatit.data.SessionManager.endWorkUnitAndFlush();
+        }
+
+    }
+
+    public static synchronized void loadSessions() {
+        com.bloatit.data.SessionManager.beginWorkUnit();
+
+        final String dump = FrameworkConfiguration.getSessionDumpfile();
+        BufferedReader br = null;
+
+        try {
+            // Open the file that is the first
+            // command line parameter
+            FileInputStream fstream;
+            fstream = new FileInputStream(dump);
+
+            // Get the object of DataInputStream
+            final DataInputStream in = new DataInputStream(fstream);
+            br = new BufferedReader(new InputStreamReader(in));
+            String strLine;
+            // Read File Line By Line
+            while ((strLine = br.readLine()) != null) {
+                // Print the content on the console
+                final String[] split = strLine.split(" ");
+
+                if (split.length == 6) {
+                    try {
+                        restoreSession(split[0], split[1], split[2], Integer.valueOf(split[3]), split[4], split[5]);
+                    } catch (WrongSessionKeyFormatException e) {
+                        // Just ignore session
+                    }
+                }
+
+            }
+
+            // Close the streams
+            in.close();
+            br.close();
+
+            if (new File(dump).delete()) {
+                Log.framework().info("deleting dump file: " + dump);
+            } else {
+                Log.framework().error("Cannot delete dump file: " + dump);
+            }
+
+        } catch (final IOException e) {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (final IOException e1) {
+                    Log.framework().error(e1);
+                }
+            }
+
+            // Failed to restore sessions
+            Log.framework().error("Failed to restore sessions.", e);
+        } finally {
+            com.bloatit.data.SessionManager.endWorkUnitAndFlush();
         }
     }
 
-    private static synchronized void performClearExpiredSessions() {
+    private static synchronized void restoreSession(final String key,
+                                                    final String shortKey,
+                                                    final String ipAddress,
+                                                    final int memberId,
+                                                    final String language,
+                                                    final String country) throws WrongSessionKeyFormatException {
+        final Session session = new Session(key, shortKey, ipAddress, memberId, language, country);
+        activeSessions.put(key, session);
+    }
+
+    static synchronized void clearExpiredSessions() {
+        int activeSessionsCountBefore = activeSessions.size();
+        
         final Iterator<Session> it = activeSessions.values().iterator();
         while (it.hasNext()) {
             final Session session = it.next();
@@ -234,6 +236,9 @@ public final class SessionManager {
                 it.remove();
             }
         }
+        
+        int activeSessionsCountAfter = activeSessions.size();
+        Log.framework().info("Clean expired session: "+activeSessionsCountBefore+" -> "+ activeSessionsCountAfter);
     }
 
     public static synchronized void storeTemporarySession(final String key, final Session session) {
