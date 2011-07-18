@@ -29,14 +29,14 @@ public abstract class OAuthAuthorizationAction extends LoggedAction {
      * REQUIRED. Value MUST be set to "code".
      */
     @RequestParam(name = OAuth.OAUTH_RESPONSE_TYPE)
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private final String responseType;
 
     /**
      * REQUIRED. The client identifier as described in Section 2.3.
      */
     @RequestParam(name = OAuth.OAUTH_CLIENT_ID)
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private String clientId;
 
     /**
@@ -45,7 +45,7 @@ public abstract class OAuthAuthorizationAction extends LoggedAction {
     // FIXME: I am non optional because I don't know what to do if there is no
     // redirectUri
     @RequestParam(name = OAuth.OAUTH_REDIRECT_URI)
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private String redirectUri;
 
     /**
@@ -117,11 +117,10 @@ public abstract class OAuthAuthorizationAction extends LoggedAction {
             clientId = oAuthAuthzRequest.getClientId();
             redirectUri = oAuthAuthzRequest.getRedirectURI();
 
-            return processOAuthRequest(clientId, redirectUri, responseType, state);
+            return processOAuthRequest(me, clientId, redirectUri, responseType, state);
 
             // if something goes wrong
         } catch (final OAuthProblemException ex) {
-
             try {
                 final OAuthResponse resp = OAuthResponse.errorResponse(HttpServletResponse.SC_FOUND)
                                                         .error(ex)
@@ -137,7 +136,7 @@ public abstract class OAuthAuthorizationAction extends LoggedAction {
     }
 
     protected abstract Url
-            processOAuthRequest(final String clientId, final String redirectUri, final String responseType, final String state)
+            processOAuthRequest(Member member, final String clientId, final String redirectUri, final String responseType, final String state)
                                                                                                                                throws OAuthSystemException;
 
     @Override

@@ -9,6 +9,7 @@ import org.apache.amber.oauth2.common.message.OAuthResponse;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlString;
+import com.bloatit.model.Member;
 import com.bloatit.web.url.OAuthDenyAuthorizationActionUrl;
 
 @ParamContainer("oauth/dodenyauthorization")
@@ -22,9 +23,10 @@ public class OAuthDenyAuthorizationAction extends OAuthAuthorizationAction {
     }
 
     @Override
-    protected Url processOAuthRequest(final String clientId, //
-                                      final String redirectUri, //
-                                      final String responseType,//
+    protected Url processOAuthRequest(final Member member, //
+                                      final String clientId, //
+                                      final String redirectUri,//
+                                      final String responseType, //
                                       final String state) throws OAuthSystemException {
         
         final OAuthResponse resp = OAuthResponse.errorResponse(HttpServletResponse.SC_FOUND)

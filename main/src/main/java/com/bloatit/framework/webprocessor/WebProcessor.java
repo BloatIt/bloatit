@@ -97,7 +97,7 @@ public abstract class WebProcessor implements XcgiProcessor {
             try {
                 ModelAccessor.rollback();
             } catch (final RuntimeException e1) {
-                Log.framework().fatal(e);
+                Log.framework().fatal("Unknown error", e);
                 throw e1;
             }
             throw e;

@@ -31,14 +31,14 @@ public class OAuthAuthorizationPage extends LoggedPage {
      * REQUIRED. Value MUST be set to "code".
      */
     @RequestParam(name = OAuth.OAUTH_RESPONSE_TYPE)
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private final String responseType;
 
     /**
      * REQUIRED. The client identifier as described in Section 2.3.
      */
     @RequestParam(name = OAuth.OAUTH_CLIENT_ID)
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private String clientId;
 
     /**
@@ -47,7 +47,7 @@ public class OAuthAuthorizationPage extends LoggedPage {
     // FIXME: I am non optional because I don't know what to do if there is no
     // redirectUri
     @RequestParam(name = OAuth.OAUTH_REDIRECT_URI)
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private String redirectUri;
 
     /**
