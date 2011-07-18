@@ -87,6 +87,25 @@ public abstract class OAuthAuthorizationAction extends LoggedAction {
 
     @Override
     protected final Url doProcessErrors() {
+        final HttpBloatitRequest request = new HttpBloatitRequest(Context.getHeader(), url.getStringParameters());
+        try {
+            new OAuthAuthzRequest(request);
+        } catch (final OAuthProblemException ex) {
+
+            try {
+                final OAuthResponse resp = OAuthResponse.errorResponse(HttpServletResponse.SC_FOUND)
+                                                        .error(ex)
+                                                        .location(redirectUri)
+                                                        .buildQueryMessage();
+                return new UrlString(resp.getLocationUri());
+            } catch (final OAuthSystemException e) {
+                throw new BadProgrammerException(ex);
+            }
+        } catch (final OAuthSystemException e) {
+            throw new BadProgrammerException(e);
+        }
+
+        // FIXME
         return new UrlString(redirectUri);
     }
 
@@ -117,8 +136,9 @@ public abstract class OAuthAuthorizationAction extends LoggedAction {
         }
     }
 
-    protected abstract Url processOAuthRequest(final String clientId, final String redirectUri, final String responseType, final String state)
-                                                                                                                          throws OAuthSystemException;
+    protected abstract Url
+            processOAuthRequest(final String clientId, final String redirectUri, final String responseType, final String state)
+                                                                                                                               throws OAuthSystemException;
 
     @Override
     protected final String getRefusalReason() {

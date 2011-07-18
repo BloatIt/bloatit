@@ -19,6 +19,8 @@ import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.OAuthAuthorizationActionUrl;
 import com.bloatit.web.url.OAuthAuthorizationPageUrl;
+import com.bloatit.web.url.OAuthDenyAuthorizationActionUrl;
+import com.bloatit.web.url.OAuthDoAuthorizationActionUrl;
 
 @ParamContainer("oauth/authorization")
 public class OAuthAuthorizationPage extends LoggedPage {
@@ -86,12 +88,16 @@ public class OAuthAuthorizationPage extends LoggedPage {
                                              loggedUser.getDisplayName(),
                                              clientId)));
 
-        div.add(new HtmlLink(redirectUri, Context.tr("No")));
-        final OAuthAuthorizationActionUrl targetUrl = new OAuthAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId);
-        targetUrl.setRedirectUri(redirectUri);
-        targetUrl.setScope(scope);
-        targetUrl.setState(state);
-        div.add(new HtmlLink(targetUrl.urlString(), Context.tr("Yes, I trust {0}", clientId)));
+        final OAuthAuthorizationActionUrl noUrl = new OAuthDenyAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId, redirectUri);
+        noUrl.setScope(scope);
+        noUrl.setState(state);
+        div.add(new HtmlLink(noUrl.urlString(), Context.tr("No")));
+
+        final OAuthAuthorizationActionUrl yesUrl = new OAuthDoAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId, redirectUri);
+        yesUrl.setScope(scope);
+        yesUrl.setState(state);
+        div.add(new HtmlLink(yesUrl.urlString(), Context.tr("Yes, I trust {0}", clientId)));
+
         return div;
     }
 
@@ -102,12 +108,12 @@ public class OAuthAuthorizationPage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return generateBreadcrumb(member, responseType, clientId);
+        return generateBreadcrumb(member, responseType, clientId, redirectUri);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member, final String responseType, final String clientId) {
+    public static Breadcrumb generateBreadcrumb(final Member member, final String responseType, final String clientId, final String redirectUri) {
         final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
-        breadcrumb.pushLink(new OAuthAuthorizationPageUrl(responseType, clientId).getHtmlLink(Context.tr("oauth authorization")));
+        breadcrumb.pushLink(new OAuthAuthorizationPageUrl(responseType, clientId, redirectUri).getHtmlLink(Context.tr("oauth authorization")));
         return breadcrumb;
     }
 
@@ -120,5 +126,4 @@ public class OAuthAuthorizationPage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
-
 }

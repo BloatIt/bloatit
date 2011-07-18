@@ -25,19 +25,19 @@ public final class OAuthDoAuthorizationAction extends OAuthAuthorizationAction {
     }
 
     @Override
-    protected Url
-            processOAuthRequest(final String clientId, final String redirectUri, final String responseType, final String state)
-                                                                                                                               throws OAuthSystemException {
-
+    protected Url processOAuthRequest(final String clientId, //
+                                      final String redirectUri, //
+                                      final String responseType, //
+                                      final String state) throws OAuthSystemException {
+        
         final OAuthASResponse.OAuthAuthorizationResponseBuilder builder = OAuthASResponse.authorizationResponse(HttpServletResponse.SC_FOUND);
 
         // TODO make a more secure Generator ?
         final OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new UUIDValueGenerator());
 
-        if (responseType.equals(ResponseType.CODE.toString()) || responseType.equals(ResponseType.CODE_AND_TOKEN.toString())) {
+        if (responseType.equals(ResponseType.CODE.toString())) {
             builder.setCode(oauthIssuerImpl.authorizationCode());
-        }
-        if (responseType.equals(ResponseType.TOKEN.toString()) || responseType.equals(ResponseType.CODE_AND_TOKEN.toString())) {
+        } else if (responseType.equals(ResponseType.TOKEN.toString())) {
             builder.setAccessToken(oauthIssuerImpl.accessToken());
             builder.setExpiresIn(String.valueOf(3600));
         }

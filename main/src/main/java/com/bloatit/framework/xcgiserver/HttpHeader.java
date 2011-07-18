@@ -35,6 +35,8 @@ import com.bloatit.framework.xcgiserver.LazyLoaders.LazyStringList;
 
 public class HttpHeader {
 
+    private static final String DEFAULT_LANG = "default";
+
     private static final String UTF_8 = "UTF-8";
 
     private final Parameters getParameters = new Parameters();
@@ -72,7 +74,7 @@ public class HttpHeader {
 
         if (firstWord.isEmpty()) {
             pageName = "index";
-            language = "default";
+            language = DEFAULT_LANG;
         } else if (LangExists(firstWord)) {
             language = firstWord;
             if (splitedUri.length > 1) {
@@ -81,7 +83,7 @@ public class HttpHeader {
                 pageName = "";
             }
         } else {
-            language = "default";
+            language = DEFAULT_LANG;
             pageName = removeFirstSlashes(getPathInfo());
         }
     }
@@ -94,6 +96,9 @@ public class HttpHeader {
     }
 
     private boolean LangExists(final String langCode) {
+        if (DEFAULT_LANG.equals(langCode)) {
+            return true;
+        }
         Localizator.getAvailableLanguages();
         for (final Entry<String, LanguageDescriptor> lang : Localizator.getAvailableLanguages().entrySet()) {
             if (lang.getValue().getCode().equals(langCode)) {
