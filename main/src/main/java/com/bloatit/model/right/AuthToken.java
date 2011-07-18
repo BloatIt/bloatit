@@ -83,9 +83,14 @@ public final class AuthToken {
     }
 
     public static void authenticate(final RequestKey key) throws NotFoundException {
-        final Integer id = SessionManager.getOrCreateSession(key).getMemberId();
+        final Session session = SessionManager.getOrCreateSession(key);
+        final Integer id = session.getMemberId();
         if (id == null) {
             throw new NotFoundException("The current session is not authenticated.");
+        }
+        if (MemberManager.getById(id) == null) {
+            session.logOut();
+            throw new NotFoundException("Wrong authentication id stored in the session.");
         }
         This.get().memberId = id;
     }
