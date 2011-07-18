@@ -242,36 +242,71 @@ textarea:focus {
        outline:none; /* Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome */
 }
 
-.button {
+.button, .button_good, .button_bad  {
         color:white;
         background: @default_link_color * 1.2;
-       .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
-       border:1px solid @default_link_color;
-       .rounded_corners(3px); 
-       text-shadow:0 1px 1px rgb(50,50,50);
-       .shadow(1px, white);
-       cursor:pointer;
-       font-size:0.9em;
-       font-weight:bold;
-       padding: 3px;
-       padding-right: 8px;
-       padding-left: 8px;
-       margin-left: 0.5em;
-       margin-right: 0.5em;
-       text-decoration:none;
-       vertical-align: middle;
+        .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
+        border:1px solid @default_link_color;
+        .rounded_corners(3px); 
+        text-shadow:0 1px 1px rgb(50,50,50);
+        .shadow(1px, white);
+        cursor:pointer;
+        font-size:0.9em;
+        font-weight:bold;
+        padding: 3px;
+        padding-right: 8px;
+        padding-left: 8px;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+        text-decoration:none;
+        vertical-align: middle;
 }
 
+.button_good {
+       background: @good_color * 1.2;
+       .horizontal-gradient(@good_color * 1.1,  @good_color * 1.4);
+       border:1px solid @good_color;
+}
+
+.button_bad {
+       background: @error_color * 0.9;
+       .horizontal-gradient(@error_color * 0.9,  @error_color * 1.0);
+       border:1px solid @error_color;
+}
+
+
 .button:hover{
-       color:white;
-       background: @default_link_color * 1.5;
-       .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.9);
+        color:white;
+        background: @default_link_color * 1.5;
+        .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.9);
+}
+
+.button_good:hover, .button_bad:hover {
+        color:white;
+        background: @good_color * 1.5;
+        .horizontal-gradient(@good_color * 1.1,  @good_color * 1.9);
+}
+
+.button_bad:hover {
+        color:white;
+        background: @error_color * 1.5;
+        .horizontal-gradient(@error_color * 0.9,  @error_color * 1.9);
 }
 
 .button:active,
-.button:focus{
+.button:focus {
        background: @default_link_color * 1.1;
        .horizontal-gradient(@default_link_color * 1.9,  @default_link_color * 1.1);
+}
+
+ .button_good:active, .button_good:focus {
+       background: @good_color * 1.1;
+       .horizontal-gradient(@good_color * 1.9,  @good_color * 1.1);
+}
+
+.button_bad:active, .button_bad:focus {
+       background: @error_color * 1.1;
+       .horizontal-gradient(@error_color * 1.9,  @error_color * 1.1);
 }
 
 input[type=submit],

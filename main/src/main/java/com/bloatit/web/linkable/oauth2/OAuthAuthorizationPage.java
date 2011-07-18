@@ -84,19 +84,19 @@ public class OAuthAuthorizationPage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         // TODO make this page pretty(er) !
         final HtmlDiv div = new HtmlDiv("oauth_question");
-        div.add(new HtmlParagraph(Context.tr("Dear {0}, are you sure you want to grant ''{1}'' the right to access your Elveos account ?",
+        div.add(new HtmlParagraph(Context.tr("{0}, are you sure you want to grant ''{1}'' the right to access your Elveos account ?",
                                              loggedUser.getDisplayName(),
                                              clientId)));
 
         final OAuthAuthorizationActionUrl noUrl = new OAuthDenyAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId, redirectUri);
         noUrl.setScope(scope);
         noUrl.setState(state);
-        div.add(new HtmlLink(noUrl.urlString(), Context.tr("No")));
+        div.add(new HtmlLink(noUrl.urlString(), Context.tr("No")).setCssClass("button_bad"));
 
         final OAuthAuthorizationActionUrl yesUrl = new OAuthDoAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId, redirectUri);
         yesUrl.setScope(scope);
         yesUrl.setState(state);
-        div.add(new HtmlLink(yesUrl.urlString(), Context.tr("Yes, I trust {0}", clientId)));
+        div.add(new HtmlLink(yesUrl.urlString(), Context.tr("Yes, I trust {0}", clientId)).setCssClass("button_good"));
 
         return div;
     }
