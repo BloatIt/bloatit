@@ -86,19 +86,28 @@ public class BloatitExampleDB { // NO_UCD
         celeste = createMember("celeste", "Céleste", Locale.CHINA);
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
+        AuthToken.authenticate(fred);
         fred.getContact().setName("Frederic Bertolus");
         fred.getContact().setStreet("Le superbe appartement à gauche");
+        AuthToken.authenticate(thomas);
         thomas.getContact().setName("Thomas Guyard");
         thomas.getContact().setStreet("Le superbe appartement à gauche");
+        AuthToken.authenticate(yoann);
         yoann.getContact().setName("Yoann Plénet");
         yoann.getContact().setStreet("Le superbe appartement à gauche");
 
         // Add avatar
+        AuthToken.authenticate(chogall);
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
+        AuthToken.authenticate(cerbere);
         cerbere.setAvatar(getImage(cerbere, "users/cerbere.png"));
+        AuthToken.authenticate(hydre);
         hydre.setAvatar(getImage(hydre, "users/hydre.png"));
+        AuthToken.authenticate(elephantman);
         elephantman.setAvatar(getImage(elephantman, "users/elephantman.png"));
+        AuthToken.authenticate(celeste);
         celeste.setAvatar(getImage(celeste, "users/celeste.png"));
+        AuthToken.authenticate(rataxes);
         rataxes.setAvatar(getImage(rataxes, "users/rataxes.png"));
 
         // Add money
@@ -111,18 +120,21 @@ public class BloatitExampleDB { // NO_UCD
         giveMoney(elephantman, 100000000);
 
         // Add withdrawal
+        AuthToken.authenticate(fred);
         withdrawMoney(fred, 1000, State.REQUESTED);
         withdrawMoney(fred, 2000, State.TREATED);
         withdrawMoney(fred, 3000, State.REFUSED);
         withdrawMoney(fred, 4000, State.CANCELED);
         withdrawMoney(fred, 5000, State.COMPLETE);
 
+        AuthToken.authenticate(yoann);
         withdrawMoney(yoann, 1000, State.REQUESTED);
         withdrawMoney(yoann, 2000, State.TREATED);
         withdrawMoney(yoann, 3000, State.REFUSED);
         withdrawMoney(yoann, 4000, State.CANCELED);
         withdrawMoney(yoann, 5000, State.COMPLETE);
 
+        AuthToken.authenticate(thomas);
         withdrawMoney(thomas, 1000, State.REQUESTED);
         withdrawMoney(thomas, 2000, State.TREATED);
         withdrawMoney(thomas, 3000, State.REFUSED);
