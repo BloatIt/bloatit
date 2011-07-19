@@ -22,6 +22,7 @@ import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.ResourceFinder;
 
 public class WebConfiguration extends ReloadableConfiguration {
     private static final WebConfiguration configuration = new WebConfiguration();
@@ -193,6 +194,9 @@ public class WebConfiguration extends ReloadableConfiguration {
     }
 
     private void loadConfiguration() {
+        
+        ResourceFinder finder = new ResourceFinder(FrameworkConfiguration.getWwwDir());
+        
         properties = ConfigurationManager.loadProperties("web.properties");
 
         // CSS
