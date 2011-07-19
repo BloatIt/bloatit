@@ -19,123 +19,129 @@ package com.bloatit.framework;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
-
-
 
 /*
  * Find the last version of a file
  */
-public class ResourceFinder  {
-    
-    private final String baseUrl;
+public class ResourceFinder {
 
+    private final String baseUrl;
+    private final Map<String,String> map = new HashMap<String, String>();
+    
     public ResourceFinder(String baseUrl) {
         this.baseUrl = baseUrl;
     }
-    
+
     public String find(String resourceUrl) {
+        if(!map.containsKey(resourceUrl)) {
+            map.put(resourceUrl, findForCache(resourceUrl));
+        } 
+        
+        return map.get(resourceUrl);
+    }
+        
+    public String findForCache(String resourceUrl) {
         
         String dirName = resourceUrl.split("/[^/]+$")[0];
-        String fileName = resourceUrl.substring(dirName.length()+1);
-        
+        String fileName = resourceUrl.substring(dirName.length() + 1);
+
         final String fileNameBase = fileName.split(".[^.]+$")[0];
         final String fileNameExtension = fileName.substring(fileNameBase.length());
-        
-        
-        System.out.println("dirName: "+dirName);
-        System.out.println("fileName: "+fileName);
-        System.out.println("fileNameBase: "+fileNameBase);
-        System.out.println("fileNameExtension: "+fileNameExtension);
-        
-        
-        File dir = new File(baseUrl+dirName);
-        if(!dir.isDirectory()) {
-            throw new ExternalErrorException(dirName+"is not a valid directory");
+
+        File dir = new File(baseUrl + dirName);
+        if (!dir.isDirectory()) {
+            throw new ExternalErrorException(baseUrl + dirName + "is not a valid directory");
         }
-        
+
         String[] versionList = dir.list(new FilenameFilter() {
-            
+
             @Override
             public boolean accept(File dir, String name) {
-                System.out.println("filter name: "+name);
-                if(name.startsWith(fileNameBase) && name.endsWith(fileNameExtension)) {
+                if (name.startsWith(fileNameBase) && name.endsWith(fileNameExtension)) {
                     return true;
                 }
                 return false;
             }
         });
-        System.out.println("Version list");
-        
-        List<VersionFile> versionFileList = new ArrayList<VersionFile>();
-        
-        for(String s: versionList) {
-            versionFileList.add(new VersionFile(fileName));
-            
 
-            int begin = Math.min(fileNameBase.length()+1, s.length()-1); 
-            int end = Math.max(begin, s.length()-fileNameExtension.length());
-            String version = s.substring(begin, end);
-            System.out.println("version: "+ version);
-            
+        List<VersionFile> versionFileList = new ArrayList<VersionFile>();
+
+        for (String versionFile : versionList) {
+            int begin = Math.min(fileNameBase.length() + 1, versionFile.length() - 1);
+            int end = Math.max(begin, versionFile.length() - fileNameExtension.length());
+            String version = versionFile.substring(begin, end);
+
+            versionFileList.add(new VersionFile(versionFile, version));
+        }
+
+        VersionFile last = findMax(versionFileList);
+
+        if (last == null) {
+            throw new ExternalErrorException(resourceUrl + " resource not found");
         }
         
-        return resourceUrl;
+        return dirName + '/' + last.fileName;
     }
-    
-    
-    public class VersionFile implements Comparable<VersionFile>{
-        
-        private final String version;
+
+    private <T extends Comparable<T>> T findMax(List<T> list) {
+        T max = null;
+
+        for (T item : list) {
+            if (max == null) {
+                max = item;
+            } else {
+                if (max.compareTo(item) < 0) {
+                    max = item;
+                }
+            }
+        }
+        return max;
+    }
+
+    public class VersionFile implements Comparable<VersionFile> {
+
         private final String fileName;
         private List<Integer> versionParts = new ArrayList<Integer>();
 
-        public VersionFile(String version, String fileName) {
-            this.version = version;
+        public VersionFile(String fileName, String version) {
             this.fileName = fileName;
-            
+
             String[] split = version.split("[^0-9]");
-            
-            for(String s : split) {
-                versionParts.add(Integer.valueOf(s));
+
+            for (String s : split) {
+                if (s.length() == 0) {
+                    versionParts.add(-1);
+                } else {
+                    versionParts.add(Integer.valueOf(s));
+                }
             }
-            
+
         }
 
         @Override
         public int compareTo(VersionFile o) {
-            for(int i = 0; i < versionParts.size(); i++) {
+            for (int i = 0; i < versionParts.size(); i++) {
                 int compareTo = getPart(i).compareTo(o.getPart(i));
-                if(compareTo != 0) {
+                if (compareTo != 0) {
                     return compareTo;
                 }
-               
+
             }
-            
+
             return -1;
         }
 
         private Integer getPart(int index) {
-            if(index < versionParts.size()) {
+            if (index < versionParts.size()) {
                 return versionParts.get(index);
             }
-            
             return -1;
         }
-        
-    }
-    
-    
-    public static void main(String[] args) {
-        String resourceUrl = "/resources/commons/css/core.css";
-        String baseUrl = "/home/fred/bloatit/www";
-        
-        ResourceFinder finder = new ResourceFinder(baseUrl);
-        
-        System.out.println(finder.find(resourceUrl));
+
     }
 }
-
-
