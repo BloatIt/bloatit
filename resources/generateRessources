@@ -1,6 +1,6 @@
 #!/bin/sh
 
-OUTPUT_DIR_PREFIX=../www/resources/
+OUTPUT_DIR_PREFIX=www_src/resources/
 OUTPUT_DIR_SUFFIX=/img/
 STAMP_OUTPUT_WIDTH=100
 

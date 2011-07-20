@@ -27,7 +27,7 @@
           </execution>
         </executions>
         <configuration>
-          <executable>./generatecss</executable>
+          <executable>./generatewww</executable>
         </configuration>
       </plugin>
     </plugins>

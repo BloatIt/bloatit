@@ -110,18 +110,17 @@ def findMax(versionList):
         if not lastVersion:
             lastVersion = versionFile
         else:
-            if compversion(versionFile,lastVersion)  < 0:
-                lastVersion = versionFile
+            lastVersion = compversion(versionFile,lastVersion)
     return lastVersion
 
 def compversion(v1,v2):
-    print('compversion: '+v1+' '+v2)
-
     for e1,e2 in zip(v1.split('.'), v2.split('.')):
-        comp = (int(e1) > int(e2)) - (int(e1) < int(e2))
-        if comp!=0:
+        i1 = int(e1.split('-')[0])
+        i2 = int(e2.split('-')[0])
+
+        if i1 != i2:
             break
-    return comp
+    return i1 < i2 and v2 or v1
 
     
     

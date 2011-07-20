@@ -1,6 +1,6 @@
 #!/bin/sh
 
-OUTPUT_DIR_PREFIX=../../www/resources/
+OUTPUT_DIR_PREFIX=../www_src/resources/
 BASE_FILE=presentation_base.svg
 TEMP_BASE_OUTPUT=tempbase.png
 TEMP_WORK_FILE=tempworkfile.svg
