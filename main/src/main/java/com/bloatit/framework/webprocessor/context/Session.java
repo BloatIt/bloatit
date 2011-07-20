@@ -22,7 +22,6 @@ import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.datetime.DateUtils;

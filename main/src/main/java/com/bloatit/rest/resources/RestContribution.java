@@ -35,7 +35,7 @@ import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.framework.restprocessor.exception.RestException;
-import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -151,7 +151,7 @@ public class RestContribution extends RestElement<Contribution> {
         try {
             return model.getComment();
         } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getComment on Contribution", e);
+            throw new RestException(StatusCode.ERROR_CLI_405_METHOD_NOT_ALLOWED, "Not allowed to use getComment on Contribution", e);
         }
     }
 
@@ -163,7 +163,7 @@ public class RestContribution extends RestElement<Contribution> {
         try {
             return model.getAmount();
         } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on Contribution", e);
+            throw new RestException(StatusCode.ERROR_CLI_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on Contribution", e);
         }
     }
 

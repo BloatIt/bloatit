@@ -28,6 +28,7 @@ import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 import com.bloatit.framework.xcgiserver.RequestKey;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
@@ -58,7 +59,8 @@ public abstract class WebProcessor implements XcgiProcessor {
                 // same page with lower case.
                 final String pageCode = httpHeader.getPageName();
                 if (pageCode.matches(".*[A-Z].*")) {
-                    response.writeRedirect(createLowerCaseUrl(httpHeader.getLanguage(), httpHeader.getQueryString(), pageCode));
+                    response.writeRedirect(StatusCode.REDIRECTION_300_MULTIPLE_CHOICES,
+                                           createLowerCaseUrl(httpHeader.getLanguage(), httpHeader.getQueryString(), pageCode));
                 } else {
 
                     ModelAccessor.authenticate(key);
@@ -83,11 +85,11 @@ public abstract class WebProcessor implements XcgiProcessor {
                     linkable.writeToHttp(response, this);
                 } catch (final RedirectException e1) {
                     Log.framework().info("Redirect to " + e.getUrl(), e);
-                    response.writeRedirect(e.getUrl().urlString());
+                    response.writeRedirect(StatusCode.REDIRECTION_301_MOVED_PERMANENTLY, e.getUrl().urlString());
                 }
             } catch (final RedirectException e) {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
-                response.writeRedirect(e.getUrl().urlString());
+                response.writeRedirect(StatusCode.REDIRECTION_301_MOVED_PERMANENTLY, e.getUrl().urlString());
             } finally {
                 ModelAccessor.close();
             }

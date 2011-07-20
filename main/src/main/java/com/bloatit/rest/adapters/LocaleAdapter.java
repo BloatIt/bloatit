@@ -23,7 +23,7 @@ import java.util.Locale;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.bloatit.framework.restprocessor.exception.RestException;
-import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 
 public class LocaleAdapter extends XmlAdapter<String, Locale> {
 
@@ -35,7 +35,7 @@ public class LocaleAdapter extends XmlAdapter<String, Locale> {
     @Override
     public Locale unmarshal(final String localeString) throws Exception {
         if (localeString.isEmpty()) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Locale mustn't be empty !");
+            throw new RestException(StatusCode.ERROR_CLI_403_FORBIDDEN, "Locale mustn't be empty !");
         }
 
         String sep = " ";

@@ -32,7 +32,7 @@ import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.webprocessor.context.User;
-import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -149,10 +149,10 @@ public class RestMember extends RestElement<Member> {
     public static RestMember createMember(final String login, final String password, final String email, final String language, final String country)
             throws RestException {
         if (language.length() != 2 || country.length() != 2) {
-            throw new RestException(StatusCode.ERROR_400_BAD_REQUEST, "Country and language must represent a valid country/language code.");
+            throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "Country and language must represent a valid country/language code.");
         }
         if (MemberManager.loginExists(login) || MemberManager.emailExists(email)) {
-            throw new RestException(StatusCode.ERROR_406_NOT_ACCEPTABLE, "Login or email already in use.");
+            throw new RestException(StatusCode.ERROR_CLI_406_NOT_ACCEPTABLE, "Login or email already in use.");
         }
         // TODO check password (do this on the Model level)
 
@@ -188,7 +188,7 @@ public class RestMember extends RestElement<Member> {
         try {
             return model.getKarma();
         } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to get karma on user", e);
+            throw new RestException(StatusCode.ERROR_CLI_405_METHOD_NOT_ALLOWED, "Not allowed to get karma on user", e);
         }
     }
 

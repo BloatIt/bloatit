@@ -21,7 +21,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
-import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
@@ -72,7 +72,7 @@ public class PageNotFound extends ElveosPage {
 
     @Override
     protected StatusCode getResponseStatus() {
-        return StatusCode.ERROR_404_NOT_FOUND;
+        return StatusCode.ERROR_CLI_404_NOT_FOUND;
     }
 
     @Override

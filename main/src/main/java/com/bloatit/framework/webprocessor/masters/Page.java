@@ -38,8 +38,8 @@ import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpResponse;
-import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
 import com.bloatit.web.pages.master.HtmlNotification;
 
 public abstract class Page implements Linkable {
@@ -56,8 +56,9 @@ public abstract class Page implements Linkable {
 
     @Override
     public final void writeToHttp(final HttpResponse response, final WebProcessor server) throws RedirectException, IOException {
-        response.setStatus(getResponseStatus());
-        response.writePage(create());
+        // The create is done before the getContentType and getResponseStatus.
+        HtmlElement page = create();
+        response.writePage(getResponseStatus(), getContentType(), page);
     }
 
     public final String getName() {
@@ -83,6 +84,17 @@ public abstract class Page implements Linkable {
      * @return a status code matching the real status of the response
      */
     protected abstract StatusCode getResponseStatus();
+
+    /**
+     * Get the content type of this page. We are looking for "text/html", but it
+     * can also be "application/json" or "text/xml". Overload me if you want to
+     * change this content type.
+     * 
+     * @return "text/html".
+     */
+    protected String getContentType() {
+        return "text/html";
+    }
 
     /**
      * This method is called only if {@link #createBody()} and

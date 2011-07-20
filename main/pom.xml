@@ -12,18 +12,23 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hibernate.version>3.6.1.Final</hibernate.version>
 	</properties>
-
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
+				<version>2.3.2</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
+					<optimize>true</optimize>
+					<annotationProcessors>
+						<processor>com.bloatit.framework.webprocessor.annotations.generator.ParamContainerProcessor</processor>
+					</annotationProcessors>
 				</configuration>
 			</plugin>
+
 			<!-- Tests -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -32,26 +37,6 @@
 				<configuration>
 					<test>com.bloatit.TestAll</test>
 				</configuration>
-			</plugin>
-			<!-- Run annotation processors on src/main/java sources -->
-			<plugin>
-				<groupId>org.bsc.maven</groupId>
-				<artifactId>maven-processor-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>process</id>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<processors>
-								<!-- list of processors to use -->
-								<processor>com.bloatit.framework.webprocessor.annotations.generator.ParamContainerProcessor</processor>
-							</processors>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<!-- i18n GetText -->
 			<plugin>
@@ -99,7 +84,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.2</version>
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
@@ -131,6 +115,42 @@
 				</includes>
 			</resource>
 		</resources>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.xnap.commons
+										</groupId>
+										<artifactId>
+											maven-gettext-plugin
+										</artifactId>
+										<versionRange>
+											[1.2.3,)
+										</versionRange>
+										<goals>
+											<goal>dist</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<repositories>
 		<repository>
@@ -146,15 +166,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-
-		<repository>
-			<id>apache-snapshots</id>
-			<url>http://repository.apache.org/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-
 		<repository>
 			<id>jboss-public-repository-group</id>
 			<name>JBoss Public Maven Repository Group</name>
@@ -196,7 +207,6 @@
 			<artifactId>gettext-commons</artifactId>
 			<version>0.9.6</version>
 		</dependency>
-
 		<!-- For hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -223,7 +233,6 @@
 			<artifactId>hibernate-search</artifactId>
 			<version>3.3.0.Final</version>
 		</dependency>
-
 		<!-- we need sl4j for logging with hibernate -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -356,6 +365,18 @@
 			<url>http://download.java.net/maven/2/</url>
 			<layout>default</layout>
 		</pluginRepository>
+
+		<pluginRepository>
+			<id>sonatype-repo</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+
 		<pluginRepository>
 			<id>central</id>
 			<name>Maven Plugin Repository</name>

@@ -39,7 +39,7 @@ import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.model.Image;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
@@ -99,7 +99,7 @@ public abstract class ElveosPage extends Page {
      */
     @Override
     protected StatusCode getResponseStatus() {
-        return StatusCode.OK_200;
+        return StatusCode.SUCCESS_200_OK;
     }
 
     @Override
