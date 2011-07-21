@@ -177,7 +177,7 @@ startBloatitServer() {
 
 
 generatewww() {
-    ./generatewww www_src www  2>&1 >/tmp/generatewww.log &
+    bash ./generatewww "$PWD/$UPLOAD_DIR/www_src" "$PWD/www"  2>&1 >/tmp/generatewww.log &
 }
 
 commitPrerelease "$PREFIX" "$RELEASE_VERSION"

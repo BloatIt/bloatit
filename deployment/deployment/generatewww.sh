@@ -1,17 +1,9 @@
 #!/bin/bash
 
-SOURCE_WWW=$PWD/www_src
-DEST_WWW=$PWD/../www/
+# Use absolute paths for source and destination directory parameters
 
-if [ -n "$1" ]
-then
-    SOURCE_WWW=$PWD/$1
-fi
-
-if [ -n "$2" ]
-then
-    DEST_WWW=$PWD/$2
-fi
+SOURCE_WWW=$1
+DEST_WWW=$2
 
 BUILD_VERSION_FILE=$DEST_WWW/../main/target/classes/build.properties
 
