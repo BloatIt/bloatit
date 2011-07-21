@@ -18,7 +18,7 @@ ROOT=$PWD
 cd -
 COMMONS=$ROOT/../commons/
 MERGE_FILE_SCRIPT=$ROOT/mergeFiles.sh
-GENERATE_WWW_SCRIPT=$ROOT/mergeFiles.sh
+GENERATE_WWW_SCRIPT=$ROOT/generatewww.sh
 LIQUIBASE_DIR=files/liquibase-core-2.0.2-SNAPSHOT.jar
 PREFIX=elveos
 
