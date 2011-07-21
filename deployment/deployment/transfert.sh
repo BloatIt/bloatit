@@ -66,12 +66,12 @@ UP_SHARE_DIR=$UPLOAD_DIR/share
 DOC=wwwdoc/
 CLASSES=java/
 DEPEDENCIES=jars
-WWW=www/
+WWW=www_src/
 
 DEST=$DISTANT_NAME@$HOST:
 SOURCE_CLASSES=$SOURCE/main/target/classes/
 SOURCE_DEPENDENCIES=$SOURCE/main/target/dependencies/
-SOURCE_WWW=$SOURCE/www/
+SOURCE_WWW=$SOURCE/resources/www_src/
 SOURCE_UP_CONF_DIR=$SOURCE/etc/
 SOURCE_UP_SHARE_DIR=$SOURCE/share/
 SOURCE_LIGHTTPD=$SOURCE/lighttpd/
