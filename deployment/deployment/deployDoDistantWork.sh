@@ -178,7 +178,7 @@ startBloatitServer() {
 
 generatewww() {
     cd $ROOT/resources
-    ./generatewww &
+    ./generatewww 2>&1 >/tmp/generatewww.log &
     cd $ROOT
 }
 
