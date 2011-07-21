@@ -2,7 +2,18 @@
 
 SOURCE_WWW=$PWD/www_src
 DEST_WWW=$PWD/../www/
-BUILD_VERSION_FILE=../main/target/classes/build.properties
+
+if [ -n "$1" ]
+then
+    SOURCE_WWW=$PWD/$1
+fi
+
+if [ -n "$2" ]
+then
+    DEST_WWW=$PWD/$2
+fi
+
+BUILD_VERSION_FILE=$DEST_WWW/../main/target/classes/build.properties
 
 VERSION=$(head -n 1 "$BUILD_VERSION_FILE" | sed s/project.version=//g)
 

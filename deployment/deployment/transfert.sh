@@ -66,8 +66,8 @@ UP_SHARE_DIR=$UPLOAD_DIR/share
 DOC=wwwdoc/
 CLASSES=java/
 DEPEDENCIES=jars
-WWW=/resources/www_src/
-WWW_SCRIPT=$SOURCE/resources/generatewww
+WWW=/www_src/
+WWW_SCRIPT=/generatewww
 
 DEST=$DISTANT_NAME@$HOST:
 SOURCE_CLASSES=$SOURCE/main/target/classes/
