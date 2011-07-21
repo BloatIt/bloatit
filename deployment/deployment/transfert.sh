@@ -66,16 +66,19 @@ UP_SHARE_DIR=$UPLOAD_DIR/share
 DOC=wwwdoc/
 CLASSES=java/
 DEPEDENCIES=jars
-WWW=www/
+WWW=/resources/www_src/
+WWW_SCRIPT=$SOURCE/resources/generatewww
 
 DEST=$DISTANT_NAME@$HOST:
 SOURCE_CLASSES=$SOURCE/main/target/classes/
 SOURCE_DEPENDENCIES=$SOURCE/main/target/dependencies/
-SOURCE_WWW=$SOURCE/www/
+SOURCE_WWW=$SOURCE/resources/www_src/
+SOURCE_WWW_SCRIPT=$SOURCE/resources/generatewww
 SOURCE_UP_CONF_DIR=$SOURCE/etc/
 SOURCE_UP_SHARE_DIR=$SOURCE/share/
 SOURCE_LIGHTTPD=$SOURCE/lighttpd/
 SOURCE_DOC=$SOURCE/doc/websitedoc/
+
 
 # Create a custom rsync launcher
 
@@ -127,6 +130,11 @@ exit_on_failure $?
 # Send the data in www folder
 log_date "Sending 'www' folder to $DEST$WWW"
 $RSYNC  --perms --chmod=o=,Fug+r,F-x $SOURCE_WWW $DEST$WWW
+exit_on_failure $?
+
+# Send the www script
+log_date "Sending 'www' script to $DEST$WWW_SCRIPT"
+$RSYNC  --perms --chmod=o=,Fug+r,F-x $SOURCE_WWW_SCRIPT $DEST$WWW_SCRIPT
 exit_on_failure $?
 
 # Send the data in etc folder (in a temporary directory)
