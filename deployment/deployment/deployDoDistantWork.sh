@@ -178,7 +178,7 @@ startBloatitServer() {
 
 
 generatewww() {
-    bash $GENERATE_WWW_SCRIPT "$PWD/$UPLOAD_DIR/www_src" "$PWD/www"
+    bash $GENERATE_WWW_SCRIPT "$PWD/$UPLOAD_DIR/www_src" "$PWD/www" "$PWD/java/build.properties"
 }
 
 commitPrerelease "$PREFIX" "$RELEASE_VERSION"

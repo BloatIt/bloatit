@@ -5,7 +5,7 @@
 SOURCE_WWW=$1
 DEST_WWW=$2
 
-BUILD_VERSION_FILE=$DEST_WWW/../main/target/classes/build.properties
+BUILD_VERSION_FILE=$3
 
 VERSION=$(head -n 1 "$BUILD_VERSION_FILE" | sed s/project.version=//g)
 
