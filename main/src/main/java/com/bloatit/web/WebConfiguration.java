@@ -23,6 +23,7 @@ import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.ResourceFinder;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 
 public class WebConfiguration extends ReloadableConfiguration {
     private static final WebConfiguration configuration = new WebConfiguration();
@@ -93,7 +94,8 @@ public class WebConfiguration extends ReloadableConfiguration {
      * @return the path to the imgPresentation
      */
     public static String getImgPresentation(final String langCode) {
-        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgPresentation);
+        return find(configuration.imgPresentation,langCode);
+        
     }
 
     /**
@@ -142,14 +144,14 @@ public class WebConfiguration extends ReloadableConfiguration {
      * @return the imgFeatureStateSuccess
      */
     public static String getImgFeatureStateSuccess(final String langCode) {
-        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateSuccess);
+        return find(configuration.imgFeatureStateSuccess,langCode);
     }
 
     /**
      * @return the imgFeatureStateSuccess
      */
     public static String getImgFeatureStateFailed(final String langCode) {
-        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateFailed);
+        return find(configuration.imgFeatureStateFailed,langCode);
     }
 
     /**
@@ -242,4 +244,14 @@ public class WebConfiguration extends ReloadableConfiguration {
         configuration.loadConfiguration();
     }
 
+    private static String find(String resource, String langCode) {
+        try {
+        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
+        } catch (ExternalErrorException e) {
+            return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
+        }
+    }
+    
 }
+
+

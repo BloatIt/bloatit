@@ -55,7 +55,7 @@ public class ResourceFinder {
 
         File dir = new File(baseUrl + dirName);
         if (!dir.isDirectory()) {
-            throw new ExternalErrorException(baseUrl + dirName + "is not a valid directory");
+            throw new ExternalErrorException(dirName + " is not a valid directory for "+resourceUrl);
         }
 
         String[] versionList = dir.list(new FilenameFilter() {

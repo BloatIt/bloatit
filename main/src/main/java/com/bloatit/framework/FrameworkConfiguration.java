@@ -21,6 +21,7 @@ import static com.bloatit.common.ConfigurationManager.SHARE_DIR;
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.RetryPolicy;
 import com.bloatit.framework.social.MicroBlogManager;
 
@@ -274,7 +275,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
      * @return the path to the jsDatePicker
      */
     public static String getJsDatePicker(final String langCode) {
-        return configuration.finder.find(configuration.resourcesDir + "/" + langCode + configuration.jsDatePicker);
+        return find(configuration.jsDatePicker, langCode);
     }
 
     /**
@@ -396,5 +397,13 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     @Override
     protected void doReload() {
         configuration.loadConfiguration();
+    }
+    
+    private static String find(String resource, String langCode) {
+        try {
+        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
+        } catch (ExternalErrorException e) {
+            return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
+        }
     }
 }
