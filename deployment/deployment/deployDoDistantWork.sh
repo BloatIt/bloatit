@@ -18,6 +18,7 @@ ROOT=$PWD
 cd -
 COMMONS=$ROOT/../commons/
 MERGE_FILE_SCRIPT=$ROOT/mergeFiles.sh
+GENERATE_WWW_SCRIPT=$ROOT/mergeFiles.sh
 LIQUIBASE_DIR=files/liquibase-core-2.0.2-SNAPSHOT.jar
 PREFIX=elveos
 
@@ -177,14 +178,17 @@ startBloatitServer() {
 
 
 generatewww() {
-    bash ./generatewww "$PWD/$UPLOAD_DIR/www_src" "$PWD/www"  2>&1 >/tmp/generatewww.log &
+    bash $GENERATE_WWW_SCRIPT "$PWD/$UPLOAD_DIR/www_src" "$PWD/www"
 }
 
 commitPrerelease "$PREFIX" "$RELEASE_VERSION"
 
-generatewww
+
 
 propagateConfFiles 
+exit_on_failure $?
+
+generatewww
 exit_on_failure $?
 
 stopBloatitServer
