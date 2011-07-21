@@ -175,7 +175,16 @@ startBloatitServer() {
     exit_on_failure $?
 }
 
+
+generatewww() {
+    cd $ROOT/resources
+    ./generatewww &
+    cd $ROOT
+}
+
 commitPrerelease "$PREFIX" "$RELEASE_VERSION"
+
+generatewww
 
 propagateConfFiles 
 exit_on_failure $?

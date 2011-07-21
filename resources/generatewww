@@ -1,128 +1,45 @@
-#!/usr/bin/python3
+#!/bin/bash
 
-import os
-import hashlib
-import shutil
-import re
+SOURCE_WWW=$PWD/www_src
+DEST_WWW=$PWD/../www/
+BUILD_VERSION_FILE=../main/target/classes/build.properties
 
-def getVersion():
-    versionFile = open('../main/target/classes/build.properties')
-    base,version = versionFile.readline().split('=')
-    return version.rstrip()
+VERSION=$(head -n 1 "$BUILD_VERSION_FILE" | sed s/project.version=//g)
 
+mkdir -p "$DEST_WWW"
 
+#create existing map
+cd "$DEST_WWW"
+existingmap="$(find . -type f | sed -r 's#^(.*)-([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z]+)?)(\.(tar\.)?([a-zA-Z]+))$#\1\4 \0#g')"
+   
+cd "$SOURCE_WWW"
 
+for line in $(find . -type f)
+do
 
-def generateDir(sourceDir, destDir):
+    filename=$(basename $line)
+    dirname=$(dirname $line)
 
-    # Create destination directory is not exists
-    if not os.path.exists(destDir):
-        os.makedirs(destDir)
+    #Create target dir if not exists
+    if [ ! -e "$DEST_WWW/$dirname" ]
+    then
+        mkdir -p "$DEST_WWW/$dirname"
+    fi
 
-    files = os.listdir(sourceDir)
+    #echo "process "$line
     
-    for afile in files:
-        if os.path.isdir(os.path.join(sourceDir,afile)):
-            # Generate sub directory
-            generateDir(os.path.join(sourceDir, afile), os.path.join(destDir, afile))
-        else:
-            generateFile(os.path.join(sourceDir, afile), destDir)
-            
-def generateFile(sourceFile, destDir):
+    matchlist=$(echo "$existingmap" | grep "$line " | cut -d " " -f 2)
     
-    base = os.path.basename(sourceFile);
-    sourceMd5 = md5(sourceFile)
+    #echo "matchlist "$matchlist
     
-    root, extension = os.path.splitext(base)
+    lastfile="$(echo "$matchlist" | sort -V | tail -n 1)"
     
-    if not extension:
-        # Don't generate Makefiles
-        return
+    #echo "lastfile "$lastfile
     
-    lastVersion = getLastVersion(destDir, base)
-    
-    if lastVersion and sourceMd5 == md5(os.path.join(destDir, lastVersion)):
-        return
-    
-    if lastVersion:
-        print("last version '"+lastVersion+"' is perimed: "+md5(os.path.join(destDir, lastVersion)))
-    else:
-        print('no %s yet' % base)
-    
-
-    
-    newName = root+'.'+version+extension
-
-    #Copy the file
-    shutil.copyfile(sourceFile, os.path.join(destDir, newName))
-    
-    print('Copied at: '+os.path.join(destDir, newName))
-
-def md5(afile):
-    content = open(afile, 'rb').read()
-    return hashlib.md5(content).hexdigest()
-
-
-
-prog = re.compile('^(.*)\.([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z]+)?)(\.(tar\.)?([a-zA-Z]+))$')                                
-
-    
-def getLastVersion(directory, baseName):
-
-    root, extension = os.path.splitext(baseName)
-
-    children = os.listdir(directory)
-    
-    versionChildren = list()
-    
-
-    
-    for afile in children:
-        if os.path.isdir(os.path.join(directory,afile)):
-            continue
-        match = prog.match(afile)
-        
-        
-        
-        if match and match.group(1)+match.group(4) == baseName:
-            #print('basename: '+baseName+' '+match.group(1)+match.group(4))
-            
-            #print('test: %s  -> %s   |   .*([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z]+)?)\.(tar\.)?([a-zA-Z]+)$' % (afile , match) )
-
-            
-            version = match.group(2)
-            #print('version: '+version)
-            versionChildren.append(version)
-        
-    last = findMax(versionChildren)
-    
-    #    print('last: '+str(last))
-        
-    if last:        
-        return root + '.'+last + extension
-    return None
-
-
-def findMax(versionList):
-    lastVersion = None
-
-    for versionFile in versionList:
-        if not lastVersion:
-            lastVersion = versionFile
-        else:
-            lastVersion = compversion(versionFile,lastVersion)
-    return lastVersion
-
-def compversion(v1,v2):
-    for e1,e2 in zip(v1.split('.'), v2.split('.')):
-        i1 = int(e1.split('-')[0])
-        i2 = int(e2.split('-')[0])
-
-        if i1 != i2:
-            break
-    return i1 < i2 and v2 or v1
-
-    
-    
-version = getVersion()
-generateDir('www_src/', '../www/')
+    #echo "$(cmp  "$line" "$DEST_WWW/$lastfile" && echo $?)"
+    if  [ -z "$lastfile" ] || [ "$(cmp -s "$line" "$DEST_WWW/$lastfile" && echo $?)" != 0 ]
+    then
+        echo "copy "$line
+        cp "$line" "$DEST_WWW/$dirname/$(echo "$filename" |sed -r "s#^(.*)(\\.(tar\\.)?([a-zA-Z]+))\$#\\1-$VERSION\\2#g")"
+    fi
+done
