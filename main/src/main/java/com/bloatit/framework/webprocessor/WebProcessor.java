@@ -18,7 +18,6 @@ import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.model.ModelAccessor;
-import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
@@ -51,7 +50,6 @@ public abstract class WebProcessor implements XcgiProcessor {
             ModelAccessor.open();
             final Session session = SessionManager.getOrCreateSession(key);
             Context.reInitializeContext(httpHeader, session);
-            accessLog(session);
 
             try {
 
@@ -99,21 +97,12 @@ public abstract class WebProcessor implements XcgiProcessor {
             try {
                 ModelAccessor.rollback();
             } catch (final RuntimeException e1) {
-                Log.framework().fatal(e);
+                Log.framework().fatal("Unknown error", e);
                 throw e1;
             }
             throw e;
         }
         return true;
-    }
-
-    private void accessLog(final Session session) {
-        final String memberId = session.getMemberId() != null ? session.getMemberId().toString() : "-1";
-        final String sessionKey = Hash.shortHash(session.getShortKey());
-        Log.framework().info("Access:Context: " + //
-                "USER_ID='" + memberId + //
-                "'; KEY='" + sessionKey + //
-                "'; LANG='" + Context.getLocalizator().getLocale() + "'");
     }
 
     private String createLowerCaseUrl(final String language, final String queryString, final String pageCode) {

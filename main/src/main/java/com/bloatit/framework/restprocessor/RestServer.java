@@ -16,9 +16,10 @@
 //
 package com.bloatit.framework.restprocessor;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -79,13 +80,6 @@ public abstract class RestServer implements XcgiProcessor {
     @Override
     public final boolean process(final RequestKey key, final HttpHeader httpHeader, final HttpPost post, final HttpResponse response)
             throws IOException {
-
-        // TODO when the authentication will be supported do not forget to log
-        // make sure bash injection is not possible.
-        // it with this syntax:
-        // Log.framework().info("Access:Context: KEY=\"" + sessionKey +
-        // "\"; USER_ID=\"" + memberId + "\"; LANG=\""
-        // + Context.getLocalizator().getLocale() + "\"");
 
         String scriptName = "";
         if (httpHeader.getScriptName().startsWith("/") && httpHeader.getScriptName().length() > 1) {

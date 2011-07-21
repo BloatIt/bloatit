@@ -21,8 +21,7 @@
 			</column>
 			<column name="refreshtoken" type="varchar(1024)">
 			</column>
-			<column name="expirationDate" type="datetime">
-				<constraints nullable="false" />
+			<column name="expirationdate" type="datetime">
 			</column>
 			<column name="cancreatefeature" type="boolean">
 				<constraints nullable="false" />

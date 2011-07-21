@@ -21,7 +21,10 @@ import javassist.NotFoundException;
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.xcgiserver.RequestKey;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.TaskUpdateDevelopingState;
@@ -124,5 +127,21 @@ public class Model implements com.bloatit.framework.model.Model {
         } catch (final NotFoundException e) {
             Log.model().trace("authentication error.", e);
         }
+        accessLog(key);
+    }
+
+    private void accessLog(final RequestKey key) {
+        final String memberId = AuthToken.getMember() != null ? AuthToken.getMember().getId().toString() : "-1";
+        final Session session = Context.getSession();
+        String sessionKey;
+        if (session != null) {
+            sessionKey = Hash.shortHash(session.getShortKey());
+        } else {
+            sessionKey = Hash.shortHash(key.getId());
+        }
+        Log.framework().info("Access:Context: " + //
+                "USER_ID='" + memberId + //
+                "'; KEY='" + sessionKey + //
+                "'; LANG='" + Context.getLocalizator().getLocale() + "'");
     }
 }

@@ -2,10 +2,8 @@ package com.bloatit.web.linkable.oauth2;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.amber.oauth2.as.issuer.OAuthIssuerImpl;
-import org.apache.amber.oauth2.as.issuer.UUIDValueGenerator;
 import org.apache.amber.oauth2.as.request.OAuthAuthzRequest;
-import org.apache.amber.oauth2.as.response.OAuthASResponse;
+import org.apache.amber.oauth2.common.OAuth;
 import org.apache.amber.oauth2.common.exception.OAuthProblemException;
 import org.apache.amber.oauth2.common.exception.OAuthSystemException;
 import org.apache.amber.oauth2.common.message.OAuthResponse;
@@ -25,27 +23,29 @@ import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.OAuthAuthorizationActionUrl;
 
 @ParamContainer("oauth/doauthorization")
-public class OAuthAuthorizationAction extends LoggedAction {
+public abstract class OAuthAuthorizationAction extends LoggedAction {
 
     /**
      * REQUIRED. Value MUST be set to "code".
      */
-    @RequestParam(name = "response_type")
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @RequestParam(name = OAuth.OAUTH_RESPONSE_TYPE)
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private final String responseType;
 
     /**
      * REQUIRED. The client identifier as described in Section 2.3.
      */
-    @RequestParam(name = "client_id")
-    @NonOptional(@tr("OAuth request need a %param% parameter."))
+    @RequestParam(name = OAuth.OAUTH_CLIENT_ID)
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private String clientId;
 
     /**
      * OPTIONAL, as described in Section 3.1.2.
      */
-    @RequestParam(name = "redirect_uri")
-    @Optional
+    // FIXME: I am non optional because I don't know what to do if there is no
+    // redirectUri
+    @RequestParam(name = OAuth.OAUTH_REDIRECT_URI)
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private String redirectUri;
 
     /**
@@ -56,7 +56,7 @@ public class OAuthAuthorizationAction extends LoggedAction {
      * access range to the requested scope.
      */
     @Optional
-    @RequestParam(name = "scope")
+    @RequestParam(name = OAuth.OAUTH_SCOPE)
     private final String scope;
 
     /**
@@ -64,7 +64,7 @@ public class OAuthAuthorizationAction extends LoggedAction {
      * the request and callback. The authorization server includes this value
      * when redirecting the user-agent back to the client.
      */
-    @RequestParam(name = "state")
+    @RequestParam(name = OAuth.OAUTH_STATE)
     @Optional
     private final String state;
 
@@ -81,27 +81,43 @@ public class OAuthAuthorizationAction extends LoggedAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(final Member me) {
+    protected final Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessRestricted(final Member me) {
+    protected final Url doProcessErrors() {
+        final HttpBloatitRequest request = new HttpBloatitRequest(Context.getHeader(), url.getStringParameters());
+        try {
+            new OAuthAuthzRequest(request);
+        } catch (final OAuthProblemException ex) {
+
+            try {
+                final OAuthResponse resp = OAuthResponse.errorResponse(HttpServletResponse.SC_FOUND)
+                                                        .error(ex)
+                                                        .location(redirectUri)
+                                                        .buildQueryMessage();
+                return new UrlString(resp.getLocationUri());
+            } catch (final OAuthSystemException e) {
+                throw new BadProgrammerException(ex);
+            }
+        } catch (final OAuthSystemException e) {
+            throw new BadProgrammerException(e);
+        }
+
+        // FIXME
+        return new UrlString(redirectUri);
+    }
+
+    @Override
+    protected final Url doProcessRestricted(final Member me) {
         final HttpBloatitRequest request = new HttpBloatitRequest(Context.getHeader(), url.getStringParameters());
         try {
             final OAuthAuthzRequest oAuthAuthzRequest = new OAuthAuthzRequest(request);
             clientId = oAuthAuthzRequest.getClientId();
             redirectUri = oAuthAuthzRequest.getRedirectURI();
 
-            // TODO make a more secure Generator ?
-            final OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new UUIDValueGenerator());
-
-            // build OAuth response
-            final OAuthResponse resp = OAuthASResponse.authorizationResponse(HttpServletResponse.SC_FOUND)
-                                                      .setCode(oauthIssuerImpl.authorizationCode())
-                                                      .location(redirectUri)
-                                                      .buildQueryMessage();
-            redirectUri = resp.getLocationUri();
+            return processOAuthRequest(me, clientId, redirectUri, responseType, state);
 
             // if something goes wrong
         } catch (final OAuthProblemException ex) {
@@ -110,28 +126,26 @@ public class OAuthAuthorizationAction extends LoggedAction {
                                                         .error(ex)
                                                         .location(redirectUri)
                                                         .buildQueryMessage();
-                redirectUri = resp.getLocationUri();
+                return new UrlString(resp.getLocationUri());
             } catch (final OAuthSystemException e) {
                 throw new BadProgrammerException(ex);
             }
         } catch (final OAuthSystemException e) {
             throw new BadProgrammerException(e);
         }
-        return new UrlString(redirectUri);
     }
 
-    @Override
-    protected Url doProcessErrors() {
-        return new UrlString(redirectUri);
-    }
+    protected abstract Url
+            processOAuthRequest(Member member, final String clientId, final String redirectUri, final String responseType, final String state)
+                                                                                                                               throws OAuthSystemException;
 
     @Override
-    protected String getRefusalReason() {
+    protected final String getRefusalReason() {
         return Context.tr("You have to be authenticated to perform a right delegation");
     }
 
     @Override
-    protected void transmitParameters() {
+    protected final void transmitParameters() {
         // Nothing ... If it fails then it's a bad programmer who gets us here
     }
 

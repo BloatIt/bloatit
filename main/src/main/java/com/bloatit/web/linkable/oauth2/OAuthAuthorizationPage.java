@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.oauth2;
 
+import org.apache.amber.oauth2.common.OAuth;
+
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
@@ -17,6 +19,8 @@ import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.OAuthAuthorizationActionUrl;
 import com.bloatit.web.url.OAuthAuthorizationPageUrl;
+import com.bloatit.web.url.OAuthDenyAuthorizationActionUrl;
+import com.bloatit.web.url.OAuthDoAuthorizationActionUrl;
 
 @ParamContainer("oauth/authorization")
 public class OAuthAuthorizationPage extends LoggedPage {
@@ -26,23 +30,25 @@ public class OAuthAuthorizationPage extends LoggedPage {
     /**
      * REQUIRED. Value MUST be set to "code".
      */
-    @RequestParam(name = "response_type")
+    @RequestParam(name = OAuth.OAUTH_RESPONSE_TYPE)
     @NonOptional(@tr("OAuth request need a %paramName% parameter."))
     private final String responseType;
 
     /**
      * REQUIRED. The client identifier as described in Section 2.3.
      */
-    @RequestParam(name = "client_id")
+    @RequestParam(name = OAuth.OAUTH_CLIENT_ID)
     @NonOptional(@tr("OAuth request need a %paramName% parameter."))
-    private final String clientId;
+    private String clientId;
 
     /**
      * OPTIONAL, as described in Section 3.1.2.
      */
-    @RequestParam(name = "redirect_uri")
-    @Optional
-    private final String redirectUri;
+    // FIXME: I am non optional because I don't know what to do if there is no
+    // redirectUri
+    @RequestParam(name = OAuth.OAUTH_REDIRECT_URI)
+    @NonOptional(@tr("OAuth request need a %paramName% parameter."))
+    private String redirectUri;
 
     /**
      * OPTIONAL. The scope of the access request expressed as a list of
@@ -52,7 +58,7 @@ public class OAuthAuthorizationPage extends LoggedPage {
      * access range to the requested scope.
      */
     @Optional
-    @RequestParam(name = "scope")
+    @RequestParam(name = OAuth.OAUTH_SCOPE)
     private final String scope;
 
     /**
@@ -60,7 +66,7 @@ public class OAuthAuthorizationPage extends LoggedPage {
      * the request and callback. The authorization server includes this value
      * when redirecting the user-agent back to the client.
      */
-    @RequestParam(name = "state")
+    @RequestParam(name = OAuth.OAUTH_STATE)
     @Optional
     private final String state;
 
@@ -82,16 +88,16 @@ public class OAuthAuthorizationPage extends LoggedPage {
                                              loggedUser.getDisplayName(),
                                              clientId)));
 
-        HtmlLink noLink = new HtmlLink(redirectUri, Context.tr("No"));
-        noLink.setCssClass("button_bad");
-        div.add(noLink);
-        final OAuthAuthorizationActionUrl targetUrl = new OAuthAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId);
-        targetUrl.setRedirectUri(redirectUri);
-        targetUrl.setScope(scope);
-        targetUrl.setState(state);
-        HtmlLink yesLink = new HtmlLink(targetUrl.urlString(), Context.tr("Yes, I trust {0}", clientId));
-        yesLink.setCssClass("button_good");
-        div.add(yesLink);
+        final OAuthAuthorizationActionUrl noUrl = new OAuthDenyAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId, redirectUri);
+        noUrl.setScope(scope);
+        noUrl.setState(state);
+        div.add(new HtmlLink(noUrl.urlString(), Context.tr("No")).setCssClass("button_bad"));
+
+        final OAuthAuthorizationActionUrl yesUrl = new OAuthDoAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId, redirectUri);
+        yesUrl.setScope(scope);
+        yesUrl.setState(state);
+        div.add(new HtmlLink(yesUrl.urlString(), Context.tr("Yes, I trust {0}", clientId)).setCssClass("button_good"));
+
         return div;
     }
 
@@ -102,12 +108,12 @@ public class OAuthAuthorizationPage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return generateBreadcrumb(member, responseType, clientId);
+        return generateBreadcrumb(member, responseType, clientId, redirectUri);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member, final String responseType, final String clientId) {
+    public static Breadcrumb generateBreadcrumb(final Member member, final String responseType, final String clientId, final String redirectUri) {
         final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
-        breadcrumb.pushLink(new OAuthAuthorizationPageUrl(responseType, clientId).getHtmlLink(Context.tr("oauth authorization")));
+        breadcrumb.pushLink(new OAuthAuthorizationPageUrl(responseType, clientId, redirectUri).getHtmlLink(Context.tr("oauth authorization")));
         return breadcrumb;
     }
 
@@ -120,5 +126,4 @@ public class OAuthAuthorizationPage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
-
 }

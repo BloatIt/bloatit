@@ -191,20 +191,25 @@ public final class XcgiServer {
         }
 
         private RequestKey createKey(final HttpHeader header, final Parameters parameters) {
-            RequestKey key;
             final String ipAddress = header.getRemoteAddr();
             try {
                 if (header.getHttpCookie().containsKey("session_key")) {
-                    key = new RequestKey(header.getHttpCookie().get("session_key"), ipAddress, Source.COOKIE);
-                } else if (parameters.containsKey("token")) {
-                    key = new RequestKey(parameters.look("token").getSimpleValue(), ipAddress, Source.TOKEN);
-                } else {
-                    key = new RequestKey(ipAddress);
+                    return new RequestKey(header.getHttpCookie().get("session_key"), ipAddress, Source.COOKIE);
                 }
+                if (parameters.containsKey("access_token")) {
+                    // Works for POST and GET
+                    return new RequestKey(parameters.look("access_token").getSimpleValue(), ipAddress, Source.TOKEN);
+                }
+                
+                if (!HttpHeader.AUTHORIZATION_UNKNOWN.equals(header.getHttpAuthorizationType())) {
+                    if ("Bearer".equals(header.getHttpAuthorizationType())) {
+                        return new RequestKey(header.getHttpAuthorizationData(), ipAddress, Source.TOKEN);
+                    }
+                }
+                return new RequestKey(ipAddress);
             } catch (final WrongSessionKeyFormatException e) {
-                key = new RequestKey(ipAddress);
+                return new RequestKey(ipAddress);
             }
-            return key;
         }
 
         private XcgiParser getXCGIParser(final InputStream is, final OutputStream os) throws IOException {

@@ -35,6 +35,10 @@ import com.bloatit.framework.xcgiserver.LazyLoaders.LazyStringList;
 
 public class HttpHeader {
 
+    public static final String AUTHORIZATION_UNKNOWN = "unknown";
+
+    private static final String DEFAULT_LANG = "default";
+
     private static final String UTF_8 = "UTF-8";
 
     private final Parameters getParameters = new Parameters();
@@ -45,6 +49,7 @@ public class HttpHeader {
     protected HttpHeader(final Map<String, String> env) {
         super();
         this.env = env;
+        System.out.println(env);
 
         parseLanguageAndPageName();
 
@@ -72,7 +77,7 @@ public class HttpHeader {
 
         if (firstWord.isEmpty()) {
             pageName = "index";
-            language = "default";
+            language = DEFAULT_LANG;
         } else if (LangExists(firstWord)) {
             language = firstWord;
             if (splitedUri.length > 1) {
@@ -81,7 +86,7 @@ public class HttpHeader {
                 pageName = "";
             }
         } else {
-            language = "default";
+            language = DEFAULT_LANG;
             pageName = removeFirstSlashes(getPathInfo());
         }
     }
@@ -94,6 +99,9 @@ public class HttpHeader {
     }
 
     private boolean LangExists(final String langCode) {
+        if (DEFAULT_LANG.equals(langCode)) {
+            return true;
+        }
         Localizator.getAvailableLanguages();
         for (final Entry<String, LanguageDescriptor> lang : Localizator.getAvailableLanguages().entrySet()) {
             if (lang.getValue().getCode().equals(langCode)) {
@@ -153,6 +161,31 @@ public class HttpHeader {
 
     public final String getGatewayInterface() {
         return gatewayInterface.getValue(env);
+    }
+
+    /**
+     * example : Basic dGhvbWFzOnBsb3A=
+     */
+    private final LazyString httpAuthorization = new LazyString("HTTP_AUTHORIZATION");
+
+    public final String getHttpAuthorization() {
+        return httpAuthorization.getValue(env);
+    }
+
+    public final String getHttpAuthorizationType() {
+        final String[] splited = httpAuthorization.getValue(env).split(" ", 2);
+        if (splited.length <= 1) {
+            return AUTHORIZATION_UNKNOWN;
+        }
+        return splited[0];
+    }
+
+    public final String getHttpAuthorizationData() {
+        final String[] splited = httpAuthorization.getValue(env).split(" ", 2);
+        if (splited.length != 2) {
+            return "";
+        }
+        return splited[1];
     }
 
     /**
