@@ -1,13 +1,10 @@
 package com.bloatit.model;
 
-import java.util.Date;
-import java.util.EnumSet;
-
+import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalService;
-import com.bloatit.data.DaoExternalService.RightLevel;
+import com.bloatit.data.DaoFileMetadata;
 
-public class ExternalService extends Identifiable<DaoExternalService> {
-
+public class ExternalService extends UserContent<DaoExternalService> {
     /**
      * The Class MyCreator.
      */
@@ -24,52 +21,32 @@ public class ExternalService extends Identifiable<DaoExternalService> {
         return new MyCreator().create(dao);
     }
 
+    public ExternalService(Member author, Team asTeam, Description description) {
+        this(DaoExternalService.createAndPersist(author.getDao(), asTeam != null ? asTeam.getDao() : null, description.getDao()));
+    }
+
     private ExternalService(final DaoExternalService dao) {
         super(dao);
+    }
+
+    public void setLogo(FileMetadata fileImage) {
+        getDao().setLogo(fileImage.getDao());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public final boolean isValid() {
-        return getDao().isValid();
+    public FileMetadata getLogo() {
+        return FileMetadata.create(getDao().getLogo());
     }
 
-    public final String getName() {
-        return getDao().getName();
+    public DaoDescription getDescription() {
+        return getDao().getDescription();
     }
 
-    public final String getToken() {
+    public String getToken() {
         return getDao().getToken();
-    }
-
-    public final boolean isAuthorized() {
-        return getDao().isAuthorized();
-    }
-
-    public final String getRefreshToken() {
-        return getDao().getRefreshToken();
-    }
-
-    public final Date getExpirationDate() {
-        return getDao().getExpirationDate();
-    }
-
-    public final Member getMember() {
-        return Member.create(getDao().getMember());
-    }
-
-    public final EnumSet<RightLevel> getLevels() {
-        return getDao().getLevels();
-    }
-
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Setters
-    // /////////////////////////////////////////////////////////////////////////////////////////
-
-    public final void authorize(final String accessToken, final String refreshToken, final Date expirationDate) {
-        getDao().authorize(accessToken, refreshToken, expirationDate);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -80,4 +57,5 @@ public class ExternalService extends Identifiable<DaoExternalService> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
 }

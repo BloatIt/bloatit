@@ -9,6 +9,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+import com.bloatit.framework.utils.Hash;
 
 /**
  * The class {@link RequestKey} represent a unique identifier for a session.
@@ -38,7 +39,7 @@ public class RequestKey {
      */
     public RequestKey(final String id, final String ipAddress, final Source source) throws WrongSessionKeyFormatException {
         this(id, ipAddress, source, 0);
-        
+
         switch (source) {
             case COOKIE:
                 if (id.length() != SHA515_HEX_LENGTH) {
@@ -82,14 +83,7 @@ public class RequestKey {
     }
 
     public static String generateRandomId() {
-        UUID.randomUUID().toString();
-        try {
-            final byte[] bytes = new byte[RANDOM_SIZE];
-            SecureRandom.getInstance(SHA1_PRNG).nextBytes(bytes);
-            return DigestUtils.sha512Hex(DigestUtils.sha512Hex(bytes) + UUID.randomUUID().toString());
-        } catch (final NoSuchAlgorithmException e) {
-            throw new BadProgrammerException(e);
-        }
+        return Hash.generateUniqueToken();
     }
 
     /**

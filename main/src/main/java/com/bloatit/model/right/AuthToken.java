@@ -98,7 +98,7 @@ public final class AuthToken {
     }
 
     private static Integer oauthAuthenticate(final RequestKey key) throws ElementNotFoundException {
-        final DaoExternalService service = DaoExternalService.getServiceByKey(key.getId());
+        final DaoExternalService service = DaoExternalService.getByToken(key.getId());
 
         // TODO manage error codes:
         // When a request fails, the resource server responds using the

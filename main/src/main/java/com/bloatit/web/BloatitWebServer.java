@@ -110,7 +110,10 @@ import com.bloatit.web.linkable.money.StaticAccountChargingPage;
 import com.bloatit.web.linkable.money.UnlockAccountChargingProcessAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyPage;
+import com.bloatit.web.linkable.oauth2.CreateExternalServiceAction;
+import com.bloatit.web.linkable.oauth2.CreateExternalServicePage;
 import com.bloatit.web.linkable.oauth2.OAuthAuthorizationPage;
+import com.bloatit.web.linkable.oauth2.OAuthPage;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
 import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.CreateReleaseAction;
@@ -318,10 +321,19 @@ public class BloatitWebServer extends WebProcessor {
         if (OAuthAuthorizationPageUrl.matches(pageCode)) {
             return new OAuthAuthorizationPage(new OAuthAuthorizationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (OAuthPageUrl.matches(pageCode)) {
+            return new OAuthPage(new OAuthPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (CreateExternalServicePageUrl.matches(pageCode)) {
+            return new CreateExternalServicePage(new CreateExternalServicePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Actions
         // ////////
+        if (CreateExternalServiceActionUrl.matches(pageCode)) {
+            return new CreateExternalServiceAction(new CreateExternalServiceActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
         if (LoginActionUrl.matches(pageCode)) {
             return new LoginAction(new LoginActionUrl(pageCode, postGetParameters, session.getParameters()));
         }

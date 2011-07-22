@@ -32,7 +32,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -61,7 +60,6 @@ class DaoTeamMembership extends DaoIdentifiable {
     private DaoTeam bloatitTeam;
 
     @OneToMany(mappedBy = "membership", orphanRemoval = true, cascade = { CascadeType.ALL })
-    @Cascade(value = {})
     private final List<DaoTeamRight> memberRight = new ArrayList<DaoTeamRight>(0);
 
     /**

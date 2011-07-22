@@ -250,4 +250,6 @@ public interface DataClassVisitor<ReturnType> {
      */
     ReturnType visit(DaoExternalService daoExternalService);
 
+    ReturnType visit(DaoExternalServiceMembership daoExternalServiceMembership);
+
 }

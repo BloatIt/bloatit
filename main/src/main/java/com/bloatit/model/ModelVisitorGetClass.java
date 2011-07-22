@@ -24,6 +24,7 @@ import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalService;
+import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoHighlightFeature;
@@ -175,5 +176,10 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     @Override
     public Class<?> visit(final ExternalService externalService) {
         return DaoExternalService.class;
+    }
+
+    @Override
+    public Class<?> visit(ExternalServiceMembership externalService) {
+        return DaoExternalServiceMembership.class;
     }
 }

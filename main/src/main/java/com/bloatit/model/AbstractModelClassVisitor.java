@@ -149,4 +149,9 @@ public class AbstractModelClassVisitor<T> implements ModelClassVisitor<T> {
     public T visit(final ExternalService externalService) {
         throw new NotImplementedException();
     }
+
+    @Override
+    public T visit(ExternalServiceMembership externalService) {
+        throw new NotImplementedException();
+    }
 }
