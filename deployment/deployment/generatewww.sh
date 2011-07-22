@@ -43,6 +43,10 @@ do
     if  [ -z "$lastfile" ] || [ "$(cmp -s "$line" "$DEST_WWW/$lastfile" && echo $?)" != 0 ]
     then
         echo "copy "$line
+        src="$line"
+        dest="$DEST_WWW/$dirname/$(echo "$filename" |sed -r "s#^(.*)(\\.(tar\\.)?([a-zA-Z]+))\$#\\1-$VERSION\\2#g")"
+        link="$DEST_WWW/$line"
         cp "$line" "$DEST_WWW/$dirname/$(echo "$filename" |sed -r "s#^(.*)(\\.(tar\\.)?([a-zA-Z]+))\$#\\1-$VERSION\\2#g")"
+        ln -sf "$dest" "$link"
     fi
 done
