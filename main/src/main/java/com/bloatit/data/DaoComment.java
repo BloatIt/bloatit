@@ -51,11 +51,7 @@ import com.bloatit.framework.utils.PageIterable;
 @NamedQueries(value = { @NamedQuery(
                         name = "commentable.byId",
                         query = "FROM com.bloatit.data.DaoCommentable " +
-                        		"WHERE id = :id " 
-                                // +
-                        		//"OR f.id = :id " +
-                        		//"OR b.id = :id"
-                        		),
+                        		"WHERE id = :id "),
 })
 //@formatter:on
 public class DaoComment extends DaoKudosable implements DaoCommentable {
