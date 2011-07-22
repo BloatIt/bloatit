@@ -32,6 +32,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
@@ -45,6 +47,17 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                        name = "commentable.byId",
+                        query = "FROM com.bloatit.data.DaoCommentable " +
+                        		"WHERE id = :id " 
+                                // +
+                        		//"OR f.id = :id " +
+                        		//"OR b.id = :id"
+                        		),
+})
+//@formatter:on
 public class DaoComment extends DaoKudosable implements DaoCommentable {
 
     @Embedded
@@ -69,6 +82,11 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded(depth = 1)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoComment> children = new ArrayList<DaoComment>(0);
+    
+    
+    public static DaoCommentable getCommentable(int id){
+        return (DaoCommentable) SessionManager.getNamedQuery("commentable.byId").setInteger("id", id).uniqueResult();
+    }
 
     /**
      * Create a comment. This constructor is protected because you should use

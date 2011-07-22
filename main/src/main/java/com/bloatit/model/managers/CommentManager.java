@@ -16,9 +16,16 @@
 //
 package com.bloatit.model.managers;
 
+import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
+import com.bloatit.data.DaoCommentable;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
+import com.bloatit.model.Commentable;
+import com.bloatit.model.Feature;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.lists.CommentList;
 
 /**
@@ -46,5 +53,19 @@ public final class CommentManager {
 
     public static CommentList getAll() {
         return new CommentList(DBRequests.getAll(DaoComment.class));
+    }
+
+    public static Commentable getCommentable(final int id) {
+        DaoCommentable commentable = DaoComment.getCommentable(id);
+        if (commentable instanceof DaoBug) {
+            return Bug.create((DaoBug) commentable);
+        }
+        if (commentable instanceof DaoComment) {
+            return Comment.create((DaoComment) commentable);
+        }
+        if (commentable instanceof DaoFeature) {
+            return FeatureImplementation.create((DaoFeature) commentable);
+        }
+        return null;
     }
 }
