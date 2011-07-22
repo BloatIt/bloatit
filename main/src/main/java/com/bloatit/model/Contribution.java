@@ -87,7 +87,6 @@ public final class Contribution extends UserContent<DaoContribution> {
      * 
      * @return true, if successful
      * @see #getAmount()
-     * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessAmount() {
         return canAccess(new RgtContribution.Amount(), Action.READ);
@@ -98,7 +97,6 @@ public final class Contribution extends UserContent<DaoContribution> {
      * 
      * @return true, if successful
      * @see #getComment()
-     * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessComment() {
         return canAccess(new RgtContribution.Comment(), Action.READ);
@@ -110,7 +108,6 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @return the amount.
      * @throws UnauthorizedOperationException if you do not have the right to
      *             access the <code>Amount</code> property.
-     * @see Contribution#authenticate(AuthToken)
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
         tryAccess(new RgtContribution.Amount(), Action.READ);

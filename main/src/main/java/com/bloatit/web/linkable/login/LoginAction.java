@@ -11,8 +11,7 @@
  */
 package com.bloatit.web.linkable.login;
 
-import javassist.NotFoundException;
-
+import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -63,7 +62,7 @@ public final class LoginAction extends ElveosAction {
             session.notifyGood(Context.tr("Login success."));
             Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
-        } catch (final NotFoundException e) {
+        } catch (final ElementNotFoundException e) {
 
             // We check if member is non existing or not validated
             final Member m = MemberManager.getMemberByLogin(login);

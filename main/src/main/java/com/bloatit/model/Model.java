@@ -16,10 +16,9 @@
 //
 package com.bloatit.model;
 
-import javassist.NotFoundException;
-
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
+import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.PageIterable;
@@ -111,20 +110,8 @@ public class Model implements com.bloatit.framework.model.Model {
     @Override
     public void authenticate(final RequestKey key) {
         try {
-            switch (key.getSource()) {
-                case COOKIE:
-                    AuthToken.authenticate(key);
-                    break;
-                case TOKEN:
-                    AuthToken.authenticate(key.getId());
-                    break;
-                case GENERATED:
-                    // No authentication on just generated key ...
-                    break;
-                default:
-                    break;
-            }
-        } catch (final NotFoundException e) {
+            AuthToken.authenticate(key);
+        } catch (final ElementNotFoundException e) {
             Log.model().trace("authentication error.", e);
         }
         accessLog(key);

@@ -26,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.zip.DeflaterOutputStream;
@@ -108,6 +110,22 @@ public final class HttpResponse {
         addSessionCookie();
 
         writeHeader();
+    }
+    
+    public void writeOAuthRedirect(int status, final String url) throws IOException {
+        addField(new HttpReponseField("status", String.valueOf(status)));
+        addField(HttpReponseField.location(url));
+        writeHeader();
+    }
+
+    public void writeOAuth(StatusCode status, Map<String, String> headers, final String body) throws IOException {
+        addField(HttpReponseField.status(status));
+        for (Entry<String, String> header : headers.entrySet()) {
+            addField(new HttpReponseField(header.getKey(), header.getValue()));
+        }
+        writeHeader();
+
+        output.write(body.getBytes());
     }
 
     public void writePage(StatusCode status, String contentType, final HtmlElement page) throws IOException {
@@ -279,8 +297,8 @@ public final class HttpResponse {
     private void writeHeader() throws IOException {
         for (HttpReponseField field : headers) {
             field.write(output);
-            output.write(EOL);
         }
+        output.write(EOL);
     }
 
     private void writeLine(final String string) throws IOException {
@@ -289,7 +307,11 @@ public final class HttpResponse {
     }
 
     private void addSessionCookie() throws IOException {
-        headers.add(HttpReponseField.setCookie("session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; Secure; HttpOnly "));
+        if (FrameworkConfiguration.isHttpsEnabled()) {
+            headers.add(HttpReponseField.setCookie("session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; Secure; HttpOnly "));
+        }else{
+            headers.add(HttpReponseField.setCookie("session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; HttpOnly "));
+        }
     }
 
     private QueryResponseStream buildHtmlStream(final OutputStream outputStream) {

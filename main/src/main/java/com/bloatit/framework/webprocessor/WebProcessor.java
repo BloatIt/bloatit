@@ -87,7 +87,7 @@ public abstract class WebProcessor implements XcgiProcessor {
                 }
             } catch (final RedirectException e) {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
-                response.writeRedirect(StatusCode.REDIRECTION_301_MOVED_PERMANENTLY, e.getUrl().urlString());
+                response.writeRedirect(StatusCode.REDIRECTION_303_SEE_OTHER, e.getUrl().urlString());
             } finally {
                 ModelAccessor.close();
             }

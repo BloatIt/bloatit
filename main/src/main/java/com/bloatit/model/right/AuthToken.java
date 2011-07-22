@@ -17,11 +17,10 @@
 
 package com.bloatit.model.right;
 
-import javassist.NotFoundException;
-
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoExternalService;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
@@ -54,25 +53,25 @@ public final class AuthToken {
         }
     } // UniqueThreadContext
 
-    public static void authenticate(final String login, final String password) throws NotFoundException {
+    public static void authenticate(final String login, final String password) throws ElementNotFoundException {
         final DaoMember tmp = DaoMember.getByLogin(login);
         if (tmp == null) {
             // Spend some time here.
             Hash.calculateHash(password, "012345678901234567890");
             Log.model().info("Identification error with login " + login);
-            throw new NotFoundException("Identification failed");
+            throw new ElementNotFoundException("Identification failed");
         }
 
         // Spend some time here. (Normal computation).
         final String digestedPassword = Hash.calculateHash(password, tmp.getSalt());
         if (!tmp.passwordEquals(digestedPassword)) {
             Log.model().info("Authentication error with login " + login);
-            throw new NotFoundException("Authentication failed");
+            throw new ElementNotFoundException("Authentication failed");
         }
 
         if (tmp.getActivationState() != ActivationState.ACTIVE) {
             Log.model().warn("Authentication with inactive or deleted account with login " + login);
-            throw new NotFoundException("Authentication with inactive or deleted account.");
+            throw new ElementNotFoundException("Authentication with inactive or deleted account.");
         }
 
         This.get().memberId = tmp.getId();
@@ -82,25 +81,75 @@ public final class AuthToken {
         }
     }
 
-    public static void authenticate(final RequestKey key) throws NotFoundException {
+    public static void authenticate(final RequestKey key) throws ElementNotFoundException {
+        switch (key.getSource()) {
+            case COOKIE:
+                This.get().memberId = sessionAuthenticate(key);
+                break;
+            case TOKEN:
+                This.get().memberId = oauthAuthenticate(key);
+                break;
+            case GENERATED:
+                This.get().memberId = null;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private static Integer oauthAuthenticate(final RequestKey key) throws ElementNotFoundException {
+        final DaoExternalService service = DaoExternalService.getServiceByKey(key.getId());
+
+        // TODO manage error codes:
+        // When a request fails, the resource server responds using the
+        // appropriate HTTP status code (typically, 400, 401, or 403), and
+        // includes one of the following error codes in the response:
+        //
+        // invalid_request
+        // The request is missing a required parameter, includes an unsupported
+        // parameter or parameter value, repeats the same parameter, uses more
+        // than one method for including an access token, or is otherwise
+        // malformed. The resource server SHOULD respond with the HTTP 400 (Bad
+        // Request) status code.
+        //
+        // invalid_token
+        // The access token provided is expired, revoked, malformed, or invalid
+        // for other reasons. The resource SHOULD respond with the HTTP 401
+        // (Unauthorized) status code. The client MAY request a new access token
+        // and retry the protected resource request.
+        //
+        // insufficient_scope
+        // The request requires higher privileges than provided by the access
+        // token. The resource server SHOULD respond with the HTTP 403
+        // (Forbidden) status code and MAY include the scope attribute with the
+        // scope necessary to access the protected resource.
+        //
+        // If the request lacks any authentication information (i.e. the client
+        // was unaware authentication is necessary or attempted using an
+        // unsupported authentication method), the resource server SHOULD NOT
+        // include an error code or other error information.
+        //
+        // For example:
+        // HTTP/1.1 401 Unauthorized
+        // WWW-Authenticate: Bearer realm="example"
+
+        if (service == null) {
+            throw new ElementNotFoundException("The current key does not belong to anyone.");
+        }
+        return service.getMember().getId();
+    }
+
+    private static Integer sessionAuthenticate(final RequestKey key) throws ElementNotFoundException {
         final Session session = SessionManager.getOrCreateSession(key);
         final Integer id = session.getMemberId();
         if (id == null) {
-            throw new NotFoundException("The current session is not authenticated.");
+            throw new ElementNotFoundException("The current session is not authenticated.");
         }
         if (MemberManager.getById(id) == null) {
             session.logOut();
-            throw new NotFoundException("Wrong authentication id stored in the session.");
+            throw new ElementNotFoundException("Wrong authentication id stored in the session.");
         }
-        This.get().memberId = id;
-    }
-
-    public static void authenticate(final String key) throws NotFoundException {
-        final DaoExternalService service = DaoExternalService.getServiceByKey(key);
-        if (service == null) {
-            throw new NotFoundException("The current key does not belong to anyone.");
-        }
-        This.get().memberId = service.getMember().getId();
+        return id;
     }
 
     public static void authenticate(final Member member) {

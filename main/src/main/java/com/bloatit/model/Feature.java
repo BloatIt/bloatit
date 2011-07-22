@@ -73,7 +73,6 @@ public interface Feature extends KudosableInterface, Commentable {
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#WRITE} right on the <code>Contribution</code>
      *             property.
-     * @see #authenticate(AuthToken)
      */
     Contribution addContribution(BigDecimal amount, String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
 
@@ -92,7 +91,6 @@ public interface Feature extends KudosableInterface, Commentable {
      * @throws WrongStateException if the state is != from
      *             {@link FeatureState#PENDING} or
      *             {@link FeatureState#PREPARING}.
-     * @see #authenticate(AuthToken)
      */
     Offer addOffer(BigDecimal amount, String description, String license, Locale locale, Date expireDate, int secondsBeforeValidation)
             throws UnauthorizedOperationException;
@@ -104,7 +102,6 @@ public interface Feature extends KudosableInterface, Commentable {
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>DELETED</code> right on the <code>Offer</code>
      *             property.
-     * @see #authenticate(AuthToken)
      */
     void removeOffer(final Offer offer) throws UnauthorizedOperationException;
 

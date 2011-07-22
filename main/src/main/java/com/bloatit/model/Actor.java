@@ -204,7 +204,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * 
      * @return true if you can access the <code>InternalAccount</code> property.
      * @see Actor#getInternalAccount()
-     * @see Actor#authenticate(AuthToken)
      */
     public final boolean canGetInternalAccount() {
         return canAccess(new RgtActor.InternalAccount(), Action.READ);

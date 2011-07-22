@@ -1,8 +1,15 @@
 package com.bloatit.web.linkable.oauth2;
 
-import org.apache.amber.oauth2.common.OAuth;
+import java.util.Map.Entry;
 
+import org.apache.amber.oauth2.common.OAuth;
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.net.URLCodec;
+
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.oauthprocessor.OAuthProcessor;
+import com.bloatit.framework.utils.parameters.HttpParameter;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -10,20 +17,20 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.Member;
-import com.bloatit.web.linkable.members.MemberPage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.url.OAuthAuthorizationActionUrl;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.url.OAuthAuthorizationPageUrl;
-import com.bloatit.web.url.OAuthDenyAuthorizationActionUrl;
-import com.bloatit.web.url.OAuthDoAuthorizationActionUrl;
 
-@ParamContainer("oauth/authorization")
-public class OAuthAuthorizationPage extends LoggedPage {
+@ParamContainer(OAuthProcessor.OAUTH_GET_CREDENTIAL_PAGENAME)
+public class OAuthAuthorizationPage extends ElveosPage {
 
     private final OAuthAuthorizationPageUrl url;
 
@@ -70,6 +77,10 @@ public class OAuthAuthorizationPage extends LoggedPage {
     @Optional
     private final String state;
 
+    @RequestParam(name = "fail")
+    @Optional
+    private final Boolean fail;
+
     public OAuthAuthorizationPage(final OAuthAuthorizationPageUrl url) {
         super(url);
         this.url = url;
@@ -78,41 +89,77 @@ public class OAuthAuthorizationPage extends LoggedPage {
         this.responseType = url.getResponseType();
         this.scope = url.getScope();
         this.state = url.getState();
+        this.fail = url.getFail();
     }
 
     @Override
-    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+    public HtmlElement createBodyContent() throws RedirectException {
+
+        if (fail != null && fail) {
+            getSession().notifyError(Context.tr("Wrong login or password, please retry."));
+        }
+
+        String yesUrl = createYesUrl();
+
         // TODO make this page pretty(er) !
         final HtmlDiv div = new HtmlDiv("oauth_question");
-        div.add(new HtmlParagraph(Context.tr("{0}, are you sure you want to grant ''{1}'' the right to access your Elveos account ?",
-                                             loggedUser.getDisplayName(),
-                                             clientId)));
+        {
+            final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.tr("Enter your loggin and password to grant ''{0}'' the right to access your Elveos account ?",
+                                                                            clientId),
+                                                                 1);
+            div.add(loginTitle);
 
-        final OAuthAuthorizationActionUrl noUrl = new OAuthDenyAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId, redirectUri);
-        noUrl.setScope(scope);
-        noUrl.setState(state);
-        div.add(new HtmlLink(noUrl.urlString(), Context.tr("No")).setCssClass("button_bad"));
+            final HtmlForm loginForm = new HtmlForm(yesUrl);
+            div.add(loginForm);
 
-        final OAuthAuthorizationActionUrl yesUrl = new OAuthDoAuthorizationActionUrl(getSession().getShortKey(), responseType, clientId, redirectUri);
-        yesUrl.setScope(scope);
-        yesUrl.setState(state);
-        div.add(new HtmlLink(yesUrl.urlString(), Context.tr("Yes, I trust {0}", clientId)).setCssClass("button_good"));
+            // Login field
+            final HtmlTextField loginInput = new HtmlTextField(OAuthProcessor.LOGIN_CODE, Context.trc("Login (noun)", "Login"));
+            loginForm.add(loginInput);
 
+            // passwordField
+            final HtmlPasswordField passwordInput = new HtmlPasswordField(OAuthProcessor.PASSWORD_CODE, Context.tr("Password"));
+            loginForm.add(passwordInput);
+
+            // Submit
+            final HtmlDiv yesOrNoDiv = new HtmlDiv("login_or_signup");
+            loginForm.add(yesOrNoDiv);
+            final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Yes, I trust {0}", clientId));
+            // submitButton.setCssClass("button_good");
+            yesOrNoDiv.add(new HtmlLink("/oauth/" + OAuthProcessor.DENY_AUTHORIZATION_PAGE_NAME, Context.tr("No")).setCssClass("button_bad"));
+            yesOrNoDiv.add(submitButton);
+
+        }
         return div;
     }
 
-    @Override
-    public String getRefusalReason() {
-        return Context.tr("You have to be authenticated to grant access to your account.");
+    private String createYesUrl() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("/oauth/");
+        sb.append(OAuthProcessor.GET_AUTHORIZATION_PAGE_NAME);
+        sb.append("?");
+        final URLCodec urlCodec = new URLCodec();
+        for (Entry<String, HttpParameter> param : url.getStringParameters().entrySet()) {
+            for (String value : param.getValue()) {
+                sb.append(param.getKey());
+                sb.append("=");
+                try {
+                    sb.append(urlCodec.encode(value));
+                } catch (EncoderException e) {
+                    throw new ExternalErrorException(e);
+                }
+                sb.append("&");
+            }
+        }
+        return sb.toString();
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final Member member) {
-        return generateBreadcrumb(member, responseType, clientId, redirectUri);
+    protected Breadcrumb createBreadcrumb() {
+        return generateBreadcrumb(responseType, clientId, redirectUri);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member, final String responseType, final String clientId, final String redirectUri) {
-        final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
+    public static Breadcrumb generateBreadcrumb(final String responseType, final String clientId, final String redirectUri) {
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         breadcrumb.pushLink(new OAuthAuthorizationPageUrl(responseType, clientId, redirectUri).getHtmlLink(Context.tr("oauth authorization")));
         return breadcrumb;
     }
@@ -126,4 +173,5 @@ public class OAuthAuthorizationPage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
+
 }

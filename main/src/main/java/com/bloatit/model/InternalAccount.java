@@ -62,7 +62,6 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
 
     /**
      * @return true if you can access the <code>Blocked</code> property.
-     * @see #authenticate(AuthToken)
      */
     public boolean canAccessBlocked() {
         return canAccess(new RgtInternalAccount.Blocked(), Action.READ);

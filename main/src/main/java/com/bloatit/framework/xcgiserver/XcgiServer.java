@@ -200,7 +200,6 @@ public final class XcgiServer {
                     // Works for POST and GET
                     return new RequestKey(parameters.look("access_token").getSimpleValue(), ipAddress, Source.TOKEN);
                 }
-                
                 if (!HttpHeader.AUTHORIZATION_UNKNOWN.equals(header.getHttpAuthorizationType())) {
                     if ("Bearer".equals(header.getHttpAuthorizationType())) {
                         return new RequestKey(header.getHttpAuthorizationData(), ipAddress, Source.TOKEN);

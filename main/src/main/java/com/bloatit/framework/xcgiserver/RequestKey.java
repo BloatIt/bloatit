@@ -38,14 +38,23 @@ public class RequestKey {
      */
     public RequestKey(final String id, final String ipAddress, final Source source) throws WrongSessionKeyFormatException {
         this(id, ipAddress, source, 0);
-        if (source == Source.COOKIE && id.length() != SHA515_HEX_LENGTH) {
-            Log.framework().error("The id must be a 128 char long hex-encoded sha512 string.");
-            throw new WrongSessionKeyFormatException("The id must be a 128 char long hex-encoded sha512 string.");
+        
+        switch (source) {
+            case COOKIE:
+                if (id.length() != SHA515_HEX_LENGTH) {
+                    Log.framework().error("The id must be a 128 char long hex-encoded sha512 string.");
+                    throw new WrongSessionKeyFormatException("The id must be a 128 char long hex-encoded sha512 string.");
+                }
+                break;
+            case TOKEN:
+                // TODO make sure the token is valide here
+                // if not: invalid_request / 400
+                break;
+            case GENERATED:
+                throw new BadProgrammerException("To generate a new RequestKey use the RequestKey(final String ipAdress) constructor.");
+            default:
+                break;
         }
-        if (source == Source.GENERATED) {
-            throw new BadProgrammerException("To generate a new RequestKey use the RequestKey(final String ipAdress) constructor.");
-        }
-
     }
 
     private RequestKey(final String id, final String ipAddress, final Source source, final int plop) {

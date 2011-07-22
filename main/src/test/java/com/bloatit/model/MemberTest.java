@@ -28,6 +28,7 @@ import javassist.NotFoundException;
 import org.junit.Test;
 
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
@@ -158,7 +159,7 @@ public class MemberTest extends ModelTestUnit {
 
         try {
             AuthToken.authenticate("Yoann", "Coucou");
-        } catch (final NotFoundException e) {
+        } catch (final ElementNotFoundException e) {
             fail();
         }
     }
