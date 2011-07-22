@@ -24,18 +24,26 @@ import java.util.Locale;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.data.DaoBug;
+import com.bloatit.data.DaoCommentable;
 import com.bloatit.data.DaoIdentifiable;
+import com.bloatit.data.DaoKudosable;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.annotations.Loader;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Bug;
 import com.bloatit.model.Commentable;
 import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.IdentifiableInterface;
+import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.managers.BugManager;
+import com.bloatit.model.managers.CommentManager;
 import com.bloatit.web.actions.WebProcess;
 
 public final class Loaders {
@@ -109,7 +117,7 @@ public final class Loaders {
             return (Loader<T>) new ToDate();
         }
         if (Commentable.class.equals(theClass)) {
-            return (Loader<T>) new LowToIdentifiable();
+            return (Loader<T>) new ToCommentable();
         }
         if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
@@ -294,22 +302,20 @@ public final class Loaders {
         }
     }
 
-    private static class LowToIdentifiable extends Loader<Identifiable<?>> {
+    private static class ToCommentable extends Loader<Commentable> {
         @Override
-        public String toString(final Identifiable<?> data) {
+        public String toString(final Commentable data) {
             return data.getId().toString();
         }
 
         @Override
-        public Identifiable<?> fromString(final String data) throws ConversionErrorException {
+        public Commentable fromString(final String data) throws ConversionErrorException {
             try {
-                @SuppressWarnings("rawtypes") final DaoIdentifiableQuery<?> daoIdentifiableQuery = new DaoIdentifiableQuery();
-                daoIdentifiableQuery.idEquals(Integer.valueOf(data));
-                final Object uniqueResult = daoIdentifiableQuery.uniqueResult();
-                if (uniqueResult == null) {
-                    throw new ConversionErrorException("No identifiable matching the id");
+                Commentable commentable = CommentManager.getCommentable(Integer.valueOf(data));
+                if (commentable != null) {
+                    return commentable;
                 }
-                return ((DaoIdentifiable) uniqueResult).accept(new DataVisitorConstructor());
+                throw new ConversionErrorException("Commentable not found for Id: " + data);
             } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
