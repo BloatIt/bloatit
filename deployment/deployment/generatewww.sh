@@ -13,11 +13,11 @@ mkdir -p "$DEST_WWW"
 
 #create existing map
 cd "$DEST_WWW"
-existingmap="$(find . -type f | sed -r 's#^(.*)-([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z]+)?)(\.(tar\.)?([a-zA-Z]+))$#\1\4 \0#g')"
+existingmap="$(find -L . -type f | sed -r 's#^(.*)-([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z]+)?)(\.(tar\.)?([a-zA-Z]+))$#\1\4 \0#g')"
    
 cd "$SOURCE_WWW"
 
-for line in $(find . -type f)
+for line in $(find -L . -type f)
 do
 
     filename=$(basename $line)
