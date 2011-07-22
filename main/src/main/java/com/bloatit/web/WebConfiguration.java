@@ -22,6 +22,8 @@ import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.ResourceFinder;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 
 public class WebConfiguration extends ReloadableConfiguration {
     private static final WebConfiguration configuration = new WebConfiguration();
@@ -51,6 +53,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgTwitterIcon;
     private String imgIdenticaIcon;
     private BigDecimal defaultChargingAmount;
+    private ResourceFinder finder;
 
     private WebConfiguration() {
         super();
@@ -69,11 +72,11 @@ public class WebConfiguration extends ReloadableConfiguration {
      * @return the path to the css
      */
     public static String getCss() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.css;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.css);
     }
 
     public static String getCssDatePicker() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.cssDatePicker;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.cssDatePicker);
     }
 
     // ----------------------------------------------------------
@@ -84,108 +87,109 @@ public class WebConfiguration extends ReloadableConfiguration {
      * @return the path to the imgLogo
      */
     public static String getImgLogo() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgLogo;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgLogo);
     }
 
     /**
      * @return the path to the imgPresentation
      */
     public static String getImgPresentation(final String langCode) {
-        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgPresentation;
+        return find(configuration.imgPresentation,langCode);
+        
     }
 
     /**
      * @return the imgMoneyDown
      */
     public static String getImgMoneyDown() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyDown;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyDown);
     }
 
     /**
      * @return the imgMoneyDownSmall
      */
     public static String getImgMoneyDownSmall() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyDownSmall;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyDownSmall);
     }
 
     /**
      * @return the imgMoneyUp
      */
     public static String getImgMoneyUp() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyUp;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyUp);
     }
 
     /**
      * @return the imgMoneyUpSmall
      */
     public static String getImgMoneyUpSmall() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyUpSmall;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyUpSmall);
     }
 
     /**
      * @return the imgNoAvatar
      */
     public static String getImgNoAvatar() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgNoAvatar;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgNoAvatar);
     }
 
     /**
      * @return the imgValidIcon
      */
     public static String getImgValidIcon() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgValidIcon;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgValidIcon);
     }
 
     /**
      * @return the imgFeatureStateSuccess
      */
     public static String getImgFeatureStateSuccess(final String langCode) {
-        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateSuccess;
+        return find(configuration.imgFeatureStateSuccess,langCode);
     }
 
     /**
      * @return the imgFeatureStateSuccess
      */
     public static String getImgFeatureStateFailed(final String langCode) {
-        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateFailed;
+        return find(configuration.imgFeatureStateFailed,langCode);
     }
 
     /**
      * @return the imgValidIcon
      */
     public static String getImgSoftwareNoLogo() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgSoftwareNoLogo;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgSoftwareNoLogo);
     }
 
     /**
      * @return the imgIdea
      */
     public static String getImgIdea() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgIdea;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgIdea);
     }
 
     public static String getImgMessage() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgMessage;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMessage);
     }
 
     public static String getImgTeam() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgTeam;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgTeam);
     }
 
     public static String getImgAccountCharge() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgAccountCharge;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgAccountCharge);
     }
 
     public static String getImgAccountWithdraw() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgAccountWithdraw;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgAccountWithdraw);
     }
 
     public static String getImgTwitterIcon() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgTwitterIcon;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgTwitterIcon);
     }
 
     public static String getImgIdenticaIcon() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgIdenticaIcon;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgIdenticaIcon);
     }
 
     public static BigDecimal getDefaultChargingAmount() {
@@ -193,6 +197,9 @@ public class WebConfiguration extends ReloadableConfiguration {
     }
 
     private void loadConfiguration() {
+        
+        finder = new ResourceFinder(FrameworkConfiguration.getWwwDir());
+        
         properties = ConfigurationManager.loadProperties("web.properties");
 
         // CSS
@@ -237,4 +244,14 @@ public class WebConfiguration extends ReloadableConfiguration {
         configuration.loadConfiguration();
     }
 
+    private static String find(String resource, String langCode) {
+        try {
+        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
+        } catch (ExternalErrorException e) {
+            return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
+        }
+    }
+    
 }
+
+

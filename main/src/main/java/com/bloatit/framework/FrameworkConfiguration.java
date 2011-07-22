@@ -21,6 +21,7 @@ import static com.bloatit.common.ConfigurationManager.SHARE_DIR;
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.RetryPolicy;
 import com.bloatit.framework.social.MicroBlogManager;
 
@@ -83,6 +84,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String jsShowdownUi;
 
     private String bloatitLibravatarURI;
+    private ResourceFinder finder;
 
     // OTHERS
     private AtomicBoolean htmlIndent;
@@ -220,7 +222,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     // ----------------------------------------------------------
 
     public static String getCssShowdown() {
-        return getCommonsDir() + configuration.cssShowdown;
+        return configuration.finder.find(getCommonsDir() + configuration.cssShowdown);
     }
 
     // ----------------------------------------------------------
@@ -231,56 +233,56 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
      * @return the path to the jsJquery
      */
     public static String getJsJquery() {
-        return getCommonsDir() + configuration.jsJquery;
+        return configuration.finder.find(getCommonsDir() + configuration.jsJquery);
     }
 
     /**
      * @return the path to the jsJqueryUi
      */
     public static String getJsJqueryUi() {
-        return getCommonsDir() + configuration.jsJqueryUi;
+        return configuration.finder.find(getCommonsDir() + configuration.jsJqueryUi);
     }
 
     /**
      * @return the path to the jsFlexie
      */
     public static String getJsFlexie() {
-        return getCommonsDir() + configuration.jsFlexie;
+        return configuration.finder.find(getCommonsDir() + configuration.jsFlexie);
     }
 
     /**
      * @return the path to the jsSelectivizr
      */
     public static String getJsSelectivizr() {
-        return getCommonsDir() + configuration.jsSelectivizr;
+        return configuration.finder.find(getCommonsDir() + configuration.jsSelectivizr);
     }
 
     /**
      * @return the path to the jsShowdown
      */
     public static String getJsShowdown() {
-        return getCommonsDir() + configuration.jsShowdown;
+        return configuration.finder.find(getCommonsDir() + configuration.jsShowdown);
     }
 
     /**
      * @return the path to the jsShowdown
      */
     public static String getJsShowdownUi() {
-        return getCommonsDir() + configuration.jsShowdownUi;
+        return configuration.finder.find(getCommonsDir() + configuration.jsShowdownUi);
     }
 
     /**
      * @return the path to the jsDatePicker
      */
     public static String getJsDatePicker(final String langCode) {
-        return configuration.resourcesDir + "/" + langCode + configuration.jsDatePicker;
+        return find(configuration.jsDatePicker, langCode);
     }
 
     /**
      * @return the imgFavicon
      */
     public static String getImgFavicon() {
-        return FrameworkConfiguration.getCommonsDir() + configuration.imgFavicon;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgFavicon);
     }
 
     public static String getLibravatarURI() {
@@ -320,6 +322,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     }
 
     private void loadConfiguration() {
+        
         properties = ConfigurationManager.loadProperties("framework.properties");
 
         // Server
@@ -378,6 +381,8 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         imgFavicon = properties.getString("bloatit.img.favicon");
         anonymousUserTokenClass = properties.getString("bloatit.anonymousUserToken.class");
         microBlogs = new MicroBlogManager(properties.getStringArray("micro.blogs"), properties.getString("micro.blogs.password"));
+        
+        finder = new ResourceFinder(wwwDir);
     }
 
     protected static void load() {
@@ -392,5 +397,13 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     @Override
     protected void doReload() {
         configuration.loadConfiguration();
+    }
+    
+    private static String find(String resource, String langCode) {
+        try {
+        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
+        } catch (ExternalErrorException e) {
+            return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
+        }
     }
 }

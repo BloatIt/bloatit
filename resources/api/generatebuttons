@@ -2,7 +2,7 @@
 
 TEMP_SVG="/tmp/button_temp.svg"
 
-OUTPUT_DIR_PREFIX="../../www/resources/"
+OUTPUT_DIR_PREFIX="../www_src/resources/"
 MAX_WIDTH=158
 
 generateButtons () { 

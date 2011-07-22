@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mkdir -p www/resources/commons/css/
-less.js/bin/lessc -x  css/core.less > www/resources/commons/css/core.css
+mkdir -p resources/www_src/resources/commons/css/
+less.js/bin/lessc -x  css/core.less > resources/www_src/resources/commons/css/core.css

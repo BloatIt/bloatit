@@ -84,7 +84,7 @@ public final class HttpResponse {
     public void writeException(final Exception e) {
         // Construct header
         addField(HttpReponseField.status(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR));
-        addField(HttpReponseField.contentType("Content-type: text/plain\r\n\r\n"));
+        addField(HttpReponseField.contentType("Content-type: text/plain"));
 
         // Construct body
         final StringBuilder display = new StringBuilder();
