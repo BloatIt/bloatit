@@ -100,7 +100,7 @@ public final class HttpResponse {
             writeHeader();
             output.write(display.toString().getBytes());
         } catch (final IOException e1) {
-            Log.framework().fatal("Cannot send exception through the SCGI soket.", e1);
+            Log.framework().fatal("Cannot send exception through the SCGI socket.", e1);
         }
     }
 
