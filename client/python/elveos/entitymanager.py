@@ -25,8 +25,6 @@ class EntityManager():
 
         entity_class = locals()[self.base_class]
             
-        print entity_class
-            
         for entity in xml_entities:
             id = int(entity.childNodes[0].data)
             obj = entity_class()
