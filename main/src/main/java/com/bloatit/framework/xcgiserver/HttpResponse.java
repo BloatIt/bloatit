@@ -120,6 +120,9 @@ public final class HttpResponse {
 
     public void writeOAuth(int status, Map<String, String> headers, final String body) throws IOException {
         addField(new HttpReponseField("status", String.valueOf(status)));
+        addField(HttpReponseField.contentType("application/json;charset=UTF-8"));
+        addField(HttpReponseField.cacheControl("no-store"));
+        addField(HttpReponseField.pragma("no-cache"));
         for (Entry<String, String> header : headers.entrySet()) {
             addField(new HttpReponseField(header.getKey(), header.getValue()));
         }
