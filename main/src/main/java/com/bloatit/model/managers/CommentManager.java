@@ -24,7 +24,6 @@ import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Commentable;
-import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.lists.CommentList;
 

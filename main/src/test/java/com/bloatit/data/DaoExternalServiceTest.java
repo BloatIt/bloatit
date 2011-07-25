@@ -1,14 +1,5 @@
 package com.bloatit.data;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Date;
-import java.util.EnumSet;
-
-import org.junit.Test;
-
-import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
-import com.bloatit.framework.utils.datetime.DateUtils;
 
 public class DaoExternalServiceTest extends DataTestUnit {
 

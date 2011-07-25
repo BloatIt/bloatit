@@ -1,12 +1,5 @@
 package com.bloatit.framework.xcgiserver;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.UUID;
-
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.Hash;
@@ -21,8 +14,6 @@ public class RequestKey {
     }
 
     private static final int SHA515_HEX_LENGTH = 128;
-    private static final int RANDOM_SIZE = 512;
-    private static final String SHA1_PRNG = "SHA1PRNG";
 
     private String id;
     private final String ipAddress;
@@ -43,7 +34,6 @@ public class RequestKey {
         switch (source) {
             case COOKIE:
                 if (id.length() != SHA515_HEX_LENGTH) {
-                    Log.framework().error("The id must be a 128 char long hex-encoded sha512 string.");
                     throw new WrongSessionKeyFormatException("The id must be a 128 char long hex-encoded sha512 string.");
                 }
                 break;

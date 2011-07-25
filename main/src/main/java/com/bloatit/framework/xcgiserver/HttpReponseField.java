@@ -3,8 +3,6 @@ package com.bloatit.framework.xcgiserver;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
-
 public class HttpReponseField {
     private static final byte[] SEPARATOR = ": ".getBytes();
 

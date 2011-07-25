@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
@@ -130,13 +129,13 @@ public class BigDB {
                                               new Date(System.currentTimeMillis() + 200),
                                               0));
                 if (pick(2) == 0) {
-                    for (final DaoContribution contrib : feature.getContributions()) {
+//                    for (final DaoContribution contrib : feature.getContributions()) {
 //                        try {
 //                            contrib.validate(feature.getOffers().iterator().next(), 100);
 //                        } catch (final NotEnoughMoneyException e) {
 //                            e.printStackTrace();
 //                        }
-                    }
+//                    }
                 }
             }
 

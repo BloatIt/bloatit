@@ -69,6 +69,7 @@ public class OAuthAuthorizationPage extends ElveosPage {
      */
     @Optional
     @RequestParam(name = OAuth.OAUTH_SCOPE)
+    @SuppressWarnings("unused")
     private final String scope;
 
     /**
@@ -78,6 +79,7 @@ public class OAuthAuthorizationPage extends ElveosPage {
      */
     @RequestParam(name = OAuth.OAUTH_STATE)
     @Optional
+    @SuppressWarnings("unused")
     private final String state;
 
     @RequestParam(name = "fail")

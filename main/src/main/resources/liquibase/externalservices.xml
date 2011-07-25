@@ -63,7 +63,7 @@
 			</column>
 
 			<column name="logo_id" type="int4" />
-			
+
 			<column name="description_id" type="int4">
 				<constraints nullable="false" />
 			</column>
@@ -90,10 +90,17 @@
 			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
 			referencedTableName="daomember" referencesUniqueColumn="false" />
 	</changeSet>
-	
+
 	<changeSet author="Thomas Guyard" id="20110725 externalService uniqueness">
 		<addUniqueConstraint tableName="daoexternalservicemembership"
 			columnNames="member_id, service_id" />
+	</changeSet>
+
+	<changeSet author="Thomas Guyard" id="1300878547256-50">
+		<addForeignKeyConstraint baseColumnNames="id"
+			baseTableName="daoexternalservice" constraintName="FKDAOEXTERNALSERVICEIDUSERCONTENTID20110725"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daousercontent" referencesUniqueColumn="false" />
 	</changeSet>
 
 </databaseChangeLog>

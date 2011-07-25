@@ -23,8 +23,6 @@ import static org.junit.Assert.fail;
 
 import java.util.Locale;
 
-import javassist.NotFoundException;
-
 import org.junit.Test;
 
 import com.bloatit.data.DaoMember;

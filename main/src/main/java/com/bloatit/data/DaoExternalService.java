@@ -2,25 +2,28 @@ package com.bloatit.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.Hash;
-import com.bloatit.model.FileMetadata;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
                            name = "externalservice.getByToken",
@@ -34,15 +37,14 @@ public final class DaoExternalService extends DaoUserContent {
     @ManyToOne(optional = false)
     private DaoDescription description;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private DaoFileMetadata logo;
 
     @Column(nullable = false, unique = true)
     private String token;
-    
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
-    private final List<DaoExternalServiceMembership> members = new ArrayList<DaoExternalServiceMembership>();
 
+    @OneToMany(mappedBy = "service", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private final List<DaoExternalServiceMembership> membership = new ArrayList<DaoExternalServiceMembership>();
 
     // ======================================================================
     // Static operations
@@ -84,9 +86,9 @@ public final class DaoExternalService extends DaoUserContent {
     public void setLogo(DaoFileMetadata fileImage) {
         logo = fileImage;
     }
-    
-    public void addMembership(DaoExternalServiceMembership membership){
-        this.members.add(membership);
+
+    public void addMembership(DaoExternalServiceMembership membership) {
+        this.membership.add(membership);
     }
 
     // ======================================================================

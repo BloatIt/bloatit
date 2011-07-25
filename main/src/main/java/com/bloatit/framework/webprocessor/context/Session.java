@@ -70,7 +70,6 @@ public final class Session {
     private UrlDump targetPage = null;
     private UrlDump lastVisitedPage;
 
-    @SuppressWarnings("unchecked")
     private final Map<String, WebProcess> processes = Collections.synchronizedMap(new HashMap<String, WebProcess>());
 
     /**

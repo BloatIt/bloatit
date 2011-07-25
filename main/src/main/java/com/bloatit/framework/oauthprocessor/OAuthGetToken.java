@@ -16,7 +16,6 @@ import org.apache.amber.oauth2.common.exception.OAuthSystemException;
 import org.apache.amber.oauth2.common.message.OAuthResponse;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 public abstract class OAuthGetToken extends OAuthBloatitReponse {

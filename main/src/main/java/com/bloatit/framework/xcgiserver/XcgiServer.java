@@ -193,9 +193,6 @@ public final class XcgiServer {
         private RequestKey createKey(final HttpHeader header, final Parameters parameters) {
             final String ipAddress = header.getRemoteAddr();
             try {
-                if (header.getHttpCookie().containsKey("session_key")) {
-                    return new RequestKey(header.getHttpCookie().get("session_key"), ipAddress, Source.COOKIE);
-                }
                 if (parameters.containsKey("access_token")) {
                     // Works for POST and GET
                     return new RequestKey(parameters.look("access_token").getSimpleValue(), ipAddress, Source.TOKEN);
@@ -204,6 +201,9 @@ public final class XcgiServer {
                     if ("Bearer".equals(header.getHttpAuthorizationType())) {
                         return new RequestKey(header.getHttpAuthorizationData(), ipAddress, Source.TOKEN);
                     }
+                }
+                if (header.getHttpCookie().containsKey("session_key")) {
+                    return new RequestKey(header.getHttpCookie().get("session_key"), ipAddress, Source.COOKIE);
                 }
                 return new RequestKey(ipAddress);
             } catch (final WrongSessionKeyFormatException e) {
