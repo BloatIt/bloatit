@@ -111,15 +111,15 @@ public final class HttpResponse {
 
         writeHeader();
     }
-    
+
     public void writeOAuthRedirect(int status, final String url) throws IOException {
         addField(new HttpReponseField("status", String.valueOf(status)));
         addField(HttpReponseField.location(url));
         writeHeader();
     }
 
-    public void writeOAuth(StatusCode status, Map<String, String> headers, final String body) throws IOException {
-        addField(HttpReponseField.status(status));
+    public void writeOAuth(int status, Map<String, String> headers, final String body) throws IOException {
+        addField(new HttpReponseField("status", String.valueOf(status)));
         for (Entry<String, String> header : headers.entrySet()) {
             addField(new HttpReponseField(header.getKey(), header.getValue()));
         }
@@ -309,7 +309,7 @@ public final class HttpResponse {
     private void addSessionCookie() throws IOException {
         if (FrameworkConfiguration.isHttpsEnabled()) {
             headers.add(HttpReponseField.setCookie("session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; Secure; HttpOnly "));
-        }else{
+        } else {
             headers.add(HttpReponseField.setCookie("session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; HttpOnly "));
         }
     }

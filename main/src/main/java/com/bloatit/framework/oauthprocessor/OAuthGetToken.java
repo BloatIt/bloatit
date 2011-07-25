@@ -64,7 +64,7 @@ public abstract class OAuthGetToken extends OAuthBloatitReponse {
         }
 
         // write the response
-        response.writeOAuth(StatusCode.REDIRECTION_302_FOUND, oauthResponse.getHeaders(), oauthResponse.getBody());
+        response.writeOAuth(oauthResponse.getResponseStatus(), oauthResponse.getHeaders(), oauthResponse.getBody());
     }
 
     protected abstract void authorizeService(String authzCode, String accessToken, String refreshToken, int expiresIn) throws AuthorizationException;
