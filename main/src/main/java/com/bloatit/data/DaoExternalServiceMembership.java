@@ -2,13 +2,17 @@ package com.bloatit.data;
 
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.Locale;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -22,8 +26,13 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
                            name = "externalServiceMembership.getByToken",
-                           query = "FROM DaoExternalService " +
+                           query = "FROM DaoExternalServiceMembership " +
                            		   "WHERE token = :token "),
+                   		@NamedQuery(
+                                    name = "externalServiceMembership.byServicetokenMember",
+                                    query = "FROM DaoExternalServiceMembership s " +
+                                            "WHERE s.service.token = :token " +
+                                            "AND s.member = :member"),
                        }
              )
 //@formatter:on
@@ -53,10 +62,10 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
     @Basic(optional = false)
     private boolean canContribute;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private DaoExternalService service;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private DaoMember member;
 
     // ======================================================================
@@ -89,14 +98,35 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         return service;
     }
 
+    public static DaoExternalServiceMembership getByServicetokenMember(final String serviceToken, final DaoMember member) {
+        final DaoExternalServiceMembership service = (DaoExternalServiceMembership) SessionManager.getNamedQuery("externalServiceMembership.byServicetokenMember")
+                                                                                                  .setString("token", serviceToken)
+                                                                                                  .setEntity("member", member)
+                                                                                                  .uniqueResult();
+        return service;
+    }
+
     // ======================================================================
     // Construction
     // ======================================================================
 
-    protected DaoExternalServiceMembership(final DaoMember member,
-                                           final DaoExternalService service,
-                                           final String token,
-                                           final EnumSet<RightLevel> level) {
+    protected static DaoExternalServiceMembership createAndPersist(final DaoMember member,
+                                                                   final DaoExternalService service,
+                                                                   final String token,
+                                                                   final EnumSet<RightLevel> level) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoExternalServiceMembership theMember = new DaoExternalServiceMembership(member, service, token, level);
+        try {
+            session.save(theMember);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+            throw e;
+        }
+        return theMember;
+    }
+
+    private DaoExternalServiceMembership(final DaoMember member, final DaoExternalService service, final String token, final EnumSet<RightLevel> level) {
         super();
         if (member == null || service == null || token == null || level == null) {
             throw new NonOptionalParameterException();
@@ -106,6 +136,7 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         }
         this.member = member;
         this.service = service;
+        this.service.addMembership(this);
         this.token = token;
         this.authorized = false;
         this.refreshToken = null;
@@ -117,6 +148,10 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         this.canKudos = false;
         this.canContribute = false;
 
+        setLevel(level);
+    }
+
+    private void setLevel(final EnumSet<RightLevel> level) {
         for (final RightLevel rightLevel : level) {
             switch (rightLevel) {
                 case CREATE_FEATURE:
@@ -154,6 +189,14 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         this.token = accessToken;
         this.refreshToken = refreshToken;
         this.expirationDate = expirationDate;
+    }
+
+    public void reset(String token, EnumSet<RightLevel> level) {
+        authorized = false;
+        refreshToken = null;
+        this.expirationDate = null;
+        setLevel(level);
+        this.token = token;
     }
 
     // ======================================================================

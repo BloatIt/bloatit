@@ -39,6 +39,7 @@ import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Comment.ParentType;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.ExternalService;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Kudos;
@@ -122,6 +123,11 @@ public class ActivityTab extends HtmlTab {
                 @Override
                 public HtmlElement visit(final Kudos model) {
                     return new HtmlParagraph("kudos");
+                }
+                
+                @Override
+                public HtmlElement visit(final ExternalService model) {
+                    return new HtmlParagraph("service");
                 }
 
                 @Override

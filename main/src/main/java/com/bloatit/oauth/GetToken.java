@@ -9,7 +9,7 @@ public class GetToken extends OAuthGetToken {
 
     protected void authorizeService(String authzCode, String accessToken, String refreshToken, int expiresIn) throws AuthorizationException {
         ExternalServiceMembership serviceMembership = ExternalServiceManager.getMembershipByToken(authzCode);
-        if (serviceMembership != null && !serviceMembership.isValid()) {
+        if (serviceMembership == null) {
             throw new AuthorizationException();
         }
         serviceMembership.authorize(accessToken, refreshToken, DateUtils.nowPlusSomeSeconds(expiresIn));

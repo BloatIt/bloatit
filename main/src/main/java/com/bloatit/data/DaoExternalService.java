@@ -1,11 +1,15 @@
 package com.bloatit.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -35,6 +39,10 @@ public final class DaoExternalService extends DaoUserContent {
 
     @Column(nullable = false, unique = true)
     private String token;
+    
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
+    private final List<DaoExternalServiceMembership> members = new ArrayList<DaoExternalServiceMembership>();
+
 
     // ======================================================================
     // Static operations
@@ -75,6 +83,10 @@ public final class DaoExternalService extends DaoUserContent {
 
     public void setLogo(DaoFileMetadata fileImage) {
         logo = fileImage;
+    }
+    
+    public void addMembership(DaoExternalServiceMembership membership){
+        this.members.add(membership);
     }
 
     // ======================================================================

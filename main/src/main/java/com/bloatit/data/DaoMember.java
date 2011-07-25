@@ -146,6 +146,7 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
                                    "AND id not in (from DaoTranslation)"  +
+                                   "AND id not in (from DaoExternalService)"  +
                                    "ORDER BY creationDate DESC"),
 
                        @NamedQuery(
@@ -154,6 +155,7 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                            		   "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
+                                   "AND id not in (from DaoExternalService)"  +
                                    "AND id not in (from DaoTranslation)"),
                         @NamedQuery(
                             name = "member.invitationCount",
@@ -237,7 +239,7 @@ public class DaoMember extends DaoActor {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoTeamMembership> teamMembership = new ArrayList<DaoTeamMembership>(0);
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private final List<DaoExternalServiceMembership> authorizedExternalServices = new ArrayList<DaoExternalServiceMembership>();
 
     // ======================================================================
@@ -537,9 +539,14 @@ public class DaoMember extends DaoActor {
     }
 
     public void addAuthorizedExternalService(final String serviceToken, final String accessToken, final EnumSet<RightLevel> level) {
-        DaoExternalService service = DaoExternalService.getByToken(serviceToken);
-        if (service != null) {
-            this.authorizedExternalServices.add(new DaoExternalServiceMembership(this, service, accessToken, level));
+        DaoExternalServiceMembership existingService = DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
+        if (existingService == null) {
+            DaoExternalService service = DaoExternalService.getByToken(serviceToken);
+            if (service != null) {
+                this.authorizedExternalServices.add(DaoExternalServiceMembership.createAndPersist(this, service, accessToken, level));
+            }
+        } else {
+            existingService.reset(accessToken, level);
         }
     }
 
@@ -858,6 +865,10 @@ public class DaoMember extends DaoActor {
 
     public String getEmailToActivate() {
         return this.emailToActivate;
+    }
+
+    public DaoExternalServiceMembership getAuthorizedExternalServices(String serviceToken) {
+        return DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
     }
 
     public PageIterable<DaoExternalServiceMembership> getAuthorizedExternalServices() {

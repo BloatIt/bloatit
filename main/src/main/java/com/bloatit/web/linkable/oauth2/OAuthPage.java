@@ -76,7 +76,8 @@ public final class OAuthPage extends LoggedPage {
             DaoTranslation translation = service.getDescription().getDefaultTranslation();
 
             HtmlBranch logo = new HtmlDiv().add(new HtmlImage(new FileResourceUrl(service.getLogo()), service.getLogo().getShortDescription(), "logo"));
-            HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText())));
+            HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText()))
+                                                                                                    .add(new HtmlParagraph(String.valueOf(serviceMembership.isValid()))));
             HtmlBranch revoke = new HtmlDiv().add(new HtmlLink("TODO", Context.tr("Revoke permissions")))
                                              .add(new HtmlParagraph(Context.getLocalizator()
                                                                            .getDate(serviceMembership.getExpirationDate())
@@ -86,8 +87,18 @@ public final class OAuthPage extends LoggedPage {
             authorizedApplication.add(new HtmlDiv().add(logo).add(description).add(revoke));
         }
 
-        // final HtmlTitleBlock createFeatureTitle = new
-        // HtmlTitleBlock(Context.tr("Manage your created applications"), 1);
+        final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Manage your created applications"), 1);
+
+        for (ExternalServiceMembership serviceMembership : externalServices) {
+            ExternalService service = serviceMembership.getService();
+            DaoTranslation translation = service.getDescription().getDefaultTranslation();
+
+            HtmlBranch logo = new HtmlDiv().add(new HtmlImage(new FileResourceUrl(service.getLogo()), service.getLogo().getShortDescription(), "logo"));
+            HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText())));
+            // serviceMembership.getLevels();
+
+            createFeatureTitle.add(new HtmlDiv().add(logo).add(description));
+        }
 
         return authorizedApplication;
     }

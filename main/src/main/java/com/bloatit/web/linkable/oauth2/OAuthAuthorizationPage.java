@@ -24,9 +24,12 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ExternalService;
+import com.bloatit.model.managers.ExternalServiceManager;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
+import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.OAuthAuthorizationPageUrl;
 
 @ParamContainer(OAuthProcessor.OAUTH_GET_CREDENTIAL_PAGENAME)
@@ -99,13 +102,19 @@ public class OAuthAuthorizationPage extends ElveosPage {
             getSession().notifyError(Context.tr("Wrong login or password, please retry."));
         }
 
+        ExternalService service = ExternalServiceManager.getByToken(clientId);
+        if (service == null) {
+            getSession().notifyError(Context.tr("Service not found!"));
+            throw new RedirectException(new IndexPageUrl());
+        }
+
         String yesUrl = createYesUrl();
 
         // TODO make this page pretty(er) !
         final HtmlDiv div = new HtmlDiv("oauth_question");
         {
             final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.tr("Enter your loggin and password to grant ''{0}'' the right to access your Elveos account ?",
-                                                                            clientId),
+                                                                            service.getDescription().getDefaultTranslation().getTitle()),
                                                                  1);
             div.add(loginTitle);
 
@@ -123,7 +132,7 @@ public class OAuthAuthorizationPage extends ElveosPage {
             // Submit
             final HtmlDiv yesOrNoDiv = new HtmlDiv("login_or_signup");
             loginForm.add(yesOrNoDiv);
-            final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Yes, I trust {0}", clientId));
+            final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Yes, I trust {0}", service.getDescription().getDefaultTranslation().getTitle()));
             // submitButton.setCssClass("button_good");
             yesOrNoDiv.add(new HtmlLink("/oauth/" + OAuthProcessor.DENY_AUTHORIZATION_PAGE_NAME, Context.tr("No")).setCssClass("button_bad"));
             yesOrNoDiv.add(submitButton);
