@@ -23,7 +23,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtActor;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.UnauthorizedBankDataAccessException;

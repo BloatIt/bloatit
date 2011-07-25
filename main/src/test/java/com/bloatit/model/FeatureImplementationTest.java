@@ -157,13 +157,6 @@ public class FeatureImplementationTest extends ModelTestUnit {
     }
 
     @Test
-    public void testCanAccessDescription() {
-        final Feature feature = createFeatureByThomas();
-        AuthToken.authenticate(memberYo);
-        AuthToken.authenticate(memberTom);
-    }
-
-    @Test
     public void testAddContribution() {
         final Feature feature = createFeatureByThomas();
 

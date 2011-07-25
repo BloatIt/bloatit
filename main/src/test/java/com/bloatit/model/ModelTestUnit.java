@@ -22,7 +22,6 @@ import org.junit.Before;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthToken;
 
 public class ModelTestUnit {
     protected Member memberYo;

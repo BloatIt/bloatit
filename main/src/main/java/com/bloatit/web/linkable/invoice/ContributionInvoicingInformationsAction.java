@@ -36,6 +36,7 @@ public final class ContributionInvoicingInformationsAction extends LoggedAction 
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionInvoicingProcess process;
 
+    @SuppressWarnings("unused")
     private final ContributionInvoicingInformationsActionUrl url;
 
     public ContributionInvoicingInformationsAction(final ContributionInvoicingInformationsActionUrl url) {

@@ -3,7 +3,6 @@ package com.bloatit.model;
 import java.util.Date;
 import java.util.EnumSet;
 
-import com.bloatit.data.DaoExternalService;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember;

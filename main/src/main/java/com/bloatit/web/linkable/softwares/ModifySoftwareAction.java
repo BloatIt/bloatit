@@ -47,8 +47,7 @@ public final class ModifySoftwareAction extends LoggedAction {
     protected static final String IMAGE_CODE = "image";
     private static final String IMAGE_NAME_CODE = "image/filename";
     private static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";
-    private static final String LANGUAGE_CODE = "feature_lang";
-
+    
     @RequestParam(role = Role.PAGENAME)
     @NonOptional(@tr("You must specify the software to modify"))
     private final Software software;

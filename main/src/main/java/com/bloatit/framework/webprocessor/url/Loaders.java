@@ -24,25 +24,15 @@ import java.util.Locale;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.bloatit.data.DaoBug;
-import com.bloatit.data.DaoCommentable;
-import com.bloatit.data.DaoIdentifiable;
-import com.bloatit.data.DaoKudosable;
-import com.bloatit.data.queries.DBRequests;
-import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.annotations.Loader;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.Bug;
 import com.bloatit.model.Commentable;
-import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.IdentifiableInterface;
-import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.model.managers.BugManager;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.web.actions.WebProcess;
 
