@@ -25,6 +25,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("f/%feature%")
 public final class FeaturePageAlias extends AliasAction {
 
+    @SuppressWarnings("unused")
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the feature number: ''%value%''."))
     @NonOptional(@tr("You have to specify a feature number."))
     private Feature feature;

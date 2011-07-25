@@ -8,6 +8,7 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Description;
 import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.ExternalService;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
@@ -142,6 +143,11 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
 
     @Override
     public final T visit(final Translation model) {
+        return visitAbstract(model);
+    }
+    
+    @Override
+    public final T visit(final ExternalService model) {
         return visitAbstract(model);
     }
 

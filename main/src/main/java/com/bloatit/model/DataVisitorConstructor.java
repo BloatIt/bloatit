@@ -23,6 +23,7 @@ import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalService;
+import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoHighlightFeature;
@@ -295,5 +296,10 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     @Override
     public Identifiable<?> visit(final DaoExternalService daoExternalService) {
         return ExternalService.create(daoExternalService);
+    }
+
+    @Override
+    public Identifiable<?> visit(DaoExternalServiceMembership daoExternalServiceMembership) {
+        return ExternalServiceMembership.create(daoExternalServiceMembership);
     }
 }

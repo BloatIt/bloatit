@@ -253,7 +253,7 @@
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>8.4-701.jdbc4</version>
+			<version>8.4-702.jdbc4</version>
 		</dependency>
 		<!-- we need information from the APT project -->
 		<dependency>

@@ -1,21 +1,29 @@
 package com.bloatit.data;
 
-import java.util.Date;
-import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Basic;
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-import com.bloatit.data.exceptions.ElementNotFoundException;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.Hash;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
                            name = "externalservice.getByToken",
@@ -24,69 +32,28 @@ import com.bloatit.framework.utils.datetime.DateUtils;
                        }
              )
 //@formatter:on
-public final class DaoExternalService extends DaoIdentifiable {
-
-    public enum RightLevel {
-        CREATE_FEATURE, CREATE_OFFER, COMMENT, KUDOS, CONTRIBUTE,
-    }
-
-    @Basic(optional = false)
-    private String name;
-
-    // TODO add unique constraint ?
-    @Basic(optional = false)
-    private String token;
-
-    @Basic(optional = false)
-    private boolean authorized;
-
-    private String refreshToken;
-    private Date expirationDate;
-
-    @Basic(optional = false)
-    private boolean canCreateFeature;
-    @Basic(optional = false)
-    private boolean canCreateOffer;
-    @Basic(optional = false)
-    private boolean canComment;
-    @Basic(optional = false)
-    private boolean canKudos;
-    @Basic(optional = false)
-    private boolean canContribute;
+public final class DaoExternalService extends DaoUserContent {
 
     @ManyToOne(optional = false)
-    private DaoMember member;
+    private DaoDescription description;
+
+    @ManyToOne(optional = true)
+    private DaoFileMetadata logo;
+
+    @Column(nullable = false, unique = true)
+    private String token;
+
+    @OneToMany(mappedBy = "service", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private final List<DaoExternalServiceMembership> membership = new ArrayList<DaoExternalServiceMembership>();
 
     // ======================================================================
     // Static operations
     // ======================================================================
 
-    public static void authorizeService(final String authorizationToken,
-                                        final String accessToken,
-                                        final String refreshToken,
-                                        final Date expirationDate) throws ElementNotFoundException {
-        if (authorizationToken == null || accessToken == null || refreshToken == null || expirationDate == null) {
-            throw new NonOptionalParameterException();
-        }
+    public static DaoExternalService getByToken(final String authorizationToken) {
         final DaoExternalService service = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getByToken")
                                                                               .setString("token", authorizationToken)
                                                                               .uniqueResult();
-        if (service == null) {
-            throw new ElementNotFoundException("The service with the specified token is not found.");
-        }
-        if (service.isAuthorized()) {
-            throw new ElementNotFoundException("The service with the specified token is already authorized.");
-        }
-        service.authorize(accessToken, refreshToken, expirationDate);
-    }
-
-    public static DaoExternalService getServiceByKey(final String authorizationToken) {
-        final DaoExternalService service = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getByToken")
-                                                                              .setString("token", authorizationToken)
-                                                                              .uniqueResult();
-        if (!service.isValid()) {
-            return null;
-        }
         return service;
     }
 
@@ -94,116 +61,50 @@ public final class DaoExternalService extends DaoIdentifiable {
     // Construction
     // ======================================================================
 
-    protected DaoExternalService(final DaoMember member, final String name, final String token, final EnumSet<RightLevel> level) {
-        super();
-        if (member == null || name == null || token == null || level == null) {
-            throw new NonOptionalParameterException();
+    public static DaoExternalService createAndPersist(DaoMember author, DaoTeam asTeam, DaoDescription description) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoExternalService theMember = new DaoExternalService(author, asTeam, description);
+        try {
+            session.save(theMember);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+            throw e;
         }
-        if (name.isEmpty() || token.isEmpty()) {
-            throw new NonOptionalParameterException();
-        }
-        this.member = member;
-        this.name = name;
-        this.token = token;
-        this.authorized = false;
-        this.refreshToken = null;
-        this.expirationDate = null;
-
-        this.canCreateFeature = false;
-        this.canCreateOffer = false;
-        this.canComment = false;
-        this.canKudos = false;
-        this.canContribute = false;
-
-        for (final RightLevel rightLevel : level) {
-            switch (rightLevel) {
-                case CREATE_FEATURE:
-                    this.canCreateFeature = true;
-                    break;
-                case CREATE_OFFER:
-                    this.canCreateOffer = true;
-                    break;
-                case COMMENT:
-                    this.canComment = true;
-                    break;
-                case KUDOS:
-                    this.canKudos = true;
-                    break;
-                case CONTRIBUTE:
-                    this.canContribute = true;
-                    break;
-                default:
-                    break;
-            }
-        }
+        return theMember;
     }
 
-    public final void authorize(final String accessToken, final String refreshToken, final Date expirationDate) {
-        if (accessToken == null || refreshToken == null || expirationDate == null) {
+    private DaoExternalService(DaoMember author, DaoTeam asTeam, DaoDescription description) {
+        super(author, asTeam);
+        if (description == null) {
             throw new NonOptionalParameterException();
         }
-        if (accessToken.isEmpty() || refreshToken.isEmpty()) {
-            throw new NonOptionalParameterException();
-        }
-        if (!DateUtils.isInTheFuture(expirationDate)) {
-            throw new BadProgrammerException("Make sure the expiration date is in the future.");
-        }
-        this.authorized = true;
-        this.token = accessToken;
-        this.refreshToken = refreshToken;
-        this.expirationDate = expirationDate;
+        this.description = description;
+        this.token = Hash.generateUniqueToken(32);
+    }
+
+    public void setLogo(DaoFileMetadata fileImage) {
+        logo = fileImage;
+    }
+
+    public void addMembership(DaoExternalServiceMembership membership) {
+        this.membership.add(membership);
     }
 
     // ======================================================================
     // Getters
     // ======================================================================
 
-    public final boolean isValid() {
-        return authorized && expirationDate != null && DateUtils.isInTheFuture(expirationDate);
+    public DaoFileMetadata getLogo() {
+        return logo;
     }
 
-    public final String getName() {
-        return name;
+    public DaoDescription getDescription() {
+        return description;
     }
 
-    public final String getToken() {
+    public String getToken() {
         return token;
-    }
-
-    public final boolean isAuthorized() {
-        return authorized;
-    }
-
-    public final String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public final Date getExpirationDate() {
-        return expirationDate;
-    }
-
-    public final DaoMember getMember() {
-        return member;
-    }
-
-    public final EnumSet<RightLevel> getLevels() {
-        final EnumSet<RightLevel> levels = EnumSet.noneOf(RightLevel.class);
-        if (canCreateFeature) {
-            levels.add(RightLevel.CREATE_FEATURE);
-        }
-        if (canCreateOffer) {
-            levels.add(RightLevel.CREATE_OFFER);
-        }
-        if (canComment) {
-            levels.add(RightLevel.COMMENT);
-        }
-        if (canContribute) {
-            levels.add(RightLevel.CONTRIBUTE);
-        }
-        if (canKudos) {
-            levels.add(RightLevel.KUDOS);
-        }
-        return levels;
     }
 
     // ======================================================================
@@ -214,77 +115,30 @@ public final class DaoExternalService extends DaoIdentifiable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (authorized ? 1231 : 1237);
-        result = prime * result + (canComment ? 1231 : 1237);
-        result = prime * result + (canContribute ? 1231 : 1237);
-        result = prime * result + (canCreateFeature ? 1231 : 1237);
-        result = prime * result + (canCreateOffer ? 1231 : 1237);
-        result = prime * result + (canKudos ? 1231 : 1237);
-        result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((refreshToken == null) ? 0 : refreshToken.hashCode());
-        result = prime * result + ((token == null) ? 0 : token.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((logo == null) ? 0 : logo.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
-        final DaoExternalService other = (DaoExternalService) obj;
-        if (authorized != other.authorized) {
-            return false;
-        }
-        if (canComment != other.canComment) {
-            return false;
-        }
-        if (canContribute != other.canContribute) {
-            return false;
-        }
-        if (canCreateFeature != other.canCreateFeature) {
-            return false;
-        }
-        if (canCreateOffer != other.canCreateOffer) {
-            return false;
-        }
-        if (canKudos != other.canKudos) {
-            return false;
-        }
-        if (expirationDate == null) {
-            if (other.expirationDate != null) {
+        DaoExternalService other = (DaoExternalService) obj;
+        if (description == null) {
+            if (other.description != null)
                 return false;
-            }
-        } else if (!expirationDate.equals(other.expirationDate)) {
+        } else if (!description.equals(other.description))
             return false;
-        }
-        if (name == null) {
-            if (other.name != null) {
+        if (logo == null) {
+            if (other.logo != null)
                 return false;
-            }
-        } else if (!name.equals(other.name)) {
+        } else if (!logo.equals(other.logo))
             return false;
-        }
-        if (refreshToken == null) {
-            if (other.refreshToken != null) {
-                return false;
-            }
-        } else if (!refreshToken.equals(other.refreshToken)) {
-            return false;
-        }
-        if (token == null) {
-            if (other.token != null) {
-                return false;
-            }
-        } else if (!token.equals(other.token)) {
-            return false;
-        }
         return true;
     }
 
@@ -301,10 +155,8 @@ public final class DaoExternalService extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * Instantiates a new dao member.
-     */
     protected DaoExternalService() {
         super();
     }
+
 }

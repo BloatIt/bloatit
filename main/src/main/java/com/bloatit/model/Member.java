@@ -23,7 +23,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.data.DaoExternalAccount;
-import com.bloatit.data.DaoExternalService;
+import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
@@ -521,8 +521,8 @@ public final class Member extends Actor<DaoMember> implements User {
         return DigestUtils.sha256Hex(digest);
     }
 
-    public PageIterable<ExternalService> getExternalServices() {
-        return new ListBinder<ExternalService, DaoExternalService>(getDao().getAuthorizedExternalServices());
+    public PageIterable<ExternalServiceMembership> getExternalServices() {
+        return new ListBinder<ExternalServiceMembership, DaoExternalServiceMembership>(getDao().getAuthorizedExternalServices());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

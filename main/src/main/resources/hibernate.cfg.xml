@@ -75,6 +75,7 @@
 		<mapping class="com.bloatit.data.DaoStringVersion" />
 		<mapping class="com.bloatit.data.DaoNewsFeed" />
 		<mapping class="com.bloatit.data.DaoExternalService" />
+		<mapping class="com.bloatit.data.DaoExternalServiceMembership" />
 
 	</session-factory>
 </hibernate-configuration>

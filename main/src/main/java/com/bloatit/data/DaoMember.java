@@ -44,7 +44,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoExternalService.RightLevel;
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.queries.QueryCollection;
@@ -146,6 +146,7 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
                                    "AND id not in (from DaoTranslation)"  +
+                                   "AND id not in (from DaoExternalService)"  +
                                    "ORDER BY creationDate DESC"),
 
                        @NamedQuery(
@@ -154,6 +155,7 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                            		   "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
+                                   "AND id not in (from DaoExternalService)"  +
                                    "AND id not in (from DaoTranslation)"),
                         @NamedQuery(
                             name = "member.invitationCount",
@@ -237,8 +239,8 @@ public class DaoMember extends DaoActor {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoTeamMembership> teamMembership = new ArrayList<DaoTeamMembership>(0);
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private final List<DaoExternalService> authorizedExternalServices = new ArrayList<DaoExternalService>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    private final List<DaoExternalServiceMembership> authorizedExternalServices = new ArrayList<DaoExternalServiceMembership>();
 
     // ======================================================================
     // Static HQL requests
@@ -536,8 +538,16 @@ public class DaoMember extends DaoActor {
         this.emailToActivate = emailToActivate;
     }
 
-    public void addAuthorizedExternalService(final String name, final String token, final EnumSet<RightLevel> level) {
-        this.authorizedExternalServices.add(new DaoExternalService(this, name, token, level));
+    public void addAuthorizedExternalService(final String serviceToken, final String accessToken, final EnumSet<RightLevel> level) {
+        DaoExternalServiceMembership existingService = DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
+        if (existingService == null) {
+            DaoExternalService service = DaoExternalService.getByToken(serviceToken);
+            if (service != null) {
+                this.authorizedExternalServices.add(DaoExternalServiceMembership.createAndPersist(this, service, accessToken, level));
+            }
+        } else {
+            existingService.reset(accessToken, level);
+        }
     }
 
     // ======================================================================
@@ -857,14 +867,18 @@ public class DaoMember extends DaoActor {
         return this.emailToActivate;
     }
 
-    public PageIterable<DaoExternalService> getAuthorizedExternalServices() {
-        return new MappedList<DaoExternalService>(authorizedExternalServices);
+    public DaoExternalServiceMembership getAuthorizedExternalServices(String serviceToken) {
+        return DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
+    }
+
+    public PageIterable<DaoExternalServiceMembership> getAuthorizedExternalServices() {
+        return new MappedList<DaoExternalServiceMembership>(authorizedExternalServices);
     }
 
     public EnumSet<RightLevel> getExternalServiceRights(final String token) {
-        final DaoExternalService externalService = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getByToken")
-                                                                                      .setString("token", token)
-                                                                                      .uniqueResult();
+        final DaoExternalServiceMembership externalService = (DaoExternalServiceMembership) SessionManager.getNamedQuery("externalServiceMembership.getByToken")
+                                                                                                          .setString("token", token)
+                                                                                                          .uniqueResult();
         if (externalService == null) {
             return EnumSet.noneOf(RightLevel.class);
         }

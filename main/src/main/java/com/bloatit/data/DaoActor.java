@@ -63,7 +63,6 @@ import com.bloatit.framework.utils.PageIterable;
                            name = "actor.getBankTransactions.size",
                            query = "select count(*) from DaoBankTransaction where author = :author")
 })
-
 // @formatter:on
 public abstract class DaoActor extends DaoIdentifiable {
 

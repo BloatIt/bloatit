@@ -23,7 +23,6 @@ import com.bloatit.data.DaoAccount;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.TransactionList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtAccount;
 import com.bloatit.model.right.UnauthorizedOperationException;
 

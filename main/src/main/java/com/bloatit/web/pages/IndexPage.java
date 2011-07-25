@@ -137,17 +137,17 @@ public final class IndexPage extends ElveosPage {
         return element;
     }
 
-    /**
-     * @return a block indicating the number of elements created on the website
-     *         over the course of its life
-     */
-    private SideBarElementLayout getWebsiteActivity() {
-        final SideBarElementLayout leftSummary = new SideBarElementLayout();
-
-        generateCounts(leftSummary);
-
-        return leftSummary;
-    }
+//    /**
+//     * @return a block indicating the number of elements created on the website
+//     *         over the course of its life
+//     */
+//    private SideBarElementLayout getWebsiteActivity() {
+//        final SideBarElementLayout leftSummary = new SideBarElementLayout();
+//
+//        generateCounts(leftSummary);
+//
+//        return leftSummary;
+//    }
 
     @Override
     protected String createPageTitle() {

@@ -20,16 +20,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javassist.NotFoundException;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
-import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.xcgiserver.RequestKey;
+import com.bloatit.framework.xcgiserver.RequestKey.Source;
 import com.bloatit.framework.xcgiserver.WrongSessionKeyFormatException;
 
 /**
@@ -53,7 +50,7 @@ public final class SessionManager {
     public static Session getOrCreateSession(final RequestKey key) {
         Session sessionByKey = null;
         try {
-            if (key != null && (sessionByKey = SessionManager.getByKey(key.getId(), key.getIpAddress())) != null) {
+            if (key != null && key.getSource() == Source.COOKIE && (sessionByKey = SessionManager.getByKey(key.getId(), key.getIpAddress())) != null) {
                 sessionByKey.resetExpirationTime();
                 return sessionByKey;
             }
@@ -227,7 +224,7 @@ public final class SessionManager {
 
     static synchronized void clearExpiredSessions() {
         int activeSessionsCountBefore = activeSessions.size();
-        
+
         final Iterator<Session> it = activeSessions.values().iterator();
         while (it.hasNext()) {
             final Session session = it.next();
@@ -236,9 +233,9 @@ public final class SessionManager {
                 it.remove();
             }
         }
-        
+
         int activeSessionsCountAfter = activeSessions.size();
-        Log.framework().info("Clean expired session: "+activeSessionsCountBefore+" -> "+ activeSessionsCountAfter);
+        Log.framework().info("Clean expired session: " + activeSessionsCountBefore + " -> " + activeSessionsCountAfter);
     }
 
     public static synchronized void storeTemporarySession(final String key, final Session session) {

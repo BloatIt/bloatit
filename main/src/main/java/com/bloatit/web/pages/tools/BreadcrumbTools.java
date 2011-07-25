@@ -26,6 +26,7 @@ import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.ExternalService;
+import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
@@ -187,6 +188,11 @@ public class BreadcrumbTools {
 
             @Override
             public Breadcrumb visit(final ExternalService externalService) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(ExternalServiceMembership externalService) {
                 throw new NotImplementedException();
             }
         });

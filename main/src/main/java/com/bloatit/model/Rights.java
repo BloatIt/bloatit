@@ -251,7 +251,7 @@ public class Rights {
         }
 
         @Override
-        public Team visit(final ExternalService externalService) {
+        public Team visit(ExternalServiceMembership externalService) {
             return null;
         }
 
@@ -343,7 +343,7 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(final ExternalService externalService) {
+        public Boolean visit(final ExternalServiceMembership externalService) {
             return null;
         }
     }
@@ -432,7 +432,7 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(final ExternalService externalService) {
+        public Boolean visit(final ExternalServiceMembership externalService) {
             return null;
         }
 

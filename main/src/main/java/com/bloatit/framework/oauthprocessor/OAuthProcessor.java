@@ -57,6 +57,8 @@ public class OAuthProcessor implements XcgiProcessor {
             return false;
         }
 
+        ModelAccessor.close();
+        
         return true;
     }
 }

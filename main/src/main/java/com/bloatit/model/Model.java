@@ -16,12 +16,15 @@
 //
 package com.bloatit.model;
 
+import java.util.Locale;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
 import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.xcgiserver.RequestKey;
@@ -126,9 +129,14 @@ public class Model implements com.bloatit.framework.model.Model {
         } else {
             sessionKey = Hash.shortHash(key.getId());
         }
+        Localizator localizator = Context.getLocalizator();
+        Locale locale = null;
+        if (localizator != null) {
+            locale = localizator.getLocale();
+        }
         Log.framework().info("Access:Context: " + //
                 "USER_ID='" + memberId + //
                 "'; KEY='" + sessionKey + //
-                "'; LANG='" + Context.getLocalizator().getLocale() + "'");
+                "'; LANG='" + locale + "'");
     }
 }

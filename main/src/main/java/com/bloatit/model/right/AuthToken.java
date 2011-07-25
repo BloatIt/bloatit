@@ -18,7 +18,7 @@
 package com.bloatit.model.right;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoExternalService;
+import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.utils.Hash;
@@ -98,7 +98,7 @@ public final class AuthToken {
     }
 
     private static Integer oauthAuthenticate(final RequestKey key) throws ElementNotFoundException {
-        final DaoExternalService service = DaoExternalService.getServiceByKey(key.getId());
+        final DaoExternalServiceMembership service = DaoExternalServiceMembership.getByToken(key.getId());
 
         // TODO manage error codes:
         // When a request fails, the resource server responds using the

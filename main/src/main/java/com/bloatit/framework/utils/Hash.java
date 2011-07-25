@@ -16,12 +16,20 @@
 //
 package com.bloatit.framework.utils;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.UUID;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
 public class Hash {
     // Be ware that it may broke the db if the value is changed.
     private final static int ITERATION_NUMBER = 1000;
+    private static final int RANDOM_SIZE = 512;
+    private static final String SHA1_PRNG = "SHA1PRNG";
 
     /**
      * From a password and a salt, returns the corresponding digest
@@ -40,5 +48,20 @@ public class Hash {
 
     public static String shortHash(final String value) {
         return DigestUtils.sha512Hex(value).substring(10, 20);
+    }
+
+    public static String generateUniqueToken(int size) {
+        return generateUniqueToken().substring(0, size);
+    }
+
+    public static String generateUniqueToken() {
+        UUID.randomUUID().toString();
+        try {
+            final byte[] bytes = new byte[RANDOM_SIZE];
+            SecureRandom.getInstance(SHA1_PRNG).nextBytes(bytes);
+            return DigestUtils.sha512Hex(DigestUtils.sha512Hex(bytes) + UUID.randomUUID().toString());
+        } catch (final NoSuchAlgorithmException e) {
+            throw new BadProgrammerException(e);
+        }
     }
 }

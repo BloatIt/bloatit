@@ -71,4 +71,6 @@ public interface ModelClassVisitor<ReturnType> {
     ReturnType visit(NewsFeed newsFeed);
 
     ReturnType visit(ExternalService externalService);
+    
+    ReturnType visit(ExternalServiceMembership externalService);
 }

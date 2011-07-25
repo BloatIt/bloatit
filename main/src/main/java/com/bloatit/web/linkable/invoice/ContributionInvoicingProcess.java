@@ -46,7 +46,9 @@ public class ContributionInvoicingProcess extends WebProcess {
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private Milestone milestone;
 
+    @SuppressWarnings("unused")
     private final ContributionInvoicingProcessUrl url;
+    @SuppressWarnings("unused")
     private ModifyInvoicingContactProcess invoicingContactProcess = null;
 
     public ContributionInvoicingProcess(final ContributionInvoicingProcessUrl url) {

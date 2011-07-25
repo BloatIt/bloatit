@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtInternalAccount;
 import com.bloatit.model.right.UnauthorizedOperationException;
 

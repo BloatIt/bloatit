@@ -31,4 +31,6 @@ public interface Commentable {
      */
     Comment addComment(final String text) throws UnauthorizedOperationException;
 
+    Integer getId();
+
 }

@@ -16,7 +16,6 @@ import org.apache.amber.oauth2.common.exception.OAuthSystemException;
 import org.apache.amber.oauth2.common.message.OAuthResponse;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 public abstract class OAuthGetToken extends OAuthBloatitReponse {
@@ -64,7 +63,7 @@ public abstract class OAuthGetToken extends OAuthBloatitReponse {
         }
 
         // write the response
-        response.writeOAuth(StatusCode.REDIRECTION_302_FOUND, oauthResponse.getHeaders(), oauthResponse.getBody());
+        response.writeOAuth(oauthResponse.getResponseStatus(), oauthResponse.getHeaders(), oauthResponse.getBody());
     }
 
     protected abstract void authorizeService(String authzCode, String accessToken, String refreshToken, int expiresIn) throws AuthorizationException;
