@@ -2,7 +2,6 @@ package com.bloatit.data;
 
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.Locale;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
