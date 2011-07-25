@@ -49,7 +49,11 @@ public class Hash {
     public static String shortHash(final String value) {
         return DigestUtils.sha512Hex(value).substring(10, 20);
     }
-    
+
+    public static String generateUniqueToken(int size) {
+        return generateUniqueToken().substring(0, size);
+    }
+
     public static String generateUniqueToken() {
         UUID.randomUUID().toString();
         try {

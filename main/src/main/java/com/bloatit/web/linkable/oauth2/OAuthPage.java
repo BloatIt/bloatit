@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -69,13 +70,18 @@ public final class OAuthPage extends LoggedPage {
 
     private HtmlElement generateFeatureCreationForm(final Member me) {
 
+        PlaceHolderElement all = new PlaceHolderElement();
+
         final HtmlTitleBlock authorizedApplication = new HtmlTitleBlock(Context.tr("These applications can access your Elveos account"), 1);
         PageIterable<ExternalServiceMembership> externalServices = me.getExternalServices();
         for (ExternalServiceMembership serviceMembership : externalServices) {
             ExternalService service = serviceMembership.getService();
             DaoTranslation translation = service.getDescription().getDefaultTranslation();
 
-            HtmlBranch logo = new HtmlDiv().add(new HtmlImage(new FileResourceUrl(service.getLogo()), service.getLogo().getShortDescription(), "logo"));
+            HtmlBranch logo = new HtmlDiv();
+            if (service.getLogo() != null) {
+                logo = new HtmlDiv().add(new HtmlImage(new FileResourceUrl(service.getLogo()), service.getLogo().getShortDescription(), "logo"));
+            }
             HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText()))
                                                                                                     .add(new HtmlParagraph(String.valueOf(serviceMembership.isValid()))));
             HtmlBranch revoke = new HtmlDiv().add(new HtmlLink("TODO", Context.tr("Revoke permissions")))
@@ -93,14 +99,18 @@ public final class OAuthPage extends LoggedPage {
             ExternalService service = serviceMembership.getService();
             DaoTranslation translation = service.getDescription().getDefaultTranslation();
 
-            HtmlBranch logo = new HtmlDiv().add(new HtmlImage(new FileResourceUrl(service.getLogo()), service.getLogo().getShortDescription(), "logo"));
-            HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText())));
+            HtmlBranch logo = new HtmlDiv();
+            if (service.getLogo() != null) {
+                logo = new HtmlDiv().add(new HtmlImage(new FileResourceUrl(service.getLogo()), service.getLogo().getShortDescription(), "logo"));
+            }
+            HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText()))
+                                                                                                    .addText(service.getToken()));
             // serviceMembership.getLevels();
 
             createFeatureTitle.add(new HtmlDiv().add(logo).add(description));
         }
 
-        return authorizedApplication;
+        return all.add(authorizedApplication).add(createFeatureTitle);
     }
 
     @Override

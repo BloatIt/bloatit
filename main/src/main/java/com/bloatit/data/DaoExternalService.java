@@ -78,7 +78,7 @@ public final class DaoExternalService extends DaoUserContent {
             throw new NonOptionalParameterException();
         }
         this.description = description;
-        this.token = Hash.generateUniqueToken();
+        this.token = Hash.generateUniqueToken(32);
     }
 
     public void setLogo(DaoFileMetadata fileImage) {
