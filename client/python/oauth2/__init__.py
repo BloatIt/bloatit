@@ -25,6 +25,12 @@ THE SOFTWARE.
 import httplib2
 import urlparse
 import urllib
+import json
+
+try:
+    from urlparse import parse_qs, parse_qsl
+except ImportError:
+    from cgi import parse_qs, parse_qsl
 
 class Client(object):
     """Client for OAuth 2.0 draft spec
@@ -47,12 +53,8 @@ class Client(object):
             proxy_info=proxy_info)
 
     @staticmethod
-    def _split_url_string(param_str):
-        """Turn URL string into parameters."""
-        parameters = parse_qs(param_str, keep_blank_values=False)
-        for key, val in parameters.iteritems():
-            parameters[key] = urllib.unquote(val[0])
-        return parameters
+    def _parse_response(content):
+        return json.loads(content)
 
     def authorization_url(self, redirect_uri=None, params=None, state=None,
         immediate=None, endpoint='authorize'):
@@ -111,19 +113,25 @@ class Client(object):
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
+        print uri
+        print args
+
         response, content = self.http.request(uri, method='POST', body=body,
             headers=headers)
         if not response.status == 200:
             raise Error(content)
-        response_args = Client2._split_url_string(content)
+        response_args = Client._parse_response(content)
+
+        print content
+        print response_args
 
         error = response_args.pop('error', None)
         if error is not None:
             raise Error(error)
 
-        refresh_token = response_args.pop('refresh_token', None)
-        if refresh_token is not None:
-            response_args = self.refresh(refresh_token, secret_type=secret_type)
+        #refresh_token = response_args.pop('refresh_token', None)
+        #if refresh_token is not None:
+        #    response_args = self.refresh(refresh_token, secret_type=secret_type)
         return response_args
 
     def refresh(self, refresh_token, params=None, secret_type=None,
@@ -160,7 +168,7 @@ class Client(object):
         if not response.status == 200:
             raise Error(content)
 
-        response_args = Client2._split_url_string(content)
+        response_args = Client._parse_response(content)
         return response_args
 
     def request(self, base_uri, access_token=None, method='GET', body=None,
@@ -173,3 +181,18 @@ class Client(object):
             args[token_param] = access_token
         uri = '%s?%s' % (base_uri, urllib.urlencode(args))
         return self.http.request(uri, method=method, body=body, headers=headers)
+        
+        
+class Error(RuntimeError):
+    """Generic exception class."""
+
+    def __init__(self, message='OAuth error occured.'):
+        self._message = message
+
+    @property
+    def message(self):
+        """A hack to get around the deprecation errors in 2.6."""
+        return self._message
+
+    def __str__(self):
+        return self._message
