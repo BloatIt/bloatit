@@ -29,8 +29,10 @@ class EntityManager():
             
         for entity in xml_entities:
             id = int(entity.childNodes[0].data)
+            obj = entity_class()
+            obj.id = id;
             
-            self.entity_list.append(entity_class(id))
+            self.entity_list.append(obj)
         
         
         return ItEntity(self.entity_list)
