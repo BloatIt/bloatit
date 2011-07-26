@@ -58,4 +58,6 @@ public interface Model {
 
     public abstract void authenticate(RequestKey key);
 
+    void flush();
+
 }

@@ -16,6 +16,7 @@
 //
 package com.bloatit.web.linkable.money;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -52,6 +53,7 @@ public final class PaylineReturnAction extends ElveosAction {
             try {
                 process.validatePayment(token);
             } catch (final UnauthorizedOperationException e) {
+                Log.web().error("Fail to validate payment",e);
                 session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
             }
         } else if (ack.equals("cancel")) {

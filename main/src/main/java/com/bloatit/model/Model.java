@@ -109,6 +109,14 @@ public class Model implements com.bloatit.framework.model.Model {
         CacheManager.clear();
         DataManager.rollback();
     }
+    
+    @Override
+    public void flush() {
+        Log.model().trace("Flush the current transaction.");
+        CacheManager.clear();
+        DataManager.close();
+        DataManager.open();
+    }
 
     @Override
     public void authenticate(final RequestKey key) {
