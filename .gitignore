@@ -1,36 +1,22 @@
 www/fcgi.pyc
 nbproject/
 umlet.tmp
-*.po~
 .project
 .pydevproject
 doc/bdd.pdf
 *.pyc
 *.bak
 locales/*
-.LCK*~
-*.less~
-*.txt~
-doc/websitedoc/frame/*~
-doc/websitedoc/main/*~
-*.html~
-*.sh~
-*.js~
-*.svg~
-resources/api/*~
 .settings
 target
 nbactions.xml
 .classpath
-main/po/*~
-main/po/*.mo
 apt/.agitator
 main/css
 www
 resources/www_src/resources/commons/css/core.css
 main/src/main/java/com/bloatit/web/url/?*Url.java
 main/src/main/java/com/bloatit/web/url/?*UrlComponent.java
-paylineWebservice/src/main/java/*
 mvnst
 bin
 !less.js/bin
@@ -46,6 +32,8 @@ log-*
 
 # vim temp files
 .*.swp
+**~
+
 main/nb-configuration.xml
 main/src/main/java/hibernate.cfg.xml
 main/*.class
