@@ -58,7 +58,7 @@ then
 	exit 1
 fi
 
-GRADLE="gradle -b $REPOS_DIR/pom.xml" 
+GRADLE="gradle -b $REPOS_DIR/build.gradle" 
 
 if [ -n "$(git status --porcelain)" ] ; then
 	echo there is non commited data. abording.
@@ -79,7 +79,7 @@ abort_if_non_zero $?
 
 ##
 ## Change the versions in the poms files
-##    REPOS_DIR the directory where the main pom.xml is
+##    REPOS_DIR the directory where the main build.gradle is
 ##    VERSION : the version string of the release.
 changeVersion(){
 	local _repos_dir="$1"
@@ -94,8 +94,8 @@ changeVersion(){
 ##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
 ##    NEXT_SNAPSHOT_VERSION : the version of the next snapshot.
-##    REPOS_DIR the directory where the main pom.xml is
-##    GRADLE : the gradle command to launch (for example "gradle -b ../pom.xml") 
+##    REPOS_DIR the directory where the main build.gradle is
+##    GRADLE : the gradle command to launch (for example "gradle -b ../build.gradle") 
 performRelease() {
     local _prefix="$1"
     local _release_version="$2"

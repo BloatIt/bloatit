@@ -83,7 +83,7 @@ else
     exit 1
 fi
 
-GRADLE="mvn -b $REPOS_DIR/pom.xml" 
+GRADLE="mvn -b $REPOS_DIR/build.gradle" 
 
 echo "HOST=$HOST
 RELEASE_VERSION=$RELEASE_VERSION

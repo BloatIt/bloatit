@@ -91,7 +91,7 @@ SOURCE_DOC=$SOURCE/doc/websitedoc/
 #
 
 RSYNC=" rsync -v4 -h -h \
-	--recursive --exclude \"pom.xml\" --exclude \"*~\" \
+	--recursive --exclude \"build.gradle\" --exclude \"*~\" \
 	--compress --skip-compress=gz/jpg/mp[34]/7z/bz2/jar --rsh=/usr/bin/ssh \
 	--times  --links --delete "
 # keep rights on directories for user.
