@@ -1,0 +1,35 @@
+
+allprojects {
+    task log << { task -> println "Building $task.project.name" }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+
+    repositories {
+       mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.8.2'
+    }
+    
+    sourceCompatibility = 1.6
+    version = '1.0'
+
+    jar {
+        // TODO : see if there are other manifest to add.
+        manifest.attributes provider: 'gradle'
+    }
+    
+    test {
+        systemProperties 'masterPassword': 'plop'
+    }
+    
+//    uploadArchives {
+//        repositories {
+//           flatDir(dirs: file('repos'))
+//        }
+}
+
