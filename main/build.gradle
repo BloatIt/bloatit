@@ -63,7 +63,7 @@ test {
 
 // Copy all the jar runtime dependancies into $buildDir/output/lib
 task copyDep(type: Copy) {
-    into "$buildDir/output/lib"
+    into "$buildDir/dependencies"
     from configurations.runtime
 }
 

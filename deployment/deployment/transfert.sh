@@ -69,8 +69,8 @@ DEPEDENCIES=jars
 WWW=$UPLOAD_DIR/www_src/
 
 DEST=$DISTANT_NAME@$HOST:
-SOURCE_CLASSES=$SOURCE/main/target/classes/
-SOURCE_DEPENDENCIES=$SOURCE/main/target/dependencies/
+SOURCE_CLASSES=$SOURCE/main/build/classes/
+SOURCE_DEPENDENCIES=$SOURCE/main/build/dependencies/
 SOURCE_WWW=$SOURCE/resources/www_src/
 SOURCE_UP_CONF_DIR=$SOURCE/etc/
 SOURCE_UP_SHARE_DIR=$SOURCE/share/
