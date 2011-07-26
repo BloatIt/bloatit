@@ -27,6 +27,17 @@ subprojects {
         systemProperties 'masterPassword': 'plop'
     }
     
+    task generateBuildProperties(){
+        File buildProperties = file('build/classes/main/build.properties')
+	buildProperties.getParentFile().mkdirs()
+
+        FileWriter w = new FileWriter(buildProperties)
+        w.write("project.version=$version\n")
+        w.close()
+    }
+
+    compileJava.dependsOn 'generateBuildProperties'
+
 //    uploadArchives {
 //        repositories {
 //           flatDir(dirs: file('repos'))

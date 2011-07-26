@@ -85,7 +85,7 @@ changeVersion(){
 	local _repos_dir="$1"
         local _version="$2"
 	
-	sed -i -E "s/(^ *version ?= ?')[^']('$)/\\1$_version\\2/g" "$_repos_dir/build.gradle"
+	sed -i -r "s/(^ *version ?= ?')[^']('$)/\\1$_version\\2/g" "$_repos_dir/build.gradle"
 }
 
 ##
