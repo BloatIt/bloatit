@@ -115,7 +115,7 @@ public class OAuthAuthorizationPage extends ElveosPage {
         // TODO make this page pretty(er) !
         final HtmlDiv div = new HtmlDiv("oauth_question");
         {
-            final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.tr("Enter your loggin and password to grant ''{0}'' the right to access your Elveos account ?",
+            final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.tr("Enter your login and password to grant ''{0}'' the right to access your Elveos account ?",
                                                                             service.getDescription().getDefaultTranslation().getTitle()),
                                                                  1);
             div.add(loginTitle);
