@@ -106,6 +106,7 @@ public final class CreateReleaseAction extends UserContentAction {
     @Override
     protected void doTransmitParameters() {
         session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getVersionParameter());
     }
 
 }
