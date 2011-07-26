@@ -48,7 +48,7 @@ public class UrlParameter<T, U> extends UrlNode {
 
     @SuppressWarnings("unchecked")
     public UrlParameter(final T value, final UrlParameterDescription<U> description) {
-        setValue(value); // Also set the string value;
+        setValue(value, false); // Also set the string value;
         this.description = description;
         this.conversionError = false;
         if (description.getDefaultValue() != null && value == null) {
@@ -169,14 +169,20 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     public final void setValue(final T value) {
+        setValue(value, false);
+    }
+    
+    public final void setValue(final T value, boolean force) {
         setValueUnprotected(value);
-        final Messages messages = getMessages();
-        if (messages.size() - customMessages.size() > 0) {
-            final StringBuilder sb = new StringBuilder();
-            for (final Message message : messages) {
-                sb.append(message.getMessage()).append(" [").append(value).append("] && ");
+        if(!force) {
+            final Messages messages = getMessages();
+            if (messages.size() - customMessages.size() > 0) {
+                final StringBuilder sb = new StringBuilder();
+                for (final Message message : messages) {
+                    sb.append(message.getMessage()).append(" [").append(value).append("] && ");
+                }
+                throw new BadProgrammerException(sb.toString());
             }
-            throw new BadProgrammerException(sb.toString());
         }
     }
 
