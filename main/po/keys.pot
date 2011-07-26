@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-26 16:41+0200\n"
+"POT-Creation-Date: 2011-07-26 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -483,6 +483,11 @@ msgstr ""
 
 #: com/bloatit/web/pages/IndexPage.java:191
 msgid "<0::>&nbsp;Funded, "
+msgstr ""
+
+#: com/bloatit/web/pages/IndexPage.java:197
+#, java-format
+msgid "{0}&nbsp;Development&nbsp;offers, "
 msgstr ""
 
 #: com/bloatit/web/pages/IndexPage.java:202
@@ -998,16 +1003,16 @@ msgstr ""
 msgid "You haven't the right to see ''{0}'' group account."
 msgstr ""
 
-#: com/bloatit/web/linkable/money/PaylineProcess.java:145
+#: com/bloatit/web/linkable/money/PaylineProcess.java:143
 msgid "Cannot validate your payment. Reason: Token not found."
 msgstr ""
 
-#: com/bloatit/web/linkable/money/PaylineProcess.java:150
+#: com/bloatit/web/linkable/money/PaylineProcess.java:148
 #, java-format
 msgid "Payment of {0} accepted."
 msgstr ""
 
-#: com/bloatit/web/linkable/money/PaylineReturnAction.java:55
+#: com/bloatit/web/linkable/money/PaylineReturnAction.java:57
 #, java-format
 msgid "Right error when trying to validate the payment: {0}"
 msgstr ""

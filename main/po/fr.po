@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-26 16:41+0200\n"
+"POT-Creation-Date: 2011-07-26 17:35+0200\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -488,6 +488,11 @@ msgstr "{0}&nbsp;Demandes, "
 msgid "<0::>&nbsp;Funded, "
 msgstr "<0::>&nbsp;Financé, "
 
+#: com/bloatit/web/pages/IndexPage.java:197
+#, java-format
+msgid "{0}&nbsp;Development&nbsp;offers, "
+msgstr "{0}&nbsp;Offres&nbsp;de&nbsp;développement, "
+
 #: com/bloatit/web/pages/IndexPage.java:202
 #, java-format
 msgid "{0}&nbsp;Releases"
@@ -696,16 +701,16 @@ msgid ""
 "Content is available under the Creative Commons Attribution (<0::CC-by>) "
 "License."
 msgstr ""
-"Le contenu est disponible sous la licence Creative Commons Attribution "
-"(<0::CC-by>)."
+"Le contenu est disponible sous la licence Creative Commons Attribution (<0::"
+"CC-by>)."
 
 #: com/bloatit/web/pages/master/Footer.java:65
 msgid ""
-"Elveos, elveos.org and the elveos logo are registered trademark of the "
-"<0::Linkeos> SAS."
+"Elveos, elveos.org and the elveos logo are registered trademark of the <0::"
+"Linkeos> SAS."
 msgstr ""
-"Elveos, elveos.org et le logo d'elveos sont des marques appartenant à "
-"<0::Linkeos> SAS."
+"Elveos, elveos.org et le logo d'elveos sont des marques appartenant à <0::"
+"Linkeos> SAS."
 
 #: com/bloatit/web/pages/master/SessionBar.java:42
 #: com/bloatit/web/linkable/login/LoginPage.java:62
@@ -1035,16 +1040,16 @@ msgstr "Vous devez être connecté pour consulter vos informations personnelles.
 msgid "You haven't the right to see ''{0}'' group account."
 msgstr "Vous n'avez pas le droit de consulter le compte de l''équipe ''{0}''."
 
-#: com/bloatit/web/linkable/money/PaylineProcess.java:145
+#: com/bloatit/web/linkable/money/PaylineProcess.java:143
 msgid "Cannot validate your payment. Reason: Token not found."
 msgstr "Impossible de valider votre paiement. Raison&nbsp;: Token introuvable."
 
-#: com/bloatit/web/linkable/money/PaylineProcess.java:150
+#: com/bloatit/web/linkable/money/PaylineProcess.java:148
 #, java-format
 msgid "Payment of {0} accepted."
 msgstr "Paiement de {0} accepté."
 
-#: com/bloatit/web/linkable/money/PaylineReturnAction.java:55
+#: com/bloatit/web/linkable/money/PaylineReturnAction.java:57
 #, java-format
 msgid "Right error when trying to validate the payment: {0}"
 msgstr "Erreur de droit durant la validation du paiement&nbsp;: {0}"
@@ -1706,8 +1711,8 @@ msgid ""
 "The page you are looking for is not here. Maybe you can try heading back to "
 "the <0::Home page>."
 msgstr ""
-"La page que vous cherchez n'est pas ici. Vous pouvez peut-être aller à "
-"<0::l'accueil>."
+"La page que vous cherchez n'est pas ici. Vous pouvez peut-être aller à <0::"
+"l'accueil>."
 
 #: com/bloatit/web/linkable/errors/PageNotFound.java:65
 msgid ""
@@ -2430,8 +2435,8 @@ msgid ""
 "Enter your login and password to grant ''{0}'' the right to access your "
 "Elveos account ?"
 msgstr ""
-"Tapez votre login et mot de passe pour accorder à \"{0}\" le droit "
-"d\\'acceder à votre compte Elveos ?"
+"Tapez votre login et mot de passe pour accorder à \"{0}\" le droit d"
+"\\'acceder à votre compte Elveos ?"
 
 #: com/bloatit/web/linkable/oauth2/OAuthAuthorizationPage.java:127
 #: com/bloatit/web/linkable/login/SignUpPage.java:73
@@ -2505,8 +2510,8 @@ msgstr "Vous partagez ce besoin et vous souhaitez participer financièrement ?"
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:338
 msgid "You are a developer and want to be paid to achieve this request?"
 msgstr ""
-"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette demande "
-"?"
+"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette "
+"demande ?"
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:341
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:63
@@ -2530,8 +2535,8 @@ msgid ""
 "An offer has already been made on this feature. However, you can <0::make an "
 "alternative offer>."
 msgstr ""
-"Une offre a déjà été faite sur cette demande. Vous pouvez cependant "
-"<0::créer une offre alternative>."
+"Une offre a déjà été faite sur cette demande. Vous pouvez cependant <0::"
+"créer une offre alternative>."
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:383
 msgid "There is no release yet."
@@ -3190,8 +3195,8 @@ msgstr ""
 "Vous pouvez aussi joindre un schéma de fonctionnement, ou un design/mockup "
 "de l'interface souhaitée. \n"
 "\n"
-"Pensez à préciser si vous voulez que le résultat soit intégré \"upstream\" "
-"(dans la version officielle du logiciel à modifier)."
+"Pensez à préciser si vous voulez que le résultat soit intégré \"upstream"
+"\" (dans la version officielle du logiciel à modifier)."
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:138
 msgid ""
@@ -3687,8 +3692,8 @@ msgid ""
 "Number of characters for Fullname has to be inferior to %constraint% but "
 "your text is %valueLength% characters long."
 msgstr ""
-"Le nombre de caractères pour le nom complet doit être inférieur à "
-"%constraint% alors que votre texte a %valueLength% caractères."
+"Le nombre de caractères pour le nom complet doit être inférieur à %constraint"
+"% alors que votre texte a %valueLength% caractères."
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:149
 msgid "Password updated."
@@ -4717,8 +4722,8 @@ msgstr "Vous devez spécifier une invitation."
 
 #: com/bloatit/web/linkable/team/HandleJoinTeamInvitationAction.java:46
 msgid ""
-"I cannot understand if you have accepted the invitation. You wrote: "
-"''%value%''."
+"I cannot understand if you have accepted the invitation. You wrote: ''%value"
+"%''."
 msgstr ""
 "Je ne comprends pas si vous souhaitez accepter cette invitation. Vous avez "
 "entré&nbsp;: \"%value%\"."
@@ -4777,8 +4782,8 @@ msgid ""
 "The team display name size has to be superior to %constraint% but your text "
 "is %valueLength% characters long."
 msgstr ""
-"Le nombre de caractère pour le nom visible de l'équipe doit être supérieur à "
-" %constraint% alors que votre texte a %valueLength% caractères."
+"Le nombre de caractère pour le nom visible de l'équipe doit être supérieur "
+"à  %constraint% alors que votre texte a %valueLength% caractères."
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:58
 msgid ""
@@ -5308,9 +5313,6 @@ msgstr "financemement de logiciel libre, open-source, achat groupé"
 #~ "Le site de financement collaboratif de logiciels libres Elveos vous "
 #~ "propose de financer la création de&nbsp;: {0} dans {1}"
 
-#~ msgid "{0}&nbsp;Development&nbsp;offers, "
-#~ msgstr "{0}&nbsp;Offres&nbsp;de&nbsp;développement, "
-
 #~ msgid " no offer"
 #~ msgstr "aucune offre"
 
@@ -5630,15 +5632,15 @@ msgstr "financemement de logiciel libre, open-source, achat groupé"
 #~ "%constraint%."
 
 #~ msgid ""
-#~ "Number of characters for password check has to be superior to "
-#~ "%constraint%."
+#~ "Number of characters for password check has to be superior to %constraint"
+#~ "%."
 #~ msgstr ""
 #~ "Le nombre de caractères pour la vérification du  mot de passe doit être "
 #~ "supérieur à %constraint%."
 
 #~ msgid ""
-#~ "Number of characters for password check has to be inferior to "
-#~ "%constraint%."
+#~ "Number of characters for password check has to be inferior to %constraint"
+#~ "%."
 #~ msgstr ""
 #~ "Le nombre de caractères pour la vérification du mot de passe doit être "
 #~ "inférieur à %constraint%."
@@ -5720,8 +5722,8 @@ msgstr "financemement de logiciel libre, open-source, achat groupé"
 #~ "We thank you for your trust."
 #~ msgstr ""
 #~ "Cher {0},\n"
-#~ "Nous sommes heureux de vous annoncer que votre paiement {1} à "
-#~ "http://elveos.org a été validé.\n"
+#~ "Nous sommes heureux de vous annoncer que votre paiement {1} à http://"
+#~ "elveos.org a été validé.\n"
 #~ "Nous vous remercions de votre confiance."
 
 #~ msgid "An error prevented us from sending you a mail. Please notify us."

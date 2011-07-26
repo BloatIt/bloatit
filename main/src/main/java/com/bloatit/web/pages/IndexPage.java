@@ -194,7 +194,7 @@ public final class IndexPage extends ElveosPage {
         }
 
         // Count of offers
-        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}nbsp;Development&nbsp;offers, ",
+        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ",
                                                                                     OfferManager.getOfferCount()));
         summaryBox.add(offerCount);
 
