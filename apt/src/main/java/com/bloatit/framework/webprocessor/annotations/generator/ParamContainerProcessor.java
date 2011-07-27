@@ -2,15 +2,14 @@ package com.bloatit.framework.webprocessor.annotations.generator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -38,10 +37,21 @@ import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
 
 @SupportedAnnotationTypes("com.bloatit.framework.webprocessor.annotations.ParamContainer")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-public class ParamContainerProcessor extends AbstractProcessor {
+public class ParamContainerProcessor extends AbstractProcessor implements Processor {
 
-    private final Map<Element, ComponentDescription> components = new HashMap<Element, ComponentDescription>();
-    private final Map<Element, UrlDescription> urls = new HashMap<Element, UrlDescription>();
+    private static class ElementPair<T> {
+        public final Element element;
+        public final T other;
+
+        public ElementPair(Element element, T other) {
+            super();
+            this.element = element;
+            this.other = other;
+        }
+    }
+
+    private final List<ElementPair<ComponentDescription>> components = new ArrayList<ElementPair<ComponentDescription>>();
+    private final List<ElementPair<UrlDescription>> urls = new ArrayList<ElementPair<UrlDescription>>();
 
     private final Set<String> classAlreadyWritten = new HashSet<String>();
 
@@ -49,7 +59,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment env) {
-        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Annotation processing...");
+        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Annotation processing ! ");
 
         for (final TypeElement typeElement : annotations) {
             for (final Element element : env.getElementsAnnotatedWith(typeElement)) {
@@ -59,26 +69,25 @@ public class ParamContainerProcessor extends AbstractProcessor {
             }
         }
 
-        for (final Entry<Element, UrlDescription> entry : urls.entrySet()) {
-            for (final Entry<Element, UrlDescription> other : urls.entrySet()) {
-                if (!other.getKey().equals(entry.getKey())) {
-                    if (entry.getValue()
-                             .getComponent()
-                             .getCodeName()
-                             .replaceAll("\\%[a-zA-Z0-9_#()\\.]+\\%", "12")
-                             .matches(other.getValue().getComponent().getCodeName().replaceAll("\\%[a-zA-Z0-9_#()\\.]+\\%", "[a-zA-Z0-9_%]+"))) {
-                        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "2 pages matches the same input.", other.getKey());
-                        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "2 pages matches the same input.", entry.getKey());
+        for (final ElementPair<UrlDescription> entry : urls) {
+            for (final ElementPair<UrlDescription> other : urls) {
+                if (!other.element.equals(entry.element)) {
+                    if (entry.other.getComponent()
+                                   .getCodeName()
+                                   .replaceAll("\\%[a-zA-Z0-9_#()\\.]+\\%", "12")
+                                   .matches(other.other.getComponent().getCodeName().replaceAll("\\%[a-zA-Z0-9_#()\\.]+\\%", "[a-zA-Z0-9_%]+"))) {
+                        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "2 pages matches the same input.", other.element);
+                        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "2 pages matches the same input.", entry.element);
                     }
                 }
             }
         }
 
-        for (final Entry<Element, ComponentDescription> entry : components.entrySet()) {
-            createFile(new CodeGenerator().generateComponentClass(entry.getValue()));
+        for (final ElementPair<ComponentDescription> entry : components) {
+            createFile(new CodeGenerator().generateComponentClass(entry.other));
         }
-        for (final Entry<Element, UrlDescription> entry : urls.entrySet()) {
-            createFile(new CodeGenerator().generateUrlClass(entry.getValue()));
+        for (final ElementPair<UrlDescription> entry : urls) {
+            createFile(new CodeGenerator().generateUrlClass(entry.other));
         }
 
         return true;
@@ -136,14 +145,14 @@ public class ParamContainerProcessor extends AbstractProcessor {
         } else {
             component = new ComponentDescription(element, paramContainer, null);
         }
-        components.put(element, component);
+        components.add(new ElementPair<ComponentDescription>(element, component));
         if (father != null) {
             father.addSubComponent(component);
         }
 
         if (!paramContainer.isComponent()) {
             final UrlDescription url = new UrlDescription(component, element, isAction(element));
-            urls.put(element, url);
+            urls.add(new ElementPair<UrlDescription>(element, url));
             parseSuperClass(element, url);
             if (urlChild != null) {
                 urlChild.setFather(url);

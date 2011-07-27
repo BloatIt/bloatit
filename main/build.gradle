@@ -1,0 +1,121 @@
+
+repositories {
+    mavenRepo urls: "http://repository.apache.org/snapshots"
+    mavenRepo urls: "https://repository.jboss.org/nexus/content/groups/public/"
+    mavenRepo urls: "http://gettext-commons.googlecode.com/svn/maven-repository/"
+    mavenRepo urls: "http://maven.itextpdf.com/"
+    mavenRepo urls: "http://download.java.net/maven/2/"
+}
+
+dependencies {
+    compile project(':apt')
+    compile project(':paylineWebservice')
+
+    compile 'org.xnap.commons:gettext-commons:0.9.6'
+    compile 'org.hibernate:hibernate-core:3.6.1.Final'
+    compile 'org.hibernate:hibernate-validator:4.2.0.Final'
+    compile 'org.hibernate:hibernate-entitymanager:3.6.1.Final'
+    compile 'org.hibernate:hibernate-ehcache:3.6.1.Final'
+    compile 'org.hibernate:hibernate-search:3.3.0.Final'
+    compile 'org.slf4j:slf4j-log4j12:1.6.0'
+    compile 'org.slf4j:slf4j-jdk14:1.6.1'
+    compile 'org.slf4j:slf4j-api:1.6.1'
+    compile 'postgresql:postgresql:8.4-702.jdbc4'
+    compile 'commons-lang:commons-lang:2.3'
+    compile 'org.apache.geronimo.javamail:geronimo-javamail_1.4_provider:1.7'
+    compile 'org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.6'
+    compile 'org.jasypt:jasypt:1.7'
+    compile 'commons-httpclient:commons-httpclient:3.1'
+    compile 'commons-codec:commons-codec:1.5'
+    compile 'com.itextpdf:itextpdf:5.0.4'
+    compile 'com.googlecode.java-diff-utils:diffutils:1.2.1'
+    compile 'org.apache.amber:amber-server:1.0-SNAPSHOT'
+    compile 'org.apache.amber:oauth2-authzserver:0.2-SNAPSHOT'
+    compile 'org.jboss.spec:jboss-javaee-6.0:1.0.0.Final'
+
+    compile 'org.springframework:spring-web:3.0.5.RELEASE'
+
+    testCompile 'org.dspace.dependencies.jmockit:dspace-jmockit:0.999.4'
+}
+
+task createBuildDir << {
+    new File("$buildDir/classes/").mkdirs()
+    new File("$buildDir/apt/").mkdirs()
+}
+
+// This is for the annotation processing.
+compileJava() {
+    doFirst {
+        classesDir = new File("$buildDir/apt")
+        classesDir.mkdirs()
+
+        options.compilerArgs = [
+            '-processor', 'com.bloatit.framework.webprocessor.annotations.generator.ParamContainerProcessor',
+            '-s', "$buildDir/apt".toString()
+        ]
+    }
+}
+compileJava.dependsOn 'createBuildDir'
+
+test {
+    include 'com/bloatit/TestAll.class'
+    scanForTestClasses=false
+}
+
+// Copy all the jar runtime dependancies into $buildDir/output/lib
+task copyDep(type: Copy) {
+    into "$buildDir/dependencies"
+    from configurations.runtime
+}
+
+
+// CSS
+
+task genCss(type: Exec){
+    workingDir = file('..')
+    commandLine = [ './generatecss' ]
+}
+compileJava.dependsOn 'genCss'
+
+// Translation 
+
+// Declare the main tasks
+potfile = "po/keys.pot"
+task msgmerge(dependsOn: 'xgettext') {}
+task msgformat(dependsOn: 'createBuildDir') {}
+
+// Make sure the message are compile during the compilation.
+compileJava.dependsOn 'msgformat'
+
+task xgettext(type: Exec) {
+    // Prepare the construction of the command line
+    cmdBuilder = ['xgettext', '--language=Java', '-D', 'src/main/java/', '--from-code=UTF-8', '-ktrc:1c,2','-ktrnc:1c,2,3','-ktr','-ktrn:1,2','-o', potfile ]
+    
+    // Add the java files
+    FileTree javaFiles = fileTree('src/main/java/').include('**/*.java')
+    
+    javaFiles.visit { javafile ->
+        if (javafile.relativePath.toString().matches(java.util.regex.Pattern.compile('.*\\.java'))) {
+            cmdBuilder.add(javafile.relativePath.toString())
+        }
+    }
+    
+    commandLine = cmdBuilder
+}
+
+FileTree pofiles = fileTree(dir: 'po')
+pofiles.include '*.po'
+pofiles.visit { po ->
+    lang = po.relativePath.toString().replaceAll('\\.po$', '')
+    
+    task "msgformat_$po.relativePath" (type:Exec) {
+        commandLine = ['msgfmt', '-java2', '--resource=i18n.Messages', '-d', 'src/main/resources', '-l', lang, po.file.toString()]
+    }
+    msgformat.dependsOn "msgformat_$po.relativePath"
+    
+    task "msgmerge_$po.relativePath" (type:Exec) {
+        commandLine = ['msgmerge', '-U', po.file.toString(), potfile ]
+    }
+    msgmerge.dependsOn "msgmerge_$po.relativePath"
+}
+

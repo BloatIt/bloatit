@@ -49,7 +49,8 @@ import com.bloatit.web.url.LoginPageUrl;
 public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
 
-    @RequestParam(name = Session.SECURE_TOKEN_NAME)
+//    @RequestParam(name = Session.SECURE_TOKEN_NAME)
+    @RequestParam(name = "secure")
     private final String secure;
 
     public LoggedAction(final LoggedActionUrl url) {

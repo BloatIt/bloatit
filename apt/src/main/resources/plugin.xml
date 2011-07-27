@@ -1,0 +1,8 @@
+<plugin>
+	<extension point="org.eclipse.jdt.apt.core.annotationProcessorFactory">
+		<factories enableDefault="true">
+			<factory class="com.bloatit.framework.webprocessor.annotations.generator.ParamContainerProcessor">
+			</factory>
+		</factories>
+	</extension>
+</plugin>
