@@ -18,6 +18,7 @@
  */
 package com.bloatit.rest.resources;
 
+import java.util.Date;
 import java.util.Locale;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -25,14 +26,17 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
+import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -182,7 +186,38 @@ public class RestMember extends RestElement<Member> {
     public String getDisplayName() {
         return model.getDisplayName();
     }
+    
+    
+    
+    @XmlAttribute(name = "email")
+    public String getEmail() {
+        try {
+            return model.getEmail();
+        } catch (final UnauthorizedOperationException e) {
+            return null;
+        }
+    }
+    
+    
+    @XmlAttribute(name = "creation_date")
+    public Date getCreationDate() {
+        try {
+            return model.getDateCreation();
+        } catch (final UnauthorizedOperationException e) {
+            return null;
+        }
+    }
 
+    @XmlElement(name = "internalaccount")
+    @XmlIDREF
+    public RestInternalAccount getInternalAccount() {
+        try {
+            return new RestInternalAccount(model.getInternalAccount());
+        } catch (final UnauthorizedOperationException e) {
+            return null;
+        }
+    }
+    
     @XmlElement(name = "karma")
     public int getKarma() throws RestException {
         try {
