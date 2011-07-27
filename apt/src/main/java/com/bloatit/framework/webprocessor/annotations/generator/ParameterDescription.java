@@ -11,7 +11,7 @@ import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
-class ParameterDescription extends Description {
+class ParameterDescription extends Description implements Comparable<ParameterDescription> {
 
     // Name of the parameter.
     private final String attributeName;
@@ -167,5 +167,119 @@ class ParameterDescription extends Description {
 
     public PrecisionConstraint getPrecisionConstraint() {
         return precisionConstraint;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((attributeName == null) ? 0 : attributeName.hashCode());
+        result = prime * result + ((conversionErrorMsg == null) ? 0 : conversionErrorMsg.hashCode());
+        result = prime * result + ((defaultValue == null) ? 0 : defaultValue.hashCode());
+        result = prime * result + ((generateFrom == null) ? 0 : generateFrom.hashCode());
+        result = prime * result + (isOptional ? 1231 : 1237);
+        result = prime * result + ((lengthConstraint == null) ? 0 : lengthConstraint.hashCode());
+        result = prime * result + ((maxConstraint == null) ? 0 : maxConstraint.hashCode());
+        result = prime * result + ((minConstraint == null) ? 0 : minConstraint.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((nonOptional == null) ? 0 : nonOptional.hashCode());
+        result = prime * result + ((precisionConstraint == null) ? 0 : precisionConstraint.hashCode());
+        result = prime * result + ((role == null) ? 0 : role.hashCode());
+        result = prime * result + ((suggestedValue == null) ? 0 : suggestedValue.hashCode());
+        result = prime * result + ((typeOrTemplateType == null) ? 0 : typeOrTemplateType.hashCode());
+        result = prime * result + ((typeWithoutTemplate == null) ? 0 : typeWithoutTemplate.hashCode());
+        result = prime * result + ((typeWithoutTemplateSimple == null) ? 0 : typeWithoutTemplateSimple.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ParameterDescription other = (ParameterDescription) obj;
+        if (attributeName == null) {
+            if (other.attributeName != null)
+                return false;
+        } else if (!attributeName.equals(other.attributeName))
+            return false;
+        if (conversionErrorMsg == null) {
+            if (other.conversionErrorMsg != null)
+                return false;
+        } else if (!conversionErrorMsg.equals(other.conversionErrorMsg))
+            return false;
+        if (defaultValue == null) {
+            if (other.defaultValue != null)
+                return false;
+        } else if (!defaultValue.equals(other.defaultValue))
+            return false;
+        if (generateFrom == null) {
+            if (other.generateFrom != null)
+                return false;
+        } else if (!generateFrom.equals(other.generateFrom))
+            return false;
+        if (isOptional != other.isOptional)
+            return false;
+        if (lengthConstraint == null) {
+            if (other.lengthConstraint != null)
+                return false;
+        } else if (!lengthConstraint.equals(other.lengthConstraint))
+            return false;
+        if (maxConstraint == null) {
+            if (other.maxConstraint != null)
+                return false;
+        } else if (!maxConstraint.equals(other.maxConstraint))
+            return false;
+        if (minConstraint == null) {
+            if (other.minConstraint != null)
+                return false;
+        } else if (!minConstraint.equals(other.minConstraint))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (nonOptional == null) {
+            if (other.nonOptional != null)
+                return false;
+        } else if (!nonOptional.equals(other.nonOptional))
+            return false;
+        if (precisionConstraint == null) {
+            if (other.precisionConstraint != null)
+                return false;
+        } else if (!precisionConstraint.equals(other.precisionConstraint))
+            return false;
+        if (role != other.role)
+            return false;
+        if (suggestedValue == null) {
+            if (other.suggestedValue != null)
+                return false;
+        } else if (!suggestedValue.equals(other.suggestedValue))
+            return false;
+        if (typeOrTemplateType == null) {
+            if (other.typeOrTemplateType != null)
+                return false;
+        } else if (!typeOrTemplateType.equals(other.typeOrTemplateType))
+            return false;
+        if (typeWithoutTemplate == null) {
+            if (other.typeWithoutTemplate != null)
+                return false;
+        } else if (!typeWithoutTemplate.equals(other.typeWithoutTemplate))
+            return false;
+        if (typeWithoutTemplateSimple == null) {
+            if (other.typeWithoutTemplateSimple != null)
+                return false;
+        } else if (!typeWithoutTemplateSimple.equals(other.typeWithoutTemplateSimple))
+            return false;
+        return true;
+    }
+
+    @Override
+    public int compareTo(ParameterDescription o) {
+        return name.compareTo(o.name);
     }
 }

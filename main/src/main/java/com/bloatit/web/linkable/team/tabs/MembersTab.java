@@ -156,16 +156,16 @@ public class MembersTab extends HtmlTab {
             if (right == UserTeamRight.CONSULT) {
                 if (member.canBeKickFromTeam(team, visitor)) {
                     if (member.equals(visitor)) {
-                        ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), team, member, right, false).getHtmlLink(Context.tr("Leave")));
+                        ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), false, right, member, team).getHtmlLink(Context.tr("Leave")));
                     } else {
-                        ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), team, member, right, false).getHtmlLink(Context.tr("Kick")));
+                        ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), false, right, member, team).getHtmlLink(Context.tr("Kick")));
                     }
                 }
             } else {
                 if (team.canChangeRight(visitor, member, right, true)) {
-                    ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), team, member, right, true).getHtmlLink(Context.tr("Grant")));
+                    ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), true, right, member, team).getHtmlLink(Context.tr("Grant")));
                 } else if (team.canChangeRight(visitor, member, right, false)) {
-                    ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), team, member, right, false).getHtmlLink(Context.tr("Remove")));
+                    ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), false, right, member, team).getHtmlLink(Context.tr("Remove")));
                 }
             }
 
