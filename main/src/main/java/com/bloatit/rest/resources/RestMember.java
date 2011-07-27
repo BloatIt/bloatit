@@ -79,7 +79,7 @@ import com.bloatit.rest.list.RestMemberList;
  * return a RestMemberList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "member")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestMember extends RestElement<Member> {
     private Member model;
