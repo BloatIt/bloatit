@@ -216,7 +216,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         identicaBlock.addAttribute("style", "background-color: white;border: 1px solid #ddd;display:inline-block;");
 
         final HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://identi.ca//index.php?action=bookmarklet',e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20"
-                + new FeaturePageAliasUrl(feature).externalUrlString()
+                + new FeaturePageAliasUrl(feature).externalUrlString(true)
                 + "';function%20a(){if(!w.open(g,'t','toolbar=0,resizable=0,scrollbars=1,status=1,width=450,height=200')){l.href=g;}}a();})()");
         final HtmlImage backgroundImage = new HtmlImage(new Image("/resources/commons/img/share/identica.png"), "identi.ca");
         backgroundImage.addAttribute("style", "border:none;");
@@ -234,6 +234,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(actionLink);
         actionLink.setCssClass("twitter-share-button");
         actionLink.addAttribute("data-count", "horizontal");
+        actionLink.addAttribute("data-url", new FeaturePageAliasUrl(feature).externalUrlString(true));
 
         final HtmlScript script = new HtmlScript();
         item.add(script);
@@ -253,6 +254,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(script2);
         script2.addAttribute("type", "IN/Share");
         script2.addAttribute("data-counter", "right");
+        script2.addAttribute("data-url", new FeaturePageAliasUrl(feature).externalUrlString(true));
 
         return item;
     }
@@ -268,6 +270,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         final HtmlGenericElement element = new HtmlGenericElement("g:plusone");
         item.add(element);
         element.addAttribute("size", "medium");
+        element.addAttribute("href", new FeaturePageAliasUrl(feature).externalUrlString(true));
 
         return item;
     }
