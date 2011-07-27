@@ -29,7 +29,7 @@ subprojects {
     }
     
     task generateBuildProperties(){
-        File buildProperties = file('build/classes/main/build.properties')
+        File buildProperties = file('src/main/resources/build.properties')
 	buildProperties.getParentFile().mkdirs()
 
         FileWriter w = new FileWriter(buildProperties)

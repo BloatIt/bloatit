@@ -68,6 +68,15 @@ task copyDep(type: Copy) {
     from configurations.runtime
 }
 
+
+// CSS
+
+task genCss(type: Exec){
+    workingDir = file('..')
+    commandLine = [ './generatecss' ]
+}
+compileJava.dependsOn 'genCss'
+
 // Translation 
 
 // Declare the main tasks
@@ -100,7 +109,7 @@ pofiles.visit { po ->
     lang = po.relativePath.toString().replaceAll('\\.po$', '')
     
     task "msgformat_$po.relativePath" (type:Exec) {
-        commandLine = ['msgfmt', '-java2', '--resource=i18n.Messages', '-d', 'build/classes/', '-l', lang, po.file.toString()]
+        commandLine = ['msgfmt', '-java2', '--resource=i18n.Messages', '-d', 'src/main/resources', '-l', lang, po.file.toString()]
     }
     msgformat.dependsOn "msgformat_$po.relativePath"
     
