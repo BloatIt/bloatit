@@ -70,7 +70,7 @@ class ParameterDescription extends Description implements Comparable<ParameterDe
     }
 
     private String computeName(final String annotationName, final String javaName, final Role role, final String className) {
-        if (annotationName.isEmpty()) {
+        if (annotationName == null || annotationName.isEmpty()) {
             if (role == Role.POST || role == Role.SESSION) {
                 return className.toLowerCase() + "_" + javaName;
             }
