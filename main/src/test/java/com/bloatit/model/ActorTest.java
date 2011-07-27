@@ -26,7 +26,7 @@ public class ActorTest extends ModelTestUnit {
     public final void testGetDateCreation() {
         final Member tom = Member.create(db.getTom());
         try {
-            assertEquals(tom.getDateCreation(), db.getTom().getDateCreation());
+            assertEquals(tom.getDateCreation().getTime(), db.getTom().getDateCreation().getTime());
         } catch (final UnauthorizedPublicReadOnlyAccessException e) {
             fail();
         }
