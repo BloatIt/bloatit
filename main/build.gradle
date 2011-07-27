@@ -109,7 +109,7 @@ pofiles.visit { po ->
     lang = po.relativePath.toString().replaceAll('\\.po$', '')
     
     task "msgformat_$po.relativePath" (type:Exec) {
-        commandLine = ['msgfmt', '-java2', '--resource=i18n.Messages', '-d', 'src/main/resources', '-l', lang, po.file.toString()]
+        commandLine = ['msgfmt', '-java2', '--resource=i18n.Messages', '-d', 'build/classes/main', '-l', lang, po.file.toString()]
     }
     msgformat.dependsOn "msgformat_$po.relativePath"
     
