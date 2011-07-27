@@ -177,7 +177,7 @@ public final class FeaturePage extends ElveosPage {
             if (feature.getSoftware() == null) {
                 return feature.getTitle();
             } else {
-                return Context.tr("{0} - {1}", feature.getTitle(), feature.getSoftware());
+                return Context.tr("{0} - {1}", feature.getTitle(), feature.getSoftware().getName());
             }
         }
         return Context.tr("feature not found.");
