@@ -31,7 +31,7 @@ public final class FeaturePageAlias extends AliasAction {
     private Feature feature;
 
     public FeaturePageAlias(final FeaturePageAliasUrl url) {
-        super(url, new FeaturePageUrl(url.getFeature(), TabKey.description));
+        super(url, new FeaturePageUrl(url.getFeature(), TabKey.description, true));
     }
 
 }

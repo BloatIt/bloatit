@@ -76,20 +76,50 @@ public class CodeGenerator {
         copyConstructor.addLine("super(other);");
         copyConstructor.addLine("component = other.component.clone();");
 
-        final Method generatedConstructor = clazz.addConstructor();
-        final MethodCall superMethod = new MethodCall("super");
-        for (final ParameterDescription paramDesc : desc.getFathersConstructorParameters()) {
-            generatedConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getAttributeName());
-            superMethod.addParameter(paramDesc.getAttributeName());
+        //Generated constructor
+        {
+            final Method generatedConstructor = clazz.addConstructor();
+            final MethodCall superMethod = new MethodCall("super");
+            for (final ParameterDescription paramDesc : desc.getFathersConstructorParameters()) {
+                generatedConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getAttributeName());
+                superMethod.addParameter(paramDesc.getAttributeName());
+            }
+            final MethodCall componentConstruction = new MethodCall(desc.getComponent().getClassName());
+            for (final ParameterDescription paramDesc : desc.getConstructorParameters()) {
+                generatedConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getAttributeName());
+                componentConstruction.addParameter(paramDesc.getAttributeName());
+                
+            }
+            componentConstruction.addParameter("false");
+            
+            generatedConstructor.addLine(superMethod + ";");
+            generatedConstructor.addLine("component = new " + componentConstruction + ";");
         }
-        final MethodCall componentConstruction = new MethodCall(desc.getComponent().getClassName());
-        for (final ParameterDescription paramDesc : desc.getConstructorParameters()) {
-            generatedConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getAttributeName());
-            componentConstruction.addParameter(paramDesc.getAttributeName());
-        }
-        generatedConstructor.addLine(superMethod + ";");
-        generatedConstructor.addLine("component = new " + componentConstruction + ";");
 
+        //Generated safe
+        {
+            final Method generatedForceConstructor = clazz.addConstructor();
+            final MethodCall superMethod = new MethodCall("super");
+            for (final ParameterDescription paramDesc : desc.getFathersConstructorParameters()) {
+                generatedForceConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getAttributeName());
+                superMethod.addParameter(paramDesc.getAttributeName());
+            }
+            
+            
+            final MethodCall componentConstruction = new MethodCall(desc.getComponent().getClassName());
+            for (final ParameterDescription paramDesc : desc.getConstructorParameters()) {
+                generatedForceConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getAttributeName());
+                componentConstruction.addParameter(paramDesc.getAttributeName());
+                
+            }
+            componentConstruction.addParameter("force");
+            
+            generatedForceConstructor.addParameter("boolean", "force");
+            generatedForceConstructor.addLine(superMethod + ";");
+            generatedForceConstructor.addLine("component = new " + componentConstruction + ";");
+        }
+        
+        //Is action
         if (desc.getFather() == null) {
             final Method isAction = clazz.addMethod("boolean", "isAction");
             isAction.setOverride();
@@ -176,7 +206,7 @@ public class CodeGenerator {
             final String setterName = "set" + Utils.firstCharUpper(param.getAttributeName());
             final Method setter = clazz.addMethod("void", setterName);
             setter.addParameter(param.getTypeWithoutTemplate(), "other");
-            setter.addLine("this.component." + setterName + "(other);");
+            setter.addLine("this.component." + setterName + "(other, false);");
         }
 
         for (final ComponentDescription subComponent : desc.getComponent().getSubComponents()) {
@@ -187,7 +217,6 @@ public class CodeGenerator {
             final String setterName = "set" + Utils.firstCharUpper(subComponent.getAttributeName()) + "Url";
             final Method setter = clazz.addMethod("void", setterName);
             setter.addParameter(subComponent.getClassName(), "other");
-            setter.addLine("this.component." + setterName + "(other);");
         }
 
         return clazz;
@@ -210,7 +239,7 @@ public class CodeGenerator {
         clazz.addImport("java.util.ArrayList");
 
         final Method constructor = clazz.addConstructor();
-        constructor.addLine("this();");
+        
         constructor.addParameter("Parameters", "params");
         constructor.addParameter("SessionParameters", "session");
 
@@ -218,6 +247,7 @@ public class CodeGenerator {
         Method defaultConstructor = null;
         if (!desc.getUrlParameters().isEmpty()) {
             generatedConstructor.addLine("this();");
+            constructor.addLine("this();");
             defaultConstructor = clazz.addConstructor();
             defaultConstructor.setModifier(Modifier.PRIVATE);
         } else {
@@ -265,8 +295,10 @@ public class CodeGenerator {
         }
         for (final ParameterDescription param : desc.getUrlParameters()) {
             generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getAttributeName());
-            generatedConstructor.addLine("this.set" + Utils.firstCharUpper(param.getAttributeName()) + "(" + param.getAttributeName() + ");");
+            generatedConstructor.addLine("this.set" + Utils.firstCharUpper(param.getAttributeName()) + "(" + param.getAttributeName() + ", force);");
         }
+        
+        
 
         final Method doRegister = clazz.addMethod("void", "doRegister");
         doRegister.setOverride();
@@ -310,15 +342,20 @@ public class CodeGenerator {
             // Value Setter
             final Method setter = clazz.addMethod("void", "set" + Utils.firstCharUpper(param.getAttributeName()));
             setter.addParameter(param.getTypeWithoutTemplate(), "other");
-            setter.addLine("this." + param.getAttributeName() + ".setValue(other);");
+            setter.addParameter("boolean", "force");
+            setter.addLine("this." + param.getAttributeName() + ".setValue(other, force);");
             for (final ParameterDescription generatedParam : desc.getParameterGeneratedFromMe(param)) {
                 setter.addLine("try {");
                 setter.addLine("    " + generatedParam.getAttributeName() + ".setValue(" + param.getAttributeName() + ".getValue().get"
-                        + Utils.firstCharUpper(generatedParam.getAttributeName()) + "());");
+                        + Utils.firstCharUpper(generatedParam.getAttributeName()) + "(), false);");
                 setter.addLine("} catch (final Exception e) {");
                 setter.addLine("    Log.framework().warn(\"Error in pretty value generation.\", e);");
                 setter.addLine("}");
             }
+            
+            final Method setter2 = clazz.addMethod("void", "set" + Utils.firstCharUpper(param.getAttributeName()));
+            setter2.addParameter(param.getTypeWithoutTemplate(), "other");
+            setter.addLine("this." + param.getAttributeName() + ".setValue(other, force);");
 
             doRegister.addLine("register(" + param.getAttributeName() + ");");
 
@@ -347,9 +384,13 @@ public class CodeGenerator {
                 final String parameterName = subParameters.getAttributeName() + subComponent.getClassName();
                 generatedConstructor.addParameter(subParameters.getTypeWithoutTemplate(), parameterName);
                 subcomponentConstruction.addParameter(parameterName);
+                
             }
+            subcomponentConstruction.addParameter("force");
             generatedConstructor.addLine("this." + subComponentName + " = new " + subcomponentConstruction + ";");
+            
         }
+        generatedConstructor.addParameter("boolean", "force");
 
         constructor.addLine("parseSessionParameters(session);");
         constructor.addLine("parseParameters(params);");

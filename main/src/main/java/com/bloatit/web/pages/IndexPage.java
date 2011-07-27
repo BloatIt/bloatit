@@ -188,7 +188,7 @@ public final class IndexPage extends ElveosPage {
 
         if (AuthToken.isAuthenticated()) {
             final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false, AuthToken.getMember());
-            final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
+            final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;Funded, "), mdc);
             final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
             summaryBox.add(contributionRaised);
         }

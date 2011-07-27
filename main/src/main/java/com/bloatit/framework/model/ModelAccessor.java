@@ -131,6 +131,21 @@ public class ModelAccessor {
             mutex.release();
         }
     }
+    
+    /**
+     * @see com.bloatit.framework.model.Model#flush()
+     */
+    public static void flush() {
+        try {
+            mutex.acquire();
+            model.flush();
+        } catch (final InterruptedException e) {
+            throw new BadProgrammerException(e);
+        } finally {
+            mutex.release();
+        }
+    }
+    
 
     /**
      * @see com.bloatit.framework.model.Model#close()
