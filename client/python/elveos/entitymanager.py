@@ -1,6 +1,8 @@
 from xml.dom.minidom import parseString as parse_xml
 import urllib
 
+from server import server
+
 class EntityManager():
 
     def __init__(self, base_class, base_module):
@@ -11,29 +13,10 @@ class EntityManager():
 
 
     def __iter__(self):        
-        dom = parse_xml(urllib.urlopen('http://127.0.0.1/rest/'+self.collection_code).read())
         
-        xml_rest = dom.getElementsByTagName('rest').item(0)
+        entity_list = server.load_entity_collection(self)
         
-        xml_collection = xml_rest.getElementsByTagName(self.collection_code).item(0)
-        
-        xml_entities = xml_collection.getElementsByTagName(self.code)
-        
-        self.entity_list = list()
-        
-        exec 'from '+self.base_module+' import '+self.base_class
-
-        entity_class = locals()[self.base_class]
-            
-        for entity in xml_entities:
-            id = int(entity.childNodes[0].data)
-            obj = entity_class()
-            obj.id = id;
-            
-            self.entity_list.append(obj)
-        
-        
-        return ItEntity(self.entity_list)
+        return ItEntity(entity_list)
         
         
         
