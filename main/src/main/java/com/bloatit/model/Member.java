@@ -16,6 +16,7 @@
 //
 package com.bloatit.model;
 
+import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalServiceMembership;
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
@@ -525,6 +527,10 @@ public final class Member extends Actor<DaoMember> implements User {
         return new ListBinder<ExternalServiceMembership, DaoExternalServiceMembership>(getDao().getAuthorizedExternalServices());
     }
 
+    public void addAuthorizedExternalService(String clientId, String token, EnumSet<RightLevel> rights) {
+        getDao().addAuthorizedExternalService(clientId, token, rights);
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -633,5 +639,4 @@ public final class Member extends Actor<DaoMember> implements User {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
 }

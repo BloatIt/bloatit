@@ -1,6 +1,9 @@
 package com.bloatit.model;
 
+import java.util.EnumSet;
+
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.right.AuthToken;
@@ -36,34 +39,37 @@ public class Rights {
     }
 
     private final OwningState owningState;
+    private final boolean isWeak;
+    private final EnumSet<RightLevel> rights;
     private Team currentTeam;
 
     public Rights(final IdentifiableInterface identifiable) {
         currentTeam = null;
+        rights = AuthToken.getRights();
+        isWeak = AuthToken.isWeak();
         if (!AuthToken.isAuthenticated()) {
             owningState = OwningState.NOBODY;
-        } else {
-            if (AuthToken.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {
-                if (AuthToken.getAsTeam() != null) {
-                    currentTeam = AuthToken.getAsTeam();
-                } else {
-                    currentTeam = identifiable.accept(new GetCreatedByTeamVisitor());
-                }
-
-                final Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(AuthToken.getMember()));
-                if (accept != null && accept) {
-                    owningState = OwningState.TEAM_OWNER;
-                } else {
-                    owningState = OwningState.AUTHENTICATED;
-                }
+            return;
+        }
+        if (AuthToken.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {
+            if (AuthToken.getAsTeam() != null) {
+                currentTeam = AuthToken.getAsTeam();
             } else {
-                if (identifiable.accept(new IsOwnerVisitor(AuthToken.getMember()))) {
-                    owningState = OwningState.OWNER;
-                } else {
-                    owningState = OwningState.AUTHENTICATED;
-                }
+                currentTeam = identifiable.accept(new GetCreatedByTeamVisitor());
+            }
+
+            final Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(AuthToken.getMember()));
+            if (accept != null && accept) {
+                owningState = OwningState.TEAM_OWNER;
+                return;
+            }
+        } else {
+            if (identifiable.accept(new IsOwnerVisitor(AuthToken.getMember()))) {
+                owningState = OwningState.OWNER;
+                return;
             }
         }
+        owningState = OwningState.AUTHENTICATED;
     }
 
     // ///////////////////////////////////////
@@ -138,6 +144,17 @@ public class Rights {
             return false;
         }
         return member.getTeamRights(team).contains(aRight);
+    }
+
+    // ///////////////////////////////////////
+    // Weak authentication
+
+    public final boolean isWeak() {
+        return isWeak;
+    }
+
+    public final EnumSet<RightLevel> getWeakRights() {
+        return rights;
     }
 
     // ///////////////////////////////////////

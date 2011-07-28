@@ -1,6 +1,7 @@
 package com.bloatit.framework.oauthprocessor;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 public class OAuthGetAuthorization extends OAuthBloatitReponse {
@@ -53,8 +55,15 @@ public class OAuthGetAuthorization extends OAuthBloatitReponse {
             // Get oauth parameters
             String clientId = oAuthAuthzRequest.getClientId();
             String responseType = oAuthAuthzRequest.getParam(OAuth.OAUTH_RESPONSE_TYPE);
+            Set<String> scopes = oAuthAuthzRequest.getScopes();
             redirectUri = oAuthAuthzRequest.getRedirectURI();
             state = oAuthAuthzRequest.getState();
+
+            int expiresIn = DEFAULT_EXPIRE_TIME;
+            if (scopes.contains("permanent_token")) {
+                expiresIn = DateUtils.SECOND_PER_DAY * 3650;
+            }
+
             if (redirectUri == null || redirectUri.isEmpty()) {
                 redirectUri = "pagenotfound";
             }
@@ -73,7 +82,7 @@ public class OAuthGetAuthorization extends OAuthBloatitReponse {
                 // build response
                 builder.setCode(token);
                 // Add the external service
-                authenticator.addExternalService(clientId, login, password, token);
+                authenticator.addExternalService(clientId, login, password, token, scopes);
 
             } else if (responseType.equals(ResponseType.TOKEN.toString())) {
                 // Create tokens
@@ -82,10 +91,10 @@ public class OAuthGetAuthorization extends OAuthBloatitReponse {
                 // build response
                 builder.setAccessToken(token);
                 builder.setParam(OAuth.OAUTH_REFRESH_TOKEN, refresh);
-                builder.setExpiresIn(String.valueOf(DEFAULT_EXPIRE_TIME));
+                builder.setExpiresIn(String.valueOf(expiresIn));
                 // Add in external services
-                authenticator.addExternalService(clientId, login, password, token);
-                authenticator.authorize(token, token, refresh, DEFAULT_EXPIRE_TIME);
+                authenticator.addExternalService(clientId, login, password, token, scopes);
+                authenticator.authorize(token, token, refresh, expiresIn);
             }
 
             // Finish the construction

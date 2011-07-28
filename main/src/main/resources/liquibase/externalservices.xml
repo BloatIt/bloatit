@@ -103,4 +103,10 @@
 			referencedTableName="daousercontent" referencesUniqueColumn="false" />
 	</changeSet>
 
+	<changeSet id="20110728 rename column canCreateFeature"
+		author="Thomas Guyard">
+		<renameColumn tableName="daoexternalservicemembership"
+			oldColumnName="cancreatefeature" newColumnName="trust" />
+	</changeSet>
+
 </databaseChangeLog>

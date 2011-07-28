@@ -37,6 +37,10 @@ dependencies {
     compile 'org.springframework:spring-web:3.0.5.RELEASE'
 
     testCompile 'org.dspace.dependencies.jmockit:dspace-jmockit:0.999.4'
+
+    runtime files("$buildDir/classes/main/") {
+        //builtBy 'compile'
+    }
 }
 
 task createBuildDir << {
@@ -56,7 +60,6 @@ compileJava() {
         ]
     }
 }
-compileJava.dependsOn 'createBuildDir'
 
 test {
     include 'com/bloatit/TestAll.class'
@@ -69,6 +72,11 @@ task copyDep(type: Copy) {
     from configurations.runtime
 }
 
+// Liquibase
+task liquibase(type:Exec, dependsOn: 'processResources') {
+     commandLine = [ './liquibase/liquibase-launcher.sh', 'update' ]
+}
+classes.dependsOn 'liquibase'
 
 // CSS
 
@@ -76,7 +84,7 @@ task genCss(type: Exec){
     workingDir = file('..')
     commandLine = [ './generatecss' ]
 }
-compileJava.dependsOn 'genCss'
+classes.dependsOn 'genCss'
 
 // Translation 
 
@@ -86,7 +94,7 @@ task msgmerge(dependsOn: 'xgettext') {}
 task msgformat(dependsOn: 'createBuildDir') {}
 
 // Make sure the message are compile during the compilation.
-compileJava.dependsOn 'msgformat'
+classes.dependsOn 'msgformat'
 
 task xgettext(type: Exec) {
     // Prepare the construction of the command line
@@ -119,4 +127,5 @@ pofiles.visit { po ->
     }
     msgmerge.dependsOn "msgmerge_$po.relativePath"
 }
+
 

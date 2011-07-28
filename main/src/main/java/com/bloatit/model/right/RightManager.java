@@ -18,6 +18,7 @@ package com.bloatit.model.right;
 
 import java.util.EnumSet;
 
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.model.Rights;
 
 /**
@@ -196,6 +197,11 @@ public abstract class RightManager {
         protected UnauthorizedPublicAccessException exception(final Action action) {
             return new UnauthorizedPublicAccessException(action);
         }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return action == Action.READ;
+        }
     }
 
     /**
@@ -211,6 +217,11 @@ public abstract class RightManager {
         protected UnauthorizedPublicReadOnlyAccessException exception(final Action action) {
             return new UnauthorizedPublicReadOnlyAccessException(action);
         }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return true;
+        }
     }
 
     /**
@@ -225,6 +236,11 @@ public abstract class RightManager {
         @Override
         protected UnauthorizedPrivateReadOnlyAccessException exception(final Action action) {
             return new UnauthorizedPrivateReadOnlyAccessException(action);
+        }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return action == Action.READ;
         }
     }
 
@@ -247,6 +263,11 @@ public abstract class RightManager {
         @Override
         protected boolean can(final Rights object, final Action action) {
             return object.isAuthenticated();
+        }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return action == Action.READ;
         }
     }
 }

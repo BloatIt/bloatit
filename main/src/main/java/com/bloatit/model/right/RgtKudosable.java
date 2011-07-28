@@ -16,6 +16,9 @@
 //
 package com.bloatit.model.right;
 
+import java.util.EnumSet;
+
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Rights;
 
@@ -38,6 +41,11 @@ public class RgtKudosable extends RightManager {
         @Override
         protected final boolean can(final Rights role, final Action action) {
             return authentifiedCanWrite(role, action);
+        }
+        
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return rights.contains(RightLevel.KUDOS);
         }
     }
 }

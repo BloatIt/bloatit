@@ -15,7 +15,7 @@ public class DaoExternalServiceTest extends DataTestUnit {
 
     @Test
     public final void testDaoExternalServiceDaoMemberStringStringEnumSetOfRightLevel() {
-        final EnumSet<RightLevel> set = EnumSet.of(RightLevel.CREATE_FEATURE, RightLevel.CONTRIBUTE, RightLevel.CREATE_OFFER);
+        final EnumSet<RightLevel> set = EnumSet.of(RightLevel.CONTRIBUTE, RightLevel.CREATE_OFFER);
         DaoExternalService service = DaoExternalService.createAndPersist(fred,
                                                                          null,
                                                                          DaoDescription.createAndPersist(fred, null, Locale.FRENCH, "title", "coucou"));
@@ -29,7 +29,7 @@ public class DaoExternalServiceTest extends DataTestUnit {
 
     @Test
     public final void testAuthorize() {
-        final EnumSet<RightLevel> set = EnumSet.of(RightLevel.CREATE_FEATURE, RightLevel.CONTRIBUTE, RightLevel.CREATE_OFFER);
+        final EnumSet<RightLevel> set = EnumSet.of(RightLevel.CONTRIBUTE, RightLevel.CREATE_OFFER);
         DaoExternalService service = DaoExternalService.createAndPersist(fred,
                                                                          null,
                                                                          DaoDescription.createAndPersist(fred, null, Locale.FRENCH, "title", "coucou"));
