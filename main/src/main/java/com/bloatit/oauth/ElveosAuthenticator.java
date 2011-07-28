@@ -15,6 +15,7 @@ import com.bloatit.model.right.AuthToken;
 
 public class ElveosAuthenticator extends OAuthAuthenticator {
 
+    // Do not forget the super scope SCOPE_PERMANENT_TOKEN = "permanent_token"
     private static final String SCOPE_TRUST_ME = "trust_me";
     private static final String SCOPE_KUDOS = "kudos";
     private static final String SCOPE_CREATE_OFFER = "create_offer";

@@ -22,6 +22,8 @@ import com.bloatit.framework.xcgiserver.HttpResponse;
 
 public class OAuthGetToken extends OAuthBloatitReponse {
 
+    private static final String SCOPE_PERMANENT_TOKEN = "permanent_token";
+
     private static final int DEFAULT_EXPIRE_TIME = 3600;
 
     private OAuthAuthenticator authenticator;
@@ -43,7 +45,7 @@ public class OAuthGetToken extends OAuthBloatitReponse {
             String authzCode = oauthRequest.getCode();
             Set<String> scopes = oauthRequest.getScopes();
             int expiresIn = DEFAULT_EXPIRE_TIME;
-            if (scopes.contains("permanent_token")) {
+            if (scopes.contains(SCOPE_PERMANENT_TOKEN)) {
                 expiresIn = DateUtils.SECOND_PER_DAY * 3650;
             }
 
