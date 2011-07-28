@@ -58,8 +58,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
     public void testCreate() {
         final Feature feature = FeatureImplementation.create(DaoFeature.createAndPersist(memberTom.getDao(),
                                                                                          null,
-                                                                                         DaoDescription.createAndPersist(memberTom
-                                                                                                                                     .getDao(),
+                                                                                         DaoDescription.createAndPersist(memberTom.getDao(),
                                                                                                                          null,
                                                                                                                          Locale.FRANCE,
                                                                                                                          "title",
@@ -231,7 +230,8 @@ public class FeatureImplementationTest extends ModelTestUnit {
         }
 
         assertEquals(feature.getContribution(), new BigDecimal("30"));
-        AuthToken.unAuthenticate();;
+        AuthToken.unAuthenticate();
+        ;
 
         try {
             feature.addContribution(new BigDecimal("10"), "comment");
@@ -379,6 +379,57 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(FeatureState.DISCARDED, feature.getFeatureState());
     }
 
+    @Test
+    public void testAddRelease() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        final Feature feature = createFeatureAddOffer120AddContribution120BeginDev();
+
+        try {
+            feature.getSelectedOffer().getCurrentMilestone().addRelease("My release", "1.1.1", Locale.FRENCH, null);
+            fail();
+        } catch (final UnauthorizedOperationException e) {
+            assertTrue(true);
+        }
+
+        try {
+            feature.getSelectedOffer().getCurrentMilestone().addRelease("My release", "1.1.1", Locale.FRENCH, null);
+            feature.cancelDevelopment();
+            fail();
+        } catch (final UnauthorizedOperationException e) {
+            assertTrue(true);
+        }
+
+        AuthToken.authenticate(memberTom);
+        assertEquals(120, feature.getContribution().intValue());
+
+        Release release = feature.getSelectedOffer().getCurrentMilestone().addRelease("My release", "1.1.1", Locale.FRENCH, null);
+
+        assertEquals(release, feature.getSelectedOffer().getCurrentMilestone().getReleases().iterator().next());
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+    }
+
+    @Test
+    public void testAddReleaseValidate() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        final Feature feature = createFeatureAddOffer120AddContribution120BeginDev();
+        AuthToken.authenticate(memberTom);
+        BigDecimal amount = AuthToken.getMember().getInternalAccount().getAmount();
+
+        Release release = feature.getSelectedOffer().getCurrentMilestone().addRelease("My release", "1.1.1", Locale.FRENCH, null);
+
+        assertEquals(release, feature.getSelectedOffer().getCurrentMilestone().getReleases().iterator().next());
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+
+        boolean validate = release.getMilestone().validate();
+        // assertFalse(validate);
+        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        //
+        // validate =release.getMilestone().forceValidate();
+        assertTrue(validate);
+        assertEquals(FeatureState.FINISHED, feature.getFeatureState());
+
+        assertEquals(AuthToken.getMember().getInternalAccount().getAmount(), amount.add(new BigDecimal(120)));
+
+    }
+
     private Feature createFeatureAddOffer120AddContribution120BeginDev() throws NotEnoughMoneyException, UnauthorizedOperationException {
         Feature feature = createFeatureByThomas();
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
@@ -486,7 +537,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
     /**
      * Test the creation of a complete feature test set (including offer,
      * milestones, contributions, kudos ...) and then delete the feature and
-     * check if eveything is correctly delete.
+     * check if everything is correctly delete.
      * 
      * @throws UnauthorizedOperationException
      * @throws NotEnoughMoneyException
