@@ -1,5 +1,5 @@
 from entitymanager import EntityManager
-from server import server
+import server
 
 class MetaEntity(type):
     def __new__(cls, name, bases, dct):
@@ -34,7 +34,7 @@ class Entity(object):
     
     
     def _load(self):
-        server.load_entity(self)
+        server.server.load_entity(self)
         
      
 

@@ -13,6 +13,7 @@ class Server:
         self.host = 'http://elveos.org'
         self.base_rest = '/rest/'
         self.entity_cache = dict()
+        self.access_token = None
 
     def set_host(self, host):
         self.host = host
@@ -38,6 +39,7 @@ class Server:
         
     def load_entity_collection(self,manager):
         url = self._build_entity_collection_url(manager);
+        
         dom = parse_xml(urllib.urlopen(url).read())
         
         xml_rest = dom.getElementsByTagName('rest').item(0)
@@ -61,7 +63,7 @@ class Server:
         
     
     def _build_entity_url(self, manager, id):
-        return self.host + self.base_rest + manager.collection_code + '/' + str(id)
+        return self.host + self.base_rest + manager.collection_code + '/' + str(id)+ (self.access_token and ('?access_token='+self.access_token) or '')
     
     def _build_entity_collection_url(self, manager):
         return self.host + self.base_rest + manager.collection_code
@@ -76,4 +78,15 @@ class Server:
             self.entity_cache[id] = obj
             return obj
     
+    def authenticate(self, access_token):
+        self.access_token = access_token
+        print 'Authenticate with %s' % access_token
+    
 server = Server()
+
+
+def set_host(host):
+        server.set_host(host)
+
+def authenticate(access_token):
+        server.authenticate(access_token)
