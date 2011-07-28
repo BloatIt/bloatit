@@ -17,8 +17,11 @@
 
 package com.bloatit.model.right;
 
+import java.util.EnumSet;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoExternalServiceMembership;
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.utils.Hash;
@@ -39,6 +42,8 @@ import com.bloatit.model.managers.TeamManager;
 public final class AuthToken {
     private Integer asTeamId;
     private Integer memberId;
+    private EnumSet<RightLevel> rights;
+    private boolean weakAuthentication;
 
     static class This {
         private static final ThreadLocal<AuthToken> data = new ThreadLocal<AuthToken>() {
@@ -136,6 +141,9 @@ public final class AuthToken {
         if (service == null) {
             throw new ElementNotFoundException("The current key does not belong to anyone.");
         }
+        This.get().weakAuthentication = !service.getLevels().contains(RightLevel.TRUST_ME);
+        This.get().rights = service.getLevels();
+
         return service.getMember().getId();
     }
 
@@ -149,6 +157,7 @@ public final class AuthToken {
             session.logOut();
             throw new ElementNotFoundException("Wrong authentication id stored in the session.");
         }
+        This.get().weakAuthentication = false;
         return id;
     }
 
@@ -158,6 +167,7 @@ public final class AuthToken {
         if (session != null) {
             session.logIn(This.get().memberId, member.getLocale());
         }
+        This.get().weakAuthentication = false;
     }
 
     public static void logOut() {
@@ -175,6 +185,14 @@ public final class AuthToken {
 
     public static boolean isAuthenticated() {
         return This.get().memberId != null;
+    }
+
+    public static boolean isWeak() {
+        return This.get().weakAuthentication;
+    }
+
+    public static EnumSet<RightLevel> getRights() {
+        return This.get().rights;
     }
 
     public static Member getMember() {

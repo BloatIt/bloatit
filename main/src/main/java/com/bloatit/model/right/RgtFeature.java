@@ -16,6 +16,9 @@
 //
 package com.bloatit.model.right;
 
+import java.util.EnumSet;
+
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Rights;
 
@@ -39,6 +42,11 @@ public class RgtFeature extends RightManager {
         protected final boolean can(final Rights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return canRead(action) || rights.contains(RightLevel.CREATE_OFFER);
+        }
     }
 
     /**
@@ -55,6 +63,11 @@ public class RgtFeature extends RightManager {
         protected final boolean can(final Rights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return canRead(action) || rights.contains(RightLevel.CONTRIBUTE);
+        }
     }
 
     /**
@@ -70,6 +83,11 @@ public class RgtFeature extends RightManager {
         @Override
         protected final boolean can(final Rights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
+        }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return canRead(action) || rights.contains(RightLevel.CONTRIBUTE);
         }
     }
 }

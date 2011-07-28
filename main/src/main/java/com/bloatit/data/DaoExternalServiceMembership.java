@@ -38,7 +38,7 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 public final class DaoExternalServiceMembership extends DaoIdentifiable {
 
     public enum RightLevel {
-        CREATE_FEATURE, CREATE_OFFER, COMMENT, KUDOS, CONTRIBUTE,
+        CREATE_OFFER, COMMENT, KUDOS, CONTRIBUTE, TRUST_ME,
     }
 
     @Basic(optional = false)
@@ -51,7 +51,7 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
     private Date expirationDate;
 
     @Basic(optional = false)
-    private boolean canCreateFeature;
+    private boolean trust;
     @Basic(optional = false)
     private boolean canCreateOffer;
     @Basic(optional = false)
@@ -141,7 +141,7 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         this.refreshToken = null;
         this.expirationDate = null;
 
-        this.canCreateFeature = false;
+        this.trust = false;
         this.canCreateOffer = false;
         this.canComment = false;
         this.canKudos = false;
@@ -153,8 +153,8 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
     private void setLevel(final EnumSet<RightLevel> level) {
         for (final RightLevel rightLevel : level) {
             switch (rightLevel) {
-                case CREATE_FEATURE:
-                    this.canCreateFeature = true;
+                case TRUST_ME:
+                    this.trust = true;
                     break;
                 case CREATE_OFFER:
                     this.canCreateOffer = true;
@@ -232,8 +232,8 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
 
     public final EnumSet<RightLevel> getLevels() {
         final EnumSet<RightLevel> levels = EnumSet.noneOf(RightLevel.class);
-        if (canCreateFeature) {
-            levels.add(RightLevel.CREATE_FEATURE);
+        if (trust) {
+            levels.add(RightLevel.TRUST_ME);
         }
         if (canCreateOffer) {
             levels.add(RightLevel.CREATE_OFFER);
@@ -261,7 +261,7 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         result = prime * result + (authorized ? 1231 : 1237);
         result = prime * result + (canComment ? 1231 : 1237);
         result = prime * result + (canContribute ? 1231 : 1237);
-        result = prime * result + (canCreateFeature ? 1231 : 1237);
+        result = prime * result + (trust ? 1231 : 1237);
         result = prime * result + (canCreateOffer ? 1231 : 1237);
         result = prime * result + (canKudos ? 1231 : 1237);
         result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
@@ -292,7 +292,7 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         if (canContribute != other.canContribute) {
             return false;
         }
-        if (canCreateFeature != other.canCreateFeature) {
+        if (trust != other.trust) {
             return false;
         }
         if (canCreateOffer != other.canCreateOffer) {

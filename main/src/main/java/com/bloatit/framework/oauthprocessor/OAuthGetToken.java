@@ -1,6 +1,7 @@
 package com.bloatit.framework.oauthprocessor;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,12 +17,13 @@ import org.apache.amber.oauth2.common.exception.OAuthSystemException;
 import org.apache.amber.oauth2.common.message.OAuthResponse;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 public class OAuthGetToken extends OAuthBloatitReponse {
 
     private static final int DEFAULT_EXPIRE_TIME = 3600;
-    
+
     private OAuthAuthenticator authenticator;
 
     public OAuthGetToken(OAuthAuthenticator authenticator) {
@@ -39,15 +41,20 @@ public class OAuthGetToken extends OAuthBloatitReponse {
         try {
             oauthRequest = new OAuthTokenRequest(request);
             String authzCode = oauthRequest.getCode();
+            Set<String> scopes = oauthRequest.getScopes();
+            int expiresIn = DEFAULT_EXPIRE_TIME;
+            if (scopes.contains("permanent_token")) {
+                expiresIn = DateUtils.SECOND_PER_DAY * 3650;
+            }
 
             String accessToken = oauthIssuerImpl.accessToken();
             String refreshToken = oauthIssuerImpl.refreshToken();
             try {
-                authenticator.authorize(authzCode, accessToken, refreshToken, DEFAULT_EXPIRE_TIME);
+                authenticator.authorize(authzCode, accessToken, refreshToken, expiresIn);
 
                 oauthResponse = OAuthASResponse.tokenResponse(HttpServletResponse.SC_OK)
                                                .setAccessToken(accessToken)
-                                               .setExpiresIn(String.valueOf(DEFAULT_EXPIRE_TIME))
+                                               .setExpiresIn(String.valueOf(expiresIn))
                                                .setRefreshToken(refreshToken)
                                                .buildJSONMessage();
             } catch (AuthorizationException e) {
