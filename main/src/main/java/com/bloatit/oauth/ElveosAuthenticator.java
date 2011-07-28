@@ -4,14 +4,15 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.exceptions.ElementNotFoundException;
-import com.bloatit.framework.oauthprocessor.OAuthGetAuthorization;
+import com.bloatit.framework.oauthprocessor.OAuthAuthenticator;
+import com.bloatit.framework.oauthprocessor.OAuthBloatitReponse.AuthorizationException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.ExternalServiceManager;
 import com.bloatit.model.right.AuthToken;
 
-public class GetAuthorization extends OAuthGetAuthorization {
+public class ElveosAuthenticator extends OAuthAuthenticator {
 
     // FIXME DAO HERE !!
 
@@ -22,12 +23,12 @@ public class GetAuthorization extends OAuthGetAuthorization {
     }
 
     @Override
-    protected void authorize(String state, String token, String refresh, int expiresIn) throws AuthorizationException {
-        ExternalServiceMembership serviceMembership = ExternalServiceManager.getMembershipByToken(token);
-        if (serviceMembership != null && !serviceMembership.isValid()) {
+    protected void authorize(String authzCode, String accessToken, String refreshToken, int expiresIn) throws AuthorizationException {
+        ExternalServiceMembership serviceMembership = ExternalServiceManager.getMembershipByToken(authzCode);
+        if (serviceMembership == null || serviceMembership.isAuthorized()) {
             throw new AuthorizationException();
         }
-        serviceMembership.authorize(token, refresh, DateUtils.nowPlusSomeSeconds(expiresIn));
+        serviceMembership.authorize(accessToken, refreshToken, DateUtils.nowPlusSomeSeconds(expiresIn));
     }
 
     private Member authenticate(String login, String password) throws ElementNotFoundException {

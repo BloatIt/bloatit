@@ -16,14 +16,22 @@ import org.apache.amber.oauth2.common.exception.OAuthSystemException;
 import org.apache.amber.oauth2.common.message.OAuthResponse;
 import org.apache.amber.oauth2.common.message.types.ResponseType;
 
-
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
-public abstract class OAuthGetAuthorization extends OAuthBloatitReponse {
+public class OAuthGetAuthorization extends OAuthBloatitReponse {
+
+    private static final int DEFAULT_EXPIRE_TIME = 3600;
+
+    private OAuthAuthenticator authenticator;
+
+    public OAuthGetAuthorization(OAuthAuthenticator authenticator) {
+        super();
+        this.authenticator = authenticator;
+    }
 
     @Override
     public void process(HttpServletRequest request, HttpResponse response) throws IOException {
@@ -65,20 +73,19 @@ public abstract class OAuthGetAuthorization extends OAuthBloatitReponse {
                 // build response
                 builder.setCode(token);
                 // Add the external service
-                addExternalService(clientId, login, password, token);
+                authenticator.addExternalService(clientId, login, password, token);
 
             } else if (responseType.equals(ResponseType.TOKEN.toString())) {
                 // Create tokens
                 final String token = oauthIssuerImpl.accessToken();
                 final String refresh = oauthIssuerImpl.refreshToken();
-                final int expireIn = 3600;
                 // build response
                 builder.setAccessToken(token);
                 builder.setParam(OAuth.OAUTH_REFRESH_TOKEN, refresh);
-                builder.setExpiresIn(String.valueOf(expireIn));
+                builder.setExpiresIn(String.valueOf(DEFAULT_EXPIRE_TIME));
                 // Add in external services
-                addExternalService(clientId, login, password, token);
-                authorize(state, token, refresh, expireIn);
+                authenticator.addExternalService(clientId, login, password, token);
+                authenticator.authorize(token, token, refresh, DEFAULT_EXPIRE_TIME);
             }
 
             // Finish the construction
@@ -111,7 +118,4 @@ public abstract class OAuthGetAuthorization extends OAuthBloatitReponse {
         response.writeOAuthRedirect(oauthResponse.getResponseStatus(), oauthResponse.getLocationUri());
     }
 
-    protected abstract void addExternalService(String clientId, String login, String password, final String token) throws ElementNotFoundException;
-
-    protected abstract void authorize(String state, final String token, final String refresh, final int expireIn) throws AuthorizationException;
 }
