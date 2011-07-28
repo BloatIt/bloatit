@@ -80,7 +80,6 @@ class Server:
     
     def authenticate(self, access_token):
         self.access_token = access_token
-        print 'Authenticate with %s' % access_token
     
 server = Server()
 
