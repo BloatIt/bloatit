@@ -1,7 +1,7 @@
 from xml.dom.minidom import parseString as parse_xml
 import urllib
 
-from server import server
+import server
 
 class EntityManager():
 
@@ -14,7 +14,7 @@ class EntityManager():
 
     def __iter__(self):        
         
-        entity_list = server.load_entity_collection(self)
+        entity_list = server.server.load_entity_collection(self)
         
         return ItEntity(entity_list)
         

@@ -11,10 +11,7 @@ OAUTH_GET_TOKEN_PATH='oauth/get_authtoken'
 OAUTH_SERVER='http://127.0.0.1'
 
 
-client = oauth.Client('be37629b2aa7186068de4a7d16d169579348dcf781a36865f0e0be73b31e880df077404e60b7724aa4295560c86f3d059771eda5e10038445210bb02b3ca4c78',
-     "c'est un secret !",
-     OAUTH_SERVER,
-     redirect_uri=OAUTH_REDIRECT_URI) 
+ 
 
 class TestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
