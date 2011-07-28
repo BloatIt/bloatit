@@ -18,7 +18,16 @@ import org.apache.amber.oauth2.common.message.OAuthResponse;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
-public abstract class OAuthGetToken extends OAuthBloatitReponse {
+public class OAuthGetToken extends OAuthBloatitReponse {
+
+    private static final int DEFAULT_EXPIRE_TIME = 3600;
+    
+    private OAuthAuthenticator authenticator;
+
+    public OAuthGetToken(OAuthAuthenticator authenticator) {
+        super();
+        this.authenticator = authenticator;
+    }
 
     @Override
     public void process(HttpServletRequest request, HttpResponse response) throws IOException {
@@ -33,14 +42,12 @@ public abstract class OAuthGetToken extends OAuthBloatitReponse {
 
             String accessToken = oauthIssuerImpl.accessToken();
             String refreshToken = oauthIssuerImpl.refreshToken();
-            int expiresIn = 3600;
-
             try {
-                authorizeService(authzCode, accessToken, refreshToken, expiresIn);
+                authenticator.authorize(authzCode, accessToken, refreshToken, DEFAULT_EXPIRE_TIME);
 
                 oauthResponse = OAuthASResponse.tokenResponse(HttpServletResponse.SC_OK)
                                                .setAccessToken(accessToken)
-                                               .setExpiresIn(String.valueOf(3600))
+                                               .setExpiresIn(String.valueOf(DEFAULT_EXPIRE_TIME))
                                                .setRefreshToken(refreshToken)
                                                .buildJSONMessage();
             } catch (AuthorizationException e) {
@@ -65,7 +72,4 @@ public abstract class OAuthGetToken extends OAuthBloatitReponse {
         // write the response
         response.writeOAuth(oauthResponse.getResponseStatus(), oauthResponse.getHeaders(), oauthResponse.getBody());
     }
-
-    protected abstract void authorizeService(String authzCode, String accessToken, String refreshToken, int expiresIn) throws AuthorizationException;
-
 }

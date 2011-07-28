@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
-abstract class OAuthBloatitReponse {
+public abstract class OAuthBloatitReponse {
     
     public static class AuthorizationException extends Exception {
         private static final long serialVersionUID = -744818410096731179L;

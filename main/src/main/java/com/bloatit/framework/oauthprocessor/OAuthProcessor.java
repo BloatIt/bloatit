@@ -23,10 +23,10 @@ public class OAuthProcessor implements XcgiProcessor {
     private final OAuthGetAuthorization authGetAuthorization;
     private final OAuthGetToken authGetToken;
 
-    public OAuthProcessor(OAuthGetAuthorization authGetAuthorization, OAuthGetToken authGetToken) {
+    public OAuthProcessor(OAuthAuthenticator authenticator) {
         super();
-        this.authGetAuthorization = authGetAuthorization;
-        this.authGetToken = authGetToken;
+        this.authGetAuthorization = new OAuthGetAuthorization(authenticator);
+        this.authGetToken = new OAuthGetToken(authenticator);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class OAuthProcessor implements XcgiProcessor {
         }
 
         ModelAccessor.close();
-        
+
         return true;
     }
 }
