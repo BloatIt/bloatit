@@ -242,6 +242,14 @@ public class HttpHeader {
         return httpConnection.getValue(env);
     }
 
+    /**
+     * example : true
+     */
+    public final boolean isHttps() {
+        String ishttps = env.get("HTTPS");
+        return ishttps != null && ishttps.equals("on");
+    }
+
     private final LazyMap httpCookie = new LazyMap("HTTP_COOKIE");
 
     /**

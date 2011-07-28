@@ -34,6 +34,7 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.SessionManager;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.RequestKey.Source;
 import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 

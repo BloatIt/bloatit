@@ -215,7 +215,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         identicaBlock.addAttribute("style", "background-color: white;border: 1px solid #ddd;display:inline-block;");
 
-        final HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://identi.ca//index.php?action=bookmarklet',e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20"
+        final HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='https://identi.ca//index.php?action=bookmarklet',e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20"
                 + new FeaturePageAliasUrl(feature).externalUrlString(true)
                 + "';function%20a(){if(!w.open(g,'t','toolbar=0,resizable=0,scrollbars=1,status=1,width=450,height=200')){l.href=g;}}a();})()");
         final HtmlImage backgroundImage = new HtmlImage(new Image("/resources/commons/img/share/identica.png"), "identi.ca");
@@ -230,7 +230,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     private XmlNode generateTwitterShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
 
-        final HtmlLink actionLink = new HtmlLink("http://twitter.com/share", "Tweet");
+        final HtmlLink actionLink = new HtmlLink("https://twitter.com/share", "Tweet");
         item.add(actionLink);
         actionLink.setCssClass("twitter-share-button");
         actionLink.addAttribute("data-count", "horizontal");
@@ -238,7 +238,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         final HtmlScript script = new HtmlScript();
         item.add(script);
-        script.addAttribute("src", "http://platform.twitter.com/widgets.js");
+        script.addAttribute("src", "https://platform.twitter.com/widgets.js");
 
         return item;
     }
@@ -248,7 +248,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         final HtmlScript script = new HtmlScript();
         item.add(script);
-        script.addAttribute("src", "http://platform.linkedin.com/in.js");
+        script.addAttribute("src", "https://platform.linkedin.com/in.js");
 
         final HtmlScript script2 = new HtmlScript();
         item.add(script2);

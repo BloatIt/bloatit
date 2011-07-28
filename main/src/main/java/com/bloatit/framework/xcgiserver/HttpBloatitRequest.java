@@ -234,10 +234,10 @@ public class HttpBloatitRequest implements HttpServletRequest {
 
     @Override
     public String getScheme() {
-        if (getProtocol().startsWith("HTTPS")) {
+        if (header.isHttps() && getProtocol().startsWith("HTTP")) {
             return "https";
         }
-        if (getProtocol().startsWith("HTTP")) {
+        if (!header.isHttps() && getProtocol().startsWith("HTTP")) {
             return "http";
         }
         if (getProtocol().startsWith("FTPS")) {

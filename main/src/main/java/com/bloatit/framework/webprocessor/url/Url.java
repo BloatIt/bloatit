@@ -129,26 +129,26 @@ public abstract class Url implements Cloneable {
     public final String externalUrlString() {
         return externalUrlString(false);
     }
-    
+
     public final String externalUrlString(boolean multilanguage) {
         if (Context.getHeader() != null) {
             final HttpHeader header = Context.getHeader();
-            if (FrameworkConfiguration.isHttpsEnabled()
-                    && (getProtocol() == Protocol.HTTPS || (header.getServerProtocol().startsWith("HTTPS") && getProtocol() == Protocol.AUTO))) {
+            if (FrameworkConfiguration.isHttpsEnabled() && (getProtocol() == Protocol.HTTPS || (header.isHttps() && getProtocol() == Protocol.AUTO))) {
                 return "https://" + header.getHttpHost() + internalUrlString(multilanguage);
             }
 
-            if (!FrameworkConfiguration.isHttpsEnabled() || getProtocol() == Protocol.HTTP
-                    || (header.getServerProtocol().startsWith("HTTP") && getProtocol() == Protocol.AUTO)) {
+            if (!FrameworkConfiguration.isHttpsEnabled() || getProtocol() == Protocol.HTTP || (!header.isHttps() && getProtocol() == Protocol.AUTO)) {
                 return "http://" + header.getHttpHost() + internalUrlString(multilanguage);
             }
 
             Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
             return "http://" + header.getHttpHost() + internalUrlString(multilanguage);
         }
-        return "http://elveos.org/" + internalUrlString(multilanguage); // FIXME : Replace
-                                                           // http://elveos.org
-                                                           // by configuration
+        return "http://elveos.org/" + internalUrlString(multilanguage); // FIXME
+                                                                        // :
+                                                                        // Replace
+        // http://elveos.org
+        // by configuration
     }
 
     public final HtmlLink getHtmlLink(final XmlNode data) {
