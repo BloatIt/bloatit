@@ -37,6 +37,10 @@ dependencies {
     compile 'org.springframework:spring-web:3.0.5.RELEASE'
 
     testCompile 'org.dspace.dependencies.jmockit:dspace-jmockit:0.999.4'
+
+    compile files("$buildDir/classes/main/") {
+        builtBy 'compile'
+    }
 }
 
 task createBuildDir << {
@@ -119,4 +123,5 @@ pofiles.visit { po ->
     }
     msgmerge.dependsOn "msgmerge_$po.relativePath"
 }
+
 
