@@ -21,7 +21,7 @@ class Whale():
         
         self.load_config()
         # Configure elveos.org connection
-        server.set_host('http://127.0.0.1')
+        server.set_host('https://elveos.org')
         server.authenticate(self.access_token)
 
         for member in Member.objects:

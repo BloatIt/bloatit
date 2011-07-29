@@ -12,9 +12,9 @@ class Authenticator():
     
     def __init__(self):
         self.get_tokens_path='oauth/get_authtoken'
-        self.host='http://127.0.0.1'
+        self.host='https://elveos.org'
         self.redirect_uri= 'oauth://auth'
-        self.client_id = 'be37629b2aa7186068de4a7d16d169579348dcf781a36865f0e0be73b31e880df077404e60b7724aa4295560c86f3d059771eda5e10038445210bb02b3ca4c78'
+        self.client_id = '07196662cab0563be208dc82f4cc8ae9'
         self.client_secret = "c'est un secret !"   
         
     def authenticate(self):        
