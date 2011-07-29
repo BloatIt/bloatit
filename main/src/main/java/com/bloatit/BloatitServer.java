@@ -19,7 +19,9 @@ package com.bloatit;
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.framework.Framework;
+import com.bloatit.framework.oauthprocessor.OAuthProcessor;
 import com.bloatit.model.Model;
+import com.bloatit.oauth.ElveosAuthenticator;
 import com.bloatit.rest.BloatitRestServer;
 import com.bloatit.web.BloatitWebServer;
 
@@ -28,6 +30,7 @@ public class BloatitServer {
     public static void main(final String[] args) {
         System.setProperty("log4J.path", ConfigurationManager.SHARE_DIR + "/log");
         final Framework framework = new Framework(new Model());
+        framework.addProcessor(new OAuthProcessor(new ElveosAuthenticator()));
         framework.addProcessor(new BloatitRestServer());
         framework.addProcessor(new BloatitWebServer());
 

@@ -17,7 +17,6 @@
 package com.bloatit.framework.webprocessor.components.renderer;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.utils.StringUtils;
 import com.bloatit.framework.utils.cache.MemoryCache;
 import com.bloatit.framework.utils.parsers.MarkdownParser;
 import com.bloatit.framework.utils.parsers.ParsingException;

@@ -52,10 +52,10 @@ public class RgtOffer extends RightManager {
     public static class Milestone extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
-     * The Class <code>Draft</code> is a {@link RightManager.Public} accessor for the
-     * <code>Draft</code> property.
+     * The Class <code>Draft</code> is a {@link RightManager.Public} accessor
+     * for the <code>Draft</code> property.
      */
     public static class Draft extends Public {
         // nothing this is just a rename.

@@ -6,15 +6,15 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
 
 /**
  * A simple table that gets constructed simply by adding elements
  */
 public class HtmlSimpleLineTable extends HtmlLeaf {
-    private HtmlGenericElement body = new HtmlGenericElement("tbody");
-    private PlaceHolderElement headerPh = new PlaceHolderElement();
+    private final HtmlGenericElement body = new HtmlGenericElement("tbody");
+    private final PlaceHolderElement headerPh = new PlaceHolderElement();
 
     public HtmlSimpleLineTable() {
         super("table");
@@ -22,22 +22,22 @@ public class HtmlSimpleLineTable extends HtmlLeaf {
         add(body);
     }
 
-    public void addLine(Object... line) {
-        HtmlGenericElement tr = new HtmlGenericElement("tr");
+    public void addLine(final Object... line) {
+        final HtmlGenericElement tr = new HtmlGenericElement("tr");
         body.add(tr);
-        for (Object elem : line) {
+        for (final Object elem : line) {
             XmlNode element;
             if (elem == null) {
                 tr.add(new HtmlGenericElement("td"));
             } else {
                 if (elem instanceof String) {
-                    element = new XmlText((String) elem);
+                    element = new HtmlText((String) elem);
                 } else if (elem instanceof XmlNode) {
                     element = (XmlNode) elem;
                 } else if (elem instanceof BigDecimal) {
-                    element = new XmlText(((BigDecimal) elem).toPlainString());
+                    element = new HtmlText(((BigDecimal) elem).toPlainString());
                 } else if (elem instanceof Enum<?>) {
-                    element = new XmlText(elem.toString());
+                    element = new HtmlText(elem.toString());
                 } else {
                     throw new BadProgrammerException("Unexpected non string, non XmlNode in SimpleLineTable. (" + elem + ").");
                 }
@@ -47,12 +47,12 @@ public class HtmlSimpleLineTable extends HtmlLeaf {
         }
     }
 
-    public void addHeader(String... header) {
-        HtmlGenericElement thead = new HtmlGenericElement("thead");
+    public void addHeader(final String... header) {
+        final HtmlGenericElement thead = new HtmlGenericElement("thead");
         headerPh.add(thead);
-        HtmlGenericElement tr = new HtmlGenericElement("tr");
+        final HtmlGenericElement tr = new HtmlGenericElement("tr");
         thead.add(tr);
-        for (String elem : header) {
+        for (final String elem : header) {
             tr.add(new HtmlGenericElement("th").addText(elem));
         }
     }

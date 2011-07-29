@@ -116,10 +116,10 @@ public class DaoHighlightFeature extends DaoIdentifiable {
      * @param desactivationDate the desactivation date
      */
     private DaoHighlightFeature(final DaoFeature feature,
-                               final int position,
-                               final String reason,
-                               final Date activationDate,
-                               final Date desactivationDate) {
+                                final int position,
+                                final String reason,
+                                final Date activationDate,
+                                final Date desactivationDate) {
         if (feature == null || activationDate == null || desactivationDate == null) {
             throw new NonOptionalParameterException();
         }
@@ -216,7 +216,8 @@ public class DaoHighlightFeature extends DaoIdentifiable {
         return this.feature;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.data.DaoIdentifiable#hashCode()
      */
     @Override
@@ -231,7 +232,8 @@ public class DaoHighlightFeature extends DaoIdentifiable {
         return result;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.data.DaoIdentifiable#equals(java.lang.Object)
      */
     @Override
@@ -284,8 +286,11 @@ public class DaoHighlightFeature extends DaoIdentifiable {
     // Visitor.
     // ======================================================================
 
-    /* (non-Javadoc)
-     * @see com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor)
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
      */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {

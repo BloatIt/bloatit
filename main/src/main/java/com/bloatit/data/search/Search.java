@@ -69,7 +69,7 @@ public abstract class Search<T> {
         if ("".equals(searchStr)) {
             query = new MatchAllDocsQuery();
         } else {
-            final MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
+            final MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_30, fields, new StandardAnalyzer(Version.LUCENE_30));
             try {
                 query = parser.parse(searchStr);
             } catch (final ParseException e) {

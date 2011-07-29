@@ -60,9 +60,9 @@ public class InvitationsTab extends HtmlTab {
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);
             }
-            final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), invitation, true).urlString(),
+            final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), true, invitation).urlString(),
                                                  Context.tr("accept"));
-            final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), invitation, false).urlString(),
+            final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), false, invitation).urlString(),
                                                  Context.tr("refuse"));
 
             final HtmlMixedText acceptOrRefuse = new HtmlMixedText(Context.tr(" (<0::>) - (<1::>)"), accept, refuse);

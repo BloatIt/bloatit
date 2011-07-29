@@ -38,7 +38,6 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLine
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
@@ -84,7 +83,7 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError(final ElveosUserToken userToken) throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -94,7 +93,7 @@ public final class AccountChargingPage extends QuotationPage {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
-        return createBodyContent(userToken);
+        return createBodyContent();
     }
 
     @Override
@@ -125,7 +124,7 @@ public final class AccountChargingPage extends QuotationPage {
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) {
         if (process.isLocked()) {
-            getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
+            getSession().notifyWarning(tr("You have a payment in progress, you cannot change the amount."));
         }
         try {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
@@ -138,7 +137,7 @@ public final class AccountChargingPage extends QuotationPage {
                 process.setAmountToPay(WebConfiguration.getDefaultChargingAmount());
             }
         } catch (final IllegalWriteException e) {
-            getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
+            getSession().notifyWarning(tr("You have a payment in progress, you cannot change the amount."));
         }
 
         group.add(ContactBox.generate(actor, process));

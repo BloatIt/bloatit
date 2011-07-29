@@ -33,6 +33,7 @@ import mockit.Mockit;
 
 import org.junit.Test;
 
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -48,17 +49,16 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.feature.TaskUpdateDevelopingState;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class FeatureImplementationTest extends ModelTestUnit {
 
     @Test
     public void testCreate() {
-        final Feature feature = FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
+        final Feature feature = FeatureImplementation.create(DaoFeature.createAndPersist(memberTom.getDao(),
                                                                                          null,
-                                                                                         DaoDescription.createAndPersist(tomAuthToken.getMember()
-                                                                                                                                     .getDao(),
+                                                                                         DaoDescription.createAndPersist(memberTom.getDao(),
                                                                                                                          null,
                                                                                                                          Locale.FRANCE,
                                                                                                                          "title",
@@ -69,9 +69,9 @@ public class FeatureImplementationTest extends ModelTestUnit {
     }
 
     private Feature createFeatureByThomas() {
-        return FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
+        return FeatureImplementation.create(DaoFeature.createAndPersist(memberTom.getDao(),
                                                                         null,
-                                                                        DaoDescription.createAndPersist(tomAuthToken.getMember().getDao(),
+                                                                        DaoDescription.createAndPersist(memberTom.getDao(),
                                                                                                         null,
                                                                                                         Locale.FRANCE,
                                                                                                         "title",
@@ -81,13 +81,13 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
     @Test
     public void testFeature() {
-        final Feature feature = new FeatureImplementation(tomAuthToken.getMember(),
+        final Feature feature = new FeatureImplementation(memberTom,
                                                           null,
                                                           Locale.FRANCE,
                                                           "title",
                                                           "Description",
                                                           Software.create(DaoSoftware.getByName("VLC")));
-        assertEquals(feature.getMember(), tomAuthToken.getMember());
+        assertEquals(feature.getAuthor(), memberTom);
         assertEquals(feature.getDescription().getDefaultLocale(), Locale.FRANCE);
         assertEquals(feature.getDescription().getDefaultTranslation().getTitle(), "title");
         assertEquals(feature.getDescription().getDefaultTranslation().getText(), "Description");
@@ -101,13 +101,13 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertFalse(feature.canAccessComment(Action.DELETE));
 
         // other
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertTrue(feature.canAccessComment(Action.READ));
         assertTrue(feature.canAccessComment(Action.WRITE));
         assertFalse(feature.canAccessComment(Action.DELETE));
 
         // feature creator
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(feature.canAccessComment(Action.READ));
         assertTrue(feature.canAccessComment(Action.WRITE));
         assertFalse(feature.canAccessComment(Action.DELETE));
@@ -123,13 +123,13 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertFalse(feature.canAccessContribution(Action.DELETE));
 
         // owner of feature.
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(feature.canAccessContribution(Action.READ));
         assertTrue(feature.canAccessContribution(Action.WRITE));
         assertFalse(feature.canAccessContribution(Action.DELETE));
 
         // other
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertTrue(feature.canAccessContribution(Action.READ));
         assertTrue(feature.canAccessContribution(Action.WRITE));
         assertFalse(feature.canAccessContribution(Action.DELETE));
@@ -143,23 +143,16 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertFalse(feature.canAccessOffer(Action.DELETE));
 
         // other
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertTrue(feature.canAccessOffer(Action.READ));
         assertTrue(feature.canAccessOffer(Action.WRITE));
         assertFalse(feature.canAccessOffer(Action.DELETE));
 
         // owner of feature.
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(feature.canAccessOffer(Action.READ));
         assertTrue(feature.canAccessOffer(Action.WRITE));
         assertFalse(feature.canAccessOffer(Action.DELETE));
-    }
-
-    @Test
-    public void testCanAccessDescription() {
-        final Feature feature = createFeatureByThomas();
-        feature.authenticate(yoAuthToken);
-        feature.authenticate(tomAuthToken);
     }
 
     @Test
@@ -168,7 +161,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         try {
             feature.addContribution(new BigDecimal("10"), "comment");
         } catch (final NotEnoughMoneyException e) {
@@ -237,7 +230,8 @@ public class FeatureImplementationTest extends ModelTestUnit {
         }
 
         assertEquals(feature.getContribution(), new BigDecimal("30"));
-        feature.authenticate(null);
+        AuthToken.unAuthenticate();
+        ;
 
         try {
             feature.addContribution(new BigDecimal("10"), "comment");
@@ -251,7 +245,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(feature.getContribution(), new BigDecimal("30"));
 
         // Tom have 1000 money.
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         try {
             feature.addContribution(new BigDecimal("1001"), "comment");
             fail();
@@ -270,14 +264,14 @@ public class FeatureImplementationTest extends ModelTestUnit {
         final Feature feature = createFeatureByThomas();
 
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
 
         assertNull(feature.getSelectedOffer());
         assertEquals(0, feature.getOffers().getPageSize());
 
         try {
-            feature.authenticate(fredAuthToken);
-            feature.addOffer(new BigDecimal("120"), "description","GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
+            AuthToken.authenticate(memeberFred);
+            feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
@@ -300,15 +294,15 @@ public class FeatureImplementationTest extends ModelTestUnit {
         Feature feature = createFeatureByThomas();
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         feature.addContribution(new BigDecimal("100"), "plop");
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
-        feature.authenticate(tomAuthToken);
-        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3",Locale.FRENCH, DateUtils.tomorrow(), 0);
+        AuthToken.authenticate(memberTom);
+        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
-        feature.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         feature.addContribution(new BigDecimal("20"), "plip");
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
@@ -325,19 +319,19 @@ public class FeatureImplementationTest extends ModelTestUnit {
         admin.setRole(Role.ADMIN);
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         feature.addContribution(new BigDecimal("100"), "plop");
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
 
-        feature.addOffer(new BigDecimal("120"), "description","GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
         assertNotNull(feature.getSelectedOffer());
 
         try {
-            feature.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             feature.removeOffer(feature.getSelectedOffer());
             fail();
         } catch (final UnauthorizedOperationException e) {
@@ -345,7 +339,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         }
 
         try {
-            feature.authenticate(new AuthenticatedUserToken("admin", "admin"));
+            AuthToken.authenticate(memberAdmin);
             feature.removeOffer(feature.getSelectedOffer());
             assertTrue(true);
         } catch (final UnauthorizedOperationException e) {
@@ -367,15 +361,14 @@ public class FeatureImplementationTest extends ModelTestUnit {
         }
 
         try {
-            feature.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             feature.cancelDevelopment();
             fail();
         } catch (final UnauthorizedOperationException e) {
             assertTrue(true);
         }
 
-        feature.authenticate(tomAuthToken);
-        feature.getSelectedOffer().authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
 
         assertEquals(120, feature.getContribution().intValue());
 
@@ -384,6 +377,56 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(0, feature.getContribution().intValue());
 
         assertEquals(FeatureState.DISCARDED, feature.getFeatureState());
+    }
+
+    @Test
+    public void testAddRelease() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        final Feature feature = createFeatureAddOffer120AddContribution120BeginDev();
+
+        try {
+            feature.getSelectedOffer().getCurrentMilestone().addRelease("My release", "1.1.1", Locale.FRENCH, null);
+            fail();
+        } catch (final UnauthorizedOperationException e) {
+            assertTrue(true);
+        }
+
+        try {
+            feature.getSelectedOffer().getCurrentMilestone().addRelease("My release", "1.1.1", Locale.FRENCH, null);
+            feature.cancelDevelopment();
+            fail();
+        } catch (final UnauthorizedOperationException e) {
+            assertTrue(true);
+        }
+
+        AuthToken.authenticate(memberTom);
+        assertEquals(120, feature.getContribution().intValue());
+
+        Release release = feature.getSelectedOffer().getCurrentMilestone().addRelease("My release", "1.1.1", Locale.FRENCH, null);
+
+        assertEquals(release, feature.getSelectedOffer().getCurrentMilestone().getReleases().iterator().next());
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+    }
+
+    @Test
+    public void testAddReleaseValidate() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        final Feature feature = createFeatureAddOffer120AddContribution120BeginDev();
+        AuthToken.authenticate(memberTom);
+        BigDecimal amount = AuthToken.getMember().getInternalAccount().getAmount();
+
+        Release release = feature.getSelectedOffer().getCurrentMilestone().addRelease("My release", "1.1.1", Locale.FRENCH, null);
+
+        assertEquals(release, feature.getSelectedOffer().getCurrentMilestone().getReleases().iterator().next());
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+
+        boolean validate = release.getMilestone().validate();
+        // assertFalse(validate);
+        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        //
+        // validate =release.getMilestone().forceValidate();
+        assertTrue(validate);
+        assertEquals(FeatureState.FINISHED, feature.getFeatureState());
+
+        assertEquals(AuthToken.getMember().getInternalAccount().getAmount(), amount.add(new BigDecimal(120)));
 
     }
 
@@ -391,17 +434,17 @@ public class FeatureImplementationTest extends ModelTestUnit {
         Feature feature = createFeatureByThomas();
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         feature.addContribution(new BigDecimal("100"), "plop");
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
 
-        feature.addOffer(new BigDecimal("120"), "description","GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
 
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
-        feature.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         feature.addContribution(new BigDecimal("20"), "plip");
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
@@ -415,30 +458,34 @@ public class FeatureImplementationTest extends ModelTestUnit {
     public void testOfferWithALotOfMilestone() throws UnauthorizedOperationException, NotEnoughMoneyException {
         Feature feature = createFeatureByThomas();
 
-        feature.authenticate(tomAuthToken);
-        final Offer offer = feature.addOffer(BigDecimal.TEN, "description","GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
+        AuthToken.authenticate(memberTom);
+        final Offer offer = feature.addOffer(BigDecimal.TEN,
+                                             "description",
+                                             "GNU GPL V3",
+                                             Locale.FRENCH,
+                                             DateUtils.tomorrow(),
+                                             DateUtils.SECOND_PER_WEEK);
 
-        offer.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(8), DateUtils.SECOND_PER_WEEK);
 
-        feature.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         feature.addContribution(new BigDecimal("12"), null);
         feature.addContribution(new BigDecimal("13"), null);
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         feature.addContribution(new BigDecimal("14"), null);
         feature.addContribution(new BigDecimal("15"), null);
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         feature.addContribution(new BigDecimal("16"), null);
 
         feature = passeIntoDev(feature);
 
         assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
 
-        feature.authenticate(tomAuthToken);
-        feature.getSelectedOffer().authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
         feature.getSelectedOffer().validateCurrentMilestone(true);
         assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
@@ -466,7 +513,6 @@ public class FeatureImplementationTest extends ModelTestUnit {
     // the model is re-closed
     // So you have to reload from the db the feature. (So it return it ...)
     private Feature passeIntoDev(final Feature feature) {
-
         ModelAccessor.close();
         ModelAccessor.open();
 
@@ -486,5 +532,80 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         return FeatureManager.getFeatureById(feature.getId());
 
+    }
+
+    /**
+     * Test the creation of a complete feature test set (including offer,
+     * milestones, contributions, kudos ...) and then delete the feature and
+     * check if everything is correctly delete.
+     * 
+     * @throws UnauthorizedOperationException
+     * @throws NotEnoughMoneyException
+     */
+    @Test
+    public void testDeleteFeature() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        final Feature feature = createFeatureByThomas();
+
+        AuthToken.authenticate(memberTom);
+        feature.addContribution(new BigDecimal(50), "Woohoo");
+        final Comment comm1 = feature.addComment("You shouldn't do it this way");
+        AuthToken.authenticate(memberTom);
+        final Comment reply11 = comm1.addComment("Mmmh in fact you should ... I was wrong !");
+
+        AuthToken.authenticate(memeberFred);
+        feature.addContribution(new BigDecimal(75), "Plop");
+        AuthToken.authenticate(memeberFred);
+        final Comment reply12 = comm1.addComment("Indeed you were wrong");
+
+        AuthToken.authenticate(memberYo);
+        feature.addContribution(new BigDecimal(200), "Yeahh");
+        final Comment comm2 = feature.addComment("Do it your way, ignore tom he's obviously wrong !");
+
+        AuthToken.authenticate(loser);
+        final Offer offer = feature.addOffer(new BigDecimal("300"), "Beautiful offer", "AGPL", new Locale("fr", "fr"), DateUtils.tomorrow(), 100);
+        final Milestone milestone = offer.getCurrentMilestone();
+        final Release release = milestone.addRelease("Beta 1", "0.1", new Locale("fr", "fr"), null);
+
+        final Bug bug1 = milestone.addBug("A new bug 1", "This is a new bug description 1", new Locale("en", "us"), Level.FATAL);
+        AuthToken.authenticate(memeberFred);
+        final Comment bugComm11 = bug1.addComment("plop");
+        AuthToken.authenticate(memberTom);
+        final Comment bugComm111 = bugComm11.addComment("plip");
+        AuthToken.authenticate(memberYo);
+        final Comment bugComm12 = bug1.addComment("plap");
+        AuthToken.authenticate(memeberFred);
+        final Bug bug2 = milestone.addBug("A new bug 2", "This is a new bug description 2", new Locale("en", "us"), Level.MAJOR);
+        AuthToken.authenticate(memberYo);
+        final Bug bug3 = milestone.addBug("A new bug 3", "This is a new bug description 3", new Locale("en", "us"), Level.MINOR);
+        AuthToken.authenticate(memberTom);
+        final Bug bug4 = milestone.addBug("A new bug 4", "This is a new bug description 4", new Locale("en", "us"), Level.FATAL);
+        AuthToken.authenticate(memeberFred);
+        final Comment bugComm41 = bug4.addComment("plop");
+        AuthToken.authenticate(memberTom);
+        final Comment bugComm411 = bugComm41.addComment("plip");
+        AuthToken.authenticate(memeberFred);
+        final Comment bugComm42 = bug4.addComment("plap");
+        AuthToken.authenticate(memberYo);
+
+        AuthToken.authenticate(memberAdmin);
+        feature.delete();
+
+        assertTrue(feature.isDeleted());
+        assertTrue(comm1.isDeleted());
+        assertTrue(reply11.isDeleted());
+        assertTrue(reply12.isDeleted());
+        assertTrue(comm2.isDeleted());
+        assertTrue(release.isDeleted());
+        assertTrue(offer.isDeleted());
+        assertTrue(bug1.isDeleted());
+        assertTrue(bug2.isDeleted());
+        assertTrue(bug3.isDeleted());
+        assertTrue(bug4.isDeleted());
+        assertTrue(bugComm11.isDeleted());
+        assertTrue(bugComm111.isDeleted());
+        assertTrue(bugComm12.isDeleted());
+        assertTrue(bugComm41.isDeleted());
+        assertTrue(bugComm411.isDeleted());
+        assertTrue(bugComm42.isDeleted());
     }
 }

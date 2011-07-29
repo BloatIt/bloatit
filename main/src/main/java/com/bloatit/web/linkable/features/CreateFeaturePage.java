@@ -70,7 +70,6 @@ public final class CreateFeaturePage extends CreateUserContentPage {
     }
 
     private HtmlElement generateFeatureCreationForm(final Member loggedUser) {
-
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
@@ -81,19 +80,21 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         createFeatureTitle.add(createFeatureForm);
 
-        // Create the fields that will describe the description of the feature
+        // Title of the feature
         final FieldData descriptionFieldData = doCreateUrl.getDescriptionParameter().pickFieldData();
-        final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
-        descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
-        descriptionInput.setCssClass("input_long_400px");
-        descriptionInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
-        createFeatureForm.add(descriptionInput);
+        final HtmlTextField titleInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
+        titleInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
+        titleInput.addErrorMessages(descriptionFieldData.getErrorMessages());
+        titleInput.setCssClass("input_long_400px");
+        titleInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
+        createFeatureForm.add(titleInput);
 
         // Linked software
         final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
         final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
-        softwareInput.addDropDownElement("", Context.tr("Select a software"));
+
+        softwareInput.addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
+        softwareInput.addDropDownElement("", Context.tr("New software"));
         for (final Software software : SoftwareManager.getAll()) {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
@@ -173,9 +174,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
     private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-
         breadcrumb.pushLink(new CreateFeaturePageUrl().getHtmlLink(tr("Create a feature")));
-
         return breadcrumb;
     }
 }

@@ -16,13 +16,13 @@
 //
 package com.bloatit.web.linkable.money;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.PaylineReturnActionUrl;
@@ -48,12 +48,13 @@ public final class PaylineReturnAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(final ElveosUserToken userToken) {
+    protected Url doProcess() {
         if (ack.equals("ok")) {
             try {
                 process.validatePayment(token);
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
+                Log.web().error("Fail to validate payment",e);
+                session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
             }
         } else if (ack.equals("cancel")) {
             process.refusePayment(token);
@@ -66,12 +67,12 @@ public final class PaylineReturnAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return Context.getSession().pickPreferredPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything() {
         return NO_ERROR; // Nothing else to check
     }
 

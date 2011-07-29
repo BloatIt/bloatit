@@ -25,8 +25,8 @@ import com.bloatit.model.Invoice;
 public class RgtActor extends RightManager {
 
     /**
-     * The Class <code>Login</code> is a {@link RightManager.Public} accessor for the
-     * <code>Login</code> property.
+     * The Class <code>Login</code> is a {@link RightManager.Public} accessor
+     * for the <code>Login</code> property.
      */
     public static class Login extends Public {
         // nothing this is just a rename.
@@ -57,8 +57,8 @@ public class RgtActor extends RightManager {
     }
 
     /**
-     * The Class DateCreation is a {@link RightManager.PublicReadOnly} accessor for the
-     * DateCreation property.
+     * The Class DateCreation is a {@link RightManager.PublicReadOnly} accessor
+     * for the DateCreation property.
      */
     public static class DateCreation extends PublicReadOnly {
         // nothing this is just a rename.
@@ -73,8 +73,8 @@ public class RgtActor extends RightManager {
     }
 
     /**
-     * The Class MonayWithdrawal is a {@link RightManager.Public} accessor for the
-     * DateCreation property.
+     * The Class MonayWithdrawal is a {@link RightManager.Public} accessor for
+     * the DateCreation property.
      */
     public static class MoneyWithdrawal extends Public {
         // nothing this is just a rename.

@@ -92,14 +92,14 @@ public abstract class Url implements Cloneable {
 
     public String urlString() {
         if (getProtocol() == Protocol.AUTO) {
-            return internalUrlString();
+            return internalUrlString(false);
         }
         return externalUrlString();
     }
 
-    private String internalUrlString() {
+    private String internalUrlString(boolean multilanguage) {
         final StringBuilder sb = new StringBuilder();
-        if (Context.getSession() != null) {
+        if (Context.getSession() != null && !multilanguage) {
             sb.append('/').append(Context.getLocalizator().getCode());
         }
         sb.append('/').append(getCode());
@@ -127,24 +127,28 @@ public abstract class Url implements Cloneable {
     }
 
     public final String externalUrlString() {
+        return externalUrlString(false);
+    }
+
+    public final String externalUrlString(boolean multilanguage) {
         if (Context.getHeader() != null) {
-            final HttpHeader header = Context.getHeader().getHttpHeader();
-            if (FrameworkConfiguration.isHttpsEnabled()
-                    && (getProtocol() == Protocol.HTTPS || (header.getServerProtocol().startsWith("HTTPS") && getProtocol() == Protocol.AUTO))) {
-                return "https://" + header.getHttpHost() + internalUrlString();
+            final HttpHeader header = Context.getHeader();
+            if (FrameworkConfiguration.isHttpsEnabled() && (getProtocol() == Protocol.HTTPS || (header.isHttps() && getProtocol() == Protocol.AUTO))) {
+                return "https://" + header.getHttpHost() + internalUrlString(multilanguage);
             }
 
-            if (!FrameworkConfiguration.isHttpsEnabled() || getProtocol() == Protocol.HTTP
-                    || (header.getServerProtocol().startsWith("HTTP") && getProtocol() == Protocol.AUTO)) {
-                return "http://" + header.getHttpHost() + internalUrlString();
+            if (!FrameworkConfiguration.isHttpsEnabled() || getProtocol() == Protocol.HTTP || (!header.isHttps() && getProtocol() == Protocol.AUTO)) {
+                return "http://" + header.getHttpHost() + internalUrlString(multilanguage);
             }
 
             Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
-            return "http://" + header.getHttpHost() + internalUrlString();
+            return "http://" + header.getHttpHost() + internalUrlString(multilanguage);
         }
-        return "http://elveos.org/" + internalUrlString(); // FIXME : Replace
-                                                           // http://elveos.org
-                                                           // by configuration
+        return "http://elveos.org/" + internalUrlString(multilanguage); // FIXME
+                                                                        // :
+                                                                        // Replace
+        // http://elveos.org
+        // by configuration
     }
 
     public final HtmlLink getHtmlLink(final XmlNode data) {

@@ -27,7 +27,6 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 
 public interface Feature extends KudosableInterface, Commentable {
@@ -64,7 +63,7 @@ public interface Feature extends KudosableInterface, Commentable {
 
     /**
      * Add a contribution on this feature.
-     *
+     * 
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char
      *            long.
@@ -73,7 +72,6 @@ public interface Feature extends KudosableInterface, Commentable {
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#WRITE} right on the <code>Contribution</code>
      *             property.
-     * @see #authenticate(AuthenticatedUserToken)
      */
     Contribution addContribution(BigDecimal amount, String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
 
@@ -85,33 +83,30 @@ public interface Feature extends KudosableInterface, Commentable {
      * offer is selected (see {@link DaoFeature#setSelectedOffer(DaoOffer)}).
      * The parameters of this function are used to create the first (non
      * optional) milestone in this offer.
-     *
+     * 
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#WRITE} right on the <code>Offer</code>
      *             property.
      * @throws WrongStateException if the state is != from
      *             {@link FeatureState#PENDING} or
      *             {@link FeatureState#PREPARING}.
-     * @see #authenticate(AuthenticatedUserToken)
      */
-    Offer
-            addOffer(BigDecimal amount, String description, String license, Locale locale, Date expireDate, int secondsBeforeValidation)
-                                                                                                                                        throws UnauthorizedOperationException;
+    Offer addOffer(BigDecimal amount, String description, String license, Locale locale, Date expireDate, int secondsBeforeValidation)
+            throws UnauthorizedOperationException;
 
     /**
      * For now only the admin can delete an offer.
-     *
+     * 
      * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>DELETED</code> right on the <code>Offer</code>
      *             property.
-     * @see #authenticate(AuthenticatedUserToken)
      */
     void removeOffer(final Offer offer) throws UnauthorizedOperationException;
 
     /**
      * Works only in development state.
-     *
+     * 
      * @throws UnauthorizedOperationException If this is not the current
      *             developer thats try to cancel the dev.
      */
@@ -128,7 +123,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * Get the total number of comments for this feature. It doesn't take into
      * account the pageSize if you are using paged list (cf:
      * {@link PageIterable}).
-     *
+     * 
      * @return the total number of comments on this feature.
      */
     Long getCommentsCount();
@@ -141,7 +136,7 @@ public interface Feature extends KudosableInterface, Commentable {
     /**
      * Return the progression in percent. It compare the amount of contribution
      * to the amount of the current offer.
-     *
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
@@ -151,7 +146,7 @@ public interface Feature extends KudosableInterface, Commentable {
     /**
      * Return the progression due by the member in percent. It compare the
      * amount of contribution to the amount of the current offer.
-     *
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
@@ -162,7 +157,7 @@ public interface Feature extends KudosableInterface, Commentable {
     /**
      * Return the progression due by the amount in percent. It compare the
      * amount of contribution to the amount of the current offer.
-     *
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
@@ -196,6 +191,11 @@ public interface Feature extends KudosableInterface, Commentable {
     Software getSoftware();
 
     /**
+     * @return true if there is a software assigned to the feature
+     */
+    boolean hasSoftware();
+
+    /**
      * @return all the offers on this feature.
      */
     PageIterable<Offer> getOffers();
@@ -203,7 +203,7 @@ public interface Feature extends KudosableInterface, Commentable {
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
-     *
+     * 
      * @return the current offer for this feature, or null if there is no offer.
      */
     Offer getSelectedOffer();
@@ -212,7 +212,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * A validated offer is an offer selected for more than one day. (If you are
      * in {@link FeatureState#DEVELOPPING} state then there should be always a
      * validated offer.
-     *
+     * 
      * @return the validated offer or null if there is no valid offer.
      */
     Offer getValidatedOffer();
@@ -237,4 +237,5 @@ public interface Feature extends KudosableInterface, Commentable {
     void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
 
     BigDecimal getContributionOf(Member member);
+
 }

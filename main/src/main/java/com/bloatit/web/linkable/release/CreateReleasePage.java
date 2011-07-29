@@ -27,7 +27,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
@@ -71,7 +70,7 @@ public final class CreateReleasePage extends CreateUserContentPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature(), new AuthenticatedUserToken(loggedUser)));
+        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
         layout.addLeft(generateReleaseCreationForm());
         return layout;
     }

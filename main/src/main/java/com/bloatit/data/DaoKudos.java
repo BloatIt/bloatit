@@ -87,8 +87,11 @@ public class DaoKudos extends DaoUserContent {
     // Visitor.
     // ======================================================================
 
-    /* (non-Javadoc)
-     * @see com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor)
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
      */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {

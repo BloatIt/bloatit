@@ -16,6 +16,7 @@
 //
 package com.bloatit.model;
 
+import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.data.DaoExternalAccount;
+import com.bloatit.data.DaoExternalServiceMembership;
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
@@ -33,14 +36,15 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.Hash;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.JoinTeamInvitationList;
 import com.bloatit.model.lists.KudosList;
+import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.lists.OfferList;
@@ -48,6 +52,7 @@ import com.bloatit.model.lists.TeamList;
 import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.RightManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -145,7 +150,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public boolean acceptInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
-        if (!invitation.getReceiver().getId().equals(getAuthToken().getMember().getId())) {
+        if (!invitation.getReceiver().getId().equals(AuthToken.getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
 
@@ -171,7 +176,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public void refuseInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
-        if (!invitation.getReceiver().getId().equals(getAuthToken().getMember().getId())) {
+        if (!invitation.getReceiver().getId().equals(AuthToken.getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
         invitation.refuse();
@@ -290,6 +295,29 @@ public final class Member extends Actor<DaoMember> implements User {
         return false;
     }
 
+    public boolean hasEmailToActivate() {
+        return getDao().getEmailToActivate() != null;
+    }
+
+    public boolean activateEmail(final String activationKey) {
+        if (!hasEmailToActivate()) {
+            return false;
+        }
+
+        if (getEmailActivationKey().equals(activationKey)) {
+            getDao().setEmail(getDao().getEmailToActivate());
+            getDao().setEmailToActivate(null);
+            return true;
+        }
+        return false;
+
+    }
+
+    public void setEmailToActivate(final String email) {
+        getDao().setEmailToActivate(email);
+
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -306,6 +334,13 @@ public final class Member extends Actor<DaoMember> implements User {
     public String getActivationKey() {
         final DaoMember m = getDao();
         final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + ACTIVATE_SALT;
+        return DigestUtils.sha256Hex(digest);
+    }
+
+    public String getEmailActivationKey() {
+        final DaoMember m = getDao();
+        final String digest = "" + m.getId() + m.getEmail() + m.getEmailToActivate() + m.getFullname() + m.getPassword() + m.getSalt()
+                + ACTIVATE_SALT;
         return DigestUtils.sha256Hex(digest);
     }
 
@@ -384,6 +419,11 @@ public final class Member extends Actor<DaoMember> implements User {
     public String getEmail() throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Email(), Action.READ);
         return getEmailUnprotected();
+    }
+
+    public String getEmailToActivate() throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Email(), Action.READ);
+        return getDao().getEmailToActivate();
     }
 
     // TODO: Create a send notification / mail
@@ -483,6 +523,14 @@ public final class Member extends Actor<DaoMember> implements User {
         return DigestUtils.sha256Hex(digest);
     }
 
+    public PageIterable<ExternalServiceMembership> getExternalServices() {
+        return new ListBinder<ExternalServiceMembership, DaoExternalServiceMembership>(getDao().getAuthorizedExternalServices());
+    }
+
+    public void addAuthorizedExternalService(String clientId, String token, EnumSet<RightLevel> rights) {
+        getDao().addAuthorizedExternalService(clientId, token, rights);
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -520,7 +568,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * 
      * @param action the type of action
      */
-    public boolean canAccessUserInformations(Action action) {
+    public boolean canAccessUserInformations(final Action action) {
         return canAccess(new RgtMember.UserInformations(), action);
     }
 

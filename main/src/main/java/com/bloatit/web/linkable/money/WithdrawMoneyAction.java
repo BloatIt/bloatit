@@ -14,7 +14,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
@@ -68,12 +67,12 @@ public class WithdrawMoneyAction extends LoggedAction {
     protected Url checkRightsAndEverything(final Member me) {
         if (actor instanceof Member) {
             if (!me.equals(actor)) {
-                session.notifyBad(Context.tr("You cannot withdraw money on someone else account."));
+                session.notifyWarning(Context.tr("You cannot withdraw money on someone else account."));
                 return new WithdrawMoneyPageUrl(actor);
             }
             try {
                 if (me.getInternalAccount().getAmount().compareTo(amount) < 0) {
-                    session.notifyBad(Context.tr("You cannot withdraw more money than you currently have on your account."));
+                    session.notifyWarning(Context.tr("You cannot withdraw more money than you currently have on your account."));
                     return new WithdrawMoneyPageUrl(actor);
                 }
             } catch (final UnauthorizedOperationException e) {
@@ -82,12 +81,12 @@ public class WithdrawMoneyAction extends LoggedAction {
         } else {
             final Team t = (Team) actor;
             if (!me.hasBankTeamRight(t)) {
-                session.notifyBad(Context.tr("You cannot withdraw money on team {0} account.", t.getDisplayName()));
+                session.notifyWarning(Context.tr("You cannot withdraw money on team {0} account.", t.getDisplayName()));
                 return new WithdrawMoneyPageUrl(actor);
             }
             try {
                 if (t.getInternalAccount().getAmount().compareTo(amount) < 0) {
-                    session.notifyBad(Context.tr("You cannot withdraw more money than the team currently have on her account."));
+                    session.notifyWarning(Context.tr("You cannot withdraw more money than the team currently have on her account."));
                     return new WithdrawMoneyPageUrl(actor);
                 }
             } catch (final UnauthorizedOperationException e) {
@@ -96,7 +95,7 @@ public class WithdrawMoneyAction extends LoggedAction {
         }
 
         if (!MoneyWithdrawal.checkIban(IBAN)) {
-            session.notifyBad(Context.tr("Invalid IBAN."));
+            session.notifyWarning(Context.tr("Invalid IBAN."));
             return new WithdrawMoneyPageUrl(actor);
         }
 
@@ -104,7 +103,7 @@ public class WithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         if (actor != null) {
             return new WithdrawMoneyPageUrl(actor);
         }

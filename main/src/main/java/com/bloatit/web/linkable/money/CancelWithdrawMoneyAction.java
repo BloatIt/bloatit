@@ -18,10 +18,10 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.linkable.members.MemberPage;
@@ -45,7 +45,7 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         if (!moneyWithdrawal.canSetCanceled()) {
-            session.notifyBad(Context.tr("Failed to cancel this withdrawal."));
+            session.notifyWarning(Context.tr("Failed to cancel this withdrawal."));
             return getBestReturnUrl(me);
         }
         return NO_ERROR;
@@ -64,9 +64,9 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
-        if (userToken.isAuthenticated()) {
-            return getBestReturnUrl(userToken.getMember());
+    protected Url doProcessErrors() {
+        if (AuthToken.isAuthenticated()) {
+            return getBestReturnUrl(AuthToken.getMember());
         }
         return session.pickPreferredPage();
     }

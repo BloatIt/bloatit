@@ -38,7 +38,7 @@ public class SideBarBugReportBlock extends TitleSideBarElementLayout {
 
         final HtmlParagraph bugDetail = new HtmlParagraph();
 
-        HtmlLink htmlLink = new MetaBugsListPageUrl().getHtmlLink();
+        final HtmlLink htmlLink = new MetaBugsListPageUrl().getHtmlLink();
         htmlLink.setNoFollow();
         bugDetail.add(new HtmlMixedText(tr("You can use the <0::bug report> system to report any problem on elveos.org website."), htmlLink));
 

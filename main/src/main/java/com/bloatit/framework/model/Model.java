@@ -16,6 +16,8 @@
 //
 package com.bloatit.framework.model;
 
+import com.bloatit.framework.xcgiserver.RequestKey;
+
 /**
  * You have to implement a model manager in the model layer. The model manager
  * allows you to plug your model into the web framework.
@@ -53,5 +55,9 @@ public interface Model {
     public abstract void close();
 
     public abstract void rollback();
+
+    public abstract void authenticate(RequestKey key);
+
+    void flush();
 
 }

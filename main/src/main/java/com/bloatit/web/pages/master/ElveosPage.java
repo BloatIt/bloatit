@@ -39,9 +39,9 @@ import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
-import com.bloatit.model.ElveosUserToken;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.model.Image;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -50,7 +50,6 @@ public abstract class ElveosPage extends Page {
     private HtmlBranch notifications;
     private final HtmlDiv notificationBlock;
     private final Session session;
-    private final ElveosUserToken token;
     private final Localizator localizator;
 
     public ElveosPage(final Url url) {
@@ -58,7 +57,6 @@ public abstract class ElveosPage extends Page {
         notifications = null;
         notificationBlock = new HtmlDiv("notifications");
         session = Context.getSession();
-        token = (ElveosUserToken) Context.getSession().getUserToken();
         localizator = Context.getLocalizator();
     }
 
@@ -73,14 +71,14 @@ public abstract class ElveosPage extends Page {
     // -----------------------------------------------------------------------
     // Template method pattern: Abstract methods
     // -----------------------------------------------------------------------
-    protected abstract HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException;
+    protected abstract HtmlElement createBodyContent() throws RedirectException;
 
     protected abstract String createPageTitle();
 
-    protected abstract Breadcrumb createBreadcrumb(ElveosUserToken userToken);
+    protected abstract Breadcrumb createBreadcrumb();
 
     // There is a default behavior here. You can overload it.
-    protected HtmlElement createBodyContentOnParameterError(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContentOnParameterError() throws RedirectException {
         throw new PageNotFoundException();
     }
 
@@ -89,7 +87,7 @@ public abstract class ElveosPage extends Page {
     // -----------------------------------------------------------------------
     @Override
     protected final HtmlElement createBody() throws RedirectException {
-        return doCreateBody(createBodyContent(token));
+        return doCreateBody(createBodyContent());
     }
 
     /**
@@ -101,12 +99,12 @@ public abstract class ElveosPage extends Page {
      */
     @Override
     protected StatusCode getResponseStatus() {
-        return StatusCode.OK_200;
+        return StatusCode.SUCCESS_200_OK;
     }
 
     @Override
     protected final HtmlElement createBodyOnParameterError() throws RedirectException {
-        return doCreateBody(createBodyContentOnParameterError(token));
+        return doCreateBody(createBodyContentOnParameterError());
     }
 
     private HtmlElement doCreateBody(final HtmlElement bodyContent) {
@@ -122,8 +120,8 @@ public abstract class ElveosPage extends Page {
         header.add(headerContent);
         header.add(new HtmlClearer());
 
-        if (session.getUserToken().isAuthenticated()) {
-            headerContent.add(new SessionBar(token.getMember()));
+        if (AuthToken.isAuthenticated()) {
+            headerContent.add(new SessionBar(AuthToken.getMember()));
         } else {
             headerContent.add(new SessionBar());
         }
@@ -146,7 +144,7 @@ public abstract class ElveosPage extends Page {
 
         body.add(new Footer());
 
-        breacrumbPlaceHolder.add(createBreadcrumb(token).toHtmlElement());
+        breacrumbPlaceHolder.add(createBreadcrumb().toHtmlElement());
         return body;
     }
 
@@ -204,7 +202,7 @@ public abstract class ElveosPage extends Page {
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
 
         final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
-        logoTextDiv.addText(tr("the cooperative platform for free software funding"));
+        logoTextDiv.addText(tr("the collaborative platform for free software funding"));
 
         logoDiv.add(logoTextDiv);
 

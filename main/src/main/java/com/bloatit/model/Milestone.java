@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoMilestone;
@@ -32,6 +31,7 @@ import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MilestoneContributionAmountList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMilestone;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
@@ -40,7 +40,7 @@ import com.bloatit.model.right.UnauthorizedPublicAccessException;
 /**
  * A milestone is a part of an offer. Simple offers are only composed of one
  * milestone.
- *
+ * 
  * @author Thomas Guyard
  */
 public final class Milestone extends Identifiable<DaoMilestone> {
@@ -71,7 +71,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
      * Check the cache, if a corresponding Milestone exist return it, otherwise
      * create a new one using its dao representation. If the dao == null return
      * null;
-     *
+     * 
      * @param dao the dao
      * @return the milestone or null if the dao == null
      * @see Creator
@@ -83,7 +83,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Instantiates a new milestone.
-     *
+     * 
      * @param dao the dao
      */
     private Milestone(final DaoMilestone dao) {
@@ -92,7 +92,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Update major fatal percent.
-     *
+     * 
      * @param fatalPercent the fatal percent
      * @param majorPercent the major percent
      * @see com.bloatit.data.DaoMilestone#updateMajorFatalPercent(int, int)
@@ -103,7 +103,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Adds the bug.
-     *
+     * 
      * @param title the title of the bug
      * @param description the description
      * @param locale the locale in which it is written
@@ -112,8 +112,8 @@ public final class Milestone extends Identifiable<DaoMilestone> {
      * @throws UnauthorizedOperationException
      */
     public Bug addBug(final String title, final String description, final Locale locale, final Level errorLevel)
-                                                                                                                throws UnauthorizedOperationException {
-        final Bug bug = new Bug(getAuthToken().getMember(), getAuthToken().getAsTeam(), this, title, description, locale, errorLevel);
+            throws UnauthorizedOperationException {
+        final Bug bug = new Bug(AuthToken.getMember(), AuthToken.getAsTeam(), this, title, description, locale, errorLevel);
         getDao().addBug(bug.getDao());
         return bug;
     }
@@ -124,7 +124,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Tells if the authenticated user can access the <i>Release</i> property.
-     *
+     * 
      * @param action the type of access you want to do on the <i>Release</i>
      *            property.
      * @return true if you can access the <i>Release</i> property.
@@ -142,14 +142,13 @@ public final class Milestone extends Identifiable<DaoMilestone> {
      * To finish the dev state of this milestone you have to validate this
      * milestone (done by {@link Offer#validateCurrentMilestone(boolean)}).
      * </p>
-     *
+     * 
      * @throws UnauthorizedOperationException
      */
-    public Release
-            addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
-                                                                                                                    throws UnauthorizedOperationException {
+    public Release addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
+            throws UnauthorizedOperationException {
         tryAccess(new RgtMilestone.Release(), Action.WRITE);
-        final Release release = new Release(getOffer().getMember(), getAuthToken().getAsTeam(), this, description, version, locale);
+        final Release release = new Release(getOffer().getMember(), AuthToken.getAsTeam(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);
         }
@@ -174,7 +173,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Validate the milestone after it has been released.
-     *
+     * 
      * @return true, if successful
      * @throws UnauthorizedPublicAccessException
      * @see com.bloatit.data.DaoMilestone#validate(boolean)
@@ -191,7 +190,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     /**
      * Force validate the milestone after it has been released even if there are
      * bugs left.
-     *
+     * 
      * @return true, if successful
      * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoMilestone#validate(boolean)
@@ -210,7 +209,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     /**
      * Tells if a specified level is validated (and the corresponding amount has
      * been given to the developer)
-     *
+     * 
      * @param level the level
      * @return true, the <code>level</code> is validated.
      */
@@ -221,7 +220,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Tells if an admin should validate this milestone part.
-     *
+     * 
      * @param level the level corresponding to the part we want to validate.
      * @return true, if we should do it, false otherwise.
      * @throws UnauthorizedOperationException
@@ -238,55 +237,59 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     // getters
     // ////////////////////////////////////////////////////////////////////////
 
+    public BugList getBugs() {
+        return new BugList(getDao().getBugs());
+    }
+
     /**
      * Gets the non resolved bugs.
-     *
+     * 
      * @param level the level
      * @return the non resolved bugs for the level <code>level</code>.
      * @see com.bloatit.data.DaoMilestone#getNonResolvedBugs(com.bloatit.data.DaoBug.Level)
      */
-    public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
-        return getDao().getNonResolvedBugs(level);
+    public BugList getNonResolvedBugs(final Level level) {
+        return new BugList(getDao().getNonResolvedBugs(level));
     }
 
     /**
      * Gets the bugs on a specific <code>level</code>.
-     *
+     * 
      * @param level the level
      * @return the bugs that are at <code>level</code>.
      * @see com.bloatit.data.DaoMilestone#getBugs(com.bloatit.data.DaoBug.Level)
      */
-    public PageIterable<DaoBug> getBugs(final Level level) {
-        return getDao().getBugs(level);
+    public BugList getBugs(final Level level) {
+        return new BugList(getDao().getBugs(level));
     }
 
     /**
      * Gets the bugs on a specific state.
-     *
+     * 
      * @param state the state
      * @return the bugs
      * @see com.bloatit.data.DaoMilestone#getBugs(com.bloatit.data.DaoBug.BugState)
      */
-    public PageIterable<DaoBug> getBugs(final BugState state) {
-        return getDao().getBugs(state);
+    public BugList getBugs(final BugState state) {
+        return new BugList(getDao().getBugs(state));
     }
 
     /**
      * Gets the bugs on a specific <code>level</code> and <code>state</code>.
-     *
+     * 
      * @param level the level
      * @param state the state
      * @return the bugs
      * @see com.bloatit.data.DaoMilestone#getBugs(com.bloatit.data.DaoBug.Level,
      *      com.bloatit.data.DaoBug.BugState)
      */
-    public PageIterable<Bug> getBugs(final Level level, final BugState state) {
+    public BugList getBugs(final Level level, final BugState state) {
         return new BugList(getDao().getBugs(level, state));
     }
 
     /**
      * Gets the release date.
-     *
+     * 
      * @return the release date
      * @see com.bloatit.data.DaoMilestone#getReleasedDate()
      */
@@ -305,7 +308,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the fatal bugs percent.
-     *
+     * 
      * @return the fatal bugs percent
      * @see com.bloatit.data.DaoMilestone#getFatalBugsPercent()
      */
@@ -315,7 +318,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the major bugs percent.
-     *
+     * 
      * @return the major bugs percent
      * @see com.bloatit.data.DaoMilestone#getMajorBugsPercent()
      */
@@ -325,7 +328,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the minor bugs percent.
-     *
+     * 
      * @return the minor bugs percent
      * @see com.bloatit.data.DaoMilestone#getMinorBugsPercent()
      */
@@ -339,7 +342,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the expiration date.
-     *
+     * 
      * @return the expiration date
      */
     public Date getExpirationDate() {
@@ -348,7 +351,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the amount.
-     *
+     * 
      * @return the amount
      */
     public BigDecimal getAmount() {
@@ -357,16 +360,20 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the title.
-     *
+     * 
      * @return the title
      */
     public String getTitle() {
         return getDao().getDescription().getDefaultTranslation().getTitle();
     }
 
+    protected Description getDescriptionEntity() {
+        return Description.create(getDao().getDescription());
+    }
+
     /**
      * Gets the description.
-     *
+     * 
      * @return the description
      */
     public String getDescription() {
@@ -375,7 +382,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the position.
-     *
+     * 
      * @return the position
      */
     public int getPosition() {
@@ -413,6 +420,6 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     }
 
     public PageIterable<MilestoneContributionAmount> getContributionAmounts() {
-         return new MilestoneContributionAmountList(getDao().getContributionAmounts());
+        return new MilestoneContributionAmountList(getDao().getContributionAmounts());
     }
 }

@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.linkable.money.PaylineProcess;
@@ -47,7 +46,7 @@ public abstract class PaymentProcess extends WebProcess {
     }
 
     @Override
-    protected final Url doProcessErrors(final ElveosUserToken userToken) {
+    protected final Url doProcessErrors() {
         return session.getLastVisitedPage();
     }
 

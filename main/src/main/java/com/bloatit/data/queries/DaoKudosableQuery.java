@@ -25,7 +25,8 @@ import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.SessionManager;
 
 /**
- * The Class DaoKudosableQuery is a generic way of querying for DaoKudosables using criterias.
+ * The Class DaoKudosableQuery is a generic way of querying for DaoKudosables
+ * using criterias.
  * 
  * @param <T> the generic type
  */

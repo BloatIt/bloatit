@@ -50,7 +50,7 @@ public abstract class DaoIdentifiable {
 
     /**
      * The accept method for the visitor pattern
-     *
+     * 
      * @param visitor the visitor.
      * @param <ReturnType> the return type of the visitor
      * @return whatever the visitor return
@@ -79,9 +79,9 @@ public abstract class DaoIdentifiable {
     // Tools
     // ======================================================================
 
-    protected void checkOptionnal(Object... parameters) {
+    protected void checkOptionnal(final Object... parameters) {
 
-        for (Object parameter : parameters) {
+        for (final Object parameter : parameters) {
             if (parameter == null) {
                 throw new NonOptionalParameterException();
             }

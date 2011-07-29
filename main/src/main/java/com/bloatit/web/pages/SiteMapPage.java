@@ -21,7 +21,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
@@ -55,7 +55,7 @@ public final class SiteMapPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -96,10 +96,10 @@ public final class SiteMapPage extends ElveosPage {
         final HtmlList personalLinkList = new HtmlList();
         layout.addLeft(personalLinkList);
 
-        if (userToken.isAuthenticated()) {
-            personalLinkList.add(new MemberPageUrl(userToken.getMember()).getHtmlLink(Context.tr("My page")));
-            personalLinkList.add(MemberPage.MyAccountUrl(userToken.getMember()).getHtmlLink(Context.tr("My account")));
-            personalLinkList.add(MemberPage.MyMessagesUrl(userToken.getMember()).getHtmlLink(Context.tr("My messages")));
+        if (AuthToken.isAuthenticated()) {
+            personalLinkList.add(new MemberPageUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My page")));
+            personalLinkList.add(MemberPage.MyAccountUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My account")));
+            personalLinkList.add(MemberPage.MyMessagesUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My messages")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
             personalLinkList.add(new HtmlText(Context.tr("My account")));
@@ -130,7 +130,7 @@ public final class SiteMapPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return SiteMapPage.generateBreadcrumb();
     }
 

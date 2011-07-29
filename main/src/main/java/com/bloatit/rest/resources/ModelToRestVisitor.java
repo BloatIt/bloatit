@@ -28,6 +28,8 @@ import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
 import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.ExternalService;
+import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
@@ -151,27 +153,37 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     }
 
     @Override
-    public RestElement<?> visit(MoneyWithdrawal model) {
+    public RestElement<?> visit(final MoneyWithdrawal model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(Invoice model) {
+    public RestElement<?> visit(final Invoice model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(ContributionInvoice model) {
+    public RestElement<?> visit(final ContributionInvoice model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(MilestoneContributionAmount model) {
+    public RestElement<?> visit(final MilestoneContributionAmount model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(NewsFeed newsFeed) {
+    public RestElement<?> visit(final NewsFeed newsFeed) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(final ExternalService externalService) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(ExternalServiceMembership externalService) {
         throw new NotImplementedException();
     }
 }

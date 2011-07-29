@@ -118,7 +118,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Create a fcgi parser with the 2 stream of the web server's socket.
-     *
+     * 
      * @param input stream containing data from the web server
      * @param output stream where to write the response to the web server
      * @throws IOException
@@ -162,7 +162,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Fetch one post record if possible
-     *
+     * 
      * @throws IOException
      */
     protected void fetchPostRecord() throws IOException {
@@ -181,7 +181,7 @@ public class FCGIParser implements XcgiParser {
 
     public byte[] readRecordHeader() throws IOException {
 
-        byte[] header = new byte[8];
+        final byte[] header = new byte[8];
         dataInput.read(header);
 
         return header;
@@ -189,7 +189,7 @@ public class FCGIParser implements XcgiParser {
 
     private byte parseRecord() throws IOException {
 
-        byte[] header = readRecordHeader();
+        final byte[] header = readRecordHeader();
 
         final byte version = header[0];
         final byte type = header[1];
@@ -346,7 +346,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Converts a 4 byte array of unsigned bytes to an long
-     *
+     * 
      * @param b an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */
@@ -370,13 +370,13 @@ public class FCGIParser implements XcgiParser {
         return postStreamOpen;
     }
 
-    public static int readUnsignedByte(byte b) {
+    public static int readUnsignedByte(final byte b) {
         return b & 0xFF;
     }
 
-    public static int readUnsignedShort(byte b1, byte b2) {
-        int firstByte = 0x000000FF & b1;
-        int secondByte = 0x000000FF & b2;
+    public static int readUnsignedShort(final byte b1, final byte b2) {
+        final int firstByte = 0x000000FF & b1;
+        final int secondByte = 0x000000FF & b2;
         return (firstByte << 8 | secondByte);
     }
 }

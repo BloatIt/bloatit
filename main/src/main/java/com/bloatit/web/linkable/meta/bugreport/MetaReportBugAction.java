@@ -23,7 +23,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.MetaReportBugActionUrl;
 
@@ -55,10 +55,10 @@ public final class MetaReportBugAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(final ElveosUserToken userToken) {
+    protected Url doProcess() {
         String bugReport = "";
         bugReport += "* **Url:** " + bugUrl + "\n";
-        bugReport += "* **Author:** " + (userToken.isAuthenticated() ? userToken.getMember().getLogin() : "not logged") + "\n";
+        bugReport += "* **Author:** " + (AuthToken.isAuthenticated() ? AuthToken.getMember().getLogin() : "not logged") + "\n";
         bugReport += "* **Date:** " + new SimpleDateFormat().format(new Date()) + "\n";
         bugReport += "\n";
         bugReport += description;
@@ -72,13 +72,13 @@ public final class MetaReportBugAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything() {
         return NO_ERROR; // Nothing else to check
     }
 

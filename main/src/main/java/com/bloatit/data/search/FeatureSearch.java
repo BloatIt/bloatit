@@ -33,11 +33,24 @@ public class FeatureSearch extends Search<DaoFeature> {
     public FeatureSearch(final String searchText) {
         super();
         sortMethod = SortMethod.SORT_BY_RELEVANCE;
-        configure(DaoFeature.class, new String[] { "description.translations.title",
-                                                  "description.translations.text",
-                                                  "offers.description.translations.title",
-                                                  "offers.description.translations.text",
-                                                  "featureState" }, searchText);
+        configure(DaoFeature.class, new String[] { //
+                                                   // feature description
+                          "description.translations.text.content",
+                          "description.translations.title",
+
+                          // Feature state
+                          "featureState",
+                          "progress",
+                          "popularity",
+
+                          // Comment
+                          "comments.text.content",
+                          "comments.children.text.content",
+
+                          // offers descriptions
+                          "offers.milestones.description.translations.title",
+                          "offers.milestones.description.translations.text.content", },
+                  searchText);
         // Remove deleted content from search.
         addFilterTerm("isDeleted", "TRUE");
     }
@@ -62,10 +75,10 @@ public class FeatureSearch extends Search<DaoFeature> {
                 sort.setSort(new SortField("contribution", SortField.FLOAT, true), new SortField("progress", SortField.FLOAT, true));
                 break;
             case SORT_BY_CREATION_DATE:
-                sort.setSort(new SortField("creationDate", SortField.STRING, false));
+                sort.setSort(new SortField("creationDate", SortField.STRING, false), new SortField("popularity", SortField.INT, true));
                 break;
             case SORT_BY_EXPIRATION_DATE:
-                sort.setSort(new SortField("selectedOffer.expirationDate", SortField.LONG, true));
+                sort.setSort(new SortField("selectedOffer.expirationDate", SortField.LONG, true), new SortField("popularity", SortField.INT, true));
                 break;
             case SORT_BY_POPULARITY:
                 sort.setSort(new SortField("popularity", SortField.INT, true));
@@ -74,7 +87,7 @@ public class FeatureSearch extends Search<DaoFeature> {
                 sort.setSort(new SortField("featureState", SortField.STRING), new SortField("progress", SortField.FLOAT, true));
                 break;
             case SORT_BY_RELEVANCE:
-                sort.setSort(SortField.FIELD_SCORE);
+                sort.setSort(SortField.FIELD_SCORE, new SortField("popularity", SortField.INT, true));
                 break;
         }
 

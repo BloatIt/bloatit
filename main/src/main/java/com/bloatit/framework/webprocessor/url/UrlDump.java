@@ -59,6 +59,10 @@ public class UrlDump extends Url {
         stringParameters.add(key, value);
     }
 
+    public void addOrReplaceParameter(final String key, final String value) {
+        stringParameters.addOrReplace(key, value);
+    }
+
     @Override
     public Messages getMessages() {
         return new Messages();

@@ -19,7 +19,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.actions.ElveosAction;
@@ -34,26 +33,26 @@ import com.bloatit.web.url.SignUpPageUrl;
 public final class SignUpAction extends ElveosAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Login cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("Number of characters for login has to be superior to 3."))
-    @MaxConstraint(max = 15, message = @tr("Number of characters for login has to be inferior to 16."))
+    @MinConstraint(min = 4, message = @tr("The login must have at least %constraint% chars."))
+    @MaxConstraint(max = 15, message = @tr("The login must be %constraint% chars length max."))
     private final String login;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Password cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("Number of characters for password has to be superior to 3."))
-    @MaxConstraint(max = 15, message = @tr("Number of characters for password has to be inferior to 16."))
+    @MinConstraint(min = 7, message = @tr("The password must have at least %constraint% chars."))
+    @MaxConstraint(max = 15, message = @tr("The password must be %constraint% chars length max."))
     private final String password;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Password check cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("Number of characters for password check has to be superior to 3."))
-    @MaxConstraint(max = 15, message = @tr("Number of characters for password check has to be inferior to 16."))
+    @MinConstraint(min = 7, message = @tr("The password check must have at least %constraint% chars."))
+    @MaxConstraint(max = 15, message = @tr("The password check must be %constraint% chars length max."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Email cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("Number of characters for email has to be superior to 3."))
-    @MaxConstraint(max = 254, message = @tr("Number of characters for email address has to be inferior to 255."))
+    @MinConstraint(min = 4, message = @tr("The email must have at least %constraint% chars."))
+    @MaxConstraint(max = 254, message = @tr("The email must be %constraint% chars length max."))
     private final String email;
 
     @RequestParam(name = "bloatit_country", role = Role.POST)
@@ -76,7 +75,7 @@ public final class SignUpAction extends ElveosAction {
     }
 
     @Override
-    protected final Url doProcess(final ElveosUserToken token) {
+    protected final Url doProcess() {
 
         final Locale locale = new Locale(lang, country);
         final Member m = new Member(login, password, email, locale);
@@ -95,12 +94,12 @@ public final class SignUpAction extends ElveosAction {
     }
 
     @Override
-    protected final Url doProcessErrors(final ElveosUserToken token) {
+    protected final Url doProcessErrors() {
         return new SignUpPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(final ElveosUserToken token) {
+    protected Url checkRightsAndEverything() {
         if (MemberManager.loginExists(login)) {
             session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
             url.getLoginParameter().addErrorMessage(Context.tr("Login already used."));
@@ -142,7 +141,7 @@ public final class SignUpAction extends ElveosAction {
         final UrlParameter<String, String> passwordParameter = url.getPasswordParameter();
         if (passwordParameter.getValue() != null) {
             if (passwordParameter.getValue().length() > 3) {
-                passwordParameter.setValue("xxxx");
+                passwordParameter.setValue("xxxxxxxxxx");
             }
         }
         session.addParameter(passwordParameter);
@@ -150,7 +149,7 @@ public final class SignUpAction extends ElveosAction {
         final UrlParameter<String, String> passwordCheckParameter = url.getPasswordCheckParameter();
         if (passwordCheckParameter.getValue() != null) {
             if (passwordCheckParameter.getValue().length() > 3) {
-                passwordCheckParameter.setValue("xxxx");
+                passwordCheckParameter.setValue("xxxxxxxxxx");
             }
         }
         session.addParameter(passwordCheckParameter);

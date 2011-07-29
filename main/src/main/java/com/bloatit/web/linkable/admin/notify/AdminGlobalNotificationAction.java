@@ -6,7 +6,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.admin.master.AdminAction;
@@ -15,13 +14,13 @@ import com.bloatit.web.url.AdminGlobalNotificationPageUrl;
 
 @ParamContainer("admin/donotify")
 public class AdminGlobalNotificationAction extends AdminAction {
-    private AdminGlobalNotificationActionUrl url;
+    private final AdminGlobalNotificationActionUrl url;
 
     @RequestParam(role = Role.POST)
     @Optional
-    private String message;
+    private final String message;
 
-    public AdminGlobalNotificationAction(AdminGlobalNotificationActionUrl url) {
+    public AdminGlobalNotificationAction(final AdminGlobalNotificationActionUrl url) {
         super(url);
         this.url = url;
         this.message = url.getMessage();
@@ -39,12 +38,12 @@ public class AdminGlobalNotificationAction extends AdminAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new AdminGlobalNotificationPageUrl();
     }
 

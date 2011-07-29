@@ -16,6 +16,9 @@
 //
 package com.bloatit.model.right;
 
+import java.util.EnumSet;
+
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.model.Rights;
 
 /**
@@ -49,6 +52,11 @@ public class RgtBug extends RightManager {
         @Override
         protected boolean can(final Rights object, final Action action) {
             return canRead(action) || authentifiedCanWrite(object, action);
+        }
+        
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return canRead(action) || rights.contains(RightLevel.COMMENT);
         }
     }
 

@@ -20,7 +20,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -63,10 +62,10 @@ public final class ContributeAction extends UserContentAction {
             process.close();
             return featurePageUrl;
         } catch (final NotEnoughMoneyException e) {
-            session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
+            session.notifyWarning(Context.tr("You need to charge your account before you can contribute."));
             return new CheckContributePageUrl(process);
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
+            session.notifyWarning(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
             return new ContributionProcessUrl(process.getFeature());
         } catch (final RuntimeException e) {
             process.close();
@@ -86,7 +85,7 @@ public final class ContributeAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new CheckContributePageUrl(process);
     }
 

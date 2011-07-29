@@ -18,10 +18,8 @@ package com.bloatit.web.linkable.money;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
@@ -43,8 +41,8 @@ public class AccountChargingProcess extends PaymentProcess {
     }
 
     @Override
-    protected Url doProcess(final ElveosUserToken userToken) {
-        userToken.setAsTeam(getTeam());
+    protected Url doProcess() {
+        AuthToken.setAsTeam(getTeam());
         return new AccountChargingPageUrl(this);
     }
 
@@ -59,8 +57,8 @@ public class AccountChargingProcess extends PaymentProcess {
                 if (getTeam() != null) {
                     return TeamPage.AccountUrl(getTeam());
                 }
-                if (Context.getSession().getUserToken().isAuthenticated()) {
-                    return MemberPage.MyAccountUrl((Member) Context.getSession().getUserToken().getMember());
+                if (AuthToken.isAuthenticated()) {
+                    return MemberPage.MyAccountUrl(AuthToken.getMember());
                 }
                 return new IndexPageUrl();
             }

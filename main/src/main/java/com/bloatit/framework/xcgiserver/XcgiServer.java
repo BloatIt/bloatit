@@ -32,7 +32,10 @@ import java.util.Map;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.SessionManager;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
+import com.bloatit.framework.xcgiserver.RequestKey.Source;
 import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 
 public final class XcgiServer {
@@ -145,32 +148,32 @@ public final class XcgiServer {
             Log.framework().debug(env);
 
             // LOGGING REQUESTS
+            // make sure bash injection is not possible
             final StringBuilder request = new StringBuilder();
             request.append("Access:Request: ");
-            request.append("REQUEST_URI=\"");
-            request.append(header.getRequestUri());
-            request.append("\"; REQUEST_METHOD=\"");
-            request.append(header.getRequestMethod());
-            request.append("\"; USER_AGENT=\"");
-            request.append(header.getHttpUserAgent());
-            request.append("\"; ACCEPT_LANGUAGES=\"");
+            request.append("REQUEST_URI='");
+            request.append(header.getRequestUri().replaceAll("'", ""));
+            request.append("'; REQUEST_METHOD='");
+            request.append(header.getRequestMethod().replaceAll("'", ""));
+            request.append("'; USER_AGENT='");
+            request.append(header.getHttpUserAgent().replaceAll("'", ""));
+            request.append("'; ACCEPT_LANGUAGES='");
             request.append(header.getHttpAcceptLanguage());
-            request.append("\"; HTTP_REFERER=\"");
-            request.append(header.getHttpReferer());
-            request.append("\"; REMOTE_ADDR=\"");
-            request.append(header.getRemoteAddr());
-            request.append("\"; SERVER_PROTOCOL=\"");
+            request.append("'; HTTP_REFERER='");
+            request.append(header.getHttpReferer().replaceAll("'", ""));
+            request.append("'; REMOTE_ADDR='");
+            request.append(header.getRemoteAddr().replaceAll("'", ""));
+            request.append("'; SERVER_PROTOCOL='");
             request.append(header.getServerProtocol());
-            request.append("\"; SERVER_ADDR=\"");
+            request.append("'; SERVER_ADDR='");
             request.append(header.getServerAddr());
             request.append('"');
             Log.framework().info(request.toString());
 
-            SessionManager.clearExpiredSessions();
-
             try {
                 for (final XcgiProcessor processor : getProcessors()) {
-                    if (processor.process(header, post, new HttpResponse(parser.getResponseStream(), header))) {
+                    if (processor.process(createKey(header, header.getGetParameters()), header, post, new HttpResponse(parser.getResponseStream(),
+                                                                                                                       header))) {
                         break;
                     }
                 }
@@ -186,6 +189,27 @@ public final class XcgiServer {
             }
 
             Log.framework().debug("Page generated in " + timer.elapsed() + " ms");
+        }
+
+        private RequestKey createKey(final HttpHeader header, final Parameters parameters) {
+            final String ipAddress = header.getRemoteAddr();
+            try {
+                if (parameters.containsKey("access_token")) {
+                    // Works for POST and GET
+                    return new RequestKey(parameters.look("access_token").getSimpleValue(), ipAddress, Source.TOKEN);
+                }
+                if (!HttpHeader.AUTHORIZATION_UNKNOWN.equals(header.getHttpAuthorizationType())) {
+                    if ("Bearer".equals(header.getHttpAuthorizationType())) {
+                        return new RequestKey(header.getHttpAuthorizationData(), ipAddress, Source.TOKEN);
+                    }
+                }
+                if (header.getHttpCookie().containsKey("session_key")) {
+                    return new RequestKey(header.getHttpCookie().get("session_key"), ipAddress, Source.COOKIE);
+                }
+                return new RequestKey(ipAddress);
+            } catch (final WrongSessionKeyFormatException e) {
+                return new RequestKey(ipAddress);
+            }
         }
 
         private XcgiParser getXCGIParser(final InputStream is, final OutputStream os) throws IOException {

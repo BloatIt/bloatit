@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.bloatit.framework.utils.i18n.Localizator;
+import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
  * <p>
@@ -35,7 +36,7 @@ public class Context {
     static class ContextData {
         private Session session = null;
         private Localizator localizator = null;
-        private WebHeader header = null;
+        private HttpHeader header = null;
     }
 
     static class UniqueThreadContext {
@@ -104,7 +105,7 @@ public class Context {
         return UniqueThreadContext.getContext().localizator;
     }
 
-    public static WebHeader getHeader() {
+    public static HttpHeader getHeader() {
         return UniqueThreadContext.getContext().header;
     }
 
@@ -112,11 +113,11 @@ public class Context {
         return Context.requestTime.get();
     }
 
-    public static void reInitializeContext(final WebHeader header, final Session session) {
+    public static void reInitializeContext(final HttpHeader header, final Session session) {
         updateTime();
         setHeader(header);
         setSession(session);
-        setLocalizator(new Localizator(header.getLanguage(), header.getHttpHeader().getHttpAcceptLanguage()));
+        setLocalizator(new Localizator(header.getLanguage(), header.getHttpAcceptLanguage()));
     }
 
     private static void updateTime() {
@@ -127,7 +128,7 @@ public class Context {
         return new Date().getTime() / MILLISECOND_DIV;
     }
 
-    private static void setHeader(final WebHeader header) {
+    private static void setHeader(final HttpHeader header) {
         UniqueThreadContext.getContext().header = header;
     }
 
@@ -139,7 +140,7 @@ public class Context {
         UniqueThreadContext.getContext().session = session;
     }
 
-    public static synchronized void setGlobalNotification(String globalNotification) {
+    public static synchronized void setGlobalNotification(final String globalNotification) {
         Context.globalNotification = globalNotification;
     }
 

@@ -18,7 +18,7 @@
  
     background: @tab_light_background_color;
     .horizontal-gradient( @tab_light_background_color, @tab_dark_background_color);
-
+    
 }
 
 .inactive_tab_title {
@@ -32,6 +32,14 @@
     background: @tab_dark_background_color;
     .horizontal-gradient( @tab_dark_background_color, @tab_light_background_color);
 
+    a:link, a:visited, a:hover, a:active {
+        outline:0;
+    } 
+
+}
+
+.inactive_tab_title:active {
+    .horizontal-gradient(@tab_light_background_color, @tab_dark_background_color);
 }
 
 .active_tab_title_content {

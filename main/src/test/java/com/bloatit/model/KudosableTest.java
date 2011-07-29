@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class KudosableTest extends ModelTestUnit {
@@ -31,16 +32,16 @@ public class KudosableTest extends ModelTestUnit {
     public void testCanKudos() throws UnauthorizedOperationException {
         final Feature feature = FeatureManager.getFeatureById(db.getFeature().getId());
 
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertTrue(feature.canVoteUp().isEmpty());
         feature.voteUp();
         assertFalse(feature.canVoteUp().isEmpty());
 
         // Yo is the author of the feature
-        feature.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertFalse(feature.canVoteUp().isEmpty());
 
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(feature.canVoteUp().isEmpty());
         feature.voteUp();
         assertFalse(feature.canVoteUp().isEmpty());
@@ -51,7 +52,7 @@ public class KudosableTest extends ModelTestUnit {
         final Feature feature = FeatureImplementation.create(db.getFeature());
         
         assertEquals(0, feature.getPopularity());
-        feature.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(feature.canVoteUp().isEmpty());
         feature.voteDown();
         assertEquals(-1, feature.getPopularity());
@@ -62,7 +63,7 @@ public class KudosableTest extends ModelTestUnit {
         final Feature feature = FeatureManager.getFeatureById(db.getFeature().getId());
 
         assertEquals(0, feature.getPopularity());
-        feature.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         feature.voteUp();
         assertEquals(1, feature.getPopularity());
     }

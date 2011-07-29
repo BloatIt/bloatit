@@ -76,7 +76,7 @@ public final class CurrencyLocale {
             }
         } catch (final IllegalArgumentException e) {
             try {
-                Context.getSession().notifyBad(Context.tr("We can't handle properly the country you selected, considering you're from the US."));
+                Context.getSession().notifyWarning(Context.tr("We can't handle properly the country you selected, considering you're from the US."));
                 Log.framework().error("Country " + targetLocale.getCountry() + " selected by user is not valid", e);
                 this.currency = Currency.getInstance(Locale.US);
             } catch (final IllegalArgumentException iae) {
@@ -129,7 +129,8 @@ public final class CurrencyLocale {
      *         application default currency
      */
     public String getSimpleEuroString() {
-        return NumberFormat.getInstance(targetLocale).format(this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE)) + " " + DEFAULT_CURRENCY_SYMBOL;
+        return NumberFormat.getInstance(targetLocale).format(this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE)) + " "
+                + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
@@ -139,11 +140,12 @@ public final class CurrencyLocale {
      * @return the localized string
      */
     public String getDecimalLocaleString() {
-        NumberFormat numberFormat = NumberFormat.getInstance(targetLocale);
+        final NumberFormat numberFormat = NumberFormat.getInstance(targetLocale);
         numberFormat.setMinimumFractionDigits(DISPLAY_PRECISION_DECIMAL);
         numberFormat.setMaximumFractionDigits(DISPLAY_PRECISION_DECIMAL);
         numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
-        return numberFormat.getInstance(targetLocale).format(getConvertedAmount().setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE)) + getLocaleSymbol();
+        return NumberFormat.getInstance(targetLocale).format(getConvertedAmount().setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE))
+                + getLocaleSymbol();
     }
 
     /**
@@ -154,7 +156,7 @@ public final class CurrencyLocale {
      *         application default currency
      */
     public String getTwoDecimalEuroString() {
-        NumberFormat numberFormat = NumberFormat.getInstance(targetLocale);
+        final NumberFormat numberFormat = NumberFormat.getInstance(targetLocale);
         numberFormat.setMinimumFractionDigits(DISPLAY_PRECISION_DECIMAL);
         numberFormat.setMaximumFractionDigits(DISPLAY_PRECISION_DECIMAL);
         numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);

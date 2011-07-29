@@ -22,8 +22,9 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.model.lists.KudosList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtKudosable;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
@@ -64,13 +65,13 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
             errors.add(SpecialCode.KUDOSABLE_LOCKED);
         }
 
-        if (getAuthTokenUnprotected() == null) {
+        if (!AuthToken.isAuthenticated()) {
             errors.add(SpecialCode.AUTHENTICATION_NEEDED);
             // Stop tests here: the other tests need an AuthToken
             return errors;
         }
 
-        if (getAuthTokenUnprotected().getMember().getRole() == Role.ADMIN) {
+        if (AuthToken.getMember().getRole() == Role.ADMIN) {
             // Stop here. The member is an admin. He must be able to kudos
             // everything.
             return errors;
@@ -82,12 +83,12 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         }
 
         // Only one kudos per person
-        if (getDao().hasKudosed(getAuthTokenUnprotected().getMember().getDao())) {
+        if (getDao().hasKudosed(AuthToken.getMember().getDao())) {
             errors.add(SpecialCode.ALREADY_VOTED);
         }
 
         // Make sure we are in the right position
-        final Member member = getAuthTokenUnprotected().getMember();
+        final Member member = AuthToken.getMember();
         final int influence = member.calculateInfluence();
         if (sign == -1 && influence < ModelConfiguration.getKudosableMinInfluenceToUnkudos()) {
             errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN);
@@ -127,12 +128,12 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         }
 
         // Make sure we are in the right position
-        final Member member = getAuthToken().getMember();
+        final Member member = AuthToken.getMember();
         final int influence = member.calculateInfluence();
 
         if (influence > 0) {
-            getMember().addToKarma(influence);
-            calculateNewState(getDao().addKudos(member.getDao(), DaoGetter.get(getAuthToken().getAsTeam()), sign * influence));
+            getMember().addToKarma(sign * influence);
+            calculateNewState(getDao().addKudos(member.getDao(), DaoGetter.get(AuthToken.getAsTeam()), sign * influence));
         }
 
         return influence * sign;
@@ -195,6 +196,27 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     @Override
+    public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+
+        for (final Kudos kudos : getKudos()) {
+            kudos.delete();
+        }
+
+        super.delete();
+    }
+
+    private KudosList getKudos() {
+        return new KudosList(getDao().getKudos());
+    }
+
+    @Override
     public void lockPopularity() throws UnauthorizedOperationException {
         if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
@@ -227,13 +249,10 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     @Override
     public int getUserVoteValue() {
-        final AuthenticatedUserToken userToken = getAuthTokenUnprotected();
-
-        if (getAuthTokenUnprotected() == null) {
+        if (!AuthToken.isAuthenticated()) {
             return 0;
         }
-
-        return getDao().getVote(userToken.getMember().getDao());
+        return getDao().getVote(AuthToken.getMember().getDao());
     }
 
     /**

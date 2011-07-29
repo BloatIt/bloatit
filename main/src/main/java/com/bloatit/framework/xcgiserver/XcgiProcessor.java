@@ -18,7 +18,6 @@ package com.bloatit.framework.xcgiserver;
 
 import java.io.IOException;
 
-
 public interface XcgiProcessor {
 
     /**
@@ -33,6 +32,7 @@ public interface XcgiProcessor {
      * Take a request and use the {@link HttpResponse} object to create a
      * result.
      * 
+     * @param key TODO
      * @param header Is the header part of the HTTP request.
      * @param postData is the Post data from the HTTP request.
      * @param response is where you will have to put the response to this
@@ -41,5 +41,5 @@ public interface XcgiProcessor {
      *         otherwise.
      * @throws IOException if there is an error writing to the response.
      */
-    boolean process(HttpHeader header, HttpPost postData, HttpResponse response) throws IOException;
+    boolean process(RequestKey key, HttpHeader header, HttpPost postData, HttpResponse response) throws IOException;
 }

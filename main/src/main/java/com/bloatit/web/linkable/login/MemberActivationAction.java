@@ -18,10 +18,9 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
@@ -51,40 +50,46 @@ public final class MemberActivationAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(final ElveosUserToken userToken) {
+    protected Url doProcess() {
         final Member member = MemberManager.getMemberByLogin(login);
 
         final Url to = new IndexPageUrl();
 
         if (member != null) {
             if (member.getActivationState() == ActivationState.VALIDATING) {
-                if (key.equals(member.getActivationKey())) {
-                    member.activate(key);
+                if (member.activate(key)) {
 
                     // Auto login after activation
-                    session.authenticate(new AuthenticatedUserToken(member));
+                    AuthToken.authenticate(member);
                     session.notifyGood(Context.tr("Activation sucess, you are now logged."));
 
                 } else {
-                    session.notifyBad(Context.tr("Wrong activation key for this member."));
+                    session.notifyWarning(Context.tr("Wrong activation key for this member."));
                 }
+            } else if (member.hasEmailToActivate()) {
+                if (member.activateEmail(key)) {
+                    session.notifyGood(Context.tr("Email activation sucess."));
+                } else {
+                    session.notifyWarning(Context.tr("Wrong email activation key for this member."));
+                }
+
             } else {
-                session.notifyBad(Context.tr("No activation needed for this member."));
+                session.notifyWarning(Context.tr("No activation needed for this member."));
             }
         } else {
-            session.notifyBad(Context.tr("Activation impossible on a not existing member."));
+            session.notifyWarning(Context.tr("Activation impossible on a not existing member."));
         }
 
         return to;
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new IndexPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything() {
         return NO_ERROR; // Nothing else to check
     }
 

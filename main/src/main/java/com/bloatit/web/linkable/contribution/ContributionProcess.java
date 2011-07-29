@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.actions.PaymentProcess;
@@ -77,7 +76,7 @@ public class ContributionProcess extends PaymentProcess {
     }
 
     @Override
-    protected Url doProcess(final ElveosUserToken userToken) {
+    protected Url doProcess() {
         return new ContributePageUrl(this);
     }
 

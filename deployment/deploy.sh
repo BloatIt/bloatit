@@ -83,7 +83,7 @@ else
     exit 1
 fi
 
-MVN="mvn -f $REPOS_DIR/pom.xml" 
+GRADLE="mvn -b $REPOS_DIR/build.gradle" 
 
 echo "HOST=$HOST
 RELEASE_VERSION=$RELEASE_VERSION
@@ -99,7 +99,8 @@ if [ -n "$( git status --porcelain)" ] ; then
     exit 1
 fi
 git checkout "$PREFIX-$RELEASE_VERSION"
-$MVN clean install -Dmaven.test.skip=true 
+$GRADLE clean build copyDep -x test
+exit_on_failure $?
 
 # Then transfer the data to the host
 $TRANSFERT_SCRIPT -d $HOST -s $REPOS_DIR -n $USER

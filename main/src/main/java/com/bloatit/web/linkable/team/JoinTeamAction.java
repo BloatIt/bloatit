@@ -22,7 +22,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -55,11 +54,11 @@ public final class JoinTeamAction extends LoggedAction {
                 me.addToPublicTeam(team);
                 session.notifyGood(Context.tr("You are now a member of team ''{0}''.", team.getDisplayName()));
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad(Context.tr("Oops we had an internal issue preventing you to join team. It's a bug, please notify us."));
+                session.notifyWarning(Context.tr("Oops we had an internal issue preventing you to join team. It's a bug, please notify us."));
                 throw new ShallNotPassException("User tries to join public team, but is not allowed to", e);
             }
         } else {
-            session.notifyBad(Context.tr("The team {0} is not public, you need an invitation to join it.", team.getDisplayName()));
+            session.notifyWarning(Context.tr("The team {0} is not public, you need an invitation to join it.", team.getDisplayName()));
             return session.getLastVisitedPage();
         }
         return new TeamPageUrl(team);
@@ -71,7 +70,7 @@ public final class JoinTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         if (team != null) {
             return new TeamPageUrl(team);
         }

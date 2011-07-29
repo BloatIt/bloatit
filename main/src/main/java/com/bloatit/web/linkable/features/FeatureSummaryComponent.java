@@ -27,22 +27,27 @@ import com.bloatit.framework.utils.datetime.TimeRenderer;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
+import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Image;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlAuthorLink;
@@ -51,6 +56,8 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.CreateReleasePageUrl;
+import com.bloatit.web.url.FeatureModerationPageUrl;
+import com.bloatit.web.url.FeaturePageAliasUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
@@ -60,7 +67,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     private final Feature feature;
 
-    protected FeatureSummaryComponent(final Feature feature, final ElveosUserToken userToken) {
+    protected FeatureSummaryComponent(final Feature feature) {
         super();
         this.feature = feature;
 
@@ -86,11 +93,12 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
                     {
                         // Try to display the title
-
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("feature_title");
-                        title.add(new SoftwaresTools.Link(feature.getSoftware()));
-                        title.addText(" – ");
+                        if (feature.hasSoftware()) {
+                            title.add(new SoftwaresTools.Link(feature.getSoftware()));
+                            title.addText(" – ");
+                        }
                         title.addText(FeaturesTools.getTitle(feature));
 
                         featureSummaryCenter.add(title);
@@ -99,11 +107,12 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 }
                 featureSummary.add(featureSummaryTop);
 
+                final JsShowHide shareBlockShowHide = new JsShowHide(false);
+
                 // ////////////////////
                 // Div feature_summary_bottom
                 final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_summary_bottom");
                 {
-
                     // ////////////////////
                     // Div feature_summary_popularity
                     final HtmlDiv featureSummaryPopularity = new HtmlDiv("feature_summary_popularity");
@@ -120,15 +129,14 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                             if (vote == 0) {
                                 final HtmlDiv featurePopularityJudge = new HtmlDiv("feature_popularity_judge");
                                 {
-
-                                    // Usefull
+                                    // Link to declare feature as Useful
                                     final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
                                                                                                           feature,
                                                                                                           true);
                                     final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
                                     usefulLink.setCssClass("useful");
 
-                                    // Useless
+                                    // ... Useless
                                     final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
                                                                                                            feature,
                                                                                                            false);
@@ -153,24 +161,26 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                             }
                         } else {
                             final HtmlDiv featurePopularityNone = new HtmlDiv("feature_popularity_none");
-
                             featureSummaryPopularity.add(featurePopularityNone);
                         }
-
+                        // Delete the feature
+                        if (AuthToken.isAuthenticated() && AuthToken.getMember().getRights().hasAdminUserPrivilege()) {
+                            featureSummaryPopularity.add(new FeatureModerationPageUrl(feature).getHtmlLink(Context.tr("Moderate")));
+                        }
                     }
                     featureSummaryBottom.add(featureSummaryPopularity);
 
                     HtmlDiv featureSummaryProgress;
-                    featureSummaryProgress = generateProgressBlock(feature, userToken);
+                    featureSummaryProgress = generateProgressBlock(feature);
                     featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////
                     // Div feature_summary_share
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
-                        @SuppressWarnings("unused") final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')",
-                                                                                                     Context.tr("+ Share"));
-                        // featureSummaryShare.add(showHideShareBlock);
+                        final HtmlLink showHideShareBlock = new HtmlLink("#", Context.tr("+ Share"));
+                        shareBlockShowHide.addActuator(showHideShareBlock);
+                        featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);
                 }
@@ -178,8 +188,16 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 // ////////////////////
                 // Div feature_summary_share
-                final HtmlDiv feature_summary_share = new HtmlDiv("feature_summary_share", "feature_summary_share");
-                featureSummary.add(feature_summary_share);
+                final HtmlDiv feature_summary_share_external = new HtmlDiv("feature_summary_share");
+                featureSummary.add(feature_summary_share_external);
+
+                feature_summary_share_external.add(generateIdenticaShareItem());
+                feature_summary_share_external.add(generateTwitterShareItem());
+                feature_summary_share_external.add(generateLinkedInShareItem());
+                feature_summary_share_external.add(generatePlusoneShareItem());
+
+                shareBlockShowHide.addListener(feature_summary_share_external);
+                shareBlockShowHide.apply();
             }
             add(featureSummary);
 
@@ -189,7 +207,75 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         }
     }
 
-    private HtmlDiv generateProgressBlock(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
+    private XmlNode generateIdenticaShareItem() {
+        final HtmlDiv item = new HtmlDiv("share_item");
+
+        final HtmlDiv identicaBlock = new HtmlDiv("identica");
+        item.add(identicaBlock);
+
+        identicaBlock.addAttribute("style", "background-color: white;border: 1px solid #ddd;display:inline-block;");
+
+        final HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='https://identi.ca//index.php?action=bookmarklet',e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20"
+                + new FeaturePageAliasUrl(feature).externalUrlString(true)
+                + "';function%20a(){if(!w.open(g,'t','toolbar=0,resizable=0,scrollbars=1,status=1,width=450,height=200')){l.href=g;}}a();})()");
+        final HtmlImage backgroundImage = new HtmlImage(new Image("/resources/commons/img/share/identica.png"), "identi.ca");
+        backgroundImage.addAttribute("style", "border:none;");
+        actionLink.add(backgroundImage);
+
+        identicaBlock.add(actionLink);
+
+        return item;
+    }
+
+    private XmlNode generateTwitterShareItem() {
+        final HtmlDiv item = new HtmlDiv("share_item");
+
+        final HtmlLink actionLink = new HtmlLink("https://twitter.com/share", "Tweet");
+        item.add(actionLink);
+        actionLink.setCssClass("twitter-share-button");
+        actionLink.addAttribute("data-count", "horizontal");
+        actionLink.addAttribute("data-url", new FeaturePageAliasUrl(feature).externalUrlString(true));
+
+        final HtmlScript script = new HtmlScript();
+        item.add(script);
+        script.addAttribute("src", "https://platform.twitter.com/widgets.js");
+
+        return item;
+    }
+
+    private XmlNode generateLinkedInShareItem() {
+        final HtmlDiv item = new HtmlDiv("share_item");
+
+        final HtmlScript script = new HtmlScript();
+        item.add(script);
+        script.addAttribute("src", "https://platform.linkedin.com/in.js");
+
+        final HtmlScript script2 = new HtmlScript();
+        item.add(script2);
+        script2.addAttribute("type", "IN/Share");
+        script2.addAttribute("data-counter", "right");
+        script2.addAttribute("data-url", new FeaturePageAliasUrl(feature).externalUrlString(true));
+
+        return item;
+    }
+
+    private XmlNode generatePlusoneShareItem() {
+        final HtmlDiv item = new HtmlDiv("share_item");
+
+        final HtmlScript script = new HtmlScript();
+        item.add(script);
+        script.addAttribute("src", "https://apis.google.com/js/plusone.js");
+        script.append("{lang: '" + Context.getLocalizator().getCode() + "'}");
+
+        final HtmlGenericElement element = new HtmlGenericElement("g:plusone");
+        item.add(element);
+        element.addAttribute("size", "medium");
+        element.addAttribute("href", new FeaturePageAliasUrl(feature).externalUrlString(true));
+
+        return item;
+    }
+
+    private HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
@@ -197,7 +283,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
             final HtmlDiv featureSummaryProgressAndState = new HtmlDiv("feature_summary_progress_and_state");
             {
-                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature, userToken));
+                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature));
                 featureSummaryProgressAndState.add(FeaturesTools.generateState(feature));
             }
 
@@ -322,7 +408,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             element.add(link);
         }
 
-        if (selectedOffer.getAuthor().equals(Context.getSession().getUserToken().getMember())) {
+        if (selectedOffer.getAuthor().equals(AuthToken.getMember())) {
             final HtmlLink link = new CreateReleasePageUrl(currentMilestone).getHtmlLink(Context.tr("Add a release"));
             link.setCssClass("button");
             element.add(link);

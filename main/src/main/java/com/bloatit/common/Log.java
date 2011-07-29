@@ -85,18 +85,18 @@ public final class Log {
             return sb.toString();
         }
 
-        private String generateId(Throwable e) {
+        private String generateId(final Throwable e) {
             return generateId(e.getStackTrace(), e.toString());
         }
 
-        private String generateId(StackTraceElement[] stack, String append) {
-            StringBuilder sb = new StringBuilder();
+        private String generateId(final StackTraceElement[] stack, final String append) {
+            final StringBuilder sb = new StringBuilder();
             sb.append(append);
-            for (StackTraceElement elem : stack) {
+            for (final StackTraceElement elem : stack) {
                 sb.append(elem.getClassName());
                 sb.append(elem.getMethodName());
             }
-            String hash = new String(DigestUtils.md5Hex(sb.toString()));
+            final String hash = new String(DigestUtils.md5Hex(sb.toString()));
             return hash.substring(0, 5);
         }
 

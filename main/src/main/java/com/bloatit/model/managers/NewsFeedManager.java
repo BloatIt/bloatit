@@ -25,7 +25,7 @@ public class NewsFeedManager {
      *            <i>false</i> otherwise
      * @return the list of news feed
      */
-    public static NewsFeedList getAll(boolean deleted) {
+    public static NewsFeedList getAll(final boolean deleted) {
         // TODO Handle deleted items
         return new NewsFeedList(DBRequests.getAll(DaoNewsFeed.class));
     }

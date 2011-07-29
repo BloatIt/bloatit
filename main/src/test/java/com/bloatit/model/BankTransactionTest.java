@@ -5,29 +5,31 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.bloatit.model.right.AuthToken;
+
 public class BankTransactionTest extends ModelTestUnit {
 
     @Test
     public final void testCanGetMessage() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
-        bankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(bankTransaction.canGetMessage());
 
-        bankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(bankTransaction.canGetMessage());
         
         final BankTransaction groupBankTransaction = BankTransaction.create(db.getPublicGroupBankTransaction());
-        groupBankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(groupBankTransaction.canGetMessage());
         
-        groupBankTransaction.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(groupBankTransaction.canGetMessage());
         
-        groupBankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(groupBankTransaction.canGetMessage());
         
-        groupBankTransaction.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(groupBankTransaction.canGetMessage());
     }
 
@@ -35,23 +37,23 @@ public class BankTransactionTest extends ModelTestUnit {
     public final void testCanGetValuePaid() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
-        bankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(bankTransaction.canGetValuePaid());
 
-        bankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(bankTransaction.canGetValuePaid());
         
         final BankTransaction groupBankTransaction = BankTransaction.create(db.getPublicGroupBankTransaction());
-        groupBankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(groupBankTransaction.canGetValuePaid());
         
-        groupBankTransaction.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(groupBankTransaction.canGetValuePaid());
         
-        groupBankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(groupBankTransaction.canGetValuePaid());
         
-        groupBankTransaction.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(groupBankTransaction.canGetValuePaid());
     }
 
@@ -59,23 +61,23 @@ public class BankTransactionTest extends ModelTestUnit {
     public final void testCanGetValue() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
-        bankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(bankTransaction.canGetValue());
 
-        bankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(bankTransaction.canGetValue());
         
         final BankTransaction groupBankTransaction = BankTransaction.create(db.getPublicGroupBankTransaction());
-        groupBankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(groupBankTransaction.canGetValue());
         
-        groupBankTransaction.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(groupBankTransaction.canGetValue());
         
-        groupBankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(groupBankTransaction.canGetValue());
         
-        groupBankTransaction.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(groupBankTransaction.canGetValue());
     }
 
@@ -83,23 +85,23 @@ public class BankTransactionTest extends ModelTestUnit {
     public final void testCanGetState() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
-        bankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(bankTransaction.canGetState());
 
-        bankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(bankTransaction.canGetState());
         
         final BankTransaction groupBankTransaction = BankTransaction.create(db.getPublicGroupBankTransaction());
-        groupBankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(groupBankTransaction.canGetState());
         
-        groupBankTransaction.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(groupBankTransaction.canGetState());
         
-        groupBankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(groupBankTransaction.canGetState());
         
-        groupBankTransaction.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(groupBankTransaction.canGetState());
     }
 
@@ -107,23 +109,23 @@ public class BankTransactionTest extends ModelTestUnit {
     public final void testCanGetCreationDate() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
-        bankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(bankTransaction.canGetCreationDate());
 
-        bankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(bankTransaction.canGetCreationDate());
         
         final BankTransaction groupBankTransaction = BankTransaction.create(db.getPublicGroupBankTransaction());
-        groupBankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(groupBankTransaction.canGetCreationDate());
         
-        groupBankTransaction.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(groupBankTransaction.canGetCreationDate());
         
-        groupBankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(groupBankTransaction.canGetCreationDate());
         
-        groupBankTransaction.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(groupBankTransaction.canGetCreationDate());
     }
 
@@ -131,23 +133,23 @@ public class BankTransactionTest extends ModelTestUnit {
     public final void testCanGetModificationDate() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
-        bankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(bankTransaction.canGetModificationDate());
 
-        bankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(bankTransaction.canGetModificationDate());
         
         final BankTransaction groupBankTransaction = BankTransaction.create(db.getPublicGroupBankTransaction());
-        groupBankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(groupBankTransaction.canGetModificationDate());
         
-        groupBankTransaction.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(groupBankTransaction.canGetModificationDate());
         
-        groupBankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(groupBankTransaction.canGetModificationDate());
         
-        groupBankTransaction.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(groupBankTransaction.canGetModificationDate());
     }
 
@@ -155,23 +157,23 @@ public class BankTransactionTest extends ModelTestUnit {
     public final void testCanGetReference() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
-        bankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(bankTransaction.canGetReference());
 
-        bankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(bankTransaction.canGetReference());
         
         final BankTransaction groupBankTransaction = BankTransaction.create(db.getPublicGroupBankTransaction());
-        groupBankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(groupBankTransaction.canGetReference());
         
-        groupBankTransaction.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(groupBankTransaction.canGetReference());
         
-        groupBankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(groupBankTransaction.canGetReference());
         
-        groupBankTransaction.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(groupBankTransaction.canGetReference());
     }
 
@@ -179,23 +181,23 @@ public class BankTransactionTest extends ModelTestUnit {
     public final void testCanGetAuthor() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
-        bankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(bankTransaction.canGetAuthor());
 
-        bankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(bankTransaction.canGetAuthor());
         
         final BankTransaction groupBankTransaction = BankTransaction.create(db.getPublicGroupBankTransaction());
-        groupBankTransaction.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(groupBankTransaction.canGetAuthor());
         
-        groupBankTransaction.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(groupBankTransaction.canGetAuthor());
         
-        groupBankTransaction.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(groupBankTransaction.canGetAuthor());
         
-        groupBankTransaction.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(groupBankTransaction.canGetAuthor());
     }
 

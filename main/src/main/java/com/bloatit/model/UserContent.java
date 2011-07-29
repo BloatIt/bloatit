@@ -84,13 +84,16 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
         return new FileMetadataList(getDao().getFiles());
     }
 
+    @Override
     public void delete() throws UnauthorizedOperationException {
         if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
+
         getDao().setIsDeleted(true);
     }
 
+    @Override
     public void restore() throws UnauthorizedOperationException {
         if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);

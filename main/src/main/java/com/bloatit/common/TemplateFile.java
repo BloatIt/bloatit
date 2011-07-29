@@ -45,7 +45,7 @@ public final class TemplateFile {
 
     public String getContent(final Locale language) throws IOException {
         File file;
-        if(language == null) {
+        if (language == null) {
             file = new File(FOLDER + "commons/" + filename);
         } else {
             file = new File(FOLDER + language.getLanguage() + "/" + filename);

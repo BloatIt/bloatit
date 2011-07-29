@@ -1,7 +1,7 @@
 Aide mémoire markdown
 ===========================
 
-[Documentation Markdown complète](/fr/documentation/markdown)
+[Documentation Markdown complète](http://daringfireball.net/projects/markdown/syntax)
 <dl>
 <dt>2 espaces en fin de ligne</dt>
 <dd>forcer un saut de ligne</dd>

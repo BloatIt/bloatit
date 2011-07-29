@@ -16,10 +16,9 @@
 //
 package com.bloatit.framework.restprocessor;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -32,8 +31,9 @@ import com.bloatit.framework.utils.parameters.HttpParameter;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpResponse;
-import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.RequestKey;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 /**
@@ -77,13 +77,8 @@ public abstract class RestServer implements XcgiProcessor {
      * @throws IOException if there is an error while writing to the socket.
      */
     @Override
-    public final boolean process(final HttpHeader httpHeader, final HttpPost post, final HttpResponse response) throws IOException {
-
-        // TODO when the authentication will be supported do not forget to log
-        // it with this syntax:
-        // Log.framework().info("Access:Context: KEY=\"" + sessionKey +
-        // "\"; USER_ID=\"" + memberId + "\"; LANG=\""
-        // + Context.getLocalizator().getLocale() + "\"");
+    public final boolean process(final RequestKey key, final HttpHeader httpHeader, final HttpPost post, final HttpResponse response)
+            throws IOException {
 
         String scriptName = "";
         if (httpHeader.getScriptName().startsWith("/") && httpHeader.getScriptName().length() > 1) {
@@ -94,46 +89,45 @@ public abstract class RestServer implements XcgiProcessor {
         for (final String directory : getResourcesDirectories()) {
             if (scriptName.equals(directory)) {
                 found = true;
+                break;
             }
         }
         if (!found) {
             return false;
         }
 
-        final RestHeader header = new RestHeader(httpHeader);
-        final String restResource = header.getResourceName();
+        final String restResource = httpHeader.getPageName();
         Log.rest().trace("Received a rest request for resource: " + restResource);
+
+        RequestMethod requestMethod;
+        final String requestMethodString = httpHeader.getRequestMethod();
+        if (requestMethodString == null) {
+            Log.web().warn("Received a rest request with no method. Should be either GET, POST, PUT or DELETE");
+            return true;
+        }
+
+        try {
+            requestMethod = RequestMethod.valueOf(requestMethodString);
+        } catch (final IllegalArgumentException e) {
+            Log.web().warn("Received a rest request with an invalid method: " + requestMethodString + ". Should be either GET, POST, PUT or DELETE");
+            return true;
+        }
+
+        final Parameters parameters = httpHeader.getGetParameters();
+        parameters.putAll(post.getParameters());
 
         try {
             ModelAccessor.open();
-            RequestMethod requestMethod;
-            final String requestMethodString = httpHeader.getRequestMethod();
-            if (requestMethodString == null) {
-                Log.web().warn("Received a rest request with no method. Should be either GET, POST, PUT or DELETE");
-                return true;
-            }
-
-            try {
-                requestMethod = RequestMethod.valueOf(requestMethodString);
-            } catch (final IllegalArgumentException e) {
-                Log.web().warn("Received a rest request with an invalid method: " + requestMethodString
-                        + ". Should be either GET, POST, PUT or DELETE");
-                return true;
-            }
-
-            final Parameters parameters = header.getParameters();
-
-            try {
-                final Object result = doProcess(restResource, requestMethod, parameters);
-                final RestResource rr = new RestResource(result, httpHeader.getRequestUri(), getJAXClasses());
-                response.writeRestResource(rr);
-            } catch (final RestException e) {
-                response.writeRestError(e);
-            }
-            return true;
+            ModelAccessor.authenticate(key);
+            final Object result = doProcess(restResource, requestMethod, parameters);
+            final RestResource rr = new RestResource(result, httpHeader.getRequestUri(), getJAXClasses());
+            response.writeRestResource(rr);
+        } catch (final RestException e) {
+            response.writeRestError(e);
         } finally {
             ModelAccessor.close();
         }
+        return true;
     }
 
     /**
@@ -201,17 +195,17 @@ public abstract class RestServer implements XcgiProcessor {
     private Object doProcess(final String restResource, final RequestMethod requestMethod, final Parameters parameters) throws RestException {
         final String[] pathInfo = restResource.split("/");
         if (pathInfo.length == 0) {
-            throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Please specify the resource you want to access");
+            throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Please specify the resource you want to access");
         }
         if (!isValidResource(pathInfo[0])) {
-            throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request resource [/" + pathInfo[0] + "] does not exist");
+            throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Request resource [/" + pathInfo[0] + "] does not exist");
         }
 
         Object result;
         if (pathInfo.length == 1) {
             result = invokeStatic(requestMethod, pathInfo[0], parameters);
             if (result == null) {
-                throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request " + requestMethod + " " + pathInfo[0]
+                throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "No result to request " + requestMethod + " " + pathInfo[0]
                         + generateParametersString(parameters));
             }
             return result;
@@ -221,13 +215,14 @@ public abstract class RestServer implements XcgiProcessor {
         try {
             id = Integer.valueOf(pathInfo[1]);
         } catch (final NumberFormatException e) {
-            throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Expected " + pathInfo[0] + "/" + "[id]/" + pathInfo[1] + "; received "
+            throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Expected " + pathInfo[0] + "/" + "[id]/" + pathInfo[1] + "; received "
                     + restResource);
         }
         result = invokeStatic(requestMethod, pathInfo[0], id);
 
         if (result == null || (RestElement.class.isAssignableFrom((result.getClass())) && ((RestElement<?>) result).isNull())) {
-            throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request " + requestMethod + " " + pathInfo[0] + "/" + pathInfo[1]);
+            throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "No result to request " + requestMethod + " " + pathInfo[0] + "/"
+                    + pathInfo[1]);
         }
 
         for (int i = 2; i < pathInfo.length; i++) {
@@ -248,7 +243,7 @@ public abstract class RestServer implements XcgiProcessor {
                         }
                         j++;
                     }
-                    throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request: [" + requestMethod + " " + request.toString()
+                    throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "No result to request: [" + requestMethod + " " + request.toString()
                             + "]. Ignored end of request: [" + ignored.toString() + "]");
                 }
             } else {
@@ -318,18 +313,17 @@ public abstract class RestServer implements XcgiProcessor {
                     } catch (final InvocationTargetException e) {
                         if (e.getCause() != null && e.getCause() instanceof RestException) {
                             throw (RestException) e.getCause();
-                        } else {
-                            Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
-                            throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                         }
+                        Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
+                        throw new RestException(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                     } catch (final Exception e) {
                         Log.rest().fatal("Encountered an error when invoking [" + path + "/" + id + "]", e);
-                        throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/" + id + "]", e);
+                        throw new RestException(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/" + id + "]", e);
                     }
                 }
             }
         }
-        throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + path + "/" + id + "] doest not exist");
+        throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Request: [" + path + "/" + id + "] doest not exist");
     }
 
     /**
@@ -358,23 +352,22 @@ public abstract class RestServer implements XcgiProcessor {
                     } catch (final InvocationTargetException e) {
                         if (e.getCause() != null && e.getCause() instanceof RestException) {
                             throw (RestException) e.getCause();
-                        } else {
-                            Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
-                            throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                         }
+                        Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
+                        throw new RestException(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                     } catch (final Exception e) {
                         Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
-                        throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
+                        throw new RestException(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                     }
                 }
             }
         }
-        throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + " on " + lookup.toString()
+        throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + " on " + lookup.toString()
                 + "] does not exist");
     }
 
-    private Object
-            invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params) throws RestException {
+    private Object invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params)
+            throws RestException {
         return invoke(requestMethod, result.getClass(), result, path, params);
     }
 
@@ -386,9 +379,8 @@ public abstract class RestServer implements XcgiProcessor {
      * @see #invokeStatic(RequestMethod, String, Parameters)
      * @see #invokeMethod(RequestMethod, Object, String, Parameters)
      */
-    private Object
-            invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
-                                                                                                                                            throws RestException {
+    private Object invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
+            throws RestException {
         for (final Method m : clazz.getMethods()) {
             if (m.isAnnotationPresent(REST.class)) {
                 final REST annotation = m.getAnnotation(REST.class);
@@ -411,13 +403,12 @@ public abstract class RestServer implements XcgiProcessor {
                         } catch (final InvocationTargetException e) {
                             if (e.getCause() != null && e.getCause() instanceof RestException) {
                                 throw (RestException) e.getCause();
-                            } else {
-                                Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
-                                throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                             }
+                            Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
+                            throw new RestException(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                         } catch (final Exception e) {
                             Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
-                            throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
+                            throw new RestException(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                         }
                     }
                 }
@@ -426,11 +417,11 @@ public abstract class RestServer implements XcgiProcessor {
         if (lookup != null) {
             Log.rest().warn("Method [" + requestMethod + " " + path + generateParametersString(params) + "] on " + lookup.toString()
                     + " does not exist");
-            throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
+            throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
                     + "] on " + lookup.getClass().toString() + " does not exist");
         }
         Log.rest().warn("Method [" + requestMethod + " " + path + generateParametersString(params) + "] does not exist");
-        throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
+        throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
                 + "] does not exist");
     }
 

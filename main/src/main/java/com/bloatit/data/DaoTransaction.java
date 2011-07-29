@@ -40,13 +40,13 @@ public class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
-    
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoInternalAccount from;
-    
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoAccount to;
-    
+
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 

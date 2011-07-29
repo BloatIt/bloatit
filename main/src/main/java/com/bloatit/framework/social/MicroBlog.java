@@ -31,7 +31,7 @@ public class MicroBlog {
      * @param realm the realm used to authenticate to the service. For example
      *            <i>identi.ca</i> or <i>twitter.com</i>
      */
-    public MicroBlog(String url, String login, String password, String realm) {
+    public MicroBlog(final String url, final String login, final String password, final String realm) {
         this.url = url;
         this.login = login;
         this.password = password;
@@ -48,26 +48,26 @@ public class MicroBlog {
      * @param message the message to post
      * @throws ExternalErrorException if a connection error happens
      */
-    public void post(String message) {
-        HttpClient client = new HttpClient(connManager);
+    public void post(final String message) {
+        final HttpClient client = new HttpClient(connManager);
         client.getParams().setAuthenticationPreemptive(true);
-        Credentials defaultcreds = new UsernamePasswordCredentials(login, password);
+        final Credentials defaultcreds = new UsernamePasswordCredentials(login, password);
         client.getState().setCredentials(new AuthScope(realm, 80, AuthScope.ANY_REALM), defaultcreds);
 
-        PostMethod post = new PostMethod(url);
+        final PostMethod post = new PostMethod(url);
         post.setParameter("status", message);
 
         try {
             client.executeMethod(post);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ExternalErrorException("Cannot send message to micro blogging service [" + realm + "]", e);
         } finally {
             post.releaseConnection();
         }
     }
 
-    public static void main(String... args) {
-        MicroBlog identica = new MicroBlog("http://identi.ca/api/statuses/update.xml", "elveos", "EH9iygELxdwrz", "identi.ca");
+    public static void main(final String... args) {
+        final MicroBlog identica = new MicroBlog("http://identi.ca/api/statuses/update.xml", "elveos", "EH9iygELxdwrz", "identi.ca");
         identica.post("This is a new message. It's fantastic !");
     }
 

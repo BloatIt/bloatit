@@ -38,12 +38,13 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.InvoicingContactTab;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -72,6 +73,7 @@ public final class TeamPage extends ElveosPage {
     public final static String MEMBERS_TAB = "members";
     public final static String ACTIVITY_TAB = "activity";
     public final static String ACCOUNT_TAB = "account";
+    public final static String INVOICING_TAB = "invoicing";
 
     private final TeamPageUrl url;
 
@@ -100,15 +102,15 @@ public final class TeamPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        layout.addLeft(generateTeamIDCard(userToken));
-        layout.addLeft(generateMain(userToken));
+        layout.addLeft(generateTeamIDCard());
+        layout.addLeft(generateMain());
 
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
-        if (userToken.isAuthenticated() && userToken.getMember().hasBankTeamRight(team)) {
+        if (AuthToken.isAuthenticated() && AuthToken.getMember().hasBankTeamRight(team)) {
             layout.addRight(new SideBarTeamWithdrawMoneyBlock(team));
             layout.addRight(new SideBarLoadAccountBlock(team));
         }
@@ -138,7 +140,7 @@ public final class TeamPage extends ElveosPage {
         return contacts;
     }
 
-    private HtmlElement generateMain(final ElveosUserToken userToken) {
+    private HtmlElement generateMain() {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(team);
@@ -152,9 +154,10 @@ public final class TeamPage extends ElveosPage {
 
         master.add(tabPane);
 
-        tabPane.addTab(new MembersTab(team, tr("Members"), MEMBERS_TAB, userToken.getMember()));
+        tabPane.addTab(new MembersTab(team, tr("Members"), MEMBERS_TAB, AuthToken.getMember()));
         if (team.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(team, tr("Account"), ACCOUNT_TAB));
+            tabPane.addTab(new InvoicingContactTab(team, tr("Invoincing"), INVOICING_TAB));
         }
         activity = new ActivityTab(team, tr("Activity"), ACTIVITY_TAB, url);
         tabPane.addTab(activity);
@@ -168,9 +171,9 @@ public final class TeamPage extends ElveosPage {
      * @param me the connected member
      * @return the ID card
      */
-    private HtmlElement generateTeamIDCard(final ElveosUserToken token) {
+    private HtmlElement generateTeamIDCard() {
         final HtmlDiv master = new HtmlDiv("padding_box");
-        if (token.isAuthenticated() && token.getMember().hasModifyTeamRight(team)) {
+        if (AuthToken.isAuthenticated() && AuthToken.getMember().hasModifyTeamRight(team)) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
@@ -219,8 +222,8 @@ public final class TeamPage extends ElveosPage {
         description.add(hcmr);
 
         // Bank informations
-        if (token.isAuthenticated()) {
-            addBankInfos(master, token.getMember());
+        if (AuthToken.isAuthenticated()) {
+            addBankInfos(master, AuthToken.getMember());
         }
 
         return master;
@@ -252,7 +255,7 @@ public final class TeamPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return TeamPage.generateBreadcrumb(team);
     }
 

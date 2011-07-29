@@ -47,8 +47,8 @@ public final class OfferManager {
     public static PageIterable<Offer> getAll() {
         return new OfferList(DBRequests.getAll(DaoOffer.class));
     }
-    
-    public static int getOfferCount(){
+
+    public static int getOfferCount() {
         return DBRequests.count(DaoOffer.class);
     }
 

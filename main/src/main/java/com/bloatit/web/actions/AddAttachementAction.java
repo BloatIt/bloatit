@@ -20,7 +20,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
@@ -60,14 +59,14 @@ public final class AddAttachementAction extends UserContentAction {
     protected boolean verifyFile(final String filename) {
         final FileConstraintChecker fcc = new FileConstraintChecker(filename);
         if (!fcc.exists() || !fcc.isFileSmaller(AddAttachementPage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE)) {
-            session.notifyBad(Context.tr("File format error: Your file is to big."));
+            session.notifyWarning(Context.tr("File format error: Your file is to big."));
             return false;
         }
         return true;
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return Context.getSession().getLastVisitedPage();
     }
 

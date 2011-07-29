@@ -52,7 +52,7 @@ public class AdminActionManager {
         }
 
         // Fake tr
-        private static String tr(String fake) {
+        private static String tr(final String fake) {
             return fake;
         }
     }

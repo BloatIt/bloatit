@@ -28,7 +28,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -52,7 +51,7 @@ public class LostPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
@@ -66,6 +65,7 @@ public class LostPasswordPage extends ElveosPage {
         final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
         final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), Context.tr("Enter your email"));
         emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
+        emailInput.setComment(Context.tr("We will send you an email explaining how to recover your password."));
         form.add(emailInput);
 
         form.add(new HtmlSubmit(Context.tr("Submit")));
@@ -78,7 +78,7 @@ public class LostPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return generateBreadcrumb();
     }
 

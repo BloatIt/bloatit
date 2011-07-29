@@ -39,7 +39,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
      * @param amount the amount of money to display (in euro)
      * @param me
      */
-    public MoneyDisplayComponent(final BigDecimal amount, Member me) {
+    public MoneyDisplayComponent(final BigDecimal amount, final Member me) {
         this(amount, true, me);
     }
 
@@ -51,7 +51,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
      * @param link <i>true</i> if the component should link to the user account
      * @param me
      */
-    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, Member me) {
+    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Member me) {
         this(amount, link, null, me);
     }
 
@@ -65,7 +65,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
      *            of the team page, <i>false</i> otherwise.
      * @param me
      */
-    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, Team teamAccount, Member me) {
+    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Team teamAccount, final Member me) {
         super();
 
         // Display user money in euro

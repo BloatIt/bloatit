@@ -49,7 +49,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
     private final boolean isContributing;
     private HtmlMoneyField moneyField;
 
-    public HtmlChargeAccountLine(boolean isContributing, final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) {
+    public HtmlChargeAccountLine(final boolean isContributing, final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) {
         this.isContributing = isContributing;
         this.amountToCharge = amountToCharge;
         this.actor = actor;
@@ -97,7 +97,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
                 }
 
                 return new HtmlText(localizator.getCurrency(initialAmount).getSimpleEuroString());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Error getting internal account", e);
             }
         }
@@ -121,7 +121,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
                     initialAmount = actor.getInternalAccount().getAmount();
                 }
                 return new HtmlText(localizator.getCurrency(initialAmount.add(amountToCharge)).getSimpleEuroString());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Error getting internal account", e);
             }
         }
@@ -147,9 +147,9 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
         @Override
         public XmlNode getBody() {
-            HtmlDiv internalAccount = new HtmlDiv("title");
+            final HtmlDiv internalAccount = new HtmlDiv("title");
             internalAccount.addText(tr("Internal account"));
-            HtmlDiv internalAccountDetails = new HtmlDiv("details");
+            final HtmlDiv internalAccountDetails = new HtmlDiv("details");
             internalAccountDetails.addText(actor.getDisplayName());
 
             return new HtmlDiv("").add(internalAccount).add(internalAccountDetails);

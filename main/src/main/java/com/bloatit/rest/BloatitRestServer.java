@@ -96,7 +96,7 @@ public class BloatitRestServer extends RestServer {
             put("translations", RestTranslation.class);
         }
     };
-    
+
     /**
      * All the classes that have to be marshalled by JAX
      */

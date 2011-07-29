@@ -45,7 +45,7 @@
     box-lines: multiple;
     //-webkit-box-lines: multiple;
     margin-bottom: 20px;
-    min-width: 850px;
+    min-width: 800px;
 }
 
 .feature_list_left_case, .feature_list_right_case {
@@ -104,9 +104,7 @@
             margin-bottom: 25px;
         }
 
-        a {
-            font-size: 0.8em;
-        }
+        
 
         .software_link a {
             font-size: 1.0em;
@@ -125,6 +123,7 @@
 
             a {
                 color: @light_text_color;
+                font-size: 0.8em;
             }
 
             a:hover {
@@ -140,6 +139,12 @@
     }
 }
 
+.all_features_button{
+    display: inline-block;
+    margin-left: 22px;
+    margin-top: 12px;
+}
+
 .elveos_summary{
     margin-left: 30px;
     margin-right: 30px;
@@ -151,5 +156,39 @@
     .count_line{
         margin-right: 5px;
         margin-left: 5px;
+    }
+
+    font-family: @title_fonts;
+    font-size: 1.1em;
+}
+
+.news_feed {
+    .feed_icons {
+        float: right;
+    }
+
+    .feed_icon{
+        max-height: 23px;
+        margin-right: 2px;
+        margin-left: 2px;
+    }
+    
+    .feed_list {
+        li {
+            border-bottom: 1px solid @light_border_color;
+        }
+        
+        li:last-of-type {
+            border: none;
+            margin-bottom: -15px;
+        }
+    
+        .feed_item {
+            margin-bottom: 5px; 
+            .item_date {
+                font-size: 0.8em;
+                color: @average_grey;
+            }
+        }
     }
 }

@@ -80,7 +80,7 @@ import com.bloatit.rest.list.RestTransactionList;
  * return a RestExternalAccountList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "externalaccount")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestExternalAccount extends RestElement<ExternalAccount> {
     private ExternalAccount model;

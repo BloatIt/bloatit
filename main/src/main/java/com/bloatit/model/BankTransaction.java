@@ -156,11 +156,11 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
             Invoice invoice;
             try {
                 final String deliveryName = "Linkeos Fees to charge an amount of " + this.getValueUnprotected().toPlainString() + "€";
-                
+
                 final BigDecimal total = getValuePaidUnprotected().subtract(getValueUnprotected());
                 invoice = new Invoice(this.getAuthorUnprotected(), total, deliveryName);
                 getDao().setInvoice(invoice.getDao());
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("Fail to create invoice", e);
             }
 

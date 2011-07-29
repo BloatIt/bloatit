@@ -115,7 +115,7 @@ public class FileConstraintChecker {
                 isImage = false;
             }
         } catch (final IOException e) {
-            Log.framework().error("",e);
+            Log.framework().error("", e);
             isImage = false;
         }
         return isImage != null && isImage.booleanValue();

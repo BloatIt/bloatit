@@ -1,9 +1,8 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javax.lang.model.element.Element;
 
@@ -17,7 +16,7 @@ public class ComponentDescription extends ClassDescription {
     private final boolean isComponent;
     private final ParamContainer.Protocol protocol;
     private final String codeName;
-    private final Set<ComponentDescription> children = new HashSet<ComponentDescription>();
+    private final List<ComponentDescription> children = new ArrayList<ComponentDescription>();
 
     private final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
 
@@ -85,13 +84,15 @@ public class ComponentDescription extends ClassDescription {
 
     public void addParameter(final ParameterDescription description) {
         parameters.add(description);
+        // TODO maybe a little optimization here ?
+        Collections.sort(parameters);
     }
 
     public void addSubComponent(final ComponentDescription child) {
         children.add(child);
     }
 
-    public Set<ComponentDescription> getSubComponents() {
+    public List<ComponentDescription> getSubComponents() {
         return children;
     }
 
@@ -107,6 +108,61 @@ public class ComponentDescription extends ClassDescription {
 
     public ParamContainer.Protocol getProtocol() {
         return protocol;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((attributeName == null) ? 0 : attributeName.hashCode());
+        result = prime * result + ((children == null) ? 0 : children.hashCode());
+        result = prime * result + ((className == null) ? 0 : className.hashCode());
+        result = prime * result + ((codeName == null) ? 0 : codeName.hashCode());
+        result = prime * result + (isComponent ? 1231 : 1237);
+        result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
+        result = prime * result + ((protocol == null) ? 0 : protocol.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ComponentDescription other = (ComponentDescription) obj;
+        if (attributeName == null) {
+            if (other.attributeName != null)
+                return false;
+        } else if (!attributeName.equals(other.attributeName))
+            return false;
+        if (children == null) {
+            if (other.children != null)
+                return false;
+        } else if (!children.equals(other.children))
+            return false;
+        if (className == null) {
+            if (other.className != null)
+                return false;
+        } else if (!className.equals(other.className))
+            return false;
+        if (codeName == null) {
+            if (other.codeName != null)
+                return false;
+        } else if (!codeName.equals(other.codeName))
+            return false;
+        if (isComponent != other.isComponent)
+            return false;
+        if (parameters == null) {
+            if (other.parameters != null)
+                return false;
+        } else if (!parameters.equals(other.parameters))
+            return false;
+        if (protocol != other.protocol)
+            return false;
+        return true;
     }
 
 }

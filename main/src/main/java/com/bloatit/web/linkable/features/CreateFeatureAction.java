@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Member;
@@ -85,7 +84,7 @@ public final class CreateFeatureAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new CreateFeaturePageUrl();
     }
 
@@ -105,5 +104,4 @@ public final class CreateFeatureAction extends UserContentAction {
     protected boolean verifyFile(final String filename) {
         return new FileConstraintChecker(filename).isFileSmaller(CreateFeaturePage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE);
     }
-
 }

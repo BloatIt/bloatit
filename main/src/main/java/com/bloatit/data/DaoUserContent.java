@@ -36,6 +36,7 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.Filters;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
@@ -49,10 +50,8 @@ import com.bloatit.model.UserContent;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@FilterDef(name="usercontent.nonDeleted" )
-@Filters( {
-    @Filter(name="usercontent.nonDeleted", condition="isDeleted = 'false'"),
-} )
+@FilterDef(name = "usercontent.nonDeleted")
+@Filters({ @Filter(name = "usercontent.nonDeleted", condition = "isDeleted = 'false'"), })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public abstract class DaoUserContent extends DaoIdentifiable {
@@ -73,7 +72,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     private DaoTeam asTeam;
 
     @Basic(optional = false)
-    @Field(store = Store.NO)
+    @Field(store = Store.NO, index = Index.UN_TOKENIZED)
     private Date creationDate;
 
     /**
@@ -81,7 +80,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * isDeleted boolean to true.
      */
     @Basic(optional = false)
-    @Field(store = Store.YES)
+    @Field(store = Store.YES, index = Index.UN_TOKENIZED)
     private boolean isDeleted;
 
     /**

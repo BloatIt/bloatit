@@ -172,13 +172,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
 
     private class FeatureLine extends HtmlTableLine {
 
-        private final HighlightFeature feature;
-        private final List<HighlightFeature> activeHightlightedFeatures;
-
         private FeatureLine(final HighlightFeature feature, final List<HighlightFeature> activeHightlightedFeatures) {
-            this.feature = feature;
-            this.activeHightlightedFeatures = activeHightlightedFeatures;
-
             addCell(new HtmlTableCell("") {
 
                 @Override

@@ -23,26 +23,49 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javassist.NotFoundException;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
-import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.xcgiserver.SessionKey;
-import com.bloatit.framework.xcgiserver.SessionKey.WrongSessionKeyFormatException;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.framework.xcgiserver.RequestKey;
+import com.bloatit.framework.xcgiserver.RequestKey.Source;
+import com.bloatit.framework.xcgiserver.WrongSessionKeyFormatException;
 
 /**
  * This class is thread safe (synchronized).
  */
 public final class SessionManager {
-    private static Map<SessionKey, Session> activeSessions = new HashMap<SessionKey, Session>();
+    private static Map<String, Session> activeSessions = new HashMap<String, Session>();
     private static Map<String, Session> temporarySessions = new HashMap<String, Session>();
-    /** Time to next cleaning up in seconds **/
-    private static long nextCleanExpiredSession = 0;
 
     private SessionManager() {
         // desactivate CTOR
+    }
+
+    /**
+     * Return the session for the user. Either an existing session or a new
+     * session.
+     * 
+     * @param header
+     * @return the session matching the user
+     */
+    public static Session getOrCreateSession(final RequestKey key) {
+        Session sessionByKey = null;
+        try {
+            if (key != null && key.getSource() == Source.COOKIE && (sessionByKey = SessionManager.getByKey(key.getId(), key.getIpAddress())) != null) {
+                sessionByKey.resetExpirationTime();
+                return sessionByKey;
+            }
+        } catch (final WrongSessionKeyFormatException e) {
+            // Just don't restore session
+        }
+        return SessionManager.createSession(key);
+    }
+
+    public static synchronized void destroySession(final Session session) {
+        if (activeSessions.containsKey(session.getKey())) {
+            Log.framework().trace("destroy session " + session.getKey());
+            cleanTemporarySession(session);
+            activeSessions.remove(session.getKey());
+        }
     }
 
     /**
@@ -51,39 +74,30 @@ public final class SessionManager {
      * @param id the id of the session (the one store in the cookie)
      * @param ipAddress the ip address of the user trying to get his session.
      * @return the session or null if not found.
-     * @throws WrongSessionKeyFormatException 
+     * @throws WrongSessionKeyFormatException
      */
-    public static synchronized Session getByKey(final String id, final String ipAddress) throws WrongSessionKeyFormatException {
-        try {
-            final Session session = activeSessions.get(new SessionKey(id, ipAddress));
+    private static synchronized Session getByKey(final String key, final String ipAddress) throws WrongSessionKeyFormatException {
+        final Session session = activeSessions.get(key);
+        if (session != null && session.isValid(ipAddress)) {
             return session;
-        } catch (final IllegalArgumentException e) {
-            return null;
         }
+        return null;
     }
 
-    public static synchronized Session createSession(final String ipAddress) {
-        final SessionKey key = new SessionKey(ipAddress);
-        final Session session = new Session(key);
-        activeSessions.put(key, session);
+    private static synchronized Session createSession(final RequestKey key) {
+        final Session session = new Session(key.getId(), key.getIpAddress());
+        activeSessions.put(session.getKey(), session);
         return session;
     }
 
-    public static synchronized void resetSession(final SessionKey key) {
+    public static synchronized String generateNewSessionKey(String key) {
         final Session session = activeSessions.get(key);
         if (session != null) {
             activeSessions.remove(key);
-            key.resetId();
+            key = RequestKey.generateRandomId();
             activeSessions.put(key, session);
         }
-    }
-
-    public static synchronized void destroySession(final Session session) {
-        if (activeSessions.containsKey(session.getKey())) {
-            Log.framework().trace("destroy session " + session.getKey().getId());
-            cleanTemporarySession(session);
-            activeSessions.remove(session.getKey());
-        }
+        return key;
     }
 
     public static synchronized void saveSessions() {
@@ -100,16 +114,23 @@ public final class SessionManager {
         try {
             fileOutputStream = new FileOutputStream(new File(dump));
 
-            for (final Entry<SessionKey, Session> session : activeSessions.entrySet()) {
+            for (final Entry<String, Session> session : activeSessions.entrySet()) {
 
-                if (session.getValue().getUserToken().isAuthenticated()) {
+                if (session.getValue().getMemberId() != null) {
                     final StringBuilder sessionDump = new StringBuilder();
 
-                    sessionDump.append(session.getKey().getId());
+                    sessionDump.append(session.getValue().getKey());
                     sessionDump.append(' ');
-                    sessionDump.append(session.getKey().getIpAddress());
+                    sessionDump.append(session.getValue().getShortKey());
                     sessionDump.append(' ');
-                    sessionDump.append(session.getValue().getUserToken().getMember().getId());
+                    sessionDump.append(session.getValue().getIpAddress());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getValue().getMemberId());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getValue().getMemberLocale().getLanguage());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getValue().getMemberLocale().getCountry());
+
                     sessionDump.append('\n');
 
                     fileOutputStream.write(sessionDump.toString().getBytes());
@@ -155,11 +176,11 @@ public final class SessionManager {
                 // Print the content on the console
                 final String[] split = strLine.split(" ");
 
-                if (split.length == 3) {
+                if (split.length == 6) {
                     try {
-                        restoreSession(split[0], split[1], Integer.valueOf(split[2]));
+                        restoreSession(split[0], split[1], split[2], Integer.valueOf(split[3]), split[4], split[5]);
                     } catch (WrongSessionKeyFormatException e) {
-                        //Just ignore session
+                        // Just ignore session
                     }
                 }
 
@@ -191,29 +212,20 @@ public final class SessionManager {
         }
     }
 
-    private static synchronized void restoreSession(final String id, final String ipAddress, final int memberId) throws WrongSessionKeyFormatException {
-        final SessionKey key = new SessionKey(id, ipAddress.equals("null") ? null : ipAddress);
-        final Session session = new Session(key);
-        try {
-            // TODO remove back reference to AuthenticatedUserToken
-            session.authenticate(new AuthenticatedUserToken(memberId));
-        } catch (final NotFoundException e) {
-            Log.framework().error("Session not found", e);
-        }
+    private static synchronized void restoreSession(final String key,
+                                                    final String shortKey,
+                                                    final String ipAddress,
+                                                    final int memberId,
+                                                    final String language,
+                                                    final String country) throws WrongSessionKeyFormatException {
+        final Session session = new Session(key, shortKey, ipAddress, memberId, language, country);
         activeSessions.put(key, session);
     }
 
-    public static synchronized void clearExpiredSessions() {
-        if (nextCleanExpiredSession < Context.getResquestTime()) {
-            performClearExpiredSessions();
-            nextCleanExpiredSession = Context.getResquestTime() + FrameworkConfiguration.getSessionCleanTime() * DateUtils.SECOND_PER_DAY;
-        }
-    }
-
-    private static synchronized void performClearExpiredSessions() {
+    static synchronized void clearExpiredSessions() {
+        int activeSessionsCountBefore = activeSessions.size();
 
         final Iterator<Session> it = activeSessions.values().iterator();
-
         while (it.hasNext()) {
             final Session session = it.next();
             if (session.isExpired()) {
@@ -221,6 +233,9 @@ public final class SessionManager {
                 it.remove();
             }
         }
+
+        int activeSessionsCountAfter = activeSessions.size();
+        Log.framework().info("Clean expired session: " + activeSessionsCountBefore + " -> " + activeSessionsCountAfter);
     }
 
     public static synchronized void storeTemporarySession(final String key, final Session session) {
@@ -246,5 +261,4 @@ public final class SessionManager {
             }
         }
     }
-
 }

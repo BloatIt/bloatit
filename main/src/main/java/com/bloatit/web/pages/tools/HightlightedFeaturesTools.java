@@ -9,7 +9,7 @@ import com.bloatit.model.HighlightFeature;
 public class HightlightedFeaturesTools {
 
     public static Map<String, String> getReasonsMap() {
-        Map<String, String> reasonMap = new HashMap<String, String>();
+        final Map<String, String> reasonMap = new HashMap<String, String>();
 
         reasonMap.put("popular", Context.tr("Popular"));
         reasonMap.put("recent", Context.tr("Recent"));
@@ -23,8 +23,8 @@ public class HightlightedFeaturesTools {
 
     }
 
-    public static String getReason(HighlightFeature feature) {
-        Map<String, String> reasonMap = getReasonsMap();
+    public static String getReason(final HighlightFeature feature) {
+        final Map<String, String> reasonMap = getReasonsMap();
         if (reasonMap.containsKey(feature.getReason())) {
             return reasonMap.get(feature.getReason());
         }

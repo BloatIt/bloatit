@@ -75,7 +75,7 @@ public final class HighlightFeature extends Identifiable<DaoHighlightFeature> {
     }
 
     public boolean isActive() {
-        Date now = DateUtils.now();
+        final Date now = DateUtils.now();
         return getActivationDate().before(now) && getDesactivationDate().after(now);
     }
 
@@ -87,7 +87,5 @@ public final class HighlightFeature extends Identifiable<DaoHighlightFeature> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
-
 
 }

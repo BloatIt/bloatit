@@ -41,6 +41,12 @@ public class DateUtils {
         return calendar.getTime();
     }
 
+    public static Date nowMinusSomeSeconds(final int seconds) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, -seconds);
+        return calendar.getTime();
+    }
+
     /**
      * Return the date in <code>n</code> days. for example tomorrow =
      * nowPlusSomeDays(1).
@@ -90,4 +96,5 @@ public class DateUtils {
     public static boolean isInTheFuture(final Date date) {
         return date.after(now());
     }
+
 }

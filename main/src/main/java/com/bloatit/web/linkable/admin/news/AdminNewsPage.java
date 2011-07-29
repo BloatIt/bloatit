@@ -29,7 +29,7 @@ import com.bloatit.web.url.AdminNewsRestoreActionUrl;
 
 @ParamContainer("admin/news")
 public class AdminNewsPage extends AdminPage {
-    private AdminNewsPageUrl url;
+    private final AdminNewsPageUrl url;
 
     public AdminNewsPage(final AdminNewsPageUrl url) {
         super(url);

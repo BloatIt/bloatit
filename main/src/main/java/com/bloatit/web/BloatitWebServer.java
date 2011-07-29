@@ -18,6 +18,7 @@ package com.bloatit.web;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
@@ -31,16 +32,18 @@ import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.linkable.admin.AdminHomePage;
 import com.bloatit.web.linkable.admin.AdministrationAction;
-import com.bloatit.web.linkable.admin.ConfigurationAdminAction;
-import com.bloatit.web.linkable.admin.ConfigurationAdminPage;
 import com.bloatit.web.linkable.admin.DeclareHightlightedFeatureAction;
 import com.bloatit.web.linkable.admin.FeatureAdminPage;
 import com.bloatit.web.linkable.admin.HightlightedFeatureAdminPage;
 import com.bloatit.web.linkable.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.linkable.admin.MilestoneAdminPage;
 import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
+import com.bloatit.web.linkable.admin.configuration.ConfigurationAdminAction;
+import com.bloatit.web.linkable.admin.configuration.ConfigurationAdminPage;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationAction;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationPage;
+import com.bloatit.web.linkable.admin.moderation.FeatureModerationAction;
+import com.bloatit.web.linkable.admin.moderation.FeatureModerationPage;
 import com.bloatit.web.linkable.admin.news.AdminNewsAction;
 import com.bloatit.web.linkable.admin.news.AdminNewsDeleteAction;
 import com.bloatit.web.linkable.admin.news.AdminNewsPage;
@@ -56,8 +59,8 @@ import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.bugs.ReportBugPage;
 import com.bloatit.web.linkable.contribution.CheckContributeAction;
 import com.bloatit.web.linkable.contribution.CheckContributePage;
-import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributeAction;
+import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
 import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
@@ -67,6 +70,7 @@ import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.features.FeaturePageAlias;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsPage;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingProcess;
 import com.bloatit.web.linkable.invoice.InvoiceResource;
@@ -106,6 +110,10 @@ import com.bloatit.web.linkable.money.StaticAccountChargingPage;
 import com.bloatit.web.linkable.money.UnlockAccountChargingProcessAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyPage;
+import com.bloatit.web.linkable.oauth2.CreateExternalServiceAction;
+import com.bloatit.web.linkable.oauth2.CreateExternalServicePage;
+import com.bloatit.web.linkable.oauth2.OAuthAuthorizationPage;
+import com.bloatit.web.linkable.oauth2.OAuthPage;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
 import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.CreateReleaseAction;
@@ -163,6 +171,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (FeaturePageUrl.matches(pageCode)) {
             return new FeaturePage(new FeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (FeaturePageAliasUrl.matches(pageCode)) {
+            return new FeaturePageAlias(new FeaturePageAliasUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (SiteMapPageUrl.matches(pageCode)) {
             return new SiteMapPage(new SiteMapPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -304,10 +315,25 @@ public class BloatitWebServer extends WebProcessor {
         if (AdminNewsPageUrl.matches(pageCode)) {
             return new AdminNewsPage(new AdminNewsPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (FeatureModerationPageUrl.matches(pageCode)) {
+            return new FeatureModerationPage(new FeatureModerationPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (OAuthAuthorizationPageUrl.matches(pageCode)) {
+            return new OAuthAuthorizationPage(new OAuthAuthorizationPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (OAuthPageUrl.matches(pageCode)) {
+            return new OAuthPage(new OAuthPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (CreateExternalServicePageUrl.matches(pageCode)) {
+            return new CreateExternalServicePage(new CreateExternalServicePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Actions
         // ////////
+        if (CreateExternalServiceActionUrl.matches(pageCode)) {
+            return new CreateExternalServiceAction(new CreateExternalServiceActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
         if (LoginActionUrl.matches(pageCode)) {
             return new LoginAction(new LoginActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
@@ -464,6 +490,9 @@ public class BloatitWebServer extends WebProcessor {
         if (AdminNewsRestoreActionUrl.matches(pageCode)) {
             return new AdminNewsRestoreAction(new AdminNewsRestoreActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (FeatureModerationActionUrl.matches(pageCode)) {
+            return new FeatureModerationAction(new FeatureModerationActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Process
@@ -485,11 +514,15 @@ public class BloatitWebServer extends WebProcessor {
         }
 
         // Resource page
-        if (FileResourceUrl.matches(pageCode)) {
-            return new FileResource(new FileResourceUrl(pageCode, postGetParameters, session.getParameters()));
-        }
-        if (InvoiceResourceUrl.matches(pageCode)) {
-            return new InvoiceResource(new InvoiceResourceUrl(pageCode, postGetParameters, session.getParameters()));
+        try {
+            if (FileResourceUrl.matches(pageCode)) {
+                return new FileResource(new FileResourceUrl(pageCode, postGetParameters, session.getParameters()));
+            }
+            if (InvoiceResourceUrl.matches(pageCode)) {
+                return new InvoiceResource(new InvoiceResourceUrl(pageCode, postGetParameters, session.getParameters()));
+            }
+        } catch (final PageNotFoundException e) {
+            return new PageNotFound(new PageNotFoundUrl());
         }
         Log.web().warn("Failed to find the page code '" + pageCode + "' in the linkable list. Maybe you forgot to declare it in BloatitWebServer ?");
         return new PageNotFound(new PageNotFoundUrl());

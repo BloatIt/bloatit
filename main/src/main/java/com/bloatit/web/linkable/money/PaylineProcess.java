@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.mails.ElveosMail;
-import com.bloatit.framework.mails.ElveosMail.ChargingAccountSuccess;
 import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -32,7 +31,6 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
@@ -77,13 +75,13 @@ public class PaylineProcess extends WebProcess {
     }
 
     @Override
-    protected synchronized Url doProcess(final ElveosUserToken userToken) {
+    protected synchronized Url doProcess() {
         url.getParentProcess().addChildProcess(this);
         return new PaylineActionUrl(Context.getSession().getShortKey(), this);
     }
 
     @Override
-    protected synchronized Url doProcessErrors(final ElveosUserToken userToken) {
+    protected synchronized Url doProcessErrors() {
         return session.getLastVisitedPage();
     }
 
@@ -116,7 +114,7 @@ public class PaylineProcess extends WebProcess {
             if (reponse.isAccepted()) {
                 return new UrlString(reponse.getRedirectUrl());
             }
-            session.notifyBad(reponse.getMessage());
+            session.notifyWarning(reponse.getMessage());
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Not authorized", e);
         }
@@ -136,32 +134,27 @@ public class PaylineProcess extends WebProcess {
 
                 // The payline process is critical. We must be sure the DB is
                 // updated right NOW!
-                ModelAccessor.close();
-                ModelAccessor.open();
+                ModelAccessor.flush();
 
                 success = true;
                 // Notify the user:
                 final BankTransaction bankTransaction = BankTransaction.getByToken(token);
                 if (bankTransaction == null) {
-                    session.notifyBad(Context.tr("Cannot validate your payment. Reason: Token not found."));
+                    session.notifyWarning(Context.tr("Cannot validate your payment. Reason: Token not found."));
                     return;
                 }
                 final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getSimpleEuroString();
                 final String paidValueStr = Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getTwoDecimalEuroString();
                 session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
-                // By mail
-                final ChargingAccountSuccess mail = new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
-                // TODO reactivate the send mail
-                // mail.sendMail(bankTransaction.getAuthor(),
-                // "payline-process");
+                new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
             } else {
                 payline.cancelPayement(token);
                 Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
-                session.notifyBad("Payment canceled. Reason: " + message + ".");
+                session.notifyWarning("Payment canceled. Reason: " + message + ".");
             }
         } catch (final TokenNotfoundException e) {
             Log.web().fatal("Token not found.", e);
-            session.notifyBad("Payment canceled. Reason: Internal error. Please report the bug.");
+            session.notifyWarning("Payment canceled. Reason: Internal error. Please report the bug.");
         }
     }
 
@@ -170,11 +163,11 @@ public class PaylineProcess extends WebProcess {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             final String message = paymentDetails.getMessage().replace("\n", ". ");
             Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
-            session.notifyBad("Payment canceled. Reason: " + message + ".");
+            session.notifyWarning("Payment canceled. Reason: " + message + ".");
             payline.cancelPayement(token);
         } catch (final TokenNotfoundException e) {
             Log.web().fatal("Token not found.", e);
-            session.notifyBad("Payment canceled. Reason: Payment refused. Please report the bug.");
+            session.notifyWarning("Payment canceled. Reason: Payment refused. Please report the bug.");
         }
     }
 

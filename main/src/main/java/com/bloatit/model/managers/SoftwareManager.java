@@ -16,7 +16,6 @@
 //
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
@@ -27,8 +26,6 @@ import com.bloatit.model.lists.SoftwareList;
  * The Class SoftwareManager is an utility class containing static methods.
  */
 public final class SoftwareManager {
-
-
 
     /**
      * Desactivated constructor on utility class.
@@ -55,10 +52,10 @@ public final class SoftwareManager {
     public static PageIterable<Software> getAll() {
         return new SoftwareList(DBRequests.getAll(DaoSoftware.class));
     }
-    
+
     /**
      * Tells if a name exists.
-     *
+     * 
      * @param name the name
      * @return <code>true</code>, if it exists, <code>false</code> otherwise.
      */
@@ -66,7 +63,7 @@ public final class SoftwareManager {
         return DaoSoftware.nameExists(name);
     }
 
-    public static Software getByName(String name) {
+    public static Software getByName(final String name) {
         return Software.create(DaoSoftware.getByName(name));
     }
 }

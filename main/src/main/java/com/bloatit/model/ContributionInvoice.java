@@ -20,11 +20,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoActor;
-import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoContributionInvoice;
-import com.bloatit.data.DaoInvoice;
-import com.bloatit.data.DaoMilestone;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.model.invoicePdf.InvoicePdfGenerator;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
@@ -85,7 +81,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
      * @param description is a complete description of the bug.
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
-     * @throws UnauthorizedPrivateAccessException 
+     * @throws UnauthorizedPrivateAccessException
      */
     public ContributionInvoice(final Actor<?> emitterActor,
                                final Actor<?> recipientActor,
@@ -106,45 +102,45 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                           final Milestone milestone,
                                                           final Contribution contribution) throws UnauthorizedPrivateAccessException {
 
-        String invoiceId = emitterActor.getContact().pickNextInvoiceId();
-        String sellerName = emitterActor.getContact().getName();
-        String sellerStreet = emitterActor.getContact().getStreet();
-        String sellerExtras = emitterActor.getContact().getExtras();
-        String sellerCity = emitterActor.getContact().getPostalCode() + " " + emitterActor.getContact().getCity();
-        String sellerCountry = emitterActor.getContact().getCountry();
-        String sellerLegalId = emitterActor.getContact().getLegalId();
-        String sellerTaxIdentification = emitterActor.getContact().getTaxIdentification();
-        String receiverName = recipientActor.getContact().getName();
-        String receiverStreet = recipientActor.getContact().getStreet();
-        String receiverExtras = recipientActor.getContact().getExtras();
-        String receiverCity = recipientActor.getContact().getPostalCode() + " " + recipientActor.getContact().getCity();
-        String receiverCountry = recipientActor.getContact().getCountry();
-        Date invoiceDate = DateUtils.now();
+        final String invoiceId = emitterActor.getContact().pickNextInvoiceId();
+        final String sellerName = emitterActor.getContact().getName();
+        final String sellerStreet = emitterActor.getContact().getStreet();
+        final String sellerExtras = emitterActor.getContact().getExtras();
+        final String sellerCity = emitterActor.getContact().getPostalCode() + " " + emitterActor.getContact().getCity();
+        final String sellerCountry = emitterActor.getContact().getCountry();
+        final String sellerLegalId = emitterActor.getContact().getLegalId();
+        final String sellerTaxIdentification = emitterActor.getContact().getTaxIdentification();
+        final String receiverName = recipientActor.getContact().getName();
+        final String receiverStreet = recipientActor.getContact().getStreet();
+        final String receiverExtras = recipientActor.getContact().getExtras();
+        final String receiverCity = recipientActor.getContact().getPostalCode() + " " + recipientActor.getContact().getCity();
+        final String receiverCountry = recipientActor.getContact().getCountry();
+        final Date invoiceDate = DateUtils.now();
 
-        BigDecimal taxRate = emitterActor.getContact().getTaxRate();
-        BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
-        BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
+        final BigDecimal taxRate = emitterActor.getContact().getTaxRate().multiply(BigDecimal.valueOf(100));
+        final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
+        final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
-        InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
-                                                                   invoiceId,
-                                                                   sellerName,
-                                                                   sellerStreet,
-                                                                   sellerExtras,
-                                                                   sellerCity,
-                                                                   sellerCountry,
-                                                                   receiverName,
-                                                                   receiverStreet,
-                                                                   receiverExtras,
-                                                                   receiverCity,
-                                                                   receiverCountry,
-                                                                   invoiceDate,
-                                                                   deliveryName,
-                                                                   priceExcludingTax,
-                                                                   taxRate,
-                                                                   taxAmount,
-                                                                   totalPrice,
-                                                                   sellerLegalId,
-                                                                   sellerTaxIdentification);
+        final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
+                                                                         invoiceId,
+                                                                         sellerName,
+                                                                         sellerStreet,
+                                                                         sellerExtras,
+                                                                         sellerCity,
+                                                                         sellerCountry,
+                                                                         receiverName,
+                                                                         receiverStreet,
+                                                                         receiverExtras,
+                                                                         receiverCity,
+                                                                         receiverCountry,
+                                                                         invoiceDate,
+                                                                         deliveryName,
+                                                                         priceExcludingTax,
+                                                                         taxRate,
+                                                                         taxAmount,
+                                                                         totalPrice,
+                                                                         sellerLegalId,
+                                                                         sellerTaxIdentification);
 
         return DaoContributionInvoice.createAndPersist(emitterActor.getDao(),
                                                        recipientActor.getDao(),

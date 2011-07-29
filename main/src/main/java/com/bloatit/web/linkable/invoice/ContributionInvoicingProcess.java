@@ -23,7 +23,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
@@ -47,7 +46,9 @@ public class ContributionInvoicingProcess extends WebProcess {
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private Milestone milestone;
 
+    @SuppressWarnings("unused")
     private final ContributionInvoicingProcessUrl url;
+    @SuppressWarnings("unused")
     private ModifyInvoicingContactProcess invoicingContactProcess = null;
 
     public ContributionInvoicingProcess(final ContributionInvoicingProcessUrl url) {
@@ -58,12 +59,12 @@ public class ContributionInvoicingProcess extends WebProcess {
     }
 
     @Override
-    protected synchronized Url doProcess(final ElveosUserToken userToken) {
+    protected synchronized Url doProcess() {
         return new ModifyInvoicingContactProcessUrl(actor, this);
     }
 
     @Override
-    protected synchronized Url doProcessErrors(final ElveosUserToken userToken) {
+    protected synchronized Url doProcessErrors() {
         return session.getLastVisitedPage();
     }
 

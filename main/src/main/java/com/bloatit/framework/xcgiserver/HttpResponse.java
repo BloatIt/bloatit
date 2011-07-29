@@ -24,8 +24,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPOutputStream;
 
 import com.bloatit.common.Log;
@@ -38,87 +43,53 @@ import com.bloatit.framework.webprocessor.components.writers.IndentedHtmlStream;
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
 import com.bloatit.framework.webprocessor.components.writers.SimpleHtmlStream;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.web.HtmlTools;
 
 public final class HttpResponse {
-    private static final byte[] EOL = "\r\n".getBytes();
+    static final byte[] EOL = "\r\n".getBytes();
 
-    /**
-     * Describes the error level
-     */
-    public enum StatusCode {
-        OK_200("200", "OK"), //
-        ERROR_301_MOVED_PERMANENTLY("301", "Moved Permanently"), //
-        ERROR_302_FOUND("302", "Found"), //
-        ERROR_400_BAD_REQUEST("400", "Bad Request"), //
-        ERROR_401_UNAUTHORIZED("401", "Unauthorized"), //
-        ERROR_403_FORBIDDEN("403", "Forbidden"), //
-        ERROR_404_NOT_FOUND("404", "Not Found"), //
-        ERROR_405_METHOD_NOT_ALLOWED("405", "Method not allowed"), //
-        ERROR_406_NOT_ACCEPTABLE("406", "Not acceptable"), //
-        ERROR_500_INTERNAL_SERVER_ERROR("500", "Internal Server Error"), //
-        ERROR_501_NOT_IMPLEMENTED("501", "Not Implemented"), //
-        ERROR_503_SERVICE_UNAVAILABLE("503", "Service Unavailable");//
-
-        private final String code;
-        private final String message;
-
-        StatusCode(final String code, final String message) {
-            this.code = code;
-            this.message = message;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        @Override
-        public String toString() {
-            return code + " " + message;
-        }
+    private static enum Encoding {
+        NONE, GZIP, DEFLATE,
     }
 
     private final OutputStream output;
-    private StatusCode status = StatusCode.OK_200;
     private final SimpleDateFormat httpDateformat;
+    private Encoding encoding = Encoding.NONE;
 
-    private boolean useGzip = false;
+    private Set<HttpReponseField> headers = new HashSet<HttpReponseField>();
 
     public HttpResponse(final OutputStream output, final HttpHeader header) {
         httpDateformat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         httpDateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-        if (header.getHttpAcceptEncoding().contains("gzip")) {
-            useGzip = true;
+        if (header.getHttpAcceptEncoding().contains("deflate")) {
+            encoding = Encoding.DEFLATE;
+        } else if (header.getHttpAcceptEncoding().contains("gzip")) {
+            encoding = Encoding.GZIP;
+        } else {
+            encoding = Encoding.NONE;
         }
 
         this.output = output;
     }
 
-    /**
-     * Sets the status (OK, ERROR+type) of the HttpResponse.
-     * <p>
-     * Default value of the status is OK_200, hence there is no need to call
-     * this method when everything is OK. When an error occurs, call this method
-     * to set the error status to its new value.
-     * </p>
-     * 
-     * @param status the new status
-     */
-    public void setStatus(final StatusCode status) {
-        this.status = status;
+    public void addField(HttpReponseField headerField) {
+        headers.add(headerField);
     }
 
     /**
      * Writes an exception to the page
      */
     public void writeException(final Exception e) {
+        // Construct header
+        addField(HttpReponseField.status(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR));
+        addField(HttpReponseField.contentType("Content-type: text/plain"));
+
+        // Construct body
         final StringBuilder display = new StringBuilder();
-        display.append("Status: " + StatusCode.ERROR_500_INTERNAL_SERVER_ERROR);
-        display.append("Content-type: text/plain\r\n\r\n");
         display.append(e.toString());
         display.append(" :\n");
-
         for (final StackTraceElement s : e.getStackTrace()) {
             display.append('\t');
             display.append(s);
@@ -126,63 +97,87 @@ public final class HttpResponse {
         }
 
         try {
+            writeHeader();
             output.write(display.toString().getBytes());
         } catch (final IOException e1) {
-            Log.framework().fatal("Cannot send exception through the SCGI soket.", e1);
+            Log.framework().fatal("Cannot send exception through the SCGI socket.", e1);
         }
     }
 
-    public void writeRedirect(final String url) throws IOException {
-        writeCookies();
-        writeLine("Location: " + url);
-        closeHeaders();
+    public void writeRedirect(StatusCode status, final String url) throws IOException {
+        addField(HttpReponseField.status(status));
+        addField(HttpReponseField.location(url));
+        addSessionCookie();
+
+        writeHeader();
     }
 
-    private QueryResponseStream buildHtmlStream(final OutputStream outputStream) {
-        if (FrameworkConfiguration.isHtmlMinified()) {
-            return new SimpleHtmlStream(outputStream);
-        }
-        return new IndentedHtmlStream(outputStream);
+    public void writeOAuthRedirect(int status, final String url) throws IOException {
+        addField(new HttpReponseField("status", String.valueOf(status)));
+        addField(HttpReponseField.location(url));
+        writeHeader();
     }
 
-    public void writePage(final HtmlElement page) throws IOException {
-        writeLine("Status: " + status);
-        writeCookies();
-        writeLine("Vary: Accept-Encoding");
-        writeLine("Content-Type: text/html");
-        writeLine("Accept-Ranges: bytes");
+    public void writeOAuth(int status, Map<String, String> headers, final String body) throws IOException {
+        addField(new HttpReponseField("status", String.valueOf(status)));
+        addField(HttpReponseField.contentType("application/json;charset=UTF-8"));
+        addField(HttpReponseField.cacheControl("no-store"));
+        addField(HttpReponseField.pragma("no-cache"));
+        for (Entry<String, String> header : headers.entrySet()) {
+            addField(new HttpReponseField(header.getKey(), header.getValue()));
+        }
+        writeHeader();
 
-        if (useGzip) {
-            writeLine("Content-Encoding: gzip");
-            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            final GZIPOutputStream gzipStream = new GZIPOutputStream(buffer);
-            final QueryResponseStream htmlText = buildHtmlStream(gzipStream);
+        output.write(body.getBytes());
+    }
 
-            page.write(htmlText);
-            gzipStream.flush();
-            gzipStream.close();
-
-            final byte[] byteArray = buffer.toByteArray();
-
-            writeLine("Content-Length: " + byteArray.length);
-            closeHeaders();
-            output.write(byteArray);
-        } else {
-            final QueryResponseStream htmlText = buildHtmlStream(output);
-
-            closeHeaders();
-            page.write(htmlText);
+    public void writePage(StatusCode status, String contentType, final HtmlElement page) throws IOException {
+        addField(HttpReponseField.status(status));
+        addSessionCookie();
+        addField(HttpReponseField.vary("Accept-Encoding"));
+        addField(HttpReponseField.contentType(contentType));
+        addField(HttpReponseField.acceptRanges("bytes"));
+        String languageCode = Context.getLocalizator().getCode();
+        if (!languageCode.isEmpty()) {
+            addField(HttpReponseField.contentLanguage(languageCode));
         }
 
+        switch (encoding) {
+            case DEFLATE:
+            case GZIP:
+                final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                OutputStream encodedStream;
+                if (encoding == Encoding.GZIP) {
+                    addField(HttpReponseField.contentEncoding("gzip"));
+                    encodedStream = new GZIPOutputStream(buffer);
+                } else {
+                    addField(HttpReponseField.contentEncoding("deflate"));
+                    encodedStream = new DeflaterOutputStream(buffer);
+                }
+
+                final QueryResponseStream htmlText = buildHtmlStream(encodedStream);
+                page.write(htmlText);
+                encodedStream.flush();
+                encodedStream.close();
+                final byte[] byteArray = buffer.toByteArray();
+                addField(HttpReponseField.contentLength(String.valueOf(byteArray.length)));
+
+                writeHeader();
+                output.write(byteArray);
+                break;
+            case NONE:
+            default:
+                writeHeader();
+                page.write(buildHtmlStream(output));
+                break;
+        }
     }
 
     public void writeResource(final String path, final long size, final String fileName) throws IOException {
-        writeLine("Content-Disposition: inline; filename=" + fileName);
-        writeLine("Vary: Accept-Encoding");
-        // writeLine("Cache-Control: max-age=31104000");
-
-        // Allow to resume the download
-        writeLine("Accept-Ranges: bytes");
+        // addField(HttpReponseField.status(status));
+        addField(HttpReponseField.contentDisposition("inline; filename=" + fileName));
+        addField(HttpReponseField.vary("Accept-Encoding"));
+        addField(HttpReponseField.acceptRanges("bytes"));
 
         // Last-Modified
         final File file = new File(path);
@@ -195,17 +190,17 @@ public final class HttpResponse {
 
         // Content type
         if (fileName.endsWith(".css")) {
-            writeLine("Content-Type: text/css");
+            addField(HttpReponseField.contentType("text/css"));
         } else if (fileName.endsWith(".png")) {
-            writeLine("Content-Type: image/png");
+            addField(HttpReponseField.contentType("image/png"));
         } else {
+            // FIXME manage other content types !!
             Log.framework().warn("FIXME: Unknown content type for file '" + fileName + "' in HttpResponse.writeResource");
         }
 
         // Send file
-        writeLine("X-Sendfile2: " + path + " 0-" + (size - 1));
-
-        closeHeaders();
+        addField(new HttpReponseField("X-sendfile2", path + " 0-" + (size - 1)));
+        writeHeader();
     }
 
     /**
@@ -234,8 +229,15 @@ public final class HttpResponse {
     public void writeRestResource(final RestResource resource) throws IOException {
         try {
             final String resourceXml = resource.getXmlString();
-            writeLine("Content-Type: text/xml");
-            closeHeaders();
+            // addField(HttpReponseField.status(status));
+            addField(HttpReponseField.contentType("text/xml"));
+            addField(HttpReponseField.vary("Accept-Encoding"));
+            addField(HttpReponseField.acceptRanges("bytes"));
+            // In modern browser allow external website to request our site (for
+            // ajax requests).
+            addField(new HttpReponseField("Access-Control-Allow-Origin", "*"));
+            writeHeader();
+
             final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
             htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
             htmlText.writeLine("<rest result=\"ok\" request=\"" + HtmlTools.escape(resource.getRequest()) + "\" >");
@@ -245,7 +247,7 @@ public final class HttpResponse {
             htmlText.writeLine("</rest>");
         } catch (final Exception e) {
             Log.rest().fatal("Exception while marshalling RestResource " + resource.getUnderlying(), e);
-            writeRestError(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error while marhsalling the Object", e);
+            writeRestError(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR, "Error while marhsalling the Object", e);
         }
     }
 
@@ -259,11 +261,6 @@ public final class HttpResponse {
         writeRestError(exception.getStatus(), exception.getMessage(), exception);
     }
 
-    private void writeLine(final String string) throws IOException {
-        output.write(string.getBytes());
-        output.write(EOL);
-    }
-
     /**
      * <p>
      * Writes a rest error
@@ -272,8 +269,14 @@ public final class HttpResponse {
      * @see {@link #writeRestError(RestException)}
      */
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {
-        writeLine("Content-Type: text/xml");
-        closeHeaders();
+        addField(HttpReponseField.status(status));
+        addField(HttpReponseField.contentType("text/xml"));
+        addField(HttpReponseField.vary("Accept-Encoding"));
+        addField(HttpReponseField.acceptRanges("bytes"));
+        // In modern browser allow external website to request our site (for
+        // ajax requests).
+        addField(new HttpReponseField("Access-Control-Allow-Origin", "*"));
+        writeHeader();
         final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
         htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
         htmlText.indent();
@@ -294,11 +297,30 @@ public final class HttpResponse {
         htmlText.unindent();
     }
 
-    private void closeHeaders() throws IOException {
+    private void writeHeader() throws IOException {
+        for (HttpReponseField field : headers) {
+            field.write(output);
+        }
         output.write(EOL);
     }
 
-    private void writeCookies() throws IOException {
-        writeLine("Set-Cookie: session_key=" + Context.getSession().getKey().getId() + "; path=/; Max-Age=1296000; Version=1 ");
+    private void writeLine(final String string) throws IOException {
+        output.write(string.getBytes());
+        output.write(EOL);
+    }
+
+    private void addSessionCookie() throws IOException {
+        if (FrameworkConfiguration.isHttpsEnabled()) {
+            headers.add(HttpReponseField.setCookie("session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; Secure; HttpOnly "));
+        } else {
+            headers.add(HttpReponseField.setCookie("session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; HttpOnly "));
+        }
+    }
+
+    private QueryResponseStream buildHtmlStream(final OutputStream outputStream) {
+        if (FrameworkConfiguration.isHtmlMinified()) {
+            return new SimpleHtmlStream(outputStream);
+        }
+        return new IndentedHtmlStream(outputStream);
     }
 }

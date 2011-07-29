@@ -25,7 +25,8 @@ import com.bloatit.model.InternalAccount;
 public class RgtInternalAccount extends RightManager {
 
     /**
-     * The Class Blocked is a {@link RightManager.Private} accessor for the Blocked property.
+     * The Class Blocked is a {@link RightManager.Private} accessor for the
+     * Blocked property.
      */
     public static class Blocked extends BankData {
         // nothing this is just a rename.

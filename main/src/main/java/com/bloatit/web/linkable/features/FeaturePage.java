@@ -27,7 +27,6 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
@@ -70,39 +69,31 @@ public final class FeaturePage extends ElveosPage {
         return true;
     }
 
-    @Override
-    protected String createPageTitle() {
-        if (feature != null) {
-            return feature.getTitle();
-        }
-        return Context.tr("feature not found.");
-    }
-
     public Feature getFeature() {
         return feature;
     }
 
+    /**
+     * The feature page body content is composed of 3 parts : <li>The summary</li>
+     * <li>The tab panel</li> <li>The comments</li>
+     */
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
-        // The feature page is composed of 3 parts:
-        // - The summary
-        // - The tab panel
-        // - The comments
-
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        layout.addLeft(new FeatureSummaryComponent(feature, userToken));
-        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, userToken));
+        layout.addLeft(new FeatureSummaryComponent(feature));
+        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature));
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
             commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
-            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), feature), userToken));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), feature)));
         }
         layout.addLeft(commentsBlock);
 
         layout.addRight(new SideBarDocumentationBlock("feature"));
+        layout.addRight(new SideBarElveosButtonBlock(feature));
 
         return layout;
     }
@@ -163,7 +154,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.bugs) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }
@@ -181,6 +172,18 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
+    protected String createPageTitle() {
+        if (feature != null) {
+            if (feature.getSoftware() == null) {
+                return feature.getTitle();
+            } else {
+                return Context.tr("{0} - {1}", feature.getTitle(), feature.getSoftware().getName());
+            }
+        }
+        return Context.tr("feature not found.");
+    }
+
+    @Override
     protected String getPageDescription() {
         String title = feature.getTitle();
         if (title.endsWith(".") || title.endsWith(":") || title.endsWith("!") || title.endsWith("?")) {
@@ -188,13 +191,12 @@ public final class FeaturePage extends ElveosPage {
         }
         String str = null;
         if (feature.getSoftware() != null) {
-            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0} in {1}",
+            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {1} - {0}",
                              title,
                              feature.getSoftware().getName());
         } else {
             str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0}", title);
         }
-
         return HtmlUtils.htmlEscape(str);
     }
 }

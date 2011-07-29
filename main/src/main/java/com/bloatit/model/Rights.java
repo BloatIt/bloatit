@@ -1,9 +1,12 @@
 package com.bloatit.model;
 
+import java.util.EnumSet;
+
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RestrictedObject;
 import com.bloatit.model.visitor.HighLevelModelVisitor;
 
@@ -36,36 +39,37 @@ public class Rights {
     }
 
     private final OwningState owningState;
-    private final AuthenticatedUserToken token;
+    private final boolean isWeak;
+    private final EnumSet<RightLevel> rights;
     private Team currentTeam;
 
-    public Rights(final AuthenticatedUserToken token, final IdentifiableInterface identifiable) {
-        this.token = token;
+    public Rights(final IdentifiableInterface identifiable) {
         currentTeam = null;
-        if (token == null || !token.isAuthenticated()) {
+        rights = AuthToken.getRights();
+        isWeak = AuthToken.isWeak();
+        if (!AuthToken.isAuthenticated()) {
             owningState = OwningState.NOBODY;
-        } else {
-            if (token.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {
-                if (token.getAsTeam() != null) {
-                    currentTeam = token.getAsTeam();
-                } else {
-                    currentTeam = identifiable.accept(new GetCreatedByTeamVisitor());
-                }
-
-                Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(token.getMember()));
-                if (accept != null && accept) {
-                    owningState = OwningState.TEAM_OWNER;
-                } else {
-                    owningState = OwningState.AUTHENTICATED;
-                }
+            return;
+        }
+        if (AuthToken.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {
+            if (AuthToken.getAsTeam() != null) {
+                currentTeam = AuthToken.getAsTeam();
             } else {
-                if (identifiable.accept(new IsOwnerVisitor(token.getMember()))) {
-                    owningState = OwningState.OWNER;
-                } else {
-                    owningState = OwningState.AUTHENTICATED;
-                }
+                currentTeam = identifiable.accept(new GetCreatedByTeamVisitor());
+            }
+
+            final Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(AuthToken.getMember()));
+            if (accept != null && accept) {
+                owningState = OwningState.TEAM_OWNER;
+                return;
+            }
+        } else {
+            if (identifiable.accept(new IsOwnerVisitor(AuthToken.getMember()))) {
+                owningState = OwningState.OWNER;
+                return;
             }
         }
+        owningState = OwningState.AUTHENTICATED;
     }
 
     // ///////////////////////////////////////
@@ -91,19 +95,19 @@ public class Rights {
     // Team Rights
 
     public boolean hasModifyTeamRight() {
-        return token != null && token.isAuthenticated() && currentTeam != null && hasModifyTeamRight(token.getMember(), currentTeam);
+        return AuthToken.isAuthenticated() && currentTeam != null && hasModifyTeamRight(AuthToken.getMember(), currentTeam);
     }
 
     public boolean hasConsultTeamRight() {
         if (isTeamOwner()) {
-            return token != null && token.isAuthenticated() && currentTeam != null && hasConsultTeamRight(token.getMember(), currentTeam);
+            return AuthToken.isAuthenticated() && currentTeam != null && hasConsultTeamRight(AuthToken.getMember(), currentTeam);
         }
         return false;
     }
 
     public boolean hasBankTeamRight() {
         if (isTeamOwner()) {
-            return token != null && token.isAuthenticated() && currentTeam != null && hasBankTeamRight(token.getMember(), currentTeam);
+            return AuthToken.isAuthenticated() && currentTeam != null && hasBankTeamRight(AuthToken.getMember(), currentTeam);
         }
         return false;
     }
@@ -143,6 +147,17 @@ public class Rights {
     }
 
     // ///////////////////////////////////////
+    // Weak authentication
+
+    public final boolean isWeak() {
+        return isWeak;
+    }
+
+    public final EnumSet<RightLevel> getWeakRights() {
+        return rights;
+    }
+
+    // ///////////////////////////////////////
     // User privilege
 
     public final boolean hasNormalUserPrivilege() {
@@ -166,7 +181,7 @@ public class Rights {
     }
 
     private final boolean hasUserPrivilege(final DaoMember.Role role) {
-        return token != null && token.isAuthenticated() && token.getMember().getRole() == role;
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getRole() == role;
     }
 
     // ///////////////////////////////////////
@@ -233,22 +248,27 @@ public class Rights {
         }
 
         @Override
-        public Team visit(Invoice model) {
+        public Team visit(final Invoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Team visit(ContributionInvoice model) {
+        public Team visit(final ContributionInvoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Team visit(MilestoneContributionAmount model) {
+        public Team visit(final MilestoneContributionAmount model) {
             return null;
         }
 
         @Override
-        public Team visit(NewsFeed newsFeed) {
+        public Team visit(final NewsFeed newsFeed) {
+            return null;
+        }
+
+        @Override
+        public Team visit(ExternalServiceMembership externalService) {
             return null;
         }
 
@@ -320,22 +340,27 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(Invoice model) {
+        public Boolean visit(final Invoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Boolean visit(ContributionInvoice model) {
+        public Boolean visit(final ContributionInvoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Boolean visit(MilestoneContributionAmount model) {
+        public Boolean visit(final MilestoneContributionAmount model) {
             return null;
         }
 
         @Override
-        public Boolean visit(NewsFeed newsFeed) {
+        public Boolean visit(final NewsFeed newsFeed) {
+            return null;
+        }
+
+        @Override
+        public Boolean visit(final ExternalServiceMembership externalService) {
             return null;
         }
     }
@@ -403,23 +428,28 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(Invoice model) {
+        public Boolean visit(final Invoice model) {
             return model.getRecipientActorUnprotected().equals(member);
         }
 
         @Override
-        public Boolean visit(ContributionInvoice model) {
+        public Boolean visit(final ContributionInvoice model) {
             return model.getRecipientActorUnprotected().equals(member)
                     || (model.getEmitterActorUnprotected() != null && model.getEmitterActorUnprotected().equals(member));
         }
 
         @Override
-        public Boolean visit(MilestoneContributionAmount model) {
+        public Boolean visit(final MilestoneContributionAmount model) {
             return null;
         }
 
         @Override
-        public Boolean visit(NewsFeed newsFeed) {
+        public Boolean visit(final NewsFeed newsFeed) {
+            return null;
+        }
+
+        @Override
+        public Boolean visit(final ExternalServiceMembership externalService) {
             return null;
         }
 

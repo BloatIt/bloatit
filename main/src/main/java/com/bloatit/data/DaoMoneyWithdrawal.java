@@ -162,7 +162,7 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
         return moneyWithdrawal;
     }
 
-    private DaoMoneyWithdrawal(DaoActor actor, String IBAN, BigDecimal amountWithdrawn, String reference) {
+    private DaoMoneyWithdrawal(final DaoActor actor, final String IBAN, final BigDecimal amountWithdrawn, final String reference) {
         super();
         this.actor = actor;
         this.IBAN = IBAN;
@@ -174,7 +174,7 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
 
         try {
             actor.getInternalAccount().block(amountWithdrawn);
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             throw new BadProgrammerException("Not enough money to block from account", e);
         }
     }
@@ -183,20 +183,20 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
     // Setters
     // ======================================================================
 
-    private void setState(State newState) {
+    private void setState(final State newState) {
         state = newState;
         this.lastModificationDate = new Date();
     }
 
-    public void setComment(String comment) {
+    public void setComment(final String comment) {
         this.comment = comment;
     }
 
-    public void setTransaction(DaoTransaction transaction) {
+    public void setTransaction(final DaoTransaction transaction) {
         this.transaction = transaction;
     }
 
-    public void setRefusalReason(String refusalReason) {
+    public void setRefusalReason(final String refusalReason) {
         this.refusalReason = refusalReason;
     }
 
@@ -213,7 +213,7 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
     public void setCanceled() {
         try {
             actor.getInternalAccount().unBlock(amountWithdrawn);
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             throw new BadProgrammerException("Not enough money to unblock.", e);
         }
         setState(State.CANCELED);
@@ -225,7 +225,7 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
     public void setRefused() {
         try {
             actor.getInternalAccount().unBlock(amountWithdrawn);
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             throw new BadProgrammerException("Not enough money to unblock.", e);
         }
         setState(State.REFUSED);
@@ -237,13 +237,13 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
     public void setComplete() {
         try {
             actor.getInternalAccount().unBlock(amountWithdrawn);
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             throw new BadProgrammerException("Not enough money to unblock.", e);
         }
 
         try {
             transaction = DaoTransaction.createAndPersist(actor.getInternalAccount(), actor.getExternalAccount(), amountWithdrawn);
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             throw new BadProgrammerException("Not enough money to complete transaction.", e);
         }
         setState(State.COMPLETE);
@@ -300,7 +300,7 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
     /**
      * @return all the DaoMoneyWithdrawal that match <code>state</code>
      */
-    public static PageIterable<DaoMoneyWithdrawal> getByState(State state) {
+    public static PageIterable<DaoMoneyWithdrawal> getByState(final State state) {
         return new QueryCollection<DaoMoneyWithdrawal>("withdrawal.bystate").setParameter("state", state);
     }
 
@@ -309,7 +309,7 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -342,41 +342,55 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoMoneyWithdrawal other = (DaoMoneyWithdrawal) obj;
+        }
+        final DaoMoneyWithdrawal other = (DaoMoneyWithdrawal) obj;
         if (IBAN == null) {
-            if (other.IBAN != null)
+            if (other.IBAN != null) {
                 return false;
-        } else if (!IBAN.equals(other.IBAN))
+            }
+        } else if (!IBAN.equals(other.IBAN)) {
             return false;
+        }
         if (actor == null) {
-            if (other.actor != null)
+            if (other.actor != null) {
                 return false;
-        } else if (!actor.equals(other.actor))
+            }
+        } else if (!actor.equals(other.actor)) {
             return false;
+        }
         if (amountWithdrawn == null) {
-            if (other.amountWithdrawn != null)
+            if (other.amountWithdrawn != null) {
                 return false;
-        } else if (!amountWithdrawn.equals(other.amountWithdrawn))
+            }
+        } else if (!amountWithdrawn.equals(other.amountWithdrawn)) {
             return false;
+        }
         if (creationDate == null) {
-            if (other.creationDate != null)
+            if (other.creationDate != null) {
                 return false;
-        } else if (!creationDate.equals(other.creationDate))
+            }
+        } else if (!creationDate.equals(other.creationDate)) {
             return false;
+        }
         if (reference == null) {
-            if (other.reference != null)
+            if (other.reference != null) {
                 return false;
-        } else if (!reference.equals(other.reference))
+            }
+        } else if (!reference.equals(other.reference)) {
             return false;
-        if (state != other.state)
+        }
+        if (state != other.state) {
             return false;
+        }
         return true;
     }
 }

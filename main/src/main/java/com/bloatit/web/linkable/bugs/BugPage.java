@@ -38,7 +38,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.SideBarFeatureBlock;
@@ -83,10 +82,10 @@ public final class BugPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        layout.addRight(new SideBarFeatureBlock(bug.getFeature(), userToken));
+        layout.addRight(new SideBarFeatureBlock(bug.getFeature()));
 
         final HtmlDiv bugListDiv = new HtmlDiv("bug_list");
         layout.addLeft(bugListDiv);
@@ -153,7 +152,7 @@ public final class BugPage extends ElveosPage {
 
         // Comments
         layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
-        layout.addLeft(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), bug), userToken));
+        layout.addLeft(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), bug)));
 
         return layout;
     }
@@ -199,7 +198,7 @@ public final class BugPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return BugPage.generateBreadcrumb(bug);
     }
 

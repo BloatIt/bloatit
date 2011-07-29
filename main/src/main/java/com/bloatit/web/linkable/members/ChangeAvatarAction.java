@@ -22,7 +22,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
@@ -72,7 +71,7 @@ public final class ChangeAvatarAction extends UserContentAction {
         final FileConstraintChecker fcc = new FileConstraintChecker(filename);
         if (fcc.isImageAvatar() != null) {
             for (final String message : fcc.isImageAvatar()) {
-                session.notifyBad(message);
+                session.notifyWarning(message);
             }
             return false;
         }
@@ -80,7 +79,7 @@ public final class ChangeAvatarAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return Context.getSession().pickPreferredPage();
     }
 

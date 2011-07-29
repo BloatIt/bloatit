@@ -36,7 +36,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.User;
 
 /**
  * <p>
@@ -411,9 +410,8 @@ public final class Localizator {
      * </p>
      */
     public void forceMemberChoice() {
-        if (Context.getSession().getUserToken().isAuthenticated()) {
-            final User user = Context.getSession().getUserToken().getMember();
-            locale = user.getLocale();
+        if (Context.getSession().getMemberId() != null) {
+            locale = Context.getSession().getMemberLocale();
             this.i18n = getI18n(locale);
         }
     }
@@ -433,7 +431,7 @@ public final class Localizator {
      * </p>
      */
     public void forceLanguageReset() {
-        if (Context.getSession().getUserToken().isAuthenticated()) {
+        if (Context.getSession().getMemberId() != null) {
             forceMemberChoice();
             return;
         }
@@ -450,9 +448,8 @@ public final class Localizator {
         if (urlLang != null && !urlLang.equals("default")) {
             // Default language
             String country;
-            if (Context.getSession().getUserToken().isAuthenticated()) {
-                final User user = Context.getSession().getUserToken().getMember();
-                country = user.getLocale().getCountry();
+            if (Context.getSession().getMemberId() != null) {
+                country = Context.getSession().getMemberLocale().getCountry();
             } else {
                 country = browserLocaleHeuristic(browserLangs).getCountry();
             }
@@ -472,9 +469,8 @@ public final class Localizator {
 
         } else {
             // Other cases
-            if (Context.getSession().getUserToken().isAuthenticated()) {
-                final User user = Context.getSession().getUserToken().getMember();
-                locale = user.getLocale();
+            if (Context.getSession().getMemberId() != null) {
+                locale = Context.getSession().getMemberLocale();
             } else {
                 locale = browserLocaleHeuristic(browserLangs);
             }
@@ -575,11 +571,11 @@ public final class Localizator {
         return NumberFormat.getInstance(getLocale());
     }
 
-    private I18n getI18n(Locale locale) {
+    private I18n getI18n(final Locale locale) {
         if (localesCache.containsKey(locale)) {
             return localesCache.get(locale);
         }
-        I18n newI18n = I18nFactory.getI18n(Localizator.class, "i18n.Messages", locale);
+        final I18n newI18n = I18nFactory.getI18n(Localizator.class, "i18n.Messages", locale);
         localesCache.put(locale.getLanguage(), newI18n);
         return newI18n;
     }

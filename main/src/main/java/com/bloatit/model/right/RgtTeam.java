@@ -23,48 +23,50 @@ import com.bloatit.model.Member;
  * class.
  */
 public class RgtTeam extends RightManager {
-    
+
     /**
-     * The Class Email is a {@link RightManager.Public} accessor for the Contact property.
+     * The Class Email is a {@link RightManager.Public} accessor for the Contact
+     * property.
      */
     public static class Contact extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
-     * The Class Email is a {@link RightManager.Public} accessor for the DisplayName property.
+     * The Class Email is a {@link RightManager.Public} accessor for the
+     * DisplayName property.
      */
     public static class DisplayName extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
-     * The Class <code>Avatar</code> is a {@link RightManager.Public} accessor for the
-     * <code>Avatar</code> property.
+     * The Class <code>Avatar</code> is a {@link RightManager.Public} accessor
+     * for the <code>Avatar</code> property.
      */
     public static class Avatar extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
-     * The Class <code>Right</code> is a {@link RightManager.Public} accessor for the
-     * <code>Right</code> property.
+     * The Class <code>Right</code> is a {@link RightManager.Public} accessor
+     * for the <code>Right</code> property.
      */
     public static class Right extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
-     * The Class <code>Description</code> is a {@link RightManager.Public} accessor for the
-     * <code>Description</code> property.
+     * The Class <code>Description</code> is a {@link RightManager.Public}
+     * accessor for the <code>Description</code> property.
      */
     public static class Description extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
-     * The Class <code>BankTransaction</code> is a {@link RightManager.BankData} accessor for the
-     * <code>BankTransaction</code> property.
+     * The Class <code>BankTransaction</code> is a {@link RightManager.BankData}
+     * accessor for the <code>BankTransaction</code> property.
      */
     public static class BankTransaction extends BankData {
         // nothing this is just a rename.

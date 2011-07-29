@@ -27,7 +27,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
@@ -148,23 +147,23 @@ public final class OfferAction extends UserContentAction {
         boolean everythingIsRight = true;
 
         if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
-            session.notifyBad(Context.tr("You have to specify both the Major and Fatal percent."));
+            session.notifyWarning(Context.tr("You have to specify both the Major and Fatal percent."));
             url.getPercentMajorParameter().addErrorMessage(Context.tr("You have to specify both the Major and Fatal percent."));
             url.getPercentFatalParameter().addErrorMessage(Context.tr("You have to specify both the Major and Fatal percent."));
             everythingIsRight = false;
         }
         if (percentFatal != null && percentFatal + percentMajor > 100) {
-            session.notifyBad(Context.tr("Major + Fatal percent cannot be > 100 !!"));
+            session.notifyWarning(Context.tr("Major + Fatal percent cannot be > 100 !!"));
             url.getPercentMajorParameter().addErrorMessage(Context.tr("Major + Fatal percent cannot be > 100 !!"));
             url.getPercentFatalParameter().addErrorMessage(Context.tr("Major + Fatal percent cannot be > 100 !!"));
             everythingIsRight = false;
         }
         if (draftOffer != null && !draftOffer.isDraft()) {
-            session.notifyBad(Context.tr("The specified offer is not modifiable. You cannot add a lot in it."));
+            session.notifyWarning(Context.tr("The specified offer is not modifiable. You cannot add a lot in it."));
             everythingIsRight = false;
         }
         if (!expiryDate.isFuture()) {
-            session.notifyBad(Context.tr("The date must be in the future."));
+            session.notifyWarning(Context.tr("The date must be in the future."));
             url.getExpiryDateParameter().addErrorMessage(Context.tr("The date must be in the future."));
             everythingIsRight = false;
         }
@@ -177,7 +176,7 @@ public final class OfferAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         if (feature != null) {
             transmitParameters();
             final MakeOfferPageUrl redirectUrl = new MakeOfferPageUrl(feature);

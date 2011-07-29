@@ -40,10 +40,8 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLine
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.components.SideBarFeatureBlock;
@@ -88,7 +86,7 @@ public final class CheckContributePage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError(final ElveosUserToken userToken) throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -98,14 +96,14 @@ public final class CheckContributePage extends QuotationPage {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
-        return createBodyContent(userToken);
+        return createBodyContent();
     }
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount(), new AuthenticatedUserToken(loggedUser)));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
         return layout;
     }
 
@@ -216,14 +214,14 @@ public final class CheckContributePage extends QuotationPage {
         group.add(ContactBox.generate(actor, process));
 
         if (process.isLocked()) {
-            getSession().notifyBad(tr("You have a payment in progress. The contribution is locked."));
+            getSession().notifyWarning(tr("You have a payment in progress. The contribution is locked."));
         }
         try {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
             }
         } catch (final IllegalWriteException e) {
-            getSession().notifyBad(tr("The preload amount is locked during the payment process."));
+            getSession().notifyWarning(tr("The preload amount is locked during the payment process."));
         }
 
         // Total
@@ -235,7 +233,7 @@ public final class CheckContributePage extends QuotationPage {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
-            getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
+            getSession().notifyWarning(tr("The contribution's total amount is locked during the payment process."));
         }
 
         final HtmlLineTableModel model = new HtmlLineTableModel();

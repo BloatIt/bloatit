@@ -28,10 +28,10 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -61,18 +61,16 @@ public final class SoftwarePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        
-        if (userToken.isAuthenticated()) {
+        if (AuthToken.isAuthenticated()) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             layout.addLeft(modify);
             modify.add(new ModifySoftwarePageUrl(software).getHtmlLink(Context.tr("Modify software description")));
         }
 
-        
         HtmlTitle softwareName;
         softwareName = new HtmlTitle(software.getName(), 1);
         layout.addLeft(softwareName);
@@ -102,7 +100,7 @@ public final class SoftwarePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb() {
         return SoftwarePage.generateBreadcrumb(software);
     }
 

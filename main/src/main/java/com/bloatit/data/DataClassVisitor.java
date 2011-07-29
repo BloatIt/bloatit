@@ -235,10 +235,21 @@ public interface DataClassVisitor<ReturnType> {
     ReturnType visit(DaoMilestoneContributionAmount daoMilestoneContributionAmount);
 
     /**
-     * visit a persistent object.
+     * visit a persistent object. visit a persistent object.
      * 
      * @param dao the visited dao
      * @return what you want
      */
     ReturnType visit(DaoNewsFeed daoNewsFeed);
+
+    /**
+     * visit a persistent object.
+     * 
+     * @param dao the visited dao
+     * @return what you want
+     */
+    ReturnType visit(DaoExternalService daoExternalService);
+
+    ReturnType visit(DaoExternalServiceMembership daoExternalServiceMembership);
+
 }

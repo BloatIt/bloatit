@@ -9,7 +9,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -41,7 +40,7 @@ public final class SendTeamInvitationAction extends LoggedAction {
     @Override
     public Url doProcessRestricted(final Member me) {
         if (!me.hasInviteTeamRight(team)) {
-            session.notifyBad(Context.tr("You are not allowed to send invitations for this team."));
+            session.notifyWarning(Context.tr("You are not allowed to send invitations for this team."));
             return session.getLastVisitedPage();
         }
 
@@ -49,7 +48,7 @@ public final class SendTeamInvitationAction extends LoggedAction {
             me.sendInvitation(receiver, team);
             session.notifyGood(Context.tr("Invitation sent to {0} for team {1}.", receiver.getDisplayName(), team.getDisplayName()));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("Oops, an error prevented us from sending this invitation. Please notify us of the bug."));
+            session.notifyWarning(Context.tr("Oops, an error prevented us from sending this invitation. Please notify us of the bug."));
             throw new ShallNotPassException("User couldn't send a team invitation, while he should be able to", e);
         }
         return session.getLastVisitedPage();
@@ -61,7 +60,7 @@ public final class SendTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return session.getLastVisitedPage();
     }
 

@@ -32,7 +32,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
@@ -92,7 +91,7 @@ public final class ReportBugPage extends CreateUserContentPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateReportBugForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature(), new AuthenticatedUserToken(loggedUser)));
+        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
         return layout;
     }

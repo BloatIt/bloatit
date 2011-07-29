@@ -7,24 +7,24 @@ Cycle de vie d'une demande
 Demande en préparation
 ---------------------
 
-Une demande en préparation n'a pas encore reçue d'offre d'un développeur. On peut déjà contribuer, et plus il y aura d'argent en contribution, plus il y aura de chance de voir un développeur faire une offre rapidement.   
+Une demande en préparation n'a pas encore reçu d'offre d'un développeur. On peut déjà contribuer, et plus il y aura d'argent en contribution, plus il y aura de chance de voir un développeur faire une offre rapidement.   
 
 Offre en validation
 ----------------------
 
-Lorsque un développeur fait un offre, les contributeurs peuvent voter pour faire augmenter ou diminuer la popularité de l'offre. S'il y a plusieurs offres pour une même demande, alors l'offre avec la plus grande popularité sera sélectionnée, et passera en développement. 
+Lorsque un développeur fait une offre, les contributeurs peuvent voter pour faire augmenter ou diminuer la popularité de l'offre. S'il y a plusieurs offres pour une même demande, alors l'offre avec la plus grande popularité sera sélectionnée, et passera en développement. 
 Si aucune offre n'a de popularité supérieure à zéro, alors aucune offre n'est sélectionnée.
-Les contributeurs on toujours au moins une journée pour aller voter pour (ou contre) l'offre sélectionnée. 
+Les contributeurs ont toujours au moins une journée pour aller voter pour (ou contre) l'offre sélectionnée. 
 
 Demande en réalisation
 ----------------------
 
-Lorsque l'offre sélectionnée à reçue suffisamment de contributions, le développeur commence la réalisation. Plus personne ne peut alors contribuer sur cette demande, et on ne peut plus modifier la popularité de l'offre. 
+Lorsque l'offre sélectionnée a reçu suffisamment de contributions, le développeur commence la réalisation. Plus personne ne peut alors contribuer sur cette demande, et on ne peut plus modifier la popularité de l'offre. 
 
 Une livraison est proposée par le développeur
 ------------------------------------------
 
-Dès que le développeur a fini la réalisation de la demande il propose une livraison. Cette livraison peut prendre plusieurs formes, en fonction de la demande et de l'offre. Dans la majorité des cas c'est un fichier à télécharger. Les contributeurs peuvent alors tester la livraison, et vérifier quelle correspond bien à la fonctionnalité demandée. S'il y a des erreurs, ou des bugs, on peut les reporter en utilisant le 'bug tracker' intégrés dans elveos.
+Dès que le développeur a fini la réalisation de la demande il propose une livraison. Cette livraison peut prendre plusieurs formes, en fonction de la demande et de l'offre. Dans la majorité des cas c'est un fichier à télécharger. Les contributeurs peuvent alors tester la livraison, et vérifier quelle correspond bien à la fonctionnalité demandée. S'il y a des erreurs, ou des bugs, on peut les reporter en utilisant le 'bug tracker' intégré dans elveos.
 
 Dans le cas d'une [offre composée de plusieurs lots](/fr/documentation/doc-offer-presentation#lesoffrescontenantplusieurslots) le principe reste le même, mais il y a une livraison par lot. 
 

@@ -57,6 +57,11 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
         }
     }
 
+    public final void addOrReplace(final String name, final String value) {
+        final HttpParameter newHttpParameter = new HttpParameter(value);
+        getElements().put(name, newHttpParameter);
+    }
+
     @Override
     public Set<Entry<String, HttpParameter>> entrySet() {
         return super.entrySet();

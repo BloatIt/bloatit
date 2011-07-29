@@ -23,19 +23,19 @@ package com.bloatit.model.right;
 public class RgtMilestone extends RightManager {
 
     /**
-     * The Class <code>State</code> is a {@link RightManager.Public} accessor for the
-     * <code>State</code> property.
+     * The Class <code>State</code> is a {@link RightManager.Public} accessor
+     * for the <code>State</code> property.
      */
     public static class State extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
-     * The Class <code>Release</code> is a {@link RightManager.Public} accessor for the
-     * <code>Release</code> property.
+     * The Class <code>Release</code> is a {@link RightManager.Public} accessor
+     * for the <code>Release</code> property.
      */
     public static class Release extends Public {
         // nothing this is just a rename.
     }
-    
+
 }

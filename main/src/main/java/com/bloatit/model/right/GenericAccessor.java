@@ -16,7 +16,10 @@
 //
 package com.bloatit.model.right;
 
+import java.util.EnumSet;
+
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.model.Rights;
 
 /**
@@ -67,9 +70,20 @@ public abstract class GenericAccessor<T extends UnauthorizedOperationException> 
     protected abstract T exception(Action action);
 
     /**
-     * CanAccess call the abstract {@link #can(Rights, Action)}
-     * method to know if the user has the right to access the
-     * <code>object</code>.
+     * If the current user use a weak auth token, and this method return false
+     * then there is no way the user will be granted for this access.
+     * 
+     * @param rights
+     * @param action
+     * @return true (Overload me if you want)
+     */
+    protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+        return true;
+    }
+
+    /**
+     * CanAccess call the abstract {@link #can(Rights, Action)} method to know
+     * if the user has the right to access the <code>object</code>.
      * 
      * @param object is the object on which we want to do the
      *            <code>action</code>
@@ -82,7 +96,13 @@ public abstract class GenericAccessor<T extends UnauthorizedOperationException> 
             Log.model().trace("Admin access");
             return true;
         }
-        return can(object, action);
+        if (can(object, action)) {
+            if (object.isAuthenticated() && object.isWeak()) {
+                return authorizeWeakAccess(object.getWeakRights(), action);
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

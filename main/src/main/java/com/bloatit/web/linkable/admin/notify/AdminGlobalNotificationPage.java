@@ -18,7 +18,7 @@ import com.bloatit.web.url.AdminHomePageUrl;
 
 @ParamContainer("admin/notify")
 public class AdminGlobalNotificationPage extends AdminPage {
-    private AdminGlobalNotificationPageUrl url;
+    private final AdminGlobalNotificationPageUrl url;
 
     public AdminGlobalNotificationPage(final AdminGlobalNotificationPageUrl url) {
         super(url);

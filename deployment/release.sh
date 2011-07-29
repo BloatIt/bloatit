@@ -58,7 +58,7 @@ then
 	exit 1
 fi
 
-MVN="mvn -q -f $REPOS_DIR/pom.xml" 
+GRADLE="gradle -b $REPOS_DIR/build.gradle" 
 
 if [ -n "$(git status --porcelain)" ] ; then
 	echo there is non commited data. abording.
@@ -79,29 +79,13 @@ abort_if_non_zero $?
 
 ##
 ## Change the versions in the poms files
-##    REPOS_DIR the directory where the main pom.xml is
+##    REPOS_DIR the directory where the main build.gradle is
 ##    VERSION : the version string of the release.
-changePomVersion(){
+changeVersion(){
 	local _repos_dir="$1"
-    local _version="$2"
-
-	local _xmls=xmlstarlet
-	local _xmlstarlet_opt="-N mvn=http://maven.apache.org/POM/4.0.0" 
-
-	local _dirs=( $( $_xmls sel $_xmlstarlet_opt -t -v "/mvn:project/mvn:modules" "$_repos_dir"/pom.xml) "." ) 
-
-	for i in ${_dirs[@]} ; do
-		$_xmls ed -L  $_xmlstarlet_opt -u "/mvn:project/mvn:version" -v "$_version" "$_repos_dir/$i/pom.xml"
-		exit_on_failure $?
-		_artifacts="$_artifacts $( $_xmls sel $_xmlstarlet_opt -t -v "/mvn:project/mvn:artifactId" "$_repos_dir/$i/pom.xml")"
-	done
-	_artifacts=( $_artifacts )
-	for i in ${_dirs[@]} ; do
-		for j in ${_artifacts[@]} ; do
-			$_xmls ed -L $_xmlstarlet_opt -u "//mvn:dependency[mvn:artifactId='$j']/mvn:version" -v "$_version" "$_repos_dir/$i/pom.xml"
-			exit_on_failure $?
-		done
-	done
+        local _version="$2"
+	
+	sed -i -r "s/(^ *version ?= ?')[0-9a-zA-Z._-]+('$)/\1$_version\2/g" "$_repos_dir/build.gradle"
 }
 
 ##
@@ -110,28 +94,24 @@ changePomVersion(){
 ##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
 ##    NEXT_SNAPSHOT_VERSION : the version of the next snapshot.
-##    REPOS_DIR the directory where the main pom.xml is
-##    MVN : the mvn command to launch (for example "mvn -f ../pom.xml") 
-performMvnRelease() {
+##    REPOS_DIR the directory where the main build.gradle is
+##    GRADLE : the gradle command to launch (for example "gradle -b ../build.gradle") 
+performRelease() {
     local _prefix="$1"
     local _release_version="$2"
     local _next_snapshot_version="$3-SNAPSHOT"
-	local _repos_dir="$4"
-    local _mvn="$5"
-
-    stty -echo
-    read -p "I need the master password: " _password ; echo
-    stty echo
+    local _repos_dir="$4"
+    local _gradle="$5"
 
 	#
 	# Create the realease
 	#
-	log_date "Change the versions in the poms to: $_release_version"
-	changePomVersion "$_repos_dir" "$_release_version"
+    log_date "Change the versions in the build.gradle to: $_release_version"
+    changeVersion "$_repos_dir" "$_release_version"
     exit_on_failure $?
 
-    log_date "Mvn clean install + tests"
-    $_mvn clean install -DargLine="-DmasterPassword=$_password"
+    log_date "gradle clean build + tests"
+    $_gradle clean build 
     exit_on_failure $?
 
 	log_date "Create a git tag on this current version: $_release_version"
@@ -142,14 +122,14 @@ performMvnRelease() {
 	# Go back to working version
 	#
 	log_date "Going to the new snapshot version (pom): $_next_snapshot_version"
-	changePomVersion "$_repos_dir" "$_next_snapshot_version"
+	changeVersion "$_repos_dir" "$_next_snapshot_version"
     exit_on_failure $?
 
-	log_date "Mvn install"
-	$_mvn install -Dmaven.test.skip=true
+	log_date "gradle build"
+	$_gradle build -x test
     exit_on_failure $?
 
-	log_date "Commit the new pom"
+	log_date "Commit the new gradle version"
 	git commit -a -m "Going to the dev version: $_next_snapshot_version"
     exit_on_failure $?
 
@@ -159,7 +139,7 @@ performMvnRelease() {
     fi
 }
 
-performMvnRelease "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$REPOS_DIR" "$MVN"
+performRelease "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$REPOS_DIR" "$GRADLE"
 
 success "Release done."
 

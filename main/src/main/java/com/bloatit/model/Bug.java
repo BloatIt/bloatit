@@ -26,8 +26,10 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtBug;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 /**
@@ -143,11 +145,29 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtBug.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.get(getAuthToken().getAsTeam()),
-                                                               getAuthToken().getMember().getDao(),
+                                                               DaoGetter.get(AuthToken.getAsTeam()),
+                                                               AuthToken.getMember().getDao(),
                                                                text);
         getDao().addComment(comment);
         return Comment.create(comment);
+    }
+
+    @Override
+    public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+
+        // Delete all comments from the bug
+        for (final Comment comment : getComments()) {
+            comment.delete();
+        }
+
+        super.delete();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

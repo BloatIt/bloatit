@@ -33,7 +33,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.UserContentActionUrl;
@@ -122,15 +122,15 @@ public abstract class UserContentAction extends LoggedAction {
         try {
             if (team != null) {
                 if (!team.getUserTeamRight(me).contains(right)) {
-                    session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
+                    session.notifyWarning(Context.tr("You are not allowed to do this action in the name of a team."));
                     transmitParameters();
                     return doProcessErrors();
                 }
-                ((AuthenticatedUserToken) Context.getSession().getUserToken()).setAsTeam(team);
+                AuthToken.setAsTeam(team);
             }
             return doDoProcessRestricted(me, team);
         } finally {
-            ((AuthenticatedUserToken) Context.getSession().getUserToken()).setAsTeam(null);
+            AuthToken.setAsTeam(null);
         }
     }
 

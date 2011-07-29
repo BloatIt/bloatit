@@ -30,7 +30,7 @@ import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 @ParamContainer("admin/withdraw")
 public class MoneyWithdrawalAdminPage extends AdminPage {
     @SuppressWarnings("unused")
-    private MoneyWithdrawalAdminPageUrl url;
+    private final MoneyWithdrawalAdminPageUrl url;
 
     private static final String FILTER_TREATED = "treated";
     private static final String FILTER_REQUESTED = "requested";

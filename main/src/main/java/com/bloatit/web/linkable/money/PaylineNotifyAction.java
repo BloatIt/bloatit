@@ -23,7 +23,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
@@ -47,7 +46,7 @@ public final class PaylineNotifyAction extends ElveosAction {
     }
 
     @Override
-    public Url doProcess(final ElveosUserToken userToken) {
+    public Url doProcess() {
         Log.web().info("Get a payline notification: " + token);
 
         try {
@@ -65,13 +64,13 @@ public final class PaylineNotifyAction extends ElveosAction {
     }
 
     @Override
-    public Url doProcessErrors(final ElveosUserToken userToken) {
+    public Url doProcessErrors() {
         Log.web().error("Payline notification with parameter errors ! ");
         return new IndexPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything() {
         return NO_ERROR; // Nothing else to check
     }
 

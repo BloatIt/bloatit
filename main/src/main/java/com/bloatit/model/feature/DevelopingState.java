@@ -43,7 +43,7 @@ public class DevelopingState extends AbstractFeatureState {
     public AbstractFeatureState eventMilestoneIsValidated() {
         return this;
     }
-    
+
     @Override
     public AbstractFeatureState eventOfferIsValidated() {
         return new FinishedState(feature);

@@ -36,13 +36,8 @@ import org.hibernate.annotations.NamedQuery;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@NamedQueries(value = {@NamedQuery(
-                           name = "milestone.contribution.exist",
-                           query = "FROM DaoMilestoneContributionAmount " +
-                           		"WHERE milestone = :milestone " +
-                           		"AND contribution = :contribution"),
-                     }
-             )
+@NamedQueries(value = { @NamedQuery(name = "milestone.contribution.exist", query = "FROM DaoMilestoneContributionAmount "
+        + "WHERE milestone = :milestone " + "AND contribution = :contribution"), })
 public class DaoMilestoneContributionAmount extends DaoIdentifiable {
 
     @ManyToOne(optional = false)
@@ -68,8 +63,8 @@ public class DaoMilestoneContributionAmount extends DaoIdentifiable {
      * Creates the DaoMilestoneContributionAmount and persist it.
      */
     private static DaoMilestoneContributionAmount createAndPersist(final DaoMilestone milestone,
-                                                                  final DaoContribution contribution,
-                                                                  final BigDecimal amount) {
+                                                                   final DaoContribution contribution,
+                                                                   final BigDecimal amount) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoMilestoneContributionAmount milestoneContribtuAmount = new DaoMilestoneContributionAmount(milestone, contribution, amount);
         try {
@@ -83,11 +78,15 @@ public class DaoMilestoneContributionAmount extends DaoIdentifiable {
     }
 
     public static DaoMilestoneContributionAmount updateOrCreate(final DaoMilestone milestone,
-                                                                  final DaoContribution contribution,
-                                                                  final BigDecimal amount) {
-        DaoMilestoneContributionAmount milestoneContribtuAmount =  (DaoMilestoneContributionAmount) SessionManager.getNamedQuery("milestone.contribution.exist").setEntity("milestone", milestone).setEntity("contribution", contribution).uniqueResult();
+                                                                final DaoContribution contribution,
+                                                                final BigDecimal amount) {
+        DaoMilestoneContributionAmount milestoneContribtuAmount = (DaoMilestoneContributionAmount) SessionManager.getNamedQuery("milestone.contribution.exist")
+                                                                                                                 .setEntity("milestone", milestone)
+                                                                                                                 .setEntity("contribution",
+                                                                                                                            contribution)
+                                                                                                                 .uniqueResult();
 
-        if(milestoneContribtuAmount == null) {
+        if (milestoneContribtuAmount == null) {
             milestoneContribtuAmount = createAndPersist(milestone, contribution, amount);
         } else {
             milestoneContribtuAmount.addAmount(amount);
@@ -96,8 +95,7 @@ public class DaoMilestoneContributionAmount extends DaoIdentifiable {
         return milestoneContribtuAmount;
     }
 
-
-    private void addAmount(BigDecimal newAmount) {
+    private void addAmount(final BigDecimal newAmount) {
         amount = amount.add(newAmount);
     }
 
@@ -154,29 +152,38 @@ public class DaoMilestoneContributionAmount extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoMilestoneContributionAmount other = (DaoMilestoneContributionAmount) obj;
+        }
+        final DaoMilestoneContributionAmount other = (DaoMilestoneContributionAmount) obj;
         if (amount == null) {
-            if (other.amount != null)
+            if (other.amount != null) {
                 return false;
-        } else if (!amount.equals(other.amount))
+            }
+        } else if (!amount.equals(other.amount)) {
             return false;
+        }
         if (contribution == null) {
-            if (other.contribution != null)
+            if (other.contribution != null) {
                 return false;
-        } else if (!contribution.equals(other.contribution))
+            }
+        } else if (!contribution.equals(other.contribution)) {
             return false;
+        }
         if (milestone == null) {
-            if (other.milestone != null)
+            if (other.milestone != null) {
                 return false;
-        } else if (!milestone.equals(other.milestone))
+            }
+        } else if (!milestone.equals(other.milestone)) {
             return false;
+        }
         return true;
     }
 

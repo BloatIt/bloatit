@@ -49,7 +49,7 @@ public class RetryPolicy {
     private final static long HOUR = 60 * MINUTE;
     private final static long DAY = 24 * HOUR;
 
-    private long[] policy;
+    private final long[] policy;
 
     private int index = 0;
 

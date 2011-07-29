@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
@@ -88,14 +87,14 @@ public final class ReportBugAction extends UserContentAction {
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
-            session.notifyBad(Context.tr("You have to specify the description language."));
+            session.notifyWarning(Context.tr("You have to specify the description language."));
             return new ReportBugPageUrl(milestone.getOffer());
         }
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         if (milestone != null) {
             return new ReportBugPageUrl(milestone.getOffer());
         }

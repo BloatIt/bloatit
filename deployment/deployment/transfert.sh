@@ -66,16 +66,17 @@ UP_SHARE_DIR=$UPLOAD_DIR/share
 DOC=wwwdoc/
 CLASSES=java/
 DEPEDENCIES=jars
-WWW=www/
+WWW=$UPLOAD_DIR/www_src/
 
 DEST=$DISTANT_NAME@$HOST:
-SOURCE_CLASSES=$SOURCE/main/target/classes/
-SOURCE_DEPENDENCIES=$SOURCE/main/target/dependencies/
-SOURCE_WWW=$SOURCE/www/
+SOURCE_CLASSES=$SOURCE/main/build/classes/main/
+SOURCE_DEPENDENCIES=$SOURCE/main/build/dependencies/
+SOURCE_WWW=$SOURCE/resources/www_src/
 SOURCE_UP_CONF_DIR=$SOURCE/etc/
 SOURCE_UP_SHARE_DIR=$SOURCE/share/
 SOURCE_LIGHTTPD=$SOURCE/lighttpd/
 SOURCE_DOC=$SOURCE/doc/websitedoc/
+
 
 # Create a custom rsync launcher
 
@@ -90,7 +91,7 @@ SOURCE_DOC=$SOURCE/doc/websitedoc/
 #
 
 RSYNC=" rsync -v4 -h -h \
-	--recursive --exclude \"pom.xml\" --exclude \"*~\" \
+	--recursive --exclude \"build.gradle\" --exclude \"*~\" \
 	--compress --skip-compress=gz/jpg/mp[34]/7z/bz2/jar --rsh=/usr/bin/ssh \
 	--times  --links --delete "
 # keep rights on directories for user.

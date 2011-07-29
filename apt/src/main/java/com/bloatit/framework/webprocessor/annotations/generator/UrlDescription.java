@@ -1,6 +1,7 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.lang.model.element.Element;

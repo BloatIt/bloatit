@@ -20,7 +20,7 @@ import static com.bloatit.framework.webprocessor.context.Context.trn;
 
 import java.util.Date;
 
-import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.context.Context;
 
 /**
@@ -51,15 +51,13 @@ public class TimeRenderer {
 
     private final long milliseconds;
     private final TimeRenderer.TimeBase base;
+    private boolean printPrefixSuffix;
 
     public TimeRenderer(final long miliseconds) {
         super();
-        this.milliseconds = miliseconds;
-        base = computeBestResolution();
-    }
-
-    public TimeRenderer(final Date date) {
-        this(date.getTime());
+        this.milliseconds = Math.abs(miliseconds);
+        this.base = computeBestResolution();
+        this.printPrefixSuffix = false;
     }
 
     private TimeRenderer.TimeBase computeBestResolution() {
@@ -84,6 +82,16 @@ public class TimeRenderer {
     }
 
     public String getTimeString() {
+        if (printPrefixSuffix) {
+            if (milliseconds >= 0) {
+                return Context.tr("{0} ago", doGetTimeString());
+            }
+            return Context.tr("in {0}", doGetTimeString());
+        }
+        return doGetTimeString();
+    }
+
+    private String doGetTimeString() {
         if (getSubBase() != null) {
             return printTime(getTime(), getBase()) + " " + printTime(getSubTime(), getSubBase());
         }
@@ -144,18 +152,19 @@ public class TimeRenderer {
         return null;
     }
 
-    /**
-     * Renders as a time from now
-     * 
-     * @param limit the limit after which the date will be rendered as a date
-     * @param style the style applied to date rendering when limit is reached
-     * @return a string corresponding to the range we want to render.
-     */
-    @SuppressWarnings("synthetic-access")
-    public String renderRange(final TimeBase limit, final DateLocale.FormatStyle style) {
-        if (milliseconds > limit.coef) {
-            return new DateLocale(new Date(milliseconds), Context.getLocalizator().getLocale()).toDateTimeString(style, style);
+    public void setPrefixSuffix(final boolean hasPrefixSuffix) {
+        this.printPrefixSuffix = hasPrefixSuffix;
+
+    }
+
+    public String render(final FormatStyle dateStyle) {
+        if (milliseconds > (DateUtils.SECOND_PER_WEEK * 1000)) {
+            if (printPrefixSuffix) {
+                return Context.tr("on ", Context.getLocalizator().getDate(new Date(DateUtils.now().getTime() + milliseconds)).toString(dateStyle));
+            }
+            return Context.getLocalizator().getDate(new Date(DateUtils.now().getTime() + milliseconds)).toString(dateStyle);
         }
         return getTimeString();
     }
+
 }

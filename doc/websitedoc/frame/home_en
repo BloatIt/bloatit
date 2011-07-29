@@ -1,14 +1,15 @@
-What is elveos ?
+<!--(QWhat is elveos ?
 ================
 Elveos is a place where people that need free software and developers meet to create the free software for tomorrow.
 
  * If you are a developer, you can be paid for creating cool software.
  * If you are a user of open source, you can find people sharing the same need as you, and share the cost of the development among all of you.
- 
+)--> 
+
 Where should I start ?
 ======================
-You want to develop or fund open-source projects, [browse](/en/feature/list) the list of feature and find one you like.
+You want to develop or fund open-source projects, [browse](/en/features) the list of feature and find one you like.
 
-You need something implemented in open-source ? [Check](/en/feature/list) if somebody else already had the same idea. If not [ask](/en/feature/create) a developer to create it.
+You need something implemented in open-source ? [Check](/en/features) if somebody else already had the same idea. If not [ask](/en/features/create) a developer to create it.
 
 If you want to know more, you can read the [documentation](/en/documentation).

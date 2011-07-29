@@ -27,8 +27,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.UserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.experian.payline.ws.impl.DoWebPaymentRequest;
@@ -151,11 +150,10 @@ public final class Payline {
                              final String returnUrl,
                              final String notificationUrl) throws UnauthorizedOperationException {
 
-        final UserToken userToken = Context.getSession().getUserToken();
-        if (!userToken.isAuthenticated()) {
+        if (!AuthToken.isAuthenticated()) {
             throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
         }
-        if (!targetActor.equals(((ElveosUserToken) userToken).getMember()) && !targetActor.equals(((ElveosUserToken) userToken).getAsTeam())) {
+        if (!targetActor.equals(AuthToken.getMember()) && !targetActor.equals(AuthToken.getAsTeam())) {
             throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
         }
 
@@ -243,7 +241,7 @@ public final class Payline {
 
     /**
      * Return a unique ref.
-     *
+     * 
      * @param actor
      * @return
      */

@@ -48,7 +48,7 @@ public enum DisplayableMilestoneState implements Displayable {
     }
 
     // Fake tr
-    private static String tr(String fake) {
+    private static String tr(final String fake) {
         return fake;
     }
 }

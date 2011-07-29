@@ -18,10 +18,12 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 /**
@@ -51,18 +53,21 @@ public abstract class Action implements Linkable {
                 final Linkable linkable = server.constructLinkable(url.getCode().toLowerCase(), parameters, session);
                 linkable.writeToHttp(response, server);
             } else {
-                response.writeRedirect(url.urlString());
+                response.writeRedirect(StatusCode.REDIRECTION_302_FOUND, url.urlString());
             }
 
         } else {
             Log.framework().error("Null destination url, redirect to page not found");
-            response.writeRedirect(new PageNotFoundUrl().urlString());
+            response.writeRedirect(StatusCode.REDIRECTION_301_MOVED_PERMANENTLY, new PageNotFoundUrl().urlString());
         }
     }
 
     private final Url process() {
         if (actionUrl.hasError()) {
-            session.notifyList(actionUrl.getMessages());
+            for (final Message message : actionUrl.getMessages()) {
+                Context.getSession().notifyError(message.getMessage());
+                Log.framework().trace("Error messages from Url system: " + message.getMessage());
+            }
             transmitParameters();
             return doProcessErrors();
         }

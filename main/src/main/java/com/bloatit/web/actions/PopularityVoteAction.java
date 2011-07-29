@@ -20,7 +20,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.KudosableInterface;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -93,21 +92,21 @@ public final class PopularityVoteAction extends LoggedAction {
 
     private void analyseErrors(final EnumSet<SpecialCode> canVote) {
         if (canVote.contains(SpecialCode.ALREADY_VOTED)) {
-            session.notifyBad(Context.tr("You already voted on that."));
+            session.notifyWarning(Context.tr("You already voted on that."));
         }
         if (canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP)) {
-            session.notifyBad(Context.tr("You have a too low reputation to vote up that."));
+            session.notifyWarning(Context.tr("You have a too low reputation to vote up that."));
         }
         if (canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN)) {
-            session.notifyBad(Context.tr("You have a too low reputation to vote down that."));
+            session.notifyWarning(Context.tr("You have a too low reputation to vote down that."));
         }
         if (canVote.contains(SpecialCode.OWNED_BY_ME)) {
-            session.notifyBad(Context.tr("You can't vote for yourself!"));
+            session.notifyWarning(Context.tr("You can't vote for yourself!"));
         }
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return session.pickPreferredPage();
     }
 

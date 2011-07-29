@@ -16,9 +16,6 @@
 //
 package com.bloatit.web.linkable.invoice;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
@@ -32,7 +29,7 @@ import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 
 public class ContactBox extends HtmlDiv {
 
-    private ContactBox(Actor<?> actor, WebProcess process) throws UnauthorizedPrivateAccessException {
+    private ContactBox(final Actor<?> actor, final WebProcess process) throws UnauthorizedPrivateAccessException {
         super("contact_box");
 
         add(new HtmlDefineParagraph(Context.tr("Invoicing name: "), actor.getContact().getName()));
@@ -41,14 +38,14 @@ public class ContactBox extends HtmlDiv {
         add(new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(Context.tr("Modify invoicing contact")));
     }
 
-    public static HtmlElement generate(Actor<?> actor, WebProcess process) {
+    public static HtmlElement generate(final Actor<?> actor, final WebProcess process) {
         try {
             if (actor.hasInvoicingContact()) {
                 return new ContactBox(actor, process);
             } else {
                 return new PlaceHolderElement();
             }
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new ShallNotPassException("User cannot access user contact information", e);
         }
     }

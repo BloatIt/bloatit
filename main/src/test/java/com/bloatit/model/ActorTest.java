@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
@@ -25,7 +26,7 @@ public class ActorTest extends ModelTestUnit {
     public final void testGetDateCreation() {
         final Member tom = Member.create(db.getTom());
         try {
-            assertEquals(tom.getDateCreation(), db.getTom().getDateCreation());
+            assertEquals(tom.getDateCreation().getTime(), db.getTom().getDateCreation().getTime());
         } catch (final UnauthorizedPublicReadOnlyAccessException e) {
             fail();
         }
@@ -43,28 +44,28 @@ public class ActorTest extends ModelTestUnit {
         final Member tom = Member.create(db.getTom());
 
         try {
-            tom.authenticate(null);
+            AuthToken.unAuthenticate();
             tom.getInternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             tom.getInternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(loser);
+            AuthToken.authenticate(loser);
             tom.getInternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             assertEquals(tom.getInternalAccount().getId(), db.getTom().getInternalAccount().getId());
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -72,7 +73,7 @@ public class ActorTest extends ModelTestUnit {
 
         final Team publicTeam = Team.create(db.getPublicGroup());
         try {
-            publicTeam.authenticate(null);
+            AuthToken.unAuthenticate();
             publicTeam.getInternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -80,7 +81,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // Bank rights
-            publicTeam.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             publicTeam.getInternalAccount();
             assertTrue(true);
         } catch (final UnauthorizedOperationException e1) {
@@ -88,7 +89,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // no bank right
-            publicTeam.authenticate(loser);
+            AuthToken.authenticate(loser);
             publicTeam.getInternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -96,7 +97,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // no bank right
-            publicTeam.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             publicTeam.getInternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -104,7 +105,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // bank right
-            publicTeam.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             assertEquals(publicTeam.getInternalAccount().getId(), db.getPublicGroup().getInternalAccount().getId());
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -116,28 +117,28 @@ public class ActorTest extends ModelTestUnit {
         final Member tom = Member.create(db.getTom());
 
         try {
-            tom.authenticate(null);
+            AuthToken.unAuthenticate();
             tom.getExternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             tom.getExternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(loser);
+            AuthToken.authenticate(loser);
             tom.getExternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             assertEquals(tom.getExternalAccount().getId(), db.getTom().getExternalAccount().getId());
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -145,7 +146,7 @@ public class ActorTest extends ModelTestUnit {
 
         final Team publicTeam = Team.create(db.getPublicGroup());
         try {
-            publicTeam.authenticate(null);
+            AuthToken.unAuthenticate();
             publicTeam.getExternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -153,7 +154,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // Bank rights
-            publicTeam.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             publicTeam.getExternalAccount();
             assertTrue(true);
         } catch (final UnauthorizedOperationException e1) {
@@ -161,7 +162,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // no bank right
-            publicTeam.authenticate(loser);
+            AuthToken.authenticate(loser);
             publicTeam.getExternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -169,7 +170,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // no bank right
-            publicTeam.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             publicTeam.getExternalAccount();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -177,7 +178,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // bank right
-            publicTeam.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             assertEquals(publicTeam.getExternalAccount().getId(), db.getPublicGroup().getExternalAccount().getId());
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -189,28 +190,28 @@ public class ActorTest extends ModelTestUnit {
         final Member tom = Member.create(db.getTom());
 
         try {
-            tom.authenticate(null);
+            AuthToken.unAuthenticate();
             tom.getBankTransactions();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             tom.getBankTransactions();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(loser);
+            AuthToken.authenticate(loser);
             tom.getBankTransactions();
             fail();
         } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
-            tom.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             assertEquals(tom.getBankTransactions().size(), db.getTom().getBankTransactions().size());
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -218,7 +219,7 @@ public class ActorTest extends ModelTestUnit {
 
         final Team publicTeam = Team.create(db.getPublicGroup());
         try {
-            publicTeam.authenticate(null);
+            AuthToken.unAuthenticate();
             publicTeam.getBankTransactions();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -226,7 +227,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // Bank rights
-            publicTeam.authenticate(yoAuthToken);
+            AuthToken.authenticate(memberYo);
             publicTeam.getBankTransactions();
             assertTrue(true);
         } catch (final UnauthorizedOperationException e1) {
@@ -234,7 +235,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // no bank right
-            publicTeam.authenticate(loser);
+            AuthToken.authenticate(loser);
             publicTeam.getBankTransactions();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -242,7 +243,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // no bank right
-            publicTeam.authenticate(fredAuthToken);
+            AuthToken.authenticate(memeberFred);
             publicTeam.getBankTransactions();
             fail();
         } catch (final UnauthorizedOperationException e1) {
@@ -250,7 +251,7 @@ public class ActorTest extends ModelTestUnit {
         }
         try {
             // bank right
-            publicTeam.authenticate(tomAuthToken);
+            AuthToken.authenticate(memberTom);
             assertEquals(publicTeam.getBankTransactions().size(), db.getPublicGroup().getBankTransactions().size());
         } catch (final UnauthorizedOperationException e) {
             fail();
@@ -289,98 +290,98 @@ public class ActorTest extends ModelTestUnit {
     @Test
     public final void testCanGetInternalAccount() {
         final Member tom = Member.create(db.getTom());
-        tom.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(tom.canGetInternalAccount());
 
-        tom.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(tom.canGetInternalAccount());
 
-        tom.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(tom.canGetInternalAccount());
 
         final Team publicTeam = Team.create(db.getPublicGroup());
-        publicTeam.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(publicTeam.canGetInternalAccount());
 
-        publicTeam.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(publicTeam.canGetInternalAccount());
 
-        publicTeam.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(publicTeam.canGetInternalAccount());
 
-        publicTeam.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(publicTeam.canGetInternalAccount());
 
-        publicTeam.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(publicTeam.canGetInternalAccount());
     }
 
     @Test
     public final void testCanGetExternalAccount() {
         final Member tom = Member.create(db.getTom());
-        tom.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(tom.canGetExternalAccount());
 
-        tom.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(tom.canGetExternalAccount());
 
-        tom.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(tom.canGetExternalAccount());
 
         final Team publicTeam = Team.create(db.getPublicGroup());
-        publicTeam.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(publicTeam.canGetExternalAccount());
 
-        publicTeam.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(publicTeam.canGetExternalAccount());
 
-        publicTeam.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(publicTeam.canGetExternalAccount());
 
-        publicTeam.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(publicTeam.canGetExternalAccount());
 
-        publicTeam.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(publicTeam.canGetExternalAccount());
     }
 
     @Test
     public final void testCanGetBankTransactionAccount() {
         final Member tom = Member.create(db.getTom());
-        tom.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(tom.canGetBankTransactionAccount());
 
-        tom.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(tom.canGetBankTransactionAccount());
 
-        tom.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(tom.canGetBankTransactionAccount());
 
         final Team publicTeam = Team.create(db.getPublicGroup());
-        publicTeam.authenticate(null);
+        AuthToken.unAuthenticate();
         assertFalse(publicTeam.canGetBankTransactionAccount());
 
-        publicTeam.authenticate(fredAuthToken);
+        AuthToken.authenticate(memeberFred);
         assertFalse(publicTeam.canGetBankTransactionAccount());
 
-        publicTeam.authenticate(loser);
+        AuthToken.authenticate(loser);
         assertFalse(publicTeam.canGetBankTransactionAccount());
 
-        publicTeam.authenticate(tomAuthToken);
+        AuthToken.authenticate(memberTom);
         assertTrue(publicTeam.canGetBankTransactionAccount());
 
-        publicTeam.authenticate(yoAuthToken);
+        AuthToken.authenticate(memberYo);
         assertTrue(publicTeam.canGetBankTransactionAccount());
     }
 
     @Test
     public final void testCanGetContributions() {
         final Member tom = Member.create(db.getTom());
-        tom.authenticate(null);
+        AuthToken.unAuthenticate();
         assertTrue(tom.canGetContributions());
 
         final Team publicTeam = Team.create(db.getPublicGroup());
-        publicTeam.authenticate(null);
+        AuthToken.unAuthenticate();
         assertTrue(publicTeam.canGetContributions());
     }
 

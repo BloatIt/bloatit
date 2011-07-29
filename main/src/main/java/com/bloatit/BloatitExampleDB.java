@@ -47,7 +47,7 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class BloatitExampleDB { // NO_UCD
@@ -86,19 +86,28 @@ public class BloatitExampleDB { // NO_UCD
         celeste = createMember("celeste", "Céleste", Locale.CHINA);
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
+        AuthToken.authenticate(fred);
         fred.getContact().setName("Frederic Bertolus");
         fred.getContact().setStreet("Le superbe appartement à gauche");
+        AuthToken.authenticate(thomas);
         thomas.getContact().setName("Thomas Guyard");
         thomas.getContact().setStreet("Le superbe appartement à gauche");
+        AuthToken.authenticate(yoann);
         yoann.getContact().setName("Yoann Plénet");
         yoann.getContact().setStreet("Le superbe appartement à gauche");
 
         // Add avatar
+        AuthToken.authenticate(chogall);
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
+        AuthToken.authenticate(cerbere);
         cerbere.setAvatar(getImage(cerbere, "users/cerbere.png"));
+        AuthToken.authenticate(hydre);
         hydre.setAvatar(getImage(hydre, "users/hydre.png"));
+        AuthToken.authenticate(elephantman);
         elephantman.setAvatar(getImage(elephantman, "users/elephantman.png"));
+        AuthToken.authenticate(celeste);
         celeste.setAvatar(getImage(celeste, "users/celeste.png"));
+        AuthToken.authenticate(rataxes);
         rataxes.setAvatar(getImage(rataxes, "users/rataxes.png"));
 
         // Add money
@@ -111,18 +120,21 @@ public class BloatitExampleDB { // NO_UCD
         giveMoney(elephantman, 100000000);
 
         // Add withdrawal
+        AuthToken.authenticate(fred);
         withdrawMoney(fred, 1000, State.REQUESTED);
         withdrawMoney(fred, 2000, State.TREATED);
         withdrawMoney(fred, 3000, State.REFUSED);
         withdrawMoney(fred, 4000, State.CANCELED);
         withdrawMoney(fred, 5000, State.COMPLETE);
 
+        AuthToken.authenticate(yoann);
         withdrawMoney(yoann, 1000, State.REQUESTED);
         withdrawMoney(yoann, 2000, State.TREATED);
         withdrawMoney(yoann, 3000, State.REFUSED);
         withdrawMoney(yoann, 4000, State.CANCELED);
         withdrawMoney(yoann, 5000, State.COMPLETE);
 
+        AuthToken.authenticate(thomas);
         withdrawMoney(thomas, 1000, State.REQUESTED);
         withdrawMoney(thomas, 2000, State.TREATED);
         withdrawMoney(thomas, 3000, State.REFUSED);
@@ -131,15 +143,15 @@ public class BloatitExampleDB { // NO_UCD
 
         // Add teams
         final Team other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
-        other.authenticate(new AuthenticatedUserToken(yoann));
+        AuthToken.authenticate(yoann);
         other.setAvatar(getImage(yoann, "teams/other.png"));
 
         final Team b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
-        b219.authenticate(new AuthenticatedUserToken(fred));
+        AuthToken.authenticate(fred);
         b219.setAvatarUnprotected(getImage(fred, "teams/b219.png"));
 
         final Team ubuntuUsers = new Team("ubuntuUsers", "ubuntu.users@elveos.org", "The team for ubuntu users", Right.PUBLIC, thomas);
-        ubuntuUsers.authenticate(new AuthenticatedUserToken(thomas));
+        AuthToken.authenticate(thomas);
         ubuntuUsers.setAvatarUnprotected(getImage(thomas, "teams/ubuntuUsers.png"));
 
         // Generate softwares
@@ -233,25 +245,25 @@ public class BloatitExampleDB { // NO_UCD
                                                                               twoSubtitlesInVlcFeatureDescription,
                                                                               vlc);
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(cerbere));
+        AuthToken.authenticate(cerbere);
         final Comment comment1 = twoSubtitlesInVlcFeature.addComment("Super idée !\n"
                 + "J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
 
-        comment1.authenticate(new AuthenticatedUserToken(hydre));
+        AuthToken.authenticate(hydre);
         comment1.addComment("Je suis l'ami de Cerbère qui a posté ci-dessus et qui apprend des langues mortes. Je trouverais ça génial , mais il est indispensable de pouvoir réduire la taille du texte.\n"
                 + "Je propose de forker cette demande pour inclure les demandes de changement (nombre de sous-titre non défini et taille des sous-titre définissable) ");
 
-        comment1.authenticate(new AuthenticatedUserToken(chogall));
+        AuthToken.authenticate(chogall);
         comment1.addComment("OK pour moi, j'aurais dû y penser dès le début, j'ai merdé, j'avais mon cerveau gauche qui avait bu trop de vodka. ");
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(elephantman));
+        AuthToken.authenticate(elephantman);
         final Comment comment2 = twoSubtitlesInVlcFeature.addComment("Elle est naze votre idée, moi j'apprends une langue en 2.53 minutes (moyenne vérifiée sur un échantillon de 353 langues) du coup autant afficher un seul sous-titre à la fois");
 
-        comment2.authenticate(new AuthenticatedUserToken(chogall));
+        AuthToken.authenticate(chogall);
         comment2.addComment("On ne peut pas vaincre un éléphant ! Abandonnons cette demande !");
 
         final String rataxesOfferDescription = "Je vais vous le faire vite et bien. Et tout ça pour vraiment pas cher !";
-        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(rataxes));
+        AuthToken.authenticate(rataxes);
         final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
                                                                      rataxesOfferDescription,
                                                                      "GNU GPL V3",
@@ -259,12 +271,12 @@ public class BloatitExampleDB { // NO_UCD
                                                                      DateUtils.tomorrow(),
                                                                      0);
 
-        rataxesOffer.authenticate(new AuthenticatedUserToken(chogall));
+        AuthToken.authenticate(chogall);
         rataxesOffer.voteUp();
-        rataxesOffer.authenticate(new AuthenticatedUserToken(hydre));
+        AuthToken.authenticate(hydre);
         rataxesOffer.voteUp();
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(celeste));
+        AuthToken.authenticate(celeste);
         final String celesteMilestone1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
                 + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
         final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
@@ -274,24 +286,24 @@ public class BloatitExampleDB { // NO_UCD
                                                                      DateUtils.nowPlusSomeDays(2),
                                                                      0);
 
-        celesteOffer.authenticate(new AuthenticatedUserToken(celeste));
+        AuthToken.authenticate(celeste);
         final String celesteMilestone2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
         celesteOffer.addMilestone(new BigDecimal(1000), celesteMilestone2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);
 
         final String celesteMilestone3Description = "Pour finir, je vais faire le packaging en tar.gz, deb, rpm et exe de la version patché pour une utilisatation immédiate. Je vais aussi proposer le patch upstream et créer un petit jeu de test fonctionnels.";
         celesteOffer.addMilestone(new BigDecimal(700), celesteMilestone3Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(4), 0);
 
-        celesteOffer.authenticate(new AuthenticatedUserToken(cerbere));
+        AuthToken.authenticate(cerbere);
         celesteOffer.voteUp();
 
         // Contributions
-        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(chogall));
+        AuthToken.authenticate(chogall);
         twoSubtitlesInVlcFeature.addContribution(new BigDecimal("800"), "On est prêts, non moi j'suis pas prêt !");
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(cerbere));
+        AuthToken.authenticate(cerbere);
         twoSubtitlesInVlcFeature.addContribution(new BigDecimal("500"), "Grrrrrr");
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(hydre));
+        AuthToken.authenticate(hydre);
         twoSubtitlesInVlcFeature.addContribution(new BigDecimal("300"), "");
 
         return twoSubtitlesInVlcFeature;
@@ -317,28 +329,33 @@ public class BloatitExampleDB { // NO_UCD
                                                                                  mageia);
 
         final String hydrePerroquetOfferDescription = "Je le fais et j'ajoute le paquet pour la première release.";
-        addPerroquetInMageiaFeature.authenticate(new AuthenticatedUserToken(hydre));
-        addPerroquetInMageiaFeature.addOffer(new BigDecimal(200), hydrePerroquetOfferDescription,"GNU GPL V3", hydre.getLocale(), DateUtils.tomorrow(), 0);
+        AuthToken.authenticate(hydre);
+        addPerroquetInMageiaFeature.addOffer(new BigDecimal(200),
+                                             hydrePerroquetOfferDescription,
+                                             "GNU GPL V3",
+                                             hydre.getLocale(),
+                                             DateUtils.tomorrow(),
+                                             0);
         // Contributions
-        addPerroquetInMageiaFeature.authenticate(new AuthenticatedUserToken(hydre));
+        AuthToken.authenticate(hydre);
         addPerroquetInMageiaFeature.addContribution(new BigDecimal("10"), "");
 
-        addPerroquetInMageiaFeature.authenticate(new AuthenticatedUserToken(fred));
+        AuthToken.authenticate(fred);
         addPerroquetInMageiaFeature.addContribution(new BigDecimal("230"), "");
 
         // Add bugs
         setFeatureInDevelopmentState(addPerroquetInMageiaFeature);
 
         final Milestone firstMilestone = addPerroquetInMageiaFeature.getSelectedOffer().getMilestones().iterator().next();
-        firstMilestone.authenticate(new AuthenticatedUserToken(fred));
+        AuthToken.authenticate(fred);
         firstMilestone.addBug("Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
-        firstMilestone.authenticate(new AuthenticatedUserToken(elephantman));
+        AuthToken.authenticate(elephantman);
         firstMilestone.addBug("Faible qualité graphique pour les éléphants",
                               "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau",
                               elephantman.getLocale(),
                               Level.MINOR);
 
-        firstMilestone.authenticate(new AuthenticatedUserToken(yoann));
+        AuthToken.authenticate(yoann);
         firstMilestone.addBug("Fichier de conf système manquant",
                               "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger",
                               yoann.getLocale(),
@@ -376,14 +393,14 @@ public class BloatitExampleDB { // NO_UCD
         final Feature feature = FeatureFactory.createFeature(yoann, null, yoann.getLocale(), featureTitle, featureDescription, libreOffice);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
-        feature.authenticate(new AuthenticatedUserToken(celeste));
-        feature.addOffer(new BigDecimal(1000), offerDescription,"GNU GPL V3", celeste.getLocale(), DateUtils.tomorrow(), 0);
+        AuthToken.authenticate(celeste);
+        feature.addOffer(new BigDecimal(1000), offerDescription, "GNU GPL V3", celeste.getLocale(), DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
-        feature.authenticate(new AuthenticatedUserToken(chogall));
+        AuthToken.authenticate(chogall);
         feature.addContribution(new BigDecimal("10"), "");
 
         return feature;
@@ -400,11 +417,11 @@ public class BloatitExampleDB { // NO_UCD
         final Feature feature = FeatureFactory.createFeature(yoann, null, yoann.getLocale(), featureTitle, featureDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
-        feature.authenticate(new AuthenticatedUserToken(fred));
-        feature.addOffer(new BigDecimal(750), offerDescription,"GNU GPL V3", fred.getLocale(), DateUtils.tomorrow(), 0);
+        AuthToken.authenticate(fred);
+        feature.addOffer(new BigDecimal(750), offerDescription, "GNU GPL V3", fred.getLocale(), DateUtils.tomorrow(), 0);
 
         // Contributions
-        feature.authenticate(new AuthenticatedUserToken(yoann));
+        AuthToken.authenticate(yoann);
         feature.addContribution(new BigDecimal("760"), "");
 
         return feature;
@@ -421,14 +438,14 @@ public class BloatitExampleDB { // NO_UCD
         final Feature feature = FeatureFactory.createFeature(thomas, null, thomas.getLocale(), featureTitle, featureDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";
-        feature.authenticate(new AuthenticatedUserToken(cerbere));
-        feature.addOffer(new BigDecimal(300), offerDescription,"GNU GPL V3", cerbere.getLocale(), DateUtils.tomorrow(), 0);
+        AuthToken.authenticate(cerbere);
+        feature.addOffer(new BigDecimal(300), offerDescription, "GNU GPL V3", cerbere.getLocale(), DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
-        feature.authenticate(new AuthenticatedUserToken(thomas));
+        AuthToken.authenticate(thomas);
         feature.addContribution(new BigDecimal("400"), "");
 
         setFeatureInFinishedState(feature);
@@ -438,7 +455,7 @@ public class BloatitExampleDB { // NO_UCD
 
     /**
      * Work only if the money is available
-     *
+     * 
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {
@@ -453,7 +470,7 @@ public class BloatitExampleDB { // NO_UCD
 
     private void withdrawMoney(final Member m, final int amount, final State completion) {
         final MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
-        mw.authenticate(new AuthenticatedUserToken(admin));
+        AuthToken.authenticate(admin);
 
         try {
             switch (completion) {
@@ -479,7 +496,6 @@ public class BloatitExampleDB { // NO_UCD
 
     public void giveMoney(final Member member, final int amount) throws UnauthorizedOperationException {
 
-
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
                                                                     UUID.randomUUID().toString(),
                                                                     member,
@@ -492,7 +508,7 @@ public class BloatitExampleDB { // NO_UCD
 
     public Member createMember(final String login, final String name, final Locale locale) throws UnauthorizedOperationException {
         final Member member = new Member(login, "plop", login + "@elveos.org", locale);
-        member.authenticate(new AuthenticatedUserToken(member));
+        AuthToken.authenticate(member);
         member.setFullname(name);
         member.getDao().setActivationState(ActivationState.ACTIVE);
         return member;

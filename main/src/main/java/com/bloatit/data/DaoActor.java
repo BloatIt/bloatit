@@ -29,7 +29,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -58,16 +57,12 @@ import com.bloatit.framework.utils.PageIterable;
                            name = "actor.byLogin.size",
                            query = "select count(*) from DaoActor where login = :login"),
                        @NamedQuery(
-                           name = "actor.byEmail.size",
-                           query = "select count(*) from DaoActor where email = :email"),
-                       @NamedQuery(
                            name = "actor.getBankTransactions",
                            query = "from DaoBankTransaction as t where t.author = :author order by t.creationDate DESC"),
                        @NamedQuery(
                            name = "actor.getBankTransactions.size",
                            query = "select count(*) from DaoBankTransaction where author = :author")
 })
-
 // @formatter:on
 public abstract class DaoActor extends DaoIdentifiable {
 
@@ -83,12 +78,12 @@ public abstract class DaoActor extends DaoIdentifiable {
     private Date dateCreation;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @Cascade(value = {org.hibernate.annotations.CascadeType.ALL })
+    @Cascade(value = { org.hibernate.annotations.CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private DaoInternalAccount internalAccount;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @Cascade(value = {org.hibernate.annotations.CascadeType.ALL })
+    @Cascade(value = { org.hibernate.annotations.CascadeType.ALL })
     private DaoExternalAccount externalAccount;
 
     @Embedded
@@ -102,7 +97,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * This method use a HQL request. If you intend to use "getByLogin" or
      * "getByName", "exist" is useless. (In that case you'd better test if
      * getByLogin != null, to minimize the number of HQL request).
-     *
+     * 
      * @param login the login we are looking for.
      * @return true if found.
      */
@@ -117,17 +112,6 @@ public abstract class DaoActor extends DaoIdentifiable {
         return ((Long) c.uniqueResult()) > 0;
     }
 
-    /**
-     * This method use a HQL request.
-     *
-     * @param email the email we are looking for.
-     * @return true if found
-     */
-    public static boolean emailExists(final String email) {
-        final Query q = SessionManager.getNamedQuery("actor.byEmail.size").setString("email", email);
-        return ((Long) q.uniqueResult()) > 0;
-    }
-
     // ======================================================================
     // Construction.
     // ======================================================================
@@ -135,7 +119,7 @@ public abstract class DaoActor extends DaoIdentifiable {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     *
+     * 
      * @param login is the login or name of this actor. It must be non null,
      *            unique, longer than 2 chars and do not contains space chars
      *            ("[^\\p{Space}]+").
@@ -178,7 +162,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * Set the external account for this actor.
-     *
+     * 
      * @param externalAccount the new external account for this actor
      * @throws BadProgrammerException if the externalAccount.getActor() != this
      */
@@ -280,7 +264,7 @@ public abstract class DaoActor extends DaoIdentifiable {
     }
 
     public DaoContact getContact() {
-        if(contact == null) {
+        if (contact == null) {
             contact = new DaoContact();
         }
         return contact;

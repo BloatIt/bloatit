@@ -5,7 +5,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.NewsFeed;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -17,11 +16,11 @@ import com.bloatit.web.url.AdminNewsPageUrl;
 public class AdminNewsDeleteAction extends AdminAction {
 
     @RequestParam(role = Role.GET)
-    private NewsFeed target;
+    private final NewsFeed target;
 
-    private AdminNewsDeleteActionUrl url;
+    private final AdminNewsDeleteActionUrl url;
 
-    public AdminNewsDeleteAction(AdminNewsDeleteActionUrl url) {
+    public AdminNewsDeleteAction(final AdminNewsDeleteActionUrl url) {
         super(url);
         this.url = url;
         this.target = url.getTarget();
@@ -35,16 +34,16 @@ public class AdminNewsDeleteAction extends AdminAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         if (target.isDeleted()) {
-            session.notifyBad("Canot delete a message twice.");
+            session.notifyWarning("Canot delete a message twice.");
             return new AdminNewsPageUrl();
         }
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new AdminNewsPageUrl();
     }
 

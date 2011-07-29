@@ -29,8 +29,10 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 public final class Offer extends Kudosable<DaoOffer> {
@@ -87,12 +89,10 @@ public final class Offer extends Kudosable<DaoOffer> {
         final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                                            amount,
                                                            DaoDescription.createAndPersist(getDao().getMember(),
-                                                                                           DaoGetter.get(getAuthToken().getAsTeam()),
+                                                                                           DaoGetter.get(AuthToken.getAsTeam()),
                                                                                            local,
                                                                                            "RFU",
-                                                                                           description),
-                                                           getDao(),
-                                                           secondBeforeValidation);
+                                                                                           description), getDao(), secondBeforeValidation);
         getDao().addMilestone(daoMilestone);
         return Milestone.create(daoMilestone);
     }
@@ -158,6 +158,36 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     private boolean hasMilestoneLeft() {
         return findCurrentDaoMilestone() != null;
+    }
+
+    @Override
+    public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+
+        // Delete all subcomponents of the offer.
+        // Because milestones are not userContents, we delete all subcomponents
+        // of milestones directly.
+        for (final Milestone milestone : getMilestones()) {
+            for (final Bug bug : milestone.getBugs()) {
+                bug.delete();
+            }
+
+            for (final Translation translation : milestone.getDescriptionEntity().getTranslations()) {
+                translation.delete();
+            }
+
+            for (final Release release : milestone.getReleases()) {
+                release.delete();
+            }
+        }
+
+        super.delete();
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -247,7 +277,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     public Release getLastRelease() {
         return Release.create(getDao().getLastRelease());
     }
-    
+
     // Public data, no right management.
     public String getlicense() {
         return getDao().getLicense();

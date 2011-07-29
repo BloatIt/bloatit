@@ -23,7 +23,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
@@ -88,7 +87,7 @@ public final class CreateReleaseAction extends UserContentAction {
     protected boolean verifyFile(final String filename) {
         final FileConstraintChecker fcc = new FileConstraintChecker(filename);
         if (!fcc.exists() || !fcc.isFileSmaller(1, SizeUnit.GBYTE)) {
-            session.notifyBad(Context.tr("File format error: Your file is to big."));
+            session.notifyWarning(Context.tr("File format error: Your file is to big."));
             return false;
         }
         return true;
@@ -100,13 +99,14 @@ public final class CreateReleaseAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return session.getLastVisitedPage();
     }
 
     @Override
     protected void doTransmitParameters() {
         session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getVersionParameter());
     }
 
 }

@@ -18,6 +18,7 @@ package com.bloatit.model.right;
 
 import java.util.EnumSet;
 
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.model.Rights;
 
 /**
@@ -196,6 +197,11 @@ public abstract class RightManager {
         protected UnauthorizedPublicAccessException exception(final Action action) {
             return new UnauthorizedPublicAccessException(action);
         }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return action == Action.READ;
+        }
     }
 
     /**
@@ -210,6 +216,11 @@ public abstract class RightManager {
         @Override
         protected UnauthorizedPublicReadOnlyAccessException exception(final Action action) {
             return new UnauthorizedPublicReadOnlyAccessException(action);
+        }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return true;
         }
     }
 
@@ -226,6 +237,11 @@ public abstract class RightManager {
         protected UnauthorizedPrivateReadOnlyAccessException exception(final Action action) {
             return new UnauthorizedPrivateReadOnlyAccessException(action);
         }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return action == Action.READ;
+        }
     }
 
     public static abstract class Accessor extends GenericAccessor<UnauthorizedOperationException> {
@@ -235,18 +251,23 @@ public abstract class RightManager {
             return new UnauthorizedOperationException(action);
         }
     }
-    
+
     public static class AdminOnly extends Accessor {
         @Override
         protected boolean can(final Rights object, final Action action) {
             return false;
         }
     }
-    
+
     public static class Authenticated extends Accessor {
         @Override
         protected boolean can(final Rights object, final Action action) {
             return object.isAuthenticated();
+        }
+
+        @Override
+        protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
+            return action == Action.READ;
         }
     }
 }

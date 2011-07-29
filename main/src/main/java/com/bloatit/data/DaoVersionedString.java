@@ -31,7 +31,7 @@ public final class DaoVersionedString extends DaoIdentifiable {
     @OneToMany(mappedBy = "versionedString", cascade = { CascadeType.ALL })
     @OrderBy(clause = "creationDate")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<DaoStringVersion> versions = new ArrayList<DaoStringVersion>();
+    private final List<DaoStringVersion> versions = new ArrayList<DaoStringVersion>();
 
     public static DaoVersionedString createAndPersist(final String content, final DaoMember author) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();

@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
@@ -34,7 +33,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 
 public class SideBarFeatureBlock extends TitleSideBarElementLayout {
 
-    public SideBarFeatureBlock(final Feature feature, final BigDecimal amount, final ElveosUserToken userToken) {
+    public SideBarFeatureBlock(final Feature feature, final BigDecimal amount) {
         setTitle(tr("Feature abstract"));
 
         try {
@@ -46,7 +45,7 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
             add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(feature.getSoftware())));
             add(new HtmlDefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
 
-            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, userToken, amount)));
+            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount)));
 
             add(new HtmlParagraph(new FeaturePageUrl(feature, TabKey.description).getHtmlLink(tr("more details..."))));
 
@@ -55,7 +54,7 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
         }
     }
 
-    public SideBarFeatureBlock(final Feature feature, final ElveosUserToken userToken) {
-        this(feature, BigDecimal.ZERO, userToken);
+    public SideBarFeatureBlock(final Feature feature) {
+        this(feature, BigDecimal.ZERO);
     }
 }

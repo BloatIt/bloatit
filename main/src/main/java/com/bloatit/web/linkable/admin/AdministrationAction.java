@@ -27,7 +27,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.url.Loaders;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
@@ -96,7 +95,7 @@ public class AdministrationAction extends AdminAction {
                         }
                         break;
                     case SET_VALIDATION_DATE:
-                        session.notifyBad("SetValidationDate not implemented yet.");
+                        session.notifyWarning("SetValidationDate not implemented yet.");
                         break;
                     case UPDATE_DEVELOPMENT_STATE:
                         Loaders.fromStr(Feature.class, id).updateDevelopmentState();
@@ -110,7 +109,7 @@ public class AdministrationAction extends AdminAction {
                             case DEVELOPPING:
                                 if (feature.getSelectedOffer() == null
                                         || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
-                                    session.notifyBad("There is no offer or not enough money. So no development state for id: " + feature.getId()
+                                    session.notifyWarning("There is no offer or not enough money. So no development state for id: " + feature.getId()
                                             + ".");
                                 } else {
                                     feature.setFeatureState(FeatureState.DEVELOPPING);
@@ -127,7 +126,7 @@ public class AdministrationAction extends AdminAction {
                             case NO_FILTER:
                             default:
                                 Log.web().info("Wrong feature state. Nothing to do.");
-                                session.notifyBad("Wrong feature state. Nothing to do.");
+                                session.notifyWarning("Wrong feature state. Nothing to do.");
                                 break;
                         }
                         break;
@@ -151,7 +150,7 @@ public class AdministrationAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return session.pickPreferredPage();
     }
 

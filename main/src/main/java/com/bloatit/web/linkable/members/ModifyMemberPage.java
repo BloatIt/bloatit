@@ -48,7 +48,7 @@ import com.bloatit.web.url.ModifyMemberPageUrl;
 
 @ParamContainer(value = "member/modify", protocol = Protocol.HTTPS)
 public class ModifyMemberPage extends LoggedPage {
-    private ModifyMemberPageUrl url;
+    private final ModifyMemberPageUrl url;
 
     public ModifyMemberPage(final ModifyMemberPageUrl url) {
         super(url);
@@ -62,7 +62,7 @@ public class ModifyMemberPage extends LoggedPage {
         final ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl(getSession().getShortKey());
 
         final HtmlTitle title = new HtmlTitle(1);
-        title.addText(Context.tr("Change account settings"));
+        title.addText(Context.tr("Change member settings"));
         layout.addLeft(title);
 
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
@@ -123,6 +123,9 @@ public class ModifyMemberPage extends LoggedPage {
             // Email
             final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
             final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), tr("Email"));
+            if (loggedUser.hasEmailToActivate()) {
+                emailInput.setComment(Context.tr("Waiting for activation: {0}", loggedUser.getEmailToActivate()));
+            }
             if (emailFieldData.getSuggestedValue() != null && !emailFieldData.getSuggestedValue().isEmpty()) {
                 emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
             } else {

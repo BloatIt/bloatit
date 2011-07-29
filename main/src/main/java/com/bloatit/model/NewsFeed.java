@@ -35,7 +35,7 @@ public class NewsFeed extends Identifiable<DaoNewsFeed> {
      * 
      * @param message
      */
-    public NewsFeed(String message) {
+    public NewsFeed(final String message) {
         super(DaoNewsFeed.createAndPersist(message));
         if (message == null) {
             throw new NonOptionalParameterException("Message content is not optional");
@@ -46,7 +46,7 @@ public class NewsFeed extends Identifiable<DaoNewsFeed> {
         FrameworkConfiguration.getMicroBlogs().post(message);
     }
 
-    protected NewsFeed(DaoNewsFeed dao) {
+    protected NewsFeed(final DaoNewsFeed dao) {
         super(dao);
     }
 
@@ -89,7 +89,7 @@ public class NewsFeed extends Identifiable<DaoNewsFeed> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public <ReturnType> ReturnType accept(ModelClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 }

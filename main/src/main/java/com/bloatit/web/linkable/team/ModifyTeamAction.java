@@ -33,7 +33,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -51,10 +50,12 @@ public class ModifyTeamAction extends LoggedAction {
     private final Team team;
 
     @RequestParam(role = Role.POST)
-    @MinConstraint(min = 4,
-                   message = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 50,
-                   message = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."))
+    @MinConstraint(
+        min = 4,
+        message = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(
+        max = 50,
+        message = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."))
     @NonOptional(@tr("You forgot to write a team name"))
     private final String displayName;
 
@@ -66,11 +67,11 @@ public class ModifyTeamAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @MinConstraint(
-                   min = 4,
-                   message = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."))
+        min = 4,
+        message = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
-                   max = 5000,
-                   message = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."))
+        max = 5000,
+        message = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."))
     @NonOptional(@tr("You forgot to write a description"))
     private final String description;
 
@@ -143,7 +144,7 @@ public class ModifyTeamAction extends LoggedAction {
                 } else {
                     if (imageErr != null) {
                         for (final String message : imageErr) {
-                            session.notifyBad(message);
+                            session.notifyWarning(message);
                         }
                     }
                     if (isEmpty(avatarFileName)) {
@@ -215,7 +216,7 @@ public class ModifyTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected Url doProcessErrors() {
         return new ModifyTeamPageUrl(team);
     }
 

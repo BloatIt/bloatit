@@ -18,7 +18,6 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
-
 public class FeatureFactory {
 
     public static Feature createFeature(final Member author,

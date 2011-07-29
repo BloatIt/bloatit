@@ -1,0 +1,47 @@
+
+allprojects {
+    task log << { task -> println "Building $task.project.name" }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+
+    repositories {
+       mavenLocal()
+       mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.8.2'
+    }
+    
+    sourceCompatibility = 1.6
+    version = '1.0.31-SNAPSHOT'
+
+    jar {
+        // TODO : see if there are other manifest to add.
+        manifest.attributes provider: 'gradle'
+    }
+    
+    test {
+        systemProperties 'masterPassword': 'plop'
+    }
+    
+    task generateBuildProperties(){
+        File buildProperties = file('src/main/resources/build.properties')
+	buildProperties.getParentFile().mkdirs()
+
+        FileWriter w = new FileWriter(buildProperties)
+        w.write("project.version=$version\n")
+        w.close()
+    }
+
+    compileJava.dependsOn 'generateBuildProperties'
+
+//    uploadArchives {
+//        repositories {
+//           flatDir(dirs: file('repos'))
+//        }
+}
+

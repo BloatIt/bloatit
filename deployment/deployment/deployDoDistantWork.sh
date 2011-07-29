@@ -18,6 +18,7 @@ ROOT=$PWD
 cd -
 COMMONS=$ROOT/../commons/
 MERGE_FILE_SCRIPT=$ROOT/mergeFiles.sh
+GENERATE_WWW_SCRIPT=$ROOT/generatewww.sh
 LIQUIBASE_DIR=files/liquibase-core-2.0.2-SNAPSHOT.jar
 PREFIX=elveos
 
@@ -84,7 +85,7 @@ migratingDB() {
 
     local _classpath="."
     _classpath="$_classpath:/home/$_user/jars/dom4j-1.6.1.jar"
-    _classpath="$_classpath:/home/$_user/jars/postgresql-8.4-701.jdbc4.jar"
+    _classpath="$_classpath:/home/$_user/jars/postgresql-8.4-702.jdbc4.jar"
     _classpath="$_classpath:/home/$_user/jars/slf4j-api-1.6.1.jar"
     _classpath="$_classpath:/home/$_user/jars/slf4j-log4j12-1.6.0.jar"
 
@@ -175,9 +176,19 @@ startBloatitServer() {
     exit_on_failure $?
 }
 
+
+generatewww() {
+    bash $GENERATE_WWW_SCRIPT "$PWD/$UPLOAD_DIR/www_src" "$PWD/www" "$PWD/java/build.properties"
+}
+
 commitPrerelease "$PREFIX" "$RELEASE_VERSION"
 
+
+
 propagateConfFiles 
+exit_on_failure $?
+
+generatewww
 exit_on_failure $?
 
 stopBloatitServer
