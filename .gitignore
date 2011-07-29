@@ -6,6 +6,7 @@ main/.factorypath
 .pydevproject
 doc/bdd.pdf
 *.pyc
+*.pyo
 *.bak
 locales/*
 .settings
