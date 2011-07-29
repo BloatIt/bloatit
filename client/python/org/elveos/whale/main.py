@@ -24,9 +24,8 @@ class Whale():
         server.set_host('https://elveos.org')
         server.authenticate(self.access_token)
 
-        for member in Member.objects:
-            print member.name + (member.email and " "+member.email or "")
-
+        #for member in Member.objects:
+        #    print member.name + (member.email and " "+member.email or "")
 
         self.start_gui()
         
