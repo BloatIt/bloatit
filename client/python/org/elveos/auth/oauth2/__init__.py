@@ -25,7 +25,10 @@ THE SOFTWARE.
 import httplib2
 import urlparse
 import urllib
-import json
+try:
+	import json
+except ImportError:
+	import simplejson as json
 
 try:
     from urlparse import parse_qs, parse_qsl
