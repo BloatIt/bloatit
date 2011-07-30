@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet author="fred (generated)" id="1305649909974-16">
+		<createTable tableName="DaoInvoice">
+			<column name="DTYPE" type="varchar(31)">
+				<constraints nullable="false" />
+			</column>
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="DaoInvoicePK" />
+			</column>
+			<column name="contributorAdress" type="TEXT(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="contributorName" type="TEXT(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="contributorTaxIdentification" type="TEXT(255)" />
+			<column name="deliveryName" type="TEXT(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="invoiceId" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="priceExcludingTax" type="numeric(19,2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="sellerAddress" type="TEXT(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="sellerName" type="TEXT(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="sellerTaxIdentification" type="TEXT(255)" />
+			<column name="totalPrice" type="numeric(19,2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="emitterActor_id" type="int4" />
+			<column name="invoiceFile_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+			<column name="recipientActor_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+			<column name="contribution_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+			<column name="milestone_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="fred (generated)" id="1305649909974-17">
+		<createTable tableName="DaoInvoicingContact">
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="DaoInvoicingCPK" />
+			</column>
+			<column name="address" type="TEXT(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="TEXT(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="taxIdentification" type="TEXT(255)" />
+			<column name="actor_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="fred (generated)" id="1305649909974-39">
+		<createIndex indexName="UKF4216B5B8CC6FAF1" tableName="DaoInvoice">
+			<column name="invoiceFile_id" />
+		</createIndex>
+	</changeSet>
+
+	<changeSet author="fred (generated)" id="1305649909974-69">
+		<addForeignKeyConstraint baseColumnNames="contribution_id"
+			baseTableName="DaoInvoice" constraintName="FKF4216B5B6D7040E0"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="DaoContribution" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="1305649909974-70">
+		<addForeignKeyConstraint baseColumnNames="emitterActor_id"
+			baseTableName="DaoInvoice" constraintName="FKF4216B5B49F5F4A2"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="DaoActor" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="1305649909974-71">
+		<addForeignKeyConstraint baseColumnNames="invoiceFile_id"
+			baseTableName="DaoInvoice" constraintName="FKF4216B5B2C199CE2"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="DaoFileMetadata" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="1305649909974-72">
+		<addForeignKeyConstraint baseColumnNames="milestone_id"
+			baseTableName="DaoInvoice" constraintName="FKF4216B5B735AB454"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="DaoMilestone" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="1305649909974-73">
+		<addForeignKeyConstraint baseColumnNames="recipientActor_id"
+			baseTableName="DaoInvoice" constraintName="FKF4216B5B2FA3D04D"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="DaoActor" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="1305649909974-74">
+		<addForeignKeyConstraint baseColumnNames="actor_id"
+			baseTableName="DaoInvoicingContact" constraintName="FK97786BA87BA58734"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="DaoActor" referencesUniqueColumn="false" />
+	</changeSet>
+</databaseChangeLog>

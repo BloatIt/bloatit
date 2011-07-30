@@ -18,8 +18,8 @@ PASSWORD=passe
 URL=jdbc:postgresql://localhost/bloatit
 
 REFERENCE_URL=hibernate:hibernate.cfg.xml
-WORK_CHANGELOG_FILE=$ROOT/src/main/resources/liquibase/working.liquibase.xml
-CURRENT_CHANGELOG_FILE=$ROOT/src/main/resources/liquibase/current.liquibase.xml
+WORK_CHANGELOG_FILE=$ROOT/../deployment/deployment/db/liquibase/working.liquibase.xml
+CURRENT_CHANGELOG_FILE=$ROOT/../deployment/deployment/db/liquibase/current.liquibase.xml
 
 
 MAVEN_REPO=$HOME/.m2/repository
@@ -27,7 +27,7 @@ POSTGRESQL_VERSION=/usr/share/java/postgresql.jar
 
 CLASSPATH=$ROOT/build/classes/main/:$ROOT/liquibase/liquibase-hibernate-2.0.1-SNAPSHOT.jar:$MAVEN_REPO/org/hibernate/hibernate-core/3.6.1.Final/hibernate-core-3.6.1.Final.jar:$MAVEN_REPO/org/hibernate/hibernate-commons-annotations/3.2.0.Final/hibernate-commons-annotations-3.2.0.Final.jar:$MAVEN_REPO/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final.jar:$MAVEN_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar:$POSTGRESQL_VERSION:$MAVEN_REPO/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar:$MAVEN_REPO/org/slf4j/slf4j-jdk14/1.6.1/slf4j-jdk14-1.6.1.jar
 
-MIN_CLASSPATH=$ROOT/build/classes/main:$POSTGRESQL_VERSION:$MAVEN_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar:$MAVEN_REPO/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar:$MAVEN_REPO/org/slf4j/slf4j-jdk14/1.6.1/slf4j-jdk14-1.6.1.jar:$ROOT/src/main/resources
+MIN_CLASSPATH=$ROOT/build/classes/main:$POSTGRESQL_VERSION:$MAVEN_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar:$MAVEN_REPO/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar:$MAVEN_REPO/org/slf4j/slf4j-jdk14/1.6.1/slf4j-jdk14-1.6.1.jar:$ROOT/../deployment/deployment/db
 
 if [ "$1" = "diff" ] ; then
 java -jar $ROOT/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar \
