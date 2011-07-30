@@ -149,6 +149,7 @@ propagateConfFiles() {
     exit_on_failure $?
 
     # resources files
+    mkdir -p $_resources
     bash $MERGE_FILE_SCRIPT -f $_up_resources -t $_resources
     exit_on_failure $?
 
