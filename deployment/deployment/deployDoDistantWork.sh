@@ -130,15 +130,15 @@ migratingDB() {
 ##    CONF_DIR : where to put the conf files.
 ##    UP_SHARE_DIR : remote directory where the share files has been uploaded
 ##    SHARE_DIR : where to put the share files.
-##    UP_RESSOURCES : where the resources has been uploaded.
-##    CLASSES : where to put the resources (where the java classes are)
+##    UP_RESOURCES : where the resources has been uploaded.
+##    RESOURCES : where to put the resources (where the java classes are)
 propagateConfFiles() {
     local _up_conf_dir="$UP_CONF_DIR"
     local _conf_dir="$CONF_DIR"
     local _up_share_dir="$UP_SHARE_DIR"
     local _share_dir="$SHARE_DIR"
-    local _up_ressources="$UP_RESSOURCES"
-    local _resources="$RESSOURCES"
+    local _up_resources="$UP_RESOURCES"
+    local _resources="$RESOURCES"
     log_date "Merging the conf files." 
     # .config files
     bash $MERGE_FILE_SCRIPT -f $_up_conf_dir -t $_conf_dir
@@ -148,8 +148,8 @@ propagateConfFiles() {
     bash $MERGE_FILE_SCRIPT -f $_up_share_dir -t $_share_dir
     exit_on_failure $?
 
-    # ressources files
-    bash $MERGE_FILE_SCRIPT -f $_up_ressources -t $_resources
+    # resources files
+    bash $MERGE_FILE_SCRIPT -f $_up_resources -t $_resources
     exit_on_failure $?
 
 }
