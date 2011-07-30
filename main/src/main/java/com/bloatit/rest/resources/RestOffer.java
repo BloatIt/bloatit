@@ -81,7 +81,7 @@ import com.bloatit.rest.list.RestOfferList;
  * return a RestOfferList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "offer")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestOffer extends RestElement<Offer> {
     private Offer model;

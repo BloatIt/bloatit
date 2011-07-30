@@ -79,7 +79,7 @@ import com.bloatit.rest.list.RestTransactionList;
  * return a RestInternalAccountList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "internalaccount")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestInternalAccount extends RestElement<InternalAccount> {
     private InternalAccount model;

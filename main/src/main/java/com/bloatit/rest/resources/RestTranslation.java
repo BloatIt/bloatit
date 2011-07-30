@@ -81,7 +81,7 @@ import com.bloatit.rest.list.RestTranslationList;
  * return a RestTranslationList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "translation")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestTranslation extends RestElement<Translation> {
     private Translation model;

@@ -78,7 +78,7 @@ import com.bloatit.rest.list.RestFileMetadataList;
  * return a RestFileMetadataList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "filemetadata")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestFileMetadata extends RestElement<FileMetadata> {
     private FileMetadata model;

@@ -79,7 +79,7 @@ import com.bloatit.rest.list.RestReleaseList;
  * return a RestReleaseList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "release")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestRelease extends RestElement<Release> {
     private Release model;

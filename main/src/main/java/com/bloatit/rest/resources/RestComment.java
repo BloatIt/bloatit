@@ -80,7 +80,7 @@ import com.bloatit.rest.list.RestFileMetadataList;
  * return a RestCommentList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "comment")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestComment extends RestElement<Comment> {
     private Comment model;

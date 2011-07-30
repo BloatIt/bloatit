@@ -80,7 +80,7 @@ import com.bloatit.rest.list.RestReleaseList;
  * return a RestMilestoneList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "milestone")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestMilestone extends RestElement<Milestone> {
     private Milestone model;

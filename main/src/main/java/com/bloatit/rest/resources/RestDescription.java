@@ -78,7 +78,7 @@ import com.bloatit.rest.list.RestTranslationList;
  * return a RestDescriptionList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "description")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestDescription extends RestElement<Description> {
     private Description model;

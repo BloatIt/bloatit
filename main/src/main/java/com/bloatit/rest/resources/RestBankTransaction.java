@@ -79,7 +79,7 @@ import com.bloatit.rest.list.RestBankTransactionList;
  * return a RestBankTransactionList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "banktransaction")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestBankTransaction extends RestElement<BankTransaction> {
     private BankTransaction model;

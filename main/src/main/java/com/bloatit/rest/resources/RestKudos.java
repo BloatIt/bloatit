@@ -76,7 +76,7 @@ import com.bloatit.rest.list.RestKudosList;
  * return a RestKudosList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "kudo")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestKudos extends RestElement<Kudos> {
     private Kudos model;

@@ -78,7 +78,7 @@ import com.bloatit.rest.list.RestTeamList;
  * return a RestTeamList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "team")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestTeam extends RestElement<Team> {
     private Team model;

@@ -82,7 +82,7 @@ import com.bloatit.rest.list.RestContributionList;
  * return a RestContributionList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "contribution")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestContribution extends RestElement<Contribution> {
     private Contribution model;

@@ -73,7 +73,7 @@ import com.bloatit.rest.list.RestSoftwareList;
  * return a RestSoftwareList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "software")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestSoftware extends RestElement<Software> {
     private Software model;

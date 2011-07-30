@@ -84,7 +84,7 @@ import com.bloatit.rest.list.RestFileMetadataList;
  * return a RestBugList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "bug")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestBug extends RestElement<Bug> {
     private Bug model;

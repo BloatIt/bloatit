@@ -76,7 +76,7 @@ import com.bloatit.rest.list.RestHighlightFeatureList;
  * return a RestHighlightFeatureList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "hightlightfeature")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestHighlightFeature extends RestElement<HighlightFeature> {
     private HighlightFeature model;
