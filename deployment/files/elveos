@@ -30,7 +30,7 @@ do_start()
         return 1
     fi
 
-    CLASSPATH=$ROOT/java
+    CLASSPATH=$ROOT/java:$ROOT/resources
     for i in $DEPEDENCIES/*.jar ; do 
         CLASSPATH=$CLASSPATH:$i
     done

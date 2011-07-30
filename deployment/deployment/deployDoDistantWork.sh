@@ -23,12 +23,12 @@ LIQUIBASE_DIR=files/liquibase-core-2.0.2-SNAPSHOT.jar
 PREFIX=elveos
 
 UPLOAD_DIR=.upload
-UP_RESSOURCES=$UPLOAD_DIR/ressources
+UP_RESOURCES=$UPLOAD_DIR/resources
 UP_CONF_DIR=$UPLOAD_DIR/conf
 UP_SHARE_DIR=$UPLOAD_DIR/share
 CONF_DIR=.config/bloatit/
 SHARE_DIR=.local/share/bloatit/
-CLASSES=java/
+RESOURCES=resources/
 DEPEDENCIES=jars/
 
 
@@ -138,7 +138,7 @@ propagateConfFiles() {
     local _up_share_dir="$UP_SHARE_DIR"
     local _share_dir="$SHARE_DIR"
     local _up_ressources="$UP_RESSOURCES"
-    local _classes="$CLASSES"
+    local _resources="$RESSOURCES"
     log_date "Merging the conf files." 
     # .config files
     bash $MERGE_FILE_SCRIPT -f $_up_conf_dir -t $_conf_dir
@@ -149,7 +149,7 @@ propagateConfFiles() {
     exit_on_failure $?
 
     # ressources files
-    bash $MERGE_FILE_SCRIPT -f $_up_ressources -t $_classes
+    bash $MERGE_FILE_SCRIPT -f $_up_ressources -t $_resources
     exit_on_failure $?
 
 }
