@@ -2436,7 +2436,7 @@ msgid ""
 "Elveos account ?"
 msgstr ""
 "Tapez votre login et mot de passe pour accorder à \"{0}\" le droit "
-"d\\'acceder à votre compte Elveos ?"
+"d''acceder à votre compte Elveos ?"
 
 #: com/bloatit/web/linkable/oauth2/OAuthAuthorizationPage.java:127
 #: com/bloatit/web/linkable/login/SignUpPage.java:73
