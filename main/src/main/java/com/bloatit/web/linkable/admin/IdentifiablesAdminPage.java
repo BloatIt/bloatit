@@ -38,6 +38,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.IdentifiableInterface;
 import com.bloatit.model.admin.IdentifiableAdminListFactory;
 import com.bloatit.web.linkable.admin.master.AdminPage;
@@ -145,6 +146,8 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         actionForm.add(block);
         block.add(group);
         final HtmlDropDown dropDown = new HtmlDropDown("action");
+        dropDown.setLabel(Context.tr("Action: "));
+        dropDown.addDropDownElement("", Context.tr("Select an action")).setDisabled().setSelected();
         block.add(dropDown);
         addActions(dropDown, block);
 
