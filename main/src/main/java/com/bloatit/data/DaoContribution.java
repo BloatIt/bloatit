@@ -82,7 +82,7 @@ public class DaoContribution extends DaoUserContent {
     @Column(updatable = false)
     private BigDecimal amount;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private DaoFeature feature;
 
     @Basic(optional = false)

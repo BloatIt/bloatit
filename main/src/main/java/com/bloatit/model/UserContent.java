@@ -102,10 +102,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     }
 
     @Override
-    public boolean isDeleted() throws UnauthorizedOperationException {
-        if (!getRights().hasAdminUserPrivilege()) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
+    public boolean isDeleted() {
         return getDao().isDeleted();
     }
 

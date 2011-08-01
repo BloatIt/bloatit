@@ -49,6 +49,7 @@ import com.bloatit.model.Release;
 import com.bloatit.model.Translation;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.activity.ActivityVisitor;
@@ -133,7 +134,8 @@ public class ActivityTab extends HtmlTab {
                 @Override
                 public HtmlElement visit(final Contribution model) {
 
-                    if (model.getFeature().getAuthor() == null) {
+                    if (model.getFeature().isDeleted()) {
+
                         // We are in the case of a deleted feature. Don't try to
                         // access to any feature information !
                         final HtmlSpan contribSpan = new HtmlSpan("feed_contribution");

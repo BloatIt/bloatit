@@ -57,7 +57,7 @@ public interface UserContentInterface extends IdentifiableInterface, RestrictedI
      */
     Team getAsTeam();
 
-    boolean isDeleted() throws UnauthorizedOperationException;
+    boolean isDeleted();
 
     void delete() throws UnauthorizedOperationException;
 
