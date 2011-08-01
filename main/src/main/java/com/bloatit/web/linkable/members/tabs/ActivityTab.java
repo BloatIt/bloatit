@@ -124,7 +124,7 @@ public class ActivityTab extends HtmlTab {
                 public HtmlElement visit(final Kudos model) {
                     return new HtmlParagraph("kudos");
                 }
-                
+
                 @Override
                 public HtmlElement visit(final ExternalService model) {
                     return new HtmlParagraph("service");
@@ -132,9 +132,18 @@ public class ActivityTab extends HtmlTab {
 
                 @Override
                 public HtmlElement visit(final Contribution model) {
-                    final HtmlSpan contribSpan = new HtmlSpan("feed_contribution");
-                    final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("<0::Contributed>"), contribSpan);
-                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
+
+                    if (model.getFeature().getAuthor() == null) {
+                        // We are in the case of a deleted feature. Don't try to
+                        // access to any feature information !
+                        final HtmlSpan contribSpan = new HtmlSpan("feed_contribution");
+                        final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("<0::Contributed> on a deleted feature"), contribSpan);
+                        return mixedText;
+                    } else {
+                        final HtmlSpan contribSpan = new HtmlSpan("feed_contribution");
+                        final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("<0::Contributed>"), contribSpan);
+                        return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
+                    }
                 }
 
                 @Override

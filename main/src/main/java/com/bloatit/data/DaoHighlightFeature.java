@@ -42,20 +42,15 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-//@formatter:off
-@NamedQueries(value = { @NamedQuery(
-                           name = "highlightFeature.byIsActivated",
-                           query = "FROM DaoHighlightFeature " +
-                                   "WHERE activationDate < now() " +
-                                   "AND desactivationDate > now()"),
-                       @NamedQuery(
-                           name = "highlightFeature.byIsActivated.size",
-                           query = "SELECT count(*) " +
-                                   "FROM DaoHighlightFeature " +
-                                   "WHERE activationDate < now() " +
-                                   "AND desactivationDate > now()")
-                       }
-             )
+// @formatter:off
+@NamedQueries(value = {
+		@NamedQuery(name = "highlightFeature.byIsActivated", query = "FROM DaoHighlightFeature "
+				+ "WHERE activationDate < now() "
+				+ "AND desactivationDate > now()"),
+		@NamedQuery(name = "highlightFeature.byIsActivated.size", query = "SELECT count(*) "
+				+ "FROM DaoHighlightFeature "
+				+ "WHERE activationDate < now() "
+				+ "AND desactivationDate > now()") })
 // @formatter:on
 public class DaoHighlightFeature extends DaoIdentifiable {
 
@@ -214,6 +209,10 @@ public class DaoHighlightFeature extends DaoIdentifiable {
      */
     public DaoFeature getFeature() {
         return this.feature;
+    }
+
+    public void delete() {
+        SessionManager.getSessionFactory().getCurrentSession().delete(this);
     }
 
     /*

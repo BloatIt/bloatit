@@ -33,6 +33,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.feature.AbstractFeatureState;
 import com.bloatit.model.feature.DevelopingState;
 import com.bloatit.model.feature.DiscardedState;
@@ -46,6 +47,7 @@ import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
+import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtFeature;
@@ -311,6 +313,13 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
         for (final Translation translation : getDescription().getTranslations()) {
             translation.delete();
+        }
+
+        for (final HighlightFeature hlFeature : HighlightFeatureManager.getAll()) {
+            if (hlFeature.getFeature().getId() == getId()) {
+
+                hlFeature.getDao().delete();
+            }
         }
     }
 
