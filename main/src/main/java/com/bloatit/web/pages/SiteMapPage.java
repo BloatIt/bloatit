@@ -31,7 +31,7 @@ import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
-import com.bloatit.web.url.DocumentationPageUrl;
+import com.bloatit.web.url.DocumentationRootPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
@@ -114,7 +114,7 @@ public final class SiteMapPage extends ElveosPage {
         final HtmlList documentationLinkList = new HtmlList();
         layout.addLeft(documentationLinkList);
 
-        documentationLinkList.add(new DocumentationPageUrl().getHtmlLink(Context.tr("Documentation home")));
+        documentationLinkList.add(new DocumentationRootPageUrl().getHtmlLink(Context.tr("Documentation home")));
 
         return layout;
     }

@@ -23,6 +23,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
+import com.bloatit.web.url.DocumentationRootPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
@@ -40,8 +41,7 @@ public class Menu extends HtmlDiv {
 
         new CreateFeaturePageUrl().getHtmlLink(tr("New request"));
 
-        final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl();
-        brainstormDocPage.setDocTarget("brainstorm");
+        final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl("brainstorm");
         final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(tr("Brainstorms"));
         final HtmlLink teamList = new TeamsPageUrl().getHtmlLink(tr("Teams"));
         final HtmlLink memberList = new MembersListPageUrl().getHtmlLink(tr("Members"));
@@ -62,7 +62,7 @@ public class Menu extends HtmlDiv {
         teamAndMemberMenu.add(memberList);
         mainMenu.add(teamAndMemberMenu);
 
-        mainMenu.add(new HtmlDiv("menu_item").add(new DocumentationPageUrl().getHtmlLink(tr("Documentation"))));
+        mainMenu.add(new HtmlDiv("menu_item").add(new DocumentationRootPageUrl().getHtmlLink(tr("Documentation"))));
 
         add(mainMenu);
     }

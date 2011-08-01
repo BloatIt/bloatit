@@ -70,8 +70,7 @@ public final class IndexPage extends ElveosPage {
         {
             final HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())),
                                                   tr("Elveos's presentation"));
-            final DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
-            documentationPageUrl.setDocTarget("presentation");
+            final DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl("presentation");
             final HtmlLink presentationLink = documentationPageUrl.getHtmlLink();
             presentationLink.add(image);
             globalDescription.add(presentationLink);

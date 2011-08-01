@@ -64,6 +64,8 @@ import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
 import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
+import com.bloatit.web.linkable.documentation.DocumentationPage;
+import com.bloatit.web.linkable.documentation.DocumentationRootPage;
 import com.bloatit.web.linkable.errors.PageForbidden;
 import com.bloatit.web.linkable.errors.PageNotFound;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
@@ -137,7 +139,6 @@ import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.pages.CommentReplyPage;
-import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.SiteMapPage;
 import com.bloatit.web.pages.TestPage;
@@ -219,6 +220,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (UserContentAdminPageUrl.matches(pageCode)) {
             return new UserContentAdminPageImplementation(new UserContentAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (DocumentationRootPageUrl.matches(pageCode)) {
+            return new DocumentationRootPage(new DocumentationRootPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (DocumentationPageUrl.matches(pageCode)) {
             return new DocumentationPage(new DocumentationPageUrl(pageCode, postGetParameters, session.getParameters()));

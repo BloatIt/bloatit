@@ -50,6 +50,7 @@ public class MarkdownParser implements Parser {
             final Reader showdownSrc = new BufferedReader(read);
             jsEngine.eval(showdownSrc);
             showdownConverter = jsEngine.eval("new Showdown.converter()");
+            
             engine = (Invocable) jsEngine;
         } catch (final ScriptException e) {
             throw new BadProgrammerException("Javascript is not available as a language on your system. Please do something ...", e);

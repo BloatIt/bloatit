@@ -26,12 +26,12 @@ Une livraison est proposée par le développeur
 
 Dès que le développeur a fini la réalisation de la demande il propose une livraison. Cette livraison peut prendre plusieurs formes, en fonction de la demande et de l'offre. Dans la majorité des cas c'est un fichier à télécharger. Les contributeurs peuvent alors tester la livraison, et vérifier quelle correspond bien à la fonctionnalité demandée. S'il y a des erreurs, ou des bugs, on peut les reporter en utilisant le 'bug tracker' intégré dans elveos.
 
-Dans le cas d'une [offre composée de plusieurs lots](/fr/documentation/doc-offer-presentation#lesoffrescontenantplusieurslots) le principe reste le même, mais il y a une livraison par lot. 
+Dans le cas d'une [offre composée de plusieurs lots](/fr/documentation/offer_presentation#lesoffrescontenantplusieurslots) le principe reste le même, mais il y a une livraison par lot. 
 
 La demande est un succès
 -----------------------
 
 Quand le nombre de bugs non résolus est suffisamment faible, l'équipe elveos valide la demande et l'argent des contributions est transféré sur le compte du développeur. 
 
-Dans le cas d'une [offre composée de plusieurs lots](/fr/documentation/doc-offer-presentation#lesoffrescontenantplusieurslots), chaque lot est validé séparément, et la demande est marquée comme étant un succès lorsque tous les lots sont validés.
+Dans le cas d'une [offre composée de plusieurs lots](/fr/documentation/offer_presentation#lesoffrescontenantplusieurslots), chaque lot est validé séparément, et la demande est marquée comme étant un succès lorsque tous les lots sont validés.
 

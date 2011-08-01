@@ -3,4 +3,4 @@ API
 
 Une API Rest est proposée pour accéder aux éléments proposés par Elveos. Elle est pour le moment limitée à la consultation d'informations publiques uniquement. L'authentification et l'écriture seront ajoutées dans un futur proche.
 
- * [API REST](/fr/documentation/doc-api-rest)
+ * [API REST](/fr/documentation/api_rest)

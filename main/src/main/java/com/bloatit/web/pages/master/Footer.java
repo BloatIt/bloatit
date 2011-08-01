@@ -70,8 +70,7 @@ public class Footer extends HtmlDiv {
     }
 
     private void addDocumentationFooterLink(final HtmlDiv linkBlock, final String docPage, final String label) {
-        final DocumentationPageUrl doc = new DocumentationPageUrl();
-        doc.setDocTarget(docPage);
+        final DocumentationPageUrl doc = new DocumentationPageUrl(docPage);
         linkBlock.add(new HtmlDiv("footer_link").add(doc.getHtmlLink(label)));
     }
 }

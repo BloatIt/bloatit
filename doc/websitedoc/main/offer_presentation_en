@@ -8,7 +8,7 @@ Selected offers
 -------------------
 
 On a feature request there must have only one offer. To make sure the selected offer is corresponding to what the user are waiting for, the contributors can vote. 
-The [reputation / popularity system](/en/documentation/doc-reputation-popularity) is used. To be selected an offer have to have a popularity superior to zero, and to the other offers on this feature request.
+The [reputation / popularity system](/en/documentation/reputation_popularity) is used. To be selected an offer have to have a popularity superior to zero, and to the other offers on this feature request.
 
 Multiple milestone offers
 -----------------------------------
