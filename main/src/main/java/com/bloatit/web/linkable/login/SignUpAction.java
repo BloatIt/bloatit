@@ -80,7 +80,7 @@ public final class SignUpAction extends ElveosAction {
         final Locale locale = new Locale(lang, country);
         final Member m = new Member(login, password, email, locale);
         final String activationKey = m.getActivationKey();
-        final MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
+        final MemberActivationActionUrl url = new MemberActivationActionUrl(activationKey, login);
 
         final String content = Context.tr("Your Elveos.org account ''{0}'' was created. Please click on the following link to activate your account: \n\n {1}",
                                           login,
