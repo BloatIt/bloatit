@@ -82,8 +82,7 @@ public final class SoftwarePage extends ElveosPage {
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
-        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle() + "\n"
-                + translatedDescription.getText()));
+        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
         layout.addLeft(description);
 
         return layout;
