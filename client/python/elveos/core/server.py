@@ -6,6 +6,7 @@ Created on 27 juil. 2011
 from xml.dom.minidom import parseString as parse_xml
 import urllib
 import field
+import xml
 
 class Server:
 
@@ -40,8 +41,14 @@ class Server:
     def load_entity_collection(self,manager):
         url = self._build_entity_collection_url(manager);
         
-        dom = parse_xml(urllib.urlopen(url).read())
-        
+        response = urllib.urlopen(url).read()
+        try:
+            dom = parse_xml(response)
+        except xml.parsers.expat.ExpatError:
+            print "Error parsing response: "
+            print response
+            return None
+            
         xml_rest = dom.getElementsByTagName('rest').item(0)
         
         xml_collection = xml_rest.getElementsByTagName(manager.collection_code).item(0)

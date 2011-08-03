@@ -5,8 +5,12 @@ Created on 28 juil. 2011
 '''
 from PyQt4 import QtGui
 from PyQt4 import QtCore
-from org.elveos.whale.gui.memberspanel import MembersPanel
-from org.elveos.whale.gui.emptypanel import EmptyPanel
+from elveos.whale.gui.memberspanel import MembersPanel
+from elveos.whale.gui.memberpanel import MemberPanel
+from elveos.whale.gui.emptypanel import EmptyPanel
+from elveos.whale.gui.entitypanel import EntityPanel
+from elveos.core.entitymanager import EntityManager
+from elveos.model.member import Member
 
 class MainWindow(QtGui.QWidget):
     
@@ -15,18 +19,19 @@ class MainWindow(QtGui.QWidget):
         super(MainWindow, self).__init__()
 
         self.initUI()
-        self.left_panel_child = None;
-        self.center_panel_child = None;
-        self.right_panel_child = None;
         
     def initUI(self):
         
         hbox = QtGui.QHBoxLayout(self)
         
         
-        self.left_panel = QtGui.QWidget()
-        self.center_panel = QtGui.QWidget()
-        self.right_panel = QtGui.QWidget()
+        self.left_panel = TopEntityPanel(self)
+        self.center_panel = TopEntityPanel(self)
+        self.right_panel = TopEntityPanel(self)
+        
+        self.left_panel.set_next_panel(self.center_panel)
+        self.center_panel.set_next_panel(self.right_panel)
+        self.right_panel.set_next_panel(self.left_panel)
         
         self.left_panel.setLayout(QtGui.QHBoxLayout(self.left_panel))
         self.center_panel.setLayout(QtGui.QHBoxLayout(self.center_panel))
@@ -44,33 +49,49 @@ class MainWindow(QtGui.QWidget):
         self.setLayout(hbox)
         
         self.setWindowTitle('Elveos Whale')
-        self.setWindowState(QtCore.Qt.WindowMaximized)
+        #self.setWindowState(QtCore.Qt.WindowMaximized)
         self.resize(800, 600)
-         
-    def set_left_panel(self, panel):  
-        
-        if self.left_panel_child: 
-            self.left_panel.layout().removeWidget(self.left_panel_child)
-        
-        self.left_panel_child = panel
-        self.left_panel.layout().addWidget(panel)
-     
-    def set_center_panel(self, panel):  
-        
-        if self.center_panel_child: 
-            self.center_panel.layout().removeWidget(self.center_panel_child)
-        
-        self.center_panel_child = panel
-        self.center_panel.layout().addWidget(panel)
-        
-    def set_right_panel(self, panel):  
-        
-        if self.right_panel_child: 
-            self.right_panel.layout().removeWidget(self.right_panel_child)
-        
-        self.right_panel_child = panel
-        self.right_panel.layout().addWidget(panel)
     
+    def load(self, loadable, target_panel=None):
+        if target_panel:
+            target_panel.load(loadable)
+        else:
+            self.left_panel.load(loadable)
     
+class TopEntityPanel(EntityPanel):
         
-    
+    def __init__(self, window):
+        super(TopEntityPanel, self).__init__(None)
+        self.window = window
+        self.current_child = None
+        
+        self.setLayout(QtGui.QHBoxLayout(self))
+        
+    def set_next_panel(self, next_panel):
+        self.next_panel = next_panel
+        
+    def open_entity(self, model):
+        self.window.load(model, self.next_panel)
+        
+        
+    def load(self, loadable):
+        if isinstance(loadable, EntityManager):
+            if loadable.code == "member":
+                self.load_panel(MembersPanel(self))
+                return
+        elif isinstance(loadable, Member):
+            self.load_panel(MemberPanel(self, loadable))
+            return
+
+    def load_panel(self, panel):
+        print "load_panel "+str(panel)
+        
+        if self.current_child:
+            self.layout().removeWidget(self.current_child)
+            self.current_child.hide()
+        
+        self.layout().addWidget(panel)
+        self.current_child = panel
+        
+        
+        

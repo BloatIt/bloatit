@@ -7,13 +7,13 @@ Created on 28 juil. 2011
 import sys
 from PyQt4 import QtGui
 
-from org.elveos.core import server
-from org.elveos.auth.guiauthenticator import GuiAuthenticator
-from org.elveos.model.member import Member
+from elveos.core import server
+from elveos.auth.guiauthenticator import GuiAuthenticator
+from elveos.model.member import Member
 from gui.mainwindow import MainWindow
 import os
-from org.elveos.whale.gui.memberspanel import MembersPanel
-from org.elveos.whale.gui.emptypanel import EmptyPanel
+from elveos.whale.gui.memberspanel import MembersPanel
+from elveos.whale.gui.emptypanel import EmptyPanel
 
 
 class Whale():
@@ -67,8 +67,6 @@ class Whale():
         main_window = MainWindow()
         main_window.show()
         
-        main_window.set_left_panel(MembersPanel())
-        main_window.set_center_panel(EmptyPanel())
-        main_window.set_right_panel(EmptyPanel())
+        main_window.load(Member.objects)
         
         sys.exit(app.exec_())

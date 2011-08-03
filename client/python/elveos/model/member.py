@@ -1,5 +1,5 @@
-import org.elveos.core.field as field
-from org.elveos.core.entity import Entity
+import elveos.core.field as field
+from elveos.core.entity import Entity
 
 class Member(Entity):
     name = field.AttributeField(str, '', 'name')

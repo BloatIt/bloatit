@@ -7,14 +7,14 @@ Created on 28 juil. 2011
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 from PyQt4 import Qt
-from org.elveos.model.member import Member
-from org.elveos.whale.gui.entitypanel import EntityPanel
+from elveos.model.member import Member
+from elveos.whale.gui.entitypanel import EntityPanel
 
 class EmptyPanel(EntityPanel):
     
 
-    def __init__(self):
-        super(EmptyPanel, self).__init__()
+    def __init__(self, parent):
+        super(EmptyPanel, self).__init__(parent)
 
         self.initUI()
         

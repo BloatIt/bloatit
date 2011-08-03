@@ -7,18 +7,16 @@ Created on 28 juil. 2011
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 from PyQt4 import Qt
-from org.elveos.model.member import Member
 
 class EntityPanel(QtGui.QWidget):
     
 
-    def __init__(self):
+    def __init__(self, parent):
         super(EntityPanel, self).__init__()
-
-        self.initUI()
+        self.parent = parent
         
-    def initUI(self):
-        pass
               
-     
+    def open_entity(self, model):
+        self.parent.open_entity(model)  
+
     
