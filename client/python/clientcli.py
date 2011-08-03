@@ -1,8 +1,8 @@
-from elveos.member import Member
-from elveos.feature import Feature
-import elveos.server
+from org.elveos.model.member import Member
+from org.elveos.model.feature import Feature
+import org.elveos.core.server
 
-elveos.server.server.set_host('http://127.0.0.1')
+org.elveos.core.server.server.set_host('http://127.0.0.1')
 
 
 for feature in Feature.objects:

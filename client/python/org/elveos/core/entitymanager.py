@@ -5,22 +5,23 @@ import server
 
 class EntityManager():
 
-    def __init__(self, base_class, base_module):
+
+    def __init__(self, base_class=None, base_module=None):
+        if base_class == None:
+            #Mock object
+            return
         self.base_class = base_class
         self.base_module = base_module
         self.code = base_class.lower()
         self.collection_code = self.code+'s'
-
-
-    def __iter__(self):        
         
+    def all(self):
         entity_list = server.server.load_entity_collection(self)
-        
-        return ItEntity(entity_list)
-        
-        
-        
-        
+        return entity_list
+    
+    def __iter__(self):        
+        return ItEntity(self.all())
+    
             
 class ItEntity:
     

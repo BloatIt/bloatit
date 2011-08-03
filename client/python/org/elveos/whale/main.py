@@ -6,22 +6,32 @@ Created on 28 juil. 2011
 
 import sys
 from PyQt4 import QtGui
-from PyQt4 import QtCore
 
 from org.elveos.core import server
 from org.elveos.auth.guiauthenticator import GuiAuthenticator
 from org.elveos.model.member import Member
 from gui.mainwindow import MainWindow
 import os
+from org.elveos.whale.gui.memberspanel import MembersPanel
+from org.elveos.whale.gui.emptypanel import EmptyPanel
 
 
 class Whale():
+    
+    def __init__(self,args):
+
+        if len(args) == 2:
+            self.host = args[1]
+        else:
+            self.host = 'https://elveos.org'
 
     def run(self):
         
+        
+        
         self.load_config()
         # Configure elveos.org connection
-        server.set_host('https://elveos.org')
+        server.set_host(self.host)
         server.authenticate(self.access_token)
 
         #for member in Member.objects:
@@ -35,9 +45,15 @@ class Whale():
         config_dir = os.path.expanduser("~/.local/share/elveos_whale")
         auth_file = "auth.db"
         
+        
+        
+        
         if not os.path.exists(os.path.join(config_dir, auth_file)):
             self.access_token = GuiAuthenticator().authenticate()
-            os.makedirs(config_dir)
+            
+            if not os.path.exists(config_dir):
+                os.makedirs(config_dir)
+            
             f = open(os.path.join(config_dir, auth_file), 'w')
             f.write(self.access_token)
             f.close()
@@ -48,9 +64,11 @@ class Whale():
         
         app = QtGui.QApplication(sys.argv)
     
-        widget = QtGui.QWidget()
-        widget.setWindowState(QtCore.Qt.WindowMaximized)
-        widget.setWindowTitle('Elveos Whale')
-        widget.show()
+        main_window = MainWindow()
+        main_window.show()
+        
+        main_window.set_left_panel(MembersPanel())
+        main_window.set_center_panel(EmptyPanel())
+        main_window.set_right_panel(EmptyPanel())
         
         sys.exit(app.exec_())

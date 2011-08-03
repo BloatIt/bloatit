@@ -12,7 +12,7 @@ class MetaEntity(type):
     
     
 class Entity(object):
-    objects = None
+    objects = EntityManager()
     __metaclass__ = MetaEntity
     
     
