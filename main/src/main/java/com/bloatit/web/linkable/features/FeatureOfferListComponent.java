@@ -111,7 +111,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         final BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
                         final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
                         block.addInLeftColumn(new HtmlParagraph(tr("This offer is validated and will go into development as soon as the requested amount is available ({0} left).",
-                                                                   currency.toString())));
+                                                                   currency.getSimpleEuroString())));
                     }
                     // Generating the right column
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
