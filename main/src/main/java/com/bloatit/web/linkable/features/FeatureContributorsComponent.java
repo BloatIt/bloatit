@@ -65,12 +65,12 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                 final String contributionMeanValue = Context.getLocalizator()
                                                             .getCurrency(feature.getContribution().divide(new BigDecimal(contributionCount),
                                                                                                           RoundingMode.HALF_EVEN))
-                                                            .getSimpleEuroString();
+                                                            .getTwoDecimalEuroString();
                 final String contributionMinValue = Context.getLocalizator().getCurrency(feature.getContributionMin()).getSimpleEuroString();
                 final String contributionMaxValue = Context.getLocalizator().getCurrency(feature.getContributionMax()).getSimpleEuroString();
                 final String contributionMedianValue = Context.getLocalizator()
                                                               .getCurrency(computeMedian(feature.getContributions()))
-                                                              .getSimpleEuroString();
+                                                              .getTwoDecimalEuroString();
 
                 final HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
                                                                                          contributionMaxValue,
