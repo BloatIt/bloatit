@@ -54,6 +54,8 @@ public final class FeatureListPage extends ElveosPage {
     private static final String FILTER_IN_PROGRESS = "in_progress";
     private static final String FILTER_FINISHED = "finished";
     private static final String FILTER_CODE = "filter";
+    private static final String FILTER_IN_DEV = "in_dev";
+    private static final String FILTER_PREPARING = "preparing";
 
     @RequestParam(name = FILTER_CODE)
     @Optional(FILTER_ALL)
@@ -120,11 +122,11 @@ public final class FeatureListPage extends ElveosPage {
                     allFilter.setCssClass("selected");
                 }
 
-                final FeatureListPageUrl preparingFilterUrl = url.clone();
-                preparingFilterUrl.setFilter(FILTER_IN_PROGRESS);
-                final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("in progress"));
+                final FeatureListPageUrl activeFilterUrl = url.clone();
+                activeFilterUrl.setFilter(FILTER_IN_PROGRESS);
+                final HtmlLink activeFilter = activeFilterUrl.getHtmlLink(Context.tr("in progress"));
                 if (filter.equals(FILTER_IN_PROGRESS)) {
-                    preparingFilter.setCssClass("selected");
+                    activeFilter.setCssClass("selected");
                 }
 
                 final FeatureListPageUrl finishedFilterUrl = url.clone();
@@ -134,12 +136,30 @@ public final class FeatureListPage extends ElveosPage {
                     finishedFilter.setCssClass("selected");
                 }
 
+                final FeatureListPageUrl indevFilterUrl = url.clone();
+                indevFilterUrl.setFilter(FILTER_IN_DEV);
+                final HtmlLink indevFilter = indevFilterUrl.getHtmlLink(Context.tr("in developement"));
+                if (filter.equals(FILTER_IN_DEV)) {
+                    indevFilter.setCssClass("selected");
+                }
+
+                final FeatureListPageUrl preparingFilterUrl = url.clone();
+                preparingFilterUrl.setFilter(FILTER_PREPARING);
+                final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("preparing"));
+                if (filter.equals(FILTER_PREPARING)) {
+                    preparingFilter.setCssClass("selected");
+                }
+
                 featureFilter.addText(Context.tr("Filter: "));
                 featureFilter.add(allFilter);
                 featureFilter.addText(" – ");
-                featureFilter.add(preparingFilter);
+                featureFilter.add(activeFilter);
                 featureFilter.addText(" – ");
                 featureFilter.add(finishedFilter);
+                featureFilter.addText(" – ");
+                featureFilter.add(preparingFilter);
+                featureFilter.addText(" – ");
+                featureFilter.add(indevFilter);
             }
             featureSearchBlock.add(featureFilter);
 
@@ -278,6 +298,15 @@ public final class FeatureListPage extends ElveosPage {
                 search.addFeatureStateFilter(FeatureState.DEVELOPPING);
                 search.addFeatureStateFilter(FeatureState.PENDING);
                 search.addFeatureStateFilter(FeatureState.PREPARING);
+            } else if (filter.equals(FILTER_IN_DEV)) {
+                search.addFeatureStateFilter(FeatureState.FINISHED);
+                search.addFeatureStateFilter(FeatureState.DISCARDED);
+                search.addFeatureStateFilter(FeatureState.PENDING);
+                search.addFeatureStateFilter(FeatureState.PREPARING);
+            } else if (filter.equals(FILTER_PREPARING)) {
+                search.addFeatureStateFilter(FeatureState.DEVELOPPING);
+                search.addFeatureStateFilter(FeatureState.FINISHED);
+                search.addFeatureStateFilter(FeatureState.DISCARDED);
             }
         }
 
