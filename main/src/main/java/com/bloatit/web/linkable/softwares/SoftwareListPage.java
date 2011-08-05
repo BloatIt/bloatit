@@ -27,13 +27,16 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
+import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
@@ -63,12 +66,12 @@ public final class SoftwareListPage extends ElveosPage {
         final SoftwareListPageUrl clonedUrl = url.clone();
         pagedSoftwareList = new HtmlPagedList<Software>(softwareItemRenderer, softwareList, clonedUrl, clonedUrl.getPagedSoftwareListUrl());
 
-        pageTitle.add(new CreateSoftwarePageUrl().getHtmlLink(tr("Add a software")));
         pageTitle.add(pagedSoftwareList);
         pageTitle.add(new HtmlClearer());
 
         layout.addLeft(pageTitle);
 
+        layout.addRight(new SideBarButton(Context.tr("Add a software"), new CreateSoftwarePageUrl(), WebConfiguration.getImgSoftware()));
         layout.addRight(new SideBarDocumentationBlock("software"));
 
         return layout;

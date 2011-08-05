@@ -47,6 +47,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgFeatureStateFailed;
     private String imgIdea;
     private String imgTeam;
+    private String imgSoftware;
     private String imgMessage;
     private String imgAccountCharge;
     private String imgAccountWithdraw;
@@ -160,6 +161,11 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgSoftwareNoLogo() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgSoftwareNoLogo);
     }
+    
+    
+    public static String getImgSoftware() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgSoftware);
+    }
 
     /**
      * @return the imgIdea
@@ -220,6 +226,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgFeatureStateFailed = properties.getString("bloatit.img.feature.state.failed");
         imgIdea = properties.getString("bloatit.img.idea");
         imgTeam = properties.getString("bloatit.img.team");
+        imgSoftware = properties.getString("bloatit.img.software");
         imgMessage = properties.getString("bloatit.img.message");
         imgAccountCharge = properties.getString("bloatit.img.account.charge");
         imgAccountWithdraw = properties.getString("bloatit.img.account.withdraw");
