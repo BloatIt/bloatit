@@ -4119,7 +4119,7 @@ msgstr "Vous avez oublié d'écrire une description"
 
 #: com/bloatit/web/linkable/login/LostPasswordPage.java:66
 msgid "Enter your email"
-msgstr "Entre votre email"
+msgstr "Entrez votre email"
 
 #: com/bloatit/web/linkable/login/LostPasswordPage.java:68
 msgid "We will send you an email explaining how to recover your password."
