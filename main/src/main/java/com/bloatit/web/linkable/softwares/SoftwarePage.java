@@ -15,29 +15,40 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.util.Locale;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.components.HtmlFeatureSummary;
+import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
+import com.sun.xml.internal.fastinfoset.sax.Features;
 
 @ParamContainer("softwares/%software%")
 public final class SoftwarePage extends ElveosPage {
@@ -52,6 +63,9 @@ public final class SoftwarePage extends ElveosPage {
     private final String name;
 
     private final SoftwarePageUrl url;
+    
+    @SubParamContainer
+    private HtmlPagedList<Feature> pagedFeatureList;
 
     public SoftwarePage(final SoftwarePageUrl url) {
         super(url);
@@ -84,7 +98,25 @@ public final class SoftwarePage extends ElveosPage {
         final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
         layout.addLeft(description);
-
+        
+        
+        
+        PageIterable<Feature> features = software.getFeatures();
+        
+        if (features.size() > 0) {
+            
+            layout.addLeft(new HtmlTitle(Context.tr("Related features"), 1));
+            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem();
+            final SoftwarePageUrl clonedUrl = url.clone();
+            pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, features, clonedUrl, clonedUrl.getPagedFeatureListUrl());
+            layout.addLeft(pagedFeatureList);
+        } 
+        
+        
+        
+        
+        
+        
         return layout;
     }
 
@@ -109,4 +141,17 @@ public final class SoftwarePage extends ElveosPage {
 
         return breadcrumb;
     }
+    
+    
+    private static class FeaturesListItem implements HtmlRenderer<Feature> {
+
+        public FeaturesListItem() {
+            super();
+        }
+
+        @Override
+        public XmlNode generate(final Feature feature) {
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL);
+        }
+    };
 }
