@@ -1,0 +1,87 @@
+#!/bin/bash
+
+TEST_CASE=$1
+PREFIX="https://elveos.org/"
+CURRENT_TMP_FILE="/tmp/elv-result-current"
+LAST_TMP_FILE="/tmp/elv-result-last-one"
+TMP_ERROR_PREFIX="/tmp/elv-error"
+
+USER_AGENT="elveos_test"
+
+get_header_size(){
+   cat "$1" | \
+   while read line ; do 
+      if [ "$line" = "$(echo -e \\r)" ] ; then 
+         exit
+      fi 
+      echo $line 
+   done \
+   | wc -c
+}
+
+if [ ! -e "$TEST_CASE" ] ; then
+    echo "Error: test case not found." 1>&2 
+    exit 1
+fi
+
+# Mehtod  url              status command options
+# GET     /fr/default?plop 200    GREP    plop
+
+cat "$TEST_CASE" |
+while read line ; do
+   set -- $line
+   [ -z "$line" ] && continue
+   [ "$1" = "#" ] && continue
+   if [ "$#" -lt 4 ] ; then
+      echo "Malformed line : '$line'" 1>&2
+      continue
+   fi
+  
+   METHOD="$1"
+   shift
+   URL="$PREFIX$1"
+   shift
+   STATUS="$1"
+   shift
+   COMMAND="$1"
+   shift
+   ARG="$@"
+
+   #echo "testing '$URL'"
+
+   if [ "$METHOD" = "GET" ] ; then
+      curl -i -s -A "$USER_AGENT" "$URL" > $CURRENT_TMP_FILE
+   else
+      echo "Non GET command ignored : '$line'" 1>&2
+      continue
+   fi
+
+
+   REMOTE_STATUS="$(head -1 "$CURRENT_TMP_FILE" | grep -E -o "[0-9]{3}")"
+   if [ "$STATUS" != "$REMOTE_STATUS" ] ; then
+      echo "Looking for '$STATUS' Got '$REMOTE_STATUS' on line : '$line'" 1>&2
+      continue
+   fi
+
+   case $COMMAND in 
+      GREP)
+      result="$(grep -o -i "$ARG" "$CURRENT_TMP_FILE" | wc -l)"
+      if [ "$result" = "0" ] ; then 
+         echo "Grep faild on line : '$line'" 1>&2
+      fi
+      ;;
+      EQUAL)
+      ch=$(get_header_size "$CURRENT_TMP_FILE")
+      lh=$(get_header_size "$LAST_TMP_FILE")
+      cmp -i $ch:$lh "$CURRENT_TMP_FILE" "$LAST_TMP_FILE"
+      if [ "$?" != "0" ] ; then 
+         echo "Equal faild on line : '$line'" 1>&2
+     fi
+     ;;
+     NOP)
+     ;;
+   esac
+
+   cp "$CURRENT_TMP_FILE" "$LAST_TMP_FILE"
+
+done
