@@ -12,11 +12,11 @@ dependencies {
     compile project(':paylineWebservice')
 
     compile 'org.xnap.commons:gettext-commons:0.9.6'
-    compile 'org.hibernate:hibernate-core:3.6.1.Final'
-    compile 'org.hibernate:hibernate-validator:4.2.0.Final'
-    compile 'org.hibernate:hibernate-entitymanager:3.6.1.Final'
-    compile 'org.hibernate:hibernate-ehcache:3.6.1.Final'
+    compile 'org.hibernate:hibernate-core:3.6.6.Final'
+    compile 'org.hibernate:hibernate-entitymanager:3.6.6.Final'
+    compile 'org.hibernate:hibernate-ehcache:3.6.6.Final'
     compile 'org.hibernate:hibernate-search:3.3.0.Final'
+    compile 'org.hibernate:hibernate-validator:4.2.0.Final'
     compile 'org.slf4j:slf4j-log4j12:1.6.0'
     compile 'org.slf4j:slf4j-jdk14:1.6.1'
     compile 'org.slf4j:slf4j-api:1.6.1'
@@ -41,6 +41,8 @@ dependencies {
     runtime files("$buildDir/classes/main/") {
         //builtBy 'compile'
     }
+
+    runtime 'org.hibernate:hibernate-c3p0:3.6.6.Final'
 }
 
 task createBuildDir << {
