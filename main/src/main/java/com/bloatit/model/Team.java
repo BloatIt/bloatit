@@ -27,6 +27,7 @@ import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MemberList;
+import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
@@ -204,6 +205,14 @@ public final class Team extends Actor<DaoTeam> {
     @Override
     public PageIterable<MoneyWithdrawal> doGetMoneyWithdrawals() throws UnauthorizedOperationException {
         return new MoneyWithdrawalList(getDao().getMoneyWithdrawals());
+    }
+
+    public PageIterable<Milestone> getMilestoneToInvoice() {
+        return new MilestoneList(getDao().getMilestoneToInvoice());
+    }
+
+    public PageIterable<Milestone> getMilestones() {
+        return new MilestoneList(getDao().getMilestones());
     }
 
     public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {

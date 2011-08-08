@@ -410,6 +410,14 @@ public final class Milestone extends Identifiable<DaoMilestone> {
         return new ListBinder<Release, DaoRelease>(getDao().getReleases());
     }
 
+    public BigDecimal getAmountPaid() {
+        return getDao().getAmountPaid();
+    }
+
+    public Date getLastPaymentDate() {
+        return getDao().getLastPaymentDate();
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -422,4 +430,5 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     public PageIterable<MilestoneContributionAmount> getContributionAmounts() {
         return new MilestoneContributionAmountList(getDao().getContributionAmounts());
     }
+
 }

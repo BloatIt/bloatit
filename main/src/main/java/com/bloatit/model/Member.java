@@ -389,6 +389,10 @@ public final class Member extends Actor<DaoMember> implements User {
         return new MilestoneList(getDao().getMilestoneToInvoice());
     }
 
+    public PageIterable<Milestone> getMilestones() {
+        return new MilestoneList(getDao().getMilestones());
+    }
+
     // TODO make right managements
     public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
         return new UserContentList(getDao().getActivity());

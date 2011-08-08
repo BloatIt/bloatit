@@ -105,6 +105,34 @@ import com.bloatit.framework.utils.datetime.DateUtils;
     		            @NamedQuery(
 	                        name = "team.getMoneyWithdrawal.size",
 	                        query = "select count(*) from DaoMoneyWithdrawal as x where x.actor = :actor"),
+                        @NamedQuery(
+                                    name = "team.getMilestoneToInvoice",
+                                    query = "SELECT bs " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS EMPTY"),
+                        @NamedQuery(
+                                    name = "team.getMilestoneToInvoice.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.asTeam = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS EMPTY"),
+                        @NamedQuery(
+                                    name = "team.getMilestones",
+                                    query = "SELECT bs " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.asTeam = :this "),
+                        @NamedQuery(
+                                    name = "team.getMilestones.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.asTeam = :this "),
                        }
              )
 // @formatter:on
@@ -249,6 +277,15 @@ public class DaoTeam extends DaoActor {
         this.teamMembership.remove(link);
         member.getTeamMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
+    }
+
+    public PageIterable<DaoMilestone> getMilestoneToInvoice() {
+        return new QueryCollection<DaoMilestone>("team.getMilestoneToInvoice").setEntity("this", this)
+                                                                              .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
+    }
+
+    public PageIterable<DaoMilestone> getMilestones() {
+        return new QueryCollection<DaoMilestone>("team.getMilestones").setEntity("this", this);
     }
 
     /**

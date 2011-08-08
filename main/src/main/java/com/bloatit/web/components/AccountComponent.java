@@ -49,9 +49,12 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Image;
 import com.bloatit.model.Invoice;
 import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
+import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -71,7 +74,10 @@ public class AccountComponent extends HtmlPageComponent {
         add(accountPage);
         accountPage.add(generateAccountSolde(team));
         accountPage.add(new HtmlTitle(tr("Account informations – {0}", team.getDisplayName()), 1));
-        accountPage.add(generateAccountMovementList(team.getContributions(), team.getBankTransactions(), team.getMoneyWithdrawals()));
+        accountPage.add(generateAccountMovementList(team.getContributions(),
+                                                    team.getBankTransactions(),
+                                                    team.getMoneyWithdrawals(),
+                                                    team.getMilestones()));
     }
 
     public AccountComponent(final Member me) throws UnauthorizedOperationException {
@@ -79,7 +85,7 @@ public class AccountComponent extends HtmlPageComponent {
         add(accountPage);
         accountPage.add(generateAccountSolde(me));
         accountPage.add(new HtmlTitle(tr("Account informations – {0}", me.getDisplayName()), 1));
-        accountPage.add(generateAccountMovementList(me.getContributions(), me.getBankTransactions(), me.getMoneyWithdrawals()));
+        accountPage.add(generateAccountMovementList(me.getContributions(), me.getBankTransactions(), me.getMoneyWithdrawals(), me.getMilestones()));
 
     }
 
@@ -109,7 +115,8 @@ public class AccountComponent extends HtmlPageComponent {
 
     private HtmlElement generateAccountMovementList(final PageIterable<Contribution> contributions,
                                                     final PageIterable<BankTransaction> bankTransactions,
-                                                    final PageIterable<MoneyWithdrawal> moneyWithdrawals) {
+                                                    final PageIterable<MoneyWithdrawal> moneyWithdrawals,
+                                                    final PageIterable<Milestone> milestones) {
         final List<HtmlTableLine> lineList = new ArrayList<HtmlTableLine>();
         final Sorter<HtmlTableLine, Date> sorter = new Sorter<HtmlTableLine, Date>(lineList);
 
@@ -142,6 +149,13 @@ public class AccountComponent extends HtmlPageComponent {
                     }
                 }
             }
+
+            for (final Milestone milestone : milestones) {
+                if (milestone.getAmountPaid().compareTo(BigDecimal.ZERO) > 0) {
+                    sorter.add(new MilestoneLine(milestone), milestone.getLastPaymentDate());
+                }
+            }
+
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Right fail on account page", e);
         }
@@ -222,6 +236,54 @@ public class AccountComponent extends HtmlPageComponent {
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature(), TabKey.contributions);
             featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
             title.add(new HtmlMixedText(tr("Contributed to a failed <0::feature>"), featurePageUrl.getHtmlLink()));
+            return title;
+        }
+    }
+
+    private static class MilestoneLine extends HtmlTableLine {
+
+        private final Milestone milestone;
+
+        public MilestoneLine(final Milestone milestone) throws UnauthorizedOperationException {
+            this.milestone = milestone;
+            addCell(new MoneyVariationCell(true));
+            addCell(new TitleCell(milestone.getLastPaymentDate(), generateMilestoneTitle()));
+            addCell(new DescriptionCell(tr("Feature summary"), generateMilestoneDescription()));
+            addCell(new MoneyCell(milestone.getAmountPaid()));
+        }
+
+        private HtmlDiv generateMilestoneDescription() {
+            final HtmlDiv description = new HtmlDiv("description");
+            FeatureImplementation feature = milestone.getOffer().getFeature();
+            final HtmlSpan softwareLink = new SoftwaresTools.Link(feature.getSoftware());
+            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", feature.getTitle()), softwareLink);
+
+            String statusString = "";
+            switch (feature.getFeatureState()) {
+                case DEVELOPPING:
+                    statusString = tr("In development");
+                    break;
+                case FINISHED:
+                    statusString = tr("Success");
+                    break;
+                case DISCARDED:
+                    statusString = tr("Failed");
+                    break;
+                case PENDING:
+                case PREPARING:
+                    statusString = tr("Funding");
+                    break;
+            }
+
+            description.add(new HtmlDefineParagraph(tr("Description: "), descriptionString));
+            description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
+            return description;
+        }
+
+        private HtmlDiv generateMilestoneTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(milestone.getOffer().getFeature(), TabKey.offers);
+            title.add(new HtmlMixedText(tr("Payed for <0::milestone> development"), featurePageUrl.getHtmlLink()));
             return title;
         }
     }
