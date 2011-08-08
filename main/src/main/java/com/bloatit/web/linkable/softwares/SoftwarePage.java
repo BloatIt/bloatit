@@ -36,7 +36,6 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.HtmlFeatureSummary;
 import com.bloatit.web.components.HtmlPagedList;
@@ -44,11 +43,9 @@ import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
-import com.sun.xml.internal.fastinfoset.sax.Features;
 
 @ParamContainer("softwares/%software%")
 public final class SoftwarePage extends ElveosPage {

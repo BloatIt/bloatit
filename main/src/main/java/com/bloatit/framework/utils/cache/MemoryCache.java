@@ -18,6 +18,7 @@ package com.bloatit.framework.utils.cache;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,12 +28,9 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
-import edu.emory.mathcs.backport.java.util.Collections;
-
 public class MemoryCache implements Cache {
     private static MemoryCache instance;
 
-    @SuppressWarnings("unchecked")
     private final Map<String, String> cache = Collections.synchronizedMap(new LinkedHashMap<String, String>() {
         private static final long serialVersionUID = 8626612206780654805L;
 

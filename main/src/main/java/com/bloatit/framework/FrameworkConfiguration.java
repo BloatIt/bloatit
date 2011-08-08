@@ -18,14 +18,14 @@ package com.bloatit.framework;
 
 import static com.bloatit.common.ConfigurationManager.SHARE_DIR;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.RetryPolicy;
 import com.bloatit.framework.social.MicroBlogManager;
-
-import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
