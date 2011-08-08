@@ -400,31 +400,6 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     /**
-     * Validate contributions.
-     * 
-     * @param percent the percent
-     */
-    void validateContributions(final int percent) {
-        if (this.selectedOffer == null) {
-            throw new BadProgrammerException("The selectedOffer shouldn't be null here !");
-        }
-        if (percent == 0) {
-            return;
-        }
-        for (final DaoContribution contribution : getContributions()) {
-            try {
-                if (contribution.getState() == DaoContribution.State.PENDING) {
-                    final DaoMilestone milestone = this.selectedOffer.getCurrentMilestone();
-                    final BigDecimal amount = contribution.validate(milestone, percent);
-                    DaoMilestoneContributionAmount.updateOrCreate(milestone, contribution, amount);
-                }
-            } catch (final NotEnoughMoneyException e) {
-                Log.data().fatal("Cannot validate contribution, not enought money.", e);
-            }
-        }
-    }
-
-    /**
      * Called by contribution when canceled.
      * 
      * @param amount the amount

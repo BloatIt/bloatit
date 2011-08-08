@@ -45,8 +45,10 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
+import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
@@ -321,19 +323,19 @@ public class DaoMilestone extends DaoIdentifiable {
         //
         if (this.levelToValidate == Level.FATAL && (force || shouldValidatePart(Level.FATAL))) {
             this.levelToValidate = Level.MAJOR;
-            this.offer.getFeature().validateContributions(fatalPercent);
+            validateContributions(fatalPercent);
         }
         // if fatalBugPercent == 100, there is nothing left to validate so it is
         // automatically validated.
         if (this.levelToValidate == Level.MAJOR && (force || shouldValidatePart(Level.MAJOR) || this.fatalBugsPercent == 100)) {
             this.levelToValidate = Level.MINOR;
-            this.offer.getFeature().validateContributions(majorPercent);
+            validateContributions(majorPercent);
         }
         // when minorBugPercent == 0, there is nothing left to validate so it is
         // automatically validated.
         if (this.levelToValidate == Level.MINOR && (force || shouldValidatePart(Level.MINOR) || getMinorBugsPercent() == 0)) {
             this.levelToValidate = null;
-            this.offer.getFeature().validateContributions(minorPercent);
+            validateContributions(minorPercent);
         }
         if (this.levelToValidate == null) {
             this.milestoneState = MilestoneState.VALIDATED;
@@ -341,6 +343,27 @@ public class DaoMilestone extends DaoIdentifiable {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Validate contributions.
+     * 
+     * @param percent the percent
+     */
+    private void validateContributions(final int percent) {
+        if (percent == 0) {
+            return;
+        }
+        for (final DaoContribution contribution : this.offer.getFeature().getContributions()) {
+            try {
+                if (contribution.getState() == DaoContribution.State.PENDING) {
+                    final BigDecimal amount = contribution.validate(this, percent);
+                    contribtutionAmounts.add(DaoMilestoneContributionAmount.updateOrCreate(this, contribution, amount));
+                }
+            } catch (final NotEnoughMoneyException e) {
+                Log.data().fatal("Cannot validate contribution, not enough money: " + contribution.getId(), e);
+            }
+        }
     }
 
     /**

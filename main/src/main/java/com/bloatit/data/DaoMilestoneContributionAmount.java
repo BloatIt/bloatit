@@ -31,7 +31,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 /**
- * Represent the amount paid for a contribution, for a spécific milestone.
+ * Represent the amount paid for a contribution, for a specific milestone.
  */
 @Entity
 @Cacheable
