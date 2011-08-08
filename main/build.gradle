@@ -98,7 +98,7 @@ classes.dependsOn 'msgformat'
 
 task xgettext(type: Exec) {
     // Prepare the construction of the command line
-    cmdBuilder = ['xgettext', '--language=Java', '-D', 'src/main/java/', '--from-code=UTF-8', '-ktrc:1c,2','-ktrnc:1c,2,3','-ktr','-ktrn:1,2','-o', potfile ]
+    cmdBuilder = ['xgettext', '--language=Java', '-D', 'src/main/java/', '--from-code=UTF-8', '-k', '-ktrc:1c,2','-ktrnc:1c,2,3','-ktr','-ktrn:1,2','-o', potfile ]
     
     // Add the java files
     FileTree javaFiles = fileTree('src/main/java/').include('**/*.java')
@@ -122,7 +122,7 @@ pofiles.visit { po ->
     }
     msgformat.dependsOn "msgformat_$po.relativePath"
     
-    task "msgmerge_$po.relativePath" (type:Exec) {
+    task "msgmerge_$po.relativePath" (type:Exec, dependsOn: 'xgettext') {
         commandLine = ['msgmerge', '-U', po.file.toString(), potfile ]
     }
     msgmerge.dependsOn "msgmerge_$po.relativePath"
