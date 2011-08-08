@@ -76,7 +76,7 @@ public final class MembersListPage extends ElveosPage {
 
     @Override
     protected String createPageTitle() {
-        return "Members list";
+        return Context.tr("Members list");
     }
 
     @Override
