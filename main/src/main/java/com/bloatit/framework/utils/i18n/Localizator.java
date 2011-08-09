@@ -96,7 +96,7 @@ public final class Localizator {
     }
 
     /**
-     * Shortcut for getLangyageCode()
+     * Shortcut for getLanguageCode()
      * 
      * @see #getLanguageCode()
      */

@@ -18,10 +18,13 @@ package com.bloatit.framework.webprocessor.url;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
+import com.bloatit.framework.utils.i18n.Localizator;
+import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -100,7 +103,19 @@ public abstract class Url implements Cloneable {
     private String internalUrlString(boolean multilanguage) {
         final StringBuilder sb = new StringBuilder();
         if (Context.getSession() != null && !multilanguage) {
-            sb.append('/').append(Context.getLocalizator().getCode());
+            Context.getLocalizator();
+            boolean found = false;
+            String langCode = Context.getLocalizator().getCode();
+            for (Entry<String, LanguageDescriptor> lang : Localizator.getAvailableLanguages().entrySet()) {
+                if (lang.getValue().getCode().equals(langCode)) {
+                    found = true;
+                }
+            }
+            if (found) {
+                sb.append('/').append(langCode);
+            } else {
+                sb.append("/en");
+            }
         }
         sb.append('/').append(getCode());
 

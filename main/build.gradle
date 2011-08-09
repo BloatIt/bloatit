@@ -75,8 +75,21 @@ task copyDep(type: Copy) {
 }
 
 // Liquibase
-task liquibase(type:Exec, dependsOn: 'processResources') {
-     commandLine = [ './liquibase/liquibase-launcher.sh', 'update' ]
+task liquibase(type: Exec) {
+    classpath = '--classpath='
+    sourceSets.main.runtimeClasspath.each { File file ->
+        if (!file.isDirectory()){
+    	    classpath += file.getAbsolutePath() + ':'
+        }
+    }
+    classpath += '../deployment/deployment/db'
+    commandLine = [ 'java', '-jar', './liquibase/liquibase-core-2.0.2-SNAPSHOT.jar',
+                    classpath,
+                    '--changeLogFile=../deployment/deployment/db/liquibase/current.liquibase.xml',
+		            '--url=jdbc:postgresql://localhost/bloatit',
+		            '--username=bloatit',
+		            '--password=passe',
+		            'update' ]
 }
 classes.dependsOn 'liquibase'
 

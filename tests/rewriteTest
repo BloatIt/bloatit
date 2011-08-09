@@ -1,0 +1,14 @@
+GET fr/index	200 	GREP Consulter toutes les demandes</a>
+GET fr 		200 	EQUAL
+GET fr/		200 	EQUAL
+GET fr?		200  	EQUAL
+GET fr?plop=plup 200	EQUAL
+GET fr?lang=en	200	EQUAL
+GET fr/?	200 	EQUAL
+
+GET rest/features	200 GREP <rest result="ok" request="/rest/features" >
+GET rest/features/	200 GREP <rest result="ok" request="/rest/features/" >
+GET rest/features/1	404 NOP
+GET rest/qsfkvnj	404 GREP <error code="404 Not Found" 
+GET en/rest/features	404 NOP
+
