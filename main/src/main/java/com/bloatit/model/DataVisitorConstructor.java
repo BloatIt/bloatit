@@ -20,6 +20,7 @@ import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
+import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalService;
@@ -267,6 +268,11 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     @Override
     public Identifiable<?> visit(final DaoInvoice dao) {
         return Invoice.create(dao);
+    }
+    
+    @Override
+    public Identifiable<?> visit(final DaoContributionInvoice dao) {
+        return ContributionInvoice.create(dao);
     }
 
     @Override

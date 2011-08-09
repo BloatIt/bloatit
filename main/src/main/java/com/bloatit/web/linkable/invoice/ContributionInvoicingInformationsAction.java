@@ -60,6 +60,8 @@ public final class ContributionInvoicingInformationsAction extends LoggedAction 
                                         contributionAmount.getAmount(),
                                         contributionAmount.getMilestone(),
                                         contributionAmount.getContribution());
+                
+                
             } catch (final UnauthorizedOperationException e) {
                 throw new BadProgrammerException("Fail create a ContributionInvoice", e);
             }

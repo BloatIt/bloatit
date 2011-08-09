@@ -185,6 +185,10 @@ public class DaoContributionInvoice extends DaoInvoice {
         return sellerActor;
     }
 
+    public DaoMilestone getMilestone() {
+        return milestone;
+    }
+    
     // ======================================================================
     // Visitor.
     // ======================================================================

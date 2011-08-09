@@ -25,6 +25,7 @@ import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContact;
 import com.bloatit.data.DaoContribution;
+import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFeature;
@@ -134,6 +135,9 @@ public class GenericConstructor {
         }
         if (clazz.equals(Invoice.class)) {
             return DaoInvoice.class;
+        }
+        if (clazz.equals(ContributionInvoice.class)) {
+            return DaoContributionInvoice.class;
         }
         if (clazz.equals(Contact.class)) {
             return DaoContact.class;

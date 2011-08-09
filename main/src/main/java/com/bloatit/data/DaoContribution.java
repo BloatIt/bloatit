@@ -39,7 +39,10 @@ import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.lists.ListBinder;
 
 /**
  * A contribution is a financial participation on a feature. Each contribution
@@ -52,7 +55,16 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 @NamedQueries(value = { @NamedQuery(
                            cacheable=true,
                            name = "contribution.getMoneyRaised",
-                           query = "SELECT sum(amount) FROM DaoContribution")
+                           query = "SELECT sum(amount) FROM DaoContribution"),
+                        @NamedQuery(
+                                    name = "contribution.getInvoices",
+                                    query = "FROM com.bloatit.data.DaoContributionInvoice invoice_ " +
+                                    "WHERE invoice_.contribution = :this "),
+                        @NamedQuery(
+                                    name = "contribution.getInvoices.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoContributionInvoice invoice_ " +
+                                    "WHERE invoice_.contribution = :this ")
                        }
              )
 // @formatter:on
@@ -100,6 +112,10 @@ public class DaoContribution extends DaoUserContent {
      */
     @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST)
     private final List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
+    
+    
+    @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST, mappedBy="contribution")
+    private final List<DaoContributionInvoice> invoices = new ArrayList<DaoContributionInvoice>();
 
     @Basic(optional = false)
     private int percentDone;
@@ -263,6 +279,15 @@ public class DaoContribution extends DaoUserContent {
      */
     public DaoFeature getFeature() {
         return this.feature;
+    }
+    
+    /**
+     * Gets the feature.
+     * 
+     * @return the feature
+     */
+    public PageIterable<DaoContributionInvoice> getInvoices() {
+        return new MappedList<DaoContributionInvoice>(invoices);
     }
 
     @Override

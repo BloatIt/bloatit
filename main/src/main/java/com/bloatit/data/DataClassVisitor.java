@@ -16,6 +16,8 @@
 //
 package com.bloatit.data;
 
+import com.bloatit.model.Identifiable;
+
 /**
  * This is the interface that all the visitors from the Data layer have to
  * implement.
@@ -209,7 +211,7 @@ public interface DataClassVisitor<ReturnType> {
      * @return what you want
      */
     ReturnType visit(DaoInvoice dao);
-
+    ReturnType visit(DaoContributionInvoice dao);
     /**
      * visit a persistent object.
      * 
@@ -251,5 +253,7 @@ public interface DataClassVisitor<ReturnType> {
     ReturnType visit(DaoExternalService daoExternalService);
 
     ReturnType visit(DaoExternalServiceMembership daoExternalServiceMembership);
+
+    
 
 }

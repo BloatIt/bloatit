@@ -1,1 +1,1 @@
-deployment/deployment/generatewww.sh "$PWD/resources/www_src" "$PWD/www" "$PWD/main//target/classes/build.properties"
+deployment/deployment/generatewww.sh "$PWD/resources/www_src" "$PWD/www" "$PWD/main/build/classes/main/build.properties"

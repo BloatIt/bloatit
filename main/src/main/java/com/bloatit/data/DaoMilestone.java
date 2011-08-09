@@ -534,7 +534,12 @@ public class DaoMilestone extends DaoIdentifiable {
     public BigDecimal getAmountPaid() {
         final Query q = SessionManager.getNamedQuery("milestone.getAmountPaid");
         q.setEntity("this", this);
-        return (BigDecimal) q.uniqueResult();
+        BigDecimal uniqueResult = (BigDecimal) q.uniqueResult();
+        if(uniqueResult == null) {
+            return BigDecimal.ZERO;
+        }
+        
+        return uniqueResult;
     }
 
     /**
