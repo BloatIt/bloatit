@@ -169,6 +169,7 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
+                                    "AND offer_.asTeam = null " +
                                     "AND bs.milestoneState = :state " +
                                     "AND bs.invoices IS EMPTY"),
                         @NamedQuery(
@@ -177,8 +178,23 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
+                                    "AND offer_.asTeam = null " +
                                     "AND bs.milestoneState = :state " +
-                                    "AND bs.invoices IS EMPTY")
+                                    "AND bs.invoices IS EMPTY"),
+                        @NamedQuery(
+                                    name = "member.getMilestones",
+                                    query = "SELECT bs " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND offer_.asTeam = null "),
+                        @NamedQuery(
+                                    name = "member.getMilestones.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND offer_.asTeam = null ")
                    }
 
              )
@@ -843,6 +859,10 @@ public class DaoMember extends DaoActor {
     public PageIterable<DaoMilestone> getMilestoneToInvoice() {
         return new QueryCollection<DaoMilestone>("member.getMilestoneToInvoice").setEntity("this", this)
                                                                                 .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
+    }
+
+    public PageIterable<DaoMilestone> getMilestones() {
+        return new QueryCollection<DaoMilestone>("member.getMilestones").setEntity("this", this);
     }
 
     /**

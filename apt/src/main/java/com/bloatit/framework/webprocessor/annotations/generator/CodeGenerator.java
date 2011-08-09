@@ -240,6 +240,7 @@ public class CodeGenerator {
 
         final Method constructor = clazz.addConstructor();
         
+        
         constructor.addParameter("Parameters", "params");
         constructor.addParameter("SessionParameters", "session");
 
@@ -252,6 +253,7 @@ public class CodeGenerator {
             defaultConstructor.setModifier(Modifier.PRIVATE);
         } else {
             defaultConstructor = generatedConstructor;
+            constructor.addLine("this(false);");
         }
         for (final ParameterDescription param : desc.getParameters()) {
 

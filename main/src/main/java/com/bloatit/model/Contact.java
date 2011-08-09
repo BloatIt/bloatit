@@ -17,8 +17,17 @@
 package com.bloatit.model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springframework.format.number.NumberFormatter;
 
 import com.bloatit.data.DaoContact;
+import com.bloatit.framework.utils.datetime.DateUtils;
 
 /**
  * This is a invoicing contact.
@@ -222,11 +231,98 @@ public final class Contact {
         dao.setInvoiceIdNumber(invoiceIdNumber);
     }
 
+    /**
+     * Return the invoice id template with the following fields replaced by the
+     * right values and increment the next id number <code>
+     * {ID|x} : id number on x characters
+     * {YEAR|2} : year on 2 characters
+     * {YEAR|4} : year on 4 characters
+     * {MONTH} : month on 4 characters
+     * {DAY} : day of the month on 2 characters
+     * {YDAY} : day of the year on 2 characters
+     * {WEEK} : week of the year on 2 characters
+     * 
+     * Exemple:
+     * 
+     * "ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}" 
+     * 
+     * The 2011/09/08 with next id number at 42 give ELVEOS-20110809-F0042
+     * </code>
+     * 
+     * @return invoice id
+     */
     public String pickNextInvoiceId() {
-        // TODO Auto-generated method stub
-        return null;
+
+        InvoiceIdFormatter formatter = new InvoiceIdFormatter(getInvoiceIdTemplate());
+        String invoiceId = formatter.format(getInvoiceIdNumber());
+
+        setInvoiceIdNumber(getInvoiceIdNumber().add(BigDecimal.ONE));
+        return invoiceId;
+
     }
 
+    private static class InvoiceIdFormatter {
+        private final String template;
+        private String output;
+
+        public InvoiceIdFormatter(String template) {
+            this.template = template;
+
+        }
+        /*
+        * {ID|x} : id number on x characters
+        * {YEAR} : year on 4 characters
+        * {MONTH} : month on 4 characters
+        * {DAY} : day of the month on 2 characters
+        * {YDAY} : day of the year on 2 characters
+        * {WEEK} : week of the year on 2 characters
+        */
+        public String format(BigDecimal invoiceIdNumber) {
+            
+            this.output = this.template;
+            
+            GregorianCalendar gregorianCalendar = new GregorianCalendar();
+            
+            replaceNumber("YEAR", 4, gregorianCalendar.get(Calendar.YEAR));
+            replaceNumber("MONTH", 2, gregorianCalendar.get(Calendar.MONTH));
+            replaceNumber("DAY", 2, gregorianCalendar.get(Calendar.DAY_OF_MONTH));
+            replaceNumber("YDAY", 2, gregorianCalendar.get(Calendar.DAY_OF_YEAR));
+            replaceNumber("WEEK", 2, gregorianCalendar.get(Calendar.WEEK_OF_YEAR));
+            replaceNumber("ID", 4, invoiceIdNumber.intValue());
+            
+            return this.output;
+        }
+
+        private void replaceNumber(String token, int defaultLength, int value) {
+            
+            Pattern pattern = Pattern.compile("^(.*)(\\{"+token+"(\\|([0-9]+))?\\})(.*)");
+
+            Matcher matcher = pattern.matcher(this.output);
+            
+            while (matcher.find()) {
+                
+                int length = defaultLength;
+                if(matcher.group(4) != null) {
+                    length = Integer.parseInt(matcher.group(4));
+                }
+                
+                DecimalFormat df = new DecimalFormat(multiply("0", length));
+                
+                this.output = matcher.group(1)+df.format(value) +matcher.group(5);
+            }
+            
+        }
+        
+        private String multiply(String string, int count) {
+            StringBuffer out = new StringBuffer();
+            for(int i=0; i<count; i++) {
+                out.append(string);
+            }
+            return out.toString();
+        }
+
+    }
+    
     // ///////////////////////////
     // Unprotected methods
 

@@ -43,7 +43,7 @@ import com.bloatit.web.components.InvoicingContactTab;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.members.tabs.AccountTab;
 import com.bloatit.web.linkable.members.tabs.ActivityTab;
-import com.bloatit.web.linkable.members.tabs.InvitationsTab;
+import com.bloatit.web.linkable.members.tabs.TasksTab;
 import com.bloatit.web.linkable.money.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.money.SideBarWithdrawMoneyBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -68,7 +68,7 @@ public final class MemberPage extends ElveosPage {
     private final MemberPageUrl url;
 
     public final static String MEMBER_TAB_PANE = "tab";
-    public final static String INVITATIONS_TAB = "invitations";
+    public final static String TASKS_TAB = "tasks";
     public final static String ACTIVITY_TAB = "activity";
     public final static String ACCOUNT_TAB = "account";
     public final static String INVOICING_TAB = "invoicing";
@@ -242,8 +242,8 @@ public final class MemberPage extends ElveosPage {
         tabPane.addTab(activity);
         tabPane.addTab(new AccountTab(member, tr("Account"), ACCOUNT_TAB));
         long nb;
-        if ((nb = member.getInvitationCount()) > 0) {
-            tabPane.addTab(new InvitationsTab(member, tr("Invitations&nbsp;({0})", nb), INVITATIONS_TAB));
+        if ((nb = (member.getInvitationCount()+member.getMilestoneToInvoice().size())) > 0) {
+            tabPane.addTab(new TasksTab(member, tr("Tasks&nbsp;({0})", nb), TASKS_TAB));
         }
 
         tabPane.addTab(new InvoicingContactTab(member, tr("Invoicing"), INVOICING_TAB));
@@ -293,7 +293,7 @@ public final class MemberPage extends ElveosPage {
 
     public static MemberPageUrl MyMessagesUrl(final Member member) {
         final MemberPageUrl memberPageUrl = new MemberPageUrl(member);
-        memberPageUrl.setActiveTabKey(INVITATIONS_TAB);
+        memberPageUrl.setActiveTabKey(TASKS_TAB);
         // memberPageUrl.setAnchor(MEMBER_TAB_PANE);
         return memberPageUrl;
     }

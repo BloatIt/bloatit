@@ -16,6 +16,8 @@
 //
 package com.bloatit.web.linkable.invoice;
 
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -40,12 +42,17 @@ public class ModifyInvoicingContactProcess extends WebProcess {
     @SuppressWarnings("unused")
     @RequestParam
     private final WebProcess parentProcess;
+    
+    @RequestParam()
+    @Optional(value="false")
+    private final Boolean needAllInfos;
 
     public ModifyInvoicingContactProcess(final ModifyInvoicingContactProcessUrl url) {
         super(url);
         this.url = url;
         setActor(url.getActor());
         parentProcess = url.getParentProcess();
+        needAllInfos = url.getNeedAllInfos();
     }
 
     @Override
@@ -75,5 +82,11 @@ public class ModifyInvoicingContactProcess extends WebProcess {
     public void setActor(final Actor<?> actor) {
         this.actor = actor;
     }
+
+    public Boolean getNeedAllInfos() {
+        return needAllInfos;
+    }
+    
+    
 
 }

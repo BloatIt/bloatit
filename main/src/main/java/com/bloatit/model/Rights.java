@@ -440,7 +440,7 @@ public class Rights {
 
         @Override
         public Boolean visit(final MilestoneContributionAmount model) {
-            return null;
+            return model.getMilestone().getOffer().getAuthor().equals(member);
         }
 
         @Override

@@ -110,11 +110,12 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
         final String sellerCountry = emitterActor.getContact().getCountry();
         final String sellerLegalId = emitterActor.getContact().getLegalId();
         final String sellerTaxIdentification = emitterActor.getContact().getTaxIdentification();
-        final String receiverName = recipientActor.getContact().getName();
-        final String receiverStreet = recipientActor.getContact().getStreet();
-        final String receiverExtras = recipientActor.getContact().getExtras();
-        final String receiverCity = recipientActor.getContact().getPostalCode() + " " + recipientActor.getContact().getCity();
-        final String receiverCountry = recipientActor.getContact().getCountry();
+        Contact recipientContact = recipientActor.getContactUnprotected();
+        final String receiverName = recipientContact.getName();
+        final String receiverStreet = recipientContact.getStreet();
+        final String receiverExtras = recipientContact.getExtras();
+        final String receiverCity = recipientContact.getPostalCode() + " " + recipientContact.getCity();
+        final String receiverCountry = recipientContact.getCountry();
         final Date invoiceDate = DateUtils.now();
 
         final BigDecimal taxRate = emitterActor.getContact().getTaxRate().multiply(BigDecimal.valueOf(100));

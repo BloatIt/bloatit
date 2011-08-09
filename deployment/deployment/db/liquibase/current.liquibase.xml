@@ -15,5 +15,6 @@
     <include file="liquibase/news-feed.xml" />
     <include file="liquibase/activation-email.xml" />
     <include file="liquibase/externalservices.xml" />
+    <include file="liquibase/milestone-lastpaymentdate.xml" />
     
 </databaseChangeLog>

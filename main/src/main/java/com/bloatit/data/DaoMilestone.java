@@ -30,6 +30,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.httpclient.util.DateUtil;
 import org.hibernate.Query;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -48,11 +49,13 @@ import org.hibernate.search.annotations.Store;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
+import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.datetime.DateUtils;
 
 /**
  * The Class DaoMilestone.
@@ -91,6 +94,11 @@ import com.bloatit.framework.utils.PageIterable;
                         @NamedQuery(
                             name = "milestone.getBugs.byStateLevel.size",
                             query = "SELECT count(*) FROM DaoBug WHERE milestone = :this AND state = :state AND level = :level"),
+                        @NamedQuery(
+                            name = "milestone.getAmountPaid",
+                            query = "SELECT SUM(co.amount)" +
+                                    "FROM DaoMilestoneContributionAmount as co " +
+                                    "WHERE co.milestone = :this"),
                      }
              )
 // @formatter:on
@@ -201,6 +209,13 @@ public class DaoMilestone extends DaoIdentifiable {
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoContributionInvoice> invoices = new ArrayList<DaoContributionInvoice>();
+
+    /**
+     * The lastPaymentDate is the date of the last payment of a contribution
+     * part on this milestone.
+     */
+    @Basic(optional = true)
+    private Date lastPaymentDate;
 
     // ======================================================================
     // Construction.
@@ -359,6 +374,7 @@ public class DaoMilestone extends DaoIdentifiable {
                 if (contribution.getState() == DaoContribution.State.PENDING) {
                     final BigDecimal amount = contribution.validate(this, percent);
                     contribtutionAmounts.add(DaoMilestoneContributionAmount.updateOrCreate(this, contribution, amount));
+                    lastPaymentDate = DateUtils.now();
                 }
             } catch (final NotEnoughMoneyException e) {
                 Log.data().fatal("Cannot validate contribution, not enough money: " + contribution.getId(), e);
@@ -515,6 +531,12 @@ public class DaoMilestone extends DaoIdentifiable {
         return this.amount;
     }
 
+    public BigDecimal getAmountPaid() {
+        final Query q = SessionManager.getNamedQuery("milestone.getAmountPaid");
+        q.setEntity("this", this);
+        return (BigDecimal) q.uniqueResult();
+    }
+
     /**
      * Remember a description is a title with some content.
      * 
@@ -569,6 +591,19 @@ public class DaoMilestone extends DaoIdentifiable {
      */
     public int getMinorBugsPercent() {
         return 100 - (this.majorBugsPercent + this.fatalBugsPercent);
+    }
+
+    public PageIterable<DaoMilestoneContributionAmount> getContributionAmounts() {
+        return new MappedList<DaoMilestoneContributionAmount>(contribtutionAmounts);
+    }
+
+    public Date getLastPaymentDate() {
+        Date date = lastPaymentDate;
+        if(date == null) {
+            return DateUtils.now();
+        } else {
+            return date;
+        }
     }
 
     // ======================================================================
@@ -674,9 +709,4 @@ public class DaoMilestone extends DaoIdentifiable {
         }
         return true;
     }
-
-    public PageIterable<DaoMilestoneContributionAmount> getContributionAmounts() {
-        return new MappedList<DaoMilestoneContributionAmount>(contribtutionAmounts);
-    }
-
 }

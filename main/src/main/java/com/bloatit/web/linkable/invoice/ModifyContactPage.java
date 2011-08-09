@@ -13,6 +13,8 @@ package com.bloatit.web.linkable.invoice;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.math.BigDecimal;
+
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -85,12 +87,12 @@ public final class ModifyContactPage extends LoggedPage {
             group = new HtmlTitleBlock(tr("Your invoicing informations"), 1);
         }
 
-        group.add(generateNewInvoicingContactForm(member));
-
+        group.add(generateCommonInvoicingContactForm(member));
+        
         return group;
     }
 
-    private HtmlElement generateNewInvoicingContactForm(final Member member) {
+    private HtmlElement generateCommonInvoicingContactForm(final Member member) {
 
         // Create contact form
         final ModifyInvoicingContactActionUrl modifyInvoicingContextActionUrl = new ModifyInvoicingContactActionUrl(getSession().getShortKey(),
@@ -150,6 +152,56 @@ public final class ModifyContactPage extends LoggedPage {
                                                  Context.tr("Country"),//
                                                  process.getActor().getContact().getCountry()));
 
+            
+            if(process.getNeedAllInfos()) {
+                final HtmlTitleBlock specificForm = new HtmlTitleBlock(Context.tr("Invoice emission"), 1);
+                
+                
+                // Invoice ID template
+                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
+                                                     Context.tr("Invoice ID template"),//
+                                                     process.getActor().getContact().getInvoiceIdTemplate()));
+                
+                // Invoice ID Number
+                BigDecimal invoiceIdNumber = process.getActor().getContact().getInvoiceIdNumber();
+                String invoiceIdNumberText = null;
+                
+                if(invoiceIdNumber != null) {
+                    invoiceIdNumberText = invoiceIdNumber.toString();
+                }
+                
+                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdNumberParameter(),//
+                                                     Context.tr("Invoice ID number"),//
+                                                     invoiceIdNumberText));
+                
+                // Legal identification
+                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getLegalIdParameter(),//
+                                                     Context.tr("Legal identification"),//
+                                                     process.getActor().getContact().getLegalId()));
+                
+
+                // Tax identification
+                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
+                                                     Context.tr("Tax identification"),//
+                                                     process.getActor().getContact().getTaxIdentification()));
+
+                
+                // Tax Rate
+                BigDecimal taxRate = process.getActor().getContact().getTaxRate();
+                String taxRateText = null;
+                
+                if(taxRate != null) {
+                    taxRateText = taxRate.toString();
+                }
+                
+                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxRateParameter(),//
+                                                     Context.tr("Tax Rate"),//
+                                                     taxRateText));
+                                 
+                newContactForm.add(specificForm);
+            }
+            
+            
             final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
             newContactForm.add(newContactButton);
         } catch (final UnauthorizedPrivateAccessException e) {
@@ -159,11 +211,11 @@ public final class ModifyContactPage extends LoggedPage {
         return newContactForm;
     }
 
-    private HtmlTextField generateTextField(final UrlParameter<String, String> parameter, final String name, final String defaultValue) {
+    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name, final String defaultValue) {
         return generateTextField(parameter, name, defaultValue, null);
     }
 
-    private HtmlTextField generateTextField(final UrlParameter<String, String> parameter,
+    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter,
                                             final String name,
                                             final String defaultValue,
                                             final String comment) {
