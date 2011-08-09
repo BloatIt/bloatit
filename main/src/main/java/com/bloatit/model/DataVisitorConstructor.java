@@ -284,8 +284,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     @Override
     public Identifiable<?> visit(final DaoMilestoneContributionAmount daoMilestoneContributionAmount) {
-        // FIXME
-        return null;
+        return MilestoneContributionAmount.create(daoMilestoneContributionAmount);
     }
 
     @Override

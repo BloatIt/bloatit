@@ -2269,7 +2269,7 @@ msgstr "Vous devez être connecté pour ajouter des coordonnées de facturation"
 
 #: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:108
 msgid "Contribution Invoicing contact"
-msgstr "Coordonées de facturation de la contribution"
+msgstr "Coordonnées de facturation de la contribution"
 
 #: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsAction.java:85
 msgid "You must be logged to generate invoices."
@@ -2282,7 +2282,7 @@ msgstr "Coordonnées de facturation {0}"
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:85
 msgid "Your invoicing informations"
-msgstr "Vos coordonées de facturation"
+msgstr "Vos coordonnées de facturation"
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:108
 msgid "Organisation name"
@@ -2336,7 +2336,7 @@ msgstr "Coordonnées de facturation"
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:218
 msgid "Invoicing contact"
-msgstr "Coordonées de facturation"
+msgstr "Coordonnées de facturation"
 
 #: com/bloatit/web/linkable/invoice/ContactBox.java:35
 msgid "Invoicing name: "

@@ -157,6 +157,10 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     public Contact getContact() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMember.Contact(), Action.READ);
+        return getContactUnprotected();
+    }
+
+    public Contact getContactUnprotected() {
         return Contact.create(getDao().getContact());
     }
 
@@ -236,6 +240,10 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     public boolean hasInvoicingContact() throws UnauthorizedPrivateAccessException {
+        return hasInvoicingContact(false);
+    }
+    
+    public boolean hasInvoicingContact(boolean all) throws UnauthorizedPrivateAccessException {
         final Contact contact = getContact();
         if (contact.getName() == null) {
             return false;
@@ -248,6 +256,24 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         }
         if (contact.getStreet() == null) {
             return false;
+        }
+
+        if (all) {
+            if (contact.getInvoiceIdNumber() == null) {
+                return false;
+            }
+            if (contact.getInvoiceIdTemplate() == null) {
+                return false;
+            }
+            if (contact.getLegalId() == null) {
+                return false;
+            }
+            if (contact.getTaxIdentification() == null) {
+                return false;
+            }
+            if (contact.getTaxRate() == null) {
+                return false;
+            }
         }
 
         return true;

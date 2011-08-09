@@ -16,6 +16,7 @@
 //
 package com.bloatit.web.linkable.invoice;
 
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -29,6 +30,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.MilestoneManager;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.url.ContributionInvoicingInformationsPageUrl;
 import com.bloatit.web.url.ContributionInvoicingProcessUrl;
@@ -60,7 +62,17 @@ public class ContributionInvoicingProcess extends WebProcess {
 
     @Override
     protected synchronized Url doProcess() {
-        return new ModifyInvoicingContactProcessUrl(actor, this);
+        try {
+            if(actor.hasInvoicingContact(true)) {
+                return new ContributionInvoicingInformationsPageUrl(this);
+            } else {
+                ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor, this);
+                modifyInvoicingContactProcessUrl.setNeedAllInfos(true);
+                return modifyInvoicingContactProcessUrl;
+            }
+        } catch (UnauthorizedPrivateAccessException e) {
+            throw new BadProgrammerException("No access to invoicing informations in ContributionInvocingProcess", e);
+        }
     }
 
     @Override

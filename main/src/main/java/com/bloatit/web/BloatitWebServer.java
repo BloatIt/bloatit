@@ -73,6 +73,7 @@ import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturePageAlias;
+import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsAction;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsPage;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingProcess;
 import com.bloatit.web.linkable.invoice.InvoiceResource;
@@ -309,9 +310,10 @@ public class BloatitWebServer extends WebProcessor {
             return new ExceptionAdministrationPage(new ExceptionAdministrationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ContributionInvoicingInformationsPageUrl.matches(pageCode)) {
-            return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(pageCode,
-                                                                                                          postGetParameters,
-                                                                                                          session.getParameters()));
+            return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ContributionInvoicingInformationsActionUrl.matches(pageCode)) {
+            return new ContributionInvoicingInformationsAction(new ContributionInvoicingInformationsActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (AdminGlobalNotificationPageUrl.matches(pageCode)) {
             return new AdminGlobalNotificationPage(new AdminGlobalNotificationPageUrl(pageCode, postGetParameters, session.getParameters()));

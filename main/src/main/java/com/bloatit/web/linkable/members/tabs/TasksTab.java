@@ -34,10 +34,10 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.ContributionInvoicingProcessUrl;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 
-public class InvitationsTab extends HtmlTab {
+public class TasksTab extends HtmlTab {
     private final Member member;
 
-    public InvitationsTab(final Member member, final String title, final String tabKey) {
+    public TasksTab(final Member member, final String title, final String tabKey) {
         super(title, tabKey);
         this.member = member;
     }

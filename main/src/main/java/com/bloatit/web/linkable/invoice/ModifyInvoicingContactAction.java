@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.invoice;
 
+import java.math.BigDecimal;
+
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
@@ -20,6 +22,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.actions.LoggedAction;
@@ -60,6 +63,27 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
     @Optional
     private final String extras;
 
+    // Specific informations
+    @RequestParam(role = Role.POST)
+    @Optional()
+    private final String invoiceIdTemplate;
+
+    @RequestParam(role = Role.POST)
+    @Optional()
+    private final BigDecimal invoiceIdNumber;
+
+    @RequestParam(role = Role.POST)
+    @Optional()
+    private final String legalId;
+
+    @RequestParam(role = Role.POST)
+    @Optional()
+    private final String taxIdentification;
+
+    @RequestParam(role = Role.POST)
+    @Optional()
+    private final BigDecimal taxRate;
+
     private final ModifyInvoicingContactActionUrl url;
 
     public ModifyInvoicingContactAction(final ModifyInvoicingContactActionUrl url) {
@@ -72,6 +96,14 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
         this.city = url.getCity();
         this.country = url.getCountry();
         this.extras = url.getExtras();
+
+        // Specific informations
+
+        this.invoiceIdTemplate = url.getInvoiceIdTemplate();
+        this.invoiceIdNumber = url.getInvoiceIdNumber();
+        this.legalId = url.getLegalId();
+        this.taxIdentification = url.getTaxIdentification();
+        this.taxRate = url.getTaxRate();
     }
 
     @Override
@@ -84,6 +116,15 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
             process.getActor().getContact().setPostalCode(postalCode);
             process.getActor().getContact().setCity(city);
             process.getActor().getContact().setCountry(country);
+            
+            if (process.getNeedAllInfos()) {
+                process.getActor().getContact().setInvoiceIdTemplate(invoiceIdTemplate);
+                process.getActor().getContact().setInvoiceIdNumber(invoiceIdNumber);
+                process.getActor().getContact().setLegalId(legalId);
+                process.getActor().getContact().setTaxIdentification(taxIdentification);
+                process.getActor().getContact().setTaxRate(taxRate);
+            }
+
         } catch (final UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
         }
@@ -93,7 +134,35 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
+
+        boolean isOk = true;
+
+        if (process.getNeedAllInfos()) {
+
+            isOk &= checkOptional(this.invoiceIdTemplate, Context.tr("You must add an invoice No template."), url.getInvoiceIdTemplateParameter());
+            isOk &= checkOptional(this.invoiceIdNumber, Context.tr("You must add an invoice No initial value."), url.getInvoiceIdNumberParameter());
+            isOk &= checkOptional(this.legalId, Context.tr("You must add a legal ID ."), url.getLegalIdParameter());
+            isOk &= checkOptional(this.taxIdentification, Context.tr("You must add a tax identification."), url.getTaxIdentificationParameter());
+            isOk &= checkOptional(this.taxRate, Context.tr("You must add a tax rate."), url.getTaxRateParameter());
+
+        }
+
+        if (!isOk) {
+            return new ModifyContactPageUrl(process);
+        }
+
         return NO_ERROR;
+    }
+
+    private boolean checkOptional(Object object, String errorText, UrlParameter parameter) {
+        if (object == null) {
+            parameter.addErrorMessage(errorText);
+            session.notifyError(errorText);
+            return false;
+        }
+
+        return true;
+
     }
 
     @Override
@@ -114,6 +183,14 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
         session.addParameter(url.getPostalCodeParameter());
         session.addParameter(url.getCityParameter());
         session.addParameter(url.getCountryParameter());
+
+        if (process.getNeedAllInfos()) {
+            session.addParameter(url.getInvoiceIdTemplateParameter());
+            session.addParameter(url.getInvoiceIdNumberParameter());
+            session.addParameter(url.getLegalIdParameter());
+            session.addParameter(url.getTaxIdentificationParameter());
+            session.addParameter(url.getTaxRateParameter());
+        }
 
     }
 
