@@ -71,7 +71,6 @@ WWW=$UPLOAD_DIR/www_src/
 DEST=$DISTANT_NAME@$HOST:
 SOURCE_CLASSES=$SOURCE/main/build/classes/main/
 SOURCE_DEPENDENCIES=$SOURCE/main/build/dependencies/
-SOURCE_RESOURCES=$SOURCE/main/build/resources/main/
 SOURCE_WWW=$SOURCE/resources/www_src/
 SOURCE_UP_CONF_DIR=$SOURCE/etc/
 SOURCE_UP_SHARE_DIR=$SOURCE/share/
@@ -119,10 +118,13 @@ log_date "Sending bloatit classes to $DEST$CLASSES"
 $RSYNC $PERMS --exclude="$DEPEDENCIES" --include="*/**" --exclude="*.xml" --exclude="*.properties" $SOURCE_CLASSES $DEST$CLASSES
 exit_on_failure $?
 
+
+# Take the xml and properties file in the root CLASS folder and put them into 
+# the RESSOURCE folder. 
 #Send resources
 # This is done to make sure local modif are not errased. 
-log_date "Sending java resources to $DEST$UP_RESOURCES"
-$RSYNC $PERMS $SOURCE_RESOURCES $DEST$UP_RESOURCES
+log_date "Sending bloatit ressources to $DEST$UP_RESSOURCES"
+$RSYNC $PERMS --include="*.xml" --include="*.properties" --exclude="**" $SOURCE_CLASSES $DEST$UP_RESSOURCES
 exit_on_failure $?
 
 # Send the data in www folder
