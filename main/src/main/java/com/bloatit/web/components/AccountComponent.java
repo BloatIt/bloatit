@@ -213,22 +213,18 @@ public class AccountComponent extends HtmlPageComponent {
 
             PageIterable<ContributionInvoice> invoices = contribution.getInvoices();
             if (invoices.size() > 0) {
-                HtmlList invoicesList = new HtmlList();
+
+                HtmlSpan invoiceList = new HtmlSpan();
 
                 for (ContributionInvoice invoice : invoices) {
-                    invoice.getMilestone();
 
-                    HtmlDiv milestoneInvoice = new HtmlDiv();
+                    invoiceList.addText(" ");
+                    invoiceList.add(new ContributionInvoiceResourceUrl(invoice).getHtmlLink(Context.tr("milestone {0}", invoice.getMilestone()
+                                                                                                                               .getPosition())));
 
-                    milestoneInvoice.addText(Context.tr("Milestone {0}:", invoice.getMilestone().getPosition()));
-                    try {
-                        milestoneInvoice.add(new ContributionInvoiceResourceUrl(invoice).getHtmlLink("invoice-" + invoice.getInvoiceNumber() + ".pdf"));
-                    } catch (final UnauthorizedOperationException e) {
-                        throw new ShallNotPassException("Right fail on account page", e);
-                    }
-                    invoicesList.add(new HtmlListItem(milestoneInvoice));
                 }
-                description.add(new HtmlDefineParagraph(tr("Invoices: "), invoicesList));
+                description.add(new HtmlDefineParagraph(tr("Invoices: "), invoiceList));
+
             }
             return description;
         }
