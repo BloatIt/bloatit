@@ -23,6 +23,8 @@ import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.model.invoicePdf.InvoicePdfGenerator;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtInvoice;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
 /**
@@ -169,6 +171,20 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                        milestone.getDao(),
                                                        contribution.getDao());
     }
+    
+    public String getFile() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtInvoice.File(), Action.READ);
+        return getDao().getFile();
+    }
+
+    public String getInvoiceNumber() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtInvoice.InvoiceNumber(), Action.READ);
+        return getDao().getInvoiceNumber();
+    }
+    
+    public Milestone getMilestone() {
+        return Milestone.create(getDao().getMilestone());
+    }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
@@ -203,5 +219,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
     final Actor<?> getEmitterActorUnprotected() {
         return (Actor<?>) getDao().getEmitterActor().accept(new DataVisitorConstructor());
     }
+
+    
 
 }

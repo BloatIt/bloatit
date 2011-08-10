@@ -19,6 +19,9 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoContribution;
+import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.lists.ContributionInvoiceList;
+import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtContribution;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -116,6 +119,11 @@ public final class Contribution extends UserContent<DaoContribution> {
     // no right management: this is public data
     public Feature getFeature() {
         return FeatureImplementation.create(getDao().getFeature());
+    }
+    
+ // no right management: this is public data
+    public PageIterable<ContributionInvoice> getInvoices() {
+        return new ContributionInvoiceList(getDao().getInvoices());
     }
 
     /**

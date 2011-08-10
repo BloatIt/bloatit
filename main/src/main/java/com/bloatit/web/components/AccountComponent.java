@@ -34,6 +34,8 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlList;
+import com.bloatit.framework.webprocessor.components.HtmlListItem;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
@@ -49,6 +51,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Image;
 import com.bloatit.model.Invoice;
@@ -65,6 +68,7 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
+import com.bloatit.web.url.ContributionInvoiceResourceUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.InvoiceResourceUrl;
 
@@ -206,6 +210,22 @@ public class AccountComponent extends HtmlPageComponent {
 
             description.add(new HtmlDefineParagraph(tr("Description: "), descriptionString));
             description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
+
+            PageIterable<ContributionInvoice> invoices = contribution.getInvoices();
+            if (invoices.size() > 0) {
+
+                HtmlSpan invoiceList = new HtmlSpan();
+
+                for (ContributionInvoice invoice : invoices) {
+
+                    invoiceList.addText(" ");
+                    invoiceList.add(new ContributionInvoiceResourceUrl(invoice).getHtmlLink(Context.tr("milestone {0}", invoice.getMilestone()
+                                                                                                                               .getPosition())));
+
+                }
+                description.add(new HtmlDefineParagraph(tr("Invoices: "), invoiceList));
+
+            }
             return description;
         }
 

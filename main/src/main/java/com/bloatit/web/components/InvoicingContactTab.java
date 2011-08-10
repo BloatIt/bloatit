@@ -16,9 +16,12 @@
 //
 package com.bloatit.web.components;
 
+import java.math.BigDecimal;
+
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -61,14 +64,19 @@ public class InvoicingContactTab extends HtmlTab {
             redirectUrl = memberPageUrl;
         }
 
-        modify.add(new ModifyInvoicingContactProcessUrl(actor, new RedirectWebProcess(redirectUrl)).getHtmlLink(Context.tr("Change invoicing informations")));
-
         Contact contact;
+        boolean all;
         try {
             contact = actor.getContact();
+            all = actor.hasInvoicingContact(true);
         } catch (final UnauthorizedPrivateAccessException e) {
             throw new ShallNotPassException(e);
         }
+
+        ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor,
+                                                                                                                 new RedirectWebProcess(redirectUrl));
+        modifyInvoicingContactProcessUrl.setNeedAllInfos(all);
+        modify.add(modifyInvoicingContactProcessUrl.getHtmlLink(Context.tr("Change invoicing informations")));
 
         final HtmlList memberIdList = new HtmlList();
         master.add(memberIdList);
@@ -107,6 +115,45 @@ public class InvoicingContactTab extends HtmlTab {
         country = Context.tr("Country: ");
         memberIdList.add(new HtmlDefineParagraph(country, emptyIfNull(contact.getCountry())));
 
+        if (all) {
+
+            memberIdList.add(new HtmlTitle(Context.tr("Invoice emission informations"), 2));
+
+            // Invoicing id template
+            final String invoicingIdTemplate;
+            invoicingIdTemplate = Context.tr("Invoicing id template: ");
+            memberIdList.add(new HtmlDefineParagraph(invoicingIdTemplate, emptyIfNull(contact.getInvoiceIdTemplate())));
+
+            // Invoicing id number
+            final String invoicingIdNumber;
+            invoicingIdNumber = Context.tr("Invoicing id next number: ");
+            if (contact.getInvoiceIdNumber() != null) {
+                memberIdList.add(new HtmlDefineParagraph(invoicingIdNumber, contact.getInvoiceIdNumber().toPlainString()));
+            } else {
+                memberIdList.add(new HtmlDefineParagraph(invoicingIdNumber, ""));
+            }
+
+            // Legal Id
+            final String legalId;
+            legalId = Context.tr("Legal identification: ");
+            memberIdList.add(new HtmlDefineParagraph(legalId, emptyIfNull(contact.getLegalId())));
+
+            // Tax identification
+            final String taxIdentification;
+            taxIdentification = Context.tr("Tax identification: ");
+            memberIdList.add(new HtmlDefineParagraph(taxIdentification, emptyIfNull(contact.getTaxIdentification())));
+
+            // Tax rate
+            final String taxRate;
+            taxRate = Context.tr("Tax rate: ");
+            if (contact.getTaxRate() != null) {
+                memberIdList.add(new HtmlDefineParagraph(taxRate, contact.getTaxRate().multiply(new BigDecimal("100")).toPlainString() + " %"));
+            } else {
+                memberIdList.add(new HtmlDefineParagraph(taxRate, ""));
+            }
+
+        }
+
         return master;
     }
 
@@ -116,4 +163,5 @@ public class InvoicingContactTab extends HtmlTab {
         }
         return input;
     }
+
 }

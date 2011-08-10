@@ -73,6 +73,7 @@ import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturePageAlias;
+import com.bloatit.web.linkable.invoice.ContributionInvoiceResource;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsAction;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsPage;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingProcess;
@@ -527,6 +528,10 @@ public class BloatitWebServer extends WebProcessor {
             if (InvoiceResourceUrl.matches(pageCode)) {
                 return new InvoiceResource(new InvoiceResourceUrl(pageCode, postGetParameters, session.getParameters()));
             }
+            if (ContributionInvoiceResourceUrl.matches(pageCode)) {
+                return new ContributionInvoiceResource(new ContributionInvoiceResourceUrl(pageCode, postGetParameters, session.getParameters()));
+            }
+            
         } catch (final PageNotFoundException e) {
             return new PageNotFound(new PageNotFoundUrl());
         }
