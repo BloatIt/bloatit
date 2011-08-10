@@ -2,6 +2,7 @@ package com.bloatit.web.components;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -21,11 +22,13 @@ public class NewsFeedSideBlock extends SideBarElementLayout {
         // small icons to display the host of the feed (twitter or identica)
         HtmlDiv socialFeedIcons = new HtmlDiv("feed_icons");
         master.add(socialFeedIcons);
-        HtmlImage identicaImg = new HtmlImage(new Image(WebConfiguration.getImgIdenticaIcon()), "", "feed_icon");
-        HtmlImage twitterImg = new HtmlImage(new Image(WebConfiguration.getImgTwitterIcon()), "", "feed_icon");
-        socialFeedIcons.add(identicaImg);
-        socialFeedIcons.add(twitterImg);
 
+        HtmlImage identicaImg = new HtmlImage(new Image(WebConfiguration.getImgIdenticaIcon()), "", "feed_icon");
+        HtmlLink identicaLink = new HtmlLink("http://identi.ca/elveos", identicaImg);
+        HtmlImage twitterImg = new HtmlImage(new Image(WebConfiguration.getImgTwitterIcon()), "", "feed_icon");
+        HtmlLink twitterLink = new HtmlLink("http://twitter.com/#!/elveos", twitterImg);
+        socialFeedIcons.add(identicaLink);
+        socialFeedIcons.add(twitterLink);
         master.add(new HtmlTitle(Context.tr("News feed"), 1));
 
         HtmlList feedList = new HtmlList();

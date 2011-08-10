@@ -66,11 +66,6 @@ public class MicroBlog {
         }
     }
 
-    public static void main(final String... args) {
-        final MicroBlog identica = new MicroBlog("http://identi.ca/api/statuses/update.xml", "elveos", "EH9iygELxdwrz", "identi.ca");
-        identica.post("This is a new message. It's fantastic !");
-    }
-
     public String getRealm() {
         return realm;
     }

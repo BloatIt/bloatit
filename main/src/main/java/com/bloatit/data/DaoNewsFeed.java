@@ -7,19 +7,32 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A message used to inform elveos' users of the current status.
  */
 @Entity
 //@formatter:off
-// @formatter:on
+@NamedQueries(value = { @NamedQuery(
+                          name = "newsFeed.getAll",
+                          query = "FROM DaoNewsFeed WHERE isDeleted = :isDeleted"),
+                          
+                        @NamedQuery(
+                          name = "newsFeed.getAll.size",
+                          query = "SELECT count(*) FROM DaoNewsFeed WHERE isDeleted = :isDeleted"),
+              })
+//@formatter:on
 public class DaoNewsFeed extends DaoIdentifiable {
     @Column(nullable = false, updatable = false, unique = false)
     private String message;
@@ -97,6 +110,10 @@ public class DaoNewsFeed extends DaoIdentifiable {
     // ======================================================================
     // Static accessors
     // ======================================================================
+
+    public static PageIterable<DaoNewsFeed> getAll(boolean isDeleted) {
+        return new QueryCollection<DaoNewsFeed>("newsFeed.getAll").setBoolean("isDeleted", isDeleted);
+    }
 
     // ======================================================================
     // Visitor
