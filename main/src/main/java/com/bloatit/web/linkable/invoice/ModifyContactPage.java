@@ -187,11 +187,11 @@ public final class ModifyContactPage extends LoggedPage {
 
                 
                 // Tax Rate
-                BigDecimal taxRate = process.getActor().getContact().getTaxRate();
+                BigDecimal taxRate = process.getActor().getContact().getTaxRate().multiply(new BigDecimal("100"));
                 String taxRateText = null;
                 
                 if(taxRate != null) {
-                    taxRateText = taxRate.toString();
+                    taxRateText = ""+taxRate.floatValue();
                 }
                 
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxRateParameter(),//

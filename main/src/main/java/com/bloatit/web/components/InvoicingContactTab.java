@@ -147,7 +147,7 @@ public class InvoicingContactTab extends HtmlTab {
             final String taxRate;
             taxRate = Context.tr("Tax rate: ");
             if (contact.getTaxRate() != null) {
-                memberIdList.add(new HtmlDefineParagraph(taxRate, contact.getTaxRate().multiply(new BigDecimal("100")).toPlainString() + " %"));
+                memberIdList.add(new HtmlDefineParagraph(taxRate, contact.getTaxRate().multiply(new BigDecimal("100")).floatValue() + " %"));
             } else {
                 memberIdList.add(new HtmlDefineParagraph(taxRate, ""));
             }
