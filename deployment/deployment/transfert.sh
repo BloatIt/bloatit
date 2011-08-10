@@ -123,8 +123,8 @@ exit_on_failure $?
 # the RESSOURCE folder. 
 #Send resources
 # This is done to make sure local modif are not errased. 
-log_date "Sending bloatit ressources to $DEST$UP_RESSOURCES"
-$RSYNC $PERMS --include="*.xml" --include="*.properties" --exclude="**" $SOURCE_CLASSES $DEST$UP_RESSOURCES
+log_date "Sending bloatit ressources to $DEST$UP_RESOURCES"
+$RSYNC $PERMS --include="*.xml" --include="*.properties" --exclude="**" $SOURCE_CLASSES $DEST$UP_RESOURCES
 exit_on_failure $?
 
 # Send the data in www folder
