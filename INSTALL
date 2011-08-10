@@ -1,7 +1,7 @@
 ***********************************
 * Install all needed dependancies *
 ***********************************
-sudo apt-get install maven2 nodejs gettext postgresql-client postgresql openjdk-6-jdk openjdk-6-doc openjdk-6-source lighttpd qt4-dev-tools xsel rlwrap build-essential visitors
+sudo apt-get install nodejs gettext postgresql-client postgresql openjdk-6-jdk openjdk-6-doc openjdk-6-source lighttpd qt4-dev-tools xsel rlwrap build-essential visitors libpg-java
 
 ************************************
 *  Install and configure lighttpd  *
@@ -26,9 +26,9 @@ In '/etc/lighttpd/lighttpd.conf' :
 -> Example:
 server.document-root       = "/home/fred/projets/bloatit/www"
 
--> Uncomment or add '"mod_rewrite"' in 'server.modules'
--> Uncomment or add '"mod-accesslog"' in 'server.modules'
--> Uncomment or add '"mod_expire"' in 'server.modules'
+Uncomment or add '"mod-accesslog"' in 'server.modules'
+Uncomment or add '"mod_expire"' in 'server.modules'
+# Note : if mod_rewrite is activated, remove or comment it
 
 -> Add line : 
 server.error-handler-404  = "/en/dopagenotfound" 
@@ -69,6 +69,7 @@ psql
 #> CREATE USER bloatit;
 #> ALTER ROLE bloatit WITH createdb;
 #> CREATE DATABASE bloatit OWNER bloatit;
+#> CREATE DATABASE bloatit_test OWNER bloatit;
 #> ALTER USER bloatit WITH ENCRYPTED PASSWORD 'passe' ;
 #>\q
 
@@ -92,21 +93,19 @@ cd main/liquibase
 ************************************
 *  Install gettext                 *
 ************************************
-
 sudo apt-get install gettext
 
 ************************************
 *  Configure the java server       *
 ************************************
--> copy the files/folders from etc/ to ~/.config/bloatit/
-   There are value to configure, see the comments in the files.
+copy the files/folders from etc/ to ~/.config/bloatit/
+# There are value to configure, see the comments in the files.
 
--> copy the files/folders from share/ to ~/.local/share/bloatit/
+copy the files/folders from share/ to ~/.local/share/bloatit/
 
 ************************************
 *  Configure access right          *
 ************************************
-
 The lighttpd process will need to read in ~/.local/share (depending of java 
 process user). You may need to run the java process with the lighttpd user or 
 change the right:
@@ -114,15 +113,13 @@ change the right:
 chmod 777 ~/.local
 chmod 777 ~/.local/share
 
-
 Create directory /var/local/lucene/indexes and give write right to it.
-
+sudo mkdir -p /var/local/lucene/indexes
+sudo chmod 777 /var/local/lucene/indexes
 
 ************************************
 *  Install and run                 *
 ************************************
-
 mvn clean install -Dmaven.test.skip=true
 cd main
 mvn exec:java
-
