@@ -23,14 +23,12 @@ elif [ "$1" = exec ] ; then
     sudo su -c '
     cd
     find . -type d -execdir chmod 700 {} \;
-    find . -type f -execdir chmod 100 {} \;
+    find . -type f -execdir chmod 400 {} \;
     chmod 750 .
     find www -type d -execdir chmod 750 {} \;
-    find www -type f -execdir chmod 110 {} \;
+    find www -type f -execdir chmod 440 {} \;
     find wwwdoc -type d -execdir chmod 750 {} \;
-    find wwwdoc -type f -execdir chmod 110 {} \;
-    find resources -type d -execdir chmod 750 {} \;
-    find resources -type f -execdir chmod 110 {} \;
+    find wwwdoc -type f -execdir chmod 440 {} \;
 ' $USER
 
 fi
