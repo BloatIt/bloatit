@@ -119,7 +119,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
             
             if (process.getNeedAllInfos()) {
                 process.getActor().getContact().setInvoiceIdTemplate(invoiceIdTemplate);
-                process.getActor().getContact().setInvoiceIdNumber(invoiceIdNumber);
+                process.getActor().getContact().setInvoiceIdNumber(invoiceIdNumber.setScale(0, BigDecimal.ROUND_HALF_EVEN));
                 process.getActor().getContact().setLegalId(legalId);
                 process.getActor().getContact().setTaxIdentification(taxIdentification);
                 process.getActor().getContact().setTaxRate(taxRate.divide(new BigDecimal("100"),4,  BigDecimal.ROUND_HALF_EVEN));

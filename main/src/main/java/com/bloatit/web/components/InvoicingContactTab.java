@@ -128,7 +128,7 @@ public class InvoicingContactTab extends HtmlTab {
             final String invoicingIdNumber;
             invoicingIdNumber = Context.tr("Invoicing id next number: ");
             if (contact.getInvoiceIdNumber() != null) {
-                memberIdList.add(new HtmlDefineParagraph(invoicingIdNumber, contact.getInvoiceIdNumber().toPlainString()));
+                memberIdList.add(new HtmlDefineParagraph(invoicingIdNumber, ""+contact.getInvoiceIdNumber().intValue()));
             } else {
                 memberIdList.add(new HtmlDefineParagraph(invoicingIdNumber, ""));
             }

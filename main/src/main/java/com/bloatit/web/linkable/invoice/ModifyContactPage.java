@@ -25,6 +25,8 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
+import com.bloatit.framework.webprocessor.components.form.HtmlPercentField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -167,7 +169,7 @@ public final class ModifyContactPage extends LoggedPage {
                 String invoiceIdNumberText = null;
                 
                 if(invoiceIdNumber != null) {
-                    invoiceIdNumberText = invoiceIdNumber.toString();
+                    invoiceIdNumberText = ""+invoiceIdNumber.intValue();
                 }
                 
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdNumberParameter(),//
@@ -188,15 +190,17 @@ public final class ModifyContactPage extends LoggedPage {
                 
                 // Tax Rate
                 BigDecimal taxRate = process.getActor().getContact().getTaxRate().multiply(new BigDecimal("100"));
-                String taxRateText = null;
                 
-                if(taxRate != null) {
-                    taxRateText = ""+taxRate.floatValue();
+                final FieldData fieldDataTaxRate = modifyInvoicingContextActionUrl.getTaxRateParameter().pickFieldData();
+                final HtmlPercentField inputTaxRate= new HtmlPercentField(fieldDataTaxRate.getName(),  Context.tr("Tax Rate"));
+                if (fieldDataTaxRate.getSuggestedValue() == null) {
+                    inputTaxRate.setDefaultStringValue(taxRate);
+                } else {
+                    inputTaxRate.setDefaultValue(fieldDataTaxRate.getSuggestedValue());
                 }
-                
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxRateParameter(),//
-                                                     Context.tr("Tax Rate"),//
-                                                     taxRateText));
+                inputTaxRate.setComment(Context.tr("Example: 19.6 for TVA in France."));
+                inputTaxRate.addErrorMessages(fieldDataTaxRate.getErrorMessages());
+                specificForm.add(inputTaxRate);
                                  
                 newContactForm.add(specificForm);
             }
