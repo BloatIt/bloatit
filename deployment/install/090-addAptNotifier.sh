@@ -6,10 +6,6 @@ cat << EOF
 $0: Install and configure cron-apt.
 -----------------------------
 
-### Usage 
-
-    $0 [ exec ]: Use exec to launch the task.
-
 ### Description
 
 To have a secure system we have to make frequent update.
@@ -41,6 +37,6 @@ elif [ "$1" = "exec" ] ; then
     read -p "You have to configure cron-apt (MAILTO and MAILON options) <hit return>"
     sudo vim /etc/cron-apt/config
 
-    read -p "You have to configure cron for cron-apt <hit return>"
+    read -p "You have to configure cron for cron-apt (default works) <hit return>"
     sudo vim /etc/cron.d/cron-apt
 fi

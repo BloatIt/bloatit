@@ -8,8 +8,7 @@ $0: Configure the postgresql db
 
 ### Usage
 
-You must export the USER variable so that this script know which user to use.
-(export USER=...)
+You must export the USER variable. (export USER=...)
 
 Configure the postgresql db:
 - Only local person can connect on the db
