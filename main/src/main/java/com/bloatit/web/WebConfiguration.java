@@ -230,8 +230,8 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgMessage = properties.getString("bloatit.img.message");
         imgAccountCharge = properties.getString("bloatit.img.account.charge");
         imgAccountWithdraw = properties.getString("bloatit.img.account.withdraw");
-        imgTwitterIcon = properties.getString("bloatit.img.identica.icon");
-        imgIdenticaIcon = properties.getString("bloatit.img.twitter.icon");
+        imgTwitterIcon = properties.getString("bloatit.img.twitter.icon");
+        imgIdenticaIcon = properties.getString("bloatit.img.identica.icon");
 
         // OTHERS
         defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");

@@ -25,8 +25,11 @@ public class NewsFeedManager {
      *            <i>false</i> otherwise
      * @return the list of news feed
      */
-    public static NewsFeedList getAll(final boolean deleted) {
-        // TODO Handle deleted items
-        return new NewsFeedList(DBRequests.getAll(DaoNewsFeed.class));
+    public static NewsFeedList getAll(final boolean isDeleted) {
+        if (isDeleted) {
+            return new NewsFeedList(DBRequests.getAll(DaoNewsFeed.class));
+        } else {
+            return new NewsFeedList(DaoNewsFeed.getAll(isDeleted));
+        }
     }
 }
