@@ -20,7 +20,7 @@ elif [ "$1" = exec ] ; then
 
     echo "*** configuring ssl (Creation of autosigned certificat) ..."
     sudo mkdir /etc/lighttpd/ssl/
-    sudo cd /etc/lighttpd/ssl/
+    cd /etc/lighttpd/ssl/
     sudo openssl req -new -x509 -keyout server.pem -out server.pem -days 3650 -nodes
     sudo chown www-data:www-data . -R
 
