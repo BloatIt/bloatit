@@ -45,6 +45,9 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private int xcgiListenport;
     private String xcgiListenAddress;
     private int xcgiThreadsNumber;
+    private boolean xcgiBlockerEnable;
+    private int xcgiBlockerElapse;
+    private int xcgiBlockerNbRequest;
 
     // DIRECTORIES
     private String documentationDir;
@@ -195,6 +198,18 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return configuration.xcgiThreadsNumber;
     }
 
+    public static boolean getXcgiBlockerEnable() {
+        return configuration.xcgiBlockerEnable;
+    }
+
+    public static int getXcgiBlockerElapse() {
+        return configuration.xcgiBlockerElapse;
+    }
+
+    public static int getXcgiBlockerNbRequest() {
+        return configuration.xcgiBlockerNbRequest;
+    }
+
     // ----------------------------------------------------------
     // DIRECTORIES
     // ----------------------------------------------------------
@@ -322,13 +337,16 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     }
 
     private void loadConfiguration() {
-        
+
         properties = ConfigurationManager.loadProperties("framework.properties");
 
         // Server
         xcgiThreadsNumber = properties.getInt("xcgi.threads.number");
         xcgiListenport = properties.getInt("xcgi.listenport");
         xcgiListenAddress = properties.getString("xcgi.listenAddress");
+        xcgiBlockerEnable = properties.getBoolean("xcgi.blocker.enable");
+        xcgiBlockerElapse = properties.getInt("xcgi.blocker.elapse");
+        xcgiBlockerNbRequest = properties.getInt("xcgi.blocker.nbRequest");
 
         // Resources
         ressourcesDirStorage = SHARE_DIR + properties.getString("ressources.dir.storage", "file_storage");
@@ -381,7 +399,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         imgFavicon = properties.getString("bloatit.img.favicon");
         anonymousUserTokenClass = properties.getString("bloatit.anonymousUserToken.class");
         microBlogs = new MicroBlogManager(properties.getStringArray("micro.blogs"), properties.getString("micro.blogs.password"));
-        
+
         finder = new ResourceFinder(wwwDir);
     }
 
@@ -398,10 +416,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
-    
+
     private static String find(String resource, String langCode) {
         try {
-        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
+            return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
         } catch (ExternalErrorException e) {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
         }

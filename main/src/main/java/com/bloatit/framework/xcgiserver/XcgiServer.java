@@ -26,6 +26,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +36,6 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.SessionManager;
-import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.RequestKey.Source;
 import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 
@@ -45,6 +46,31 @@ public final class XcgiServer {
 
     private final List<XcgiThread> threads = new ArrayList<XcgiThread>(NB_THREADS);
     private final List<XcgiProcessor> processors = new ArrayList<XcgiProcessor>();
+
+    private final Guard guard = new Guard();
+
+    private static class Guard {
+        private final Map<String, Integer> lastAccessedIp = new HashMap<String, Integer>();
+        private long lasteTimestamp = new Date().getTime();
+
+        public void access(String ip, long timestamp) {
+            if (timestamp > (lasteTimestamp + FrameworkConfiguration.getXcgiBlockerElapse())) {
+                lasteTimestamp = timestamp;
+                lastAccessedIp.clear();
+                lastAccessedIp.put(ip, 1);
+            } else {
+                Integer occur = lastAccessedIp.get(ip);
+                if (occur == null) {
+                    lastAccessedIp.put(ip, 1);
+                } else {
+                    lastAccessedIp.put(ip, ++occur);
+                    if (occur > FrameworkConfiguration.getXcgiBlockerNbRequest()) {
+                        Log.fakesshguard().error("Invalid user inexu from " + ip);
+                    }
+                }
+            }
+        }
+    }
 
     public XcgiServer() {
         // Nothing ?
@@ -169,6 +195,10 @@ public final class XcgiServer {
             request.append(header.getServerAddr());
             request.append('"');
             Log.framework().info(request.toString());
+
+            if (FrameworkConfiguration.getXcgiBlockerEnable()) {
+                guard.access(header.getServerAddr(), new Date().getTime());
+            }
 
             try {
                 for (final XcgiProcessor processor : getProcessors()) {
