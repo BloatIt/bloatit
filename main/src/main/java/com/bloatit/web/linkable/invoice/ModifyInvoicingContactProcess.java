@@ -19,6 +19,7 @@ package com.bloatit.web.linkable.invoice;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -40,7 +41,8 @@ public class ModifyInvoicingContactProcess extends WebProcess {
     private final ModifyInvoicingContactProcessUrl url;
 
     @SuppressWarnings("unused")
-    @RequestParam
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final WebProcess parentProcess;
     
     @RequestParam()
