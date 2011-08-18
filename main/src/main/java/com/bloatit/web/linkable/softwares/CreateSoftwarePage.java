@@ -101,7 +101,7 @@ public final class CreateSoftwarePage extends LoggedPage {
         final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
         languageInput.setDefaultValue(languageData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
         languageInput.addErrorMessages(languageData.getErrorMessages());
-        languageInput.setComment(Context.tr("Language of the descriptions."));
+        languageInput.setComment(Context.tr("Language of the description."));
         addSoftwareForm.add(languageInput);
 
         final HtmlFileInput softwareImageInput = new HtmlFileInput(CreateSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
