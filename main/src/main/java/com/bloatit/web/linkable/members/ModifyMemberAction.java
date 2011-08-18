@@ -193,7 +193,7 @@ public class ModifyMemberAction extends LoggedAction {
 
             // LOCALE
             if (langString != null || countryString != null) {
-                final String locale = (langString != null) ? langString : me.getLocale().getLanguage() + "_"
+                final String locale = ((langString != null) ? langString : me.getLocale().getLanguage()) + "_"
                         + ((countryString != null) ? countryString : me.getLocale().getCountry());
                 me.setLocal(new Locale(locale));
             }
