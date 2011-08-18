@@ -35,7 +35,12 @@ public class NewsFeedSideBlock extends SideBarElementLayout {
         master.add(feedList);
         feedList.setCssClass("feed_list");
 
+        int count = 1;
         for (final NewsFeed news : NewsFeedManager.getAll()) {
+            if (count > WebConfiguration.getFeedItemNumber()) {
+                break;
+            }
+            
             HtmlDiv feedItem = new HtmlDiv("feed_item");
             feedList.add(feedItem);
 
@@ -45,6 +50,8 @@ public class NewsFeedSideBlock extends SideBarElementLayout {
             itemDate.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(news.getCreationDate())));
             feedItem.add(itemContent);
             feedItem.add(itemDate);
+            
+            count++;
         }
     }
 }

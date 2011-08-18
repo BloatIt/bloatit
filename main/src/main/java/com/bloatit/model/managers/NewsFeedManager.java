@@ -14,6 +14,7 @@ public class NewsFeedManager {
     }
 
     /**
+     * @param i
      * @return all the non deleted news feed
      */
     public static NewsFeedList getAll() {

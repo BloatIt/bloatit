@@ -26,11 +26,11 @@ import com.bloatit.framework.utils.PageIterable;
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
                           name = "newsFeed.getAll",
-                          query = "FROM DaoNewsFeed WHERE isDeleted = :isDeleted"),
+                          query = "FROM DaoNewsFeed WHERE isDeleted = :isDeleted ORDER BY creationDate DESC"),
                           
                         @NamedQuery(
                           name = "newsFeed.getAll.size",
-                          query = "SELECT count(*) FROM DaoNewsFeed WHERE isDeleted = :isDeleted"),
+                          query = "SELECT count(*) FROM DaoNewsFeed WHERE isDeleted = :isDeleted ORDER BY creationDate DESC"),
               })
 //@formatter:on
 public class DaoNewsFeed extends DaoIdentifiable {

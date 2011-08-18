@@ -55,6 +55,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgIdenticaIcon;
     private BigDecimal defaultChargingAmount;
     private ResourceFinder finder;
+    private int feedItemNumber;
 
     private WebConfiguration() {
         super();
@@ -95,8 +96,8 @@ public class WebConfiguration extends ReloadableConfiguration {
      * @return the path to the imgPresentation
      */
     public static String getImgPresentation(final String langCode) {
-        return find(configuration.imgPresentation,langCode);
-        
+        return find(configuration.imgPresentation, langCode);
+
     }
 
     /**
@@ -145,14 +146,14 @@ public class WebConfiguration extends ReloadableConfiguration {
      * @return the imgFeatureStateSuccess
      */
     public static String getImgFeatureStateSuccess(final String langCode) {
-        return find(configuration.imgFeatureStateSuccess,langCode);
+        return find(configuration.imgFeatureStateSuccess, langCode);
     }
 
     /**
      * @return the imgFeatureStateSuccess
      */
     public static String getImgFeatureStateFailed(final String langCode) {
-        return find(configuration.imgFeatureStateFailed,langCode);
+        return find(configuration.imgFeatureStateFailed, langCode);
     }
 
     /**
@@ -161,8 +162,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgSoftwareNoLogo() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgSoftwareNoLogo);
     }
-    
-    
+
     public static String getImgSoftware() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgSoftware);
     }
@@ -202,10 +202,14 @@ public class WebConfiguration extends ReloadableConfiguration {
         return configuration.defaultChargingAmount;
     }
 
+    public static int getFeedItemNumber() {
+        return configuration.feedItemNumber;
+    }
+
     private void loadConfiguration() {
-        
+
         finder = new ResourceFinder(FrameworkConfiguration.getWwwDir());
-        
+
         properties = ConfigurationManager.loadProperties("web.properties");
 
         // CSS
@@ -235,6 +239,7 @@ public class WebConfiguration extends ReloadableConfiguration {
 
         // OTHERS
         defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");
+        feedItemNumber = properties.getInt("bloatit.feed.item.number", 5);
     }
 
     protected static void load() {
@@ -253,12 +258,10 @@ public class WebConfiguration extends ReloadableConfiguration {
 
     private static String find(String resource, String langCode) {
         try {
-        return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
+            return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
         } catch (ExternalErrorException e) {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
         }
     }
-    
+
 }
-
-
