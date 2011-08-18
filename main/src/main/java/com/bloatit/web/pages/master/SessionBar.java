@@ -26,7 +26,9 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
+import com.bloatit.web.linkable.language.ChangeLanguageAction;
 import com.bloatit.web.linkable.members.MemberPage;
+import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -34,15 +36,18 @@ import com.bloatit.web.url.SignUpPageUrl;
 
 public class SessionBar extends HtmlDiv {
 
-    private static final String SESSION_BAR_COMPONENT_CSS_CLASS = "session_bar_component";
-
+    private static String SESSION_BAR_COMPONENT_CSS_CLASS = "session_bar_component";
+    
     protected SessionBar() {
         super();
         setId("session_bar");
         final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.trc("Login (verb)", "Login"));
         final HtmlLink signupLink = new SignUpPageUrl().getHtmlLink(Context.trc("Sign up (verb)", "Sign up"));
+        final HtmlLink changeLanguageLink = new ChangeLanguagePageUrl().getHtmlLink(Context.getLocalizator().getLanguageCode());
+        add(new HtmlSpan().setCssClass("small_session_bar_component").add(changeLanguageLink));
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(loginLink));
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(signupLink));
+        
     }
 
     protected SessionBar(final Member me) {
