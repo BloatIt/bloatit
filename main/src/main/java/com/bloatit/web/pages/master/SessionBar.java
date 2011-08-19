@@ -70,8 +70,6 @@ public class SessionBar extends HtmlDiv {
         } catch (final UnauthorizedOperationException e) {
             // No right, no display the karma
         }
-        final HtmlLink changeLanguageLink = new ChangeLanguagePageUrl().getHtmlLink(Context.getLocalizator().getLanguageCode());
-        add(new HtmlSpan().setCssClass("small_session_bar_component").add(changeLanguageLink));
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(memberLink).add(karma));
 
         try {
