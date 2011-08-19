@@ -48,6 +48,7 @@ dependencies {
 
 task createBuildDir << {
     new File("$buildDir/classes/main").mkdirs()
+    new File("$buildDir/resources/main").mkdirs()
     new File("$buildDir/apt/").mkdirs()
 }
 
@@ -76,7 +77,7 @@ task copyDep(type: Copy) {
 }
 
 // Liquibase
-task liquibase(type: Exec) {
+task liquibase(type: Exec, dependsOn: 'createBuildDir') {
     classpath = '--classpath='
     sourceSets.main.runtimeClasspath.each { File file ->
         if (!file.isDirectory()){
