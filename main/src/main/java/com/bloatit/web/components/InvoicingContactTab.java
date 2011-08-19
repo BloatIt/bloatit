@@ -107,7 +107,7 @@ public class InvoicingContactTab extends HtmlTab {
 
         // Postal code
         final String postalCode;
-        postalCode = Context.tr("ZIP code: ");
+        postalCode = Context.tr("Postcode: ");
         memberIdList.add(new HtmlDefineParagraph(postalCode, emptyIfNull(contact.getPostalCode())));
 
         // Country
