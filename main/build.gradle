@@ -48,6 +48,7 @@ dependencies {
 
 task createBuildDir << {
     new File("$buildDir/classes/main").mkdirs()
+    new File("$buildDir/resources/main").mkdirs()
     new File("$buildDir/apt/").mkdirs()
 }
 
