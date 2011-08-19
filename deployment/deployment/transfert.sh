@@ -70,6 +70,7 @@ WWW=$UPLOAD_DIR/www_src/
 
 DEST=$DISTANT_NAME@$HOST:
 SOURCE_CLASSES=$SOURCE/main/build/classes/main/
+SOURCE_RESOURCES=$SOURCE/main/build/resources/main/
 SOURCE_DEPENDENCIES=$SOURCE/main/build/dependencies/
 SOURCE_WWW=$SOURCE/resources/www_src/
 SOURCE_UP_CONF_DIR=$SOURCE/etc/
@@ -124,7 +125,7 @@ exit_on_failure $?
 #Send resources
 # This is done to make sure local modif are not errased. 
 log_date "Sending bloatit ressources to $DEST$UP_RESOURCES"
-$RSYNC $PERMS --include="*.xml" --include="*.properties" --exclude="**" $SOURCE_CLASSES $DEST$UP_RESOURCES
+$RSYNC $PERMS --include="*.xml" --include="*.properties" --exclude="**" $SOURCE_RESOURCES $DEST$UP_RESOURCES
 exit_on_failure $?
 
 # Send the data in www folder

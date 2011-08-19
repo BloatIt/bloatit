@@ -62,7 +62,7 @@ public class ResourceFinder {
 
             @Override
             public boolean accept(File dir, String name) {
-                if (name.startsWith(fileNameBase) && name.endsWith(fileNameExtension)) {
+                if (name.startsWith(fileNameBase+"-") && name.endsWith(fileNameExtension)) {
                     return true;
                 }
                 return false;
