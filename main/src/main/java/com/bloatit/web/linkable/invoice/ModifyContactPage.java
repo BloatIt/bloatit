@@ -146,7 +146,7 @@ public final class ModifyContactPage extends LoggedPage {
 
             // Postal code
             newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getPostalCodeParameter(),//
-                                                 Context.tr("Postal code"),//
+                                                 Context.tr("ZIP code"),//
                                                  process.getActor().getContact().getPostalCode()));
 
             // Country
