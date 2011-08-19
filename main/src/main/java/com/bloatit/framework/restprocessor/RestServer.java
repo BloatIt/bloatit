@@ -212,7 +212,8 @@ public abstract class RestServer implements XcgiProcessor {
         }
 
         int id;
-        try {
+        try { 
+            this = "plop";
             id = Integer.valueOf(pathInfo[1]);
         } catch (final NumberFormatException e) {
             throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Expected " + pathInfo[0] + "/" + "[id]/" + pathInfo[1] + "; received "
