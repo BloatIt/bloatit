@@ -139,9 +139,10 @@ import com.bloatit.framework.utils.PageIterable;
                         @NamedQuery(
                             name = "feature.getContributionOf",
                             query = "SELECT sum(amount) "+
-                                    "FROM com.bloatit.data.DaoContribution  "+
-                                    "WHERE feature = :this "+
-                                    "AND feature.member = :member"),
+                                    "FROM com.bloatit.data.DaoContribution as c "+
+                                    "WHERE c.feature = :this "+
+                                    "AND c.member = :member " +
+                                    "AND c.asTeam = null "),
                      }
              )
 // @formatter:on

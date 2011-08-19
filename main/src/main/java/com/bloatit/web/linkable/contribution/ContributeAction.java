@@ -54,7 +54,7 @@ public final class ContributeAction extends UserContentAction {
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         try {
             process.getFeature().addContribution(process.getAmount(), process.getComment());
-            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature.", Context.getLocalizator()
+            session.notifyGood(Context.tr("Thank you for contributing {0} on this feature.", Context.getLocalizator()
                                                                                                   .getCurrency(process.getAmount())
                                                                                                   .getSimpleEuroString()));
 

@@ -37,18 +37,13 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
         setTitle(tr("Feature abstract"));
 
         try {
-
             setFloatRight(new SoftwaresTools.Logo(feature.getSoftware()));
-
             add(new HtmlDefineParagraph(tr("Title: "), FeaturesTools.getTitle(feature)));
-
             add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(feature.getSoftware())));
             add(new HtmlDefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
-
+            
             add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount)));
-
             add(new HtmlParagraph(new FeaturePageUrl(feature, TabKey.description).getHtmlLink(tr("more details..."))));
-
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException(e);
         }
