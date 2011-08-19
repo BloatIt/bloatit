@@ -122,30 +122,25 @@ public class FeaturesTools {
     public static HtmlDiv generateProgress(final Feature feature, final BigDecimal futureAmount) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
-
             // Progress bar
-
             final float progressValue = (float) Math.floor(feature.getProgression());
             float myProgressValue = 0;
             float futureProgressValue = 0;
 
             if (AuthToken.isAuthenticated()) {
                 myProgressValue = feature.getMemberProgression(AuthToken.getMember());
-                if (myProgressValue > 0.0f && myProgressValue < 5f) {
-                    myProgressValue = 5f;
-
+                if (myProgressValue > 0.0f && myProgressValue < Math.min(progressValue / 2, 5f)) {
+                    myProgressValue = Math.min(progressValue / 2, 5f);
                 }
                 myProgressValue = (float) Math.floor(myProgressValue);
             }
 
             if (!futureAmount.equals(BigDecimal.ZERO)) {
                 futureProgressValue = feature.getRelativeProgression(futureAmount);
-                if (futureProgressValue > 0.0f && futureProgressValue < 5f) {
-                    futureProgressValue = 5f;
-
+                if (futureProgressValue > 0.0f && futureProgressValue < Math.min(progressValue / 2, 5f)) {
+                    futureProgressValue = Math.min(progressValue / 2, 5f);
                 }
                 futureProgressValue = (float) Math.floor(futureProgressValue);
-
             }
 
             float cappedProgressValue = progressValue;
@@ -173,7 +168,6 @@ public class FeaturesTools {
 
             // Progress text
             featureSummaryProgress.add(generateProgressText(feature, progressValue));
-
         }
         return featureSummaryProgress;
     }

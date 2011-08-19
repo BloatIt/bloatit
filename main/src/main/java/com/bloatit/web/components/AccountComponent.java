@@ -125,7 +125,6 @@ public class AccountComponent extends HtmlPageComponent {
         final Sorter<HtmlTableLine, Date> sorter = new Sorter<HtmlTableLine, Date>(lineList);
 
         try {
-
             for (final MoneyWithdrawal moneyWithdrawal : moneyWithdrawals) {
                 sorter.add(new MoneyWithdrawalLine(moneyWithdrawal), moneyWithdrawal.getCreationDate());
             }
@@ -140,7 +139,6 @@ public class AccountComponent extends HtmlPageComponent {
 
             for (final BankTransaction bankTransaction : bankTransactions) {
                 if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) >= 0) {
-
                     if (bankTransaction.getState() == State.VALIDATED) {
                         sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getModificationDate());
                     } else if (bankTransaction.getState() == State.REFUSED) {

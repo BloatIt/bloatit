@@ -40,23 +40,23 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
     private final ModifyInvoicingContactProcess process;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a name ."))
+    @NonOptional(@tr("You must add a name."))
     private final String name;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a street ."))
+    @NonOptional(@tr("You must add a street."))
     private final String street;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a postal code."))
+    @NonOptional(@tr("You must add a Postcode."))
     private final String postalCode;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a city ."))
+    @NonOptional(@tr("You must add a city."))
     private final String city;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a country ."))
+    @NonOptional(@tr("You must add a country."))
     private final String country;
 
     @RequestParam(role = Role.POST)
@@ -98,7 +98,6 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
         this.extras = url.getExtras();
 
         // Specific informations
-
         this.invoiceIdTemplate = url.getInvoiceIdTemplate();
         this.invoiceIdNumber = url.getInvoiceIdNumber();
         this.legalId = url.getLegalId();
@@ -108,7 +107,6 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member me) {
-
         try {
             process.getActor().getContact().setName(name);
             process.getActor().getContact().setStreet(street);
@@ -116,13 +114,13 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
             process.getActor().getContact().setPostalCode(postalCode);
             process.getActor().getContact().setCity(city);
             process.getActor().getContact().setCountry(country);
-            
+
             if (process.getNeedAllInfos()) {
                 process.getActor().getContact().setInvoiceIdTemplate(invoiceIdTemplate);
                 process.getActor().getContact().setInvoiceIdNumber(invoiceIdNumber.setScale(0, BigDecimal.ROUND_HALF_EVEN));
                 process.getActor().getContact().setLegalId(legalId);
                 process.getActor().getContact().setTaxIdentification(taxIdentification);
-                process.getActor().getContact().setTaxRate(taxRate.divide(new BigDecimal("100"),4,  BigDecimal.ROUND_HALF_EVEN));
+                process.getActor().getContact().setTaxRate(taxRate.divide(new BigDecimal("100"), 4, BigDecimal.ROUND_HALF_EVEN));
             }
 
         } catch (final UnauthorizedPrivateAccessException e) {
@@ -134,23 +132,19 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
-
         boolean isOk = true;
 
         if (process.getNeedAllInfos()) {
-
-            isOk &= checkOptional(this.invoiceIdTemplate, Context.tr("You must add an invoice No template."), url.getInvoiceIdTemplateParameter());
+            isOk &= checkOptional(this.invoiceIdTemplate, Context.tr("You must add an invoice number template."), url.getInvoiceIdTemplateParameter());
             isOk &= checkOptional(this.invoiceIdNumber, Context.tr("You must add an invoice No initial value."), url.getInvoiceIdNumberParameter());
-            isOk &= checkOptional(this.legalId, Context.tr("You must add a legal ID ."), url.getLegalIdParameter());
+            isOk &= checkOptional(this.legalId, Context.tr("You must add a legal ID."), url.getLegalIdParameter());
             isOk &= checkOptional(this.taxIdentification, Context.tr("You must add a tax identification."), url.getTaxIdentificationParameter());
             isOk &= checkOptional(this.taxRate, Context.tr("You must add a tax rate."), url.getTaxRateParameter());
-
         }
 
         if (!isOk) {
             return new ModifyContactPageUrl(process);
         }
-
         return NO_ERROR;
     }
 
@@ -160,9 +154,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
             session.notifyError(errorText);
             return false;
         }
-
         return true;
-
     }
 
     @Override
@@ -191,7 +183,5 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
             session.addParameter(url.getTaxIdentificationParameter());
             session.addParameter(url.getTaxRateParameter());
         }
-
     }
-
 }
