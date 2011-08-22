@@ -34,8 +34,7 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
-import com.bloatit.framework.webprocessor.components.HtmlList;
-import com.bloatit.framework.webprocessor.components.HtmlListItem;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
@@ -57,7 +56,6 @@ import com.bloatit.model.Image;
 import com.bloatit.model.Invoice;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
-import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -98,7 +96,7 @@ public class AccountComponent extends HtmlPageComponent {
         final HtmlDiv soldeBlock = new HtmlDiv("solde_block");
         final HtmlDiv soldeText = new HtmlDiv("solde_text");
         if (loggedUser instanceof Team) {
-            soldeText.addText(tr("The team currently have "));
+            soldeText.addText(tr("The team currently has "));
         } else {
             soldeText.addText(tr("You currently have "));
         }
@@ -157,12 +155,16 @@ public class AccountComponent extends HtmlPageComponent {
                     sorter.add(new MilestoneLine(milestone), milestone.getLastPaymentDate());
                 }
             }
-
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Right fail on account page", e);
         }
 
         sorter.performSort(Order.DESC);
+
+        if (sorter.size() == 0) {
+            return new HtmlParagraph(Context.tr("No operations occured on your account yet."));
+        }
+
         final HtmlLineTableModel model = new HtmlLineTableModel();
         for (final HtmlTableLine line : lineList) {
             model.addLine(line);

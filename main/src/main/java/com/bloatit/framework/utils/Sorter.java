@@ -109,4 +109,7 @@ public class Sorter<T, U extends Comparable<U>> {
 
     }
 
+    public int size() {
+        return inputList.size();
+    }
 }
