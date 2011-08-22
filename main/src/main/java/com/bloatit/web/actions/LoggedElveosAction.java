@@ -19,12 +19,11 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.web.url.LoggedActionUrl;
+import com.bloatit.web.url.LoggedElveosActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -53,7 +52,7 @@ public abstract class LoggedElveosAction extends ElveosAction {
     @RequestParam(name = "secure")
     private final String secure;
 
-    public LoggedElveosAction(final LoggedActionUrl url) {
+    public LoggedElveosAction(final LoggedElveosActionUrl url) {
         super(url);
         this.meUrl = url;
         this.secure = url.getSecure();

@@ -19,9 +19,9 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoContribution;
+import com.bloatit.data.DaoContribution.State;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ContributionInvoiceList;
-import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtContribution;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -80,7 +80,8 @@ public final class Contribution extends UserContent<DaoContribution> {
      * which this Contribution is made is canceled. It allows the user to take
      * back its money.
      */
-    void cancel() {
+    public void cancel() {
+        // FIXME : add user right
         getDao().cancel();
     }
 
@@ -136,6 +137,10 @@ public final class Contribution extends UserContent<DaoContribution> {
     public String getComment() throws UnauthorizedOperationException {
         tryAccess(new RgtContribution.Comment(), Action.READ);
         return getDao().getComment();
+    }
+    
+    public State getState() {
+        return getDao().getState();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

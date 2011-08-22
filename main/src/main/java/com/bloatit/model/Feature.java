@@ -134,6 +134,13 @@ public interface Feature extends KudosableInterface, Commentable {
     PageIterable<Contribution> getContributions();
 
     /**
+     * @param isCanceled <i>true</i> to return canceled contributions only
+     *            <i>false</i> to return not canceled contributions only
+     * @return all the Contributions on this Feature.
+     */
+    PageIterable<Contribution> getContributions(boolean isCanceled);
+
+    /**
      * Return the progression in percent. It compare the amount of contribution
      * to the amount of the current offer.
      * 

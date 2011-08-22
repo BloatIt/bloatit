@@ -16,6 +16,7 @@
 //
 package com.bloatit.web.linkable.members.tabs;
 
+import com.bloatit.data.DaoContribution.State;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.PageIterable;
@@ -133,9 +134,7 @@ public class ActivityTab extends HtmlTab {
 
                 @Override
                 public HtmlElement visit(final Contribution model) {
-
                     if (model.getFeature().isDeleted()) {
-
                         // We are in the case of a deleted feature. Don't try to
                         // access to any feature information !
                         final HtmlSpan contribSpan = new HtmlSpan("feed_contribution");
@@ -143,7 +142,13 @@ public class ActivityTab extends HtmlTab {
                         return mixedText;
                     } else {
                         final HtmlSpan contribSpan = new HtmlSpan("feed_contribution");
-                        final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("<0::Contributed>"), contribSpan);
+                        final HtmlMixedText mixedText;
+                        if (model.getState() != State.CANCELED) {
+                            mixedText = new HtmlMixedText(Context.tr("<0::Contributed>"), contribSpan);
+                        } else {
+                            mixedText = new HtmlMixedText(Context.tr("<0::Contributed> (canceled)"), contribSpan);
+                        }
+
                         return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
                     }
                 }

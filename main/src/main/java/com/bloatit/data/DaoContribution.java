@@ -112,9 +112,8 @@ public class DaoContribution extends DaoUserContent {
      */
     @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST)
     private final List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
-    
-    
-    @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST, mappedBy="contribution")
+
+    @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST, mappedBy = "contribution")
     private final List<DaoContributionInvoice> invoices = new ArrayList<DaoContributionInvoice>();
 
     @Basic(optional = false)
@@ -232,7 +231,7 @@ public class DaoContribution extends DaoUserContent {
      * Set the state to CANCELED. (Unblock the blocked amount.)
      */
     public void cancel() {
-        if (this.state != State.PENDING) {
+        if (this.state != State.PENDING ) {
             throw new BadProgrammerException("Cannot cancel a contribution if its state isn't PENDING");
         }
         try {
@@ -280,7 +279,7 @@ public class DaoContribution extends DaoUserContent {
     public DaoFeature getFeature() {
         return this.feature;
     }
-    
+
     /**
      * Gets the feature.
      * 

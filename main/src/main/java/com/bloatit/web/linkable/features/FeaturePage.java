@@ -29,7 +29,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
@@ -100,7 +100,7 @@ public final class FeaturePage extends ElveosPage {
 
     public static Breadcrumb generateBreadcrumb(final Feature feature) {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.description);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, FeatureTabKey.description);
         if (feature.getSoftware() != null) {
             breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
         } else {
@@ -112,7 +112,7 @@ public final class FeaturePage extends ElveosPage {
     public static Breadcrumb generateBreadcrumbBugs(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.bugs);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, FeatureTabKey.bugs);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Bugs")));
@@ -123,7 +123,7 @@ public final class FeaturePage extends ElveosPage {
     public static Breadcrumb generateBreadcrumbOffers(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.offers);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, FeatureTabKey.offers);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Offers")));
@@ -134,7 +134,7 @@ public final class FeaturePage extends ElveosPage {
     public static Breadcrumb generateBreadcrumbContributions(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.contributions);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, FeatureTabKey.contributions);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Contributions")));
@@ -145,7 +145,7 @@ public final class FeaturePage extends ElveosPage {
     private static Breadcrumb generateBreadcrumbDetails(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.details);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, FeatureTabKey.details);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Details")));
@@ -155,16 +155,16 @@ public final class FeaturePage extends ElveosPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.bugs) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey() == FeatureTabKey.bugs) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }
-        if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.contributions) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey() == FeatureTabKey.contributions) {
             return FeaturePage.generateBreadcrumbContributions(feature);
         }
-        if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.details) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey() == FeatureTabKey.details) {
             return FeaturePage.generateBreadcrumbDetails(feature);
         }
-        if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.offers) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey() == FeatureTabKey.offers) {
             return FeaturePage.generateBreadcrumbOffers(feature);
         }
 

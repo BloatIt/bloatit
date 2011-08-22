@@ -57,6 +57,7 @@ import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Contribution;
 
 /**
  * A DaoFeature is a kudosable content. It has a translatable description, and
@@ -143,6 +144,28 @@ import com.bloatit.framework.utils.PageIterable;
                                     "WHERE c.feature = :this "+
                                     "AND c.member = :member " +
                                     "AND c.asTeam = null "),
+                        @NamedQuery(
+                             name="feature.getContribution.canceled", 
+                             query="FROM com.bloatit.data.DaoContribution as c " +
+                             		"WHERE c.feature = :this " +
+                             		"AND c.state = :state "),
+                        @NamedQuery(
+                             name="feature.getContribution.notcanceled", 
+                             query="FROM com.bloatit.data.DaoContribution as c " +
+                                   "WHERE c.feature = :this " +
+                                   "AND c.state != :state "),
+                       @NamedQuery(
+                             name="feature.getContribution.canceled.size", 
+                             query="SELECT COUNT(*) " +
+                             	   "FROM com.bloatit.data.DaoContribution as c " +
+                                   "WHERE c.feature = :this " +
+                                   "AND c.state = :state "),
+                      @NamedQuery(
+                             name="feature.getContribution.notcanceled.size", 
+                             query="SELECT COUNT(*) " +
+                             	   "FROM com.bloatit.data.DaoContribution as c " +
+                                   "WHERE c.feature = :this " +
+                                   "AND c.state != :state "),
                      }
              )
 // @formatter:on
@@ -486,6 +509,16 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      */
     public PageIterable<DaoContribution> getContributions() {
         return new MappedUserContentList<DaoContribution>(this.contributions);
+    }
+
+    public PageIterable<DaoContribution> getContributions(boolean isCanceled) {
+        String qr = "feature.getContribution.";
+        if (!isCanceled) {
+            qr += "not";
+        }
+        qr += "canceled";
+
+        return new QueryCollection<DaoContribution>(qr).setParameter("this", this).setParameter("state", DaoContribution.State.CANCELED);
     }
 
     /**

@@ -107,6 +107,14 @@ public final class CheckContributePage extends QuotationPage {
         return layout;
     }
 
+    /**
+     * Generate the core of the check contribution page including : <li>A title</li>
+     * <li>A summary of the contribution</li> <li>The button to validate the
+     * contribution</li>
+     * 
+     * @param member the member doing the contribution
+     * @return the HtmlElement to display in the core of the page
+     */
     private HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group = new HtmlTitleBlock(tr("Check contribution"), 1);
 
@@ -128,11 +136,18 @@ public final class CheckContributePage extends QuotationPage {
         return group;
     }
 
+    /**
+     * Generates the summary of the transaction for a user who already enough
+     * money on his account
+     * 
+     * @param group
+     * @param feature
+     * @param actor
+     */
     private void generateWithMoneyContent(final HtmlTitleBlock group, final Feature feature, final Actor<?> actor) {
         final HtmlDiv contributionSummaryDiv = new HtmlDiv("contribution_summary");
         {
             contributionSummaryDiv.add(generateFeatureSummary(feature));
-
             final HtmlDiv authorContributionSummary = new HtmlDiv("author_contribution_summary");
             {
 

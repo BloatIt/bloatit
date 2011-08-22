@@ -34,6 +34,7 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
@@ -61,10 +62,11 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane;
-import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.HtmlPageComponent;
+import com.bloatit.web.url.CancelContributionPageUrl;
 import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
 import com.bloatit.web.url.ContributionInvoiceResourceUrl;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -127,10 +129,14 @@ public class AccountComponent extends HtmlPageComponent {
             }
 
             for (final Contribution contribution : contributions) {
-                if (contribution.getFeature().getFeatureState() != FeatureState.DISCARDED) {
-                    sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
+                if (contribution.getState() == com.bloatit.data.DaoContribution.State.CANCELED) {
+                    sorter.add(new ContributionCanceledLine(contribution), contribution.getCreationDate());
                 } else {
-                    sorter.add(new ContributionFailedLine(contribution), contribution.getCreationDate());
+                    if (contribution.getFeature().getFeatureState() != FeatureState.DISCARDED) {
+                        sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
+                    } else {
+                        sorter.add(new ContributionFailedLine(contribution), contribution.getCreationDate());
+                    }
                 }
             }
 
@@ -190,25 +196,28 @@ public class AccountComponent extends HtmlPageComponent {
             final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
             final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", contribution.getFeature().getTitle()), softwareLink);
 
-            String statusString = "";
+            HtmlSpan status = new HtmlSpan();
+
             switch (contribution.getFeature().getFeatureState()) {
                 case DEVELOPPING:
-                    statusString = tr("In development");
+                    status.addText(tr("In development"));
                     break;
                 case FINISHED:
-                    statusString = tr("Success");
+                    status.addText(tr("Success"));
                     break;
                 case DISCARDED:
-                    statusString = tr("Failed");
+                    status.addText(tr("Failed"));
                     break;
                 case PENDING:
                 case PREPARING:
-                    statusString = tr("Funding");
+                    HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink(Context.tr("(Cancel contribution)"));
+                    status.addText(tr("Funding "));
+                    status.add(cancelLink);
                     break;
             }
-
+            
             description.add(new HtmlDefineParagraph(tr("Description: "), descriptionString));
-            description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
+            description.add(new HtmlDefineParagraph(tr("Status: "), status));
 
             PageIterable<ContributionInvoice> invoices = contribution.getInvoices();
             if (invoices.size() > 0) {
@@ -225,7 +234,7 @@ public class AccountComponent extends HtmlPageComponent {
 
         private HtmlDiv generateContributionTitle() {
             final HtmlDiv title = new HtmlDiv("title");
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature(), TabKey.contributions);
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.contributions);
             featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
             title.add(new HtmlMixedText(tr("Contributed to a <0::feature>"), featurePageUrl.getHtmlLink()));
             return title;
@@ -233,7 +242,6 @@ public class AccountComponent extends HtmlPageComponent {
     }
 
     private static class ContributionFailedLine extends HtmlTableLine {
-
         private final Contribution contribution;
 
         public ContributionFailedLine(final Contribution contribution) throws UnauthorizedOperationException {
@@ -247,9 +255,32 @@ public class AccountComponent extends HtmlPageComponent {
 
         private HtmlDiv generateContributionTitle() {
             final HtmlDiv title = new HtmlDiv("title");
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature(), TabKey.contributions);
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.contributions);
             featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
             title.add(new HtmlMixedText(tr("Contributed to a failed <0::feature>"), featurePageUrl.getHtmlLink()));
+            return title;
+        }
+    }
+
+    /**
+     * 
+     */
+    private static class ContributionCanceledLine extends HtmlTableLine {
+        private final Contribution contribution;
+
+        public ContributionCanceledLine(final Contribution contribution) throws UnauthorizedOperationException {
+            setCssClass("failed_line");
+            this.contribution = contribution;
+            addCell(new EmptyCell());
+            addCell(new TitleCell(contribution.getCreationDate(), generateContributionTitle()));
+            addCell(new EmptyCell());
+            addCell(new MoneyCell(contribution.getAmount().negate()));
+        }
+
+        private HtmlDiv generateContributionTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.contributions);
+            title.add(new HtmlMixedText(tr("Contribution canceled (<0::feature>)"), featurePageUrl.getHtmlLink()));
             return title;
         }
     }
@@ -296,7 +327,7 @@ public class AccountComponent extends HtmlPageComponent {
 
         private HtmlDiv generateMilestoneTitle() {
             final HtmlDiv title = new HtmlDiv("title");
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(milestone.getOffer().getFeature(), TabKey.offers);
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(milestone.getOffer().getFeature(), FeatureTabKey.offers);
             title.add(new HtmlMixedText(tr("Payed for <0::milestone> development"), featurePageUrl.getHtmlLink()));
             return title;
         }

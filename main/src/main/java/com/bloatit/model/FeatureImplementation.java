@@ -33,7 +33,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.feature.AbstractFeatureState;
 import com.bloatit.model.feature.DevelopingState;
 import com.bloatit.model.feature.DiscardedState;
@@ -580,6 +579,11 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     private PageIterable<Contribution> getContributionsUnprotected() {
         return new ContributionList(getDao().getContributions());
     }
+    
+    @Override
+    public PageIterable<Contribution> getContributions(boolean isCanceled) {
+        return new ContributionList(getDao().getContributions(isCanceled));
+    }
 
     /** The Constant PROGRESSION_PERCENT. */
     public static final int PROGRESSION_PERCENT = 100;
@@ -611,7 +615,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public BigDecimal getContribution() {
         return getDao().getContribution();
     }
-
+    
     @Override
     public BigDecimal getContributionMax() {
         return getDao().getContributionMax();
@@ -646,6 +650,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public PageIterable<Offer> getOffers() {
         return getOffersUnprotected();
     }
+
 
     /**
      * Gets the offers unprotected.
@@ -799,5 +804,4 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
 }

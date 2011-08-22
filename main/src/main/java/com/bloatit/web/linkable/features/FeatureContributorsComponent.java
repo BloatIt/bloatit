@@ -23,16 +23,23 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlTableModel;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.url.CancelContributionPageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 
 @ParamContainer(value = "FeatureContributorsComponent", isComponent = true)
@@ -50,14 +57,13 @@ public final class FeatureContributorsComponent extends HtmlDiv {
     private HtmlElement produce() {
         final HtmlDiv contributorsBlock = new HtmlDiv("contribution_block");
         {
-
             final int contributionCount = feature.getContributions().size();
 
             // Display contribution count
             contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
 
             // Display contribution list
-            final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
+            final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions(false), AuthToken.getMember()));
             contributorsBlock.add(table);
 
             // Display contribution stats
@@ -69,7 +75,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                 final String contributionMinValue = Context.getLocalizator().getCurrency(feature.getContributionMin()).getSimpleEuroString();
                 final String contributionMaxValue = Context.getLocalizator().getCurrency(feature.getContributionMax()).getSimpleEuroString();
                 final String contributionMedianValue = Context.getLocalizator()
-                                                              .getCurrency(computeMedian(feature.getContributions()))
+                                                              .getCurrency(computeMedian(feature.getContributions(false)))
                                                               .getTwoDecimalEuroString();
 
                 final HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
@@ -114,10 +120,11 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         private Iterator<Contribution> it;
         private Contribution contribution;
         private final PageIterable<Contribution> contributions;
+        private Member loggedMember;
 
-        private ContributionTableModel(final PageIterable<Contribution> contributions) {
+        private ContributionTableModel(final PageIterable<Contribution> contributions, Member loggedMember) {
             this.contributions = contributions;
-
+            this.loggedMember = loggedMember;
         }
 
         @Override
@@ -171,20 +178,35 @@ public final class FeatureContributorsComponent extends HtmlDiv {
 
         @Override
         public XmlNode getBody(final int column) {
-            String value = "";
+            HtmlSpan val = new HtmlSpan();
             try {
                 switch (column) {
                     case 0:
-                        value = contribution.getAuthor().getDisplayName();
+                        val.addText(contribution.getAuthor().getDisplayName());
                         break;
                     case 1:
-                        value = Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString();
+
+                        if (contribution.getAuthor().equals(loggedMember)) {
+                            HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink();
+                            HtmlMixedText mixed = new HtmlMixedText(Context.tr("(<0::Cancel contribution>) {0}",
+                                                                               Context.getLocalizator()
+                                                                                      .getCurrency(contribution.getAmount())
+                                                                                      .getSimpleEuroString()), cancelLink);
+                            val.add(mixed);
+                        } else {
+                            val.addText(Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString());
+                        }
+
                         break;
                     case 2:
-                        value = Context.getLocalizator().getDate(contribution.getCreationDate()).toString(FormatStyle.MEDIUM);
+                        val.addText(Context.getLocalizator().getDate(contribution.getCreationDate()).toString(FormatStyle.MEDIUM));
                         break;
                     case 3:
-                        value = contribution.getComment();
+                        if (contribution.getComment() == null || contribution.getComment().isEmpty()) {
+                            val = null;
+                        } else {
+                            val.addText(contribution.getComment());
+                        }
                         break;
                 }
 
@@ -192,10 +214,11 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                 // Display nothing
             }
 
-            if (value == null) {
-                value = "";
+            if (val == null) {
+                return new PlaceHolderElement();
             }
-            return new HtmlText(value);
+
+            return val;
         }
     }
 
