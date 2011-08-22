@@ -88,7 +88,6 @@ public class AccountComponent extends HtmlPageComponent {
         accountPage.add(generateAccountSolde(me));
         accountPage.add(new HtmlTitle(tr("Account informations – {0}", me.getDisplayName()), 1));
         accountPage.add(generateAccountMovementList(me.getContributions(), me.getBankTransactions(), me.getMoneyWithdrawals(), me.getMilestones()));
-
     }
 
     private HtmlElement generateAccountSolde(final Actor<?> loggedUser) {
@@ -213,18 +212,13 @@ public class AccountComponent extends HtmlPageComponent {
 
             PageIterable<ContributionInvoice> invoices = contribution.getInvoices();
             if (invoices.size() > 0) {
-
                 HtmlSpan invoiceList = new HtmlSpan();
-
                 for (ContributionInvoice invoice : invoices) {
-
                     invoiceList.addText(" ");
                     invoiceList.add(new ContributionInvoiceResourceUrl(invoice).getHtmlLink(Context.tr("milestone {0}", invoice.getMilestone()
                                                                                                                                .getPosition())));
-
                 }
                 description.add(new HtmlDefineParagraph(tr("Invoices: "), invoiceList));
-
             }
             return description;
         }
@@ -309,7 +303,6 @@ public class AccountComponent extends HtmlPageComponent {
     }
 
     private static class MoneyWithdrawalLine extends HtmlTableLine {
-
         private final MoneyWithdrawal moneyWithdrawal;
         private final boolean failed;
 
@@ -322,7 +315,6 @@ public class AccountComponent extends HtmlPageComponent {
             } else {
                 addCell(new MoneyVariationCell(false));
             }
-
             addCell(new TitleCell(moneyWithdrawal.getCreationDate(), generateTitle()));
             addCell(new DescriptionCell(tr("Withdrawal summary"), generateContributionDescription()));
             addCell(new MoneyCell(moneyWithdrawal.getAmountWithdrawn().negate()));
@@ -369,13 +361,11 @@ public class AccountComponent extends HtmlPageComponent {
             } else {
                 title.addText(tr("Withdrew money"));
             }
-
             return title;
         }
     }
 
     private static class ChargeAccountLine extends HtmlTableLine {
-
         private final BankTransaction bankTransaction;
 
         public ChargeAccountLine(final BankTransaction bankTransaction) {
@@ -399,14 +389,11 @@ public class AccountComponent extends HtmlPageComponent {
             description.add(new HtmlDefineParagraph(tr("Total cost: "), Context.getLocalizator()
                                                                                .getCurrency(bankTransaction.getValuePaid())
                                                                                .getTwoDecimalEuroString()));
-
             final Invoice invoice = bankTransaction.getInvoice();
             if (invoice != null) {
                 description.add(new HtmlDefineParagraph(tr("Invoice: "), new InvoiceResourceUrl(invoice).getHtmlLink("invoice-"
                         + invoice.getInvoiceNumber() + ".pdf")));
-
             }
-
             return description;
         }
 
@@ -468,7 +455,6 @@ public class AccountComponent extends HtmlPageComponent {
     }
 
     private static class MoneyVariationCell extends HtmlTableCell {
-
         private final boolean up;
 
         public MoneyVariationCell(final boolean up) {
@@ -486,7 +472,6 @@ public class AccountComponent extends HtmlPageComponent {
     }
 
     private static class TitleCell extends HtmlTableCell {
-
         private final Date date;
         private final HtmlDiv title;
 
@@ -550,5 +535,4 @@ public class AccountComponent extends HtmlPageComponent {
             return moneyCell;
         }
     }
-
 }
