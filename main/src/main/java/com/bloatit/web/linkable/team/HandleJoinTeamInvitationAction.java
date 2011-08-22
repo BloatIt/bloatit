@@ -28,7 +28,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -38,7 +38,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * </p>
  */
 @ParamContainer("team/invitation/doacceptinvitation")
-public final class HandleJoinTeamInvitationAction extends LoggedAction {
+public final class HandleJoinTeamInvitationAction extends LoggedElveosAction {
     @RequestParam(message = @tr("I cannot find the invitation number: ''%value%''."))
     @NonOptional(@tr("You have to specify an invitation."))
     private final JoinTeamInvitation invite;

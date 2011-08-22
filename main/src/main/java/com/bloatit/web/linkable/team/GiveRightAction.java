@@ -30,7 +30,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -38,7 +38,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * Action used to give a user a new right in a team
  */
 @ParamContainer("teams/%team%/dogiveright")
-public final class GiveRightAction extends LoggedAction {
+public final class GiveRightAction extends LoggedElveosAction {
     @SuppressWarnings("unused")
     // Kept for consistency
     private final GiveRightActionUrl url;

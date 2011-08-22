@@ -9,11 +9,11 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.PaylineActionUrl;
 
 @ParamContainer(value = "payline/dopayment", protocol = Protocol.HTTPS)
-public final class PaylineAction extends LoggedAction {
+public final class PaylineAction extends LoggedElveosAction {
 
     @RequestParam
     private final PaylineProcess process;

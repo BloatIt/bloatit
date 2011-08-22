@@ -24,7 +24,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
@@ -35,7 +35,7 @@ import com.bloatit.web.url.WithdrawMoneyPageUrl;
  * account back to their physical bank account
  */
 @ParamContainer("account/withdraw/create")
-public class WithdrawMoneyPage extends LoggedPage {
+public class WithdrawMoneyPage extends LoggedElveosPage {
     private final WithdrawMoneyPageUrl url;
 
     @RequestParam(role = Role.GET)

@@ -18,14 +18,14 @@ import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
 @ParamContainer("account/withdraw/docreate")
-public class WithdrawMoneyAction extends LoggedAction {
+public class WithdrawMoneyAction extends LoggedElveosAction {
     private final WithdrawMoneyActionUrl url;
 
     @RequestParam(role = Role.GET)

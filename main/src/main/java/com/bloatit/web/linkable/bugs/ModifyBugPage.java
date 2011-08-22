@@ -31,7 +31,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Member;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyBugActionUrl;
@@ -41,7 +41,7 @@ import com.bloatit.web.url.ModifyBugPageUrl;
  * Page that hosts the form to create a new feature
  */
 @ParamContainer("bugs/%bug%/modify")
-public final class ModifyBugPage extends LoggedPage {
+public final class ModifyBugPage extends LoggedElveosPage {
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_LINES = 5;
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS = 80;
 

@@ -46,14 +46,14 @@ import com.bloatit.web.url.LoginPageUrl;
  * </p>
  */
 @ParamContainer("loggedAction")
-public abstract class LoggedAction extends ElveosAction {
+public abstract class LoggedElveosAction extends ElveosAction {
     private final Url meUrl;
 
-//    @RequestParam(name = Session.SECURE_TOKEN_NAME)
+    // @RequestParam(name = Session.SECURE_TOKEN_NAME)
     @RequestParam(name = "secure")
     private final String secure;
 
-    public LoggedAction(final LoggedActionUrl url) {
+    public LoggedElveosAction(final LoggedActionUrl url) {
         super(url);
         this.meUrl = url;
         this.secure = url.getSecure();

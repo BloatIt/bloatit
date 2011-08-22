@@ -25,7 +25,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.ModifyContactPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 
@@ -33,7 +33,7 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/invoicingcontact/choose")
-public final class ModifyInvoicingContactAction extends LoggedAction {
+public final class ModifyInvoicingContactAction extends LoggedElveosAction {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))

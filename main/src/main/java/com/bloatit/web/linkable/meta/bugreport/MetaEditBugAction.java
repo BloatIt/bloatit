@@ -24,7 +24,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.MetaBugsListPageUrl;
 import com.bloatit.web.url.MetaEditBugActionUrl;
 
@@ -32,7 +32,7 @@ import com.bloatit.web.url.MetaEditBugActionUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("meta/bug/doedit")
-public final class MetaEditBugAction extends LoggedAction {
+public final class MetaEditBugAction extends LoggedElveosAction {
 
     private static final String BUG_DESCRIPTION = "bug_description";
 

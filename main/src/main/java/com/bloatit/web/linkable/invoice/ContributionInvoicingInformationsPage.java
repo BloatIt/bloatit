@@ -27,7 +27,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
@@ -38,7 +38,7 @@ import com.bloatit.web.url.ContributionInvoicingInformationsPageUrl;
  * invoice.
  */
 @ParamContainer(value = "invoicing/contribution_invoicing_informations", protocol = Protocol.HTTPS)
-public final class ContributionInvoicingInformationsPage extends LoggedPage {
+public final class ContributionInvoicingInformationsPage extends LoggedElveosPage {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))

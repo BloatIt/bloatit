@@ -23,12 +23,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 
 @ParamContainer(value = "account/charging/process/%process%/unlock", protocol = Protocol.HTTPS)
-public final class UnlockAccountChargingProcessAction extends LoggedAction {
+public final class UnlockAccountChargingProcessAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.PAGENAME)
     private final AccountChargingProcess process;

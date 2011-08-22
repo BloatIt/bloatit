@@ -17,14 +17,14 @@
 package com.bloatit.web.linkable.usercontent;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.url.CreateUserContentPageUrl;
 
 /**
  * @author thomas
  */
 @ParamContainer("usercontent/create")
-public abstract class CreateUserContentPage extends LoggedPage {
+public abstract class CreateUserContentPage extends LoggedElveosPage {
 
     public CreateUserContentPage(final CreateUserContentPageUrl url) {
         super(url);

@@ -333,7 +333,7 @@ public final class FeatureListPage extends ElveosPage {
         return new FeatureList(search.doSearch());
     }
 
-    protected static Breadcrumb generateBreadcrumb() {
+    public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         final FeatureListPageUrl featureListPageUrl = new FeatureListPageUrl();
         breadcrumb.pushLink(featureListPageUrl.getHtmlLink(tr("Features")));
