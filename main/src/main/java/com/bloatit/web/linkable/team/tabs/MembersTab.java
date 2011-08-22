@@ -54,7 +54,7 @@ public class MembersTab extends HtmlTab {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Members
-        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", team.getMembers().size()), 2);
+        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", team.getMembers().size()), 1);
         master.add(memberTitle);
 
         if (visitor != null) {
