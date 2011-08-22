@@ -1,0 +1,11 @@
+User rights in a team
+=====================
+
+Every memeber of a team have a set of rights inside the team 
+
+ * Consult: The user can see informations relative to this team. Every memeber of a team can do this.
+ * Talk: The user is allowed to express the team opinion.
+ * Invite: The user can invite other people to join the team (private teams only)
+ * Modify: The user can modify the team informations (contact, description ...)
+ * Promote: the user can change the rights of the members of the team
+ * Bank: The user can access and modify the team bank informations (he can also withdraw money from the team account)

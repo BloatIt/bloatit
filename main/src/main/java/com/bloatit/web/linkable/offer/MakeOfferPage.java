@@ -172,7 +172,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         // locale
         offerForm.add(new LanguageField(offerActionUrl, //
                                         Context.tr("description language"), //
-                                        Context.tr("The language in which you have maid the description.")));
+                                        Context.tr("The language of the offer description.")));
 
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
