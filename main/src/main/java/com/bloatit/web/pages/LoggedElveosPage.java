@@ -97,5 +97,5 @@ public abstract class LoggedElveosPage extends ElveosPage {
         return createBreadcrumb((Member) null);
     }
 
-    protected abstract Breadcrumb createBreadcrumb(Member member);
+    protected abstract Breadcrumb createBreadcrumb(Member loggedUser);
 }

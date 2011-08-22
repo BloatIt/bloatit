@@ -196,7 +196,7 @@ public abstract class ElveosPage extends Page {
         final HtmlImage logoImage = new HtmlImage(new Image(WebConfiguration.getImgLogo()), tr("elveos.org logo"));
         logoImage.setCssClass("logo_elveos");
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
-        
+
         final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
         logoTextDiv.addText(tr("the collaborative platform for free software funding"));
         logoDiv.add(logoTextDiv);
