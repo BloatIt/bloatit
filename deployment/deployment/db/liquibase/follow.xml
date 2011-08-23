@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+ 	<changeSet author="Yoann Plénet" id="Creation of the content follow table">
+		<comment>Creating the table used to store followed content</comment>
+		<createTable tableName="daofollow">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daofollowpk"/>
+            </column>
+            <column name="actor_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="usercontent_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creationdate" type="datetime"/>
+            <column name="lastconsultationdate" type="datetime"/>
+            <column name="followstate" type="int4">
+                <constraints nullable="false"/>
+            </column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="Yoann Plénet" id="Creation of the content following FKs ">
+        <addForeignKeyConstraint baseColumnNames="actor_id" baseTableName="daofollow" constraintName="FKCFOLLOWDAOACTOR" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+        <addForeignKeyConstraint baseColumnNames="usercontent_id" baseTableName="daofollow" constraintName="FKCFOLLOWDAOUSERCONTENT" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daousercontent" referencesUniqueColumn="false"/>
+	</changeSet>
+	
+	<changeSet author="Yoann Plénet" id="Change name of usercontent_id to followed_id">
+	    <renameColumn tableName="daofollow" oldColumnName="usercontent_id" newColumnName="followed_id"/>
+	</changeSet>
+</databaseChangeLog>

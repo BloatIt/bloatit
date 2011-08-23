@@ -17,4 +17,5 @@
     <include file="liquibase/externalservices.xml" />
     <include file="liquibase/milestone-lastpaymentdate.xml" />
     <include file="liquibase/actor-taxrate.xml" />
+    <include file="liquibase/follow.xml" />
 </databaseChangeLog>
