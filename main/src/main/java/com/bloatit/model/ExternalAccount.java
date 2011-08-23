@@ -21,6 +21,7 @@ import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtExternalAccount;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * @see DaoExternalAccount

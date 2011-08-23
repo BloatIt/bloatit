@@ -16,7 +16,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.model;
+package com.bloatit.model.visitor;
+
+import com.bloatit.model.BankTransaction;
+import com.bloatit.model.Bug;
+import com.bloatit.model.Comment;
+import com.bloatit.model.Contribution;
+import com.bloatit.model.ContributionInvoice;
+import com.bloatit.model.Description;
+import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.ExternalService;
+import com.bloatit.model.ExternalServiceMembership;
+import com.bloatit.model.Feature;
+import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Follow;
+import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.InternalAccount;
+import com.bloatit.model.Invoice;
+import com.bloatit.model.JoinTeamInvitation;
+import com.bloatit.model.Kudos;
+import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
+import com.bloatit.model.MilestoneContributionAmount;
+import com.bloatit.model.MoneyWithdrawal;
+import com.bloatit.model.NewsFeed;
+import com.bloatit.model.Offer;
+import com.bloatit.model.Release;
+import com.bloatit.model.Software;
+import com.bloatit.model.Team;
+import com.bloatit.model.Transaction;
+import com.bloatit.model.Translation;
 
 public interface ModelClassVisitor<ReturnType> {
 
@@ -73,4 +102,6 @@ public interface ModelClassVisitor<ReturnType> {
     ReturnType visit(ExternalService externalService);
     
     ReturnType visit(ExternalServiceMembership externalService);
+
+    ReturnType visit(Follow model);
 }

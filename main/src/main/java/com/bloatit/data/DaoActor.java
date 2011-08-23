@@ -16,16 +16,20 @@
 //
 package com.bloatit.data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.Criteria;
@@ -88,6 +92,9 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     @Embedded
     private DaoContact contact;
+
+    @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL)
+    private final List<DaoFollow> followedContents = new ArrayList<DaoFollow>();
 
     // ======================================================================
     // HQL static requests.
@@ -208,6 +215,10 @@ public abstract class DaoActor extends DaoIdentifiable {
      */
     public PageIterable<DaoBankTransaction> getBankTransactions() {
         return new QueryCollection<DaoBankTransaction>("actor.getBankTransactions").setEntity("author", this);
+    }
+
+    public PageIterable<DaoFollow> getFollowedContent() {
+        return new MappedList<DaoFollow>(followedContents);
     }
 
     // ======================================================================

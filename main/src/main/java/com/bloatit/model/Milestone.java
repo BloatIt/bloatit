@@ -36,6 +36,7 @@ import com.bloatit.model.right.RgtMilestone;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * A milestone is a part of an offer. Simple offers are only composed of one

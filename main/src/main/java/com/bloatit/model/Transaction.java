@@ -27,6 +27,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtAccount;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 

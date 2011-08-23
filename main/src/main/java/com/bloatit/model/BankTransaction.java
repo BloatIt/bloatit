@@ -29,6 +29,7 @@ import com.bloatit.model.right.RgtBankTransaction;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.UnauthorizedReadOnlyBankDataAccessException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * The Class BankTransaction.

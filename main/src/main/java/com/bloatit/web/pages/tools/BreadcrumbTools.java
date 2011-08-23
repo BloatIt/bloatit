@@ -29,6 +29,7 @@ import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Follow;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
@@ -37,7 +38,6 @@ import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.MilestoneContributionAmount;
-import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.NewsFeed;
 import com.bloatit.model.Offer;
@@ -47,6 +47,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.Transaction;
 import com.bloatit.model.Translation;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.visitor.ModelClassVisitor;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.members.MemberPage;
@@ -193,6 +194,11 @@ public class BreadcrumbTools {
 
             @Override
             public Breadcrumb visit(ExternalServiceMembership externalService) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(Follow model) {
                 throw new NotImplementedException();
             }
         });

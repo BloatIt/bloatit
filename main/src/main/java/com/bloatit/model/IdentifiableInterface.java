@@ -16,6 +16,8 @@
 //
 package com.bloatit.model;
 
+import com.bloatit.model.visitor.ModelClassVisitor;
+
 /**
  * @author Thomas Guyard Every identifiable should inherite from the
  *         identifiable interface.

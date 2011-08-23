@@ -17,7 +17,6 @@
 package com.bloatit.web.components.activity;
 
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.model.AbstractModelClassVisitor;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
@@ -27,6 +26,7 @@ import com.bloatit.model.Kudos;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.Translation;
+import com.bloatit.model.visitor.AbstractModelClassVisitor;
 
 public abstract class ActivityVisitor extends AbstractModelClassVisitor<HtmlElement> {
     @Override

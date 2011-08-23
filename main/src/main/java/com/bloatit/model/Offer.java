@@ -34,6 +34,7 @@ import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class Offer extends Kudosable<DaoOffer> {
 

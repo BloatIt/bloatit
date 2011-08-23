@@ -24,6 +24,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public class Release extends UserContent<DaoRelease> {
 

@@ -21,6 +21,7 @@ import java.util.Locale;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.TranslationList;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * A description must be created through the Feature class. (For example, you

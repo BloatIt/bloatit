@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model;
+package com.bloatit.model.visitor;
 
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
@@ -27,6 +27,7 @@ import com.bloatit.data.DaoExternalService;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
+import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoInvoice;
@@ -42,6 +43,34 @@ import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
+import com.bloatit.model.BankTransaction;
+import com.bloatit.model.Bug;
+import com.bloatit.model.Comment;
+import com.bloatit.model.Contribution;
+import com.bloatit.model.ContributionInvoice;
+import com.bloatit.model.Description;
+import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.ExternalService;
+import com.bloatit.model.ExternalServiceMembership;
+import com.bloatit.model.Feature;
+import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Follow;
+import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.InternalAccount;
+import com.bloatit.model.Invoice;
+import com.bloatit.model.JoinTeamInvitation;
+import com.bloatit.model.Kudos;
+import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
+import com.bloatit.model.MilestoneContributionAmount;
+import com.bloatit.model.MoneyWithdrawal;
+import com.bloatit.model.NewsFeed;
+import com.bloatit.model.Offer;
+import com.bloatit.model.Release;
+import com.bloatit.model.Software;
+import com.bloatit.model.Team;
+import com.bloatit.model.Transaction;
+import com.bloatit.model.Translation;
 
 /**
  * The Class ModelVisitorGetClass.
@@ -181,5 +210,10 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     @Override
     public Class<?> visit(ExternalServiceMembership externalService) {
         return DaoExternalServiceMembership.class;
+    }
+
+    @Override
+    public Class<?> visit(Follow model) {
+        return DaoFollow.class;
     }
 }

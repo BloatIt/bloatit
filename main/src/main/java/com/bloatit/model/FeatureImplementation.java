@@ -53,6 +53,7 @@ import com.bloatit.model.right.RgtFeature;
 import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class FeatureImplementation extends Kudosable<DaoFeature> implements Feature {
 

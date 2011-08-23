@@ -20,6 +20,7 @@ import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtJoinTeamInvitation;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * This is an invitation to join a team. Some teams are not public, and you have

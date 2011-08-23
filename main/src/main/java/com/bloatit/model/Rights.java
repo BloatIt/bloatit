@@ -2,6 +2,8 @@ package com.bloatit.model;
 
 import java.util.EnumSet;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember.Role;
@@ -272,6 +274,11 @@ public class Rights {
             return null;
         }
 
+        @Override
+        public Team visitAbstract(Follow model) {
+            throw new NotImplementedException();
+        }
+
     }
 
     private class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -363,6 +370,11 @@ public class Rights {
         public Boolean visit(final ExternalServiceMembership externalService) {
             return null;
         }
+
+        @Override
+        public Boolean visitAbstract(Follow model) {
+            throw new NotImplementedException();
+        }
     }
 
     private class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -451,6 +463,11 @@ public class Rights {
         @Override
         public Boolean visit(final ExternalServiceMembership externalService) {
             return null;
+        }
+
+        @Override
+        public Boolean visitAbstract(Follow model) {
+            throw new NotImplementedException();
         }
 
     }
