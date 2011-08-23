@@ -565,6 +565,10 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return new CommentList(getDao().getComments());
     }
 
+    /**
+     * @see Feature#getContributions(boolean)
+     */
+    @Deprecated
     @Override
     public PageIterable<Contribution> getContributions() {
         return getContributionsUnprotected();
