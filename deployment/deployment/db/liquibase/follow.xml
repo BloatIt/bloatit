@@ -32,4 +32,31 @@
 	<changeSet author="Yoann Plénet" id="Change name of usercontent_id to followed_id">
 	    <renameColumn tableName="daofollow" oldColumnName="usercontent_id" newColumnName="followed_id"/>
 	</changeSet>
+	
+	<changeSet author='Yoann Plénet' id="follow past contributions">
+		<sql splitStatements="false">
+            CREATE OR REPLACE FUNCTION migrate_follow() RETURNS void AS $$
+            DECLARE  
+	            c	RECORD;
+	            seq	INTEGER;
+	            nb	INTEGER;
+            BEGIN SET CONSTRAINTS ALL DEFERRED;
+	            RAISE NOTICE 'Now gathering contributions';
+	            FOR c IN SELECT * FROM daocontribution, daousercontent WHERE daocontribution.id = daousercontent.id LOOP
+		            SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = c.member_id AND followed_id = c.feature_id;
+		            RAISE NOTICE 'SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = % AND followed_id = % ==> %' , c.member_id, c.feature_id, nb;
+		            IF nb = 0 THEN 
+			            SELECT nextval('hibernate_sequence') INTO seq;
+			            INSERT INTO daofollow VALUES (seq, c.member_id, c.feature_id, timeofday()::timestamp, timeofday()::timestamp, 0);
+		            ELSE
+			            RAISE NOTICE 'Skipping (already present)';
+		            END IF;
+	            END LOOP;
+            END;
+            $$ LANGUAGE plpgsql;
+
+            SELECT * FROM migrate_follow();
+		    DROP FUNCTION migrate_follow();
+		</sql>
+	</changeSet>
 </databaseChangeLog>
