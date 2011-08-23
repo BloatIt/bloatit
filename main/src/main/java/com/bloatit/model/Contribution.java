@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoContribution.State;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ContributionInvoiceList;
 import com.bloatit.model.right.Action;
@@ -121,8 +122,8 @@ public final class Contribution extends UserContent<DaoContribution> {
     public Feature getFeature() {
         return FeatureImplementation.create(getDao().getFeature());
     }
-    
- // no right management: this is public data
+
+    // no right management: this is public data
     public PageIterable<ContributionInvoice> getInvoices() {
         return new ContributionInvoiceList(getDao().getInvoices());
     }
@@ -138,11 +139,15 @@ public final class Contribution extends UserContent<DaoContribution> {
         tryAccess(new RgtContribution.Comment(), Action.READ);
         return getDao().getComment();
     }
-    
+
     public State getState() {
         return getDao().getState();
     }
 
+    public boolean isCancelable() {
+        return (getState() == State.PENDING && (getFeature().getFeatureState() == DaoFeature.FeatureState.PENDING || getFeature().getFeatureState() == DaoFeature.FeatureState.PREPARING));
+    }
+    
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -151,5 +156,4 @@ public final class Contribution extends UserContent<DaoContribution> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
 }

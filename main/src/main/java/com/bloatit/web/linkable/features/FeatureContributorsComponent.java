@@ -57,7 +57,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
     private HtmlElement produce() {
         final HtmlDiv contributorsBlock = new HtmlDiv("contribution_block");
         {
-            final int contributionCount = feature.getContributions().size();
+            final int contributionCount = feature.getContributions(false).size();
 
             // Display contribution count
             contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
@@ -94,7 +94,10 @@ public final class FeatureContributorsComponent extends HtmlDiv {
     }
 
     private BigDecimal computeMedian(final PageIterable<Contribution> contributions) {
-
+        if(contributions.size() == 0){
+            return BigDecimal.ZERO;
+        }
+        
         try {
             final Iterator<Contribution> it = contributions.iterator();
             final List<BigDecimal> list = new ArrayList<BigDecimal>();
@@ -113,7 +116,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         } catch (final UnauthorizedOperationException e) {
             return new BigDecimal(-1);
         }
-
     }
 
     public static class ContributionTableModel extends HtmlTableModel {
@@ -186,7 +188,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                         break;
                     case 1:
 
-                        if (contribution.getAuthor().equals(loggedMember)) {
+                        if (contribution.getAuthor().equals(loggedMember) && contribution.isCancelable()) {
                             HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink();
                             HtmlMixedText mixed = new HtmlMixedText(Context.tr("(<0::Cancel contribution>) {0}",
                                                                                Context.getLocalizator()

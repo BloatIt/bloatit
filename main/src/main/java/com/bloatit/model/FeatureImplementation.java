@@ -579,7 +579,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     private PageIterable<Contribution> getContributionsUnprotected() {
         return new ContributionList(getDao().getContributions());
     }
-    
+
     @Override
     public PageIterable<Contribution> getContributions(boolean isCanceled) {
         return new ContributionList(getDao().getContributions(isCanceled));
@@ -615,15 +615,25 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public BigDecimal getContribution() {
         return getDao().getContribution();
     }
-    
+
     @Override
     public BigDecimal getContributionMax() {
-        return getDao().getContributionMax();
+        BigDecimal contributionMax = getDao().getContributionMax();
+        if (contributionMax == null) {
+            return BigDecimal.ZERO;
+        } else {
+            return contributionMax;
+        }
     }
 
     @Override
     public BigDecimal getContributionMin() {
-        return getDao().getContributionMin();
+        BigDecimal contributionMin = getDao().getContributionMin();
+        if (contributionMin == null) {
+            return BigDecimal.ZERO;
+        } else {
+            return contributionMin;
+        }
     }
 
     @Override
@@ -650,7 +660,6 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public PageIterable<Offer> getOffers() {
         return getOffersUnprotected();
     }
-
 
     /**
      * Gets the offers unprotected.

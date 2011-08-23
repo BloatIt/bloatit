@@ -82,15 +82,23 @@ import com.bloatit.model.Contribution;
 
                         @NamedQuery(
                            name = "feature.getAmounts.min",
-                           query = "SELECT min(amount) FROM DaoContribution WHERE feature = :this"),
-
+                           query = "SELECT min(amount) " +
+                           		   "FROM DaoContribution " +
+                           		   "WHERE feature = :this " +
+                           		   "AND state != :state "),
                         @NamedQuery(
                            name = "feature.getAmounts.max",
-                           query = "SELECT max(amount) FROM DaoContribution WHERE feature = :this"),
+                           query = "SELECT max(amount) " +
+                           		   "FROM DaoContribution " +
+                           		   "WHERE feature = :this " +
+                           		   "AND state != :state "),
 
                        @NamedQuery(
                            name = "feature.getAmounts.avg",
-                           query = "SELECT avg(amount) FROM DaoContribution WHERE feature = :this"),
+                           query = "SELECT avg(amount) " +
+                           		   "FROM DaoContribution " +
+                           		   "WHERE feature = :this " +
+                           		   "AND state != :state "),
 
                         @NamedQuery(
                             name = "feature.getBugs.byNonState",
@@ -576,7 +584,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the minimum value of the contributions on this feature.
      */
     public BigDecimal getContributionMin() {
-        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.min").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.min")
+                                          .setEntity("this", this)
+                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .uniqueResult();
     }
 
     /**
@@ -585,7 +596,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the maximum value of the contributions on this feature.
      */
     public BigDecimal getContributionMax() {
-        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.max").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.max")
+                                          .setEntity("this", this)
+                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .uniqueResult();
     }
 
     /**
@@ -594,7 +608,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the average value of the contributions on this feature.
      */
     public BigDecimal getContributionAvg() {
-        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg")
+                                          .setEntity("this", this)
+                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .uniqueResult();
     }
 
     public BigDecimal getContributionOf(final DaoMember member) {
