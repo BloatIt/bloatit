@@ -59,4 +59,44 @@
 		    DROP FUNCTION migrate_follow();
 		</sql>
 	</changeSet>
+	
+	<changeSet author='Yoann Plénet' id="follow past features, offers">
+		<sql splitStatements="false">
+            CREATE OR REPLACE FUNCTION migrate_follow_features_and_offers() RETURNS void AS $$
+            DECLARE  
+                c	RECORD;
+                seq	INTEGER;
+                nb	INTEGER;
+            BEGIN SET CONSTRAINTS ALL DEFERRED;
+                RAISE NOTICE 'Now gathering features';
+                FOR c IN SELECT * FROM daofeature, daousercontent WHERE daofeature.id = daousercontent.id LOOP
+	                SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = c.member_id AND followed_id = c.id;
+	                RAISE NOTICE 'SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = % AND followed_id = % ==> %' , c.member_id, c.id, nb;
+	                IF nb = 0 THEN 
+		                SELECT nextval('hibernate_sequence') INTO seq;
+		                INSERT INTO daofollow VALUES (seq, c.member_id, c.feature_id, timeofday()::timestamp, timeofday()::timestamp, 0);
+	                ELSE
+		                RAISE NOTICE 'Skipping (already present)';
+	                END IF;
+                END LOOP;
+                
+                RAISE NOTICE 'Now gathering offers';
+                FOR c IN SELECT * FROM daooffer, daousercontent WHERE daooffer.id = daousercontent.id LOOP
+	                SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = c.member_id AND followed_id = c.feature_id;
+	                RAISE NOTICE 'SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = % AND followed_id = % ==> %' , c.member_id, c.feature_id, nb;
+	                IF nb = 0 THEN 
+		                SELECT nextval('hibernate_sequence') INTO seq;
+		                INSERT INTO daofollow VALUES (seq, c.member_id, c.feature_id, timeofday()::timestamp, timeofday()::timestamp, 0);
+	                ELSE
+		                RAISE NOTICE 'Skipping (already present)';
+	                END IF;
+                END LOOP;
+            END;
+            $$ LANGUAGE plpgsql;
+
+            SELECT * FROM migrate_follow_features_and_offers();
+            DROP FUNCTION migrate_follow_features_and_offers();
+		</sql>
+	</changeSet>
+	
 </databaseChangeLog>
