@@ -16,19 +16,6 @@ import org.hibernate.search.annotations.Field;
 
 @Entity
 //@formatter:off
-//@NamedQueries(value = { 
-//                     @NamedQuery(
-//                         name =  "withdrawal.bystate",
-//                         query = "FROM DaoMoneyWithdrawal " +
-//                                 "WHERE state = :state"),
-//                      @NamedQuery(
-//                          name =  "withdrawal.bystate.size",
-//                          query = "SELECT COUNT(*)" +
-//                                  "FROM DaoMoneyWithdrawal " +
-//                                  "WHERE state = :state"),
-//                      }
-//
-//           )
 //@formatter:on
 public class DaoFollow extends DaoIdentifiable {
 
@@ -58,7 +45,7 @@ public class DaoFollow extends DaoIdentifiable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.PERSIST })
-    private DaoUserContent followed;
+    private DaoFeature followed;
 
     @Basic(optional = false)
     @Column(updatable = false)
@@ -80,7 +67,7 @@ public class DaoFollow extends DaoIdentifiable {
     /**
      * Creates a new Money Withdrawal, with a default state of ACTIVE
      */
-    public static DaoFollow createAndPersist(final DaoActor actor, final DaoUserContent followed) {
+    public static DaoFollow createAndPersist(final DaoActor actor, final DaoFeature followed) {
         final DaoFollow follow = new DaoFollow(actor, followed);
         try {
             SessionManager.getSessionFactory().getCurrentSession().save(follow);
@@ -91,7 +78,7 @@ public class DaoFollow extends DaoIdentifiable {
         return follow;
     }
 
-    private DaoFollow(final DaoActor actor, final DaoUserContent followed) {
+    private DaoFollow(final DaoActor actor, final DaoFeature followed) {
         this.actor = actor;
         this.followed = followed;
         this.creationDate = new Date();
@@ -102,7 +89,7 @@ public class DaoFollow extends DaoIdentifiable {
     // ======================================================================
     // Getters
     // ======================================================================
-    
+
     /**
      * The actor following a content
      */
@@ -113,7 +100,7 @@ public class DaoFollow extends DaoIdentifiable {
     /**
      * @return The content being followed
      */
-    public DaoUserContent getFollowed() {
+    public DaoFeature getFollowed() {
         return followed;
     }
 
@@ -142,8 +129,6 @@ public class DaoFollow extends DaoIdentifiable {
     // Setters
     // ======================================================================
 
-    
-    
     // ======================================================================
     // Static accessors
     // ======================================================================
@@ -154,7 +139,7 @@ public class DaoFollow extends DaoIdentifiable {
 
     @Override
     public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
-        return null;
+        return visitor.visit(this);
     }
 
     // ======================================================================

@@ -57,7 +57,6 @@ import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Contribution;
 
 /**
  * A DaoFeature is a kudosable content. It has a translatable description, and

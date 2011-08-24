@@ -43,6 +43,7 @@ import com.bloatit.web.components.InvoicingContactTab;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.members.tabs.AccountTab;
 import com.bloatit.web.linkable.members.tabs.ActivityTab;
+import com.bloatit.web.linkable.members.tabs.DashboardTab;
 import com.bloatit.web.linkable.members.tabs.TasksTab;
 import com.bloatit.web.linkable.money.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.money.SideBarWithdrawMoneyBlock;
@@ -72,12 +73,16 @@ public final class MemberPage extends ElveosPage {
     public final static String ACTIVITY_TAB = "activity";
     public final static String ACCOUNT_TAB = "account";
     public final static String INVOICING_TAB = "invoicing";
+    public final static String DASHBOARD_TAB = "dashboard";
 
     @SubParamContainer
     private ActivityTab activity;
 
+    @SubParamContainer
+    private DashboardTab dashboard;
+
     @RequestParam(name = MEMBER_TAB_PANE)
-    @Optional(ACTIVITY_TAB)
+    @Optional(DASHBOARD_TAB)
     private final String activeTabKey;
 
     @NonOptional(@tr("You have to specify a member number."))
@@ -238,14 +243,22 @@ public final class MemberPage extends ElveosPage {
         final HtmlTabBlock tabPane = new HtmlTabBlock(MEMBER_TAB_PANE, activeTabKey, secondUrl);
         master.add(tabPane);
 
+        // Dashboard tab
+        dashboard = new DashboardTab(member, tr("Dashboard"), DASHBOARD_TAB, url);
+        tabPane.addTab(dashboard);
+
+        // Activity tab
         activity = new ActivityTab(member, tr("Activity"), ACTIVITY_TAB, url);
         tabPane.addTab(activity);
+        
+        // Account tab
         tabPane.addTab(new AccountTab(member, tr("Account"), ACCOUNT_TAB));
         long nb;
-        if ((nb = (member.getInvitationCount()+member.getMilestoneToInvoice().size())) > 0) {
+        if ((nb = (member.getInvitationCount() + member.getMilestoneToInvoice().size())) > 0) {
             tabPane.addTab(new TasksTab(member, tr("Tasks&nbsp;({0})", nb), TASKS_TAB));
         }
 
+        // Invoicing contact tab
         tabPane.addTab(new InvoicingContactTab(member, tr("Invoicing"), INVOICING_TAB));
 
         return master;

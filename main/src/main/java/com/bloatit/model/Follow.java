@@ -3,6 +3,7 @@ package com.bloatit.model;
 import java.util.Date;
 
 import com.bloatit.data.DaoActor;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoFollow.FollowState;
 import com.bloatit.data.DaoUserContent;
@@ -37,7 +38,7 @@ public class Follow extends Identifiable<DaoFollow> {
      * @param toFollow the content to follow
      * @param follower the user than will follow the content
      */
-    public Follow(UserContent<? extends DaoUserContent> toFollow, Actor<? extends DaoActor> follower) {
+    public Follow(FeatureImplementation toFollow, Actor<? extends DaoActor> follower) {
         super(DaoFollow.createAndPersist(follower.getDao(), toFollow.getDao()));
     }
 
@@ -54,6 +55,15 @@ public class Follow extends Identifiable<DaoFollow> {
      */
     public FollowState getFollowState() {
         return getDao().getFollowState();
+    }
+
+    public UserContent<?> getFollowed() {
+        // TODO : create a proper visitor that returns a usercontent
+        DaoFeature followed = (DaoFeature) getDao().getFollowed();
+        DataVisitorConstructor visitor = new DataVisitorConstructor();
+        Identifiable<?> accept2 = followed.accept(visitor);
+        UserContent<?> accept = (UserContent<?>) accept2;
+        return accept;
     }
 
     public Actor<?> getActor() {
@@ -74,6 +84,6 @@ public class Follow extends Identifiable<DaoFollow> {
 
     @Override
     public <ReturnType> ReturnType accept(ModelClassVisitor<ReturnType> visitor) {
-        return null;
+        return visitor.visit(this);
     }
 }
