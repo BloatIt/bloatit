@@ -23,8 +23,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.channels.ByteChannel;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -118,13 +122,15 @@ public final class XcgiServer {
 
     private final class XcgiThread extends Thread {
         private static final int NB_MAX_SOCKET_ERROR = 12;
-        private Socket socket;
-        private final ServerSocket provider;
+        private SocketChannel socket;
+        private final ServerSocketChannel provider;
+
         private final Timer timer;
 
         private XcgiThread(final int port) throws IOException {
             super();
-            provider = new ServerSocket(port, 1, InetAddress.getByName(FrameworkConfiguration.getXcgiListenAddress()));
+            provider = ServerSocketChannel.open();
+            provider.socket().bind(new InetSocketAddress(InetAddress.getByName(FrameworkConfiguration.getXcgiListenAddress()), port));
             timer = new Timer();
         }
 
@@ -139,13 +145,13 @@ public final class XcgiServer {
                     if (nbError > NB_MAX_SOCKET_ERROR) {
                         throw new BadProgrammerException("Too much errors on this socket.", e);
                     }
-                    Log.framework().fatal("Socket error on port: " + provider.getLocalPort(), e);
+                    Log.framework().fatal("Socket error on port: " + provider.socket().getLocalPort(), e);
                 }
             }
         }
 
         private void kill() {
-            if (socket != null && !socket.isClosed()) {
+            if (socket != null && socket.isOpen()) {
                 try {
                     socket.close();
                 } catch (final IOException e) {
@@ -164,10 +170,9 @@ public final class XcgiServer {
             timer.start();
 
             // Parse the header and the post data.
-            final BufferedInputStream bis = new BufferedInputStream(socket.getInputStream(), 4096);
-            final XcgiParser parser = getXCGIParser(bis, socket.getOutputStream());
+            final XcgiParser parser = getXCGIParser(socket);
 
-            final Map<String, String> env = parser.getEnv();
+            final Map<String, String> env = parser.getHeaders();
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
 
@@ -242,9 +247,9 @@ public final class XcgiServer {
             }
         }
 
-        private XcgiParser getXCGIParser(final InputStream is, final OutputStream os) throws IOException {
+        private XcgiParser getXCGIParser(ByteChannel channel) throws IOException {
             // You can also use scgi parser
-            return new FCGIParser(is, os);
+            return new FCGIParser(channel);
         }
     }
 

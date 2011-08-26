@@ -88,7 +88,7 @@ public class SCGIParser implements XcgiParser { // NO_UCD
      * @return strings passed via the SCGIUtils request.
      */
     @Override
-    public Map<String, String> getEnv() throws IOException {
+    public Map<String, String> getHeaders() throws IOException {
 
         final StringBuilder lengthString = new StringBuilder(12);
         String headers = "";

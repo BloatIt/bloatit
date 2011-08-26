@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.ByteBuffer;
 
 public class FCGIPostStream extends InputStream {
 
@@ -68,7 +69,10 @@ public class FCGIPostStream extends InputStream {
         return read(b, 0, b.length);
     }
 
-    protected void pushData(final byte[] data) throws IOException {
-        pipeOut.write(data);
+    protected void pushData(ByteBuffer data) throws IOException {
+        final byte[] b = new byte[data.remaining()];
+        data.get(b);
+
+        pipeOut.write(b);
     }
 }

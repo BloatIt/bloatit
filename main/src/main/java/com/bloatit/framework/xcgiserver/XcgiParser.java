@@ -42,7 +42,7 @@ public interface XcgiParser {
      * @return key-value map for http params
      * @throws IOException in case of problem in read or parsing
      */
-    Map<String, String> getEnv() throws IOException;
+    Map<String, String> getHeaders() throws IOException;
 
     /**
      * Return a stream where the post http data can be read
