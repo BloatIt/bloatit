@@ -3,10 +3,8 @@ package com.bloatit.model;
 import java.util.Date;
 
 import com.bloatit.data.DaoActor;
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoFollow.FollowState;
-import com.bloatit.data.DaoUserContent;
 import com.bloatit.model.visitor.ModelClassVisitor;
 
 public class Follow extends Identifiable<DaoFollow> {
@@ -33,7 +31,10 @@ public class Follow extends Identifiable<DaoFollow> {
 
     /**
      * Make the user <code>follower</code> follow the content
-     * <code>toFollow</code>
+     * <code>toFollow</code>. <br />
+     * If the feature is already followed by the same actor, it is not followed
+     * again, but no error is thrown (trying to follow even when you already do,
+     * is the normal behavior).
      * 
      * @param toFollow the content to follow
      * @param follower the user than will follow the content
@@ -57,13 +58,8 @@ public class Follow extends Identifiable<DaoFollow> {
         return getDao().getFollowState();
     }
 
-    public UserContent<?> getFollowed() {
-        // TODO : create a proper visitor that returns a usercontent
-        DaoFeature followed = (DaoFeature) getDao().getFollowed();
-        DataVisitorConstructor visitor = new DataVisitorConstructor();
-        Identifiable<?> accept2 = followed.accept(visitor);
-        UserContent<?> accept = (UserContent<?>) accept2;
-        return accept;
+    public Feature getFollowed() {
+        return FeatureImplementation.create(getDao().getFollowed());
     }
 
     public Actor<?> getActor() {
@@ -76,6 +72,14 @@ public class Follow extends Identifiable<DaoFollow> {
 
     public Date getLastConsultationDate() {
         return getDao().getLastConsultationDate();
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Static getters
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public static Follow getFollow(FeatureImplementation content, Actor<? extends DaoActor> follower) {
+        return new Follow(DaoFollow.getFollow(content.getDao(), follower.getDao()));
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

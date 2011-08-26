@@ -245,4 +245,10 @@ public interface Feature extends KudosableInterface, Commentable {
 
     BigDecimal getContributionOf(Member member);
 
+    /**
+     * Makes <code>member</code> start following the feature
+     * 
+     * @param member the member that will follow the feature
+     */
+    void follow(Member member);
 }

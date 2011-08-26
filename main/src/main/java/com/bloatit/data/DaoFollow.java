@@ -12,10 +12,21 @@ import javax.persistence.ManyToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Field;
 
 @Entity
 //@formatter:off
+@NamedQueries(value = { 
+                       @NamedQuery(
+                           name =  "follow.find",
+                           query = "FROM DaoFollow " +
+                                   "WHERE actor = :follower " +
+                                   "AND followed = :content "),
+                        }
+
+             )
 //@formatter:on
 public class DaoFollow extends DaoIdentifiable {
 
@@ -51,6 +62,7 @@ public class DaoFollow extends DaoIdentifiable {
     @Column(updatable = false)
     private Date creationDate;
 
+    // NOTE : This is not used (or updated) yet
     @Basic(optional = false)
     @Column(updatable = false)
     private Date lastConsultationDate;
@@ -65,17 +77,32 @@ public class DaoFollow extends DaoIdentifiable {
     // ======================================================================
 
     /**
-     * Creates a new Money Withdrawal, with a default state of ACTIVE
+     * Creates a new Money Withdrawal, with a default state of ACTIVE, or
+     * reactivate an already existing follow
      */
     public static DaoFollow createAndPersist(final DaoActor actor, final DaoFeature followed) {
-        final DaoFollow follow = new DaoFollow(actor, followed);
-        try {
-            SessionManager.getSessionFactory().getCurrentSession().save(follow);
-        } catch (final HibernateException e) {
-            SessionManager.getSessionFactory().getCurrentSession().getTransaction().rollback();
-            throw e;
+        DaoFollow alreadyFollowed = getFollow(followed, actor);
+
+        if (alreadyFollowed != null) {
+            // Already exists
+            switch (alreadyFollowed.getFollowState()) {
+                case CANCELED:
+                case DELETE:
+                case EXPIRED:
+                    alreadyFollowed.setState(FollowState.ACTIVE);
+                    break;
+            }
+            return alreadyFollowed;
+        } else {
+            final DaoFollow follow = new DaoFollow(actor, followed);
+            try {
+                SessionManager.getSessionFactory().getCurrentSession().save(follow);
+            } catch (final HibernateException e) {
+                SessionManager.getSessionFactory().getCurrentSession().getTransaction().rollback();
+                throw e;
+            }
+            return follow;
         }
-        return follow;
     }
 
     private DaoFollow(final DaoActor actor, final DaoFeature followed) {
@@ -129,9 +156,21 @@ public class DaoFollow extends DaoIdentifiable {
     // Setters
     // ======================================================================
 
+    private void setState(FollowState newState) {
+        this.followState = newState;
+    }
+
     // ======================================================================
     // Static accessors
     // ======================================================================
+
+    /**
+     * @return the state of the follow matching both <code>content</code> and
+     *         <code>follower</code> or null if none matches
+     */
+    public static DaoFollow getFollow(DaoFeature content, DaoActor follower) {
+        return (DaoFollow) SessionManager.getNamedQuery("follow.find").setEntity("follower", follower).setEntity("content", content).uniqueResult();
+    }
 
     // ======================================================================
     // Visitor

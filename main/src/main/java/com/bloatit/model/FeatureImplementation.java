@@ -107,6 +107,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                          DaoGetter.get(team),
                                          DaoDescription.createAndPersist(author.getDao(), DaoGetter.get(team), locale, title, description),
                                          DaoGetter.get(software)));
+        follow(author);
     }
 
     /**
@@ -157,7 +158,16 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                                                       amount,
                                                                       comment);
         setStateObject(getStateObject().eventAddContribution());
+
+        // Contributing automatically puts the feature in your follow list
+        follow(AuthToken.getMember());
+
         return Contribution.create(contribution);
+    }
+
+    @Override
+    public void follow(Member member) {
+        new Follow(this, member);
     }
 
     @Override
@@ -177,6 +187,9 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                       local,
                                       dateExpire,
                                       secondsBeforeValidation);
+
+        follow(AuthToken.getMember());
+
         return doAddOffer(offer);
     }
 
