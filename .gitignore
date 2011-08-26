@@ -20,7 +20,9 @@ resources/www_src/resources/commons/css/core.css
 main/src/main/java/com/bloatit/web/url/?*Url.java
 main/src/main/java/com/bloatit/web/url/?*UrlComponent.java
 mvnst
-bin
+apt/bin
+main/bin
+paylineWebservice/bin
 !less.js/bin
 #Liquidbase working file
 main/src/main/resources/liquibase/working.liquibase.xml
