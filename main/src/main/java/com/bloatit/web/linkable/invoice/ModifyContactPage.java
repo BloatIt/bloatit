@@ -41,7 +41,7 @@ import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyContactPageUrl;
@@ -52,7 +52,7 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
  * invoice.
  */
 @ParamContainer(value = "account/charging/invoicing_contact", protocol = Protocol.HTTPS)
-public final class ModifyContactPage extends LoggedPage {
+public final class ModifyContactPage extends LoggedElveosPage {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))

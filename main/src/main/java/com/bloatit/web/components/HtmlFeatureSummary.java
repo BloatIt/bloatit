@@ -27,7 +27,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Translation;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -190,7 +190,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
             title.addText(" – ");
         }
 
-        title.add(new FeaturePageUrl(feature, TabKey.description).getHtmlLink(translatedDescription.getTitle()));
+        title.add(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(translatedDescription.getTitle()));
 
         return title;
     }

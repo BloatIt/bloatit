@@ -28,7 +28,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.CreateSoftwareActionUrl;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
@@ -37,7 +37,7 @@ import com.bloatit.web.url.SoftwarePageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("software/docreate")
-public final class CreateSoftwareAction extends LoggedAction {
+public final class CreateSoftwareAction extends LoggedElveosAction {
     protected static final String IMAGE_CODE = "image";
     private static final String IMAGE_NAME_CODE = "image/filename";
     private static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";

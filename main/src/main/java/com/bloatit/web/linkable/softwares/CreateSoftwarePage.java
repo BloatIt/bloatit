@@ -27,7 +27,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateSoftwareActionUrl;
@@ -37,7 +37,7 @@ import com.bloatit.web.url.CreateSoftwarePageUrl;
  * Page that hosts the form to create a new feature
  */
 @ParamContainer("software/create")
-public final class CreateSoftwarePage extends LoggedPage {
+public final class CreateSoftwarePage extends LoggedElveosPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 

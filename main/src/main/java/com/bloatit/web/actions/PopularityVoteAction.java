@@ -31,7 +31,7 @@ import com.bloatit.web.url.PopularityVoteActionUrl;
  * website
  */
 @ParamContainer("popularity/vote")
-public final class PopularityVoteAction extends LoggedAction {
+public final class PopularityVoteAction extends LoggedElveosAction {
 
     private static final String TARGET_KUDOSABLE = "targetKudosable";
     private static final String VOTE_UP = "voteUp";

@@ -36,6 +36,9 @@ package com.bloatit.framework.webprocessor.components.meta;
  */
 public class HtmlMixedText extends HtmlBranch {
 
+    /**
+     * Hello, you can <0:comment:follow this link>.
+     */
     public HtmlMixedText(String content, final HtmlElement... parameters) {
         content = " " + content; // Handle the cast where it starts by a tag
         final String[] split = content.split("<[0-9]+(:[^>]+)*>");

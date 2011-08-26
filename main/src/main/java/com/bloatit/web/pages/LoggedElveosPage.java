@@ -31,9 +31,9 @@ import com.bloatit.web.url.LoginPageUrl;
  * {@link #getRefusalReason()}</i>
  * </p>
  */
-public abstract class LoggedPage extends ElveosPage {
+public abstract class LoggedElveosPage extends ElveosPage {
 
-    public LoggedPage(final Url url) {
+    public LoggedElveosPage(final Url url) {
         super(url);
     }
 
@@ -97,5 +97,5 @@ public abstract class LoggedPage extends ElveosPage {
         return createBreadcrumb((Member) null);
     }
 
-    protected abstract Breadcrumb createBreadcrumb(Member member);
+    protected abstract Breadcrumb createBreadcrumb(Member loggedUser);
 }

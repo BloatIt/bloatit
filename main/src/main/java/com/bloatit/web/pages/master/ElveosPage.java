@@ -141,7 +141,6 @@ public abstract class ElveosPage extends Page {
 
         // Template method pattern.
         content.add(bodyContent);
-
         body.add(new Footer());
 
         breacrumbPlaceHolder.add(createBreadcrumb().toHtmlElement());
@@ -193,19 +192,14 @@ public abstract class ElveosPage extends Page {
 
     private HtmlElement generateLogo() {
         Context.getSession();
-
         final HtmlDiv logoDiv = new HtmlDiv("logo", "logo");
-
         final HtmlImage logoImage = new HtmlImage(new Image(WebConfiguration.getImgLogo()), tr("elveos.org logo"));
         logoImage.setCssClass("logo_elveos");
-
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
 
         final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
         logoTextDiv.addText(tr("the collaborative platform for free software funding"));
-
         logoDiv.add(logoTextDiv);
-
         return logoDiv;
     }
 }

@@ -52,7 +52,7 @@ import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.admin.master.AdminPage;
-import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.HightlightedFeaturesTools;
@@ -217,7 +217,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
 
                 @Override
                 public XmlNode getBody() {
-                    return new FeaturePageUrl(feature.getFeature(), TabKey.description).getHtmlLink(feature.getFeature().getTitle());
+                    return new FeaturePageUrl(feature.getFeature(), FeatureTabKey.description).getHtmlLink(feature.getFeature().getTitle());
                 }
             });
 

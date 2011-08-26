@@ -40,14 +40,14 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 
 @ParamContainer(value = "member/modify", protocol = Protocol.HTTPS)
-public class ModifyMemberPage extends LoggedPage {
+public class ModifyMemberPage extends LoggedElveosPage {
     private final ModifyMemberPageUrl url;
 
     public ModifyMemberPage(final ModifyMemberPageUrl url) {

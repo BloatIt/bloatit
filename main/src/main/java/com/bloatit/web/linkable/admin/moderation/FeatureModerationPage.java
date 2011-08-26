@@ -51,7 +51,7 @@ public class FeatureModerationPage extends AdminPage {
 
         final HtmlLink ok = new FeatureModerationActionUrl(getSession().getShortKey(), feature).getHtmlLink(Context.tr("Delete"));
         ok.setCssClass("button");
-        final HtmlLink cancel = new FeaturePageUrl(feature, FeatureTabPane.TabKey.description).getHtmlLink(Context.tr("Cancel"));
+        final HtmlLink cancel = new FeaturePageUrl(feature, FeatureTabPane.FeatureTabKey.description).getHtmlLink(Context.tr("Cancel"));
         cancel.setCssClass("button");
 
         master.addLeft(ok);

@@ -24,7 +24,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.model.Feature;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
@@ -43,7 +43,7 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
             add(new HtmlDefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
             
             add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount)));
-            add(new HtmlParagraph(new FeaturePageUrl(feature, TabKey.description).getHtmlLink(tr("more details..."))));
+            add(new HtmlParagraph(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(tr("more details..."))));
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException(e);
         }

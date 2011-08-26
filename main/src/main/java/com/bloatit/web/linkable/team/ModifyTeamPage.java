@@ -38,14 +38,14 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyTeamActionUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 
 @ParamContainer("teams/%team%/modify")
-public class ModifyTeamPage extends LoggedPage {
+public class ModifyTeamPage extends LoggedElveosPage {
     private final ModifyTeamPageUrl url;
 
     @RequestParam(role = Role.PAGENAME)

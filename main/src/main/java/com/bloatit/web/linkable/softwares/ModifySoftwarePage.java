@@ -31,7 +31,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
@@ -42,7 +42,7 @@ import com.bloatit.web.url.ModifySoftwarePageUrl;
  * Page that hosts the form to create a new feature
  */
 @ParamContainer("softwares/%software%/modify")
-public final class ModifySoftwarePage extends LoggedPage {
+public final class ModifySoftwarePage extends LoggedElveosPage {
     // TODO : mutualize with others DESCRIPTION_INPUT_NB_LINES et
     // DESCRIPTION_INPUT_NB_COLUMNS
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;

@@ -12,7 +12,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 
 /**
@@ -21,7 +21,7 @@ import com.bloatit.web.url.SendTeamInvitationActionUrl;
  * </p>
  */
 @ParamContainer("teams/%team%/dosendinvitation")
-public final class SendTeamInvitationAction extends LoggedAction {
+public final class SendTeamInvitationAction extends LoggedElveosAction {
     @RequestParam(role = Role.PAGENAME)
     private final Team team;
 

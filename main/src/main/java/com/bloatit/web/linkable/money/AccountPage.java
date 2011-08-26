@@ -29,7 +29,7 @@ import com.bloatit.web.components.AccountComponent;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountPageUrl;
@@ -40,7 +40,7 @@ import com.bloatit.web.url.AccountPageUrl;
  * </p>
  */
 @ParamContainer(value = "account", protocol = Protocol.HTTPS)
-public final class AccountPage extends LoggedPage {
+public final class AccountPage extends LoggedElveosPage {
 
     @RequestParam(message = @tr("I cannot find the team number: ''%value%''."))
     @Optional

@@ -18,7 +18,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.MetaBugDeleteActionUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
 
@@ -26,7 +26,7 @@ import com.bloatit.web.url.MetaBugsListPageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("meta/bug/dodelete")
-public final class MetaBugDeleteAction extends LoggedAction {
+public final class MetaBugDeleteAction extends LoggedElveosAction {
 
     @RequestParam
     private final String bugId;

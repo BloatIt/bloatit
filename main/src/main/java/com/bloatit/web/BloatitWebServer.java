@@ -57,6 +57,8 @@ import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
 import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.bugs.ReportBugPage;
+import com.bloatit.web.linkable.contribution.CancelContributionAction;
+import com.bloatit.web.linkable.contribution.CancelContributionPage;
 import com.bloatit.web.linkable.contribution.CheckContributeAction;
 import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributeAction;
@@ -334,6 +336,9 @@ public class BloatitWebServer extends WebProcessor {
         if (CreateExternalServicePageUrl.matches(pageCode)) {
             return new CreateExternalServicePage(new CreateExternalServicePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (CancelContributionPageUrl.matches(pageCode)) {
+            return new CancelContributionPage(new CancelContributionPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -499,6 +504,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (FeatureModerationActionUrl.matches(pageCode)) {
             return new FeatureModerationAction(new FeatureModerationActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (CancelContributionActionUrl.matches(pageCode)) {
+            return new CancelContributionAction(new CancelContributionActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////

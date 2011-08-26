@@ -30,7 +30,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -41,7 +41,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * </p>
  */
 @ParamContainer("team/docreate")
-public final class CreateTeamAction extends LoggedAction {
+public final class CreateTeamAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a team name"))

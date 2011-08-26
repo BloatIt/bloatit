@@ -41,14 +41,14 @@ import com.bloatit.model.Member;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 
 @ParamContainer(value = "member/domodify", protocol = Protocol.HTTPS)
-public class ModifyMemberAction extends LoggedAction {
+public class ModifyMemberAction extends LoggedElveosAction {
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(

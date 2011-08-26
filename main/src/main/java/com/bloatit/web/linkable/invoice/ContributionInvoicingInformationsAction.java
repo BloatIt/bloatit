@@ -23,14 +23,14 @@ import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Member;
 import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
 
 /**
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/invoicing/contribution_invoicing_informations")
-public final class ContributionInvoicingInformationsAction extends LoggedAction {
+public final class ContributionInvoicingInformationsAction extends LoggedElveosAction {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))

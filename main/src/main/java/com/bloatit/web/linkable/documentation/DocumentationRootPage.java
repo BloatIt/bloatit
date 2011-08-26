@@ -17,7 +17,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.model.Feature;
-import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.pages.master.AliasAction;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
