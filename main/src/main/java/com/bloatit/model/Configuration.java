@@ -4,17 +4,13 @@ import com.bloatit.data.DaoConfiguration;
 
 public class Configuration {
     DaoConfiguration dao;
-    private static Configuration instance;
 
     private Configuration() {
         dao = DaoConfiguration.getInstance();
     }
 
     public static Configuration getInstance() {
-        if (instance == null) {
-            instance = new Configuration();
-        }
-        return instance;
+        return new Configuration();
     }
 
     public synchronized int getNextMercanetTransactionId() {

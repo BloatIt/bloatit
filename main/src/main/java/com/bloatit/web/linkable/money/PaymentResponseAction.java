@@ -16,6 +16,8 @@
 //
 package com.bloatit.web.linkable.money;
 
+import java.util.Map.Entry;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -23,6 +25,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.PaymentResponseActionUrl;
@@ -49,6 +52,12 @@ public final class PaymentResponseAction extends ElveosAction {
 
     @Override
     protected Url doProcess() {
+        
+        
+        for(Entry<String, UrlParameter<?, ?>> entry : session.getParameters().entrySet()){
+            System.out.println(entry.getKey()+ " : "+ entry.getValue().getStringValue());
+        }
+        
         if (ack.equals("ok")) {
             try {
                 process.validatePayment();
