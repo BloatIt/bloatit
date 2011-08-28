@@ -48,7 +48,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
-import com.bloatit.web.url.PaylineProcessUrl;
+import com.bloatit.web.url.PaymentProcessUrl;
 import com.bloatit.web.url.StaticAccountChargingPageUrl;
 import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 
@@ -125,7 +125,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         // Pay bloc
         summary.add(new HtmlPayBlock(quotation,
                                      process.getTeam(),
-                                     new PaylineProcessUrl(actor, process),
+                                     new PaymentProcessUrl(actor, process),
                                      new UnlockAccountChargingProcessActionUrl(getSession().getShortKey(), process)));
         group.add(summary);
 

@@ -10,15 +10,15 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedElveosAction;
-import com.bloatit.web.url.PaylineActionUrl;
+import com.bloatit.web.url.PaymentActionUrl;
 
-@ParamContainer(value = "payline/dopayment", protocol = Protocol.HTTPS)
-public final class PaylineAction extends LoggedElveosAction {
+@ParamContainer(value = "payment/dopayment", protocol = Protocol.HTTPS)
+public final class PaymentAction extends LoggedElveosAction {
 
     @RequestParam
-    private final PaylineProcess process;
+    private final PaymentProcess process;
 
-    public PaylineAction(final PaylineActionUrl url) {
+    public PaymentAction(final PaymentActionUrl url) {
         super(url);
         process = url.getProcess();
     }

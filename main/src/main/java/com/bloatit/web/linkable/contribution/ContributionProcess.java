@@ -26,17 +26,17 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.web.actions.PaymentProcess;
+import com.bloatit.web.actions.AccountProcess;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
-import com.bloatit.web.linkable.money.PaylineProcess;
+import com.bloatit.web.linkable.money.PaymentProcess;
 import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributeActionUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 
 @ParamContainer("contribution/process")
-public class ContributionProcess extends PaymentProcess {
+public class ContributionProcess extends AccountProcess {
 
     @RequestParam
     private Feature feature;
@@ -87,8 +87,8 @@ public class ContributionProcess extends PaymentProcess {
 
     @Override
     public synchronized Url notifyChildClosed(final WebProcess subProcess) {
-        if (subProcess instanceof PaylineProcess) {
-            final PaylineProcess subPro = (PaylineProcess) subProcess;
+        if (subProcess instanceof PaymentProcess) {
+            final PaymentProcess subPro = (PaymentProcess) subProcess;
             if (subPro.isSuccessful()) {
                 // Redirects to the contribution action which will perform the
                 // actual contribution

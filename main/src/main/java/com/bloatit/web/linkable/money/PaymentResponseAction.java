@@ -25,10 +25,10 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
-import com.bloatit.web.url.PaylineReturnActionUrl;
+import com.bloatit.web.url.PaymentResponseActionUrl;
 
-@ParamContainer(value = "payline/doreturn", protocol = Protocol.HTTPS)
-public final class PaylineReturnAction extends ElveosAction {
+@ParamContainer(value = "payment/doresponse", protocol = Protocol.HTTPS)
+public final class PaymentResponseAction extends ElveosAction {
 
     @RequestParam(name = "token")
     @Optional
@@ -38,9 +38,9 @@ public final class PaylineReturnAction extends ElveosAction {
     private final String ack;
 
     @RequestParam(name = "process")
-    private final PaylineProcess process;
+    private final PaymentProcess process;
 
-    public PaylineReturnAction(final PaylineReturnActionUrl url) {
+    public PaymentResponseAction(final PaymentResponseActionUrl url) {
         super(url);
         token = url.getToken();
         ack = url.getAck();

@@ -39,31 +39,31 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.PaymentProcess;
+import com.bloatit.web.actions.AccountProcess;
 import com.bloatit.web.actions.WebProcess;
-import com.bloatit.web.url.PaylineActionUrl;
-import com.bloatit.web.url.PaylineNotifyActionUrl;
-import com.bloatit.web.url.PaylineProcessUrl;
-import com.bloatit.web.url.PaylineReturnActionUrl;
+import com.bloatit.web.url.PaymentResponseActionUrl;
+import com.bloatit.web.url.PaymentActionUrl;
+import com.bloatit.web.url.PaymentAutoresponseActionUrl;
+import com.bloatit.web.url.PaymentProcessUrl;
 
-@ParamContainer(value = "payline/process", protocol = Protocol.HTTPS)
-public class PaylineProcess extends WebProcess {
+@ParamContainer(value = "payment/process", protocol = Protocol.HTTPS)
+public class PaymentProcess extends WebProcess {
 
     @RequestParam
     private Actor<?> actor;
 
     @SuppressWarnings("unused")
     @RequestParam
-    private final PaymentProcess parentProcess;
+    private final AccountProcess parentProcess;
 
     private boolean success = false;
 
     // Make the payment request.
     private final Payline payline = new Payline();
 
-    private final PaylineProcessUrl url;
+    private final PaymentProcessUrl url;
 
-    public PaylineProcess(final PaylineProcessUrl url) {
+    public PaymentProcess(final PaymentProcessUrl url) {
         super(url);
         this.url = url;
         actor = url.getActor();
@@ -77,7 +77,7 @@ public class PaylineProcess extends WebProcess {
     @Override
     protected synchronized Url doProcess() {
         url.getParentProcess().addChildProcess(this);
-        return new PaylineActionUrl(Context.getSession().getShortKey(), this);
+        return new PaymentActionUrl(Context.getSession().getShortKey(), this);
     }
 
     @Override
@@ -98,11 +98,11 @@ public class PaylineProcess extends WebProcess {
 
     synchronized Url initiatePayment() {
         // Constructing the urls.
-        final PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok", this);
+        final PaymentResponseActionUrl paylineReturnActionUrl = new PaymentResponseActionUrl("ok", this);
         final String returnUrl = paylineReturnActionUrl.externalUrlString();
-        final PaylineReturnActionUrl paylineReturnActionUrlCancel = new PaylineReturnActionUrl("cancel", this);
+        final PaymentResponseActionUrl paylineReturnActionUrlCancel = new PaymentResponseActionUrl("cancel", this);
         final String cancelUrl = paylineReturnActionUrlCancel.externalUrlString();
-        final PaylineNotifyActionUrl paylineNotifyActionUrl = new PaylineNotifyActionUrl(this);
+        final PaymentAutoresponseActionUrl paylineNotifyActionUrl = new PaymentAutoresponseActionUrl(this);
         final String notificationUrl = paylineNotifyActionUrl.externalUrlString();
 
         Reponse reponse;
@@ -122,7 +122,7 @@ public class PaylineProcess extends WebProcess {
     }
 
     private BigDecimal getAmount() {
-        return ((PaymentProcess) getFather()).getAmountToPay();
+        return ((AccountProcess) getFather()).getAmountToPay();
     }
 
     synchronized void validatePayment(final String token) throws UnauthorizedOperationException {

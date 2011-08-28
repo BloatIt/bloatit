@@ -26,11 +26,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.web.linkable.money.PaylineProcess;
+import com.bloatit.web.linkable.money.PaymentProcess;
+import com.bloatit.web.url.AccountProcessUrl;
 import com.bloatit.web.url.PaymentProcessUrl;
 
-@ParamContainer("paymentprocess")
-public abstract class PaymentProcess extends WebProcess {
+@ParamContainer("accountprocess")
+public abstract class AccountProcess extends WebProcess {
 
     @RequestParam
     @Optional
@@ -40,7 +41,7 @@ public abstract class PaymentProcess extends WebProcess {
     private BigDecimal amountToCharge = new BigDecimal("0");
     private boolean locked = false;
 
-    public PaymentProcess(final PaymentProcessUrl url) {
+    public AccountProcess(final AccountProcessUrl url) {
         super(url);
         team = url.getTeam();
     }
@@ -52,7 +53,7 @@ public abstract class PaymentProcess extends WebProcess {
 
     @Override
     protected final synchronized void notifyChildAdded(final WebProcess subProcess) {
-        if (subProcess.getClass().equals(PaylineProcess.class)) {
+        if (subProcess.getClass().equals(PaymentProcess.class)) {
             locked = true;
         }
     }

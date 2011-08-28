@@ -41,7 +41,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributeActionUrl;
 import com.bloatit.web.url.CheckContributePageUrl;
-import com.bloatit.web.url.PaylineProcessUrl;
+import com.bloatit.web.url.PaymentProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 
@@ -136,7 +136,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         summary.add(new HtmlClearer());
         summary.add(new HtmlPayBlock(quotation,
                                      process.getTeam(),
-                                     new PaylineProcessUrl(actor, process),
+                                     new PaymentProcessUrl(actor, process),
                                      new UnlockContributionProcessActionUrl(getSession().getShortKey(), process)));
         group.add(summary);
     }

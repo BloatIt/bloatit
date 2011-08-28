@@ -26,10 +26,10 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.PaylineNotifyActionUrl;
+import com.bloatit.web.url.PaymentAutoresponseActionUrl;
 
-@ParamContainer(value = "payline/donotify", protocol = Protocol.HTTPS)
-public final class PaylineNotifyAction extends ElveosAction {
+@ParamContainer(value = "payment/doautoresponse", protocol = Protocol.HTTPS)
+public final class PaymentAutoresponseAction extends ElveosAction {
     public static final String TOKEN_CODE = "token";
 
     @RequestParam(name = TOKEN_CODE)
@@ -37,9 +37,9 @@ public final class PaylineNotifyAction extends ElveosAction {
     private final String token;
 
     @RequestParam(name = "process")
-    private final PaylineProcess process;
+    private final PaymentProcess process;
 
-    public PaylineNotifyAction(final PaylineNotifyActionUrl url) {
+    public PaymentAutoresponseAction(final PaymentAutoresponseActionUrl url) {
         super(url);
         token = url.getToken();
         process = url.getProcess();
