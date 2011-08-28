@@ -51,13 +51,13 @@ public final class PaymentResponseAction extends ElveosAction {
     protected Url doProcess() {
         if (ack.equals("ok")) {
             try {
-                process.validatePayment(token);
+                process.validatePayment();
             } catch (final UnauthorizedOperationException e) {
                 Log.web().error("Fail to validate payment",e);
-                session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
+                session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference()));
             }
         } else if (ack.equals("cancel")) {
-            process.refusePayment(token);
+            process.refusePayment();
         }
         final Url target = process.close();
         if (target != null) {

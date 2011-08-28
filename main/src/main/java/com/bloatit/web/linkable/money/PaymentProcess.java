@@ -17,11 +17,16 @@
 package com.bloatit.web.linkable.money;
 
 import java.math.BigDecimal;
+import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.bank.MercanetAPI;
+import com.bloatit.framework.bank.MercanetAPI.PaymentMethod;
+import com.bloatit.framework.bank.MercanetTransaction;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.mails.ElveosMail;
 import com.bloatit.framework.model.ModelAccessor;
+import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -31,11 +36,14 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
+import com.bloatit.model.Configuration;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
 import com.bloatit.model.Payline.TokenNotfoundException;
+import com.bloatit.model.Payment;
 import com.bloatit.model.Team;
+import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -59,9 +67,10 @@ public class PaymentProcess extends WebProcess {
     private boolean success = false;
 
     // Make the payment request.
-    private final Payline payline = new Payline();
+    private final Payment payment = new Payment();
 
     private final PaymentProcessUrl url;
+    private BankTransaction bankTransaction;
 
     public PaymentProcess(final PaymentProcessUrl url) {
         super(url);
@@ -92,90 +101,88 @@ public class PaymentProcess extends WebProcess {
         } else if (actor instanceof Team) {
             actor = TeamManager.getById(actor.getId());
         }
+        
+        if(bankTransaction != null) {
+            bankTransaction = BankTransactionManager.getById(bankTransaction.getId());
+        }
         // actor = (Actor<?>) DBRequests.getById(DaoActor.class,
         // actor.getId()).accept(new DataVisitorConstructor());
     }
 
     synchronized Url initiatePayment() {
         // Constructing the urls.
-        final PaymentResponseActionUrl paylineReturnActionUrl = new PaymentResponseActionUrl("ok", this);
-        final String returnUrl = paylineReturnActionUrl.externalUrlString();
-        final PaymentResponseActionUrl paylineReturnActionUrlCancel = new PaymentResponseActionUrl("cancel", this);
-        final String cancelUrl = paylineReturnActionUrlCancel.externalUrlString();
-        final PaymentAutoresponseActionUrl paylineNotifyActionUrl = new PaymentAutoresponseActionUrl(this);
-        final String notificationUrl = paylineNotifyActionUrl.externalUrlString();
+        final PaymentResponseActionUrl normalReturnActionUrl = new PaymentResponseActionUrl("ok", this);
+        final PaymentResponseActionUrl cancelReturnActionUrl = new PaymentResponseActionUrl("cancel", this);
+        final PaymentAutoresponseActionUrl autoResponseActionUrl = new PaymentAutoresponseActionUrl(this);
 
-        Reponse reponse;
+        String token = new RandomString(10).nextString();
+        autoResponseActionUrl.setToken(token);
+        SessionManager.storeTemporarySession(token, session);
+
         try {
-            reponse = payline.doPayment(actor, getAmount(), cancelUrl, returnUrl, notificationUrl);
-            SessionManager.storeTemporarySession(reponse.getToken(), session);
-
-            // Normal case It is accepted !
-            if (reponse.isAccepted()) {
-                return new UrlString(reponse.getRedirectUrl());
-            }
-            session.notifyWarning(reponse.getMessage());
+            bankTransaction = payment.doPayment(actor, getAmount());
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Not authorized", e);
         }
-        return Context.getSession().pickPreferredPage();
+
+        MercanetTransaction mercanetTransaction = MercanetAPI.createTransaction(Configuration.getInstance().getNextMercanetTransactionId(),
+                                                                                parentProcess.getAmountToPay(),
+                                                                                "" + bankTransaction.getId(),
+                                                                                normalReturnActionUrl,
+                                                                                cancelReturnActionUrl,
+                                                                                autoResponseActionUrl);
+
+        StringBuilder url = new StringBuilder(mercanetTransaction.getUrl());
+
+        boolean firstParam = true;
+
+        for (Entry<String, String> param : mercanetTransaction.getHiddenParameters(PaymentMethod.VISA).entrySet()) {
+            if (firstParam) {
+                url.append("?");
+                firstParam = false;
+            } else {
+                url.append("&");
+            }
+            url.append(param.getKey());
+            url.append("=");
+            url.append(param.getValue());
+        }
+
+        return new UrlString(url.toString());
     }
 
     private BigDecimal getAmount() {
         return ((AccountProcess) getFather()).getAmountToPay();
     }
 
-    synchronized void validatePayment(final String token) throws UnauthorizedOperationException {
-        try {
-            final Reponse paymentDetails = payline.getPaymentDetails(token);
-            final String message = paymentDetails.getMessage().replace("\n", ". ");
-            if (paymentDetails.isAccepted()) {
-                payline.validatePayment(token);
+    synchronized void validatePayment() throws UnauthorizedOperationException {
+        payment.validatePayment(bankTransaction);
 
-                // The payline process is critical. We must be sure the DB is
-                // updated right NOW!
-                ModelAccessor.flush();
+        // The payline process is critical. We must be sure the DB is
+        // updated right NOW!
+        ModelAccessor.flush();
 
-                success = true;
-                // Notify the user:
-                final BankTransaction bankTransaction = BankTransaction.getByToken(token);
-                if (bankTransaction == null) {
-                    session.notifyWarning(Context.tr("Cannot validate your payment. Reason: Token not found."));
-                    return;
-                }
-                final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getSimpleEuroString();
-                final String paidValueStr = Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getTwoDecimalEuroString();
-                session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
-                new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
-            } else {
-                payline.cancelPayement(token);
-                Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
-                session.notifyWarning("Payment canceled. Reason: " + message + ".");
-            }
-        } catch (final TokenNotfoundException e) {
-            Log.web().fatal("Token not found.", e);
-            session.notifyWarning("Payment canceled. Reason: Internal error. Please report the bug.");
-        }
+        success = true;
+        // Notify the user:
+        final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getSimpleEuroString();
+        final String paidValueStr = Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getTwoDecimalEuroString();
+        session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
+        new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
+
+        // payment.cancelPayement(token);
+        // Log.framework().info("Payline transaction failure. (Reason: " +
+        // message + ")");
+        // session.notifyWarning("Payment canceled. Reason: " + message + ".");
     }
 
-    synchronized void refusePayment(final String token) {
-        try {
-            final Reponse paymentDetails = payline.getPaymentDetails(token);
-            final String message = paymentDetails.getMessage().replace("\n", ". ");
-            Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
-            session.notifyWarning("Payment canceled. Reason: " + message + ".");
-            payline.cancelPayement(token);
-        } catch (final TokenNotfoundException e) {
-            Log.web().fatal("Token not found.", e);
-            session.notifyWarning("Payment canceled. Reason: Payment refused. Please report the bug.");
-        }
+    synchronized void refusePayment() {
+        // Log.framework().info("Payline transaction failure. (Reason: " +
+        // message + ")");
+        // session.notifyWarning("Payment canceled. Reason: " + message + ".");
+        payment.cancelPayment(bankTransaction);
     }
 
-    public synchronized String getPaymentReference(final String token) {
-        final BankTransaction bankTransaction = BankTransaction.getByToken(token);
-        if (bankTransaction == null) {
-            return "";
-        }
+    public synchronized String getPaymentReference() {
         try {
             return bankTransaction.getReference();
         } catch (final UnauthorizedOperationException e) {

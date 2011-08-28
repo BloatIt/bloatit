@@ -112,6 +112,24 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
                            final String orderReference) {
         super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, valuePayed, orderReference));
     }
+    
+    
+    /**
+     * Create a new BankTransaction.
+     * 
+     * @param author it the person implied in this transaction (the one filling
+     *            is account)
+     * @param value is the quantity of money transfered.
+     * @param valuePayed the really paid value.
+     * @param orderReference is a reference we have to create and should be
+     *            unique.
+     */
+    public BankTransaction(final Actor<?> author,
+                           final BigDecimal value,
+                           final BigDecimal valuePayed,
+                           final String orderReference) {
+        super(DaoBankTransaction.createAndPersist(author.getDao(), value, valuePayed, orderReference));
+    }
 
     /**
      * Instantiates a new bank transaction.

@@ -50,7 +50,7 @@ public final class PaymentAutoresponseAction extends ElveosAction {
         Log.web().info("Get a payline notification: " + token);
 
         try {
-            process.validatePayment(token);
+            process.validatePayment();
         } catch (final UnauthorizedOperationException e) {
             throw new BadProgrammerException(e);
         }

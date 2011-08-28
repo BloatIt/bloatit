@@ -27,10 +27,10 @@ public class MercanetTransaction {
     public String getUrl() {
         return url;
     }
-    
-    public Map<String,String> getHiddenParameters(PaymentMethod method) {
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("data", data);
+
+    public Map<String, String> getHiddenParameters(PaymentMethod method) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("DATA", data);
         params.put(method.toString() + ".x", "0");
         params.put(method.toString() + ".y", "0");
         return params;

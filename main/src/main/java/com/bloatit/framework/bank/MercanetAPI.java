@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,17 +17,25 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.utils.Pair;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.webprocessor.url.UrlString;
+import com.bloatit.model.Configuration;
 
+/**
+ * A class that handles interactions with the Mercanet API.
+ * <p>
+ * To use this class, use the method
+ * {@link MercanetAPI#createTransaction(BigDecimal, String, Url, Url, Url)}.
+ * </p>
+ * 
+ * @see MercanetTransaction
+ */
 public class MercanetAPI {
     private final static String API_PATH = "/home/fred/bloatit/mercanet";
     private final static String PATHFILE_PATH = "/home/fred/.config/bloatit/pathfile";
     private final static String REQUEST_BIN = API_PATH + "/bin/request";
     private final static String RESPONSE_BIN = API_PATH + "/bin/response";
 
-    enum PaymentMethod {
+    public enum PaymentMethod {
         CB, VISA, MASTERCARD
     }
 
@@ -46,9 +54,29 @@ public class MercanetAPI {
     private final static AtomicInteger nextTransactionId = new AtomicInteger(0);
 
     /**
-     * @return
+     * Initializes a MercanetTransaction with all the correct values to start a
+     * payment.
+     * <p>
+     * <b>NOTE: </b> This method requires a valid context to be used, including
+     * a valid user language.
+     * </p>
+     * 
+     * @param amount the amount of the transaction. Must be a eurovalue
+     * @param userData a string that will be returned as is at the end of the
+     *            transaction. Must not contain the following characters : '|',
+     *            ';', ':', '"'
+     * @param normalReturnUrl the url where the user will be redirected when
+     *            transaction completes normally
+     * @param cancelReturnUrl the url where the user will be redirected when he
+     *            decides to cancel the transaction
+     * @param automaticResponseUrl the url that will be called by the server
+     * @throws BadProgrammerException if userData contains any of the forbidden
+     *             characters
+     * @throws ExternalErrorException if errors occurs when using the API binary
+     *             file
      */
-    public static MercanetTransaction createTransaction(BigDecimal amount,
+    public static MercanetTransaction createTransaction(int transactionId,
+                                                        BigDecimal amount,
                                                         String userData,
                                                         Url normalReturnUrl,
                                                         Url cancelReturnUrl,
@@ -64,7 +92,6 @@ public class MercanetAPI {
         // Dynamics informations
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
 
-        int transactionId = getNextTransactionId();
         params.put("transaction_id", Integer.toString(transactionId));
         params.put("normal_return_url", normalReturnUrl.externalUrlString());
         params.put("cancel_return_url", cancelReturnUrl.externalUrlString());
@@ -73,15 +100,20 @@ public class MercanetAPI {
         params.put("language", filterLanguage(Context.getLocalizator().getLanguageCode()));
         params.put("return_context", checkReturnContext(userData));
 
-        
-        
-        
         Pair<String, String> executionResultPairOfString = executeRequest(params);
         String data = executionResultPairOfString.first;
         String baseUrl = executionResultPairOfString.second;
         return new MercanetTransaction(data, baseUrl, transactionId);
     }
 
+    /**
+     * Checks if the string <code>returnContext</code> is a valid value for the
+     * <i>return_context</i> field
+     * 
+     * @param returnContext the string to validate
+     * @return the string if it is valid
+     * @throws BadProgrammerException if the string is not valid
+     */
     private static String checkReturnContext(String returnContext) {
         String[] forbiddenChars = { "|", ";", ":", "\"" };
 
@@ -93,6 +125,13 @@ public class MercanetAPI {
         return returnContext;
     }
 
+    /**
+     * Checks if the string <code>lanuageCode</code> is a valid language code
+     * (i.e: it is handled by the payment API)
+     * 
+     * @param languageCode the code to validate
+     * @return <code>languageCode</code> if it is valid, <i>en</i> otherwise
+     */
     private static String filterLanguage(String languageCode) {
         if (!supportedLanguages.contains(languageCode)) {
             return "en";
@@ -100,6 +139,23 @@ public class MercanetAPI {
         return languageCode;
     }
 
+    /**
+     * Executes a request to the Mercanet API, and returns a pair containing the
+     * return of the API.
+     * <p>
+     * Example of use :
+     * 
+     * <pre>
+     * Pair&lt;String, String&gt; executionResultPairOfString = executeRequest(params);
+     * String data = executionResultPairOfString.first;
+     * String baseUrl = executionResultPairOfString.second;
+     * </pre>
+     * 
+     * </p>
+     * 
+     * @returns a pair containing first the data, second the url to go for the
+     *          payment
+     */
     private static Pair<String, String> executeRequest(Map<String, String> params) {
         // Execute binary
         StringBuilder query = new StringBuilder();
@@ -112,20 +168,28 @@ public class MercanetAPI {
             query.append(param.getValue());
         }
 
+        System.out.println(query.toString());
+        
         Runtime runtime = Runtime.getRuntime();
         String response;
         try {
             Process proc = runtime.exec(query.toString());
             response = IOUtils.toString(proc.getInputStream(), "UTF-8");
 
-            if (proc.exitValue() != 0) {
+            System.out.println(response);
+            if (proc.waitFor() != 0) {
                 throw new ExternalErrorException("Failure during execution of Merc@net binary: " + query.toString() + " - exit value: "
                         + proc.exitValue());
             }
         } catch (IOException e) {
             throw new ExternalErrorException("Failed to execute Merc@net binary: " + query.toString(), e);
+        } catch (InterruptedException e) {
+            throw new ExternalErrorException("No luck, you have been hit by a signal !", e);
         }
 
+        
+        
+        
         // Extract data
         Pattern p = Pattern.compile("^.*<FORM METHOD=POST ACTION=\"([^\"]+)\".*<INPUT TYPE=HIDDEN NAME=DATA VALUE=\"([a-f0-9]+)\".*$");
         Matcher m = p.matcher(response);
@@ -137,26 +201,5 @@ public class MercanetAPI {
         String data = m.group(2);
 
         return new Pair<String, String>(data, baseUrl);
-    }
-
-    private static synchronized int getNextTransactionId() {
-        int id = nextTransactionId.getAndIncrement();
-        if (id == 999999) {
-            nextTransactionId.set(0);
-        }
-        return id;
-    }
-
-    public static void main(String[] args) {
-        MercanetTransaction transaction = createTransaction(new BigDecimal("523.24"),
-                                                            "sdlfkj|slk",
-                                                            new UrlString("https://elveos.org/1"),
-                                                            new UrlString("https://elveos.org/2"),
-                                                            new UrlString("https://elveos.org/3"));
-
-        String data = transaction.getData();
-        String url = transaction.getUrl();
-        Map<String, String> hiddenParameters = transaction.getHiddenParameters(PaymentMethod.CB);
-
     }
 }

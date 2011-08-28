@@ -49,6 +49,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
             }
         } catch (final ClassNotFoundException e) {
             // This is not a team
+        } catch (final ClassCastException e) {
+            // This is not a team
         }
 
         try {
@@ -60,7 +62,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         } catch (final ClassNotFoundException e) {
             // not a member nether a team !
             throw new BadProgrammerException(e);
-        }
+        } catch (final ClassCastException e) {
+            throw new BadProgrammerException(e);
+        }   
         return null;
     }
 

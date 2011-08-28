@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -62,7 +63,7 @@ import com.bloatit.web.url.StaticAccountChargingPageUrl;
 @ParamContainer(value = "account/charging/process/%process%", protocol = Protocol.HTTPS)
 public final class AccountChargingPage extends QuotationPage {
 
-    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(role=Role.PAGENAME,  message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountChargingProcess process;
 
