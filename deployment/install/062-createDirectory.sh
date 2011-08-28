@@ -20,6 +20,7 @@ Create in the elveos home directory:
  * .local/share/bloatit/log
  * .config/bloatit
  * www
+ * resources
 
 EOF
 
@@ -37,6 +38,7 @@ elif [ "$1" = exec ] ; then
     mkdir -p .local/share/bloatit/log
     mkdir -p .config/bloatit
     mkdir www
+    mkdir resources
     ' $USER
 
 fi

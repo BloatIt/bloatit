@@ -56,7 +56,7 @@ public class PageNotFound extends ElveosPage {
         box.add(errorTitle);
 
         final HtmlParagraph error = new HtmlParagraph();
-        final String tr = Context.tr("The page you are looking for is not here. Maybe you can try heading back to the <0::Home page>.");
+        final String tr = Context.tr("This is not the page you are looking for. Maybe you can try heading back to the <0::Home page>.");
         final HtmlMixedText mixed = new HtmlMixedText(tr, new IndexPageUrl().getHtmlLink());
         error.add(mixed);
         box.add(error);

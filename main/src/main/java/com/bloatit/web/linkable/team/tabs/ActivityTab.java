@@ -165,8 +165,6 @@ public class ActivityTab extends HtmlTab {
                     final HtmlLink htmlLink = new FileResourceUrl(model).getHtmlLink(model.getFileName());
                     final HtmlElement secondLine = generateFeedSecondLine(Context.tr("File: "), htmlLink);
                     return generateFeedStructure(mixedText, secondLine, model);
-                    // return generateFeatureFeedStructure(mixedText,
-                    // model.getFeature(), model);
                 }
 
                 @Override

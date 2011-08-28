@@ -8,8 +8,7 @@ $0: Versionning of the home directory using git
 
 ### Usage 
 
-You must export the USER variable so that this script know which user to use.
-(export USER=...)
+You must export the USER variable. (export USER=...)
 
 EOF
 

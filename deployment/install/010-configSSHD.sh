@@ -7,13 +7,15 @@ cat << EOF
 $0: Configuration du serveur openSSH.
 -------------------------------------
 
-### Usage
+### description
 
 Par défaut ce script ajoute les configurations suivante: 
 
  * authentication by public key only
  * No X11 forwarding
  * No known host trusting.
+
+Permet la modification du fichier de conf sshd à la main.
 
 
 ### Tips
@@ -43,10 +45,15 @@ EOF
 elif [ "$1" = exec ] ; then 
     SSHD_CFG=/etc/ssh/sshd_config
 
+    echo "*** set RSAAuthentication to 	'no'"
     sudo sed -i -r '/RSAAuthentication/ s/#?(.*) yes$/\1 no/g' $SSHD_CFG
+    echo "*** set PublikeyAuthentication to 'yes'"
     sudo sed -i -r '/PubkeyAuthentication/ s/#?(.*) no$/\1 yes/g' $SSHD_CFG
+    echo "*** set IgnoreUserKnownHosts to 'yes'"
     sudo sed -i -r '/IgnoreUserKnownHosts/ s/#?(.*) no$/\1 yes/g' $SSHD_CFG
+    echo "*** set PasswordAuthentication to 'no'"
     sudo sed -i -r '/PasswordAuthentication/ s/#?(.*) yes$/\1 no/g' $SSHD_CFG
+    echo "*** set X11Forwarding to 'no'"
     sudo sed -i -r '/X11Forwarding/ s/#?(.*) yes$/\1 no/g' $SSHD_CFG
 
     read -p "Config the $SSHD_CFG (press return to continue)"

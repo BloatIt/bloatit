@@ -33,7 +33,7 @@ import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.model.right.DuplicateDataException;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.ModifySoftwareActionUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;
@@ -43,7 +43,7 @@ import com.bloatit.web.url.SoftwarePageUrl;
  * A response to a form used to modify a software
  */
 @ParamContainer("softwares/%software%/domodify")
-public final class ModifySoftwareAction extends LoggedAction {
+public final class ModifySoftwareAction extends LoggedElveosAction {
     protected static final String IMAGE_CODE = "image";
     private static final String IMAGE_NAME_CODE = "image/filename";
     private static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";

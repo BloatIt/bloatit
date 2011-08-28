@@ -10,6 +10,24 @@
 		</layout>
 	</appender>
 
+	<appender name="syslog" class="org.apache.log4j.net.SyslogAppender">
+		<param name="Facility" value="USER" />
+		<param name="SyslogHost" value="localhost" />
+		<param name="Threshold" value="info" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="elveosJava: %d{yyyy-MM-ddTHH:mm:ss} [%t] %p\t%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="fakesshguard" class="org.apache.log4j.net.SyslogAppender">
+		<param name="Facility" value="AUTH" />
+		<param name="SyslogHost" value="localhost" />
+		<param name="Threshold" value="info" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m%n" />
+		</layout>
+	</appender>
+
 	<appender name="error" class="org.apache.log4j.RollingFileAppender">
 		<param name="file" value="${log4J.path}/errors.log" />
 		<param name="MaxFileSize" value="1000KB" />
@@ -75,13 +93,16 @@
 	<logger name="com.bloatit.cache">
 		<level value="info" />
 	</logger>
+	<logger name="com.bloatit.fakesshguard">
+		<level value="error" />
+		<appender-ref ref="fakesshguard" />
+	</logger>
 
 	<root>
 		<priority value="trace" />
 		<appender-ref ref="console" />
 		<!-- 
-		<appender-ref ref="info" /> 
-		<appender-ref ref="error" /> 
+		<appender-ref ref="syslog" /> 
 		<appender-ref ref="email" /> 
 		-->
 	</root>

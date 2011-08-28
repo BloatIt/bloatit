@@ -37,13 +37,13 @@ import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 public final class FeatureTabPane extends HtmlPageComponent {
     public static final String FEATURE_TAB_PANE = "activeTabKey";
 
-    public static enum TabKey {
+    public static enum FeatureTabKey {
         bugs, details, offers, contributions, description
     }
 
     @RequestParam(role = Role.PAGENAME)
     @NonOptional(@tr("The tab is not optional."))
-    private TabKey activeTabKey;
+    private FeatureTabKey activeTabKey;
 
     // Useful for Url generation Do not delete
     @SuppressWarnings("unused")
@@ -59,7 +59,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
         final HtmlTabBlock tabPane = new HtmlTabBlock(FEATURE_TAB_PANE, activeTabKey.name(), featureUrl);
 
         // Create description tab
-        tabPane.addTab(new HtmlTab(Context.tr("Description"), TabKey.description.name()) {
+        tabPane.addTab(new HtmlTab(Context.tr("Description"), FeatureTabKey.description.name()) {
             @SuppressWarnings("synthetic-access")
             @Override
             public XmlNode generateBody() {
@@ -67,14 +67,14 @@ public final class FeatureTabPane extends HtmlPageComponent {
             }
         });
 
-        tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions().size()), TabKey.contributions.name()) {
+        tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions(false).size()), FeatureTabKey.contributions.name()) {
             @Override
             public XmlNode generateBody() {
                 return new FeatureContributorsComponent(feature);
             }
         });
 
-        tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), TabKey.offers.name()) {
+        tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), FeatureTabKey.offers.name()) {
             @Override
             public XmlNode generateBody() {
                 return new FeatureOfferListComponent(feature);
@@ -92,7 +92,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
         // Create Bugtracker tab only after preparation
         if (feature.getFeatureState() != FeatureState.PENDING && feature.getFeatureState() != FeatureState.PREPARING) {
 
-            tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", feature.countOpenBugs()), TabKey.bugs.name()) {
+            tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", feature.countOpenBugs()), FeatureTabKey.bugs.name()) {
                 @Override
                 public XmlNode generateBody() {
                     return new FeatureBugListComponent(feature);

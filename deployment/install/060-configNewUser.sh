@@ -6,7 +6,7 @@ if [ -z "$1" ] ; then
 $0: Create a new user
 ----------------------
 
-This script just call addUser ...
+This script just call addUser $USER ...
 
 EOF
 
@@ -17,5 +17,4 @@ elif [ "$1" = exec ] ; then
         exit
     fi
     sudo adduser $USER 
-
 fi

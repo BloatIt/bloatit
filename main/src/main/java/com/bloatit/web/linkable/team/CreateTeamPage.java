@@ -33,7 +33,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamActionUrl;
@@ -45,7 +45,7 @@ import com.bloatit.web.url.CreateTeamPageUrl;
  * </p>
  */
 @ParamContainer("team/create")
-public final class CreateTeamPage extends LoggedPage {
+public final class CreateTeamPage extends LoggedElveosPage {
     private final CreateTeamPageUrl url;
 
     public CreateTeamPage(final CreateTeamPageUrl url) {

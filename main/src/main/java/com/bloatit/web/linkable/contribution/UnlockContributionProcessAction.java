@@ -21,12 +21,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 
 @ParamContainer("contribution/unlock")
-public final class UnlockContributionProcessAction extends LoggedAction {
+public final class UnlockContributionProcessAction extends LoggedElveosAction {
 
     @RequestParam
     private final ContributionProcess process;

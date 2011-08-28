@@ -531,7 +531,6 @@ public class FeatureImplementationTest extends ModelTestUnit {
         ModelAccessor.open();
 
         return FeatureManager.getFeatureById(feature.getId());
-
     }
 
     /**

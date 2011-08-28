@@ -8,8 +8,7 @@ $0: add the www-data user in the specified user group.
 
 ### Usage 
 
-You must export the USER variable so that this script know which user to use.
-(export USER=...)
+You must export the USER variable. (export USER=...)
 
 ### Details
 
@@ -18,15 +17,12 @@ To set the rights correctly we have to allow the users in the group elveos to re
 
 EOF
 
-elif [ "$1" = exec ] ; then
+elif [ "$1" = "exec" ] ; then
     if [ -z "$USER" ] ; then 
         echo "You have to specify the user you want to use (export USER=...)"
         echo "Found error. Abording."
         exit
     fi
-    USER="$1"
+    echo "*** Adding www-data into $USER"
     sudo addgroup www-data $USER
-
 fi
-
-

@@ -25,10 +25,10 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.url.LoginPageUrl;
 
-public abstract class AdminPage extends LoggedPage {
+public abstract class AdminPage extends LoggedElveosPage {
 
     public AdminPage(final Url url) {
         super(url);

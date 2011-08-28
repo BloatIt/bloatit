@@ -25,6 +25,8 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
+import com.bloatit.framework.webprocessor.components.form.HtmlPercentField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -39,7 +41,7 @@ import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyContactPageUrl;
@@ -50,7 +52,7 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
  * invoice.
  */
 @ParamContainer(value = "account/charging/invoicing_contact", protocol = Protocol.HTTPS)
-public final class ModifyContactPage extends LoggedPage {
+public final class ModifyContactPage extends LoggedElveosPage {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
@@ -88,7 +90,7 @@ public final class ModifyContactPage extends LoggedPage {
         }
 
         group.add(generateCommonInvoicingContactForm(member));
-        
+
         return group;
     }
 
@@ -144,7 +146,7 @@ public final class ModifyContactPage extends LoggedPage {
 
             // Postal code
             newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getPostalCodeParameter(),//
-                                                 Context.tr("Postal code"),//
+                                                 Context.tr("Postcode"),//
                                                  process.getActor().getContact().getPostalCode()));
 
             // Country
@@ -152,56 +154,53 @@ public final class ModifyContactPage extends LoggedPage {
                                                  Context.tr("Country"),//
                                                  process.getActor().getContact().getCountry()));
 
-            
-            if(process.getNeedAllInfos()) {
+            if (process.getNeedAllInfos()) {
                 final HtmlTitleBlock specificForm = new HtmlTitleBlock(Context.tr("Invoice emission"), 1);
-                
-                
+
                 // Invoice ID template
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
-                                                     Context.tr("Invoice ID template"),//
-                                                     process.getActor().getContact().getInvoiceIdTemplate()));
-                
+                                                   Context.tr("Invoice ID template"),//
+                                                   process.getActor().getContact().getInvoiceIdTemplate()));
+
                 // Invoice ID Number
                 BigDecimal invoiceIdNumber = process.getActor().getContact().getInvoiceIdNumber();
                 String invoiceIdNumberText = null;
-                
-                if(invoiceIdNumber != null) {
-                    invoiceIdNumberText = invoiceIdNumber.toString();
+
+                if (invoiceIdNumber != null) {
+                    invoiceIdNumberText = "" + invoiceIdNumber.intValue();
                 }
-                
+
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdNumberParameter(),//
-                                                     Context.tr("Invoice ID number"),//
-                                                     invoiceIdNumberText));
-                
+                                                   Context.tr("Invoice ID number"),//
+                                                   invoiceIdNumberText));
+
                 // Legal identification
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getLegalIdParameter(),//
-                                                     Context.tr("Legal identification"),//
-                                                     process.getActor().getContact().getLegalId()));
-                
+                                                   Context.tr("Legal identification"),//
+                                                   process.getActor().getContact().getLegalId()));
 
                 // Tax identification
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
-                                                     Context.tr("Tax identification"),//
-                                                     process.getActor().getContact().getTaxIdentification()));
+                                                   Context.tr("Tax identification"),//
+                                                   process.getActor().getContact().getTaxIdentification()));
 
-                
                 // Tax Rate
-                BigDecimal taxRate = process.getActor().getContact().getTaxRate();
-                String taxRateText = null;
-                
-                if(taxRate != null) {
-                    taxRateText = taxRate.toString();
+                BigDecimal taxRate = process.getActor().getContact().getTaxRate().multiply(new BigDecimal("100"));
+
+                final FieldData fieldDataTaxRate = modifyInvoicingContextActionUrl.getTaxRateParameter().pickFieldData();
+                final HtmlPercentField inputTaxRate = new HtmlPercentField(fieldDataTaxRate.getName(), Context.tr("Tax Rate"));
+                if (fieldDataTaxRate.getSuggestedValue() == null) {
+                    inputTaxRate.setDefaultStringValue(taxRate);
+                } else {
+                    inputTaxRate.setDefaultValue(fieldDataTaxRate.getSuggestedValue());
                 }
-                
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxRateParameter(),//
-                                                     Context.tr("Tax Rate"),//
-                                                     taxRateText));
-                                 
+                inputTaxRate.setComment(Context.tr("Example: 19.6 for TVA in France."));
+                inputTaxRate.addErrorMessages(fieldDataTaxRate.getErrorMessages());
+                specificForm.add(inputTaxRate);
+
                 newContactForm.add(specificForm);
             }
-            
-            
+
             final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
             newContactForm.add(newContactButton);
         } catch (final UnauthorizedPrivateAccessException e) {
@@ -215,10 +214,7 @@ public final class ModifyContactPage extends LoggedPage {
         return generateTextField(parameter, name, defaultValue, null);
     }
 
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter,
-                                            final String name,
-                                            final String defaultValue,
-                                            final String comment) {
+    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name, final String defaultValue, final String comment) {
         final FieldData fieldData = parameter.pickFieldData();
         final HtmlTextField input = new HtmlTextField(fieldData.getName(), name);
         if (fieldData.getSuggestedValue() == null) {

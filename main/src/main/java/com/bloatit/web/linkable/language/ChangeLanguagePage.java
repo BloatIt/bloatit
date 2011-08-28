@@ -25,6 +25,7 @@ import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -60,6 +61,11 @@ public final class ChangeLanguagePage extends ElveosPage {
 
     private HtmlElement generateChangeLanguagePageMain() {
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Change language"), 1);
+        final HtmlParagraph help = new HtmlParagraph(Context.tr("The new language will be used during your navigation session on elveos. "
+                + "If you close your navigator or disconnect your default language will be used again. "
+                + "You can change your default language on your member page."));
+        master.add(help);
+
         final ChangeLanguageActionUrl targetAction = new ChangeLanguageActionUrl();
         final HtmlForm form = new HtmlForm(targetAction.urlString());
         master.add(form);

@@ -157,7 +157,7 @@ public final class TeamPage extends ElveosPage {
         tabPane.addTab(new MembersTab(team, tr("Members"), MEMBERS_TAB, AuthToken.getMember()));
         if (team.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(team, tr("Account"), ACCOUNT_TAB));
-            tabPane.addTab(new InvoicingContactTab(team, tr("Invoincing"), INVOICING_TAB));
+            tabPane.addTab(new InvoicingContactTab(team, tr("Invoicing"), INVOICING_TAB));
         }
         activity = new ActivityTab(team, tr("Activity"), ACTIVITY_TAB, url);
         tabPane.addTab(activity);

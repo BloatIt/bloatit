@@ -1,0 +1,85 @@
+Financial informations
+----------------------
+
+WARNING: all data in this page are provided for guidance only. This is not a balence sheet, nor an income statement. 
+
+Data in this page may not be up-to-date and can be inaccurate.
+
+
+Expenditure
+-----------
+
+
+###Periodic expenditure
+
+    
+<table>
+    <thead><tr><th>Label</th><th>Price</th></tr></thead>
+    <tbody>
+        <tr><td>Local Insurance</td><td>195 €/ Year</td></tr>
+        <tr><td>OVH server location</td><td>59.79 € / Month</td></tr>
+    </tbody>
+</table>
+
+
+###Unit expenditure
+
+<table>
+    <thead><tr><th>Label</th><th>Price</th></tr></thead>
+    <tbody>
+        <tr><td>Constitution drafting</td><td>1500 €</td></tr>
+        <tr><td>Company registration</td><td>280 €</td></tr>
+        <tr><td>Hardware</td><td>1600 €</td></tr>
+    </tbody>
+</table>
+
+
+###Variable expenditure
+
+The variable expenditure are related to the bank fees.
+
+<table>
+    <thead><tr><th>Region</th><th>Variable Fee</th><th>Fix Fee</th></tr></thead>
+    <tbody>
+        <tr><td>Credit card from France</td><td>0.52%</td><td>0.19 €</td></tr>
+        <tr><td>Credit card from Europe</td><td>1.10%</td><td>0.30 €</td></tr>
+        <tr><td>Credit card from World</td><td>1.60%</td><td>0.40 €</td></tr>
+        <tr><td>Paypal</td><td>3.40%</td><td>0.25 €</td></tr>
+    </tbody>
+</table>
+
+
+
+###Future expenditure
+
+<table>
+    <thead><tr><th>Label</th><th>Price</th></tr></thead>
+    <tbody>
+        <tr><td>Terms of Use redaction</td><td>2000 €</td></tr>
+        <tr><td>Wages for 3 employees, including taxes</td><td>64 k€</td></tr>
+    </tbody>
+</table>
+
+
+##Incomes
+
+The only incomes source is the 10% commission get on contributions or account charging.
+
+However, these 10% include bank and a part of taxes fees.
+
+Example:
+
+Alice want to contribute 100€ on a feature. Our comission is 10% so 10€. We ask Alice to pay 110€.
+
+From the 10€, we have to pay our french VAT (19.6%) : 1.63 €
+
+Alice is german and we have to pay the bank (1.10% + 0.30€) : 1.51 €
+
+In the end, we get 6.86 €.
+
+
+
+
+
+
+

@@ -50,8 +50,6 @@ public class HttpHeader {
         super();
         this.env = env;
 
-        System.out.println(env);
-        
         parseLanguageAndPageName();
 
         try {

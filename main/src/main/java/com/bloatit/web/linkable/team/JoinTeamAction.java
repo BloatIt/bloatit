@@ -25,7 +25,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -35,7 +35,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * </p>
  */
 @ParamContainer("teams/%team%/dojoin")
-public final class JoinTeamAction extends LoggedAction {
+public final class JoinTeamAction extends LoggedElveosAction {
     @SuppressWarnings("unused")
     private JoinTeamActionUrl url;
 

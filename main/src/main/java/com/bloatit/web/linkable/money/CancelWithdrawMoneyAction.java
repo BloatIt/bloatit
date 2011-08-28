@@ -23,13 +23,13 @@ import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
 
 @ParamContainer("account/withdraws/%moneyWithdrawal%/docancel")
-public class CancelWithdrawMoneyAction extends LoggedAction {
+public class CancelWithdrawMoneyAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.PAGENAME)
     private final MoneyWithdrawal moneyWithdrawal;

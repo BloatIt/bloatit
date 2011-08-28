@@ -73,7 +73,6 @@ public final class TeamsPage extends ElveosPage {
 
     private HtmlElement generateMain() {
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Teams list"), 1);
-        master.add(new HtmlLink(new CreateTeamPageUrl().urlString(), Context.tr("Create a new team")));
 
         final PageIterable<Team> teamList = TeamManager.getAll();
         final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();

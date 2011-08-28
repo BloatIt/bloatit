@@ -31,7 +31,7 @@ import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Image;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
-import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
@@ -56,7 +56,7 @@ public class IndexFeatureBlock extends HtmlDiv {
 
             setFloatRight(new SoftwaresTools.Logo(highlightFeature.getFeature().getSoftware()));
 
-            indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature(), TabKey.description).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
+            indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature(), FeatureTabKey.description).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
                                                3));
 
             indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(highlightFeature.getFeature().getSoftware())));

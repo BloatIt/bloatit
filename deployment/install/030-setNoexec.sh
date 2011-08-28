@@ -23,7 +23,7 @@ cat << EOF
 $0: remonte les partitions /var et /tmp en noexec par défaut.
 -----------------------------------------------------
 
-### Usage
+### Descritpion
 
  * modify the fstab
  * create a /etc/apt.conf.d/50remount file to remount with exec during apt execution.

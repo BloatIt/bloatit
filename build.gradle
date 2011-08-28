@@ -13,11 +13,10 @@ subprojects {
     }
 
     dependencies {
-        testCompile 'junit:junit:4.8.2'
     }
     
     sourceCompatibility = 1.6
-    version = '1.0.40-SNAPSHOT'
+    version = '1.0.45-SNAPSHOT'
 
     jar {
         // TODO : see if there are other manifest to add.

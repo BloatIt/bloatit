@@ -35,11 +35,11 @@ import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.UserContentActionUrl;
 
 @ParamContainer("usercontent/docreate")
-public abstract class UserContentAction extends LoggedAction {
+public abstract class UserContentAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @Optional

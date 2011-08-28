@@ -30,7 +30,7 @@ import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Member;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
@@ -40,7 +40,7 @@ import com.bloatit.web.url.OAuthPageUrl;
  * Page that hosts the form to create a new feature
  */
 @ParamContainer("oauth_page")
-public final class OAuthPage extends LoggedPage {
+public final class OAuthPage extends LoggedElveosPage {
 
     private final OAuthPageUrl url;
 

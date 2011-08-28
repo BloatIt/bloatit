@@ -33,7 +33,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.feature.AbstractFeatureState;
 import com.bloatit.model.feature.DevelopingState;
 import com.bloatit.model.feature.DiscardedState;
@@ -566,6 +565,10 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return new CommentList(getDao().getComments());
     }
 
+    /**
+     * @see Feature#getContributions(boolean)
+     */
+    @Deprecated
     @Override
     public PageIterable<Contribution> getContributions() {
         return getContributionsUnprotected();
@@ -579,6 +582,11 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     private PageIterable<Contribution> getContributionsUnprotected() {
         return new ContributionList(getDao().getContributions());
+    }
+
+    @Override
+    public PageIterable<Contribution> getContributions(boolean isCanceled) {
+        return new ContributionList(getDao().getContributions(isCanceled));
     }
 
     /** The Constant PROGRESSION_PERCENT. */
@@ -614,12 +622,22 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public BigDecimal getContributionMax() {
-        return getDao().getContributionMax();
+        BigDecimal contributionMax = getDao().getContributionMax();
+        if (contributionMax == null) {
+            return BigDecimal.ZERO;
+        } else {
+            return contributionMax;
+        }
     }
 
     @Override
     public BigDecimal getContributionMin() {
-        return getDao().getContributionMin();
+        BigDecimal contributionMin = getDao().getContributionMin();
+        if (contributionMin == null) {
+            return BigDecimal.ZERO;
+        } else {
+            return contributionMin;
+        }
     }
 
     @Override
@@ -799,5 +817,4 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
 }

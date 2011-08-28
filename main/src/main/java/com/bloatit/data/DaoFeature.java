@@ -57,6 +57,7 @@ import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Contribution;
 
 /**
  * A DaoFeature is a kudosable content. It has a translatable description, and
@@ -81,15 +82,23 @@ import com.bloatit.framework.utils.PageIterable;
 
                         @NamedQuery(
                            name = "feature.getAmounts.min",
-                           query = "SELECT min(amount) FROM DaoContribution WHERE feature = :this"),
-
+                           query = "SELECT min(amount) " +
+                           		   "FROM DaoContribution " +
+                           		   "WHERE feature = :this " +
+                           		   "AND state != :state "),
                         @NamedQuery(
                            name = "feature.getAmounts.max",
-                           query = "SELECT max(amount) FROM DaoContribution WHERE feature = :this"),
+                           query = "SELECT max(amount) " +
+                           		   "FROM DaoContribution " +
+                           		   "WHERE feature = :this " +
+                           		   "AND state != :state "),
 
                        @NamedQuery(
                            name = "feature.getAmounts.avg",
-                           query = "SELECT avg(amount) FROM DaoContribution WHERE feature = :this"),
+                           query = "SELECT avg(amount) " +
+                           		   "FROM DaoContribution " +
+                           		   "WHERE feature = :this " +
+                           		   "AND state != :state "),
 
                         @NamedQuery(
                             name = "feature.getBugs.byNonState",
@@ -139,9 +148,32 @@ import com.bloatit.framework.utils.PageIterable;
                         @NamedQuery(
                             name = "feature.getContributionOf",
                             query = "SELECT sum(amount) "+
-                                    "FROM com.bloatit.data.DaoContribution  "+
-                                    "WHERE feature = :this "+
-                                    "AND feature.member = :member"),
+                                    "FROM com.bloatit.data.DaoContribution as c "+
+                                    "WHERE c.feature = :this "+
+                                    "AND c.member = :member " +
+                                    "AND c.asTeam = null "),
+                        @NamedQuery(
+                             name="feature.getContribution.canceled", 
+                             query="FROM com.bloatit.data.DaoContribution as c " +
+                             		"WHERE c.feature = :this " +
+                             		"AND c.state = :state "),
+                        @NamedQuery(
+                             name="feature.getContribution.notcanceled", 
+                             query="FROM com.bloatit.data.DaoContribution as c " +
+                                   "WHERE c.feature = :this " +
+                                   "AND c.state != :state "),
+                       @NamedQuery(
+                             name="feature.getContribution.canceled.size", 
+                             query="SELECT COUNT(*) " +
+                             	   "FROM com.bloatit.data.DaoContribution as c " +
+                                   "WHERE c.feature = :this " +
+                                   "AND c.state = :state "),
+                      @NamedQuery(
+                             name="feature.getContribution.notcanceled.size", 
+                             query="SELECT COUNT(*) " +
+                             	   "FROM com.bloatit.data.DaoContribution as c " +
+                                   "WHERE c.feature = :this " +
+                                   "AND c.state != :state "),
                      }
              )
 // @formatter:on
@@ -487,6 +519,16 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         return new MappedUserContentList<DaoContribution>(this.contributions);
     }
 
+    public PageIterable<DaoContribution> getContributions(boolean isCanceled) {
+        String qr = "feature.getContribution.";
+        if (!isCanceled) {
+            qr += "not";
+        }
+        qr += "canceled";
+
+        return new QueryCollection<DaoContribution>(qr).setParameter("this", this).setParameter("state", DaoContribution.State.CANCELED);
+    }
+
     /**
      * Gets the comments count.
      * 
@@ -542,7 +584,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the minimum value of the contributions on this feature.
      */
     public BigDecimal getContributionMin() {
-        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.min").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.min")
+                                          .setEntity("this", this)
+                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .uniqueResult();
     }
 
     /**
@@ -551,7 +596,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the maximum value of the contributions on this feature.
      */
     public BigDecimal getContributionMax() {
-        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.max").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.max")
+                                          .setEntity("this", this)
+                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .uniqueResult();
     }
 
     /**
@@ -560,7 +608,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the average value of the contributions on this feature.
      */
     public BigDecimal getContributionAvg() {
-        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg")
+                                          .setEntity("this", this)
+                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .uniqueResult();
     }
 
     public BigDecimal getContributionOf(final DaoMember member) {

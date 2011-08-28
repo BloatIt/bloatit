@@ -34,7 +34,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
@@ -46,7 +46,7 @@ import com.bloatit.web.url.SendTeamInvitationPageUrl;
  * </p>
  */
 @ParamContainer("teams/%team%/sendinvitation")
-public class SendTeamInvitationPage extends LoggedPage {
+public class SendTeamInvitationPage extends LoggedElveosPage {
     private final SendTeamInvitationPageUrl url;
 
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the team number: ''%value%''."))

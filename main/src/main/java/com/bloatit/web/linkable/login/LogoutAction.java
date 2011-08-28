@@ -18,7 +18,7 @@ import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 
@@ -26,7 +26,7 @@ import com.bloatit.web.url.LogoutActionUrl;
  * A response to a form used to log out of the website
  */
 @ParamContainer("member/dologout")
-public final class LogoutAction extends LoggedAction {
+public final class LogoutAction extends LoggedElveosAction {
     // Keep it for consistency
     @SuppressWarnings("unused")
     private final LogoutActionUrl url;

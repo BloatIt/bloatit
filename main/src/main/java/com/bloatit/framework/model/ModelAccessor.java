@@ -16,8 +16,6 @@
 //
 package com.bloatit.framework.model;
 
-import java.util.concurrent.Semaphore;
-
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.xcgiserver.RequestKey;
 
@@ -26,12 +24,6 @@ import com.bloatit.framework.xcgiserver.RequestKey;
  * methods.
  */
 public class ModelAccessor {
-    /**
-     * Mutex that protect this class. Every public method is callable in a
-     * multi-threaded environment.
-     */
-    private static Semaphore mutex = new Semaphore(1);
-
     /**
      * This static variable is protected by the {@link #mutex}.
      */
@@ -52,15 +44,8 @@ public class ModelAccessor {
      * @see com.bloatit.framework.model.Model#initialize()
      */
     public static void initialize(final Model manager) {
-        try {
-            mutex.acquire();
-            setModelManager(manager);
-            model.initialize();
-        } catch (final InterruptedException e) {
-            throw new BadProgrammerException(e);
-        } finally {
-            mutex.release();
-        }
+        setModelManager(manager);
+        model.initialize();
     }
 
     /**
@@ -68,14 +53,7 @@ public class ModelAccessor {
      */
     public static void shutdown() {
         if (model != null) {
-            try {
-                mutex.acquire();
-                model.shutdown();
-            } catch (final InterruptedException e) {
-                throw new BadProgrammerException(e);
-            } finally {
-                mutex.release();
-            }
+            model.shutdown();
         }
     }
 
@@ -83,81 +61,38 @@ public class ModelAccessor {
      * @see com.bloatit.framework.model.Model#setReadOnly()
      */
     public static void setReadOnly() {
-        try {
-            mutex.acquire();
-            model.setReadOnly();
-        } catch (final InterruptedException e) {
-            throw new BadProgrammerException(e);
-        } finally {
-            mutex.release();
-        }
+        model.setReadOnly();
     }
 
     /**
      * @see com.bloatit.framework.model.Model#open()
      */
     public static void open() {
-        try {
-            mutex.acquire();
-            model.open();
-        } catch (final InterruptedException e) {
-            throw new BadProgrammerException(e);
-        } finally {
-            mutex.release();
-        }
+        model.open();
     }
 
     public static void authenticate(final RequestKey key) {
-        try {
-            mutex.acquire();
-            model.authenticate(key);
-        } catch (final InterruptedException e) {
-            throw new BadProgrammerException(e);
-        } finally {
-            mutex.release();
-        }
+        model.authenticate(key);
     }
 
     /**
      * @see com.bloatit.framework.model.Model#close()
      */
     public static void close() {
-        try {
-            mutex.acquire();
-            model.close();
-        } catch (final InterruptedException e) {
-            throw new BadProgrammerException(e);
-        } finally {
-            mutex.release();
-        }
+        model.close();
     }
-    
+
     /**
      * @see com.bloatit.framework.model.Model#flush()
      */
     public static void flush() {
-        try {
-            mutex.acquire();
-            model.flush();
-        } catch (final InterruptedException e) {
-            throw new BadProgrammerException(e);
-        } finally {
-            mutex.release();
-        }
+        model.flush();
     }
-    
 
     /**
      * @see com.bloatit.framework.model.Model#close()
      */
     public static void rollback() {
-        try {
-            mutex.acquire();
-            model.rollback();
-        } catch (final InterruptedException e) {
-            throw new BadProgrammerException(e);
-        } finally {
-            mutex.release();
-        }
+        model.rollback();
     }
 }
