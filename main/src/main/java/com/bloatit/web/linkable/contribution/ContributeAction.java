@@ -53,20 +53,14 @@ public final class ContributeAction extends UserContentAction {
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         try {
-            process.getFeature().addContribution(process.getAmount(), process.getComment());
-            session.notifyGood(Context.tr("Thank you for contributing {0} on this feature.", Context.getLocalizator()
-                                                                                                  .getCurrency(process.getAmount())
-                                                                                                  .getSimpleEuroString()));
-
+            process.doContribute();
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature(), FeatureTabKey.contributions);
             process.close();
             return featurePageUrl;
+        
         } catch (final NotEnoughMoneyException e) {
             session.notifyWarning(Context.tr("You need to charge your account before you can contribute."));
             return new CheckContributePageUrl(process);
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyWarning(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
-            return new ContributionProcessUrl(process.getFeature());
         } catch (final RuntimeException e) {
             process.close();
             throw e;

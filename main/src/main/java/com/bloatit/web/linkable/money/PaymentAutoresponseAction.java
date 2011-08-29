@@ -72,8 +72,8 @@ public final class PaymentAutoresponseAction extends ElveosAction {
         Payment.handlePayment(bankTransaction, response);
 
         if (process != null) {
-            //TODO: success = true !
-            return process.close();
+            process.load();
+            process.update(null);
         }
         return new IndexPageUrl();
     }

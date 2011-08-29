@@ -113,12 +113,11 @@ public class PaymentProcess extends WebProcess {
         // Constructing the urls.
         final PaymentResponseActionUrl normalReturnActionUrl = new PaymentResponseActionUrl(this);
         final PaymentResponseActionUrl cancelReturnActionUrl = new PaymentResponseActionUrl(this);
-        
 
         String token = new RandomString(10).nextString();
         final PaymentAutoresponseActionUrl autoResponseActionUrl = new PaymentAutoresponseActionUrl(token);
         autoResponseActionUrl.setProcess(this);
-        
+
         SessionManager.storeTemporarySession(token, session);
         MercanetTransaction mercanetTransaction;
         try {
@@ -161,7 +160,7 @@ public class PaymentProcess extends WebProcess {
     }
 
     synchronized void handlePayment(String data) throws UnauthorizedOperationException {
-        
+
         MercanetResponse response = MercanetAPI.parseResponse(data);
 
         if (response.hasError()) {
@@ -172,8 +171,13 @@ public class PaymentProcess extends WebProcess {
         if (!response.check(bankTransaction.getId().toString(), bankTransaction.getAuthor().getId().toString(), mercanetTransactionId)) {
             throw new MeanUserException("Data received from transaction do not match the value sent when creating transaction");
         }
-        
+
         Payment.handlePayment(bankTransaction, response);
+
+        // Flush doesn't reload entities stored into the processes. Hence we
+        // need to reload the process to make sure we don't have references to
+        // old database objects
+        load();
 
         if (bankTransaction.getState() == State.VALIDATED) {
 
@@ -183,7 +187,7 @@ public class PaymentProcess extends WebProcess {
             session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
         } else {
             Log.payment().info("Payment refused. [" + response.getResponseCode().code + ": " + response.getResponseCode().label + "]");
-            session.notifyWarning(Context.tr("Payment canceled. Reason: {0}.",response.getResponseCode().getDisplayName()));
+            session.notifyWarning(Context.tr("Payment canceled. Reason: {0}.", response.getResponseCode().getDisplayName()));
         }
     }
 
@@ -202,4 +206,13 @@ public class PaymentProcess extends WebProcess {
             return "Reference-not-Found";
         }
     }
+
+    @Override
+    public synchronized void update(final WebProcess subProcess) {
+        if (bankTransaction.getStateUnprotected() == State.VALIDATED) {
+            success = true;
+        }
+        super.update(this);
+    }
+
 }
