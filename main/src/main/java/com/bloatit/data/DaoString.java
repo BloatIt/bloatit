@@ -3,8 +3,11 @@ package com.bloatit.data;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
@@ -16,7 +19,7 @@ public class DaoString {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String content;
 
-    @ManyToOne(optional = false, cascade = { CascadeType.ALL })
+    @ManyToOne(optional = false, cascade = { CascadeType.ALL }, fetch=FetchType.LAZY)
     private DaoVersionedString versions;
 
     public DaoString(final String content, final DaoMember author) {

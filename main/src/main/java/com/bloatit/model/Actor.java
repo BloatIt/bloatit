@@ -18,6 +18,8 @@ package com.bloatit.model;
 
 import java.util.Date;
 
+import org.hibernate.ObjectNotFoundException;
+
 import com.bloatit.data.DaoActor;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
@@ -52,7 +54,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         } catch (final ClassCastException e) {
             // This is not a team
         }
-
         try {
             Member member;
             member = Member.class.cast(GenericConstructor.create(Member.class, id));
