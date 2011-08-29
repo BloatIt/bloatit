@@ -21,6 +21,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -39,10 +40,14 @@ public final class PaymentAutoresponseAction extends ElveosAction {
     @RequestParam(name = "process")
     private final PaymentProcess process;
 
+    @RequestParam(role = Role.POST, name = "DATA")
+    private final String data;
+    
     public PaymentAutoresponseAction(final PaymentAutoresponseActionUrl url) {
         super(url);
         token = url.getToken();
         process = url.getProcess();
+        data = url.getData();
     }
 
     @Override
@@ -50,7 +55,7 @@ public final class PaymentAutoresponseAction extends ElveosAction {
         Log.web().info("Get a payline notification: " + token);
 
         try {
-            process.validatePayment();
+            process.validatePayment(data);
         } catch (final UnauthorizedOperationException e) {
             throw new BadProgrammerException(e);
         }

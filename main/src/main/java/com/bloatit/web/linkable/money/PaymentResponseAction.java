@@ -16,16 +16,16 @@
 //
 package com.bloatit.web.linkable.money;
 
-import java.util.Map.Entry;
-
 import com.bloatit.common.Log;
+import com.bloatit.framework.bank.MercanetAPI;
+import com.bloatit.framework.bank.MercanetResponse;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.PaymentResponseActionUrl;
@@ -43,30 +43,29 @@ public final class PaymentResponseAction extends ElveosAction {
     @RequestParam(name = "process")
     private final PaymentProcess process;
 
+    @RequestParam(role = Role.POST, name = "DATA")
+    private final String data;
+
     public PaymentResponseAction(final PaymentResponseActionUrl url) {
         super(url);
         token = url.getToken();
         ack = url.getAck();
         process = url.getProcess();
+        data = url.getData();
     }
 
     @Override
     protected Url doProcess() {
-        
-        
-        for(Entry<String, UrlParameter<?, ?>> entry : session.getParameters().entrySet()){
-            System.out.println(entry.getKey()+ " : "+ entry.getValue().getStringValue());
-        }
-        
+
         if (ack.equals("ok")) {
             try {
-                process.validatePayment();
+                process.validatePayment(data);
             } catch (final UnauthorizedOperationException e) {
-                Log.web().error("Fail to validate payment",e);
+                Log.web().error("Fail to validate payment", e);
                 session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference()));
             }
         } else if (ack.equals("cancel")) {
-            process.refusePayment();
+            process.refusePayment(data);
         }
         final Url target = process.close();
         if (target != null) {

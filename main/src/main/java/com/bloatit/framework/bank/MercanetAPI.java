@@ -2,6 +2,7 @@ package com.bloatit.framework.bank;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,7 +19,6 @@ import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.utils.Pair;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.Configuration;
 
 /**
  * A class that handles interactions with the Mercanet API.
@@ -38,6 +38,8 @@ public class MercanetAPI {
     public enum PaymentMethod {
         CB, VISA, MASTERCARD
     }
+    
+    
 
     private final static Set<String> supportedLanguages = new HashSet<String>() {
         private static final long serialVersionUID = -7322981103982506459L;
@@ -168,15 +170,12 @@ public class MercanetAPI {
             query.append(param.getValue());
         }
 
-        System.out.println(query.toString());
-        
         Runtime runtime = Runtime.getRuntime();
         String response;
         try {
             Process proc = runtime.exec(query.toString());
             response = IOUtils.toString(proc.getInputStream(), "UTF-8");
 
-            System.out.println(response);
             if (proc.waitFor() != 0) {
                 throw new ExternalErrorException("Failure during execution of Merc@net binary: " + query.toString() + " - exit value: "
                         + proc.exitValue());
@@ -187,9 +186,6 @@ public class MercanetAPI {
             throw new ExternalErrorException("No luck, you have been hit by a signal !", e);
         }
 
-        
-        
-        
         // Extract data
         Pattern p = Pattern.compile("^.*<FORM METHOD=POST ACTION=\"([^\"]+)\".*<INPUT TYPE=HIDDEN NAME=DATA VALUE=\"([a-f0-9]+)\".*$");
         Matcher m = p.matcher(response);
@@ -201,5 +197,36 @@ public class MercanetAPI {
         String data = m.group(2);
 
         return new Pair<String, String>(data, baseUrl);
+    }
+
+    public static MercanetResponse parseResponse(String data) {
+
+        // Execute response binary
+        StringBuilder query = new StringBuilder();
+        query.append(RESPONSE_BIN);
+
+        query.append(" pathfile=");
+        query.append(PATHFILE_PATH);
+        query.append(" message=");
+        query.append(data);
+
+        Runtime runtime = Runtime.getRuntime();
+        String response;
+        try {
+            Process proc = runtime.exec(query.toString());
+            response = IOUtils.toString(proc.getInputStream(), "UTF-8");
+
+            System.out.println(response);
+            if (proc.waitFor() != 0) {
+                throw new ExternalErrorException("Failure during execution of Merc@net response binary: " + query.toString() + " - exit value: "
+                        + proc.exitValue());
+            }
+        } catch (IOException e) {
+            throw new ExternalErrorException("Failed to execute Merc@net response binary: " + query.toString(), e);
+        } catch (InterruptedException e) {
+            throw new ExternalErrorException("No luck, you have been hit by a signal !", e);
+        }
+
+        return new MercanetResponse(response);
     }
 }
