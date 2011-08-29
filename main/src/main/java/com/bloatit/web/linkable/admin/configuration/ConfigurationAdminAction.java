@@ -30,9 +30,9 @@ import com.bloatit.web.linkable.admin.master.AdminAction;
 import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 
-@ParamContainer("admin/doConfigure")
+@ParamContainer("admin/doconfigure")
 public class ConfigurationAdminAction extends AdminAction {
-    @RequestParam(name = "toReload", role = Role.POST)
+    @RequestParam(name = "toreload", role = Role.POST)
     private final List<String> toReload;
 
     @SuppressWarnings("unchecked")

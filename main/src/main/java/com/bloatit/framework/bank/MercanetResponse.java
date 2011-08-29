@@ -57,7 +57,7 @@ public class MercanetResponse {
         AUTHORISATION_ACCEPTED("00", tr("Payment accepted")),
         THRESHOLD("02", tr("Credit card threshold crossed. Sorry, but the L annex is missing so we don't understand this response code.")),
         INVALID_MERCHANT_ID("03", tr("Invalid merchant id")),
-        AUTHORISATION_REFUSED("05", tr("Invalid merchant id")),
+        AUTHORISATION_REFUSED("05", tr("Transaction refused")),
         TRANSACTION_INVALID("12", tr("Invalid transaction parameters")),
         CANCELED_BY_CUSTOMER("17", tr("You canceled the transaction")),
         FORMAT_ERROR("30", tr("We made an error communicating with the bank")),
@@ -122,4 +122,42 @@ public class MercanetResponse {
         return ResponseCode.create(responseFields[RESPONSE_CODE_INDEX]);
     }
 
+    public String getReturnContext() {
+        return responseFields[RETURN_CONTEXT_INDEX];
+    }
+
+    public int getTransactionId() {
+        return Integer.valueOf(responseFields[TRANSACTION_ID_INDEX]);
+    }
+
+    public String getCustomerId() {
+        return responseFields[CUSTOMER_ID_INDEX];
+    }
+
+    /**
+     * Checks if the merc@net transaction response matches the expected values
+     * provided as parameters
+     * 
+     * @param returnContext the data passed into the return context field when
+     *            creating the merc@net treansaction
+     * @param customerId the author id passed when creating the merc@net
+     *            transaction
+     * @param mercanetTransactionId the transaction id passed when creating the
+     *            merc@net transaction
+     * @return <i>true</i> if the passed values matrches the response values,
+     *         <i>false</i> otherwise
+     */
+    public boolean check(String returnContext, String customerId, int mercanetTransactionId) {
+        if (getReturnContext() == null || !getReturnContext().equals(returnContext)) {
+            return false;
+        }
+        if (customerId == null || !customerId.equals(getCustomerId())) {
+            return false;
+        }
+        if (mercanetTransactionId != getTransactionId()) {
+            return false;
+        }
+        return true;
+
+    }
 }

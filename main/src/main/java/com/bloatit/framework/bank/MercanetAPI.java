@@ -38,8 +38,6 @@ public class MercanetAPI {
     public enum PaymentMethod {
         CB, VISA, MASTERCARD
     }
-    
-    
 
     private final static Set<String> supportedLanguages = new HashSet<String>() {
         private static final long serialVersionUID = -7322981103982506459L;
@@ -67,6 +65,8 @@ public class MercanetAPI {
      * @param userData a string that will be returned as is at the end of the
      *            transaction. Must not contain the following characters : '|',
      *            ';', ':', '"'
+     * @param customerId a customer identifier that will be copied as is in the
+     *            response from API
      * @param normalReturnUrl the url where the user will be redirected when
      *            transaction completes normally
      * @param cancelReturnUrl the url where the user will be redirected when he
@@ -80,6 +80,7 @@ public class MercanetAPI {
     public static MercanetTransaction createTransaction(int transactionId,
                                                         BigDecimal amount,
                                                         String userData,
+                                                        String customerId,
                                                         Url normalReturnUrl,
                                                         Url cancelReturnUrl,
                                                         Url automaticResponseUrl) {
@@ -93,12 +94,11 @@ public class MercanetAPI {
 
         // Dynamics informations
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
-
         params.put("transaction_id", Integer.toString(transactionId));
+        params.put("customer_id", customerId);
         params.put("normal_return_url", normalReturnUrl.externalUrlString());
         params.put("cancel_return_url", cancelReturnUrl.externalUrlString());
         params.put("automatic_response_url", automaticResponseUrl.externalUrlString());
-
         params.put("language", filterLanguage(Context.getLocalizator().getLanguageCode()));
         params.put("return_context", checkReturnContext(userData));
 

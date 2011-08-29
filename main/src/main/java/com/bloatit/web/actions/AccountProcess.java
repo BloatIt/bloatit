@@ -37,8 +37,8 @@ public abstract class AccountProcess extends WebProcess {
     @Optional
     private Team team;
 
-    private BigDecimal amountToPay = new BigDecimal("0");
-    private BigDecimal amountToCharge = new BigDecimal("0");
+    private BigDecimal amountToPayBeforeComission = new BigDecimal("0");
+    private BigDecimal accountChargingAmount = new BigDecimal("0");
     private boolean locked = false;
 
     public AccountProcess(final AccountProcessUrl url) {
@@ -58,26 +58,26 @@ public abstract class AccountProcess extends WebProcess {
         }
     }
 
-    public final synchronized BigDecimal getAmountToPay() {
-        return amountToPay;
+    public final synchronized BigDecimal getAmountToPayBeforeComission() {
+        return amountToPayBeforeComission;
     }
 
-    public final synchronized void setAmountToPay(final BigDecimal amount) throws IllegalWriteException {
+    public final synchronized void setAmountToPayBeforeComission(final BigDecimal amount) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
-        this.amountToPay = amount;
+        this.amountToPayBeforeComission = amount;
     }
 
     public final synchronized void setAmountToCharge(final BigDecimal amount) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
-        this.amountToCharge = amount;
+        this.accountChargingAmount = amount;
     }
 
-    public final synchronized BigDecimal getAmountToCharge() {
-        return amountToCharge;
+    public final synchronized BigDecimal getAccountChargingAmount() {
+        return accountChargingAmount;
     }
 
     public final synchronized void setTeam(final Team team) throws IllegalWriteException {

@@ -21,10 +21,17 @@ import java.math.BigDecimal;
 import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.framework.bank.MercanetResponse;
+import com.bloatit.framework.bank.MercanetResponse.ResponseCode;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.MeanUserException;
+import com.bloatit.framework.mails.ElveosMail;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.managers.BankTransactionManager;
+import com.bloatit.framework.utils.i18n.Localizator;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
@@ -34,14 +41,13 @@ public final class Payment {
     public Payment() {
     }
 
-    public void validatePayment(final BankTransaction transaction) {
+    public static void validatePayment(final BankTransaction transaction) {
         if (!transaction.setValidated()) {
             throw new MeanUserException("Cannot validate the BankTransaction.");
         }
     }
 
-    public BankTransaction doPayment(final Actor<?> targetActor, final BigDecimal amount) throws UnauthorizedOperationException {
-
+    public static BankTransaction doPayment(final Actor<?> targetActor, final BigDecimal amount) throws UnauthorizedOperationException {
         if (!AuthToken.isAuthenticated()) {
             throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
         }
@@ -68,7 +74,7 @@ public final class Payment {
                                                                     amountToPay, //
                                                                     orderReference);
         bankTransaction.setAuthorized();
-        
+
         return bankTransaction;
     }
 
@@ -78,7 +84,7 @@ public final class Payment {
      * @param actor
      * @return
      */
-    private String createOrderRef(final Actor<?> actor) {
+    private static String createOrderRef(final Actor<?> actor) {
         final StringBuilder ref = new StringBuilder();
         // It is a payline action
         ref.append("MERCANET-");
@@ -107,8 +113,34 @@ public final class Payment {
         return ref.toString();
     }
 
-    public void cancelPayment(final BankTransaction transaction) {
+    public static void cancelPayment(final BankTransaction transaction) {
         transaction.setRefused();
+    }
+
+    public synchronized static void handlePayment(BankTransaction transaction, MercanetResponse response) {
+        if (transaction.getStateUnprotected() == State.VALIDATED) {
+            // Auto response can validate it before response happens
+            return;
+        }
+
+        if (response.getResponseCode() == ResponseCode.AUTHORISATION_ACCEPTED) {
+            Payment.validatePayment(transaction);
+
+            // Payment process is critical. We must be sure the DB is updated
+            ModelAccessor.flush();
+
+            // Notify the user:
+            // TODO Store member id in bank transaction
+            Member member = MemberManager.getById(Integer.valueOf(response.getCustomerId()));
+            Localizator localizator = new Localizator(member.getLocaleUnprotected());
+            final String valueStr = localizator.getCurrency(transaction.getValueUnprotected()).getSimpleEuroString();
+            final String paidValueStr = localizator.getCurrency(transaction.getValuePaidUnprotected()).getTwoDecimalEuroString();
+            ElveosMail mail = new ElveosMail.ChargingAccountSuccess(transaction.getReferenceUnprotected(), paidValueStr, valueStr);
+            mail.sendMail(member, "account-charging");
+        } else {
+            Payment.cancelPayment(transaction);
+            Log.payment().info("Payment refused. [" + response.getResponseCode().code + ": " + response.getResponseCode().label + "]");
+        }
     }
 
     public static class BankTransactionException extends Exception {

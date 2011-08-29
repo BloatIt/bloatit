@@ -17,8 +17,6 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.bank.MercanetAPI;
-import com.bloatit.framework.bank.MercanetResponse;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -37,9 +35,6 @@ public final class PaymentResponseAction extends ElveosAction {
     @Optional
     private final String token;
 
-    @RequestParam(name = "ack")
-    private final String ack;
-
     @RequestParam(name = "process")
     private final PaymentProcess process;
 
@@ -49,23 +44,17 @@ public final class PaymentResponseAction extends ElveosAction {
     public PaymentResponseAction(final PaymentResponseActionUrl url) {
         super(url);
         token = url.getToken();
-        ack = url.getAck();
         process = url.getProcess();
         data = url.getData();
     }
 
     @Override
     protected Url doProcess() {
-
-        if (ack.equals("ok")) {
-            try {
-                process.validatePayment(data);
-            } catch (final UnauthorizedOperationException e) {
-                Log.web().error("Fail to validate payment", e);
-                session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference()));
-            }
-        } else if (ack.equals("cancel")) {
-            process.refusePayment(data);
+        try {
+            process.handlePayment(data);
+        } catch (final UnauthorizedOperationException e) {
+            Log.web().error("Fail to validate payment", e);
+            session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference()));
         }
         final Url target = process.close();
         if (target != null) {
@@ -88,5 +77,4 @@ public final class PaymentResponseAction extends ElveosAction {
     protected void transmitParameters() {
         // No post parameters.
     }
-
 }

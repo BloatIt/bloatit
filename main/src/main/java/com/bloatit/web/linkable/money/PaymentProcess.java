@@ -20,12 +20,14 @@ import java.math.BigDecimal;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.framework.bank.MercanetAPI;
-import com.bloatit.framework.bank.MercanetResponse;
 import com.bloatit.framework.bank.MercanetAPI.PaymentMethod;
+import com.bloatit.framework.bank.MercanetResponse;
 import com.bloatit.framework.bank.MercanetResponse.ResponseCode;
 import com.bloatit.framework.bank.MercanetTransaction;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.mails.ElveosMail;
 import com.bloatit.framework.model.ModelAccessor;
@@ -41,9 +43,6 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Configuration;
 import com.bloatit.model.Member;
-import com.bloatit.model.Payline;
-import com.bloatit.model.Payline.Reponse;
-import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.model.Payment;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.BankTransactionManager;
@@ -52,10 +51,10 @@ import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.AccountProcess;
 import com.bloatit.web.actions.WebProcess;
-import com.bloatit.web.url.PaymentResponseActionUrl;
 import com.bloatit.web.url.PaymentActionUrl;
 import com.bloatit.web.url.PaymentAutoresponseActionUrl;
 import com.bloatit.web.url.PaymentProcessUrl;
+import com.bloatit.web.url.PaymentResponseActionUrl;
 
 @ParamContainer(value = "payment/process", protocol = Protocol.HTTPS)
 public class PaymentProcess extends WebProcess {
@@ -68,9 +67,6 @@ public class PaymentProcess extends WebProcess {
     private final AccountProcess parentProcess;
 
     private boolean success = false;
-
-    // Make the payment request.
-    private final Payment payment = new Payment();
 
     private final PaymentProcessUrl url;
     private BankTransaction bankTransaction;
@@ -115,23 +111,31 @@ public class PaymentProcess extends WebProcess {
 
     synchronized Url initiatePayment() {
         // Constructing the urls.
-        final PaymentResponseActionUrl normalReturnActionUrl = new PaymentResponseActionUrl("ok", this);
-        final PaymentResponseActionUrl cancelReturnActionUrl = new PaymentResponseActionUrl("cancel", this);
-        final PaymentAutoresponseActionUrl autoResponseActionUrl = new PaymentAutoresponseActionUrl(this);
+        final PaymentResponseActionUrl normalReturnActionUrl = new PaymentResponseActionUrl(this);
+        final PaymentResponseActionUrl cancelReturnActionUrl = new PaymentResponseActionUrl(this);
+        
 
         String token = new RandomString(10).nextString();
-        autoResponseActionUrl.setToken(token);
+        final PaymentAutoresponseActionUrl autoResponseActionUrl = new PaymentAutoresponseActionUrl(token);
+        autoResponseActionUrl.setProcess(this);
+        
         SessionManager.storeTemporarySession(token, session);
-
+        MercanetTransaction mercanetTransaction;
         try {
-            bankTransaction = payment.doPayment(actor, getAmount());
+            bankTransaction = Payment.doPayment(actor, getAmount());
+
+            mercanetTransactionId = Configuration.getInstance().getNextMercanetTransactionId();
+            mercanetTransaction = MercanetAPI.createTransaction(mercanetTransactionId,
+                                                                bankTransaction.getValuePaid(),
+                                                                "" + bankTransaction.getId(),
+                                                                "" + bankTransaction.getAuthor().getId(),
+                                                                normalReturnActionUrl,
+                                                                cancelReturnActionUrl,
+                                                                autoResponseActionUrl);
+
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Not authorized", e);
         }
-
-        mercanetTransactionId = Configuration.getInstance().getNextMercanetTransactionId();
-        MercanetTransaction mercanetTransaction = MercanetAPI.createTransaction(mercanetTransactionId, parentProcess.getAmountToPay(), ""
-                + bankTransaction.getId(), normalReturnActionUrl, cancelReturnActionUrl, autoResponseActionUrl);
 
         StringBuilder url = new StringBuilder(mercanetTransaction.getUrl());
 
@@ -153,11 +157,11 @@ public class PaymentProcess extends WebProcess {
     }
 
     private BigDecimal getAmount() {
-        return ((AccountProcess) getFather()).getAmountToPay();
+        return ((AccountProcess) getFather()).getAmountToPayBeforeComission();
     }
 
-    synchronized void validatePayment(String data) throws UnauthorizedOperationException {
-
+    synchronized void handlePayment(String data) throws UnauthorizedOperationException {
+        
         MercanetResponse response = MercanetAPI.parseResponse(data);
 
         if (response.hasError()) {
@@ -165,25 +169,21 @@ public class PaymentProcess extends WebProcess {
                     + ". Banktransaction: " + bankTransaction.getId() + ".Member:" + bankTransaction.getAuthor().getId());
         }
 
-        if (response.getResponseCode() == ResponseCode.AUTHORISATION_ACCEPTED ) {
+        if (!response.check(bankTransaction.getId().toString(), bankTransaction.getAuthor().getId().toString(), mercanetTransactionId)) {
+            throw new MeanUserException("Data received from transaction do not match the value sent when creating transaction");
+        }
+        
+        Payment.handlePayment(bankTransaction, response);
 
-            payment.validatePayment(bankTransaction);
-
-            // The payline process is critical. We must be sure the DB is
-            // updated right NOW!
-            ModelAccessor.flush();
+        if (bankTransaction.getState() == State.VALIDATED) {
 
             success = true;
             // Notify the user:
-            final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getSimpleEuroString();
             final String paidValueStr = Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getTwoDecimalEuroString();
             session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
-            new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
-
         } else {
-            /*payment.cancelPayement(bankTransaction);
-            Log.payment().info("Mercanet transaction failure. (Reason: " + message + ")");
-            session.notifyWarning("Payment canceled. Reason: " + message + ".");*/
+            Log.payment().info("Payment refused. [" + response.getResponseCode().code + ": " + response.getResponseCode().label + "]");
+            session.notifyWarning(Context.tr("Payment canceled. Reason: {0}.",response.getResponseCode().getDisplayName()));
         }
     }
 
@@ -191,7 +191,7 @@ public class PaymentProcess extends WebProcess {
         // Log.framework().info("Payline transaction failure. (Reason: " +
         // message + ")");
         // session.notifyWarning("Payment canceled. Reason: " + message + ".");
-        payment.cancelPayment(bankTransaction);
+        Payment.cancelPayment(bankTransaction);
     }
 
     public synchronized String getPaymentReference() {
