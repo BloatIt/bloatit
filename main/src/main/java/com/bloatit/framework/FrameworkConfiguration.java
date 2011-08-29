@@ -61,6 +61,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String mailLogin;
     private String mailPassword;
     private String mailFrom;
+    private String mailReplyTo;
     private String sessionDumpfile;
     private String mailSmtpHost;
     private String mailSmptSocketFactoryPort;
@@ -178,6 +179,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return configuration.mailFrom;
     }
 
+    public static String getMailReplyTo() {
+        return configuration.mailReplyTo;
+    }
+    
     public static RetryPolicy getMailRetryPolicy() {
         return configuration.mailRetryPolicy;
     }
@@ -371,6 +376,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         mailLogin = properties.getString("mail.login");
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");
+        mailReplyTo = properties.getString("mail.reply.to");
         mailRetryPolicy = new RetryPolicy(properties.getString("mail.retry.policy", "[15s, 1min, 2min, 5min, 5min, 5min, 10min, 20min, ...]"));
 
         // CSS

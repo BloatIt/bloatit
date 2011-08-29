@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -166,6 +167,8 @@ public class MailServer extends Thread {
             final Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(FrameworkConfiguration.getMailFrom()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getTo()));
+            Address[] replyTo = {new InternetAddress(FrameworkConfiguration.getMailReplyTo())};
+            message.setReplyTo(replyTo);
             message.setSubject(mail.getSubject());
 
             if (mail.hasAttachment()) {
