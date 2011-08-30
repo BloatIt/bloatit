@@ -83,6 +83,9 @@ public class MercanetAPI {
         params.put("merchant_country", "fr");
         params.put("currency_code", "978");
         params.put("pathfile", FrameworkConfiguration.getMercanetPathfile());
+        params.put("data", "NO_WINDOWS_MSG;NO_SSL_SYMBOLS");
+        params.put("advert", "logo_elveos.png");
+        
 
         // Dynamics informations
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
@@ -92,7 +95,6 @@ public class MercanetAPI {
         params.put("cancel_return_url", cancelReturnUrl.externalUrlString());
         params.put("automatic_response_url", automaticResponseUrl.externalUrlString());
         params.put("language", filterLanguage(Context.getLocalizator().getLanguageCode()));
-        params.put("data", "NO_WINDOWS_MSG;NO_SSL_SYMBOLS");
         params.put("return_context", checkReturnContext(userData));
 
         Pair<String, String> executionResultPairOfString = executeRequest(params);
