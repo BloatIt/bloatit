@@ -2,18 +2,17 @@ package com.bloatit.framework.bank;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.cxf.helpers.IOUtils;
 
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.utils.Pair;
@@ -30,11 +29,6 @@ import com.bloatit.framework.webprocessor.url.Url;
  * @see MercanetTransaction
  */
 public class MercanetAPI {
-    private final static String API_PATH = "/home/fred/bloatit/mercanet";
-    private final static String PATHFILE_PATH = "/home/fred/.config/bloatit/pathfile";
-    private final static String REQUEST_BIN = API_PATH + "/bin/request";
-    private final static String RESPONSE_BIN = API_PATH + "/bin/response";
-
     public enum PaymentMethod {
         CB, VISA, MASTERCARD
     }
@@ -50,8 +44,6 @@ public class MercanetAPI {
             add("it");
         }
     };
-
-    private final static AtomicInteger nextTransactionId = new AtomicInteger(0);
 
     /**
      * Initializes a MercanetTransaction with all the correct values to start a
@@ -90,7 +82,7 @@ public class MercanetAPI {
         params.put("merchant_id", "082584341411111");
         params.put("merchant_country", "fr");
         params.put("currency_code", "978");
-        params.put("pathfile", PATHFILE_PATH);
+        params.put("pathfile", FrameworkConfiguration.getMercanetPathfile());
 
         // Dynamics informations
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
@@ -161,7 +153,7 @@ public class MercanetAPI {
     private static Pair<String, String> executeRequest(Map<String, String> params) {
         // Execute binary
         StringBuilder query = new StringBuilder();
-        query.append(REQUEST_BIN);
+        query.append(FrameworkConfiguration.getMercanetRequestBin());
 
         for (Entry<String, String> param : params.entrySet()) {
             query.append(" ");
@@ -203,10 +195,10 @@ public class MercanetAPI {
 
         // Execute response binary
         StringBuilder query = new StringBuilder();
-        query.append(RESPONSE_BIN);
+        query.append(FrameworkConfiguration.getMercanetResponseBin());
 
         query.append(" pathfile=");
-        query.append(PATHFILE_PATH);
+        query.append(FrameworkConfiguration.getMercanetPathfile());
         query.append(" message=");
         query.append(data);
 
