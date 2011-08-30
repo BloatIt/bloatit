@@ -117,6 +117,7 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
      */
     public void deletedOnly() {
         add(Restrictions.eq(IS_DELETED, true));
+        SessionManager.getSessionFactory().getCurrentSession().disableFilter("usercontent.nonDeleted");
     }
 
     /**
