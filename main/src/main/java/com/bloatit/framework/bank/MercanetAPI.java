@@ -83,6 +83,9 @@ public class MercanetAPI {
         params.put("merchant_country", "fr");
         params.put("currency_code", "978");
         params.put("pathfile", FrameworkConfiguration.getMercanetPathfile());
+        params.put("data", "NO_WINDOWS_MSG;NO_SSL_SYMBOLS");
+        params.put("advert", "logo_elveos.png");
+        
 
         // Dynamics informations
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
