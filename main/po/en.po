@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-30 14:18+0200\n"
+"POT-Creation-Date: 2011-08-30 18:24+0200\n"
 "PO-Revision-Date: 2010-09-22 02:42+0100\n"
 "Last-Translator: Frédéric Bertolus <fred.bertolus@gmail.com>\n"
 "Language-Team: French\n"
@@ -1032,12 +1032,16 @@ msgstr ""
 msgid "Validation"
 msgstr ""
 
-#: com/bloatit/web/linkable/money/PaymentProcess.java:187
+#: com/bloatit/web/linkable/money/PaymentProcess.java:73
+msgid "You must choose a payment method."
+msgstr ""
+
+#: com/bloatit/web/linkable/money/PaymentProcess.java:197
 #, java-format
 msgid "Payment of {0} accepted."
 msgstr ""
 
-#: com/bloatit/web/linkable/money/PaymentProcess.java:190
+#: com/bloatit/web/linkable/money/PaymentProcess.java:200
 #, java-format
 msgid "Payment canceled. Reason: {0}."
 msgstr ""
@@ -1159,7 +1163,7 @@ msgstr ""
 #: com/bloatit/web/linkable/money/AccountChargingPage.java:173
 #: com/bloatit/web/linkable/contribution/CheckContributePage.java:205
 #: com/bloatit/web/linkable/contribution/CheckContributePage.java:291
-#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:39
+#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:68
 #, java-format
 msgid "You are using the account of ''{0}'' team."
 msgstr ""
@@ -1450,7 +1454,7 @@ msgid "Contribution"
 msgstr ""
 
 #: com/bloatit/web/linkable/contribution/HtmlContributionLine.java:151
-#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:41
+#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:70
 #: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:60
 msgid "edit"
 msgstr ""
@@ -1471,19 +1475,23 @@ msgstr ""
 msgid "The contribution's amount is locked during the payment process."
 msgstr ""
 
-#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:31
-#, java-format
-msgid "Pay {0}"
+#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:55
+msgid "Choose your payment method:"
 msgstr ""
 
-#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:36
+#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:65
 msgid "You are using a beta version. Payment with real money is not activated."
 msgstr ""
 
-#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:36
+#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:65
 msgid ""
-"You can simulate it using this card number: 4970100000325734, and the "
-"security number: 123."
+"You can simulate it using this card number: 4974934125497800 , and the "
+"security number: 600."
+msgstr ""
+
+#: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:72
+#, java-format
+msgid "Pay {0}"
 msgstr ""
 
 #: com/bloatit/web/linkable/contribution/CancelContributionPage.java:71
