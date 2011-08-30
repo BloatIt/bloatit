@@ -189,13 +189,6 @@ public final class SessionManager {
             // Close the streams
             in.close();
             br.close();
-
-            if (new File(dump).delete()) {
-                Log.framework().info("deleting dump file: " + dump);
-            } else {
-                Log.framework().error("Cannot delete dump file: " + dump);
-            }
-
         } catch (final IOException e) {
             if (br != null) {
                 try {

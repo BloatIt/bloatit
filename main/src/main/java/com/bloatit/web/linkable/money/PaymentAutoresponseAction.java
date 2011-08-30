@@ -17,49 +17,64 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.framework.bank.MercanetAPI;
+import com.bloatit.framework.bank.MercanetResponse;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.BankTransaction;
+import com.bloatit.model.Payment;
+import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.PaylineNotifyActionUrl;
+import com.bloatit.web.url.PaymentAutoresponseActionUrl;
 
-@ParamContainer(value = "payline/donotify", protocol = Protocol.HTTPS)
-public final class PaylineNotifyAction extends ElveosAction {
+@ParamContainer(value = "payment/doautoresponse", protocol = Protocol.HTTPS)
+public final class PaymentAutoresponseAction extends ElveosAction {
+
+    @RequestParam(role = Role.POST, name = "DATA")
+    private final String data;
+
     public static final String TOKEN_CODE = "token";
 
     @RequestParam(name = TOKEN_CODE)
-    @Optional
     private final String token;
 
     @RequestParam(name = "process")
-    private final PaylineProcess process;
+    @Optional
+    private final PaymentProcess process;
 
-    public PaylineNotifyAction(final PaylineNotifyActionUrl url) {
+    public PaymentAutoresponseAction(final PaymentAutoresponseActionUrl url) {
         super(url);
-        token = url.getToken();
         process = url.getProcess();
+        token = url.getToken();
+        data = url.getData();
     }
 
     @Override
     public Url doProcess() {
-        Log.web().info("Get a payline notification: " + token);
-
-        try {
-            process.validatePayment(token);
-        } catch (final UnauthorizedOperationException e) {
-            throw new BadProgrammerException(e);
+        Log.web().info("Got a Merc@net autoresponse");
+        
+        MercanetResponse response = MercanetAPI.parseResponse(data);
+        if (response.hasError()) {
+            throw new BadProgrammerException("Failure during payment response processing (autoresponse).");
         }
 
-        final Url target = process.close();
-        if (target != null) {
-            return target;
-        }
+        BankTransaction bankTransaction = BankTransactionManager.getById(Integer.valueOf(response.getReturnContext()));
+        Payment.handlePayment(bankTransaction, response);
 
+        if (process != null) {
+            process.load();
+            process.update(null);
+        }
         return new IndexPageUrl();
     }
 

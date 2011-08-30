@@ -114,6 +114,20 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
+     * Create a new BankTransaction.
+     * 
+     * @param author it the person implied in this transaction (the one filling
+     *            is account)
+     * @param value is the quantity of money transfered.
+     * @param valuePayed the really paid value.
+     * @param orderReference is a reference we have to create and should be
+     *            unique.
+     */
+    public BankTransaction(final Actor<?> author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
+        super(DaoBankTransaction.createAndPersist(author.getDao(), value, valuePayed, orderReference));
+    }
+
+    /**
      * Instantiates a new bank transaction.
      * 
      * @param dao the dao
@@ -150,7 +164,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * @return true, if successful
      * @see DaoBankTransaction#setValidated()
      */
-    protected boolean setValidated() {
+    protected synchronized boolean setValidated() {
         if (getDao().setValidated()) {
             // Emit invoice
             Invoice invoice;
@@ -244,9 +258,9 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     public BigDecimal getValue() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.Value(), Action.READ);
-        return getDao().getValue();
+        return getValueUnprotected();
     }
-
+   
     /**
      * Gets the state.
      * 
@@ -255,6 +269,16 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     public State getState() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.State(), Action.READ);
+        return getStateUnprotected();
+    }
+    
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     * @throws UnauthorizedReadOnlyBankDataAccessException
+     */
+    public State getStateUnprotected(){
         return getDao().getState();
     }
 
@@ -288,6 +312,16 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     public String getReference() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.Reference(), Action.READ);
+        return getReferenceUnprotected();
+    }
+    
+    /**
+     * Gets the reference. This is the generated purchase reference.
+     * 
+     * @return the reference
+     * @throws UnauthorizedReadOnlyBankDataAccessException
+     */
+    public String getReferenceUnprotected() {
         return getDao().getReference();
     }
 

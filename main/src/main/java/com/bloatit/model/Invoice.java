@@ -133,11 +133,12 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
-        final String receiverName = recipientActor.getContact().getName();
-        final String receiverStreet = recipientActor.getContact().getStreet();
-        final String receiverExtras = recipientActor.getContact().getExtras();
-        final String receiverCity = recipientActor.getContact().getPostalCode() + " " + recipientActor.getContact().getCity();
-        final String receiverCountry = recipientActor.getContact().getCountry();
+        Contact recipientContact = recipientActor.getContactUnprotected();
+        final String receiverName = recipientContact.getName();
+        final String receiverStreet = recipientContact.getStreet();
+        final String receiverExtras = recipientContact.getExtras();
+        final String receiverCity = recipientContact.getPostalCode() + " " + recipientContact.getCity();
+        final String receiverCountry = recipientContact.getCountry();
         final Date invoiceDate = DateUtils.now();
 
         final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,

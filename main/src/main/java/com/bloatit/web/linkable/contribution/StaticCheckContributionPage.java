@@ -41,7 +41,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributeActionUrl;
 import com.bloatit.web.url.CheckContributePageUrl;
-import com.bloatit.web.url.PaylineProcessUrl;
+import com.bloatit.web.url.PaymentProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 
@@ -103,11 +103,11 @@ public final class StaticCheckContributionPage extends QuotationPage {
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor, final BigDecimal account) {
         // Total
-        final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAmountToCharge());
+        final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAccountChargingAmount());
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
         try {
-            if (!process.getAmountToPay().equals(quotation.subTotalTTCEntry.getValue())) {
-                process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
+            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotalTTCEntry.getValue())) {
+                process.setAmountToPayBeforeComission(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
             getSession().notifyWarning(tr("The contribution's total amount is locked during the payment process."));
@@ -118,8 +118,8 @@ public final class StaticCheckContributionPage extends QuotationPage {
             if (actor.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
                 model.addLine(new HtmlPrepaidLine(actor));
             }
-            if (process.getAmountToCharge().compareTo(BigDecimal.ZERO) > 0) {
-                model.addLine(new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, null));
+            if (process.getAccountChargingAmount().compareTo(BigDecimal.ZERO) > 0) {
+                model.addLine(new HtmlChargeAccountLine(true, process.getAccountChargingAmount(), actor, null));
             }
             
         } catch (final UnauthorizedOperationException e) {
@@ -136,7 +136,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         summary.add(new HtmlClearer());
         summary.add(new HtmlPayBlock(quotation,
                                      process.getTeam(),
-                                     new PaylineProcessUrl(actor, process),
+                                     new PaymentProcessUrl(actor, process),
                                      new UnlockContributionProcessActionUrl(getSession().getShortKey(), process)));
         group.add(summary);
     }

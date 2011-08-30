@@ -20,7 +20,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.web.actions.PaymentProcess;
+import com.bloatit.web.actions.AccountProcess;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
 import com.bloatit.web.linkable.members.MemberPage;
@@ -30,7 +30,7 @@ import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer(value = "account/charging/process", protocol = Protocol.HTTPS)
-public class AccountChargingProcess extends PaymentProcess {
+public class AccountChargingProcess extends AccountProcess {
 
     @SuppressWarnings("unused")
     private final AccountChargingProcessUrl url;
@@ -48,8 +48,8 @@ public class AccountChargingProcess extends PaymentProcess {
 
     @Override
     public synchronized Url notifyChildClosed(final WebProcess subProcess) {
-        if (subProcess instanceof PaylineProcess) {
-            final PaylineProcess subPro = (PaylineProcess) subProcess;
+        if (subProcess instanceof PaymentProcess) {
+            final PaymentProcess subPro = (PaymentProcess) subProcess;
             if (subPro.isSuccessful()) {
                 // Redirects to the contribution action which will perform the
                 // actual contribution

@@ -1,0 +1,38 @@
+package com.bloatit.framework.bank;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.bloatit.framework.bank.MercanetAPI.PaymentMethod;
+
+/**
+ * 
+ */
+public class MercanetTransaction {
+
+    private final String url;
+    private final String data;
+    private final int transactionId;
+
+    protected MercanetTransaction(String data, String url, int transactionId) {
+        this.data = data;
+        this.url = url;
+        this.transactionId = transactionId;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Map<String, String> getHiddenParameters(PaymentMethod method) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("DATA", data);
+        params.put(method.toString() + ".x", "0");
+        params.put(method.toString() + ".y", "0");
+        return params;
+    }
+}

@@ -20,29 +20,35 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
+import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.framework.exceptions.highlevel.MeanUserException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.web.actions.PaymentProcess;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.actions.AccountProcess;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
-import com.bloatit.web.linkable.money.PaylineProcess;
+import com.bloatit.web.linkable.money.PaymentProcess;
 import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributeActionUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 
 @ParamContainer("contribution/process")
-public class ContributionProcess extends PaymentProcess {
+public class ContributionProcess extends AccountProcess {
 
     @RequestParam
     private Feature feature;
 
     private BigDecimal amount = new BigDecimal("0");
     private String comment = "";
+
+    private boolean contributionDone = false;
 
     public ContributionProcess(final ContributionProcessUrl url) {
         super(url);
@@ -87,8 +93,8 @@ public class ContributionProcess extends PaymentProcess {
 
     @Override
     public synchronized Url notifyChildClosed(final WebProcess subProcess) {
-        if (subProcess instanceof PaylineProcess) {
-            final PaylineProcess subPro = (PaylineProcess) subProcess;
+        if (subProcess instanceof PaymentProcess) {
+            final PaymentProcess subPro = (PaymentProcess) subProcess;
             if (subPro.isSuccessful()) {
                 // Redirects to the contribution action which will perform the
                 // actual contribution
@@ -101,4 +107,38 @@ public class ContributionProcess extends PaymentProcess {
         }
         return null;
     }
+
+    public synchronized void doContribute() throws NotEnoughMoneyException {
+        if(contributionDone) {
+            return;
+        }
+        
+        try {
+            getFeature().addContribution(getAmount(), getComment());
+            contributionDone = true;
+
+            session.notifyGood(Context.tr("Thank you for contributing {0} on this feature.", Context.getLocalizator()
+                                                                                                    .getCurrency(getAmount())
+                                                                                                    .getSimpleEuroString()));
+        } catch (UnauthorizedOperationException e) {
+            new ShallNotPassException("No right to make a contribution");
+        }
+    }
+
+    @Override
+    public synchronized void update(final WebProcess subProcess) {
+        if (subProcess instanceof PaymentProcess) {
+            final PaymentProcess subPro = (PaymentProcess) subProcess;
+            if(subPro.isSuccessful()) {
+                try {
+                    doContribute();
+                } catch (NotEnoughMoneyException e) {
+                    // Do nothing.
+                }
+            }
+        }
+        super.update(this);
+    }
+    
+    
 }

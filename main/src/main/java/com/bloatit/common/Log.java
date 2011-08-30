@@ -183,6 +183,7 @@ public final class Log {
     private static final LoggerInterface REST = new BloatitLogger(Logger.getLogger("com.bloatit.rest"));
     private static final LoggerInterface RESOURCE = new BloatitLogger(Logger.getLogger("com.bloatit.resource"));
     private static final LoggerInterface CACHE = new BloatitLogger(Logger.getLogger("com.bloatit.cache"));
+    private static final LoggerInterface PAYMENT = new BloatitLogger(Logger.getLogger("com.bloatit.payment"));
     private static final Logger FAKESSHGUARD = Logger.getLogger("com.bloatit.fakesshguard");
 
     public static LoggerInterface model() {
@@ -215,6 +216,10 @@ public final class Log {
 
     public static LoggerInterface cache() {
         return CACHE;
+    }
+    
+    public static LoggerInterface payment() {
+        return PAYMENT;
     }
 
     public static Logger fakesshguard() {

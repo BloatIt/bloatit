@@ -48,7 +48,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
-import com.bloatit.web.url.PaylineProcessUrl;
+import com.bloatit.web.url.PaymentProcessUrl;
 import com.bloatit.web.url.StaticAccountChargingPageUrl;
 import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 
@@ -104,10 +104,10 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) throws UnauthorizedOperationException {
         // Total
-        final StandardQuotation quotation = new StandardQuotation(process.getAmountToCharge());
+        final StandardQuotation quotation = new StandardQuotation(process.getAccountChargingAmount());
 
         final HtmlLineTableModel model = new HtmlLineTableModel();
-        model.addLine(new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, null));
+        model.addLine(new HtmlChargeAccountLine(false, process.getAccountChargingAmount(), actor, null));
 
         final HtmlTable lines = new HtmlTable(model);
         lines.setCssClass("quotation_details_lines");
@@ -125,7 +125,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         // Pay bloc
         summary.add(new HtmlPayBlock(quotation,
                                      process.getTeam(),
-                                     new PaylineProcessUrl(actor, process),
+                                     new PaymentProcessUrl(actor, process),
                                      new UnlockAccountChargingProcessActionUrl(getSession().getShortKey(), process)));
         group.add(summary);
 
@@ -139,7 +139,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
             final HtmlDiv changeLine = new HtmlDiv("change_line");
             {
                 changeLine.add(new SoftwaresTools.Logo(feature.getSoftware()));
-                changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmountToCharge())));
+                changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAccountChargingAmount())));
             }
             featureContributionSummary.add(changeLine);
             featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));

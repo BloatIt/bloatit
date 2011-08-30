@@ -86,7 +86,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
      * When doing automatic transaction with a bank, we can received a message
      * (mostly error messages). Use this property to store them.
      */
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = true)
     private String message;
 
     /**
@@ -95,7 +95,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
      * and the bank will ask for it during the process, to identify the
      * different requests. ( {@value #DEFAULT_STRING_LENGTH} length)
      */
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(unique = true, updatable = false, length = DEFAULT_STRING_LENGTH)
     private String token;
 
@@ -178,6 +178,29 @@ public class DaoBankTransaction extends DaoIdentifiable {
     }
 
     /**
+     * Creates a bank transaction and persist it.
+     * 
+     * @param author the author of the transaction
+     * @param value the value the user will have on its internal account
+     * @param valuePayed the value payed by the user
+     * @param orderReference the order reference a unique reference of the order
+     * @return the dao bank transaction
+     */
+    public static DaoBankTransaction createAndPersist(final DaoActor author,
+                                                      final BigDecimal value,
+                                                      final BigDecimal valuePayed,
+                                                      final String orderReference) {
+        final DaoBankTransaction bankTransaction = new DaoBankTransaction(author, value, valuePayed, orderReference);
+        try {
+            SessionManager.getSessionFactory().getCurrentSession().save(bankTransaction);
+        } catch (final HibernateException e) {
+            SessionManager.getSessionFactory().getCurrentSession().getTransaction().rollback();
+            throw e;
+        }
+        return bankTransaction;
+    }
+
+    /**
      * throw a {@link NonOptionalParameterException} if any of the parameters is
      * null (or string isEmpty).
      */
@@ -192,6 +215,26 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
         this.message = message;
         this.token = token;
+        this.author = author;
+        this.value = value;
+        this.valuePaid = valuePayed;
+        this.state = State.PENDING;
+        this.reference = orderReference;
+        this.creationDate = new Date();
+        this.modificationDate = (Date) this.creationDate.clone();
+    }
+    
+    /**
+     * throw a {@link NonOptionalParameterException} if any of the parameters is
+     * null (or string isEmpty).
+     */
+    private DaoBankTransaction(final DaoActor author,
+                               final BigDecimal value,
+                               final BigDecimal valuePayed,
+                               final String orderReference) {
+        super();
+        checkOptionnal(author, value, valuePayed, orderReference);
+
         this.author = author;
         this.value = value;
         this.valuePaid = valuePayed;
