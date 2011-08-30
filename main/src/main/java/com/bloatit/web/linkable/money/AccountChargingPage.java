@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -62,7 +63,7 @@ import com.bloatit.web.url.StaticAccountChargingPageUrl;
 @ParamContainer(value = "account/charging/process/%process%", protocol = Protocol.HTTPS)
 public final class AccountChargingPage extends QuotationPage {
 
-    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(role=Role.PAGENAME,  message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountChargingProcess process;
 
@@ -87,7 +88,7 @@ public final class AccountChargingPage extends QuotationPage {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
-                    preload = process.getAmountToCharge() != null ? process.getAmountToCharge() : BigDecimal.ZERO;
+                    preload = process.getAccountChargingAmount() != null ? process.getAccountChargingAmount() : BigDecimal.ZERO;
                 }
             } else {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
@@ -127,14 +128,14 @@ public final class AccountChargingPage extends QuotationPage {
             getSession().notifyWarning(tr("You have a payment in progress, you cannot change the amount."));
         }
         try {
-            if (!process.getAmountToCharge().equals(preload) && preload != null) {
+            if (!process.getAccountChargingAmount().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
-                process.setAmountToPay(preload);
+                process.setAmountToPayBeforeComission(preload);
             }
-            if (process.getAmountToCharge().equals(BigDecimal.ZERO)) {
+            if (process.getAccountChargingAmount().equals(BigDecimal.ZERO)) {
 
                 process.setAmountToCharge(WebConfiguration.getDefaultChargingAmount());
-                process.setAmountToPay(WebConfiguration.getDefaultChargingAmount());
+                process.setAmountToPayBeforeComission(WebConfiguration.getDefaultChargingAmount());
             }
         } catch (final IllegalWriteException e) {
             getSession().notifyWarning(tr("You have a payment in progress, you cannot change the amount."));
@@ -143,13 +144,13 @@ public final class AccountChargingPage extends QuotationPage {
         group.add(ContactBox.generate(actor, process));
 
         // Total
-        final StandardQuotation quotation = new StandardQuotation(process.getAmountToPay());
+        final StandardQuotation quotation = new StandardQuotation(process.getAmountToPayBeforeComission());
 
         final HtmlLineTableModel model = new HtmlLineTableModel();
 
         final AccountChargingPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
-        final HtmlChargeAccountLine line = new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, recalculateUrl);
+        final HtmlChargeAccountLine line = new HtmlChargeAccountLine(false, process.getAccountChargingAmount(), actor, recalculateUrl);
 
         model.addLine(line);
 

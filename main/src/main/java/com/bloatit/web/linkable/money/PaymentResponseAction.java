@@ -21,43 +21,40 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
-import com.bloatit.web.url.PaylineReturnActionUrl;
+import com.bloatit.web.url.PaymentResponseActionUrl;
 
-@ParamContainer(value = "payline/doreturn", protocol = Protocol.HTTPS)
-public final class PaylineReturnAction extends ElveosAction {
+@ParamContainer(value = "payment/doresponse", protocol = Protocol.HTTPS)
+public final class PaymentResponseAction extends ElveosAction {
 
     @RequestParam(name = "token")
     @Optional
     private final String token;
 
-    @RequestParam(name = "ack")
-    private final String ack;
-
     @RequestParam(name = "process")
-    private final PaylineProcess process;
+    private final PaymentProcess process;
 
-    public PaylineReturnAction(final PaylineReturnActionUrl url) {
+    @RequestParam(role = Role.POST, name = "DATA")
+    private final String data;
+
+    public PaymentResponseAction(final PaymentResponseActionUrl url) {
         super(url);
         token = url.getToken();
-        ack = url.getAck();
         process = url.getProcess();
+        data = url.getData();
     }
 
     @Override
     protected Url doProcess() {
-        if (ack.equals("ok")) {
-            try {
-                process.validatePayment(token);
-            } catch (final UnauthorizedOperationException e) {
-                Log.web().error("Fail to validate payment",e);
-                session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
-            }
-        } else if (ack.equals("cancel")) {
-            process.refusePayment(token);
+        try {
+            process.handlePayment(data);
+        } catch (final UnauthorizedOperationException e) {
+            Log.web().error("Fail to validate payment", e);
+            session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference()));
         }
         final Url target = process.close();
         if (target != null) {
@@ -80,5 +77,4 @@ public final class PaylineReturnAction extends ElveosAction {
     protected void transmitParameters() {
         // No post parameters.
     }
-
 }

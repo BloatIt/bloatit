@@ -18,4 +18,5 @@
     <include file="liquibase/milestone-lastpaymentdate.xml" />
     <include file="liquibase/actor-taxrate.xml" />
     <include file="liquibase/follow.xml" />
+    <include file="liquibase/add-mercanet.xml" />
 </databaseChangeLog>

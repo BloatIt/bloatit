@@ -32,8 +32,8 @@ public class WithdrawMoneyAction extends LoggedElveosAction {
     private final Actor<?> actor;
 
     @RequestParam(role = Role.POST)
-    @MaxConstraint(max = 100000, message = @tr("Amount to withdraw must be greater or equal to %constraint%."))
-    @MinConstraint(min = 1, message = @tr("Amount to withdraw must be greater or equal to %constraint%."))
+    @MaxConstraint(max = 100000, message = @tr("Amount to withdraw must be smaller or equal than %constraint%."))
+    @MinConstraint(min = 1, message = @tr("Amount to withdraw must be greater or equal than %constraint%."))
     @NonOptional(@tr("The amount is needed."))
     private final BigDecimal amount;
 

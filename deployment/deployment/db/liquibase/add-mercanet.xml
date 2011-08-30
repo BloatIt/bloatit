@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+ 	<changeSet author="Frédéric Bertolus and Yoann Plénet" id="remove integrity constraint for daobanktransaction">
+		<comment>Remove null constraints</comment>
+        <dropNotNullConstraint tableName="daobanktransaction" columnName="message"/>
+        <dropNotNullConstraint tableName="daobanktransaction" columnName="token"/>
+	</changeSet>
+	
+	<changeSet author="Frédéric Bertolus and Yoann Plénet" id="add config table">
+		<comment>Creation of a configuration table</comment>
+        <createTable tableName="daoconfiguration">
+        	<column name="id" type="int4" defaultValue="0">
+        		<constraints nullable="false" primaryKey="true" primaryKeyName="daoconfigurationpk"/>
+        	</column>
+        	<column name="mercanettransactionid" type="int" defaultValue="0">
+        		<constraints nullable="false" />
+        	</column>
+        </createTable>
+        <sql splitStatements="false">
+			INSERT INTO daoconfiguration VALUES (0,0);
+        </sql>
+	</changeSet>
+	
+</databaseChangeLog>

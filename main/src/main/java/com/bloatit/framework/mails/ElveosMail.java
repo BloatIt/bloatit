@@ -60,15 +60,13 @@ public abstract class ElveosMail {
     public final void sendMail(final Member to, final String mailSenderID) {
         try {
             content.addNamedParameter("member", to.getDisplayName());
-            final Mail mail = new Mail(to.getEmail(), new Localizator(to.getLocale()).tr(title), content.getContent(to.getLocale()), mailSenderID);
+            final Mail mail = new Mail(to.getEmailUnprotected(), new Localizator(to.getLocale()).tr(title), content.getContent(to.getLocale()), mailSenderID);
             if (attachment != null) {
                 mail.addAttachment(attachment, filename);
             }
             MailServer.getInstance().send(mail);
         } catch (final IOException e) {
             throw new BadProgrammerException(e);
-        } catch (final UnauthorizedOperationException e) {
-            throw new ShallNotPassException(e);
         }
     }
 

@@ -90,7 +90,7 @@ public final class CheckContributePage extends QuotationPage {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
-                    preload = process.getAmountToCharge() != null ? process.getAmountToCharge() : BigDecimal.ZERO;
+                    preload = process.getAccountChargingAmount() != null ? process.getAccountChargingAmount() : BigDecimal.ZERO;
                 }
             } else {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
@@ -232,7 +232,7 @@ public final class CheckContributePage extends QuotationPage {
             getSession().notifyWarning(tr("You have a payment in progress. The contribution is locked."));
         }
         try {
-            if (!process.getAmountToCharge().equals(preload) && preload != null) {
+            if (!process.getAccountChargingAmount().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
             }
         } catch (final IllegalWriteException e) {
@@ -240,12 +240,12 @@ public final class CheckContributePage extends QuotationPage {
         }
 
         // Total
-        final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAmountToCharge());
+        final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAccountChargingAmount());
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
 
         try {
-            if (!process.getAmountToPay().equals(quotation.subTotalTTCEntry.getValue())) {
-                process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
+            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotalTTCEntry.getValue())) {
+                process.setAmountToPayBeforeComission(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
             getSession().notifyWarning(tr("The contribution's total amount is locked during the payment process."));
@@ -264,7 +264,7 @@ public final class CheckContributePage extends QuotationPage {
 
             final CheckContributePageUrl recalculateUrl = url.clone();
             recalculateUrl.setPreload(null);
-            line = new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, recalculateUrl);
+            line = new HtmlChargeAccountLine(true, process.getAccountChargingAmount(), actor, recalculateUrl);
             model.addLine(line);
         } catch (final UnauthorizedOperationException e) {
             getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));

@@ -420,7 +420,7 @@ public final class Member extends Actor<DaoMember> implements User {
         }
         return getLogin();
     }
-
+    
     public String getEmail() throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Email(), Action.READ);
         return getEmailUnprotected();

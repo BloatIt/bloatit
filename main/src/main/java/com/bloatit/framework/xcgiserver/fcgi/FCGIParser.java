@@ -23,10 +23,14 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.ByteChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.framework.xcgiserver.XcgiParser;
 
@@ -86,7 +90,7 @@ public class FCGIParser implements XcgiParser {
     /**
      * Input stream
      */
-    private final DataInputStream dataInput;
+    private final ByteChannel dataInput;
 
     /**
      * Status of param input stream. The param input stream is closed when a
@@ -104,7 +108,7 @@ public class FCGIParser implements XcgiParser {
      * Http header params. This map is full with param input stream record's
      * content.
      */
-    private final Map<String, String> env;
+    private final Map<String, String> headers;
 
     /**
      * Stream give to users to write their response.
@@ -123,18 +127,17 @@ public class FCGIParser implements XcgiParser {
      * @param output stream where to write the response to the web server
      * @throws IOException
      */
-    public FCGIParser(final InputStream input, final OutputStream output) throws IOException {
+    public FCGIParser(final ByteChannel channel) throws IOException {
         // The FCGIOutputStream has a BufferedOutputStream before and a
         // BufferedOutputStream after.
         // The first avoid to give too small or too big packet to put in on
         // record and the
         // second avoid to
-        responseStream = new FCGIOutputStream(this, output);
-
+        responseStream = new FCGIOutputStream(this, channel);
         postStream = new FCGIPostStream(this);
 
-        dataInput = new DataInputStream(input);
-        env = new HashMap<String, String>();
+        this.dataInput = channel;
+        headers = new HashMap<String, String>();
 
     }
 
@@ -147,17 +150,15 @@ public class FCGIParser implements XcgiParser {
         }
     }
 
-    @Override
     public OutputStream getResponseStream() {
         return responseStream;
     }
 
-    @Override
-    public Map<String, String> getEnv() throws IOException {
+    public Map<String, String> getHeaders() throws IOException {
         while (paramStreamOpen) {
             parseRecord();
         }
-        return env;
+        return headers;
     }
 
     /**
@@ -174,28 +175,30 @@ public class FCGIParser implements XcgiParser {
     }
 
     protected void fetchAll() throws IOException {
-        while (paramStreamOpen && postStreamOpen) {
+        while (paramStreamOpen || postStreamOpen) {
             parseRecord();
         }
     }
 
-    public byte[] readRecordHeader() throws IOException {
+    public ByteBuffer readRecordHeader() throws IOException {
 
-        final byte[] header = new byte[8];
+        ByteBuffer header = ByteBuffer.allocateDirect(8);
+
+        // final byte[] header = new byte[8];
         dataInput.read(header);
-
+        header.flip();
         return header;
     }
 
     private byte parseRecord() throws IOException {
 
-        final byte[] header = readRecordHeader();
+        final ByteBuffer header = readRecordHeader();
 
-        final byte version = header[0];
-        final byte type = header[1];
-        final int requestId = readUnsignedShort(header[2], header[3]);
-        final int contentLength = readUnsignedShort(header[4], header[5]);
-        final int paddingLength = readUnsignedByte(header[6]);
+        final byte version = header.get();
+        final byte type = header.get();
+        final int requestId = readUnsignedShort(header.get(), header.get());
+        final int contentLength = readUnsignedShort(header.get(), header.get());
+        final int paddingLength = readUnsignedByte(header.get());
         // 1 Reserved byte is not read
 
         if (version != FCGI_VERSION_1) {
@@ -206,54 +209,63 @@ public class FCGIParser implements XcgiParser {
             throw new FCGIException("Bad request ID. Found '" + requestId + "' but '" + 1 + "' excepted.");
         }
 
+        ByteBuffer record = ByteBuffer.allocateDirect(contentLength);
+        dataInput.read(record);
+        record.flip();
+
         switch (type) {
             case FCGI_BEGIN_REQUEST:
-                parseBeginRequestRecord(contentLength);
+                parseBeginRequestRecord(contentLength, record);
                 break;
             case FCGI_ABORT_REQUEST:
-                throw new NotImplementedException("TODO type: " + type);
+                throw new FCGIException("Not implemented type: " + type);
                 // break;
             case FCGI_PARAMS:
-                parseParamsRecord(contentLength);
+                parseParamsRecord(contentLength, record);
                 break;
             case FCGI_STDIN:
-                parseStdinRecord(contentLength);
+                parseStdinRecord(contentLength, record);
                 break;
             case FCGI_DATA:
-                throw new NotImplementedException("TODO type: " + type);
+                throw new FCGIException("Not implemented type: " + type);
                 // break;
             case FCGI_GET_VALUES:
-                throw new NotImplementedException("TODO type: " + type);
+                throw new FCGIException("Not implemented type: " + type);
                 // break;
             default:
                 throw new FCGIException("Invalid type code for a record: " + type);
         }
 
         // Skip padding
-        dataInput.skipBytes(paddingLength);
+        skipBytes(paddingLength);
         return type;
     }
 
-    private void parseBeginRequestRecord(final int contentLenght) throws IOException {
+    private void skipBytes(int paddingLength) throws IOException {
+        ByteBuffer padding = ByteBuffer.allocateDirect(paddingLength);
+        dataInput.read(padding);
+    }
+
+    private void parseBeginRequestRecord(final int contentLenght, ByteBuffer record) throws IOException {
         if (contentLenght != 8) {
             throw new FCGIException("Bad lenght for begin request record. Found '" + contentLenght + "' but '8' excepted.");
         }
-        final short role = dataInput.readShort();
-        final byte flags = dataInput.readByte();
+
+        final short role = record.getShort();
+        final byte flags = record.get();
         // Skip 5 reserved bytes
-        dataInput.skipBytes(5);
 
         if ((flags & FCGI_KEEP_CONN) != 0) {
-            throw new NotImplementedException("Keep Connection mode is not implemented");
+            throw new FCGIException("Keep Connection mode is not implemented");
         }
 
         if (role != FCGI_RESPONDER) {
-            throw new NotImplementedException("Only FCGI responder role is implemented");
+            throw new FCGIException("Only FCGI responder role is implemented");
         }
 
     }
 
-    private void parseParamsRecord(final int contentLength) throws IOException {
+    private void parseParamsRecord(final int contentLength, ByteBuffer record) throws IOException {
         if (contentLength == 0) {
             // End of param stream
             paramStreamOpen = false;
@@ -263,7 +275,7 @@ public class FCGIParser implements XcgiParser {
         int remainingLength = contentLength;
 
         while (remainingLength > 0) {
-            final int usedLength = parseNameValuePair();
+            final int usedLength = parseNameValuePair(record);
             if (usedLength > remainingLength) {
                 throw new FCGIException("Bad format un params record");
             }
@@ -271,18 +283,18 @@ public class FCGIParser implements XcgiParser {
         }
     }
 
-    private int parseNameValuePair() throws IOException {
+    private int parseNameValuePair(ByteBuffer dbuffer) throws IOException {
         int usedLength = 0;
         long nameLength = 0;
-        final int firstNameLengthByte = dataInput.readUnsignedByte();
+        final int firstNameLengthByte = dbuffer.get() & 0xff;
         usedLength++;
 
         if ((firstNameLengthByte & 0x80) != 0) {// 10000000
             final int[] lengthArray = new int[4];
             lengthArray[3] = firstNameLengthByte;
-            lengthArray[2] = dataInput.readUnsignedByte();
-            lengthArray[1] = dataInput.readUnsignedByte();
-            lengthArray[0] = dataInput.readUnsignedByte();
+            lengthArray[2] = dbuffer.get() & 0xff;
+            lengthArray[1] = dbuffer.get() & 0xff;
+            lengthArray[0] = dbuffer.get() & 0xff;
             usedLength += 3;
 
             nameLength = unsignedIntToLong(lengthArray);
@@ -292,15 +304,15 @@ public class FCGIParser implements XcgiParser {
 
         long valueLength = 0;
 
-        final int firstValueLengthByte = dataInput.readUnsignedByte();
+        final int firstValueLengthByte = dbuffer.get() & 0xff;
         usedLength++;
 
         if ((firstValueLengthByte >> 7) == 1) { // 10000000
             final int[] lengthArray = new int[4];
             lengthArray[3] = firstValueLengthByte;
-            lengthArray[2] = dataInput.readUnsignedByte();
-            lengthArray[1] = dataInput.readUnsignedByte();
-            lengthArray[0] = dataInput.readUnsignedByte();
+            lengthArray[2] = dbuffer.get() & 0xff;
+            lengthArray[1] = dbuffer.get() & 0xff;
+            lengthArray[0] = dbuffer.get() & 0xff;
             usedLength += 3;
 
             valueLength = unsignedIntToLong(lengthArray);
@@ -309,39 +321,27 @@ public class FCGIParser implements XcgiParser {
         }
 
         final byte[] nameArray = new byte[(int) nameLength];
-        dataInput.read(nameArray);
-        usedLength += nameLength;
+        dbuffer.get(nameArray);
         final String name = new String(nameArray);
+        usedLength += nameLength;
 
         final byte[] valueArray = new byte[(int) valueLength];
-        dataInput.read(valueArray);
-        usedLength += valueLength;
+        dbuffer.get(valueArray);
         final String value = new String(valueArray);
+        usedLength += valueLength;
 
-        env.put(name, value);
+        headers.put(name, value);
 
         return usedLength;
     }
 
-    private void parseStdinRecord(final int contentLength) throws IOException {
+    private void parseStdinRecord(final int contentLength, ByteBuffer record) throws IOException {
         if (contentLength == 0) {
             // End of stdin stream
             postStreamOpen = false;
             return;
         }
-
-        final byte[] data = new byte[contentLength];
-
-        int readLength = 0;
-
-        while (readLength < contentLength) {
-            final int size = dataInput.read(data, readLength, contentLength - readLength);
-            if (size == -1) {
-                throw new EOFException();
-            }
-            readLength += size;
-        }
-        postStream.pushData(data);
+        postStream.pushData(record);
     }
 
     /**
@@ -361,7 +361,6 @@ public class FCGIParser implements XcgiParser {
         return l;
     }
 
-    @Override
     public InputStream getPostStream() {
         return postStream;
     }

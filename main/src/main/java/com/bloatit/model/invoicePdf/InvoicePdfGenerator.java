@@ -152,12 +152,15 @@ public class InvoicePdfGenerator {
 
         this.pageSize = PageSize.A4;
         this.document = new Document();
-        this.filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + ".pdf";
-
-        if (new File(filename).exists()) {
-            throw new BadProgrammerException("Already existing invoice with that number");
+        String filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + ".pdf";
+        int retry = 1;
+        
+        while (new File(filename).exists()) {
+            filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + "-"+retry+".pdf";
         }
 
+        this.filename = filename;
+        
         createDirectory();
 
         try {

@@ -18,46 +18,36 @@
  */
 package com.bloatit.framework.xcgiserver.fcgi;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.ByteChannel;
 
 public class FCGIOutputStream extends OutputStream {
 
     private static final int WAIT_BUFFER_SIZE = 60000;
-    private static final int PREPARE_BUFFER_SIZE = 65000;
     private final static byte FCGI_REQUEST_COMPLETE = 0;
     final static byte FCGI_CANT_MPX_CONN = 1;
     final static byte FCGI_OVERLOADED = 2;
     final static byte FCGI_UNKNOWN_ROLE = 3; // NO_UCD
 
-    // private final DataOutputStream outputStream;
     private final FCGIParser fcgiParser;
-    private final DataOutputStream prepareStream;
-    private final ByteArrayOutputStream prepareBuffer;
-    private final ByteArrayOutputStream waitBuffer;
-    private final OutputStream outputStream;
+    private final byte[] waitBuffer;
+    private int waitOffset;
+    private final ByteChannel outputStream;
 
-    protected FCGIOutputStream(final FCGIParser fcgiParser, final OutputStream outputStream) {
+    protected FCGIOutputStream(final FCGIParser fcgiParser, final ByteChannel channel) {
         this.fcgiParser = fcgiParser;
-        this.outputStream = outputStream;
-        prepareBuffer = new ByteArrayOutputStream(PREPARE_BUFFER_SIZE);
-        waitBuffer = new ByteArrayOutputStream(WAIT_BUFFER_SIZE);
-
-        this.prepareStream = new DataOutputStream(prepareBuffer);
+        this.outputStream = channel;
+        waitBuffer = new byte[WAIT_BUFFER_SIZE];
+        waitOffset = 0;
     }
 
     @Override
     public void write(final int b) throws IOException {
         final byte[] bArray = new byte[1];
         bArray[0] = (byte) b;
-        writeBytes(bArray, 0, 1);
-    }
-
-    @Override
-    public void write(final byte[] b, final int off, final int len) throws IOException {
-        writeBytes(b, off, len);
+        write(bArray, 0, 1);
     }
 
     @Override
@@ -69,85 +59,89 @@ public class FCGIOutputStream extends OutputStream {
     public void close() throws IOException {
         // Close stdout stream
         fcgiParser.fetchAll();
+        if (waitOffset > 0) {
+            sendStdoutRecord();
+        }
+        // EOF stream
         sendStdoutRecord();
+
         sendEndRecord();
         outputStream.close();
     }
 
-    private void writeBytes(final byte[] b, final int off, final int len) throws IOException {
-        int wroteLen = 0;
-        while (wroteLen < len) {
-            final int currentOffset = off + wroteLen;
-            final int lenToWrite = len - wroteLen;
+    @Override
+    public void write(final byte[] b, final int off, final int len) throws IOException {
 
-            // Check if left size in next record
-            final int leftSize = WAIT_BUFFER_SIZE - waitBuffer.size();
-            if (leftSize > 0) {
-                // Check if there too bytes for the current record
-                if (lenToWrite <= leftSize) {
-                    waitBuffer.write(b, currentOffset, lenToWrite);
-                    wroteLen += len;
-                } else {
-                    waitBuffer.write(b, currentOffset, leftSize);
-                    wroteLen += leftSize;
-                }
-            }
-            sendStdoutRecordIfNeeded();
+        if (waitOffset + len < WAIT_BUFFER_SIZE) {
+            System.arraycopy(b, off, waitBuffer, waitOffset, len);
+            waitOffset += len;
+            return;
         }
 
-    }
+        int writeOffset = 0;
+        while (writeOffset < len) {
+            // Complete the wait buffer
+            final int leftSize = WAIT_BUFFER_SIZE - waitOffset;
+            final int sizeTowrite = len - writeOffset;
+            final int minSize = Math.min(leftSize, sizeTowrite);
 
-    private void sendStdoutRecordIfNeeded() throws IOException {
-        final int leftSize = WAIT_BUFFER_SIZE - waitBuffer.size();
-        if (leftSize <= 0) {
-            sendStdoutRecord();
+            System.arraycopy(b, off + writeOffset, waitBuffer, waitOffset, minSize);
+
+            writeOffset += minSize;
+            waitOffset += minSize;
+
+            if (waitOffset == WAIT_BUFFER_SIZE) {
+                sendStdoutRecord();
+            }
         }
     }
 
     private void sendStdoutRecord() throws IOException {
-        if (waitBuffer.size() > 0) {
-            sendRecordHeader(FCGIParser.FCGI_STDOUT, waitBuffer.size());
-            prepareStream.write(waitBuffer.toByteArray(), 0, waitBuffer.size());
-            flushRecord();
-        }
-    }
-
-    private void flushRecord() throws IOException {
-        // Write record in the socket
-        outputStream.write(prepareBuffer.toByteArray());
-        prepareBuffer.reset();
-        waitBuffer.reset();
+        sendRecordHeader(FCGIParser.FCGI_STDOUT, waitOffset);
+        outputStream.write(ByteBuffer.wrap(waitBuffer, 0, waitOffset));
+        waitOffset = 0;
     }
 
     private void sendRecordHeader(final byte fcgiType, final int length) throws IOException {
+
+        ByteBuffer buffer = ByteBuffer.allocateDirect(8);
+
         // FCGI version
-        prepareStream.writeByte(FCGIParser.FCGI_VERSION_1);
+        buffer.put(FCGIParser.FCGI_VERSION_1);
         // FCGI record type
-        prepareStream.writeByte(fcgiType);
+        buffer.put(fcgiType);
         // request id : 1
-        prepareStream.writeShort(1);
+        buffer.putShort((short) 1);
         // End recod Length
-        prepareStream.writeShort(length);
+        buffer.putShort((short) length);
         // No padding; length : 0
-        prepareStream.writeByte(0);
+        buffer.put((byte) 0);
         // Reserved
-        prepareStream.writeByte(0);
+        buffer.put((byte) 0);
+
+        // Write buffer
+        buffer.flip();
+        outputStream.write(buffer);
     }
 
     private void sendEndRecord() throws IOException {
         sendRecordHeader(FCGIParser.FCGI_END_REQUEST, 8);
 
+        ByteBuffer buffer = ByteBuffer.allocateDirect(8);
+
         // Write end record content
         // App state
-        prepareStream.writeInt(0);
+        buffer.putInt(0);
         // Protocol status
-        prepareStream.writeByte(FCGI_REQUEST_COMPLETE);
+        buffer.put(FCGI_REQUEST_COMPLETE);
 
         // 3 reserved bytes
-        prepareStream.writeByte(0);
-        prepareStream.writeByte(0);
-        prepareStream.writeByte(0);
+        buffer.put((byte) 0);
+        buffer.put((byte) 0);
+        buffer.put((byte) 0);
 
-        flushRecord();
+        // Write buffer
+        buffer.flip();
+        outputStream.write(buffer);
     }
 }
