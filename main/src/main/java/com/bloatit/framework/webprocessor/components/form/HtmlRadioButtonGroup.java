@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 
 public final class HtmlRadioButtonGroup extends HtmlLeaf {
@@ -36,6 +37,13 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
         this.position = position;
     }
 
+    public HtmlRadioButton addRadioButton(final String value, final HtmlElement label) {
+        final HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
+        add(button);
+        buttons.put(value, button);
+        return button;
+    }
+    
     public HtmlRadioButton addRadioButton(final String value, final String label) {
         final HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
         add(button);
