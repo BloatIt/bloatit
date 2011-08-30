@@ -153,6 +153,15 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         this.setLabel(label);
     }
 
+    public HtmlFormField(final InputBlock inputBlock, final String name, final HtmlElement label, final LabelPosition position) {
+        super();
+        this.inputBlock = inputBlock;
+        this.position = position;
+        this.setName(name);
+        init();
+        this.setLabel(label);
+    }
+
     /**
      * <p>
      * Add a message indicating to the user that his input is not correct
@@ -203,6 +212,26 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         checkIdLabel();
     }
 
+    /**
+     * <p>
+     * Sets the label for the object
+     * </p>
+     * <p>
+     * <b>CONTRACT :</b> Any class overriding this method have to be careful and
+     * not modify any other parameters than redefining the placeholder
+     * </p>
+     * 
+     * @param label the label for the element
+     */
+    public final void setLabel(final HtmlElement label) {
+        final HtmlDiv labelBlock = new HtmlDiv("label");
+        this.label = new HtmlLabel(label);
+
+        labelBlock.add(this.label);
+        this.ph.add(labelBlock);
+        checkIdLabel();
+    }
+    
     /**
      * <p>
      * Adds some text that explains the meaning of this

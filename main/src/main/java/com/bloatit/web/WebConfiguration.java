@@ -53,6 +53,9 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgAccountWithdraw;
     private String imgTwitterIcon;
     private String imgIdenticaIcon;
+    private String imgMercanetVISA;
+    private String imgMercanetMastercard;
+    private String imgMercanetCB;
     private BigDecimal defaultChargingAmount;
     private ResourceFinder finder;
     private int feedItemNumber;
@@ -197,6 +200,20 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgIdenticaIcon() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgIdenticaIcon);
     }
+    
+    public static String getImgMercanetVISA() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMercanetVISA);
+    }
+
+    public static String getImgMercanetMastercard() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMercanetMastercard);
+    }
+
+    public static String getImgMercanetCB() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMercanetCB);
+    }
+    
+    
 
     public static BigDecimal getDefaultChargingAmount() {
         return configuration.defaultChargingAmount;
@@ -236,6 +253,9 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgAccountWithdraw = properties.getString("bloatit.img.account.withdraw");
         imgTwitterIcon = properties.getString("bloatit.img.twitter.icon");
         imgIdenticaIcon = properties.getString("bloatit.img.identica.icon");
+        imgMercanetVISA = properties.getString("bloatit.img.mercanet.visa");
+        imgMercanetMastercard = properties.getString("bloatit.img.mercanet.mastercard");
+        imgMercanetCB = properties.getString("bloatit.img.mercanet.cb");
 
         // OTHERS
         defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");
@@ -263,5 +283,7 @@ public class WebConfiguration extends ReloadableConfiguration {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
         }
     }
+
+    
 
 }
