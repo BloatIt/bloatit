@@ -74,7 +74,7 @@
 	                RAISE NOTICE 'SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = % AND followed_id = % ==> %' , c.member_id, c.id, nb;
 	                IF nb = 0 THEN 
 		                SELECT nextval('hibernate_sequence') INTO seq;
-		                INSERT INTO daofollow VALUES (seq, c.member_id, c.feature_id, timeofday()::timestamp, timeofday()::timestamp, 0);
+		                INSERT INTO daofollow VALUES (seq, c.member_id, c.id, timeofday()::timestamp, timeofday()::timestamp, 0);
 	                ELSE
 		                RAISE NOTICE 'Skipping (already present)';
 	                END IF;
