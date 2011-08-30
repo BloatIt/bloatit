@@ -92,6 +92,7 @@ public class MercanetAPI {
         params.put("cancel_return_url", cancelReturnUrl.externalUrlString());
         params.put("automatic_response_url", automaticResponseUrl.externalUrlString());
         params.put("language", filterLanguage(Context.getLocalizator().getLanguageCode()));
+        params.put("data", "NO_WINDOWS_MSG;NO_SSL_SYMBOLS");
         params.put("return_context", checkReturnContext(userData));
 
         Pair<String, String> executionResultPairOfString = executeRequest(params);
