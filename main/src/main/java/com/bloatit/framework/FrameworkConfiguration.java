@@ -98,6 +98,14 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String anonymousUserTokenClass;
     private MicroBlogManager microBlogs;
 
+    private String mercanetApiPath;
+
+    private String mercanetRequestBin;
+
+    private String mercanetResponseBin;
+
+    private String mercanetPatfilePath;
+
     private FrameworkConfiguration() {
         super();
         loadConfiguration();
@@ -182,7 +190,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static String getMailReplyTo() {
         return configuration.mailReplyTo;
     }
-    
+
     public static RetryPolicy getMailRetryPolicy() {
         return configuration.mailRetryPolicy;
     }
@@ -341,6 +349,22 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return configuration.microBlogs;
     }
 
+    public static String getMercanetApiPath() {
+        return configuration.mercanetApiPath;
+    }
+
+    public static String getMercanetRequestBin() {
+        return configuration.mercanetRequestBin;
+    }
+
+    public static String getMercanetResponseBin() {
+        return configuration.mercanetResponseBin;
+    }
+
+    public static String getMercanetPathfile() {
+        return configuration.mercanetPatfilePath;
+    }
+
     private void loadConfiguration() {
 
         properties = ConfigurationManager.loadProperties("framework.properties");
@@ -364,6 +388,12 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
         // Bugs
         metaBugsDirStorage = SHARE_DIR + properties.getString("meta.bugs.dir.storage", "bug_storage");
+
+        // Mercanet
+        mercanetApiPath = properties.getString("mercanet.api.path");
+        mercanetRequestBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.request.bin");
+        mercanetResponseBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.response.bin");
+        mercanetPatfilePath = ConfigurationManager.getConfigDir() + properties.getString("mercanet.pathfile.path");
 
         // Mail configuration
         mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");

@@ -33,6 +33,17 @@ import com.bloatit.web.linkable.team.TeamPage;
  * currency
  */
 public class MoneyDisplayComponent extends HtmlSpan {
+    
+    
+    /**
+     * Creates a money display component
+     * 
+     * @param amount the amount of money to display (in euro)
+     */
+    public MoneyDisplayComponent(final BigDecimal amount) {
+        this(amount, false, null);
+    }
+    
     /**
      * Creates a money display component with a link to user account page
      * 

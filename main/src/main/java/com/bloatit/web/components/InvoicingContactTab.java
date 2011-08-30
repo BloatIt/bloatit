@@ -83,7 +83,7 @@ public class InvoicingContactTab extends HtmlTab {
         master.add(title);
 
         HtmlParagraph guide = new HtmlParagraph(Context.tr("Your invoicing contact will be used to generate invoices whenever the team " +
-        		"pays or receives argent (when you make a contribution or complete an offer)."));
+        		"pays or receives money (when you make a contribution or complete an offer)."));
         master.add(guide);
 
         final HtmlList memberIdList = new HtmlList();

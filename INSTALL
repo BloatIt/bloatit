@@ -104,10 +104,26 @@ copy the files/folders from etc/ to ~/.config/bloatit/
 copy the files/folders from share/ to ~/.local/share/bloatit/
 
 ************************************
+* Get a fake connection with bank  *
+************************************
+copy pathfile file to your config path 
+cp ~/elveos/dev/etc/pathfile ~/.config/bloatit/pathfile
+
+edit pathfile to point to the correct URI :
+vim ~/.config/bloatit/pathfile
+Modify :
+ - F_DEFAULT!/home/yoann/elveos/dev/share/mercanet/parmcom.mercanet!
+ - F_PARAM!/home/yoann/elveos/dev/share/mercanet/parmcom!
+ - F_CERTIFICATE!/home/yoann/elveos/dev/share/mercanet/certif!
+
+where /home/yoann/elveos/dev is the root to your development folder
+
+************************************
 *  Configure access right          *
 ************************************
 The lighttpd process will need to read in ~/.local/share (depending of java 
-process user). You may need to run the java process with the lighttpd user or 
+process user). You may need to run the java process with the lighttp
+d user or 
 change the right:
 
 chmod 777 ~/.local
