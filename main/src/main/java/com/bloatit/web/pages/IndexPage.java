@@ -131,21 +131,22 @@ public final class IndexPage extends ElveosPage {
         // Adding doc
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
         twoColumnLayout.addRight(new NewsFeedSideBlock());
-        
+
         return element;
     }
 
-//    /**
-//     * @return a block indicating the number of elements created on the website
-//     *         over the course of its life
-//     */
-//    private SideBarElementLayout getWebsiteActivity() {
-//        final SideBarElementLayout leftSummary = new SideBarElementLayout();
-//
-//        generateCounts(leftSummary);
-//
-//        return leftSummary;
-//    }
+    // /**
+    // * @return a block indicating the number of elements created on the
+    // website
+    // * over the course of its life
+    // */
+    // private SideBarElementLayout getWebsiteActivity() {
+    // final SideBarElementLayout leftSummary = new SideBarElementLayout();
+    //
+    // generateCounts(leftSummary);
+    //
+    // return leftSummary;
+    // }
 
     @Override
     protected String createPageTitle() {
@@ -184,12 +185,10 @@ public final class IndexPage extends ElveosPage {
             moneyRaised = BigDecimal.ZERO;
         }
 
-        if (AuthToken.isAuthenticated()) {
-            final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false, AuthToken.getMember());
-            final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;Funded, "), mdc);
-            final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
-            summaryBox.add(contributionRaised);
-        }
+        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised);
+        final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;Funded, "), mdc);
+        final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
+        summaryBox.add(contributionRaised);
 
         // Count of offers
         final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ",
