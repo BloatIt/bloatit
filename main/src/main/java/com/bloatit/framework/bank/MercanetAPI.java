@@ -79,7 +79,7 @@ public class MercanetAPI {
         Map<String, String> params = new HashMap<String, String>();
 
         // Static informations
-        params.put("merchant_id", "082584341411111");
+        params.put("merchant_id", FrameworkConfiguration.getMercanetMerchantId());
         params.put("merchant_country", "fr");
         params.put("currency_code", "978");
         params.put("pathfile", FrameworkConfiguration.getMercanetPathfile());

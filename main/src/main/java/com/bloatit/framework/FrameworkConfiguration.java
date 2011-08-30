@@ -105,6 +105,8 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String mercanetResponseBin;
 
     private String mercanetPatfilePath;
+    
+    private String mercanetMerchantId;
 
     private FrameworkConfiguration() {
         super();
@@ -364,6 +366,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static String getMercanetPathfile() {
         return configuration.mercanetPatfilePath;
     }
+    
+    public static String getMercanetMerchantId() {
+        return configuration.mercanetMerchantId;
+    }
 
     private void loadConfiguration() {
 
@@ -394,6 +400,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         mercanetRequestBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.request.bin");
         mercanetResponseBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.response.bin");
         mercanetPatfilePath = ConfigurationManager.getConfigDir() + properties.getString("mercanet.pathfile.path");
+        mercanetMerchantId = properties.getString("mercanet.merchant.id");
 
         // Mail configuration
         mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");
