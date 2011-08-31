@@ -17,8 +17,10 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -36,9 +38,11 @@ public final class PaymentResponseAction extends ElveosAction {
     private final String token;
 
     @RequestParam(name = "process")
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final PaymentProcess process;
 
     @RequestParam(role = Role.POST, name = "DATA")
+    @NonOptional(@tr("The bank data is missing."))
     private final String data;
 
     public PaymentResponseAction(final PaymentResponseActionUrl url) {

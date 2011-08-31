@@ -29,6 +29,8 @@ import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.masters.Linkable;
 import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CreateCommentAction;
@@ -385,6 +387,7 @@ public class BloatitWebServer extends WebProcessor {
                 final Session fakeSession = SessionManager.pickTemporarySession(token);
                 if (fakeSession != null) {
                     Context.reInitializeContext(Context.getHeader(), fakeSession);
+                    AuthToken.authenticate(fakeSession);
                 }
             }
             return new PaymentAutoresponseAction(new PaymentAutoresponseActionUrl(pageCode, postGetParameters, session.getParameters()));

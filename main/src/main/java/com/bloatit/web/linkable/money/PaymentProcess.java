@@ -69,17 +69,15 @@ public class PaymentProcess extends WebProcess {
     @RequestParam
     private final AccountProcess parentProcess;
 
-    @RequestParam(role=Role.POST)
+    @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must choose a payment method."))
     private final PaymentMethod paymentMethod;
-    
+
     private boolean success = false;
 
     private final PaymentProcessUrl url;
     private BankTransaction bankTransaction;
     private int mercanetTransactionId;
-    
-    
 
     public PaymentProcess(final PaymentProcessUrl url) {
         super(url);
@@ -223,6 +221,7 @@ public class PaymentProcess extends WebProcess {
             success = true;
         }
         super.update(this);
+
     }
 
 }
