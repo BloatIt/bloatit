@@ -16,7 +16,7 @@ subprojects {
     }
     
     sourceCompatibility = 1.6
-    version = '1.0.46-SNAPSHOT'
+    version = '1.0.47-beta'
 
     jar {
         // TODO : see if there are other manifest to add.
