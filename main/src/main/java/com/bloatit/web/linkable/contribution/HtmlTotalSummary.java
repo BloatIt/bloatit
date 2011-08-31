@@ -247,6 +247,7 @@ public class HtmlTotalSummary extends HtmlTable {
                 quotationUpdateScriptTemplate.addNamedParameter("commission_fix_rate", String.valueOf(BankTransaction.COMMISSION_FIX_RATE));
                 quotationUpdateScriptTemplate.addNamedParameter("input_offset", "0");
                 quotationUpdateScriptTemplate.addNamedParameter("output_offset", "5");
+                quotationUpdateScriptTemplate.addNamedParameter("locale", "\""+Context.getLocalizator().getLanguageCode()+"\"");
 
                 for (final Entry<QuotationEntry, String> entryQuotation : idQuotationMap.entrySet()) {
 
