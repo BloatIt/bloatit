@@ -194,7 +194,17 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
-                                    "AND offer_.asTeam = null ")
+                                    "AND offer_.asTeam = null "),
+                        @NamedQuery(
+                                    name = "members.exceptRole",
+                                    query = "FROM com.bloatit.data.DaoMember " +
+                                            "WHERE role != :role " +
+                                            "ORDER BY coalesce(fullname, login) ASC"),
+                        @NamedQuery(
+                                    name = "members.exceptRole.size",
+                                    query = "SELECT count(*) " +
+                                    		"FROM com.bloatit.data.DaoMember " +
+                                            "WHERE role != :role "),
                    }
 
              )
@@ -330,6 +340,10 @@ public class DaoMember extends DaoActor {
         q.setString("email", email);
         return (DaoMember) q.uniqueResult();
 
+    }
+
+    public static PageIterable<DaoMember> getAllMembersButAdmins() {
+        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN);
     }
 
     // ======================================================================
