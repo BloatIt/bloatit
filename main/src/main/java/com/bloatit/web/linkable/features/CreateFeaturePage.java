@@ -28,6 +28,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
@@ -157,7 +158,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));
         layout.addRight(new SideBarDocumentationBlock("cc_by"));
-        layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SidebarMarkdownHelp());
 
         return layout;
     }

@@ -32,7 +32,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.web.components.SideBarFeatureBlock;
-import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
@@ -63,7 +63,7 @@ public final class ContributePage extends CreateUserContentPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateContributeForm(loggedUser));
         layout.addRight(new SideBarFeatureBlock(process.getFeature()));
-        layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SidebarMarkdownHelp());
 
         return layout;
     }
