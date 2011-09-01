@@ -37,6 +37,7 @@ import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributeActionUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
+import com.bloatit.web.url.StaticCheckContributionPageUrl;
 
 @ParamContainer("contribution/process")
 public class ContributionProcess extends AccountProcess {
@@ -100,7 +101,11 @@ public class ContributionProcess extends AccountProcess {
                 return new ContributeActionUrl(Context.getSession().getShortKey(), this);
             }
             unlock();
-            return new CheckContributePageUrl(this);
+            if(subPro.hasBadParams()) {
+                return new StaticCheckContributionPageUrl(this);
+            } else {
+                return new CheckContributePageUrl(this);
+            }
         } else if (subProcess instanceof ModifyInvoicingContactProcess) {
             return new CheckContributePageUrl(this);
         }
