@@ -30,7 +30,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.apache.commons.httpclient.util.DateUtil;
 import org.hibernate.Query;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -49,7 +48,6 @@ import org.hibernate.search.annotations.Store;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;

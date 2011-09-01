@@ -30,7 +30,6 @@ import com.bloatit.framework.mails.ElveosMail;
 import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;

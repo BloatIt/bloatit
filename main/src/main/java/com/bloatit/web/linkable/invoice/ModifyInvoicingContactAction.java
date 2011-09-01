@@ -148,7 +148,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         return NO_ERROR;
     }
 
-    private boolean checkOptional(Object object, String errorText, UrlParameter parameter) {
+    private boolean checkOptional(Object object, String errorText, UrlParameter<?, ?> parameter) {
         if (object == null) {
             parameter.addErrorMessage(errorText);
             session.notifyError(errorText);

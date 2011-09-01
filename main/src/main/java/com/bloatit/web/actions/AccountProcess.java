@@ -28,7 +28,6 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.linkable.money.PaymentProcess;
 import com.bloatit.web.url.AccountProcessUrl;
-import com.bloatit.web.url.PaymentProcessUrl;
 
 @ParamContainer("accountprocess")
 public abstract class AccountProcess extends WebProcess {
