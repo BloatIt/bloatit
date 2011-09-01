@@ -171,7 +171,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     featureSummaryBottom.add(featureSummaryPopularity);
 
                     HtmlDiv featureSummaryProgress;
-                    featureSummaryProgress = generateProgressBlock(feature);
+                    featureSummaryProgress = generateProgressBlock(feature, FeaturesTools.FeatureContext.FeaturePage);
                     featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////
@@ -275,7 +275,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return item;
     }
 
-    private HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature, FeaturesTools.FeatureContext context) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
@@ -283,7 +283,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
             final HtmlDiv featureSummaryProgressAndState = new HtmlDiv("feature_summary_progress_and_state");
             {
-                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature));
+                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature, context));
                 featureSummaryProgressAndState.add(FeaturesTools.generateState(feature));
             }
 

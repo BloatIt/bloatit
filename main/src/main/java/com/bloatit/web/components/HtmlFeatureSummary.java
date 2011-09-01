@@ -18,6 +18,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
@@ -29,6 +30,7 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.features.FeaturesTools.FeatureContext;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.FeaturePageUrl;
 
@@ -53,7 +55,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     // "feature_summary"
-    public HtmlFeatureSummary(final Feature feature, final Compacity compacity) {
+    public HtmlFeatureSummary(final Feature feature, final Compacity compacity, FeaturesTools.FeatureContext context) {
         super(compacity.getCssClass());
         this.feature = feature;
         if (feature == null) {
@@ -66,10 +68,10 @@ public final class HtmlFeatureSummary extends HtmlDiv {
         try {
             switch (compacity) {
                 case NORMAL:
-                    generateNormalStructure();
+                    generateNormalStructure(context);
                     break;
                 case COMPACT:
-                    generateCompactStructure();
+                    generateCompactStructure(context);
                     break;
                 case LINE:
                     throw new NotImplementedException();
@@ -88,7 +90,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      * @param userToken
      * @throws UnauthorizedOperationException
      */
-    private void generateCompactStructure() throws UnauthorizedOperationException {
+    private void generateCompactStructure(FeaturesTools.FeatureContext context) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             featureSummaryTop.add(generateTitle());
@@ -107,7 +109,8 @@ public final class HtmlFeatureSummary extends HtmlDiv {
 
             final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
             {
-                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature);
+                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature, context);
+                
                 featureummaryProgress.add(FeaturesTools.generateDetails(feature, false));
                 featureSummaryCenter.add(featureummaryProgress);
             }
@@ -119,10 +122,11 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     /**
+     * @param context 
      * @param me
      * @throws UnauthorizedOperationException
      */
-    private void generateNormalStructure() throws UnauthorizedOperationException {
+    private void generateNormalStructure(FeatureContext context) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
@@ -148,9 +152,10 @@ public final class HtmlFeatureSummary extends HtmlDiv {
             final HtmlDiv featureSummaryBottomCenter = new HtmlDiv("feature_summary_bottom_center");
             {
 
-                featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature));
-
+                featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature, context));
+                
                 featureSummaryBottomCenter.add(FeaturesTools.generateDetails(feature, false));
+                
                 featureSummaryBottomCenter.add(FeaturesTools.generateState(feature));
             }
             featureSummaryBottom.add(featureSummaryBottomCenter);

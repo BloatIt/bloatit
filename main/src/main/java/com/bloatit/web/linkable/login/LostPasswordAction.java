@@ -62,7 +62,7 @@ public class LostPasswordAction extends ElveosAction {
     protected Url doProcess() {
         final TemplateFile templateFile = new TemplateFile("recover-password.mail");
 
-        final String resetUrl = new RecoverPasswordPageUrl(m.getResetKey(), m.getLogin()).externalUrlString();
+        final String resetUrl = new RecoverPasswordPageUrl(m.getLogin(), m.getResetKey()).externalUrlString();
         templateFile.addNamedParameter("recovery_url", resetUrl);
         templateFile.addNamedParameter("member", m.getDisplayName());
 

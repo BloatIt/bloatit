@@ -40,13 +40,13 @@ public final class SignUpAction extends ElveosAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Password cannot be blank."))
     @MinConstraint(min = 7, message = @tr("The password must have at least %constraint% chars."))
-    @MaxConstraint(max = 15, message = @tr("The password must be %constraint% chars length max."))
+    @MaxConstraint(max = 255, message = @tr("The password must be %constraint% chars length max."))
     private final String password;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Password check cannot be blank."))
     @MinConstraint(min = 7, message = @tr("The password check must have at least %constraint% chars."))
-    @MaxConstraint(max = 15, message = @tr("The password check must be %constraint% chars length max."))
+    @MaxConstraint(max = 255, message = @tr("The password check must be %constraint% chars length max."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)

@@ -22,6 +22,7 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.bank.MercanetResponse;
 import com.bloatit.framework.bank.MercanetResponse.ResponseCode;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
@@ -30,7 +31,7 @@ import com.bloatit.framework.mails.ElveosMail;
 import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.managers.ActorManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
@@ -51,7 +52,7 @@ public final class Payment {
             throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
         }
         if (!targetActor.equals(AuthToken.getMember()) && !targetActor.equals(AuthToken.getAsTeam())) {
-            throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
+
         }
 
         final BigDecimal amountToPay = BankTransaction.computateAmountToPay(amount);
@@ -129,17 +130,35 @@ public final class Payment {
             ModelAccessor.flush();
 
             // Notify the user:
-            // TODO Store member id in bank transaction
-            Member member = MemberManager.getById(Integer.valueOf(response.getCustomerId()));
-            Localizator localizator = new Localizator(member.getLocaleUnprotected());
-            final String valueStr = localizator.getCurrency(transaction.getValueUnprotected()).getSimpleEuroString();
-            final String paidValueStr = localizator.getCurrency(transaction.getValuePaidUnprotected()).getTwoDecimalEuroString();
-            ElveosMail mail = new ElveosMail.ChargingAccountSuccess(transaction.getReferenceUnprotected(), paidValueStr, valueStr);
-            mail.sendMail(member, "account-charging");
+
+            Actor<?> actor = ActorManager.getById(Integer.valueOf(response.getCustomerId()));
+
+            // TODO Make a good mail sender for teams
+            if (actor.isTeam()) {
+                Team team = (Team) actor;
+                PageIterable<Member> members = team.getMembers();
+                for (Member member : members) {
+                    if (team.getUserTeamRight(member).contains(UserTeamRight.BANK)) {
+                        sendEmail(transaction, member);
+                    }
+
+                }
+            } else {
+                sendEmail(transaction, (Member) actor);
+            }
+
         } else {
             Payment.cancelPayment(transaction);
             Log.payment().info("Payment refused. [" + response.getResponseCode().code + ": " + response.getResponseCode().label + "]");
         }
+    }
+
+    private static void sendEmail(BankTransaction transaction, Member member) {
+        Localizator localizator = new Localizator(member.getLocaleUnprotected());
+        final String valueStr = localizator.getCurrency(transaction.getValueUnprotected()).getSimpleEuroString();
+        final String paidValueStr = localizator.getCurrency(transaction.getValuePaidUnprotected()).getTwoDecimalEuroString();
+        ElveosMail mail = new ElveosMail.ChargingAccountSuccess(transaction.getReferenceUnprotected(), paidValueStr, valueStr);
+        mail.sendMail(member, "account-charging");
     }
 
     public static class BankTransactionException extends Exception {

@@ -64,6 +64,7 @@ public class PaymentProcess extends WebProcess {
 
     @SuppressWarnings("unused")
     @RequestParam
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountProcess parentProcess;
 
     @RequestParam(role = Role.POST)
@@ -110,8 +111,6 @@ public class PaymentProcess extends WebProcess {
         if (bankTransaction != null) {
             bankTransaction = BankTransactionManager.getById(bankTransaction.getId());
         }
-        // actor = (Actor<?>) DBRequests.getById(DaoActor.class,
-        // actor.getId()).accept(new DataVisitorConstructor());
     }
 
     synchronized Url initiatePayment() {
@@ -128,11 +127,19 @@ public class PaymentProcess extends WebProcess {
         try {
             bankTransaction = Payment.doPayment(actor, getAmount());
 
+            String contact = "team:"+bankTransaction.getAuthor().getLogin();
+            
+            if(!bankTransaction.getAuthor().isTeam()) {
+                
+                contact = ((Member) bankTransaction.getAuthor()).getEmail();
+            }
+            
             mercanetTransactionId = Configuration.getInstance().getNextMercanetTransactionId();
             mercanetTransaction = MercanetAPI.createTransaction(mercanetTransactionId,
                                                                 bankTransaction.getValuePaid(),
                                                                 "" + bankTransaction.getId(),
                                                                 "" + bankTransaction.getAuthor().getId(),
+                                                                contact,
                                                                 normalReturnActionUrl,
                                                                 cancelReturnActionUrl,
                                                                 autoResponseActionUrl);
