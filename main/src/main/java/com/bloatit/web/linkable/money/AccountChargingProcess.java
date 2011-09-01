@@ -28,6 +28,7 @@ import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.StaticAccountChargingPageUrl;
 
 @ParamContainer(value = "account/charging/process", protocol = Protocol.HTTPS)
 public class AccountChargingProcess extends AccountProcess {
@@ -62,8 +63,13 @@ public class AccountChargingProcess extends AccountProcess {
                 }
                 return new IndexPageUrl();
             }
-            unlock();
-            return new AccountChargingPageUrl(this);
+            if(subPro.hasBadParams()) {
+                unlock();
+                return new StaticAccountChargingPageUrl(this);
+            } else {
+                unlock();
+                return new AccountChargingPageUrl(this);
+            }
         } else if (subProcess instanceof ModifyInvoicingContactProcess) {
             return new AccountChargingPageUrl(this);
         }
