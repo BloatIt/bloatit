@@ -283,7 +283,7 @@ public final class FeatureListPage extends ElveosPage {
 
         @Override
         public XmlNode generate(final Feature feature) {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.FeatureListPage);
         }
     };
 

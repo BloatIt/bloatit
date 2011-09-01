@@ -40,6 +40,7 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.HtmlFeatureSummary;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -148,7 +149,7 @@ public final class SoftwarePage extends ElveosPage {
 
         @Override
         public XmlNode generate(final Feature feature) {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.Other);
         }
     };
 }

@@ -33,6 +33,8 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureImplementation;
@@ -52,6 +54,13 @@ public class FeaturesTools {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
+    public enum FeatureContext {
+        FeaturePage,
+        FeatureListPage,
+        IndexPage,
+        Other,
+    }
+    
     public static String getTitle(final Feature feature) {
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
@@ -115,11 +124,11 @@ public class FeaturesTools {
         return master;
     }
 
-    public static HtmlDiv generateProgress(final Feature feature) throws UnauthorizedOperationException {
-        return generateProgress(feature, BigDecimal.ZERO);
+    public static HtmlDiv generateProgress(final Feature feature, FeatureContext context) throws UnauthorizedOperationException {
+        return generateProgress(feature, BigDecimal.ZERO, context);
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, final BigDecimal futureAmount) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final BigDecimal futureAmount, FeatureContext context) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
             // Progress bar
@@ -148,10 +157,14 @@ public class FeaturesTools {
                 cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT - futureProgressValue;
             }
 
-            String barLabel = "";
+            XmlNode barLabel = new PlaceHolderElement();
 
             if (feature.getFeatureState() == FeatureState.DEVELOPPING) {
-                barLabel = Context.tr("In developement");
+                barLabel = new HtmlText(Context.tr("In developement"));
+            } else if (feature.getFeatureState() == FeatureState.PENDING && context != FeatureContext.FeaturePage) {
+                final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature, FeatureTabKey.offers);
+                offersFeatureUrl.setAnchor("feature_tab_pane");
+                barLabel = offersFeatureUrl.getHtmlLink(Context.tr("make an offer"));
             }
 
             String styleSuffix = null;
@@ -188,11 +201,8 @@ public class FeaturesTools {
             final HtmlParagraph progressText = new HtmlParagraph();
             progressText.setCssClass("progress_text");
 
-            progressText.add(amount);
+            progressText.add(new HtmlMixedText(Context.trn("<0::> funded",  "<0::> funded", feature.getContribution().intValue()), amount) );
 
-            final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature, FeatureTabKey.offers);
-            offersFeatureUrl.setAnchor("feature_tab_pane");
-            progressText.add(offersFeatureUrl.getHtmlLink(Context.tr("make an offer")));
 
             return progressText;
         }
@@ -245,6 +255,7 @@ public class FeaturesTools {
             final String trn = Context.trn("{0} comment", "{0} comments", commentsCount, Long.valueOf((commentsCount)));
             featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(trn));
             if (feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
+                
                 // PENDING or PREPARING we add the number of offers
                 final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature, FeatureTabKey.offers);
                 offersFeatureUrl.setAnchor("feature_tab_pane");
