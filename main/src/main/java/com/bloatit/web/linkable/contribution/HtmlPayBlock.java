@@ -60,20 +60,17 @@ public class HtmlPayBlock extends HtmlDiv {
         paymentMethodRadioButtonGroup.addRadioButton("CB", logoCB);
         form.add(paymentMethodBlock);
         
-        
-        
-        form.add(new HtmlParagraph(Context.tr("You are using a beta version. Payment with real money is not activated."), "debug")).add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4974934125497800 , and the security number: 600."),
-                                                                                                                                                     "debug"));
         if (team != null) {
             add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", team.getLogin()), "use_account"));
         }
-        form.add(returnUrl.getHtmlLink(Context.tr("edit")));
-        
         final HtmlSubmit payContributionButton = new HtmlSubmit(tr("Pay {0}", Context.getLocalizator()
                                                                        .getCurrency(quotation.totalTTC.getValue())
                                                                        .getTwoDecimalEuroString()));
         
         form.add(payContributionButton);
+        form.add(returnUrl.getHtmlLink(Context.tr("edit")));
+        
+        
         
         add(form);
     }
