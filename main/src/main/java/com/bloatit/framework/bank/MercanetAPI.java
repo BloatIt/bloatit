@@ -116,7 +116,7 @@ public class MercanetAPI {
 
         for (String forbiddenChar : forbiddenChars) {
             if (returnContext.contains(forbiddenChar)) {
-                throw new BadProgrammerException("The user data contains forbidden chars (" + forbiddenChars + ") : " + returnContext);
+                throw new BadProgrammerException("The user data contains forbidden chars (" + String.valueOf(forbiddenChars) + ") : " + returnContext);
             }
         }
         return returnContext;
@@ -211,7 +211,6 @@ public class MercanetAPI {
             Process proc = runtime.exec(query.toString());
             response = IOUtils.toString(proc.getInputStream(), "UTF-8");
 
-            System.out.println(response);
             if (proc.waitFor() != 0) {
                 throw new ExternalErrorException("Failure during execution of Merc@net response binary: " + query.toString() + " - exit value: "
                         + proc.exitValue());

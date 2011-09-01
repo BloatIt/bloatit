@@ -52,10 +52,10 @@ public class InvoicePdfGenerator {
     private final Document document;
     private final PdfWriter writer;
 
-    private final float leftMargin = 60;
-    private final float rightMargin = leftMargin;
-    private final float topMargin = 60;
-    private final float bottomMargin = 30;
+    private static final float LEFT_MARGIN = 60;
+    private static final float RIGHT_MARGIN = LEFT_MARGIN;
+    private static final float TOP_MARGIN = 60;
+    private static final float BOTTOM_MARGIN = 30;
 
     public InvoicePdfGenerator(final String sellerName,
                                final String sellerAddress,
@@ -258,7 +258,7 @@ public class InvoicePdfGenerator {
      */
     private void addLinkeosImg() throws DocumentException, InvalidPositionException, IOException {
         final Image img = Image.getInstance(ModelConfiguration.getInvoiceLinkeosLogo());
-        img.setAbsolutePosition(leftMargin, pageSize.getHeight() - topMargin - bottomMargin + 15);
+        img.setAbsolutePosition(LEFT_MARGIN, pageSize.getHeight() - TOP_MARGIN - BOTTOM_MARGIN + 15);
         img.scalePercent(20);
         img.setCompressionLevel(8);
         document.add(img);
@@ -402,8 +402,8 @@ public class InvoicePdfGenerator {
 
         cb.setLineWidth(1.7f);
         cb.setGrayStroke(0.80f);
-        cb.moveTo(0 + leftMargin, 60 + bottomMargin);
-        cb.lineTo(pageSize.getWidth() - rightMargin, 60 + bottomMargin);
+        cb.moveTo(0 + LEFT_MARGIN, 60 + BOTTOM_MARGIN);
+        cb.lineTo(pageSize.getWidth() - RIGHT_MARGIN, 60 + BOTTOM_MARGIN);
         cb.stroke();
 
         final StringBuilder sb = new StringBuilder();
@@ -435,11 +435,11 @@ public class InvoicePdfGenerator {
      * @throws InvalidPositionException
      */
     private void setAt(final float x, final float y, final Element element) throws DocumentException, InvalidPositionException {
-        if ((pageSize.getWidth() - (leftMargin + rightMargin)) < x || (pageSize.getHeight() - (topMargin + bottomMargin)) < y) {
+        if ((pageSize.getWidth() - (LEFT_MARGIN + RIGHT_MARGIN)) < x || (pageSize.getHeight() - (TOP_MARGIN + BOTTOM_MARGIN)) < y) {
             throw new InvalidPositionException();
         }
         final ColumnText ct = new ColumnText(writer.getDirectContent());
-        ct.setSimpleColumn(x + leftMargin, y + bottomMargin, pageSize.getWidth() - rightMargin, 0);
+        ct.setSimpleColumn(x + LEFT_MARGIN, y + BOTTOM_MARGIN, pageSize.getWidth() - RIGHT_MARGIN, 0);
         ct.addElement(element);
         ct.go();
     }

@@ -98,8 +98,8 @@ public final class SiteMapPage extends ElveosPage {
 
         if (AuthToken.isAuthenticated()) {
             personalLinkList.add(new MemberPageUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My page")));
-            personalLinkList.add(MemberPage.MyAccountUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My account")));
-            personalLinkList.add(MemberPage.MyMessagesUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My messages")));
+            personalLinkList.add(MemberPage.myAccountUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My account")));
+            personalLinkList.add(MemberPage.myMessagesUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My messages")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
             personalLinkList.add(new HtmlText(Context.tr("My account")));

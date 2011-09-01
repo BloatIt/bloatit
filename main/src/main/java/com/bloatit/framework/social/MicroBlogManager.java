@@ -8,10 +8,9 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
  * Class used to send messages to various micro blogging services.
  */
 public class MicroBlogManager {
-    public static ArrayList<MicroBlog> microblogs;
+    public static ArrayList<MicroBlog> microblogs = new ArrayList<MicroBlog>();
 
     public MicroBlogManager(final String[] microBlogs, final String password) {
-        microblogs = new ArrayList<MicroBlog>();
         final String[] rawMbList = microBlogs;
 
         for (String mb : rawMbList) {

@@ -187,7 +187,7 @@ public class Rights {
     // ///////////////////////////////////////
     // Visitors
 
-    private class GetCreatedByTeamVisitor extends HighLevelModelVisitor<Team> {
+    private static class GetCreatedByTeamVisitor extends HighLevelModelVisitor<Team> {
 
         @Override
         public Team visitAbstract(final Account<?> model) {
@@ -274,7 +274,7 @@ public class Rights {
 
     }
 
-    private class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
+    private static class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
         private final Member member;
 
         public IsTeamOwnerVisitor(final Member member) {
@@ -365,7 +365,7 @@ public class Rights {
         }
     }
 
-    private class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
+    private static class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
         private final Member member;
 
         public IsOwnerVisitor(final Member member) {

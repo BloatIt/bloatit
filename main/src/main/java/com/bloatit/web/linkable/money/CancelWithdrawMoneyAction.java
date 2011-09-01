@@ -81,7 +81,7 @@ public class CancelWithdrawMoneyAction extends LoggedElveosAction {
                 throw new ShallNotPassException("Fail to read the actor of a withdrawal", e);
             }
         }
-        return MemberPage.MyAccountUrl(me);
+        return MemberPage.myAccountUrl(me);
     }
 
     @Override

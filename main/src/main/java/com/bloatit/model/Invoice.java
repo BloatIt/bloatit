@@ -196,12 +196,12 @@ public final class Invoice extends Identifiable<DaoInvoice> {
             final int size = Integer.valueOf(m.group(2));
             final int intValue = internalInvoiceNumber.intValue();
 
-            String format = "";
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < size; i++) {
-                format += "0";
+                sb.append("0");
             }
 
-            final NumberFormat nf = new DecimalFormat(format);
+            final NumberFormat nf = new DecimalFormat(sb.toString());
 
             return m.group(1) + nf.format(intValue) + m.group(3);
         }

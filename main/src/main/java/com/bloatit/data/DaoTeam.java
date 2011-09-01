@@ -252,7 +252,7 @@ public class DaoTeam extends DaoActor {
      * 
      * @param contact the new contact information.
      */
-    public void setContact(final String contact) {
+    public void setPublicContact(final String contact) {
         this.publicContact = contact;
     }
 
