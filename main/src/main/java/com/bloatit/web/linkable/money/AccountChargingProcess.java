@@ -72,7 +72,7 @@ public class AccountChargingProcess extends AccountProcess {
 
     @Override
     public void doDoLoad() {
-        // Nothing to do.
+        AuthToken.setAsTeam(getTeam());
     }
 
 }
