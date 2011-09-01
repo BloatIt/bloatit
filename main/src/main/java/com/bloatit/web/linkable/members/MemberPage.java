@@ -280,18 +280,18 @@ public final class MemberPage extends ElveosPage {
         return breadcrumb;
     }
 
-    public static MemberPageUrl AccountUrl(final Member member) {
+    public static MemberPageUrl accountUrl(final Member member) {
         final MemberPageUrl memberPageUrl = new MemberPageUrl(member);
         memberPageUrl.setActiveTabKey(ACCOUNT_TAB);
         // memberPageUrl.setAnchor(MEMBER_TAB_PANE);
         return memberPageUrl;
     }
 
-    public static MemberPageUrl MyAccountUrl(final Member member) {
-        return AccountUrl(member);
+    public static MemberPageUrl myAccountUrl(final Member member) {
+        return accountUrl(member);
     }
 
-    public static MemberPageUrl MyMessagesUrl(final Member member) {
+    public static MemberPageUrl myMessagesUrl(final Member member) {
         final MemberPageUrl memberPageUrl = new MemberPageUrl(member);
         memberPageUrl.setActiveTabKey(TASKS_TAB);
         // memberPageUrl.setAnchor(MEMBER_TAB_PANE);

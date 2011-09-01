@@ -121,7 +121,7 @@ public class ContributionProcess extends AccountProcess {
                                                                                                     .getCurrency(getAmount())
                                                                                                     .getSimpleEuroString()));
         } catch (UnauthorizedOperationException e) {
-            new ShallNotPassException("No right to make a contribution");
+            throw new ShallNotPassException("No right to make a contribution");
         }
     }
 

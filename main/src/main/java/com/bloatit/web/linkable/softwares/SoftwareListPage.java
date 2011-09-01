@@ -87,7 +87,7 @@ public final class SoftwareListPage extends ElveosPage {
         return true;
     }
 
-    private class SoftwareRenderer implements HtmlRenderer<Software> {
+    private static class SoftwareRenderer implements HtmlRenderer<Software> {
 
         public SoftwareRenderer() {
             super();

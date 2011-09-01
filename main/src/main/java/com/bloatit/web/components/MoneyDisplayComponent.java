@@ -91,7 +91,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
             if (teamAccount != null) {
                 money = TeamPage.AccountUrl(teamAccount).getHtmlLink(euroMoney);
             } else {
-                money = MemberPage.MyAccountUrl(me).getHtmlLink(euroMoney);
+                money = MemberPage.myAccountUrl(me).getHtmlLink(euroMoney);
             }
 
             money.setCssClass("money");

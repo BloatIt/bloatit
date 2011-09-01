@@ -84,7 +84,7 @@ public class SessionBar extends HtmlDiv {
         // Display link to private messages
         long nb;
         if ((nb = (me.getInvitationCount()+ me.getMilestoneToInvoice().size())) > 0) {
-            final HtmlLink messagesLink = MemberPage.MyMessagesUrl(me).getHtmlLink(Context.tr("Tasks ({0})", nb));
+            final HtmlLink messagesLink = MemberPage.myMessagesUrl(me).getHtmlLink(Context.tr("Tasks ({0})", nb));
             messagesLink.setCssClass("bold");
             final HtmlBranch componentSpan = new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink);
             add(componentSpan);

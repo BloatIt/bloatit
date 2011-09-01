@@ -60,7 +60,10 @@ public abstract class ElveosMail {
     public final void sendMail(final Member to, final String mailSenderID) {
         try {
             content.addNamedParameter("member", to.getDisplayName());
-            final Mail mail = new Mail(to.getEmailUnprotected(), new Localizator(to.getLocale()).tr(title), content.getContent(to.getLocale()), mailSenderID);
+            final Mail mail = new Mail(to.getEmailUnprotected(),
+                                       new Localizator(to.getLocale()).tr(title),
+                                       content.getContent(to.getLocale()),
+                                       mailSenderID);
             if (attachment != null) {
                 mail.addAttachment(attachment, filename);
             }
@@ -156,7 +159,7 @@ public abstract class ElveosMail {
      * handle
      */
     public static class WithdrawalAdminMail extends ElveosMail {
-        private static DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        private DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         public WithdrawalAdminMail(final String reference, final String amount, final String iban, final String memberName, final String url) {
             super(new TemplateFile("withdrawal-admin.mail"), "[ELVEOS ADMINISTRATION] New money withdrawal request");
@@ -164,7 +167,9 @@ public abstract class ElveosMail {
             addNamedParameter("iban", iban);
             addNamedParameter("reference", reference);
             addNamedParameter("member", memberName);
-            addNamedParameter("date", ISO8601Local.format(new Date()));
+            synchronized (ISO8601Local) {
+                addNamedParameter("date", ISO8601Local.format(new Date()));
+            }
             addNamedParameter("url", url);
         }
     }

@@ -58,7 +58,7 @@ public class AccountChargingProcess extends AccountProcess {
                     return TeamPage.AccountUrl(getTeam());
                 }
                 if (AuthToken.isAuthenticated()) {
-                    return MemberPage.MyAccountUrl(AuthToken.getMember());
+                    return MemberPage.myAccountUrl(AuthToken.getMember());
                 }
                 return new IndexPageUrl();
             }

@@ -50,7 +50,7 @@ public abstract class Url implements Cloneable {
                 try {
                     params.add(URLDecoder.decode(pair[0], UTF_8), URLDecoder.decode(pair[1], UTF_8));
                 } catch (final UnsupportedEncodingException e) {
-                    new ExternalErrorException(e);
+                    throw new ExternalErrorException(e);
                 }
             }
         }
