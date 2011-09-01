@@ -396,7 +396,7 @@
         font-size: 0.8em;
     }
     
-    .button {
+    .button, input[type=submit] {
         font-size: 1.3em;
         margin-left: 20px;
         margin-right: 0;
@@ -417,6 +417,38 @@
         font-size: 1.2em;
         font-weight: bold;
         color: @orange;
+    }
+    
+    .payment_methods {
+        margin-left: -120px;
+        //border: 1px solid red;
+     //   width: 650px;
+    
+        p {
+            text-align: left;
+            color: @light_text_color;
+            font-size: 0.9em;
+            margin-bottom: 3px;
+        }
+    
+        .field {
+            display: table-cell;
+            //width: 600px;
+            padding-right: 50px;
+            vertical-align: middle;
+            height: 75px;
+            .label {
+                width: 100px;
+                min-width: 0px;
+                //display: inline-block;
+                padding-right: 0px;
+            }
+            .input {
+                vertical-align: middle;
+                //height: 100px;
+                //display: block;
+            }
+        }
     }
 }
 

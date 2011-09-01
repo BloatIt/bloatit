@@ -57,7 +57,7 @@ public class WithdrawMoneyAction extends LoggedElveosAction {
         final String amountStr = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
         if (actor instanceof Member) {
             session.notifyGood(Context.tr("Requested to withdraw {0} from your account.", amountStr));
-            return MemberPage.MyAccountUrl(me);
+            return MemberPage.myAccountUrl(me);
         }
         session.notifyGood(Context.tr("Requested to withdraw {0} from team {1} account.", amountStr, ((Team) actor).getDisplayName()));
         return TeamPage.AccountUrl(((Team) actor));

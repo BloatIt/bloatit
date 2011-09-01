@@ -12,6 +12,7 @@
 
 package com.bloatit.framework.webprocessor.components.form;
 
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 
 /**
@@ -27,6 +28,16 @@ public final class HtmlLabel extends HtmlLeaf {
     protected HtmlLabel(final String content) {
         super("label");
         addText(content);
+    }
+    
+    /**
+     * Creates a label with displayed text
+     * 
+     * @param content the displayed text
+     */
+    protected HtmlLabel(final HtmlElement content) {
+        super("label");
+        add(content);
     }
 
     /**

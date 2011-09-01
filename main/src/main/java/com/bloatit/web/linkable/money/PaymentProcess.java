@@ -24,17 +24,17 @@ import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.framework.bank.MercanetAPI;
 import com.bloatit.framework.bank.MercanetAPI.PaymentMethod;
 import com.bloatit.framework.bank.MercanetResponse;
-import com.bloatit.framework.bank.MercanetResponse.ResponseCode;
 import com.bloatit.framework.bank.MercanetTransaction;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.mails.ElveosMail;
-import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.RandomString;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -66,6 +66,10 @@ public class PaymentProcess extends WebProcess {
     @RequestParam
     private final AccountProcess parentProcess;
 
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must choose a payment method."))
+    private final PaymentMethod paymentMethod;
+
     private boolean success = false;
 
     private final PaymentProcessUrl url;
@@ -77,6 +81,7 @@ public class PaymentProcess extends WebProcess {
         this.url = url;
         actor = url.getActor();
         parentProcess = url.getParentProcess();
+        paymentMethod = url.getPaymentMethod();
     }
 
     public synchronized boolean isSuccessful() {
@@ -140,7 +145,7 @@ public class PaymentProcess extends WebProcess {
 
         boolean firstParam = true;
 
-        for (Entry<String, String> param : mercanetTransaction.getHiddenParameters(PaymentMethod.VISA).entrySet()) {
+        for (Entry<String, String> param : mercanetTransaction.getHiddenParameters(paymentMethod).entrySet()) {
             if (firstParam) {
                 url.append("?");
                 firstParam = false;
@@ -213,6 +218,7 @@ public class PaymentProcess extends WebProcess {
             success = true;
         }
         super.update(this);
+
     }
 
 }

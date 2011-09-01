@@ -32,6 +32,7 @@ public class SideBarButton extends SideBarElementLayout {
         final SideBarElementLayout createBox = new SideBarElementLayout();
         final HtmlDiv buttonMasterDiv = new HtmlDiv("side_bar_button");
         link = new HtmlLink(to.urlString(), buttonMasterDiv);
+        link.setCssClass("side_bar_button_link");
 
         { // Box to hold feature creating button content
             final HtmlImage img = new HtmlImage(new Image(imgUri), text);

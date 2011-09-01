@@ -32,6 +32,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
+import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -60,7 +61,7 @@ public final class CreateTeamPage extends LoggedElveosPage {
         layout.addRight(new SideBarDocumentationBlock("create_team"));
         layout.addRight(new SideBarDocumentationBlock("cc_by"));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
-        layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SidebarMarkdownHelp());
 
         return layout;
     }

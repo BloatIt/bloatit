@@ -315,8 +315,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         }
 
         for (final HighlightFeature hlFeature : HighlightFeatureManager.getAll()) {
-            if (hlFeature.getFeature().getId() == getId()) {
-
+            if (hlFeature.getFeature().getId().equals(getId())) {
                 hlFeature.getDao().delete();
             }
         }

@@ -139,7 +139,7 @@ public abstract class UserContentAction extends LoggedElveosAction {
             try {
                 content.addFile(getFile());
             } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Yon cannot add an attachment file (Even if y tested it ...)", e);
+                throw new ShallNotPassException("You cannot add an attachment file (Even if y tested it ...)", e);
             }
             return true;
         }

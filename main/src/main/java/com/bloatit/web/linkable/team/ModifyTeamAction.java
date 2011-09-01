@@ -50,12 +50,8 @@ public class ModifyTeamAction extends LoggedElveosAction {
     private final Team team;
 
     @RequestParam(role = Role.POST)
-    @MinConstraint(
-        min = 4,
-        message = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(
-        max = 50,
-        message = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."))
+    @MinConstraint(min = 4, message = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 50, message = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."))
     @NonOptional(@tr("You forgot to write a team name"))
     private final String displayName;
 
@@ -66,12 +62,8 @@ public class ModifyTeamAction extends LoggedElveosAction {
     private final String contact;
 
     @RequestParam(role = Role.POST)
-    @MinConstraint(
-        min = 4,
-        message = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(
-        max = 5000,
-        message = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(min = 4, message = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 5000, message = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."))
     @NonOptional(@tr("You forgot to write a description"))
     private final String description;
 
@@ -122,9 +114,9 @@ public class ModifyTeamAction extends LoggedElveosAction {
             }
 
             // Contact information
-            if (!isEmpty(contact.trim()) && !contact.equals(team.getContact())) {
+            if (!isEmpty(contact.trim()) && !contact.equals(team.getPublicContact())) {
                 session.notifyGood(Context.tr("Team's contact information changed."));
-                team.setContact(contact);
+                team.setPublicContact(contact);
             }
 
             // Description

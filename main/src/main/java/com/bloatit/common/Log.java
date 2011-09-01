@@ -96,7 +96,7 @@ public final class Log {
                 sb.append(elem.getClassName());
                 sb.append(elem.getMethodName());
             }
-            final String hash = new String(DigestUtils.md5Hex(sb.toString()));
+            final String hash = DigestUtils.md5Hex(sb.toString());
             return hash.substring(0, 5);
         }
 

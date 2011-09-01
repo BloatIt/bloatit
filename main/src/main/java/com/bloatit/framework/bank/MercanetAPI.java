@@ -79,10 +79,13 @@ public class MercanetAPI {
         Map<String, String> params = new HashMap<String, String>();
 
         // Static informations
-        params.put("merchant_id", "082584341411111");
+        params.put("merchant_id", FrameworkConfiguration.getMercanetMerchantId());
         params.put("merchant_country", "fr");
         params.put("currency_code", "978");
         params.put("pathfile", FrameworkConfiguration.getMercanetPathfile());
+        params.put("data", "NO_WINDOWS_MSG;NO_SSL_SYMBOLS");
+        params.put("advert", "logo_elveos.png");
+        
 
         // Dynamics informations
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
@@ -113,7 +116,7 @@ public class MercanetAPI {
 
         for (String forbiddenChar : forbiddenChars) {
             if (returnContext.contains(forbiddenChar)) {
-                throw new BadProgrammerException("The user data contains forbidden chars (" + forbiddenChars + ") : " + returnContext);
+                throw new BadProgrammerException("The user data contains forbidden chars (" + String.valueOf(forbiddenChars) + ") : " + returnContext);
             }
         }
         return returnContext;
@@ -208,7 +211,6 @@ public class MercanetAPI {
             Process proc = runtime.exec(query.toString());
             response = IOUtils.toString(proc.getInputStream(), "UTF-8");
 
-            System.out.println(response);
             if (proc.waitFor() != 0) {
                 throw new ExternalErrorException("Failure during execution of Merc@net response binary: " + query.toString() + " - exit value: "
                         + proc.exitValue());
