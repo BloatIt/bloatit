@@ -19,15 +19,11 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.format.number.NumberFormatter;
-
 import com.bloatit.data.DaoContact;
-import com.bloatit.framework.utils.datetime.DateUtils;
 
 /**
  * This is a invoicing contact.

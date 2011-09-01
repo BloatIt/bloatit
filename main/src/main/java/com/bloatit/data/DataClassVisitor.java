@@ -16,7 +16,6 @@
 //
 package com.bloatit.data;
 
-import com.bloatit.model.Identifiable;
 
 /**
  * This is the interface that all the visitors from the Data layer have to

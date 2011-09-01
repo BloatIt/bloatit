@@ -27,7 +27,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -39,10 +38,8 @@ import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.lists.ListBinder;
 
 /**
  * A contribution is a financial participation on a feature. Each contribution

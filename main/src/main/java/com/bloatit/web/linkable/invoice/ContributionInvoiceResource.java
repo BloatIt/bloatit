@@ -22,10 +22,8 @@ import com.bloatit.framework.webprocessor.masters.Resource;
 import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ContributionInvoice;
-import com.bloatit.model.Invoice;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.url.ContributionInvoiceResourceUrl;
-import com.bloatit.web.url.InvoiceResourceUrl;
 
 /**
  * A invoice file

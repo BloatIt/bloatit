@@ -17,22 +17,18 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.framework.bank.MercanetAPI;
 import com.bloatit.framework.bank.MercanetResponse;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Payment;
 import com.bloatit.model.managers.BankTransactionManager;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.PaymentAutoresponseActionUrl;
@@ -45,6 +41,7 @@ public final class PaymentAutoresponseAction extends ElveosAction {
 
     public static final String TOKEN_CODE = "token";
 
+    @SuppressWarnings("unused")
     @RequestParam(name = TOKEN_CODE)
     private final String token;
 
@@ -61,7 +58,7 @@ public final class PaymentAutoresponseAction extends ElveosAction {
 
     @Override
     public Url doProcess() {
-        Log.web().info("Got a Merc@net autoresponse");
+        Log.payment().info("Got a Merc@net autoresponse");
         
         MercanetResponse response = MercanetAPI.parseResponse(data);
         if (response.hasError()) {
@@ -80,7 +77,7 @@ public final class PaymentAutoresponseAction extends ElveosAction {
 
     @Override
     public Url doProcessErrors() {
-        Log.web().error("Payline notification with parameter errors ! ");
+        Log.payment().error("Payline notification with parameter errors ! ");
         return new IndexPageUrl();
     }
 

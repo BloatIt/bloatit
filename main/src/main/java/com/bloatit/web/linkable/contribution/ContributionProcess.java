@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import javax.mail.IllegalWriteException;
 
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;

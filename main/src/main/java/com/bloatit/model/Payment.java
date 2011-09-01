@@ -141,7 +141,7 @@ public final class Payment {
                     if (team.getUserTeamRight(member).contains(UserTeamRight.BANK)) {
                         sendEmail(transaction, member);
                     }
-                        
+
                 }
             } else {
                 sendEmail(transaction, (Member) actor);

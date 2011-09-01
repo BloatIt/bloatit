@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlPercentField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;

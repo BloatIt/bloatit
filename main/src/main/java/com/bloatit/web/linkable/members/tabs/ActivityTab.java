@@ -50,7 +50,6 @@ import com.bloatit.model.Release;
 import com.bloatit.model.Translation;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.activity.ActivityVisitor;

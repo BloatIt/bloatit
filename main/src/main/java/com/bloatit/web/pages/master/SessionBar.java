@@ -26,7 +26,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
-import com.bloatit.web.linkable.language.ChangeLanguageAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.LoginPageUrl;
