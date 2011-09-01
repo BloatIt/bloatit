@@ -122,6 +122,7 @@ class entry_processor:
             VALUES (?,    ?,        ?,          ?,      ?,              ?,           ?,               ?,           ?,               datetime(?),?,?)''',
             (linkable_id, visit_id, referer_id, self.lang, self.request_method, self.remote_addr, self.server_protocol, self.server_addr, self.accept_languages, self.date, self.key, self.request_uri))
         
+
     def _get_or_create_referer(self, cursor):
         cursor.execute('SELECT id FROM externalurl WHERE external_url=?', (self.http_referer,))
         referer_id = cursor.fetchone()
