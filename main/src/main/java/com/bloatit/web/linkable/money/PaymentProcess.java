@@ -207,7 +207,7 @@ public class PaymentProcess extends WebProcess {
         try {
             return bankTransaction.getReference();
         } catch (final UnauthorizedOperationException e) {
-            Log.web().fatal("Cannot find a reference.", e);
+            Log.payment().fatal("Cannot find a reference.", e);
             return "Reference-not-Found";
         }
     }

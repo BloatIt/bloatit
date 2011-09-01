@@ -398,11 +398,6 @@ public class BloatitWebServer extends WebProcessor {
             return new MemberActivationAction(new MemberActivationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (PaymentResponseActionUrl.matches(pageCode)) {
-            for(Entry<String, HttpParameter> e: postGetParameters.entrySet()) {
-                System.out.println(e.getKey() + "    "+ e.getValue().getSimpleValue());
-            }
-            
-            
             return new PaymentResponseAction(new PaymentResponseActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (AdministrationActionUrl.matches(pageCode)) {

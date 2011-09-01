@@ -58,7 +58,7 @@ public final class PaymentResponseAction extends ElveosAction {
         try {
             process.handlePayment(data);
         } catch (final UnauthorizedOperationException e) {
-            Log.web().error("Fail to validate payment", e);
+            Log.payment().error("Fail to validate payment", e);
             session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference()));
         }
         final Url target = process.close();

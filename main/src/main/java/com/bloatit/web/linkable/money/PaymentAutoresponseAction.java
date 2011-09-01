@@ -58,7 +58,7 @@ public final class PaymentAutoresponseAction extends ElveosAction {
 
     @Override
     public Url doProcess() {
-        Log.web().info("Got a Merc@net autoresponse");
+        Log.payment().info("Got a Merc@net autoresponse");
         
         MercanetResponse response = MercanetAPI.parseResponse(data);
         if (response.hasError()) {
@@ -77,7 +77,7 @@ public final class PaymentAutoresponseAction extends ElveosAction {
 
     @Override
     public Url doProcessErrors() {
-        Log.web().error("Payline notification with parameter errors ! ");
+        Log.payment().error("Payline notification with parameter errors ! ");
         return new IndexPageUrl();
     }
 
