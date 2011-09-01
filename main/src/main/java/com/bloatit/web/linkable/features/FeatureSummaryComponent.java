@@ -107,7 +107,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 }
                 featureSummary.add(featureSummaryTop);
 
-                final JsShowHide shareBlockShowHide = new JsShowHide(false);
+                //final JsShowHide shareBlockShowHide = new JsShowHide(false);
 
                 // ////////////////////
                 // Div feature_summary_bottom
@@ -178,9 +178,9 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_share
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
-                        final HtmlLink showHideShareBlock = new HtmlLink("#", Context.tr("+ Share"));
-                        shareBlockShowHide.addActuator(showHideShareBlock);
-                        featureSummaryShare.add(showHideShareBlock);
+                        //final HtmlLink showHideShareBlock = new HtmlLink("#", Context.tr("+ Share"));
+                        //shareBlockShowHide.addActuator(showHideShareBlock);
+                        //featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);
                 }
@@ -196,8 +196,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 feature_summary_share_external.add(generateLinkedInShareItem());
                 feature_summary_share_external.add(generatePlusoneShareItem());
 
-                shareBlockShowHide.addListener(feature_summary_share_external);
-                shareBlockShowHide.apply();
+                //shareBlockShowHide.addListener(feature_summary_share_external);
+                //shareBlockShowHide.apply();
             }
             add(featureSummary);
 
@@ -236,19 +236,35 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         actionLink.addAttribute("data-count", "horizontal");
         actionLink.addAttribute("data-url", new FeaturePageAliasUrl(feature).externalUrlString(true));
 
-        final HtmlScript script = new HtmlScript();
-        item.add(script);
-        script.addAttribute("src", "https://platform.twitter.com/widgets.js");
-
+        item.add(new PlaceHolderElement() {
+            @Override
+            protected List<XmlNode> getPostNodes() {
+                List<XmlNode> nodes = new ArrayList<XmlNode>();
+                final HtmlScript script = new HtmlScript();
+                script.addAttribute("src", "https://platform.twitter.com/widgets.js");
+                nodes.add(script);
+                return nodes;
+            }
+        });
+        
         return item;
     }
+    
 
     private XmlNode generateLinkedInShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
 
-        final HtmlScript script = new HtmlScript();
-        item.add(script);
-        script.addAttribute("src", "https://platform.linkedin.com/in.js");
+        item.add(new PlaceHolderElement() {
+            @Override
+            protected List<XmlNode> getPostNodes() {
+                List<XmlNode> nodes = new ArrayList<XmlNode>();
+                final HtmlScript script = new HtmlScript();
+                nodes.add(script);
+                script.addAttribute("src", "https://platform.linkedin.com/in.js");
+                return nodes;
+            }
+        });
+        
 
         final HtmlScript script2 = new HtmlScript();
         item.add(script2);
@@ -262,11 +278,20 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     private XmlNode generatePlusoneShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
 
-        final HtmlScript script = new HtmlScript();
-        item.add(script);
-        script.addAttribute("src", "https://apis.google.com/js/plusone.js");
-        script.append("{lang: '" + Context.getLocalizator().getCode() + "'}");
+        
+        item.add(new PlaceHolderElement() {
+            @Override
+            protected List<XmlNode> getPostNodes() {
+                List<XmlNode> nodes = new ArrayList<XmlNode>();
+                final HtmlScript script = new HtmlScript();
+                nodes.add(script);
+                script.addAttribute("src", "https://apis.google.com/js/plusone.js");
+                script.append("{lang: '" + Context.getLocalizator().getCode() + "'}");
 
+                return nodes;
+            }
+        });
+        
         final HtmlGenericElement element = new HtmlGenericElement("g:plusone");
         item.add(element);
         element.addAttribute("size", "medium");

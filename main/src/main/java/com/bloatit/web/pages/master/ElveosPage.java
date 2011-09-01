@@ -86,7 +86,7 @@ public abstract class ElveosPage extends Page {
     // Template method pattern: Implementation
     // -----------------------------------------------------------------------
     @Override
-    protected final HtmlElement createBody() throws RedirectException {
+    protected final HtmlGenericElement createBody() throws RedirectException {
         return doCreateBody(createBodyContent());
     }
 
@@ -103,11 +103,11 @@ public abstract class ElveosPage extends Page {
     }
 
     @Override
-    protected final HtmlElement createBodyOnParameterError() throws RedirectException {
+    protected final HtmlGenericElement createBodyOnParameterError() throws RedirectException {
         return doCreateBody(createBodyContentOnParameterError());
     }
 
-    private HtmlElement doCreateBody(final HtmlElement bodyContent) {
+    private HtmlGenericElement doCreateBody(final HtmlElement bodyContent) {
         final HtmlGenericElement body = new HtmlGenericElement("body");
         body.addCustomJs(FrameworkConfiguration.getJsJquery());
         body.addCustomJs(FrameworkConfiguration.getJsJqueryUi());
