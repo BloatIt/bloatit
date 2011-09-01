@@ -128,11 +128,19 @@ public class PaymentProcess extends WebProcess {
         try {
             bankTransaction = Payment.doPayment(actor, getAmount());
 
+            String contact = "Team: "+bankTransaction.getAuthor().getLogin();
+            
+            if(!bankTransaction.getAuthor().isTeam()) {
+                
+                contact = ((Member) bankTransaction.getAuthor()).getEmail();
+            }
+            
             mercanetTransactionId = Configuration.getInstance().getNextMercanetTransactionId();
             mercanetTransaction = MercanetAPI.createTransaction(mercanetTransactionId,
                                                                 bankTransaction.getValuePaid(),
                                                                 "" + bankTransaction.getId(),
                                                                 "" + bankTransaction.getAuthor().getId(),
+                                                                contact,
                                                                 normalReturnActionUrl,
                                                                 cancelReturnActionUrl,
                                                                 autoResponseActionUrl);
