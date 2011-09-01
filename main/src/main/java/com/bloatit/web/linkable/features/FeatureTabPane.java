@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.features;
 
+import static com.bloatit.framework.webprocessor.context.Context.tr;
+
 import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -20,6 +22,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -27,11 +30,13 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Translation;
 import com.bloatit.web.components.UserContentAuthorBlock;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FeatureTabPaneUrlComponent;
+import com.bloatit.web.url.FileResourceUrl;
 
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
@@ -109,7 +114,6 @@ public final class FeatureTabPane extends HtmlPageComponent {
         {
             final HtmlDiv descriptionText = new HtmlDiv("description_text");
             {
-
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
                 final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
                 // final HtmlParagraph description = new HtmlParagraph(new
@@ -119,6 +123,14 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
             }
             descriptionBlock.add(descriptionText);
+            
+            // Attachements
+            for (final FileMetadata attachment : feature.getFiles()) {
+                final HtmlParagraph attachmentPara = new HtmlParagraph();
+                attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
+                attachmentPara.addText(tr(": ") + attachment.getShortDescription());
+                descriptionBlock.add(attachmentPara);
+            }
 
             final HtmlDiv descriptionSeparator = new HtmlDiv("description_separator");
             descriptionBlock.add(descriptionSeparator);

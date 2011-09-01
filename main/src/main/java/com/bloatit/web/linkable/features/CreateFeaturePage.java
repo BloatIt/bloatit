@@ -78,7 +78,8 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         // Create the form stub
         final HtmlForm createFeatureForm = new HtmlForm(doCreateUrl.urlString());
-
+        createFeatureForm.enableFileUpload();
+        
         createFeatureTitle.add(createFeatureForm);
 
         // Title of the feature
