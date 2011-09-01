@@ -48,7 +48,7 @@ public class ContributionProcess extends AccountProcess {
     private BigDecimal amount = new BigDecimal("0");
     private String comment = "";
 
-    private boolean contributionDone = false;
+    private volatile boolean contributionDone = false;
 
     public ContributionProcess(final ContributionProcessUrl url) {
         super(url);

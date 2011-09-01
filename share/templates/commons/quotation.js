@@ -81,6 +81,7 @@ var commissionVariableRate = ${commission_variable_rate};
 var commissionFixRate = ${commission_fix_rate};
 var inputOffset = ${input_offset};
 var outputOffset = ${output_offset};
+var locale = ${locale};
 
 quotationEntries = new Array();
 
@@ -88,25 +89,46 @@ ${entry_list}
 
 function update() {
     var newValue = parseFloat($( "#"+chargeField ).val());
-    var baseValue = parseFloat($( "#input_money" ).html());
+
+    if(isNaN(newValue)) {
+        return
+    }
+
+
+    var baseValueText = $( "#input_money" ).html()
+    var baseValueTextFormated = baseValueText;
+    baseValueTextFormated = baseValueTextFormated.replace("&nbsp;","");
+    baseValueTextFormated = baseValueTextFormated.replace(",","");
+    var baseValue = parseFloat(baseValueTextFormated);
 
     var amount = pretotal + newValue;
     quotationEntries[inputOffset].amount = amount;
     quotationEntries[outputOffset].total =  amount + amount * commissionVariableRate + commissionFixRate;
- 
+
     for(var i= 0; i < quotationEntries.length; i++) {
         quotationEntry = quotationEntries[i];
         $( "#"+quotationEntry.id ).html(quotationEntry.getValue().toFixed(2) + "&nbsp;€");
     }
-    
-    
-    $("#output_money").html((newValue + baseValue).toFixed(0) + "&nbsp;€")
-    
+
+    $("#output_money").html(addNumberSeparator((newValue + baseValue).toFixed(0)) + "&nbsp;€")
+
     //Update process
     var http = new XMLHttpRequest();
     http.open('GET', callbackUrl+"?preload="+newValue, true);
     http.send(null);
 };
+
+function addNumberSeparator(numberStr)
+{
+	numberStr += '';
+	sep = (locale == "fr" ? '&nbsp;' : ',');
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(numberStr)) {
+		numberStr = numberStr.replace(rgx, '$1' + sep + '$2');
+	}
+	return numberStr;
+}
+
 
 //$( "#"+chargeField).keyup(update());
 //$( "#"+chargeField).change(update());
