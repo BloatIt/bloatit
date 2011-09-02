@@ -45,8 +45,7 @@ public class Footer extends HtmlDiv {
             linkBlock.add(new HtmlDiv("footer_link").add(new MetaBugsListPageUrl().getHtmlLink(Context.tr("Report a bug"))));
             addDocumentationFooterLink(linkBlock, "api", Context.tr("APIs"));
             addDocumentationFooterLink(linkBlock, "contacts", Context.tr("Contacts"));
-            // addDocumentationFooterLink(linkBlock, "jobs",
-            // Context.tr("Jobs"));
+            addDocumentationFooterLink(linkBlock, "cgv", Context.tr("Terms of Use"));
             linkBlock.add(new HtmlDiv("footer_link").add(new UrlString("http://blog.elveos.org").getHtmlLink(Context.tr("Blog & news"))));
 
         }

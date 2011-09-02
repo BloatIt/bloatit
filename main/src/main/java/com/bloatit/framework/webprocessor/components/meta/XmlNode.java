@@ -51,6 +51,15 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
      */
     protected abstract List<String> getCustomJs();
 
+    /**
+     * This method should be overridden by any components needing some special
+     * javascript files.
+     * 
+     * @return the list of custom js file needed by this component or null if no
+     *         special js is needed
+     */
+    protected abstract List<XmlNode> getPostNodes();
+    
     public final List<String> getAllCss() {
         final ArrayList<String> css = new ArrayList<String>();
         doGetAllCustomCss(css);
@@ -60,6 +69,12 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
     public final Set<String> getAllJs() {
         final Set<String> js = new LinkedHashSet<String>();
         doGetAllCustomJs(js);
+        return js;
+    }
+    
+    public final Set<XmlNode> getAllPostNode() {
+        final Set<XmlNode> js = new LinkedHashSet<XmlNode>();
+        doGetAllPostNode(js);
         return js;
     }
 
@@ -78,6 +93,15 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
         }
         if (getCustomJs() != null) {
             js.addAll(getCustomJs());
+        }
+    }
+    
+    private final void doGetAllPostNode(final Set<XmlNode> nodes) {
+        for (final XmlNode node : this) {
+            node.doGetAllPostNode(nodes);
+        }
+        if (getPostNodes() != null) {
+            nodes.addAll(getPostNodes());
         }
     }
 }

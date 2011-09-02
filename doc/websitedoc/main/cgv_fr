@@ -1,0 +1,114 @@
+Conditions générales de vente
+==================================
+
+Objet
+-----
+
+### Acceptation des conditions générales de vente
+
+Le présent document énonce les Conditions Générales de Vente, elles s'appliquent de façon exclusive entre la société *Linkeos* et toute personne effectuant une contribution sur le *site elveos*.
+
+**Veuillez lire attentivement les Conditions Générales de vente, les imprimer et en conserver une copie.**
+
+La contribution à une demande sur le site elveos implique l'acceptation sans réserve par le contributeur des présentes Conditions Générales de Vente.
+
+Ces conditions générales de vente prévaudront sur toutes autres conditions générales ou particulières non expressément agréées par *Linkeos*.
+
+Les conditions générales de vente complètent les conditions générales d'utilisation (TODO lien vers CGU) du *site elveos* dans le cadre d'un achat.
+
+### Modification des conditions
+
+*Linkeos* se réserve le droit de pouvoir modifier ses conditions générales de vente à tout moment. Dans ce cas, les conditions applicables seront celles en vigueur à la date de la commande par l'acheteur. 
+
+### Droit applicable et juridiction compétente
+
+Les présentes conditions générales de vente sont soumises au droit français. Tous les litiges relatifs à la relation commerciale existant entre Vous et Nous sont soumis à la compétence des juridictions françaises.
+
+Définitions
+-----------
+
+**Utilisateur** : Les utilisateurs sont toutes les personnes qui utilisent le *site elveos* ou un des services proposés sur le *site elveos*, même en simple consultation. Un utilisateur peut être identifié ou non.
+
+**Demande** : Sur le *site elveos*, une *demande* est une demande de fonctionnalité sur un logiciel libre.
+
+**Contribution** : Sur le *site elveos* une *contribution* est une somme d'argent qu'un *membre* donne pour la réalisation d'une *demande*. 
+
+**Achat** : Sur le *site elveos* un *achat* est réalisé lorsque l'utilisateur réalise une transaction bancaire : lors d'une contribution ou d'un chargement de compte.
+
+**Client** : Sur le *site elveos*, un *client* est un utilisateur qui vient de réaliser un paiement, ou s'apprète a réaliser un paiement.
+
+**Tarif** : Sur le *site elveos*, le *tarif* appliqué correspond aux charges prélevées par *Linkeos*.
+
+Mentions légales
+----------------
+
+    Société :
+    Linkeos SAS 
+    SAS au capital de 10 500,00 euros
+
+    Adresse :
+    66 BIS RUE DU CHATEAU C O H2NA EURL, 
+    92600 ASNIERES SUR SEINE 
+
+    Courriel :
+    contact@linkeos.com 
+
+    Immatriculée au Registre du Commerce et des Sociétés :
+    RCS Nanterre 533 206 074 Paris, 
+    représentée par Yoann PLÉNET
+
+Validation
+----------
+
+Vous déclarez avoir pris connaissance et accepté les présentes Conditions générales de vente avant le paiement en ligne. Un paiement vaut donc acceptation de ces Conditions générales de vente.
+
+Sauf preuve contraire, les données enregistrées par *Linkeos* constituent la preuve de l'ensemble des transactions passées par *Linkeos* et ses clients.
+
+Prix
+----
+
+Les prix sont indiqués en euros toutes taxes comprises (TVA plus autres taxes applicables le cas échéant).
+
+Lors de l'*achat*, le montant facturé au client correspond au montant de l'achat plus les charges appliquées par elveos.
+
+*Linkeos* se réserve le droit de modifier ses *tarifs* à tout instant. Le *tarif* applicable étant celui en vigueur lors de la validation de l'achat.
+
+Paiement
+--------
+
+Le réglements s'effectuent sur le *site elveos* par carte bancaire (VISA, Master Carte, Carte Bleue).
+
+Le débit de la carte est effectué dès la validation du paiement.
+
+Le *site elveos* fait l'objet d'un système de sécurisation.
+
+Le système de paiement en ligne utilisé par le *site elveos* est fourni par un tiers. Ce dernier s'engage à maintenir un niveau de sécurité maximal pour les informations bancaires des utilisateurs. Cependant, en cas de défaillance du système de paiement, elveos ne pourra être tenu responsable.
+
+Remboursement
+-------------
+
+A tout moment avant qu'une *demande* ne passe "en cours développement" (voir cycle de vie d'une demande TODO : insérer le lien) l'utilisateur à la possibilité d'annuler sa *contribution*.
+
+Suite à une annulation le montant de la *contribution* sera déposé sur le compte interne de l'utilisateur. Il pourra par la suite le récupérer au moyen d'une demande de retrait d'argent.
+
+Dans tous les cas, les charges prélevées par elveos ne seront jamais remboursées.
+
+Support
+--------
+
+Pour toute information, question, ou même réclamation, le support elveos est disponible via contact@elveos.org
+
+Responsabilité
+--------------
+
+*Linkeos* ne prend aucune responsabilité quant à l'adéquation entre la demande et le développement.
+
+*Linkeos* laisse un délai de 7 (sept) jours glissants aux utilisateurs pour remonter les bugs rencontrés. A l'issue de 7 jours après que le dernier bug ait été clos, le développement sera validé. 
+
+*Linkeos* considère ces 7 jours comme suffisant pour remonter les problèmes concernant un développement. À ce titre, à l'issue de cette validation, aucune réclamation ne sera acceptée.
+
+A l'issue du développement l'utilisateur a toujours la possibilité de prendre contact avec le développeur pour lui remonter les bugs.
+
+
+
+*Version 0.1-beta rédigé le 01 Septembre 2011*

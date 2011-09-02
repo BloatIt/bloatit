@@ -71,7 +71,12 @@ public class PaymentProcess extends WebProcess {
     @NonOptional(@tr("You must choose a payment method."))
     private final PaymentMethod paymentMethod;
 
+    @RequestParam(role = Role.POST, suggestedValue = "true")
+    @NonOptional(@tr("You must accept the terms of sales to continue."))
+    private final Boolean tos;
+
     private boolean success = false;
+    private boolean badParams = false;
 
     private final PaymentProcessUrl url;
     private BankTransaction bankTransaction;
@@ -83,6 +88,7 @@ public class PaymentProcess extends WebProcess {
         actor = url.getActor();
         parentProcess = url.getParentProcess();
         paymentMethod = url.getPaymentMethod();
+        tos = url.getTos();
     }
 
     public synchronized boolean isSuccessful() {
@@ -91,12 +97,27 @@ public class PaymentProcess extends WebProcess {
 
     @Override
     protected synchronized Url doProcess() {
+
         url.getParentProcess().addChildProcess(this);
+
+        if (tos == null || !tos.booleanValue()) {
+            session.notifyWarning(Context.tr("You must accept the terms of sales to continue."));
+            transmitParameters();
+            badParams = true;
+            return close();
+
+        }
+
         return new PaymentActionUrl(Context.getSession().getShortKey(), this);
     }
 
     @Override
     protected synchronized Url doProcessErrors() {
+        if (parentProcess != null) {
+            url.getParentProcess().addChildProcess(this);
+            badParams = true;
+            return close();
+        }
         return session.getLastVisitedPage();
     }
 
@@ -127,13 +148,13 @@ public class PaymentProcess extends WebProcess {
         try {
             bankTransaction = Payment.doPayment(actor, getAmount());
 
-            String contact = "team:"+bankTransaction.getAuthor().getLogin();
-            
-            if(!bankTransaction.getAuthor().isTeam()) {
-                
+            String contact = "team:" + bankTransaction.getAuthor().getLogin();
+
+            if (!bankTransaction.getAuthor().isTeam()) {
+
                 contact = ((Member) bankTransaction.getAuthor()).getEmail();
             }
-            
+
             mercanetTransactionId = Configuration.getInstance().getNextMercanetTransactionId();
             mercanetTransaction = MercanetAPI.createTransaction(mercanetTransactionId,
                                                                 bankTransaction.getValuePaid(),
@@ -226,6 +247,16 @@ public class PaymentProcess extends WebProcess {
         }
         super.update(this);
 
+    }
+
+    @Override
+    protected synchronized void transmitParameters() {
+        session.addParameter(url.getPaymentMethodParameter());
+        session.addParameter(url.getTosParameter());
+    }
+
+    public boolean hasBadParams() {
+        return badParams;
     }
 
 }

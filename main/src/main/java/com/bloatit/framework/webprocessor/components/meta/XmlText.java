@@ -81,5 +81,10 @@ public class XmlText extends XmlNode {
     protected final List<String> getCustomJs() {
         return null;
     }
+    
+    @Override
+    protected final List<XmlNode> getPostNodes() {
+        return null;
+    }
 
 }
