@@ -39,7 +39,7 @@ optipng $OUTPUT_DIR_PREFIX"commons/img/withdraw_money.png"
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/charge_account.png" -C -w 40 charge_account.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/charge_account.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/logo_elveos.png" -C -w 150 logo_elveos_beta.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/logo_elveos.png" -C -w 150 logo_elveos.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/logo_elveos.png"
 
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/favicon.png" -C -w 32 favicon.svg
