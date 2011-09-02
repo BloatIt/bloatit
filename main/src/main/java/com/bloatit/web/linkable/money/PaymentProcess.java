@@ -62,7 +62,6 @@ public class PaymentProcess extends WebProcess {
     @RequestParam
     private Actor<?> actor;
 
-    @SuppressWarnings("unused")
     @RequestParam
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountProcess parentProcess;

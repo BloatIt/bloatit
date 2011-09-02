@@ -125,7 +125,13 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You tried to modify team without having the right to
          */
-        TEAM_MISSING_MODIFY_RIGHT
+        TEAM_MISSING_MODIFY_RIGHT,
+
+        /**
+         * You tried to vote on an offer and you do not have contributed on the
+         * corresponding feature
+         */
+        YOU_HAVE_TO_CONTRIBUTE_TO_VOTE_ON_OFFER
 
     }
 

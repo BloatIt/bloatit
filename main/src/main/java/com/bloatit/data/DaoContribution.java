@@ -61,7 +61,12 @@ import com.bloatit.framework.utils.PageIterable;
                                     name = "contribution.getInvoices.size",
                                     query = "SELECT count(*) " +
                                     "FROM com.bloatit.data.DaoContributionInvoice invoice_ " +
-                                    "WHERE invoice_.contribution = :this ")
+                                    "WHERE invoice_.contribution = :this "),
+                        @NamedQuery(
+                                    name = "contribution.getByFeatureMember",
+                                    query = "FROM com.bloatit.data.DaoContribution contrib_ \n" +
+                                            "WHERE contrib_.member = :member \n" +
+                                            "AND contrib_.feature = :feature \n"),
                        }
              )
 // @formatter:on
@@ -118,6 +123,13 @@ public class DaoContribution extends DaoUserContent {
 
     @Basic(optional = false)
     private BigDecimal alreadyGivenMoney;
+
+    public static DaoContribution getByFeatureMember(DaoFeature f, DaoMember m) {
+        final Query q = SessionManager.getNamedQuery("contribution.getByFeatureMember");
+        q.setEntity("member", m);
+        q.setEntity("feature", f);
+        return (DaoContribution) q.uniqueResult();
+    }
 
     /**
      * Gets the money raised.
@@ -228,7 +240,7 @@ public class DaoContribution extends DaoUserContent {
      * Set the state to CANCELED. (Unblock the blocked amount.)
      */
     public void cancel() {
-        if (this.state != State.PENDING ) {
+        if (this.state != State.PENDING) {
             throw new BadProgrammerException("Cannot cancel a contribution if its state isn't PENDING");
         }
         try {
@@ -374,5 +386,4 @@ public class DaoContribution extends DaoUserContent {
         }
         return true;
     }
-
 }

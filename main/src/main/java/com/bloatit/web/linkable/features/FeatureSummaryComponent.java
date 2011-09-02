@@ -107,7 +107,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 }
                 featureSummary.add(featureSummaryTop);
 
-                //final JsShowHide shareBlockShowHide = new JsShowHide(false);
+                // final JsShowHide shareBlockShowHide = new JsShowHide(false);
 
                 // ////////////////////
                 // Div feature_summary_bottom
@@ -129,22 +129,25 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                             if (vote == 0) {
                                 final HtmlDiv featurePopularityJudge = new HtmlDiv("feature_popularity_judge");
                                 {
-                                    // Link to declare feature as Useful
-                                    final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
-                                                                                                          feature,
-                                                                                                          true);
-                                    final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
-                                    usefulLink.setCssClass("useful");
+                                    if (feature.canVoteUp().isEmpty()) {
+                                        final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
+                                                                                                              feature,
+                                                                                                              true);
+                                        final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
+                                        usefulLink.setCssClass("useful");
+                                        featurePopularityJudge.add(usefulLink);
+                                    }
 
-                                    // ... Useless
-                                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
-                                                                                                           feature,
-                                                                                                           false);
-                                    final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
-                                    uselessLink.setCssClass("useless");
+                                    if (feature.canVoteDown().isEmpty()) {
 
-                                    featurePopularityJudge.add(usefulLink);
-                                    featurePopularityJudge.add(uselessLink);
+                                        final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
+                                                                                                               feature,
+                                                                                                               false);
+                                        final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
+                                        uselessLink.setCssClass("useless");
+                                        featurePopularityJudge.add(uselessLink);
+                                    }
+
                                 }
                                 featureSummaryPopularity.add(featurePopularityJudge);
                             } else {
@@ -178,9 +181,10 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_share
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
-                        //final HtmlLink showHideShareBlock = new HtmlLink("#", Context.tr("+ Share"));
-                        //shareBlockShowHide.addActuator(showHideShareBlock);
-                        //featureSummaryShare.add(showHideShareBlock);
+                        // final HtmlLink showHideShareBlock = new HtmlLink("#",
+                        // Context.tr("+ Share"));
+                        // shareBlockShowHide.addActuator(showHideShareBlock);
+                        // featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);
                 }
@@ -196,8 +200,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 feature_summary_share_external.add(generateLinkedInShareItem());
                 feature_summary_share_external.add(generatePlusoneShareItem());
 
-                //shareBlockShowHide.addListener(feature_summary_share_external);
-                //shareBlockShowHide.apply();
+                // shareBlockShowHide.addListener(feature_summary_share_external);
+                // shareBlockShowHide.apply();
             }
             add(featureSummary);
 
@@ -246,10 +250,9 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 return nodes;
             }
         });
-        
+
         return item;
     }
-    
 
     private XmlNode generateLinkedInShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
@@ -264,7 +267,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 return nodes;
             }
         });
-        
 
         final HtmlScript script2 = new HtmlScript();
         item.add(script2);
@@ -278,7 +280,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     private XmlNode generatePlusoneShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
 
-        
         item.add(new PlaceHolderElement() {
             @Override
             protected List<XmlNode> getPostNodes() {
@@ -291,7 +292,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 return nodes;
             }
         });
-        
+
         final HtmlGenericElement element = new HtmlGenericElement("g:plusone");
         item.add(element);
         element.addAttribute("size", "medium");

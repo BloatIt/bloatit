@@ -16,10 +16,7 @@
 //
 package com.bloatit.web;
 
-import java.util.Map.Entry;
-
 import com.bloatit.common.Log;
-import com.bloatit.framework.utils.parameters.HttpParameter;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.WebProcessor;
