@@ -1,4 +1,223 @@
 Conditions générales d'utilisation
 ==================================
 
-Les vrai CGU arriveront plus tard. En attendant, soyez gentils et nous seront gentils.
+Bienvenue sur le site web elveos.org (nommé ci-après "site elveos").
+Le *site elveos* est édité par la société Linkeos SAS (nommé ci-après "Linkeos").
+
+Objet
+-----
+
+### Acceptation des conditions générales d'utilisation
+
+Le présent document énonce les Conditions Générales d'utilisation du *site elveos*. 
+**Veuillez lire attentivement les Conditions Générales d'utilisation, les imprimer et en conserver une copie.**
+
+Toute utilisation ou consultation du *site elveos*, gratuits, payants ou qui nécessite la création d'un compte, suppose que vous vous engagiez à respecter les présentes conditions générales d'utilisation. 
+
+### Modification des conditions
+
+*Linkeos* se réserve le droit de modifier les termes, conditions et mentions du présent contrat à tout moment. Les modifications seront mises en oeuvre sans notification préalable. Les utilisateurs doivent se référer à chaque ouverture de session à la dernière version des Conditions générales d'utilisation disponible à l'adresse suivante : [Conditions Générales d'utilisation](/fr/documentation/cgu)
+
+### Droit applicable et juridiction compétente
+
+Les règles en matière de droit, applicables aux contenus et aux transmissions de données sur et autour du *site elveos*, sont déterminées par la loi française. En cas de litige, n'ayant pu faire l'objet d'un accord à l'amiable, seuls les tribunaux français du ressort de la cour d'appel de Paris sont compétents.
+
+Définitions
+-----------
+
+**Utilisateur** : Les utilisateurs sont toutes les personnes qui utilisent le *site elveos* ou un des services proposés sur le *site elveos*, même en simple consultation. Un utilisateur peut être identifié ou non.
+
+**Membre** : Un membre est un utilisateur identifié. Il a créé un compte sur le *site elveos* en fournissant un identifiant et un mot de passe.
+
+**Équipe** : Une équipe est un groupe de membre.
+
+**Contenu utilisateur** : Le contenu utilisateur désigne l'ensemble des données qu'un utilisateur partage avec d'autres utilisateurs sur le *site elveos*. Cela comprend entre autre les données textuelles (par exemple les commentaires, les demandes, les offres de développement), et les fichiers envoyés sur le site (par exemple les images de profil). 
+
+**Données personnelles** : Les données personnelles d'un utilisateur sont l'ensemble des données qu'il confie au *site elveos* mais ne souhaite pas diffuser publiquement. Par exemple, l'adresse courriel ou l'adresse de facturation sont des données personnelles sur le *site elveos*.
+
+**Identifiant** : L'identifiant est l'ensemble des informations nécessaires à l'identification d'un utilisateur sur le *site elveos*.
+
+**Mot de passe** : Le mot de passe est une information confidentielle détenue par un utilisateur. Utilisé conjointement avec son identifiant, il permet de prouver son identité.
+
+**Consensus** : Sur le *site elveos*, nous considérons qu'il y a consensus sur un sujet s'il y a au moins cinq avis prononcés, et les trois quart de ces avis sont les mêmes.
+
+**Demande** : Sur le *site elveos*, une *demande* est une demande de fonctionnalité sur un logiciel libre.
+
+**Contribution** : Sur le *site elveos* une *contribution* est une somme d'argent qu'un *membre* donne pour la réalisation d'une *demande*. 
+
+**Offre** : Sur le *site elveos* une *offre* est une réponse à une demande, proposée par un développeur. Dans une offre, le développeur décrit comment, et à quel prix, il va répondre à la demande. 
+
+Mentions légales
+----------------
+
+    Société :
+    Linkeos SAS 
+    SAS au capital de 10 500,00 euros
+
+    Adresse :
+    66 BIS RUE DU CHATEAU C O H2NA EURL, 
+    92600 ASNIERES SUR SEINE 
+
+    Courriel :
+    contact@linkeos.com 
+
+    Immatriculée au Registre du Commerce et des Sociétés :
+    RCS Nanterre 533 206 074, 
+    représentée par Yoann PLÉNET
+
+
+Description du service
+----------------------
+
+### Le service
+
+Le *site elveos* est un site de financement collaboratif pour le logiciel libre. Il a pour objectif de mettre en relation des utilisateurs cherchant des fonctionnalités sur des logiciels libres et des développeurs prêts à réaliser ces fonctionnalités. *Linkeos* ne peut en aucun cas proposer directement sur le *site elveos* ses services pour la réalisation de *demandes* passées sur ce dernier. 
+
+*Linkeos* ne vend pas la réalisation de la demande, mais uniquement le service de mise en relation et de suivi de la réalisation. Pour plus d'informations, se référer au Conditions Générales de Vente à l'adresse suivante : [Conditions Générales de Vente](/fr/documentation/cgv)
+
+### Le compte elveos
+
+Chaque *membre* et chaque *équipe* dispose d'un *compte elveos*. Ce compte s'apparente à un porte-monnaie en ligne, qui peut stocker une somme d'argent. Un *membre* peut ajouter de l'argent sur son *compte elveos* en utilisant les moyens de payements mis à sa disposition sur le *site elveos*. S'il possède les droits suffisants, un *membre* peut de la même manière ajouter de l'argent sur le compte d'une équipe dont il est membre. Dans tout les cas l'ajout d'argent sur un *compte elveos* est sujet à des frais décris dans les Conditions Générales de Vente. 
+
+Un *membre* peut retirer l'argent confié au *site elveos* sur son *compte elveos*. De même, s'il possède les droits suffisants, il peut retirer l'argent sur le *compte elveos* d'une équipe dont il est membre.
+Les frais de retrait d'argent sont toujours à la charge de l'utilisateur, et seront prélevés sur la somme retirée.
+
+Le solde du compte elveos est en euros.
+
+*Linkeos* s'engage a ne pas utiliser l'argent confié par les utilisateurs dans le but de faire des contributions, jusqu'à ce qu'il soit retiré du *site elveos*. 
+
+### Contribution et paiement
+
+Lorsque l'utilisateur contribue à une demande, *Linkeos* prélève immédiatement l'argent.
+
+Tant que la demande n'est pas passée à l'état "en cours de développement" l'utilisateur a la possibilité d'annuler sa contribution. L'argent sera alors placé sur son *compte elveos*. Il pourra le retirer par la suite (voir *le compte elveos*). Le montant remboursé n'inclut pas les charges prélevées par elveos.
+
+Une fois que la demande a passé l'état "en cours de développement" il n'est plus possible d'annuler la contribution.
+
+Si le développement est un échec, le montant des contributions non payés au développeur est restitué sur le *compte elveos* des contributeurs.
+
+### Accès au service
+
+Le *site elveos* est accessible à tout utilisateur disposant d'un accès à internet. Tous les coûts afférents à l'accès au *site elveos* sont exclusivement à la charge de l'utilisateur.
+
+*Linkeos* ne peut être tenu responsable de tout dysfonctionnement du réseau, ou des serveurs ou de tout autre événement échappant au contrôle raisonnable, qui empêcherait ou dégraderait l'accès au *site elveos*. 
+
+*Linkeos* se réserve la possibilité d'interrompre, de suspendre momentanément ou de modifier sans préavis l'accès à tout ou une partie du *site elveos*, afin d'en assurer la maintenance, la mise à jour ou toute autre raison, sans que l'interruption n'ouvre droit à aucune obligation ni indemnisation.
+
+*Linkeos* s'engage à respecter dans la mesure du possible, et si cela n'entrave pas le bon déroulement du développement du *site elveos*, à respecter les recommandations du W3C en vigueur. 
+Le rendu des pages ainsi que l'utilisablilté du service ne sont pas garantis par *Linkeos*.
+
+L'identifiant 
+-------------
+
+Chaque membre possède sur le *site elveos* un identifiant, un mot de passe et une adresse courriel, renseignés lors de l'inscription.
+Le mot de passe sert à vérifier l'identité du membre.
+
+L'adresse courriel doit permettre à *Linkeos* de joindre les membres du *site elveos* et doit donc être tenue à jour.
+
+Toutes ces informations d'identification sont strictement privées et ne peuvent en aucun cas être cédées, même temporairement, à un autre utilisateur. Dans ce même objectif, les membres doivent utiliser tous les moyens en leur possession pour sécuriser leur mot de passe.
+
+*Linkeos* pourra supprimer un compte utilisateur ne respectant pas ces conditions.
+
+Propriété intellectuelle
+------------------------
+
+Tous les contenus utilisateurs pour lesquels aucune licence n'est spécifiée sont considérés en licence **Creative Commons Attribution-Sharealike 2.0** (http://creativecommons.org/licenses/by-sa/2.0/fr/deed.fr).
+Les utilisateurs peuvent spécifier une licence différente, en précisant dans le *contenu utilisateur* la licence souhaitée. Cette dernière doit être une des licences libres listées sur le site GNU : http://www.gnu.org/licenses/license-list.html.
+
+*Linkeos* ne pourra en aucun cas être tenu responsable pour la publication de *contenus utilisateurs* ne respectant pas les droits d'auteur. Il est cependant possible de demander à *Linkeos* le retrait de tels contenus en utilisant l'adresse mail : contact+author@elveos.org. Toute réclamation de ce type devra apporter la preuve que le demandeur possède bien les droits sur le contenu ; dans le cas contraire, *Linkeos* ne donnera pas suite à une telle réclamation. 
+
+Le *site elveos* est développé en AGPL V3. Les sources sont disponible sur https://gitorious.org/bloatit/bloatit/ .
+
+Contenu utilisateur
+-------------------
+
+L'*utilisateur* est seul responsable des *contenus utilisateur* qu'il met en ligne sur le *site elveos*. De même, il est seul responsable des textes ou opinions qu'il formule. 
+
+*Linkeos* se réserve le droit de supprimer à tout moment, sans préavis, avertissement ni justification tout ou une partie d'un *contenu utilisateur*. L'utilisateur ne pourra faire valoir aucune réclamation à ce titre.
+
+
+Validation d'un développement
+-----------------------------
+
+*Linkeos* est seul à pouvoir valider un développement (appelé *droit de validation*) et donc de transférer l'argent des contributions assignées à ce développement sur le *compte elveos* du développeur. 
+*Linkeos* peut faire valoir son *droit de validation* à tout moment, quelque soit l'état du développement et contre l'avis des utilisateurs. 
+
+Le *site elveos* a pour objectif de permettre le développement et le financement de logiciel libre, en s'appuyant sur la communauté. Pour cela il est nécessaire que le *site elveos* respecte au mieux les avis de la communauté, et instaure un climat de confiance entre les développeurs, les contributeurs et le *site elveos*. Dans cet état d'esprit :  
+
+1. *Linkeos* s'engage à laisser au moins 7 jours aux utilisateurs, après la fin d'un développement pour qu'ils puissent donner leur avis sur le résultat obtenu. *Linkeos* pourra augmenter cette durée en cas de difficulté d'accès au *site elveos*.
+
+2. *Linkeos* s'engage à respecter les avis des utilisateurs pour faire valoir son *droit de validation*, sauf si aucun *consensus* évident n'est atteint, ou si *Linkeos* le considère nécessaire.
+
+*Linkeos* considère les 7 jours laissés aux utilisateurs comme suffisant pour remonter les problèmes concernant un développement. À ce titre, à l'issue de cette validation, aucune réclamation ne sera acceptée.
+
+A l'issue du développement l'utilisateur a toujours la possibilité de prendre contact avec le développeur pour lui remonter les bugs.
+
+Annulation d'un développement ou d'une demande
+---------------------------------------------
+
+*Linkeos* est seul à avoir le droit d'annuler une demande (appelé *droit d'annulation*) et donc de transférer l'argent de chaque contribution sur le *compte elveos* de leur contributeur respectif. L'annulation d'une demande implique l'annulation du développement associé.
+
+Le droit d'annulation de *Linkeos* sera utilisé :
+
+1. S'il y a consensus des *contributeurs* sur la volonté d'annuler une demande, et dans la mesure ou *Linkeos* considère l'annulation justifiée, *Linkeos* s'engage à utiliser son *droit d'annulation* sur cette demande.
+
+2. *Linkeos* s'engage à utiliser son *droit d'annulation* sur une demande qui remplit au moins un des critères suivant : 
+
+    - Aucun développeur ne se propose pour remplir l'offre après plus d'un mois depuis la dernière contribution
+    - Un développeur à fait une offre depuis plus d'un mois, et il s'est écoulé plus d'un mois depuis la dernière contribution.
+    - Un développeur ne respecte pas les échéances formulées dans son offre de développement.
+
+
+*Linkeos* se réserve toutefois la possibilité de faire valoir son *droit d'annulation* à tout moment, quelque soit l'état de la demande et contre l'avis des utilisateurs.
+
+
+Données personnelles et vie privée
+--------------------
+
+Conscient de ce que la collecte et le traitement des données personnelles sur Internet doivent respecter les droits fondamentaux des personnes, *Linkeos* s’engage à ce que tout traitement de données nominatives sur le *site elveos* soit conforme à la loi n°78-17 du 6 janvier 1978 relative à l’informatique, aux fichiers et aux libertés. À ce titre, le *site elveos* fait l'objet d'une déclaration à la CNIL sous le numéro 1526817. 
+
+L’utilisateur dispose d’un droit d’accès (article 34 à 38 de la loi de 1978) et d’un droit de rectification (article 36 de la loi de 1978) aux données personnelles le concernant.
+
+L’utilisateur peut exercer ce droit à tout moment par l’envoi d’un courriel à contact@elveos.org afin que soient rectifiées, complétées, clarifiées, mises à jour ou effacées les informations les concernant. Il est demandé un délai de 15 jours maximum avant la prise en compte de la demande de l’utilisateur.
+
+*Linkeos* s'engage à ne pas diffuser les *données personnelles* ou nominative confiées au *site elveos*. En aucun cas *Linkeos* ne pourra vendre les *données personnelles* ou les *contenus utilisateurs* ou les données nominative du *site elveos* à des entreprises, des associations ou des particuliers. 
+
+
+Liens hypertexte
+-------------------------
+
+Le *site elveos* propose des liens hypertextes vers des sites web édités et/ou gérés par des tiers.
+
+Dans la mesure où aucun contrôle n'est exercé sur ces ressources externes, l'utilisateur reconnaît que *Linkeos* n'assume aucune responsabilité relative à la mise à disposition de ces ressources, et ne peut être tenue responsable quant à leur contenu. 
+
+
+Usage abusif 
+------------
+
+*Linkeos* se réserve le droit de bannir du *site elveos* tout utilisateur qui en ferait un usage abusif, contraire à la loi ou aux présentes Condition Générale d'utilisation. 
+
+*Linkeos* considère les usages suivants du *site elveos* comme abusifs (liste non exhaustives):
+
+* Usage à but publicitaire
+* Usage afin d'améliorer le ranking d'un autre site internet
+* Tout autre usage pouvant porter préjudice directement ou indirectement à *Linkeos* au *site elveos* ou à ses partenaires
+* Plus généralement tout usage pouvant porter préjudice à un tiers
+
+
+International
+-------------
+
+Le *site elveos* est utilisable depuis tous les pays du monde, sans limitation aucune. 
+
+Les présentes conditions sont appliquées aux utilisateurs quelque soit le pays depuis lequel ils accèdent au *site elveos* et quelque soit leur nationalité.
+
+*Linkeos* fournit contenus et informations relatifs au *site elveos* en Français et/ou en Anglais et pourra éventuellement les traduire dans d'autres langues, sans aucune obligation de délai ni de résultat.
+
+
+Support 
+-------
+
+Pour toute information, réclamation ou remarque, vous pouvez nous contacter à contact@elveos.org.
+
+*Version 0.1-beta rédigé le 01 Septembre 2011*
