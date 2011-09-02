@@ -546,17 +546,25 @@ td:first-child
 border-left : 1px solid @dark_border_color;
 } 
 
-tr:nth-child(even) {
-    background-color: @very_light_background_color;
-   
+
+thead {
+   tr {
+        background-color: @default_background_color;       
+       
+    }
 }
 
-tr:nth-child(odd) {
-    background-color: @light_background_color;   
-}   
+tbody {
+    tr:nth-child(even) {
+        background-color: @light_background_color;       
+       
+    }
 
-tr:nth-child(1) {
-    background-color: @default_background_color;   
+    tr:nth-child(odd) {
+
+        background-color: @very_light_background_color;
+    }   
+
 }
 
 blockquote {
