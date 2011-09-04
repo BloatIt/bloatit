@@ -5,7 +5,7 @@
 
 export PYTHONPATH=$PYTHONPATH:$PWD
 
-LAST_FETCH_FILE=".$(id -u -n).lastFetch"
+LAST_FETCH_FILE=".$(id -u -n).$(ifconfig eth0 | head -1 | grep -o -E "..:..:..:..:..:..").lastFetch"
 
 ssh elveos@elveos.org "
 cd ~/.local/share/bloatit/log/ 
@@ -15,4 +15,4 @@ else
    find . -iname 'infos.log*' -exec grep 'Access:' {} \; 
 fi
 [ $? = 0 ] && touch $LAST_FETCH_FILE 
-" | sed -E "s/(2011-..-..)-(..:..:..)/\\1T\\2/g"|  python bloatitstats/filldb.py -d ~/.local/share/bloatit/stats.db
+" | sed -E "s/(2011-..-..) (..:..:..)/\\1T\\2/g"|  python bloatitstats/filldb.py -d ~/.local/share/bloatit/stats.db
