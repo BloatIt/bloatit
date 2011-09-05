@@ -74,6 +74,7 @@ public final class Team extends Actor<DaoTeam> {
      */
     public Team(final String login, final String contact, final String description, final Right right, final Member author) {
         super(DaoTeam.createAndPersiste(login, contact, description, right));
+        Reporting.reporter.reportTeamCreation(login);
         author.addToTeamUnprotected(this);
 
         // Give all rights

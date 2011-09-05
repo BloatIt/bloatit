@@ -103,6 +103,7 @@ public final class Member extends Actor<DaoMember> implements User {
     private static DaoMember createDaoMember(final String login, final String password, final String email, final Locale locale) {
         final String salt = RandomStringUtils.randomAscii(PASSWORD_SALT_LENGTH);
         final String passwd = Hash.calculateHash(password, salt);
+        Reporting.reporter.reportMemberCreation(login);
         return DaoMember.createAndPersist(login, passwd, salt, email, locale);
     }
 
