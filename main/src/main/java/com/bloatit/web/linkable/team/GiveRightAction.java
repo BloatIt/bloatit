@@ -68,7 +68,7 @@ public final class GiveRightAction extends LoggedElveosAction {
     protected Url checkRightsAndEverything(final Member me) {
         if (right == UserTeamRight.CONSULT && !give) {
             if (!targetMember.canBeKickFromTeam(team, me)) {
-                session.notifyWarning(Context.tr("You are not allowed to remove people in the team"));
+                session.notifyWarning(Context.tr("You are not allowed to remove people in the team."));
                 throw new ShallNotPassException("Cannot display a team name");
             }
         } else {

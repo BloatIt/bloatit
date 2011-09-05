@@ -214,7 +214,7 @@ public class ModifyTeamAction extends LoggedElveosAction {
 
     @Override
     protected String getRefusalReason() {
-        return Context.tr("You must be logged to modify your account settings");
+        return Context.tr("You must be logged to modify your account settings.");
     }
 
     @Override

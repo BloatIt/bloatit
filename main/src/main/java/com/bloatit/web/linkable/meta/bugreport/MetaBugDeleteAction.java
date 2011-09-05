@@ -60,7 +60,7 @@ public final class MetaBugDeleteAction extends LoggedElveosAction {
 
     @Override
     protected String getRefusalReason() {
-        return Context.tr("You have to be logged in to delete a metaBug");
+        return Context.tr("You have to be logged in to delete a metaBug.");
     }
 
     @Override
