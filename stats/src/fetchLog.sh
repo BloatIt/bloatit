@@ -5,7 +5,7 @@
 
 export PYTHONPATH=$PYTHONPATH:$PWD
 
-LAST_FETCH_FILE=".$(id -u -n).$(ifconfig eth0 | head -1 | grep -o -E "..:..:..:..:..:..").lastFetch"
+LAST_FETCH_FILE=".$(id -u -n).$(ip addr | grep link/ether | grep -o -E "..:..:..:..:..:.." | head -1).lastFetch"
 
 ssh elveos@elveos.org "
 cd ~/.local/share/bloatit/log/ 
