@@ -45,20 +45,16 @@ public class KudosableAuthorBlock extends UserContentAuthorBlock {
                 if (vote == 0) {
                     commentPopularity.addText(" (");
 
-                    if (!kudosable.canVoteUp().isEmpty()) {
-                        final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), kudosable, true);
-                        final HtmlLink usefullLink = usefullUrl.getHtmlLink(tr("Useful"));
-                        usefullLink.setCssClass("useful");
-                        commentPopularity.add(usefullLink);
-                        commentPopularity.addText(" – ");
-                    }
+                    final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), kudosable, true);
+                    final HtmlLink usefullLink = usefullUrl.getHtmlLink(tr("Useful"));
+                    usefullLink.setCssClass("useful");
+                    commentPopularity.add(usefullLink);
+                    commentPopularity.addText(" – ");
 
-                    if (!kudosable.canVoteDown().isEmpty()) {
-                        final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), kudosable, false);
-                        final HtmlLink uselessLink = uselessUrl.getHtmlLink(tr("Useless"));
-                        uselessLink.setCssClass("useless");
-                        commentPopularity.add(uselessLink);
-                    }
+                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), kudosable, false);
+                    final HtmlLink uselessLink = uselessUrl.getHtmlLink(tr("Useless"));
+                    uselessLink.setCssClass("useless");
+                    commentPopularity.add(uselessLink);
 
                     commentPopularity.addText(")");
                 } else {
