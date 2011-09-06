@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Field;

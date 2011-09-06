@@ -57,7 +57,6 @@ import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Contribution;
 
 /**
  * A DaoFeature is a kudosable content. It has a translatable description, and
@@ -475,7 +474,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public float getProgress() {
         final DaoOffer currentOffer = getSelectedOffer();
         if (currentOffer == null) {
-            return PROGRESSION_COEF * (1 - 1 / (1 + getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
+            return 0.f;
         }
         if (currentOffer.getAmount().floatValue() != 0) {
             return (getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();

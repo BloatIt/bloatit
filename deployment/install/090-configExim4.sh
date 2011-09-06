@@ -26,6 +26,40 @@ There are different possible choices, (procmail, qmail, sendmail, exim).
 - qmail is not realy maintained
 - exim is the last one available... So I choose exim4.
 
+
+/////////////////////////////////////
+////////////////////////////////////
+WARNING !!! 
+UPDATE THIS SCRIPT USING:
+
+- router/900_exim4-config_local_user
+
+local_user_2:
+  driver = dnslookup
+  domains = +local_domains
+  local_parts = ! root
+  transport = remote_smtp
+  cannot_route_message = Unknown user 2
+
+- config :
+dc_eximconfig_configtype='internet'
+dc_other_hostnames=''
+dc_local_interfaces='127.0.0.1 ; ::1'
+dc_readhost='elveos.org'
+dc_relay_domains=''
+dc_minimaldns='false'
+dc_relay_nets=''
+dc_smarthost='smtp.gmail.com::587'
+CFILEMODE='644'
+dc_use_split_config='true'
+dc_hide_mailname='false'
+dc_mailname_in_oh='true'
+dc_localdelivery='maildir_home'
+
+//////////////////////////////////////
+//////////////////////////////////////
+
+
 TODO: A special transfer agent to automatically sign all mails.
 
 EOF

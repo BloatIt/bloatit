@@ -114,6 +114,10 @@ public final class MemberManager {
         return new MemberList(new QueryCollection<DaoMember>(query, size));
     }
 
+    public static PageIterable<Member> getAllMembersButAdmins() {
+        return new MemberList(DaoMember.getAllMembersButAdmins());
+    }
+
     /**
      * Gets the number of members.
      * 

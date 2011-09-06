@@ -34,6 +34,7 @@ import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
@@ -112,7 +113,7 @@ public abstract class Page implements Linkable {
      * @throws RedirectException if there is a problem during the page
      *             construction and we want to redirect on an other page.
      */
-    protected abstract HtmlElement createBody() throws RedirectException;
+    protected abstract HtmlGenericElement createBody() throws RedirectException;
 
     /**
      * Create the body tag of the HTML page. This method is called when there
@@ -122,7 +123,7 @@ public abstract class Page implements Linkable {
      * @throws RedirectException if there is a problem during the page
      *             construction and we want to redirect on an other page.
      */
-    protected abstract HtmlElement createBodyOnParameterError() throws RedirectException;
+    protected abstract HtmlGenericElement createBodyOnParameterError() throws RedirectException;
 
     /**
      * Adds a user notification
@@ -153,7 +154,7 @@ public abstract class Page implements Linkable {
         Log.framework().trace("Writing page: " + thisUrl.urlString());
         final PlaceHolderElement page = new PlaceHolderElement();
 
-        HtmlElement bodyContent;
+        HtmlGenericElement bodyContent;
         if (thisUrl.hasError()) {
             for (final Message message : thisUrl.getMessages()) {
                 Context.getSession().notifyError(message.getMessage());
@@ -197,6 +198,12 @@ public abstract class Page implements Linkable {
             pageHeader.addJs(js);
         }
 
+        for (final XmlNode node : page.getAllPostNode()) {
+            bodyContent.add(node);
+        }
+        
+        
+        
         return page;
     }
 

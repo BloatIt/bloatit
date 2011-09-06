@@ -2,8 +2,8 @@ package com.bloatit.model;
 
 import java.util.EnumSet;
 
-import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
+import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.right.AuthToken;

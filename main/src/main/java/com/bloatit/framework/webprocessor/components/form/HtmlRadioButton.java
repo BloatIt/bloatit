@@ -12,7 +12,6 @@
 
 package com.bloatit.framework.webprocessor.components.form;
 
-import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 

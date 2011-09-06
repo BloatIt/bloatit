@@ -91,17 +91,30 @@ public final class PopularityVoteAction extends LoggedElveosAction {
     }
 
     private void analyseErrors(final EnumSet<SpecialCode> canVote) {
+        boolean foundSomthing = false;
         if (canVote.contains(SpecialCode.ALREADY_VOTED)) {
             session.notifyWarning(Context.tr("You already voted on that."));
+            foundSomthing = true;
         }
         if (canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP)) {
             session.notifyWarning(Context.tr("You have a too low reputation to vote up that."));
+            foundSomthing = true;
         }
         if (canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN)) {
             session.notifyWarning(Context.tr("You have a too low reputation to vote down that."));
+            foundSomthing = true;
         }
         if (canVote.contains(SpecialCode.OWNED_BY_ME)) {
             session.notifyWarning(Context.tr("You can't vote for yourself!"));
+            foundSomthing = true;
+        }
+        if (canVote.contains(SpecialCode.YOU_HAVE_TO_CONTRIBUTE_TO_VOTE_ON_OFFER)) {
+            session.notifyWarning(Context.tr("You have to contribute to vote for this offer!"));
+            foundSomthing = true;
+        }
+
+        if (!foundSomthing) {
+            session.notifyWarning(Context.tr("For an unknown reason you cannot vote here."));
         }
     }
 

@@ -20,8 +20,8 @@ import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -38,8 +38,9 @@ import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.HtmlFeatureSummary;
-import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
+import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -148,7 +149,7 @@ public final class SoftwarePage extends ElveosPage {
 
         @Override
         public XmlNode generate(final Feature feature) {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.Other);
         }
     };
 }

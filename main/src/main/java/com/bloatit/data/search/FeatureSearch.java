@@ -75,7 +75,7 @@ public class FeatureSearch extends Search<DaoFeature> {
                 sort.setSort(new SortField("contribution", SortField.FLOAT, true), new SortField("progress", SortField.FLOAT, true));
                 break;
             case SORT_BY_CREATION_DATE:
-                sort.setSort(new SortField("creationDate", SortField.STRING, false), new SortField("popularity", SortField.INT, true));
+                sort.setSort(new SortField("creationDate", SortField.STRING, true), new SortField("popularity", SortField.INT, true));
                 break;
             case SORT_BY_EXPIRATION_DATE:
                 sort.setSort(new SortField("selectedOffer.expirationDate", SortField.LONG, true), new SortField("popularity", SortField.INT, true));

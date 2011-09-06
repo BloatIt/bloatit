@@ -102,18 +102,23 @@ public class DaoInvoice extends DaoIdentifiable {
     private String invoiceId;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private String invoiceType;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private String sellerStreet;
 
     @Basic(optional = true)
+    @SuppressWarnings("unused")
     private String sellerExtras;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private String sellerCity;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private String sellerCountry;
 
     // Receiver
@@ -128,30 +133,39 @@ public class DaoInvoice extends DaoIdentifiable {
     private String receiverName;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private String receiverStreet;
 
     @Basic(optional = true)
+    @SuppressWarnings("unused")
     private String receiverExtras;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private String receiverCity;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private String receiverCountry;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private Date invoiceDate;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private BigDecimal taxRate;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private BigDecimal taxAmount;
 
     @Basic(optional = false)
+    @SuppressWarnings("unused")
     private String sellerLegalId;
 
     @Basic(optional = true)
+    @SuppressWarnings("unused")
     private BigDecimal internalInvoiceNumber;
 
     protected DaoInvoice(final DaoActor recipientActor,

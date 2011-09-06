@@ -55,7 +55,7 @@ public class ModifyMemberAction extends LoggedElveosAction {
         min = 7,
         message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
-        max = 15,
+        max = 255,
         message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String password;
 
@@ -69,7 +69,7 @@ public class ModifyMemberAction extends LoggedElveosAction {
         min = 7,
         message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
-        max = 15,
+        max = 255,
         message = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String passwordCheck;
 
@@ -299,7 +299,7 @@ public class ModifyMemberAction extends LoggedElveosAction {
 
     @Override
     protected String getRefusalReason() {
-        return Context.tr("You must be logged to modify your account settings");
+        return Context.tr("You must be logged to modify your account settings.");
     }
 
     @Override

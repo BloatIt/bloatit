@@ -18,8 +18,6 @@ package com.bloatit.model;
 
 import java.util.Date;
 
-import org.hibernate.ObjectNotFoundException;
-
 import com.bloatit.data.DaoActor;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;

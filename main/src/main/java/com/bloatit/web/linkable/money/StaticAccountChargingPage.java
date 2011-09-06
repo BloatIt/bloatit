@@ -159,7 +159,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to charge your account");
+        return tr("You must be logged to charge your account.");
     }
 
     @Override

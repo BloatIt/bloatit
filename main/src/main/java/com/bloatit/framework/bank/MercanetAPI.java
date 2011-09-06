@@ -73,6 +73,7 @@ public class MercanetAPI {
                                                         BigDecimal amount,
                                                         String userData,
                                                         String customerId,
+                                                        String customerContact,
                                                         Url normalReturnUrl,
                                                         Url cancelReturnUrl,
                                                         Url automaticResponseUrl) {
@@ -91,6 +92,7 @@ public class MercanetAPI {
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
         params.put("transaction_id", Integer.toString(transactionId));
         params.put("customer_id", customerId);
+        params.put("customer_email", customerContact);
         params.put("normal_return_url", normalReturnUrl.externalUrlString());
         params.put("cancel_return_url", cancelReturnUrl.externalUrlString());
         params.put("automatic_response_url", automaticResponseUrl.externalUrlString());

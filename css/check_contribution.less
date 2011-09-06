@@ -123,6 +123,14 @@
     tr {
         background-color: transparent;
     }
+    
+    tr:nth-child(even) {
+        background-color: transparent;
+    }
+
+    tr:nth-child(odd) {
+        background-color: transparent;
+    }   
 }
 
 .quotation_detail_line {
@@ -131,7 +139,6 @@
     //padding-right: 0px;
     padding-top: 15px;
     padding-bottom: 10px;
-    
     
     width: 100%;
     
@@ -419,6 +426,35 @@
         color: @orange;
     }
     
+    .tos {
+
+        .input {
+            vertical-align: middle;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .label {
+
+            label{
+                font-size: 0.9em;
+                font-weight: bold;
+
+                a {
+                    font-size: 1em;
+                    font-weight: bold;
+                }
+            }
+
+            vertical-align: middle;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            width: 400px;
+
+            text-align: left;
+        }
+    }
+
     .payment_methods {
         margin-left: -120px;
         //border: 1px solid red;

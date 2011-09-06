@@ -50,7 +50,7 @@ function elveos_startGenerateButton(button) {
     var featureId = button.getAttribute('data-feature-id');
     var buttonStyle = button.getAttribute('data-button-style');
     
-    var host = 'http://'+ window.location.hostname;
+    var host = 'https://elveos.org';
     elveos_ajax(host + '/rest/features/'+featureId, function(xml) {
     var contribution = parseFloat(xml.getElementsByTagName('contribution')[0].firstChild.data);
     var progression = parseFloat(xml.getElementsByTagName('feature')[0].getAttribute("progression"));

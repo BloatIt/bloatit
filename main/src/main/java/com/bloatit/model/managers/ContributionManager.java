@@ -24,6 +24,8 @@ import com.bloatit.data.DaoContribution;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.FeatureImplementation;
+import com.bloatit.model.Member;
 import com.bloatit.model.lists.ContributionList;
 
 /**
@@ -46,6 +48,10 @@ public class ContributionManager {
 
     public static ContributionList getAll() {
         return new ContributionList(DBRequests.getAll(DaoContribution.class));
+    }
+
+    public static Contribution getByFeatureMember(FeatureImplementation f, Member m) {
+        return Contribution.create(DaoContribution.getByFeatureMember(f.getDao(), m.getDao()));
     }
 
     public static BigDecimal getMoneyRaised() {

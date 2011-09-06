@@ -332,18 +332,18 @@ public final class OfferBlock extends HtmlDiv {
                 if (vote == 0) {
                     final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");
                     {
-                        // Useful
-                        final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, true);
-                        final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
-                        usefulLink.setCssClass("useful");
-
-                        // Useless
-                        final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, false);
-                        final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
-                        uselessLink.setCssClass("useless");
-
-                        offerPopularityJudge.add(usefulLink);
-                        offerPopularityJudge.add(uselessLink);
+                        if (offer.canVoteUp().isEmpty()) {
+                            final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, true);
+                            final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
+                            usefulLink.setCssClass("useful");
+                            offerPopularityJudge.add(usefulLink);
+                        }
+                        if (offer.canVoteDown().isEmpty()) {
+                            final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, false);
+                            final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
+                            uselessLink.setCssClass("useless");
+                            offerPopularityJudge.add(uselessLink);
+                        }
                     }
                     offerSummaryPopularity.add(offerPopularityJudge);
                 } else {

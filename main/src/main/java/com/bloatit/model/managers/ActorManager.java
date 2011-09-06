@@ -14,18 +14,34 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.lists;
+package com.bloatit.model.managers;
 
-import com.bloatit.data.DaoContributionInvoice;
-import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.ContributionInvoice;
+import com.bloatit.data.DaoActor;
+import com.bloatit.data.queries.DBRequests;
+import com.bloatit.model.Actor;
+import com.bloatit.model.Team;
 
 /**
- * The Class ContributionInvoiceList transforms PageIterable<DaoContributionInvoice> to
- * PageIterable<ContributionInvoice>.
+ * The Class TeamManager is an utility class containing static methods for
+ * {@link Team} loading etc.
  */
-public final class ContributionInvoiceList extends ListBinder<ContributionInvoice, DaoContributionInvoice> {
-    public ContributionInvoiceList(final PageIterable<DaoContributionInvoice> daoCollection) {
-        super(daoCollection);
+public final class ActorManager {
+
+    /**
+     * Desactivated constructor on utility class.
+     */
+    private ActorManager() {
+        // Desactivate default ctor
     }
+
+    /**
+     * Gets the team by id.
+     * 
+     * @param id the id
+     * @return the team or null if not found
+     */
+    public static Actor<?> getById(final Integer id) {
+        return Actor.getActorFromDao(DBRequests.getById(DaoActor.class, id));
+    }
+
 }

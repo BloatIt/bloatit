@@ -75,7 +75,7 @@ public class RecoverPasswordPage extends ElveosPage {
         layout.addLeft(master);
 
         RecoverPasswordActionUrl targetUrl;
-        targetUrl = new RecoverPasswordActionUrl(resetKey, member.getLogin());
+        targetUrl = new RecoverPasswordActionUrl(member.getLogin(), resetKey);
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.add(form);
 

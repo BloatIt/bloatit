@@ -64,9 +64,19 @@ public class FCGIOutputStream extends OutputStream {
         }
         // EOF stream
         sendStdoutRecord();
-
-        sendEndRecord();
-        outputStream.close();
+        try {
+            sendEndRecord();
+        } catch( IOException e){
+            // Normal case: the fcgi server close quickly the connection after the end of the out stream
+        }
+        
+        try {
+            outputStream.close();
+        } catch( IOException e){
+            // Normal case: the fcgi server close quickly the connection after the end of the out stream
+        }
+        
+        
     }
 
     @Override
