@@ -245,8 +245,8 @@ public final class CheckContributePage extends QuotationPage {
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
 
         try {
-            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotalTTCEntry.getValue())) {
-                process.setAmountToPayBeforeComission(quotation.subTotalTTCEntry.getValue());
+            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotal.getValue())) {
+                process.setAmountToPayBeforeComission(quotation.subTotal.getValue());
             }
         } catch (final IllegalWriteException e) {
             getSession().notifyWarning(tr("The contribution's total amount is locked during the payment process."));
@@ -298,7 +298,7 @@ public final class CheckContributePage extends QuotationPage {
         
         
         // Add show/hide charge account line
-        final HtmlParagraph showChargeAccountLink = new HtmlParagraph(Context.tr("+ add prepaid money"), "prepaid_line_fake_link");
+        final HtmlParagraph showChargeAccountLink = new HtmlParagraph(Context.tr("+ charge your elveos account"), "prepaid_line_fake_link");
         
         
         final JsShowHide showHideFees = new JsShowHide(group, !process.getAccountChargingAmount().equals(BigDecimal.ZERO));
