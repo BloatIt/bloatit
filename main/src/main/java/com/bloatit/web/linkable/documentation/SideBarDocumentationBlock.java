@@ -29,7 +29,7 @@ public class SideBarDocumentationBlock extends SideBarElementLayout {
 
     public SideBarDocumentationBlock(final String key, String hiddenTitle) {
 
-        final JsShowHide showHide = new JsShowHide(false);
+        final JsShowHide showHide = new JsShowHide(this, false);
         showHide.setHasFallback(false);
 
         final HtmlParagraph showHideLink = new HtmlParagraph(hiddenTitle, "fake_link");

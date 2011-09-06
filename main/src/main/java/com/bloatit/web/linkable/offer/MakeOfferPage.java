@@ -185,7 +185,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final boolean percentFatalChanged = !(offerActionUrl.getPercentFatalParameter().getDefaultSuggestedValue().equals(percentFatalData.getSuggestedValue()));
         final boolean daysBeforeValidationChanged = !(offerActionUrl.getDaysBeforeValidationParameter().getDefaultSuggestedValue().equals(nbDaysData.getSuggestedValue()));
 
-        final JsShowHide showHideValidationDetails = new JsShowHide(percentMajorChanged || percentFatalChanged || daysBeforeValidationChanged);
+        final JsShowHide showHideValidationDetails = new JsShowHide(offerForm, percentMajorChanged || percentFatalChanged || daysBeforeValidationChanged);
         showHideValidationDetails.setHasFallback(false);
         showHideValidationDetails.addActuator(showHideLink);
         showHideValidationDetails.addListener(validationDetails);

@@ -34,6 +34,7 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -134,12 +135,12 @@ public final class BugPage extends ElveosPage {
             if (bug.getRights().isOwner()) {
 
                 final HtmlParagraph newAttachementLink = new HtmlParagraph(Context.tr("add new attachement"), "fake_link");
-                final HtmlElement generateNewAttachementForm = generateNewAttachementForm();
+                final HtmlBranch generateNewAttachementForm = generateNewAttachementForm();
 
                 attachmentDiv.add(newAttachementLink);
                 attachmentDiv.add(generateNewAttachementForm);
 
-                final JsShowHide showHide = new JsShowHide(false);
+                final JsShowHide showHide = new JsShowHide(generateNewAttachementForm, false);
                 showHide.setHasFallback(false);
 
                 showHide.addActuator(newAttachementLink);
@@ -188,7 +189,7 @@ public final class BugPage extends ElveosPage {
         return true;
     }
 
-    private HtmlElement generateNewAttachementForm() {
+    private HtmlBranch generateNewAttachementForm() {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(getSession().getShortKey(), bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
         addAttachementForm.enableFileUpload();

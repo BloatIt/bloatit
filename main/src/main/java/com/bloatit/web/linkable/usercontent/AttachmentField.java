@@ -63,7 +63,7 @@ public class AttachmentField extends PlaceHolderElement {
                             final boolean jsAutoHide) {
         super();
 
-        final JsShowHide showHide = new JsShowHide(false);
+        final JsShowHide showHide = new JsShowHide(this, false);
         showHide.setHasFallback(false);
         if (jsAutoHide) {
             final HtmlParagraph addAttachementLink = new HtmlParagraph(Context.tr("+ add attachement"), "fake_link");

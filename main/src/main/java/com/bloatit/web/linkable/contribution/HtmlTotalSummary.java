@@ -159,7 +159,7 @@ public class HtmlTotalSummary extends HtmlTable {
             feesDetailLine.addCell(cellDetailsMoney);
 
             // Add show/hide template
-            final JsShowHide showHideFees = new JsShowHide(showFeesDetails);
+            final JsShowHide showHideFees = new JsShowHide(scriptContainer, showFeesDetails);
             showHideFees.addActuator(showDetailLink);
             showHideFees.addListener(feesDetailLine);
             showHideFees.apply();

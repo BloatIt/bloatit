@@ -557,7 +557,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         element.add(showHideLink);
         element.add(details);
 
-        final JsShowHide showHideValidationDetails = new JsShowHide(false);
+        final JsShowHide showHideValidationDetails = new JsShowHide(element, false);
         showHideValidationDetails.setHasFallback(false);
         showHideLink.setCssClass("fake_link");
         showHideValidationDetails.addActuator(showHideLink);

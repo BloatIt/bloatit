@@ -241,7 +241,7 @@ public final class OfferBlock extends HtmlDiv {
 
     private void generateValidationDetails(final Milestone lot, final HtmlDiv lotBlock) {
 
-        final JsShowHide showHideValidationDetails = new JsShowHide(false);
+        final JsShowHide showHideValidationDetails = new JsShowHide(lotBlock, false);
         showHideValidationDetails.setHasFallback(false);
 
         final HtmlParagraph showHideLink = new HtmlParagraph(tr("show validation details"));
