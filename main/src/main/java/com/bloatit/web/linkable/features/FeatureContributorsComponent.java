@@ -42,7 +42,6 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.url.CancelContributionPageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
-import com.bloatit.web.url.MemberPageUrl;
 
 @ParamContainer(value = "FeatureContributorsComponent", isComponent = true)
 public final class FeatureContributorsComponent extends HtmlDiv {

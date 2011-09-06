@@ -62,6 +62,17 @@ function QuotationPercentEntry(id, reference, percent) {
     }
 }
 
+function QuotationMultiplyEntry(id, reference, percent) {
+    this.id = id
+       
+    this.percent = percent
+    this.reference = reference
+
+    this.getValue = function() {
+        return this.reference.getValue() * percent;
+    }
+}
+
 function QuotationDifferenceEntry(id, reference1, reference2) {
     this.id = id
        

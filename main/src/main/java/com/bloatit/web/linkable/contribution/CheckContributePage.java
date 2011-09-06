@@ -245,8 +245,8 @@ public final class CheckContributePage extends QuotationPage {
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
 
         try {
-            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotalTTCEntry.getValue())) {
-                process.setAmountToPayBeforeComission(quotation.subTotalTTCEntry.getValue());
+            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotal.getValue())) {
+                process.setAmountToPayBeforeComission(quotation.subTotal.getValue());
             }
         } catch (final IllegalWriteException e) {
             getSession().notifyWarning(tr("The contribution's total amount is locked during the payment process."));

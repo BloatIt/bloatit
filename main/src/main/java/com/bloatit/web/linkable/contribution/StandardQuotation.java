@@ -19,67 +19,52 @@ package com.bloatit.web.linkable.contribution;
 import java.math.BigDecimal;
 
 import com.bloatit.model.BankTransaction;
-import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
+import com.bloatit.web.linkable.money.Quotation.QuotationMultiplyEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationPercentEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationTotalEntry;
 import com.bloatit.web.linkable.money.QuotationEntry;
 
 public class StandardQuotation {
 
-    final protected QuotationEntry subTotalTTCEntry;
-    final protected QuotationEntry feesHT;
-    final protected QuotationEntry feesTTC;
-    final protected QuotationEntry totalHT;
-    final protected QuotationEntry totalTTC;
-    final protected QuotationEntry bank;
-    final protected QuotationEntry commission;
+    protected final QuotationEntry subTotal;
+
+    protected final QuotationEntry fees;
+    protected final QuotationEntry bankFees;
+    protected final QuotationEntry taxesFees;
+    protected final QuotationEntry elveosFees;
+
+    protected final QuotationEntry totalTTC;
+    protected final QuotationEntry totalHT;
 
     public StandardQuotation(final BigDecimal amount) {
+        subTotal = new QuotationAmountEntry(amount);
 
-        final String fixBank = "0.30";
-        final String variableBank = "0.03";
-        final String TVAInvertedRate = "0.836120401";
+        fees = new QuotationTotalEntry();
+        fees.addEntry(new QuotationPercentEntry(subTotal, BankTransaction.COMMISSION_VARIABLE_RATE));
+        fees.addEntry(new QuotationAmountEntry(BankTransaction.COMMISSION_FIX_RATE));
 
-        final Quotation quotation = new Quotation(BankTransaction.computateAmountToPay(amount));
+        totalTTC = new QuotationTotalEntry();
+        totalTTC.addEntry(subTotal);
+        totalTTC.addEntry(fees);
 
-        subTotalTTCEntry = new QuotationAmountEntry("Subtotal TTC", null, amount);
+        bankFees = new QuotationTotalEntry();
+        bankFees.addEntry(new QuotationMultiplyEntry(totalTTC, new BigDecimal("0.0110")));
+        bankFees.addEntry(new QuotationAmountEntry(new BigDecimal("0.30")));
 
-        // Fees TTC
-        final QuotationTotalEntry feesTotal = new QuotationTotalEntry(null, null, null);
-        final QuotationPercentEntry feesVariable = new QuotationPercentEntry("Fees", null, subTotalTTCEntry, BankTransaction.COMMISSION_VARIABLE_RATE);
-        final QuotationAmountEntry feesFix = new QuotationAmountEntry("Fees", null, BankTransaction.COMMISSION_FIX_RATE);
-        feesTotal.addEntry(feesVariable);
-        feesTotal.addEntry(feesFix);
+        taxesFees = new QuotationPercentEntry(fees, new BigDecimal("0.163879599"));
 
-        feesTTC = feesTotal;
+        QuotationEntry taxesAndBank = new QuotationTotalEntry();
+        taxesAndBank.addEntry(taxesFees);
+        taxesAndBank.addEntry(bankFees);
 
-        // Fees HT
+        elveosFees = new QuotationDifferenceEntry(fees, taxesAndBank);
 
-        feesHT = new QuotationPercentEntry("Fees HT", null, feesTotal, new BigDecimal(TVAInvertedRate));
+        totalHT = new QuotationTotalEntry();
+        totalHT.addEntry(subTotal);
+        totalHT.addEntry(bankFees);
+        totalHT.addEntry(elveosFees);
 
-        // Total TTC
-        totalTTC = quotation;
-
-        // Total HT
-        totalHT = new QuotationTotalEntry("Fees HT", null, null).addEntry(feesHT).addEntry(subTotalTTCEntry);
-
-        // Fees details
-        // Bank fees
-        bank = new QuotationTotalEntry("Bank fees", null, "Total bank fees");
-
-        final QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
-
-        final QuotationPercentEntry variableBankFee = new QuotationPercentEntry("Variable fee", "" + Float.valueOf(variableBank).floatValue() * 100
-                + "%", quotation, new BigDecimal(variableBank));
-        bank.addEntry(variableBankFee);
-        bank.addEntry(fixBankFee);
-
-        // Our fees
-        commission = new QuotationDifferenceEntry("Elveos's commission TTC", null, feesHT, bank);
-
-        quotation.addEntry(subTotalTTCEntry);
-        quotation.addEntry(feesTTC);
     }
 }
