@@ -3750,7 +3750,7 @@ msgstr "Valider"
 
 #: com/bloatit/web/linkable/contribution/CheckContributePage.java:301
 msgid "+ charge your elveos account"
-msgstr "Crediter votre compte elveos"
+msgstr "+ crediter votre compte elveos"
 
 #: com/bloatit/web/linkable/contribution/CheckContributePage.java:342
 msgid "Contribute to a feature - check"
