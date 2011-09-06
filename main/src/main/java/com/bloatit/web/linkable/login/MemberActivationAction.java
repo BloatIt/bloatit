@@ -53,8 +53,6 @@ public final class MemberActivationAction extends ElveosAction {
     protected Url doProcess() {
         final Member member = MemberManager.getMemberByLogin(login);
 
-        final Url to = new IndexPageUrl();
-
         if (member != null) {
             if (member.getActivationState() == ActivationState.VALIDATING) {
                 if (member.activate(key)) {
@@ -80,7 +78,7 @@ public final class MemberActivationAction extends ElveosAction {
             session.notifyWarning(Context.tr("Activation impossible on a not existing member."));
         }
 
-        return to;
+        return session.getLastStablePage();
     }
 
     @Override

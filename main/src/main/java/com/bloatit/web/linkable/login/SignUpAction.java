@@ -90,7 +90,7 @@ public final class SignUpAction extends ElveosAction {
 
         MailServer.getInstance().send(activationMail);
         session.notifyGood(Context.tr("Account created, you will receive a mail to activate it."));
-        return session.pickPreferredPage();
+        return session.getLastStablePage();
     }
 
     @Override

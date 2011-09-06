@@ -88,11 +88,11 @@ public final class Session {
 
     /**
      * Restore session
-     *
+     * 
      * @param key
      * @param ipAddress
-     * @param country 
-     * @param language 
+     * @param country
+     * @param language
      */
     protected Session(final String key, final String shortKey, final String ipAddress, final Integer memberId, String language, String country) {
         this.key = key;
@@ -157,7 +157,7 @@ public final class Session {
     }
 
     public synchronized boolean isExpired() {
-        return DateUtils.now().getTime()/ DateUtils.MILLISECOND_PER_SECOND > expirationTime;
+        return DateUtils.now().getTime() / DateUtils.MILLISECOND_PER_SECOND > expirationTime;
     }
 
     public synchronized void setLastStablePage(final Url p) {
@@ -205,6 +205,24 @@ public final class Session {
     public synchronized Url getLastVisitedPage() {
         if (lastVisitedPage != null) {
             return lastVisitedPage;
+        }
+        return new IndexPageUrl();
+    }
+
+    /**
+     * Finds the last stable page the user visited on the website.
+     * <p>
+     * Actions are ignored. <br />
+     * <b>NOTE</b>: If the user has two active tabs, it will return the last
+     * page visited in any tab, and can lead to <i>very</i> confusing result.
+     * Avoid relying on this.
+     * </p>
+     * 
+     * @return the last page the user visited
+     */
+    public synchronized Url getLastStablePage() {
+        if (lastStablePage != null) {
+            return lastStablePage;
         }
         return new IndexPageUrl();
     }
