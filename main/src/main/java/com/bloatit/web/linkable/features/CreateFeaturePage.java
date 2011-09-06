@@ -145,13 +145,13 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         // Attachment
         createFeatureForm.add(new AttachmentField(doCreateUrl, FILE_MAX_SIZE_MIO + " Mio"));
+        
+        // Markdown previewer
+        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
+        createFeatureForm.add(mdPreview);
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));
-
-        // Markdown previewer
-        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
-        createFeatureTitle.add(mdPreview);
 
         layout.addLeft(createFeatureTitle);
 
