@@ -36,7 +36,7 @@ import com.bloatit.web.url.SignUpPageUrl;
 public class SessionBar extends HtmlDiv {
 
     private static String SESSION_BAR_COMPONENT_CSS_CLASS = "session_bar_component";
-    
+
     protected SessionBar() {
         super();
         setId("session_bar");
@@ -46,7 +46,7 @@ public class SessionBar extends HtmlDiv {
         add(new HtmlSpan().setCssClass("small_session_bar_component").add(changeLanguageLink));
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(loginLink));
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(signupLink));
-        
+
     }
 
     protected SessionBar(final Member me) {
@@ -64,6 +64,7 @@ public class SessionBar extends HtmlDiv {
         // Display user karma
         final HtmlBranch karma = new HtmlSpan();
         karma.setCssClass("karma");
+        karma.addAttribute("title", Context.tr("My karma"));
         karma.addText(HtmlTools.compressKarma(me.getKarma()));
         final HtmlLink changeLanguageLink = new ChangeLanguagePageUrl().getHtmlLink(Context.getLocalizator().getLanguageCode());
         add(new HtmlSpan().setCssClass("small_session_bar_component").add(changeLanguageLink));
@@ -78,7 +79,7 @@ public class SessionBar extends HtmlDiv {
 
         // Display link to private messages
         long nb;
-        if ((nb = (me.getInvitationCount()+ me.getMilestoneToInvoice().size())) > 0) {
+        if ((nb = (me.getInvitationCount() + me.getMilestoneToInvoice().size())) > 0) {
             final HtmlLink messagesLink = MemberPage.myMessagesUrl(me).getHtmlLink(Context.tr("Tasks ({0})", nb));
             messagesLink.setCssClass("bold");
             final HtmlBranch componentSpan = new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink);
