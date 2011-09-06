@@ -73,6 +73,7 @@ public final class FeatureListPage extends ElveosPage {
     private final String sort;
 
     private static final String SEARCH_STRING_CODE = "search_string";
+
     @RequestParam(name = SEARCH_STRING_CODE)
     @Optional("")
     private final String searchString;

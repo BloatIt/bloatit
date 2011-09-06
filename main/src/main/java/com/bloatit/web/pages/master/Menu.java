@@ -21,6 +21,12 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
@@ -63,6 +69,13 @@ public class Menu extends HtmlDiv {
         mainMenu.add(teamAndMemberMenu);
 
         mainMenu.add(new HtmlDiv("menu_item").add(new DocumentationRootPageUrl().getHtmlLink(tr("Documentation"))));
+
+        final FeatureListPageUrl formUrl = new FeatureListPageUrl();
+        final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
+        searchForm.add(new HtmlTextField(formUrl.getSearchStringParameter().getName()));
+        searchForm.add(new HtmlSubmit(Context.trc("Search (verb)", "Search")));
+
+        // mainMenu.add(new HtmlDiv("menu_item").add(searchForm));
 
         add(mainMenu);
     }
