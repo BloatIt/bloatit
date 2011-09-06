@@ -19,14 +19,17 @@ package com.bloatit.web.pages.master;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.form.HtmlButton;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
+import com.bloatit.framework.webprocessor.components.form.HtmlSearch;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.web.linkable.features.FeatureListPage;
+import com.bloatit.model.Image;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
@@ -70,12 +73,20 @@ public class Menu extends HtmlDiv {
 
         mainMenu.add(new HtmlDiv("menu_item").add(new DocumentationRootPageUrl().getHtmlLink(tr("Documentation"))));
 
+        // Search form
         final FeatureListPageUrl formUrl = new FeatureListPageUrl();
         final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
-        searchForm.add(new HtmlTextField(formUrl.getSearchStringParameter().getName()));
-        searchForm.add(new HtmlSubmit(Context.trc("Search (verb)", "Search")));
+        HtmlSearch searchField = new HtmlSearch(formUrl.getSearchStringParameter().getName());
+        searchForm.add(searchField);
+        searchField.addAttribute("placeholder", Context.tr("Search"));
 
-        // mainMenu.add(new HtmlDiv("menu_item").add(searchForm));
+        HtmlButton searchSubmit = new HtmlButton("Search");
+        searchSubmit.addAttribute("type", "submit");
+        searchSubmit.add(new HtmlImage(new Image("/resources/commons/img/magnifying_lense.png"), ""));
+
+        searchForm.add(searchSubmit);
+
+        mainMenu.add(new HtmlDiv("form_menu_item").add(searchForm));
 
         add(mainMenu);
     }
