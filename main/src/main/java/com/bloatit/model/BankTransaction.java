@@ -46,6 +46,47 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         return amount.add(amount.multiply(COMMISSION_VARIABLE_RATE)).add(COMMISSION_FIX_RATE).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
+    public static class ElveosPayment {
+
+        private final BigDecimal subTotal;
+
+        public ElveosPayment(BigDecimal subTotal) {
+            super();
+            this.subTotal = subTotal;
+        }
+
+        public BigDecimal getSubTotal() {
+            return subTotal;
+        }
+
+        public BigDecimal getAllFees() {
+            // 10% + 0.30 €
+            return getSubTotal().multiply(new BigDecimal("0.10")).add(new BigDecimal("0.30"));
+        }
+
+        public BigDecimal getIndicativeBankFees() {
+            // 1.10% + 0.30 €
+            return getSubTotal().multiply(new BigDecimal("0.0110")).add(new BigDecimal("0.30"));
+        }
+
+        public BigDecimal getTaxes() {
+            // (0.1960 / 1.1960) * allFees
+            return getAllFees().multiply(new BigDecimal("0.163879599"));
+        }
+
+        public BigDecimal getIndicativeElveosCommission() {
+            return getAllFees().subtract(getIndicativeBankFees()).subtract(getTaxes());
+        }
+
+        public BigDecimal getNoTaxesTotal() {
+            return null;
+        }
+
+        public BigDecimal getTotal() {
+            return subTotal.add(getAllFees());
+        }
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +153,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
                            final BigDecimal valuePayed,
                            final String orderReference) {
         super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, valuePayed, orderReference));
+        // FIXME: remove me ?
     }
 
     /**
@@ -126,6 +168,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     public BankTransaction(final Actor<?> author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
         super(DaoBankTransaction.createAndPersist(author.getDao(), value, valuePayed, orderReference));
+        Reporting.reporter.reportAccountCharging(value + " from " + author.getLogin() + " (" + author.getId() + ")");
     }
 
     /**
@@ -261,7 +304,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         tryAccess(new RgtBankTransaction.Value(), Action.READ);
         return getValueUnprotected();
     }
-   
+
     /**
      * Gets the state.
      * 
@@ -272,14 +315,14 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         tryAccess(new RgtBankTransaction.State(), Action.READ);
         return getStateUnprotected();
     }
-    
+
     /**
      * Gets the state.
      * 
      * @return the state
      * @throws UnauthorizedReadOnlyBankDataAccessException
      */
-    public State getStateUnprotected(){
+    public State getStateUnprotected() {
         return getDao().getState();
     }
 
@@ -315,7 +358,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         tryAccess(new RgtBankTransaction.Reference(), Action.READ);
         return getReferenceUnprotected();
     }
-    
+
     /**
      * Gets the reference. This is the generated purchase reference.
      * 

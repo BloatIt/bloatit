@@ -103,7 +103,7 @@ public class ResourceFinder {
         return max;
     }
 
-    public class VersionFile implements Comparable<VersionFile> {
+    public static class VersionFile implements Comparable<VersionFile> {
 
         private final String fileName;
         private List<Integer> versionParts = new ArrayList<Integer>();
@@ -135,6 +135,8 @@ public class ResourceFinder {
 
             return -1;
         }
+        
+        
 
         private Integer getPart(int index) {
             if (index < versionParts.size()) {

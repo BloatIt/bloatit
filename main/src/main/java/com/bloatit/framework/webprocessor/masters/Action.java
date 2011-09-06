@@ -65,7 +65,7 @@ public abstract class Action implements Linkable {
     private final Url process() {
         if (actionUrl.hasError()) {
             for (final Message message : actionUrl.getMessages()) {
-                Context.getSession().notifyError(message.getMessage());
+                Context.getSession().notifyError(Context.tr(message.getMessage()));
                 Log.framework().trace("Error messages from Url system: " + message.getMessage());
             }
             transmitParameters();

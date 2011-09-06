@@ -35,7 +35,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 
 public class HttpBloatitRequest implements HttpServletRequest {
 
-    private final class EnumerationImplementation<T> implements Enumeration<String> {
+    private static final class EnumerationImplementation<T> implements Enumeration<String> {
 
         private final Iterator<Entry<String, T>> it;
 
@@ -181,7 +181,7 @@ public class HttpBloatitRequest implements HttpServletRequest {
                 values.add(value);
             }
         }
-        return (String[]) values.toArray();
+        return values.toArray(new String[values.size()]);
     }
 
     @Override

@@ -28,25 +28,27 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 
 public class JsShowHide {
 
-    private final List<HtmlBranch> actuators = new ArrayList<HtmlBranch>();
+    private final List<HtmlElement> actuators = new ArrayList<HtmlElement>();
     private final List<HtmlElement> listeners = new ArrayList<HtmlElement>();
     private final RandomString rng = new RandomString(10);
     private final boolean state;
     private boolean hasFallback;
+    private final HtmlBranch scriptableElement;
 
     public void setHasFallback(final boolean b) {
         this.hasFallback = b;
     }
 
-    public JsShowHide(final boolean state) {
+    public JsShowHide(HtmlBranch scriptableElement, final boolean state) {
+        this.scriptableElement = scriptableElement;
         this.state = state;
         this.hasFallback = true;
     }
 
-    public void addActuator(final HtmlBranch actuator) {
+    public void addActuator(final HtmlElement actuator) {
         actuators.add(actuator);
 
-        injectJQueryInclusion(actuator);
+        injectJQueryInclusion();
     }
 
     public void addListener(final HtmlElement listener) {
@@ -64,7 +66,7 @@ public class JsShowHide {
 
         prepareIds();
 
-        for (final HtmlBranch actuator : actuators) {
+        for (final HtmlElement actuator : actuators) {
 
             final String effectCall = "toggle()";
             final HtmlScript script = new HtmlScript();
@@ -86,7 +88,7 @@ public class JsShowHide {
 
             script.append("    });");
 
-            actuator.add(script);
+            scriptableElement.add(script);
         }
 
     }
@@ -98,7 +100,7 @@ public class JsShowHide {
             }
         }
 
-        for (final HtmlBranch actuator : actuators) {
+        for (final HtmlElement actuator : actuators) {
             if (actuator.getId() == null) {
                 actuator.setId(rng.nextString());
             }
@@ -106,8 +108,8 @@ public class JsShowHide {
 
     }
 
-    private void injectJQueryInclusion(final HtmlBranch actuator) {
-        actuator.add(new HtmlGenericElement() {
+    private void injectJQueryInclusion() {
+        scriptableElement.add(new HtmlGenericElement() {
 
             @Override
             protected List<String> getCustomJs() {

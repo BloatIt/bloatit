@@ -16,10 +16,7 @@
 //
 package com.bloatit.web;
 
-import java.util.Map.Entry;
-
 import com.bloatit.common.Log;
-import com.bloatit.framework.utils.parameters.HttpParameter;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.WebProcessor;
@@ -29,6 +26,7 @@ import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.masters.Linkable;
 import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CreateCommentAction;
@@ -111,10 +109,10 @@ import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
-import com.bloatit.web.linkable.money.PaymentAutoresponseAction;
-import com.bloatit.web.linkable.money.PaymentResponseAction;
 import com.bloatit.web.linkable.money.PaymentAction;
+import com.bloatit.web.linkable.money.PaymentAutoresponseAction;
 import com.bloatit.web.linkable.money.PaymentProcess;
+import com.bloatit.web.linkable.money.PaymentResponseAction;
 import com.bloatit.web.linkable.money.StaticAccountChargingPage;
 import com.bloatit.web.linkable.money.UnlockAccountChargingProcessAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyAction;
@@ -385,6 +383,7 @@ public class BloatitWebServer extends WebProcessor {
                 final Session fakeSession = SessionManager.pickTemporarySession(token);
                 if (fakeSession != null) {
                     Context.reInitializeContext(Context.getHeader(), fakeSession);
+                    AuthToken.authenticate(fakeSession);
                 }
             }
             return new PaymentAutoresponseAction(new PaymentAutoresponseActionUrl(pageCode, postGetParameters, session.getParameters()));
@@ -396,11 +395,6 @@ public class BloatitWebServer extends WebProcessor {
             return new MemberActivationAction(new MemberActivationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (PaymentResponseActionUrl.matches(pageCode)) {
-            for(Entry<String, HttpParameter> e: postGetParameters.entrySet()) {
-                System.out.println(e.getKey() + "    "+ e.getValue().getSimpleValue());
-            }
-            
-            
             return new PaymentResponseAction(new PaymentResponseActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (AdministrationActionUrl.matches(pageCode)) {

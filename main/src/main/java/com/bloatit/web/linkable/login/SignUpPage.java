@@ -18,7 +18,6 @@ import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
@@ -120,11 +119,6 @@ public final class SignUpPage extends ElveosPage {
         form.add(button);
 
         master.add(container);
-
-        master.add(new HtmlParagraph(Context.tr("This website is un beta phase. It's here to be tested. Don't worry about create some content, all will be cleaned at the end of the beta."),
-                                     "debug"));
-        master.add(new HtmlParagraph(Context.tr(" During the beta, there is no real money. However, you can simulate payment and withdraw money, a test credit card number or a test IBAN will be provide where you will need it."),
-                                     "debug"));
 
         return master;
     }

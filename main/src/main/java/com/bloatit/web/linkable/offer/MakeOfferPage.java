@@ -41,7 +41,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.web.components.SideBarFeatureBlock;
-import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.OfferBlock;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
@@ -93,7 +93,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         layout.addLeft(generateOfferForm(loggedUser));
 
         layout.addRight(new SideBarFeatureBlock(feature));
-        layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SidebarMarkdownHelp());
 
         return layout;
     }
@@ -185,7 +185,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final boolean percentFatalChanged = !(offerActionUrl.getPercentFatalParameter().getDefaultSuggestedValue().equals(percentFatalData.getSuggestedValue()));
         final boolean daysBeforeValidationChanged = !(offerActionUrl.getDaysBeforeValidationParameter().getDefaultSuggestedValue().equals(nbDaysData.getSuggestedValue()));
 
-        final JsShowHide showHideValidationDetails = new JsShowHide(percentMajorChanged || percentFatalChanged || daysBeforeValidationChanged);
+        final JsShowHide showHideValidationDetails = new JsShowHide(offerForm, percentMajorChanged || percentFatalChanged || daysBeforeValidationChanged);
         showHideValidationDetails.setHasFallback(false);
         showHideValidationDetails.addActuator(showHideLink);
         showHideValidationDetails.addListener(validationDetails);

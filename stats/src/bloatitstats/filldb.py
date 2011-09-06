@@ -32,6 +32,20 @@ def parse_file(dbname, logfile):
                 logentries[parser.thread].add_context(parser.context)
     base.close_connection()
 
+def showNews():
+    if entry_processor.nb_new_request == 0:
+        print "No new elements."
+    else:
+        print "New elements:"
+        print "  - request: %d" % entry_processor.nb_new_request
+        print "  - linkable: %d" % entry_processor.nb_new_linkable
+        print "  - visitor: %d" % entry_processor.nb_new_visitor
+        print "  - useragent: %d" % entry_processor.nb_new_useragent
+        print "  - referer: %d" % entry_processor.nb_new_referer
+        print "  - visit: %d" % entry_processor.nb_new_visit
+        print "  - first date: %s" % entry_processor.first_request_date
+        print "  - last date: %s" % entry_processor.last_request_date
+
 def usage():
     print '''
     Parse a log file and add the entries into a database.
@@ -71,7 +85,7 @@ def main():
             sys.exit()
             
     parse_file(database, logfile)
-            
+    showNews()
 
 if __name__ == "__main__":
     main()

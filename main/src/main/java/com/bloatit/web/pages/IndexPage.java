@@ -35,7 +35,6 @@ import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.model.managers.ReleaseManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.components.MoneyDisplayComponent;

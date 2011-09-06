@@ -11,7 +11,7 @@ function update_output() {
     
     output += "<script type=\"text/javascript\" src=\""+host+"/resources/commons/api/button.js\"></scr"+"ipt>";
     $("textarea#elveos_button_generator_output").val(output);
-    $("div#elveos_button_generator_output_example").html(output);    
+    $("div#elveos_button_generator_output_example").html(output);
 };
 
 (function () {

@@ -121,6 +121,18 @@ public abstract class HtmlElement extends XmlElement {
     protected List<String> getCustomJs() {
         return null;
     }
+    
+    /**
+     * This method should be overridden by any components needing some special
+     * javascript files.
+     * 
+     * @return the list of custom element needed by this component or null if no
+     *         special element is needed
+     */
+    @Override
+    protected List<XmlNode> getPostNodes() {
+        return null;
+    }
 
     @Override
     protected final void writeTagAndOffspring(final QueryResponseStream txt) {

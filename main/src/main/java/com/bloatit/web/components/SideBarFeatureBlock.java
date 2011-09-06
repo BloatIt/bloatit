@@ -42,7 +42,7 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
             add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(feature.getSoftware())));
             add(new HtmlDefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
             
-            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount)));
+            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount, FeaturesTools.FeatureContext.Other)));
             add(new HtmlParagraph(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(tr("more details..."))));
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException(e);

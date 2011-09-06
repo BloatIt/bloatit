@@ -80,11 +80,22 @@ public final class OfferBlock extends HtmlDiv {
 
                         authorPara.addText(tr(" by "));
                         authorPara.add(new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName()));
+                        
+                        final HtmlSpan karma = new HtmlSpan("karma");
+                        karma.addAttribute("title", Context.tr("{0} karma's ", offer.getMember().getDisplayName()));
+                        karma.addText(HtmlTools.compressKarma(offer.getMember().getKarma()));
+                        authorPara.add(karma);
+                        
                     } else {
                         HtmlLink author = null;
                         author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
+                        
+                        final HtmlSpan karma = new HtmlSpan("karma");
+                        karma.addAttribute("title", Context.tr("{0} karma's ", offer.getMember().getDisplayName()));
+                        karma.addText(HtmlTools.compressKarma(offer.getMember().getKarma()));
+                        authorPara.add(karma);
                     }
 
                 }
@@ -241,7 +252,7 @@ public final class OfferBlock extends HtmlDiv {
 
     private void generateValidationDetails(final Milestone lot, final HtmlDiv lotBlock) {
 
-        final JsShowHide showHideValidationDetails = new JsShowHide(false);
+        final JsShowHide showHideValidationDetails = new JsShowHide(lotBlock, false);
         showHideValidationDetails.setHasFallback(false);
 
         final HtmlParagraph showHideLink = new HtmlParagraph(tr("show validation details"));
@@ -332,18 +343,18 @@ public final class OfferBlock extends HtmlDiv {
                 if (vote == 0) {
                     final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");
                     {
-                        // Useful
-                        final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, true);
-                        final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
-                        usefulLink.setCssClass("useful");
-
-                        // Useless
-                        final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, false);
-                        final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
-                        uselessLink.setCssClass("useless");
-
-                        offerPopularityJudge.add(usefulLink);
-                        offerPopularityJudge.add(uselessLink);
+                        if (offer.canVoteUp().isEmpty()) {
+                            final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, true);
+                            final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
+                            usefulLink.setCssClass("useful");
+                            offerPopularityJudge.add(usefulLink);
+                        }
+                        if (offer.canVoteDown().isEmpty()) {
+                            final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, false);
+                            final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
+                            uselessLink.setCssClass("useless");
+                            offerPopularityJudge.add(uselessLink);
+                        }
                     }
                     offerSummaryPopularity.add(offerPopularityJudge);
                 } else {

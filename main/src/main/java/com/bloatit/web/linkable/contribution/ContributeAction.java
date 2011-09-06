@@ -22,12 +22,10 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributeActionUrl;
-import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 /**

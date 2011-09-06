@@ -1,7 +1,15 @@
 #!/bin/bash
 
+# $1 : test case, obligatoire
+# $2 : 'test.elveos.org', optionnel.
+
 TEST_CASE=$1
-PREFIX="https://elveos.org/"
+
+if [ -n "$2" ] ; then
+    PREFIX="https://$2/"
+else
+    PREFIX="https://elveos.org/"
+fi
 CURRENT_TMP_FILE="/tmp/elv-result-current"
 LAST_TMP_FILE="/tmp/elv-result-last-one"
 TMP_ERROR_PREFIX="/tmp/elv-error"
@@ -47,10 +55,8 @@ while read line ; do
    shift
    ARG="$@"
 
-   #echo "testing '$URL'"
-
    if [ "$METHOD" = "GET" ] ; then
-      curl -i -s -A "$USER_AGENT" "$URL" > $CURRENT_TMP_FILE
+      curl --insecure -i -s -A "$USER_AGENT" "$URL" > $CURRENT_TMP_FILE
    else
       echo "Non GET command ignored : '$line'" 1>&2
       continue

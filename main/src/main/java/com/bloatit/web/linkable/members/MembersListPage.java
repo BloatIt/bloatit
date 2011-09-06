@@ -57,7 +57,7 @@ public final class MembersListPage extends ElveosPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
-        final PageIterable<Member> memberList = MemberManager.getAllMembersOrderByName();
+        final PageIterable<Member> memberList = MemberManager.getAllMembersButAdmins();
         final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
 
         final MembersListPageUrl clonedUrl = url.clone();
@@ -93,28 +93,23 @@ public final class MembersListPage extends ElveosPage {
         @Override
         public XmlNode generate(final Member member) {
             final MemberPageUrl memberUrl = new MemberPageUrl(member);
-            try {
-                final HtmlDiv box = new HtmlDiv("member_box");
+            final HtmlDiv box = new HtmlDiv("member_box");
 
-                box.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
+            box.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
 
-                final HtmlDiv textBox = new HtmlDiv("member_text");
-                HtmlLink htmlLink;
-                htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-                final HtmlSpan karma = new HtmlSpan("karma");
-                karma.addAttribute("title", Context.tr("{0} karma's ", member.getDisplayName()));
-                karma.addText(HtmlTools.compressKarma(member.getKarma()));
+            final HtmlDiv textBox = new HtmlDiv("member_text");
+            HtmlLink htmlLink;
+            htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
+            final HtmlSpan karma = new HtmlSpan("karma");
+            karma.addAttribute("title", Context.tr("{0} karma's ", member.getDisplayName()));
+            karma.addText(HtmlTools.compressKarma(member.getKarma()));
 
-                textBox.add(htmlLink);
-                textBox.add(karma);
-                box.add(textBox);
-                box.add(new HtmlClearer());
+            textBox.add(htmlLink);
+            textBox.add(karma);
+            box.add(textBox);
+            box.add(new HtmlClearer());
 
-                return box;
-            } catch (final UnauthorizedOperationException e) {
-                getSession().notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
-                throw new ShallNotPassException("User cannot access user information", e);
-            }
+            return box;
         }
     }
 

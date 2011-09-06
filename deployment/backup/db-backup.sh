@@ -79,7 +79,7 @@ done
 SSH="ssh -L localhost:$LOCAL_PORT:localhost:$DISTANT_PORT $USER@$HOST -N -f"
 
 tunnel(){
-    echo "Create the ssh tunnel"
+    echo "Creating the ssh tunnel ($SSH)"
     $SSH
     [ "$?" = 0 ] || exit_fail
 }

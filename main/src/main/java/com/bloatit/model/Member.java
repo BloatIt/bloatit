@@ -104,6 +104,7 @@ public final class Member extends Actor<DaoMember> implements User {
     private static DaoMember createDaoMember(final String login, final String password, final String email, final Locale locale) {
         final String salt = RandomStringUtils.randomAscii(PASSWORD_SALT_LENGTH);
         final String passwd = Hash.calculateHash(password, salt);
+        Reporting.reporter.reportMemberCreation(login);
         return DaoMember.createAndPersist(login, passwd, salt, email, locale);
     }
 
@@ -381,8 +382,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return new TeamList(getDao().getTeams());
     }
 
-    public int getKarma() throws UnauthorizedOperationException {
-        tryAccess(new RgtMember.Karma(), Action.READ);
+    public int getKarma() {
         return getDao().getKarma();
     }
 
@@ -549,10 +549,6 @@ public final class Member extends Actor<DaoMember> implements User {
      */
     public final boolean canAccessAvatar(final Action action) {
         return canAccess(new RgtMember.Avatar(), action);
-    }
-
-    public boolean canGetKarma() {
-        return canAccess(new RgtMember.Karma(), Action.READ);
     }
 
     public boolean canGetTeams() {

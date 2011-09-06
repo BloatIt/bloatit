@@ -18,6 +18,7 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
@@ -28,6 +29,7 @@ import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MilestoneList;
+import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtOffer;
@@ -194,6 +196,37 @@ public final class Offer extends Kudosable<DaoOffer> {
     // ////////////////////////////////////////////////////////////////////////
     // Notifications
     // ////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public EnumSet<SpecialCode> canVoteUp() {
+        EnumSet<SpecialCode> set = super.canVoteUp();
+        if (!canVote()) {
+            set.add(SpecialCode.YOU_HAVE_TO_CONTRIBUTE_TO_VOTE_ON_OFFER);
+        }
+        return set;
+    }
+
+    @Override
+    public EnumSet<SpecialCode> canVoteDown() {
+        EnumSet<SpecialCode> set = super.canVoteDown();
+        if (!canVote()) {
+            set.add(SpecialCode.YOU_HAVE_TO_CONTRIBUTE_TO_VOTE_ON_OFFER);
+        }
+        return set;
+    }
+
+    private boolean canVote() {
+        if (!AuthToken.isAuthenticated()) {
+            return false;
+        }
+        if (ContributionManager.getByFeatureMember(getFeature(), AuthToken.getMember()).size() > 0) {
+            return true;
+        }
+        if (getMember().equals(AuthToken.getMember())) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     protected void notifyKudos(final boolean positif) {

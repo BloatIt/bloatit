@@ -74,8 +74,7 @@ public class WithdrawMoneyPage extends LoggedElveosPage {
         } else {
             try {
                 final BigDecimal available = actor.getInternalAccount().getAmount();
-                available.setScale(0);
-                moneyInput.setDefaultValue("" + available.intValue());
+                moneyInput.setDefaultValue("" + available.setScale(0).intValue());
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Cannot account amount.");
             }

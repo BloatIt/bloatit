@@ -29,14 +29,12 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
-import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -220,11 +218,7 @@ public class RestMember extends RestElement<Member> {
     
     @XmlElement(name = "karma")
     public int getKarma() throws RestException {
-        try {
-            return model.getKarma();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_CLI_405_METHOD_NOT_ALLOWED, "Not allowed to get karma on user", e);
-        }
+        return model.getKarma();
     }
 
     @XmlElement

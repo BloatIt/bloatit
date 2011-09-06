@@ -26,7 +26,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
-import com.bloatit.web.linkable.language.ChangeLanguageAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -65,11 +64,7 @@ public class SessionBar extends HtmlDiv {
         // Display user karma
         final HtmlBranch karma = new HtmlSpan();
         karma.setCssClass("karma");
-        try {
-            karma.addText(HtmlTools.compressKarma(me.getKarma()));
-        } catch (final UnauthorizedOperationException e) {
-            // No right, no display the karma
-        }
+        karma.addText(HtmlTools.compressKarma(me.getKarma()));
         final HtmlLink changeLanguageLink = new ChangeLanguagePageUrl().getHtmlLink(Context.getLocalizator().getLanguageCode());
         add(new HtmlSpan().setCssClass("small_session_bar_component").add(changeLanguageLink));
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(memberLink).add(karma));
@@ -84,7 +79,7 @@ public class SessionBar extends HtmlDiv {
         // Display link to private messages
         long nb;
         if ((nb = (me.getInvitationCount()+ me.getMilestoneToInvoice().size())) > 0) {
-            final HtmlLink messagesLink = MemberPage.MyMessagesUrl(me).getHtmlLink(Context.tr("Tasks ({0})", nb));
+            final HtmlLink messagesLink = MemberPage.myMessagesUrl(me).getHtmlLink(Context.tr("Tasks ({0})", nb));
             messagesLink.setCssClass("bold");
             final HtmlBranch componentSpan = new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink);
             add(componentSpan);

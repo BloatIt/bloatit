@@ -75,6 +75,7 @@ public final class Team extends Actor<DaoTeam> {
      */
     public Team(final String login, final String contact, final String description, final Right right, final Member author) {
         super(DaoTeam.createAndPersiste(login, contact, description, right));
+        Reporting.reporter.reportTeamCreation(login);
         author.addToTeamUnprotected(this);
 
         // Give all rights
@@ -90,9 +91,9 @@ public final class Team extends Actor<DaoTeam> {
         super(dao);
     }
 
-    public void setContact(final String contact) throws UnauthorizedPublicAccessException {
+    public void setPublicContact(final String contact) throws UnauthorizedPublicAccessException {
         tryAccess(new RgtTeam.Contact(), Action.WRITE);
-        getDao().setContact(contact);
+        getDao().setPublicContact(contact);
     }
 
     public void setDescription(final String description, final Member author) throws UnauthorizedPublicAccessException {
@@ -147,8 +148,12 @@ public final class Team extends Actor<DaoTeam> {
         }
     }
 
-    // no right management: this is public data
+    /**
+     * 
+     * @return
+     */
     public String getPublicContact() {
+        // no right management: this is public data
         return getDao().getPublicContact();
     }
 

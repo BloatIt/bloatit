@@ -1,0 +1,88 @@
+Informations financières
+------------------------
+
+ATTENTION : toutes les données de cette page sont fournis à titre indicatif. Il ne s'agit ni d'un bilan, ni d'un compte de résultat.
+
+Ces données peuvent ne pas être à jour ou contenir des imprécisions.
+
+Dépenses
+---------
+
+
+###Dépenses régulières
+
+    
+<table>
+    <thead><tr><th>Libélé</th><th>Prix</th></tr></thead>
+    <tbody>
+        <tr><td>Assurance des locaux</td><td>195 €/ An</td></tr>
+        <tr><td>Location du serveur OVH</td><td>59.79 € / Mois</td></tr>
+        <tr><td>Service bancaire</td><td>~20 € / Mois</td></tr>
+    </tbody>
+</table>
+
+
+###Dépenses unitaires
+
+<table>
+    <thead><tr><th>Libélé</th><th>Prix</th></tr></thead>
+    <tbody>
+        <tr><td>Rédaction des status de la société</td><td>1500 €</td></tr>
+        <tr><td>Immatriculation de la société</td><td>280 €</td></tr>
+        <tr><td>Matériel informatique</td><td>1600 €</td></tr>
+    </tbody>
+</table>
+
+
+###Dépenses variables
+
+Les dépenses variables sont dû aux frais bancaire lors de la reception d'un payment.
+
+<table>
+    <thead><tr><th>Région</th><th>Commission Variable</th><th>Commission fixe</th></tr></thead>
+    <tbody>
+        <tr><td>Carte bancaire en France</td><td>0.52%</td><td>0.19 €</td></tr>
+        <tr><td>Carte bancaire en Europe</td><td>1.10%</td><td>0.30 €</td></tr>
+        <tr><td>Carte bancaire dans le Monde</td><td>1.60%</td><td>0.40 €</td></tr>
+        <tr><td>Paypal</td><td>3.40%</td><td>0.25 €</td></tr>
+    </tbody>
+</table>
+
+
+
+### Dépenses futures
+
+<table>
+    <thead><tr><th>Libélé</th><th>Prix</th></tr></thead>
+    <tbody>
+        <tr><td>Rédaction des conditions générales d'utilisation</td><td>2000 €</td></tr>
+        <tr><td>Salaires minimaux pour 3 employés, charges comprises</td><td>64 k€</td></tr>
+    </tbody>
+</table>
+
+
+##Revenus
+
+
+La seule source de revenue vient des 10% de commission prélevé lors de la contributions ou du chargement du compte.
+
+Cependant, ces 10% inclus les frais bancaires et la TVA sur notre commission.
+
+Exemple:
+
+Alice veux contribuer de 100 € sur une demande. Notre commission est de 10 %, donc 10 €. Nous demandons à alice de payer 110 €.
+
+À partir de ses 10 €, nous devons payer la TVA (19,6%) : 1.63 €
+
+Alice est allemande donc nous devons aussi payer à la banque (1.10 % + 0,30 €) : 
+
+Donc au final nous touchons 6,86 € pour 100€ de contribution.
+
+
+
+
+
+
+
+
+

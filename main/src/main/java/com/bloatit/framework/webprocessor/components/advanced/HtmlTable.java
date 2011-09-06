@@ -44,6 +44,7 @@ public class HtmlTable extends HtmlGenericElement {
     }
 
     private void generateBody() {
+        final HtmlGenericElement tbody = new HtmlGenericElement("tbody");
         while (getModel().next()) {
             final HtmlGenericElement tr = new HtmlGenericElement("tr");
             columnCount = getModel().getColumnCount();
@@ -72,12 +73,14 @@ public class HtmlTable extends HtmlGenericElement {
                 }
                 tr.add(td);
             }
-            add(tr);
+            tbody.add(tr);
         }
+        add(tbody);
     }
 
     private void generateHeader() {
         if (getModel().hasHeader()) {
+            final HtmlGenericElement thead = new HtmlGenericElement("thead");
             final HtmlGenericElement tr = new HtmlGenericElement("tr");
             columnCount = getModel().getColumnCount();
             for (int i = 0; i < columnCount; i++) {
@@ -85,7 +88,8 @@ public class HtmlTable extends HtmlGenericElement {
                 th.add(getModel().getHeader(i));
                 tr.add(th);
             }
-            add(tr);
+            thead.add(tr);
+            add(thead);
         }
     }
 

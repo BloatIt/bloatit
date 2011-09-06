@@ -2,3 +2,4 @@
 
 mkdir -p resources/www_src/resources/commons/css/
 less.js/bin/lessc -x  css/core.less > resources/www_src/resources/commons/css/core.css
+cp resources/www_src/resources/commons/css/core.css www/resources/commons/css/core.css

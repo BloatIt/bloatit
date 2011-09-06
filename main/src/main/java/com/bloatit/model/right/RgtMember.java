@@ -33,14 +33,6 @@ public class RgtMember extends RightManager {
     }
 
     /**
-     * The Class Karma is a {@link RightManager.Public} accessor for the Karma
-     * property.
-     */
-    public static class Karma extends Public {
-        // nothing this is just a rename.
-    }
-
-    /**
      * The Class Teams is a {@link RightManager.Public} accessor for the Teams
      * property.
      */

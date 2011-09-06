@@ -169,6 +169,11 @@ public final class AuthToken {
         }
         This.get().weakAuthentication = false;
     }
+    
+    public static void authenticate(final Session session) {
+        This.get().memberId = session.getMemberId();
+        This.get().weakAuthentication = false;
+    }
 
     public static void logOut() {
         final Session session = Context.getSession();

@@ -17,11 +17,13 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -31,14 +33,17 @@ import com.bloatit.web.url.PaymentResponseActionUrl;
 @ParamContainer(value = "payment/doresponse", protocol = Protocol.HTTPS)
 public final class PaymentResponseAction extends ElveosAction {
 
+    @SuppressWarnings("unused")
     @RequestParam(name = "token")
     @Optional
     private final String token;
 
     @RequestParam(name = "process")
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final PaymentProcess process;
 
     @RequestParam(role = Role.POST, name = "DATA")
+    @NonOptional(@tr("The bank data is missing."))
     private final String data;
 
     public PaymentResponseAction(final PaymentResponseActionUrl url) {
@@ -53,7 +58,7 @@ public final class PaymentResponseAction extends ElveosAction {
         try {
             process.handlePayment(data);
         } catch (final UnauthorizedOperationException e) {
-            Log.web().error("Fail to validate payment", e);
+            Log.payment().error("Fail to validate payment", e);
             session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference()));
         }
         final Url target = process.close();

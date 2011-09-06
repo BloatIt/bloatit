@@ -37,6 +37,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
@@ -253,6 +254,7 @@ public final class CheckContributePage extends QuotationPage {
 
         final HtmlLineTableModel model = new HtmlLineTableModel();
 
+        //Charge account line
         HtmlChargeAccountLine line;
         try {
             final ContributePageUrl contributePageUrl = new ContributePageUrl(process);
@@ -293,9 +295,22 @@ public final class CheckContributePage extends QuotationPage {
             payBlock.add(invoicingContactLink);
         }
 
+        
+        
+        // Add show/hide charge account line
+        final HtmlParagraph showChargeAccountLink = new HtmlParagraph(Context.tr("+ add prepaid money"), "prepaid_line_fake_link");
+        
+        
+        final JsShowHide showHideFees = new JsShowHide(group, !process.getAccountChargingAmount().equals(BigDecimal.ZERO));
+        showHideFees.addActuator(showChargeAccountLink);
+        showHideFees.addListener(line);
+        showHideFees.apply();
+
+        
         final HtmlTable lines = new HtmlTable(model);
         lines.setCssClass("quotation_details_lines");
         group.add(lines);
+        group.add(showChargeAccountLink);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
         summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process.getAmount().subtract(account), line.getMoneyField(), summary));

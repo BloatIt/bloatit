@@ -16,11 +16,32 @@
 //
 package com.bloatit.web.linkable.documentation;
 
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer.DocumentationType;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 
 public class SideBarDocumentationBlock extends SideBarElementLayout {
     public SideBarDocumentationBlock(final String key) {
         add(new HtmlDocumentationRenderer(DocumentationType.FRAME, key));
+    }
+
+    public SideBarDocumentationBlock(final String key, String hiddenTitle) {
+
+        final JsShowHide showHide = new JsShowHide(this, false);
+        showHide.setHasFallback(false);
+
+        final HtmlParagraph showHideLink = new HtmlParagraph(hiddenTitle, "fake_link");
+        add(showHideLink);
+        showHide.addActuator(showHideLink);
+
+        HtmlDiv documentationRendererBlock = new HtmlDiv();
+        HtmlDocumentationRenderer documentationRenderer = new HtmlDocumentationRenderer(DocumentationType.FRAME, key);
+        documentationRendererBlock.add(documentationRenderer);
+        add(documentationRendererBlock);
+
+        showHide.addListener(documentationRendererBlock);
+        showHide.apply();
     }
 }

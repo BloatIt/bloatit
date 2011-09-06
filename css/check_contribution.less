@@ -123,6 +123,14 @@
     tr {
         background-color: transparent;
     }
+    
+    tr:nth-child(even) {
+        background-color: transparent;
+    }
+
+    tr:nth-child(odd) {
+        background-color: transparent;
+    }   
 }
 
 .quotation_detail_line {
@@ -131,7 +139,6 @@
     //padding-right: 0px;
     padding-top: 15px;
     padding-bottom: 10px;
-    
     
     width: 100%;
     
@@ -396,7 +403,7 @@
         font-size: 0.8em;
     }
     
-    .button {
+    .button, input[type=submit] {
         font-size: 1.3em;
         margin-left: 20px;
         margin-right: 0;
@@ -418,9 +425,75 @@
         font-weight: bold;
         color: @orange;
     }
+    
+    .tos {
+
+        .input {
+            vertical-align: middle;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .label {
+
+            label{
+                font-size: 0.9em;
+                font-weight: bold;
+
+                a {
+                    font-size: 1em;
+                    font-weight: bold;
+                }
+            }
+
+            vertical-align: middle;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            width: 400px;
+
+            text-align: left;
+        }
+    }
+
+    .payment_methods {
+        margin-left: -120px;
+        //border: 1px solid red;
+     //   width: 650px;
+    
+        p {
+            text-align: left;
+            color: @light_text_color;
+            font-size: 0.9em;
+            margin-bottom: 3px;
+        }
+    
+        .field {
+            display: table-cell;
+            //width: 600px;
+            padding-right: 50px;
+            vertical-align: middle;
+            height: 75px;
+            .label {
+                width: 100px;
+                min-width: 0px;
+                //display: inline-block;
+                padding-right: 0px;
+            }
+            .input {
+                vertical-align: middle;
+                //height: 100px;
+                //display: block;
+            }
+        }
+    }
 }
 
-
+.prepaid_line_fake_link {
+    .fake_link;
+    font-size: 0.8em;
+    margin-left: 10px;
+    margin-top: -10px;
+}
 
 .contact_box {
     .padding_box;

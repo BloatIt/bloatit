@@ -27,7 +27,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -42,7 +41,6 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.lists.ListBinder;
 
 /**
  * A contribution is a financial participation on a feature. Each contribution
@@ -64,7 +62,18 @@ import com.bloatit.model.lists.ListBinder;
                                     name = "contribution.getInvoices.size",
                                     query = "SELECT count(*) " +
                                     "FROM com.bloatit.data.DaoContributionInvoice invoice_ " +
-                                    "WHERE invoice_.contribution = :this ")
+                                    "WHERE invoice_.contribution = :this "),
+                        @NamedQuery(
+                                    name = "contribution.getByFeatureMember",
+                                    query = "FROM com.bloatit.data.DaoContribution contrib_ \n" +
+                                            "WHERE contrib_.member = :member \n" +
+                                            "AND contrib_.feature = :feature \n"),
+                        @NamedQuery(
+                                    name = "contribution.getByFeatureMember.size",
+                                    query = "SELECT count(*)" +
+                                            "FROM com.bloatit.data.DaoContribution contrib_ \n" +
+                                            "WHERE contrib_.member = :member \n" +
+                                            "AND contrib_.feature = :feature \n"),
                        }
              )
 // @formatter:on
@@ -121,6 +130,10 @@ public class DaoContribution extends DaoUserContent {
 
     @Basic(optional = false)
     private BigDecimal alreadyGivenMoney;
+
+    public static PageIterable<DaoContribution> getByFeatureMember(DaoFeature f, DaoMember m) {
+        return new QueryCollection<DaoContribution>("contribution.getByFeatureMember").setEntity("member", m).setEntity("feature", f);
+    }
 
     /**
      * Gets the money raised.
@@ -231,7 +244,7 @@ public class DaoContribution extends DaoUserContent {
      * Set the state to CANCELED. (Unblock the blocked amount.)
      */
     public void cancel() {
-        if (this.state != State.PENDING ) {
+        if (this.state != State.PENDING) {
             throw new BadProgrammerException("Cannot cancel a contribution if its state isn't PENDING");
         }
         try {
@@ -377,5 +390,4 @@ public class DaoContribution extends DaoUserContent {
         }
         return true;
     }
-
 }

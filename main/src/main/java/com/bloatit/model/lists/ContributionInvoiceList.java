@@ -17,10 +17,8 @@
 package com.bloatit.model.lists;
 
 import com.bloatit.data.DaoContributionInvoice;
-import com.bloatit.data.DaoMilestone;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.ContributionInvoice;
-import com.bloatit.model.Milestone;
 
 /**
  * The Class ContributionInvoiceList transforms PageIterable<DaoContributionInvoice> to

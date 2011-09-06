@@ -49,7 +49,7 @@ public class SideBarElveosButtonBlock extends SideBarElementLayout {
         final HtmlDiv sizeBlock = new HtmlDiv();
         item.add(sizeBlock);
 
-        final JsShowHide jsShowHide = new JsShowHide(false);
+        final JsShowHide jsShowHide = new JsShowHide(item, false);
         jsShowHide.addActuator(configureSize);
         jsShowHide.addListener(sizeBlock);
         jsShowHide.apply();
