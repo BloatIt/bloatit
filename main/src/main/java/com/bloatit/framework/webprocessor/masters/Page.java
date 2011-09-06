@@ -157,7 +157,7 @@ public abstract class Page implements Linkable {
         HtmlGenericElement bodyContent;
         if (thisUrl.hasError()) {
             for (final Message message : thisUrl.getMessages()) {
-                Context.getSession().notifyError(message.getMessage());
+                Context.getSession().notifyError(Context.tr(message.getMessage()));
                 Log.framework().trace("Error messages from Url system: " + message.getMessage());
             }
             // Abstract method cf: template method pattern
