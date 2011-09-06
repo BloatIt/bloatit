@@ -80,11 +80,22 @@ public final class OfferBlock extends HtmlDiv {
 
                         authorPara.addText(tr(" by "));
                         authorPara.add(new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName()));
+                        
+                        final HtmlSpan karma = new HtmlSpan("karma");
+                        karma.addAttribute("title", Context.tr("{0} karma's ", offer.getMember().getDisplayName()));
+                        karma.addText(HtmlTools.compressKarma(offer.getMember().getKarma()));
+                        authorPara.add(karma);
+                        
                     } else {
                         HtmlLink author = null;
                         author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
+                        
+                        final HtmlSpan karma = new HtmlSpan("karma");
+                        karma.addAttribute("title", Context.tr("{0} karma's ", offer.getMember().getDisplayName()));
+                        karma.addText(HtmlTools.compressKarma(offer.getMember().getKarma()));
+                        authorPara.add(karma);
                     }
 
                 }

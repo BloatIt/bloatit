@@ -218,11 +218,7 @@ public class RestMember extends RestElement<Member> {
     
     @XmlElement(name = "karma")
     public int getKarma() throws RestException {
-        try {
-            return model.getKarma();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_CLI_405_METHOD_NOT_ALLOWED, "Not allowed to get karma on user", e);
-        }
+        return model.getKarma();
     }
 
     @XmlElement
