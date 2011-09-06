@@ -38,6 +38,7 @@ import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -65,6 +66,12 @@ import com.bloatit.framework.utils.PageIterable;
                         @NamedQuery(
                                     name = "contribution.getByFeatureMember",
                                     query = "FROM com.bloatit.data.DaoContribution contrib_ \n" +
+                                            "WHERE contrib_.member = :member \n" +
+                                            "AND contrib_.feature = :feature \n"),
+                        @NamedQuery(
+                                    name = "contribution.getByFeatureMember.size",
+                                    query = "SELECT count(*)" +
+                                            "FROM com.bloatit.data.DaoContribution contrib_ \n" +
                                             "WHERE contrib_.member = :member \n" +
                                             "AND contrib_.feature = :feature \n"),
                        }
@@ -124,11 +131,8 @@ public class DaoContribution extends DaoUserContent {
     @Basic(optional = false)
     private BigDecimal alreadyGivenMoney;
 
-    public static DaoContribution getByFeatureMember(DaoFeature f, DaoMember m) {
-        final Query q = SessionManager.getNamedQuery("contribution.getByFeatureMember");
-        q.setEntity("member", m);
-        q.setEntity("feature", f);
-        return (DaoContribution) q.uniqueResult();
+    public static PageIterable<DaoContribution> getByFeatureMember(DaoFeature f, DaoMember m) {
+        return new QueryCollection<DaoContribution>("contribution.getByFeatureMember").setEntity("member", m).setEntity("feature", f);
     }
 
     /**

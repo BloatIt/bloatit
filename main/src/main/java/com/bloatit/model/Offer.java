@@ -218,7 +218,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         if (!AuthToken.isAuthenticated()) {
             return false;
         }
-        if (ContributionManager.getByFeatureMember(getFeature(), AuthToken.getMember()) != null) {
+        if (ContributionManager.getByFeatureMember(getFeature(), AuthToken.getMember()).size() > 0) {
             return true;
         }
         if (getMember().equals(AuthToken.getMember())) {

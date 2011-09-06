@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.FeatureImplementation;
@@ -50,8 +51,8 @@ public class ContributionManager {
         return new ContributionList(DBRequests.getAll(DaoContribution.class));
     }
 
-    public static Contribution getByFeatureMember(FeatureImplementation f, Member m) {
-        return Contribution.create(DaoContribution.getByFeatureMember(f.getDao(), m.getDao()));
+    public static PageIterable<Contribution> getByFeatureMember(FeatureImplementation f, Member m) {
+        return new ContributionList(DaoContribution.getByFeatureMember(f.getDao(), m.getDao()));
     }
 
     public static BigDecimal getMoneyRaised() {
