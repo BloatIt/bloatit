@@ -69,8 +69,6 @@ public class HtmlPayBlock extends HtmlDiv {
         HtmlCheckbox tosCheckbox = new HtmlCheckbox(tosParameter.getName(), LabelPosition.AFTER);
         tosCheckbox.setLabel(new HtmlMixedText(Context.tr("I agree to the Elveos' <0::terms of sales>"),
                                                new DocumentationPageUrl("cgv").getHtmlLink()));
-        tosCheckbox.addAttribute("checked", "checked");
-
         tosCheckbox.addErrorMessages(tosParameter.getMessages());
         tosBlock.add(tosCheckbox);
 
