@@ -298,7 +298,7 @@ public final class CheckContributePage extends QuotationPage {
         
         
         // Add show/hide charge account line
-        final HtmlParagraph showChargeAccountLink = new HtmlParagraph(Context.tr("+ add prepaid money"), "prepaid_line_fake_link");
+        final HtmlParagraph showChargeAccountLink = new HtmlParagraph(Context.tr("+ charge your elveos account"), "prepaid_line_fake_link");
         
         
         final JsShowHide showHideFees = new JsShowHide(group, !process.getAccountChargingAmount().equals(BigDecimal.ZERO));
