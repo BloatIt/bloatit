@@ -160,7 +160,8 @@ import com.bloatit.framework.utils.PageIterable;
                              name="feature.getContribution.notcanceled", 
                              query="FROM com.bloatit.data.DaoContribution as c " +
                                    "WHERE c.feature = :this " +
-                                   "AND c.state != :state "),
+                                   "AND c.state != :state " +
+                                   "ORDER BY c.amount DESC "),
                        @NamedQuery(
                              name="feature.getContribution.canceled.size", 
                              query="SELECT COUNT(*) " +
@@ -461,12 +462,6 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // Getters.
     // ======================================================================
 
-    /** The Constant PROGRESSION_COEF. */
-    private static final int PROGRESSION_COEF = 42;
-
-    /** The Constant PROGRESSION_CONTRIBUTION_DIVISOR. */
-    private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
-
     /** The Constant PROGRESSION_PERCENT. */
     public static final int PROGRESSION_PERCENT = 100;
 
@@ -519,13 +514,13 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     public PageIterable<DaoContribution> getContributions(boolean isCanceled) {
-        String qr = "feature.getContribution.";
-        if (!isCanceled) {
-            qr += "not";
+        if (isCanceled) {
+            return new QueryCollection<DaoContribution>("feature.getContribution.canceled").setParameter("this", this)
+                                                                                           .setParameter("state", DaoContribution.State.CANCELED);
         }
-        qr += "canceled";
+        return new QueryCollection<DaoContribution>("feature.getContribution.notcanceled").setParameter("this", this)
+                                                                                          .setParameter("state", DaoContribution.State.CANCELED);
 
-        return new QueryCollection<DaoContribution>(qr).setParameter("this", this).setParameter("state", DaoContribution.State.CANCELED);
     }
 
     /**
