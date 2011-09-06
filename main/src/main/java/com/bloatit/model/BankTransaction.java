@@ -72,7 +72,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
             // (0.1960 / 1.1960) * allFees
             return getAllFees().multiply(new BigDecimal("0.163879599"));
         }
-        
+
         public BigDecimal getIndicativeElveosCommission() {
             return getAllFees().subtract(getIndicativeBankFees()).subtract(getTaxes());
         }
@@ -152,6 +152,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
                            final BigDecimal valuePayed,
                            final String orderReference) {
         super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, valuePayed, orderReference));
+        // FIXME: remove me ?
     }
 
     /**
@@ -166,6 +167,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     public BankTransaction(final Actor<?> author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
         super(DaoBankTransaction.createAndPersist(author.getDao(), value, valuePayed, orderReference));
+        Reporting.reporter.reportAccountCharging(value + " from " + author.getLogin() + " (" + author.getId() + ")");
     }
 
     /**

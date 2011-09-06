@@ -79,7 +79,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // Create the form stub
         final HtmlForm createFeatureForm = new HtmlForm(doCreateUrl.urlString());
         createFeatureForm.enableFileUpload();
-        
+
         createFeatureTitle.add(createFeatureForm);
 
         // Title of the feature
@@ -100,6 +100,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         for (final Software software : SoftwareManager.getAll()) {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
+        softwareInput.setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
         createFeatureForm.add(softwareInput);
 
         // As team input
@@ -111,8 +112,6 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
-        // final HtmlTextArea specificationInput = new
-        // HtmlTextArea(specificationFieldData.getName(),
         final MarkdownEditor specificationInput = new MarkdownEditor(specificationFieldData.getName(),
                                                                      tr("Describe the feature"),
                                                                      SPECIF_INPUT_NB_LINES,
@@ -146,13 +145,13 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         // Attachment
         createFeatureForm.add(new AttachmentField(doCreateUrl, FILE_MAX_SIZE_MIO + " Mio"));
+        
+        // Markdown previewer
+        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
+        createFeatureForm.add(mdPreview);
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));
-
-        // Markdown previewer
-        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
-        createFeatureTitle.add(mdPreview);
 
         layout.addLeft(createFeatureTitle);
 

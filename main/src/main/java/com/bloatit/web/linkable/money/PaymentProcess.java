@@ -70,7 +70,7 @@ public class PaymentProcess extends WebProcess {
     @NonOptional(@tr("You must choose a payment method."))
     private final PaymentMethod paymentMethod;
 
-    @RequestParam(role = Role.POST, suggestedValue = "true")
+    @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must accept the terms of sales to continue."))
     private final Boolean tos;
 

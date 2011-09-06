@@ -1,107 +1,127 @@
 FAQ
 ===
 
+Qui sommes nous ? / finance / le site (êtes vous des arnaqueurs / profiteurs ? )
+--------------------------------------------------------------------------------
 
-##Qui sommes nous ? / finance / le site (êtes vous des arnaqueurs / profiteurs ? )
-
-- **Qui sommes nous ? Qui a créé ce site ?**
+- Qui sommes nous ? Qui a créé ce site ?
 Nous sommes trois anciens élèves de l'INSA Lyon, Frédéric, Thomas et Yoann. On a quitté nos emplois respectifs pour se lancer dans l'aventure de la création d'entreprise. 
 
-- **Comment est financé Elveos ?**
+- Comment est financé Elveos ?
 Nous prélevons une commission sur les entrées d'argent dans le site. La réponse à la questions suivante vous en dira un peu plus.
 
-- **Une commission est-elle prélevée sur ce que je donne ? Laquelle ?**
+- Une commission est-elle prélevée sur ce que je donne ? Laquelle ?
 Oui, une commission est prélevée sur l'argent qui est confié à Elveos. Lorsque vous chargez votre compte elveos, vous payez une commission. Ensuite toutes les transactions internes à Elveos sont gratuite. 
 Il se peut aussi que vous ayez à payer des frais de retrait. Si vous êtes en zone euro, les virements sont gratuits. Dans le cas contraire vous aurez à payer un frais de transaction bancaire.
 
-- **Elveos est-il géré par une entreprise à but lucratif ?**
+- Elveos est-il géré par une entreprise à but lucratif ?
 Elveos n'est pas géré par une association à but non lucratif, mais bien par une entreprise (SAS). Nous n'avons bien évidemment pas pour but de devenir millionnaire, mais simplement de pouvoir vivre de notre travail, tout en pouvant contribuer à améliorer le logiciel libre.
 
-- **10% + 0,30€ c'est cher !**
-10% + 0,30€ peut paraître élevé. Il faut cependant réaliser que sur ce montant, nous devons nous acquitter de la TVA et des frais de transaction bancaire. Elveos récupère au final ~7% de chaque transaction, nous permettant de payer l'hébergement, les charges diverses, et à terme de nous payer des salaires.
+- 10% + 0,30€ c'est cher !
+10% + 0,30€ peut paraître élevé. Il faut cependant réaliser que sur ce montant, nous devons nous acquitter de la TVA et des frais de transaction bancaire. Elveos récupère au final ~7% de chaque transaction, nous permettant de payer l'hébergement, les charges diverses, et à terme de nous payer des salaires. Nous vous invitons à consulter [le détail des coût](fr/documentation/couts) pour plus d'informations.
 
-- **10% + 0,30€ ? pourquoi pas simplement 10%**
+- 10% + 0,30€ ? pourquoi pas simplement 10%
 Pour encourager les utilisateurs à faire un gros paiement plutôt que plusieurs petits car nous devons payer des charges lors de chaque transaction bancaire.
 
-- **Est-ce que votre site est pérenne ?**
+- Est-ce que votre site est pérenne ?
 Nous sommes une jeune entreprise et sommes donc bien sûr susceptibles de couler.
 Si ça devait arriver, nous ferons tout pour essayer de continuer à faire vivre le site ... mais nous ne pouvons pas vraiment vous en dire plus car nous n'avons pas encore envisagé ce scénario en détail.
 
-- **Qu'allez vous faire de mes données personnelles ?**
+- Qu'allez vous faire de mes données personnelles ?
 Elveos ne diffusera **jamais** vos données personnelles à un tiers.
 Par ailleurs nous faisons tout notre possible pour qu'elle soit le plus sûres possibles... Chez nous pas de mot de passe ou de numéro de carte bancaire stockée en clair.
+
+- Est-ce qu'il y aura de la publicité sur le site elveos.org ?
+Non.
+Nous n'aimons pas la publicité sur internet, nous ne souhaitons donc pas en mettre.
 
 - **Est-ce qu'il y aura de la publicité sur le site elveos.org ?**
 Non.
 Nous n'aimons pas la publicité sur internet, nous ne souhaitons donc pas en mettre.
 
+Logiciel libre, licence
+-----------------------
 
-##Logiciel libre, licence
+- Sous quelles licences les programmes sont ils distribués ? Quelles licences sont autorisées sur le site ?
+Toutes les licences libres au sens de la FSF sont autorisées. Les programmes 
 
-- **Sous quelles licences les programmes sont ils distribués ? Quelles licences sont autorisées sur le site ?**
-Toutes les licences libres au sens de la Open Source Initiative sont autorisées. Les programmes développeur sur Elveos doivent être des logiciels libres.
-
-- **Croyez vous au logiciel libre ?**
+- Croyez vous au logiciel libre ?
 Oui le site Elveos est sous licence GNU affero. Nous contribuons régulièrement à divers projets libre (par exemple Perroquet, exxEditor ...). Nous avons créé ce site dans le but de fournir un nouveau moyen de financement au logiciel libre, et de permettre aux logiciels libres de s'améliorer.
 
-##Demandeur
+Demandeur
+---------
 
-- **J'ai une idée, mais c'est compliqué et je ne peux pas expliquer correctement tout seul**
+- J'ai une idée, mais c'est compliqué et je ne peux pas expliquer correctement tout seul
 Nous prévoyons de créer des braintorms pour répondre à ce cas d'usage. Cependant nous ne l'avons pas encore fait.
 En attendant, n'hésitez pas à créer une demande, même incomplète, les gens pourront l'améliorer via les commentaires. Nous sommes conscients que ce n'est pas le processus optimal, mais ça va venir.
 
-- **Qui va choisir le développeur ?**
+- Qui va choisir le développeur ?
 Les contributeurs.
 Lorsqu'un développeur pense pouvoir faire le développement, il va déposer une offre sur le site elveos. Si l'offre ne plait pas aux contributeurs (trop chère, développeur pas assez expérimenté ...) ils peuvent voter contre cette offre (vote négatif). Au contraire s'ils aiment l'offre ils peuvent voter pour cette offre.
 
-- **Qui a le droit de voter pour choisir le développeur ?**
+- Qui a le droit de voter pour choisir le développeur ?
 Tous les gens qui ont contribué sur la demande.
 
-- **Que se passe-t-il s'il y a une différence entre l'offre du développeur et la demande ?**
+- Que se passe-t-il s'il y a une différence entre l'offre du développeur et la demande ?
 Si le changement vous semble réhibitoire, vous pouvez voter *contre* l'offre.
 Si le changement vous semble rédhibitoire mais que trop peu de personnes partagent votre opinion, vous avez toujours la possibilité d'annuler votre contribution.
 
-- **Que se passe-t-il si personne ne veut développer mon idée ?**
+- Que se passe-t-il si personne ne veut développer mon idée ?
 Si vous sentez que la demande n'aboutira jamais, vous pouvez annuler votre contribution.
 Si vous pensez qu'il y a un vrai potentiel à votre demande, mais qu'elle ne décolle pas, vérifiez que vous avez bien expliqué ce que vous désirez ... et n'hésitez pas à en parler sur des forums, sur votre blog ...
 
-- **Quand l'argent est-il débité de mon compte ?**
+- Quand l'argent est-il débité de mon compte ?
 Dès que vous décidez de contribuer.
 Elveos prélève l'argent dès la contribution. Cela permet de garantir au développeur que l'argent est bien disponible. 
 
-- **Qui décide si le logiciel est conforme a mes attentes ?**
+- Qui décide si le logiciel est conforme a mes attentes ?
 Vous.
 A la fin du développement, le développeur soumet sa création sur le site elveos. Vous pourrez alors la tester et remonter les bugs.
-Vous avez 7 jours minimum pour remonter des bugs. Après ce délai, lorsqu'il n'y a plus de bugs important, le développement sera considéré comme validé, et le développeur sera payé. Il ne sera alors plus possible de remonter des problèmes via elveos. Vous pouvez cependant contacter directement le développeur !
+7 Jours après que le dernier bug est clos, le développement sera considéré comme validé, et le développeur sera payé. Passé ce délai il ne sera donc plus possible de remonter des problèmes via elveos. Vous pouvez cependant contacter directement le développeur !
 
-- **Qui fixe le montant nécessaire pour faire implémenter mon idée ?**
+- Qui fixe le montant nécessaire pour faire implémenter mon idée ?
 Le développeur.
 Un développeur intéressé pour implémenter votre idée va pouvoir créer une offre, à laquelle il devra fixer un montant.
 
-- **Que se passe-t-il si les contributeurs donnent plus d’argent que demandé par le développeur ?**
+- Que se passe-t-il si les contributeurs donnent plus d’argent que demandé par le développeur ?
 Le développeur reçoit l'intégralité des contributions, y compris celles en surplus.
 
-##Développeurs
+Contributeurs
+-------------
 
-- **Est-ce que je peux répondre à une demande en développant un logiciel propriétaire ?**
+- Je paie, et tout le monde peut en bénéficier gratuitement, c'est injuste !
+C'est le concept du logiciel libre. Vous payez parce que vous en avez besoin maintenant. Une fois que c'est fini et que le développeur a été payé suffisamment pour le développement, pourquoi refaire payer les autres ?
+
+- Je veux annuler ma contribution, qu'est ce qui se passe ?
+Vous pouvez annuler votre contribution tant que l'offre n'est pas encore en développement, après ça, il n'est plus possible d'annuler.
+Lorsque vous annulez votre contribution, vous récupérez le montant de la contribution sur votre compte interne Elveos, vous pouvez le faire virer sur votre compte en banque ou vous en servir pour contribuer sur une autre demande.
+Notez que vous ne récupérerez pas la commission elveos, celle-ci est prélevée définitivement dès que vous faites un paiement.
+
+Développeurs
+------------
+
+- Est-ce que je peux répondre à une demande en développant un logiciel propriétaire ?
 Non. Uniquement les développements réalisés sous une license reconnue par l'OSI sont autorisés sur le site elveos.
 
-- **Quand est-ce que je serai payé pour mon travail ? Sous quelles conditions ?**
-L'argent sera versé sur le compte elveos du développeur 7 jours minimum après la première livraison et dès que le dernier bug critique ait été clos.
+- Quand est-ce que je serai payé pour mon travail ? Sous quelles conditions ?
+L'argent sera versé sur le compte elveos du développeur 7 jours après que le dernier bug critique ait été clos.
 Le développeur pourra par la suite se faire verser l'argent sur son compte bancaire en faisant une demande de retrait.
 
-- **Je suis développeur, j’aime contribuer au logiciel libre, mais je préfère le faire gratuitement.**
+- Je suis développeur, j’aime contribuer au logiciel libre, mais je préfère le faire gratuitement.
 C'est une position très honorable ! D'autres développeurs cependant n'ont pas la volonté/possibilité de le faire gratuitement.
-En faisant un développement sur elveos, vous recevrez l'argent sur un compte interne elveos, vous pourrez alors contribuer (sans charge) sur une autre demande, permettant peut-être à un développeur qui ne peut se permettre de travailler gratuitement de participer lui aussi.
+En faisant un paiement sur elveos, vous recevrez l'argent sur un compte interne elveos, vous pourrez alors contribuer (sans charge) sur une autre demande, permettant peut-être à un développeur qui ne peut se permettre de travailler gratuitement de participer lui aussi.
 
-##Le processus
+Le processus
+------------
 
-- **Le montant demandé par le développeur a été atteint, pourquoi le développement ne commence-t'il pas ?**
+- Le montant demandé par le développeur a été atteint, pourquoi le développement ne commence-t'il pas ?
 Il y a un court délai à attendre permettant aux contributeurs de s'assurer que l'offre leur convient
 Ceci évitera par exemple qu'un développeur fasse une offre "bidon" du montant exacte de la somme des contributions, ce qui bloquerait la demande.
 
-- **Il n'y a plus de bugs, mais la demande n'est pas validée. Pourquoi ?**
-Le développement est validé, et la demande fermée, 7 jours après que le dernier bug ait été validé.
+- Il n'y a plus de bugs, mais la feature n'est pas validée pourquoi ?
+Le développement est validé, et la feature fermée, 7 jours après que le dernier bug ait été validé.
 Ce délai permet aux utilisateurs de tester le développement.
-De plus, lors que les conditions sont remplies, nous nous chargeons de valider manuellement la demande, pour vérifier une dernière fois qu'il n'y a pas de problèmes.
 
+- Qu'est que le karma ?
+Que vous faites quelque chose de bien sur le site, vous gagnez du karma, quand c'est pas bien ... vous en perdez.
+Pour le moment votre karma ne vous permet pas de faire grand chose, à terme ce sera un des moteurs du site.
