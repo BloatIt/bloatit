@@ -47,9 +47,9 @@ public final class CreateFeatureAction extends UserContentAction {
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
     private final String description;
 
-    @NonOptional(@tr("You forgot to write a specification"))
-    @MinConstraint(min = 10, message = @tr("The specification must have at least %constraint% chars."))
-    @MaxConstraint(max = 800000, message = @tr("The specification must be %constraint% chars length max."))
+    @NonOptional(@tr("You forgot to write a description"))
+    @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
+    @MaxConstraint(max = 800000, message = @tr("The description must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
     private final String specification;
 

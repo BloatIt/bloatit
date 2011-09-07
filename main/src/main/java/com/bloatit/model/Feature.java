@@ -203,6 +203,12 @@ public interface Feature extends KudosableInterface, Commentable {
     boolean hasSoftware();
 
     /**
+     * @return <true> if the user can still modify the feature, <false>
+     *         otherwise
+     */
+    boolean canModify();
+
+    /**
      * @return all the offers on this feature.
      */
     PageIterable<Offer> getOffers();
@@ -244,5 +250,9 @@ public interface Feature extends KudosableInterface, Commentable {
     void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
 
     BigDecimal getContributionOf(Member member);
+
+    void setDescription(String newDescription, Locale locale) throws UnauthorizedOperationException;
+
+    void setSoftware(Software software) throws UnauthorizedOperationException;
 
 }

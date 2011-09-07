@@ -23,7 +23,6 @@ import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 public class Release extends UserContent<DaoRelease> {
 

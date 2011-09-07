@@ -125,6 +125,11 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
         softwareInput.setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
+        
+        if (softwareFieldData.getSuggestedValue() != null) {
+            softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
+        }
+        
         offerForm.add(softwareInput);
         
         // asTeam

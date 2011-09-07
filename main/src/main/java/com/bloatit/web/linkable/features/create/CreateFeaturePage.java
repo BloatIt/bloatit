@@ -17,8 +17,8 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
@@ -50,8 +50,8 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 @ParamContainer("feature/%process%/create")
 public final class CreateFeaturePage extends CreateUserContentPage {
 
-    private static final int SPECIF_INPUT_NB_LINES = 20;
-    private static final int SPECIF_INPUT_NB_COLUMNS = 100;
+    public static final int SPECIF_INPUT_NB_LINES = 20;
+    public static final int SPECIF_INPUT_NB_COLUMNS = 100;
     public static final int FILE_MAX_SIZE_MIO = 2;
     
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
@@ -113,6 +113,11 @@ public final class CreateFeaturePage extends CreateUserContentPage {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
         softwareInput.setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
+        
+        if (softwareFieldData.getSuggestedValue() != null) {
+            softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
+        }
+        
         createFeatureForm.add(softwareInput);
 
         // As team input

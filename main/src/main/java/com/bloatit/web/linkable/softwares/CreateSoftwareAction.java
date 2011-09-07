@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
@@ -34,7 +33,6 @@ import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.CreateSoftwareActionUrl;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 /**
  * A response to a form used to create a new feature
