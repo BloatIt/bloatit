@@ -75,7 +75,6 @@ public final class IndexPage extends ElveosPage {
             globalDescription.add(presentationLink);
 
             generateCounts(globalDescription);
-
         }
         element.add(globalDescription);
 
@@ -124,28 +123,12 @@ public final class IndexPage extends ElveosPage {
         // Display of a button to create a feature
         twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
 
-        // Display of a summary of all website activity since creation
-        // twoColumnLayout.addRight(getWebsiteActivity(userToken));
-
         // Adding doc
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
         twoColumnLayout.addRight(new NewsFeedSideBlock());
 
         return element;
     }
-
-    // /**
-    // * @return a block indicating the number of elements created on the
-    // website
-    // * over the course of its life
-    // */
-    // private SideBarElementLayout getWebsiteActivity() {
-    // final SideBarElementLayout leftSummary = new SideBarElementLayout();
-    //
-    // generateCounts(leftSummary);
-    //
-    // return leftSummary;
-    // }
 
     @Override
     protected String createPageTitle() {
@@ -173,9 +156,12 @@ public final class IndexPage extends ElveosPage {
         final HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
         parent.add(summaryBox);
 
+        int featureNb = FeatureManager.getFeatureCount();
         // Feature count
-        final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requests, ",
-                                                                                      FeatureManager.getFeatureCount()));
+        final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Feature request, ",
+                                                                                       "{0}&nbsp;Features requests, ",
+                                                                                       featureNb,
+                                                                                       featureNb));
         summaryBox.add(featureCount);
 
         // Contribution amount
@@ -190,12 +176,19 @@ public final class IndexPage extends ElveosPage {
         summaryBox.add(contributionRaised);
 
         // Count of offers
-        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ",
-                                                                                    OfferManager.getOfferCount()));
+        int offerNb = OfferManager.getOfferCount();
+        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Development&nbsp;offer, ",
+                                                                                     "{0}&nbsp;Development&nbsp;offers, ",
+                                                                                     offerNb,
+                                                                                     offerNb));
         summaryBox.add(offerCount);
 
         // Count of releases
-        final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Releases", ReleaseManager.getReleaseCount()));
+        int releaseNb = ReleaseManager.getReleaseCount();
+        final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Release", 
+                                                                                       "{0}&nbsp;Releases", 
+                                                                                       releaseNb, 
+                                                                                       releaseNb));
         summaryBox.add(releaseCount);
     }
 }
