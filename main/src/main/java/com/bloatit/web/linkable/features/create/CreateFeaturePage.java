@@ -9,12 +9,16 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.features;
+package com.bloatit.web.linkable.features.create;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
@@ -30,6 +34,7 @@ import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
@@ -42,22 +47,29 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 /**
  * Page that hosts the form to create a new Feature
  */
-@ParamContainer("features/create")
+@ParamContainer("feature/%process%/create")
 public final class CreateFeaturePage extends CreateUserContentPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 20;
     private static final int SPECIF_INPUT_NB_COLUMNS = 100;
     public static final int FILE_MAX_SIZE_MIO = 2;
+    
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(role = Role.PAGENAME)
+    CreateFeatureProcess process;
+    
+    
     private final CreateFeaturePageUrl url;
-
+    
     public CreateFeaturePage(final CreateFeaturePageUrl url) {
         super(url);
         this.url = url;
+        this.process = url.getProcess();
     }
 
     @Override
     protected String createPageTitle() {
-        return "Create new feature";
+        return Context.tr("Create new feature");
     }
 
     @Override
@@ -74,7 +86,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
-        final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl(getSession().getShortKey());
+        final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl(getSession().getShortKey(), process);
 
         // Create the form stub
         final HtmlForm createFeatureForm = new HtmlForm(doCreateUrl.urlString());
@@ -170,12 +182,12 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return CreateFeaturePage.generateBreadcrumb();
+        return CreateFeaturePage.generateBreadcrumb(process);
     }
 
-    private static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb(CreateFeatureProcess process) {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-        breadcrumb.pushLink(new CreateFeaturePageUrl().getHtmlLink(tr("Create a feature")));
+        breadcrumb.pushLink(new CreateFeaturePageUrl(process).getHtmlLink(tr("Create a feature")));
         return breadcrumb;
     }
 }
