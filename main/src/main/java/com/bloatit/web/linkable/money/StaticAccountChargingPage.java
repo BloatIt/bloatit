@@ -119,8 +119,10 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
         // Invoicing contact
         // TODO : Display PROPERLY invoicing information
-//        summary.add(new HtmlDefineParagraph(Context.tr("Invoicing name"), actor.getContact().getName()));
-//        summary.add(new HtmlDefineParagraph(Context.tr("Invoicing address"), actor.getContact().getCity()));
+        // summary.add(new HtmlDefineParagraph(Context.tr("Invoicing name"),
+        // actor.getContact().getName()));
+        // summary.add(new HtmlDefineParagraph(Context.tr("Invoicing address"),
+        // actor.getContact().getCity()));
 
         // Pay bloc
         summary.add(new HtmlPayBlock(quotation,
