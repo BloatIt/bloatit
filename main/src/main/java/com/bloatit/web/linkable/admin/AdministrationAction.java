@@ -121,8 +121,14 @@ public class AdministrationAction extends AdminAction {
                             case FINISHED:
                                 feature.setFeatureState(FeatureState.FINISHED);
                                 break;
-                            case PENDING:
                             case PREPARING:
+                            case PENDING:
+                                if (feature.getSelectedOffer() == null) {
+                                    feature.setFeatureState(FeatureState.PENDING);
+                                } else {
+                                    feature.setFeatureState(FeatureState.PREPARING);
+                                }
+                                break;
                             case NO_FILTER:
                             default:
                                 Log.web().info("Wrong feature state. Nothing to do.");
