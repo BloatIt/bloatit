@@ -153,21 +153,12 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     }
 
     @Override
-    public void delete() throws UnauthorizedOperationException {
-        if (isDeleted()) {
-            return;
-        }
-
-        if (!getRights().hasAdminUserPrivilege()) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
-
+    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
         // Delete all comments from the bug
         for (final Comment comment : getComments()) {
-            comment.delete();
+            comment.delete(delOrder);
         }
-
-        super.delete();
+        super.delete(delOrder);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

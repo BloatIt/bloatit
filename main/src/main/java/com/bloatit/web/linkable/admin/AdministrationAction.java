@@ -123,10 +123,10 @@ public class AdministrationAction extends AdminAction {
                                 break;
                             case PREPARING:
                             case PENDING:
-                                if (feature.getSelectedOffer() == null) {
-                                    feature.setFeatureState(FeatureState.PENDING);
-                                } else {
+                                if (feature.getSelectedOffer() != null && !feature.getSelectedOffer().isDeleted()) {
                                     feature.setFeatureState(FeatureState.PREPARING);
+                                } else {
+                                    feature.setFeatureState(FeatureState.PENDING);
                                 }
                                 break;
                             case NO_FILTER:

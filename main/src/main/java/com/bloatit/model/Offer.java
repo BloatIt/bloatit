@@ -163,33 +163,25 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     @Override
-    public void delete() throws UnauthorizedOperationException {
-        if (isDeleted()) {
-            return;
-        }
-
-        if (!getRights().hasAdminUserPrivilege()) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
-
+    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
         // Delete all subcomponents of the offer.
         // Because milestones are not userContents, we delete all subcomponents
         // of milestones directly.
         for (final Milestone milestone : getMilestones()) {
             for (final Bug bug : milestone.getBugs()) {
-                bug.delete();
+                bug.delete(delOrder);
             }
 
             for (final Translation translation : milestone.getDescriptionEntity().getTranslations()) {
-                translation.delete();
+                translation.delete(delOrder);
             }
 
             for (final Release release : milestone.getReleases()) {
-                release.delete();
+                release.delete(delOrder);
             }
         }
 
-        super.delete();
+        super.delete(delOrder);
     }
 
     // ////////////////////////////////////////////////////////////////////////
