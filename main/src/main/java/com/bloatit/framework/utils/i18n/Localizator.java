@@ -193,6 +193,10 @@ public final class Localizator {
      * @see #tr(String)
      */
     public String trn(final String singular, final String plural, final long amount) {
+        if(locale.getLanguage().equals("fr")) {
+            // In french, 0 use the singular
+            return correctTr(i18n.trn(singular, plural, (amount > 1 ? amount : 1)));
+        }
         return correctTr(i18n.trn(singular, plural, amount));
     }
 
@@ -229,6 +233,10 @@ public final class Localizator {
      * @see org.slf4j.helpers.MessageFormatter
      */
     public String trn(final String singular, final String plural, final long amount, final Object... parameters) {
+        if(locale.getLanguage().equals("fr")) {
+            // In french, 0 use the singular
+            return correctTr(i18n.trn(singular, plural, (amount > 1 ? amount : 1) , parameters));
+        }
         return correctTr(i18n.trn(singular, plural, amount, parameters));
     }
 
