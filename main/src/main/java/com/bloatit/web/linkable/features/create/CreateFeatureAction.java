@@ -92,6 +92,7 @@ public final class CreateFeatureAction extends UserContentAction {
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, software);
         propagateAttachedFileIfPossible(feature);
+        process.close();
         return new FeaturePageUrl(feature, FeatureTabKey.description);
     }
 

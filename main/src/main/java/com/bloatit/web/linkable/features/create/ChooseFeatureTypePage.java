@@ -18,6 +18,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -69,9 +71,13 @@ public final class ChooseFeatureTypePage extends LoggedElveosPage {
         
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final HtmlTitleBlock chooseTypeTitle = new HtmlTitleBlock(tr("Do you to implement the feature yourself ?"), 1);
+        final HtmlTitleBlock title = new HtmlTitleBlock(tr("Create a feature"), 1);
+        
         final ChooseFeatureTypeActionUrl doCreateUrl = new ChooseFeatureTypeActionUrl(getSession().getShortKey(), process);
 
+        HtmlDiv chooseFeatureTypeBlock = new HtmlDiv("choose_feature_type");
+        
+        final HtmlTitleBlock chooseTypeTitle = new HtmlTitleBlock(tr("Do you want to implement the feature yourself ?"), 2);
         
         FieldData fieldData = doCreateUrl.getTypeParameter().pickFieldData();
         // Create the first form 
@@ -79,17 +85,21 @@ public final class ChooseFeatureTypePage extends LoggedElveosPage {
         HtmlHidden developHiddenField = new HtmlHidden(fieldData.getName(), CreateFeatureProcess.FeatureCreationType.CREATE_AND_MAKE_OFFER.toString());
         developForm.add(developHiddenField);
         developForm.add(new HtmlSubmit(tr("Yes, I want to implement the feature")));
+        developForm.add(new HtmlParagraph(Context.tr("You are a developer. You have an idea for your software and you want to fund it.")));
         chooseTypeTitle.add(developForm);
 
         // Create the seconde form 
         final HtmlForm dontDevelopForm = new HtmlForm(doCreateUrl.urlString());
         HtmlHidden dontDevelopHiddenField = new HtmlHidden(fieldData.getName(), CreateFeatureProcess.FeatureCreationType.CREATE.toString());
         dontDevelopForm.add(dontDevelopHiddenField);
-        dontDevelopForm.add(new HtmlSubmit(tr("No, I just want to propose it")));
+        dontDevelopForm.add(new HtmlSubmit(tr("No, I just want to submit it")));
+        dontDevelopForm.add(new HtmlParagraph(Context.tr("You use a free software and you have an enhancement idea to submit.")));
         chooseTypeTitle.add(dontDevelopForm);
         
+        chooseFeatureTypeBlock.add(chooseTypeTitle);
         
-        layout.addLeft(chooseTypeTitle);
+        layout.addLeft(title);
+        layout.addLeft(chooseFeatureTypeBlock);
         
 
         // RightColunm

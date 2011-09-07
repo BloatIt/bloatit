@@ -92,7 +92,7 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
     private HtmlElement generateFeatureCreationForm(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
+        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Create a feature"), 1);
 
         // Create offer form
         final CreateFeatureAndOfferActionUrl offerActionUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey(), process);

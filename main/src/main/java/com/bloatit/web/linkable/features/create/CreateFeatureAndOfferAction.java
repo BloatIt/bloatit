@@ -40,6 +40,7 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureAndOfferActionUrl;
+import com.bloatit.web.url.CreateFeatureAndOfferPageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.IndexPageUrl;
@@ -168,11 +169,13 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         }
         
         if (isFinished) {
+            process.close();
             return new FeaturePageUrl(feature, FeatureTabKey.description);    
         }
         
         final MakeOfferPageUrl returnUrl = new MakeOfferPageUrl(feature);
         returnUrl.setOffer(constructingOffer);
+        process.close();
         return returnUrl;
         
         
@@ -183,7 +186,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         if(process == null) {
             return new IndexPageUrl();
         } else {
-            return new CreateFeaturePageUrl(process);
+            return new CreateFeatureAndOfferPageUrl(process);
         }
     }
 
@@ -197,6 +200,13 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSpecificationParameter());
         session.addParameter(url.getSoftwareParameter());
+        session.addParameter(url.getExpiryDateParameter());
+        session.addParameter(url.getPriceParameter());
+        session.addParameter(url.getDaysBeforeValidationParameter());
+        session.addParameter(url.getPercentFatalParameter());
+        session.addParameter(url.getPercentMajorParameter());
+        session.addParameter(url.getIsFinishedParameter());
+        session.addParameter(url.getLicenseParameter());
     }
 
     @Override
