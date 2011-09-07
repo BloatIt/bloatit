@@ -17,6 +17,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
+import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -95,6 +96,10 @@ public final class CreateSoftwarePage extends LoggedElveosPage {
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the project : list all features, add siteweb links, etc."));
         addSoftwareForm.add(descriptionInput);
+        
+        // Markdown previewer
+        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(descriptionInput);
+        addSoftwareForm.add(mdPreview);
 
         // Language
         final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
