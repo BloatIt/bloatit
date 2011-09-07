@@ -249,6 +249,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public void cancelDevelopment() throws UnauthorizedOperationException {
+        throwWrongStateExceptionOnNondevelopingState();
         getSelectedOffer().tryAccess(new RgtOffer.SelectedOffer(), Action.WRITE);
         setStateObject(getStateObject().eventDeveloperCanceled());
         // Work is done in the slot system.
@@ -363,7 +364,10 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         for (final Contribution contribution : getContributionsUnprotected()) {
             contribution.cancel();
         }
-        getSelectedOffer().cancelEverythingLeft();
+        Offer selectedOffer = getSelectedOffer();
+        if (selectedOffer != null){
+            selectedOffer.cancelEverythingLeft();
+        }
     }
 
     /**

@@ -22,4 +22,4 @@ else
    find . -iname 'infos.log*' -exec grep 'Access:' {} \; 
 fi
 [ $? = 0 ] && touch $LAST_FETCH_FILE 
-" | sed -E "s/(2011-..-..) (..:..:..)/\\1T\\2/g"|  python bloatitstats/filldb.py -d $DB_PATH
+" | sed -E "s/(2011-..-..) (..:..:..),.../\\1T\\2/g"|  python bloatitstats/filldb.py -d $DB_PATH

@@ -12,10 +12,7 @@
 
 package com.bloatit.framework.webprocessor.components.form;
 
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
-import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
-import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 
 /**
  * <p>
@@ -28,9 +25,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
  * 
  * @see HtmlSubmit
  */
-public final class HtmlButton extends HtmlLeaf {
+public final class HtmlButton extends HtmlBranch{
 
-    private final HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.BUTTON_INPUT));
+//    private final HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.BUTTON_INPUT));
 
     /**
      * <p>
@@ -40,9 +37,7 @@ public final class HtmlButton extends HtmlLeaf {
      * @param value the text that will be shown on the button
      */
     public HtmlButton(final String value) {
-        super();
-        add(new HtmlParagraph().add(this.button));
-        this.button.addAttribute("value", value);
+        super("button");
     }
-
+    
 }
