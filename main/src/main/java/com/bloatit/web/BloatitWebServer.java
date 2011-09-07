@@ -76,6 +76,8 @@ import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturePageAlias;
+import com.bloatit.web.linkable.features.ModifyFeatureAction;
+import com.bloatit.web.linkable.features.ModifyFeaturePage;
 import com.bloatit.web.linkable.invoice.ContributionInvoiceResource;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsAction;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsPage;
@@ -340,6 +342,9 @@ public class BloatitWebServer extends WebProcessor {
         if (CancelContributionPageUrl.matches(pageCode)) {
             return new CancelContributionPage(new CancelContributionPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (ModifyFeaturePageUrl.matches(pageCode)) {
+            return new ModifyFeaturePage(new ModifyFeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -509,6 +514,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (CancelContributionActionUrl.matches(pageCode)) {
             return new CancelContributionAction(new CancelContributionActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ModifyFeatureActionUrl.matches(pageCode)) {
+            return new ModifyFeatureAction(new ModifyFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////

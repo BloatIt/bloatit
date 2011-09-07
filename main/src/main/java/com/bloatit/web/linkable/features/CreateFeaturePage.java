@@ -45,8 +45,8 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 @ParamContainer("features/create")
 public final class CreateFeaturePage extends CreateUserContentPage {
 
-    private static final int SPECIF_INPUT_NB_LINES = 20;
-    private static final int SPECIF_INPUT_NB_COLUMNS = 100;
+    public static final int SPECIF_INPUT_NB_LINES = 20;
+    public static final int SPECIF_INPUT_NB_COLUMNS = 100;
     public static final int FILE_MAX_SIZE_MIO = 2;
     private final CreateFeaturePageUrl url;
 
@@ -101,6 +101,11 @@ public final class CreateFeaturePage extends CreateUserContentPage {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
         softwareInput.setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
+        
+        if (softwareFieldData.getSuggestedValue() != null) {
+            softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
+        }
+        
         createFeatureForm.add(softwareInput);
 
         // As team input

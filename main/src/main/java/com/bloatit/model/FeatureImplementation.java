@@ -27,6 +27,7 @@ import com.bloatit.data.DaoContribution.State;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -135,6 +136,51 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public boolean canAccessOffer(final Action action) {
         return canAccess(new RgtFeature.Offer(), action);
+    }
+
+    /**
+     * Indicates whether the feature can be modified or not
+     * <p>
+     * A feature can be modified when :
+     * <li>The connected user is admin</li>
+     * <li>OR the connected user is the author of the feature</li>
+     * <li>AND the feature has no contributions (except from the author of the
+     * feature)</li>
+     * <li>AND the feature has no offer (except from the authoer of the feature)
+     * </li>
+     * </p>
+     */
+    @Override
+    public boolean canModify() {
+        if (!AuthToken.isAuthenticated()) {
+            return false;
+        }
+
+        if (AuthToken.getMember().getRole() == Role.ADMIN) {
+            return true;
+        }
+
+        if (!AuthToken.getMember().equals(getMember())) {
+            return false;
+        }
+
+        if (!(getFeatureState() == FeatureState.PENDING || getFeatureState() == FeatureState.PREPARING)) {
+            return false;
+        }
+
+        for (Contribution c : getContributions(false)) {
+            if (!c.getMember().equals(getMember())) {
+                return false;
+            }
+        }
+
+        for (Offer o : getOffers()) {
+            if (!o.getMember().equals(getMember())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -284,7 +330,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     protected void delete(boolean delOrder) throws UnauthorizedOperationException {
-        if (delOrder){
+        if (delOrder) {
             this.setFeatureState(FeatureState.DISCARDED);
         }
 
@@ -526,6 +572,27 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     public void setMilestoneIsRejected() {
         setStateObject(getStateObject().eventMilestoneIsRejected());
+    }
+
+    @Override
+    public void setDescription(String newDescription, final Locale locale) throws UnauthorizedOperationException {
+        if (!canModify()) {
+            throw new UnauthorizedOperationException(Action.WRITE);
+        }
+
+        if (getDescription().getTranslation(locale) == null) {
+            throw new BadProgrammerException("Cannot modify a feature description for a non existing language. Should be a new translation");
+        }
+        getDao().setDescription(newDescription, locale);
+    }
+
+    @Override
+    public void setSoftware(Software software) throws UnauthorizedOperationException {
+        if (!canModify()) {
+            throw new UnauthorizedOperationException(Action.WRITE);
+        }
+
+        getDao().setSoftware(software.getDao());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
