@@ -79,6 +79,9 @@ public class DBRequests {
                 return null;
             }
         }
+        if (!persistant.isInstance(identifiable)){
+            return null;
+        }
         return identifiable;
     }
 
