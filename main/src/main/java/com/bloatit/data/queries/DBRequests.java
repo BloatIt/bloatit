@@ -74,7 +74,7 @@ public class DBRequests {
         if (identifiable == null) {
             return null;
         }
-        if (DaoUserContent.class.isAssignableFrom(persistant)) {
+        if (currentSession.getEnabledFilter("usercontent.nonDeleted") != null && DaoUserContent.class.isAssignableFrom(persistant)) {
             if (((DaoUserContent) identifiable).isDeleted()) {
                 return null;
             }
