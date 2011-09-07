@@ -15,6 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -48,6 +49,7 @@ public class HtmlPagedList<T> extends HtmlDiv {
     @RequestParam(name = PAGE_SIZE_FIELD_NAME)
     @Optional("30")
     @MaxConstraint(max = 100, message = @tr("Page size must be inferior to %constraint%."))
+    @MinConstraint(min = 1, message = @tr("Page size must be superior or equal to %constraint%."))
     private final Integer pageSize;
 
     // Explain contract for URL and PageListUrl
