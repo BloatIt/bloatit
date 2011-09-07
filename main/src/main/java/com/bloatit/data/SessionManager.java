@@ -139,7 +139,7 @@ public class SessionManager {
      */
     public static void beginWorkUnit() {
         sessionFactory.getCurrentSession().beginTransaction();
-        sessionFactory.getCurrentSession().enableFilter("usercontent.nonDeleted");
+//        sessionFactory.getCurrentSession().enableFilter("usercontent.nonDeleted");
     }
 
     /**

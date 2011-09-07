@@ -57,7 +57,7 @@ body {
 
 .menu_item {
     display:table-cell;
-     .no_insets;
+    .no_insets;
     padding-left: 30px;
     padding-right: 30px;  
     padding-right: 30px;  
@@ -71,7 +71,66 @@ body {
         margin-left: 20px;
         margin-right: 20px;
     }
+}
+
+.form_menu_item {
+   display:table-cell;
+    .no_insets;
+    padding-left: 30px;
+    padding-right: 30px;  
+    padding-right: 30px;  
+    border-left : 1px solid @border_color;
+    margin-top: 4px;
+    vertical-align: bottom;
+    padding-bottom: 1px;
     
+    .separator {
+        font-size: 1.1em;
+        color: @border_color;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    input[type=search]{
+	height: 23px;
+	border: 1px solid @border_color;
+	padding: 0px;
+	.rounded_corners_top_left(4px);
+	.rounded_corners_bottom_left(4px);
+	padding-left: 7px;
+	width: 150px;
+	color: rgb(175, 175, 175);
+    }
+
+    .field {
+	margin: 0px 0px 0px;
+	display: inline-block;
+    }
+ 
+    button {
+	background: @default_background_color * 0.95;
+	.horizontal-gradient(@default_background_color * 0.95,  @default_background_color);
+	border: 1px solid @border_color;
+       	.rounded_corners_bottom_right(4px); 
+	.rounded_corners_top_right(4px);
+       	.shadow(1px, white);
+	color: white;
+	cursor: pointer;
+	display: inline-block;
+	margin-left: -21px;
+	margin-bottom: 0px;
+	height: 25px;
+	vertical-align: bottom;
+	padding-top: 2px;
+    }
+
+    button:hover, button:active, button:focus{
+	outline:0;
+    }
+
+    button::-moz-focus-inner {
+	border: 0;
+    }
 }
 
 #menu_item:first-of-type {

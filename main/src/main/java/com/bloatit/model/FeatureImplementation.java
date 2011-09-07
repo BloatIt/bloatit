@@ -23,6 +23,7 @@ import java.util.Locale;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
+import com.bloatit.data.DaoContribution.State;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -235,6 +236,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public void cancelDevelopment() throws UnauthorizedOperationException {
+        throwWrongStateExceptionOnNondevelopingState();
         getSelectedOffer().tryAccess(new RgtOffer.SelectedOffer(), Action.WRITE);
         setStateObject(getStateObject().eventDeveloperCanceled());
         // Work is done in the slot system.
@@ -281,16 +283,10 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public void delete() throws UnauthorizedOperationException {
-        if (isDeleted()) {
-            return;
+    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+        if (delOrder){
+            this.setFeatureState(FeatureState.DISCARDED);
         }
-
-        if (!getRights().hasAdminUserPrivilege()) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
-
-        this.setFeatureState(FeatureState.DISCARDED);
 
         // We delete every components of the feature (comments, offers,
         // translations ...)
@@ -300,23 +296,22 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         // on the web site (for example on the account page) which is the
         // behavior we want.
 
-        super.delete();
+        super.delete(delOrder);
 
         for (final Comment comment : getComments()) {
-            comment.delete();
+            comment.delete(delOrder);
         }
-
         for (final Offer offer : getOffers()) {
-            offer.delete();
+            offer.delete(delOrder);
         }
-
         for (final Translation translation : getDescription().getTranslations()) {
-            translation.delete();
+            translation.delete(delOrder);
         }
-
-        for (final HighlightFeature hlFeature : HighlightFeatureManager.getAll()) {
-            if (hlFeature.getFeature().getId().equals(getId())) {
-                hlFeature.getDao().delete();
+        if (delOrder) {
+            for (final HighlightFeature hlFeature : HighlightFeatureManager.getAll()) {
+                if (hlFeature.getFeature().getId().equals(getId())) {
+                    hlFeature.getDao().delete();
+                }
             }
         }
     }
@@ -347,9 +342,14 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         getDao().setFeatureState(FeatureState.DISCARDED);
 
         for (final Contribution contribution : getContributionsUnprotected()) {
-            contribution.cancel();
+            if (contribution.getState() == State.PENDING) {
+                contribution.cancel();
+            }
         }
-        getSelectedOffer().cancelEverythingLeft();
+        Offer selectedOffer = getSelectedOffer();
+        if (selectedOffer != null) {
+            selectedOffer.cancelEverythingLeft();
+        }
     }
 
     /**

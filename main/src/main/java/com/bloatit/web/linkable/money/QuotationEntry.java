@@ -23,15 +23,11 @@ import java.util.List;
 import com.bloatit.web.linkable.money.Quotation.QuotationVisitor;
 
 public abstract class QuotationEntry {
-    private final String label;
-    private final String comment;
     private boolean closed;
     protected final List<QuotationEntry> entries = new ArrayList<QuotationEntry>();
 
-    protected QuotationEntry(final String label, final String comment) {
+    protected QuotationEntry() {
         super();
-        this.label = label;
-        this.comment = comment;
         this.closed = true;
     }
 
@@ -44,14 +40,6 @@ public abstract class QuotationEntry {
     }
 
     public abstract BigDecimal getValue();
-
-    public String getLabel() {
-        return label;
-    }
-
-    public String getComment() {
-        return comment;
-    }
 
     public QuotationEntry addEntry(final QuotationEntry entry) {
         entries.add(entry);

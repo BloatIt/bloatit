@@ -39,6 +39,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.url.CancelContributionPageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 
@@ -94,10 +95,10 @@ public final class FeatureContributorsComponent extends HtmlDiv {
     }
 
     private BigDecimal computeMedian(final PageIterable<Contribution> contributions) {
-        if(contributions.size() == 0){
+        if (contributions.size() == 0) {
             return BigDecimal.ZERO;
         }
-        
+
         try {
             final Iterator<Contribution> it = contributions.iterator();
             final List<BigDecimal> list = new ArrayList<BigDecimal>();
@@ -184,7 +185,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             try {
                 switch (column) {
                     case 0:
-                        val.addText(contribution.getAuthor().getDisplayName());
+                            val.add(new HtmlAuthorLink(contribution));
                         break;
                     case 1:
 

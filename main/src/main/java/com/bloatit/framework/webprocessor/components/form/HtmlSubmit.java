@@ -14,10 +14,10 @@ package com.bloatit.framework.webprocessor.components.form;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 
-public final class HtmlSubmit extends HtmlLeaf {
+public final class HtmlSubmit extends HtmlBranch {
 
     /**
      * Creates a HtmlButton

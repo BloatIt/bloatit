@@ -152,15 +152,15 @@ public final class CreateFeaturePage extends CreateUserContentPage {
                 + "... Try to leave as little room for ambiguity as possible."));
         createFeatureForm.add(specificationInput);
 
+        // Markdown previewer
+        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
+        createFeatureForm.add(mdPreview);
+        
         // Language
         createFeatureForm.add(new LanguageField(doCreateUrl, tr("Description language"), tr("The language of the description you just wrote.")));
 
         // Attachment
         createFeatureForm.add(new AttachmentField(doCreateUrl, FILE_MAX_SIZE_MIO + " Mio"));
-        
-        // Markdown previewer
-        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
-        createFeatureForm.add(mdPreview);
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));

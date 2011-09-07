@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoSoftware;
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
@@ -55,8 +56,9 @@ public final class Software extends Identifiable<DaoSoftware> {
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link FeatureManager#canCreate(AuthToken)} to make sure
      * you can create a new feature.
+     * @throws UniqueNameExpectedException 
      */
-    public Software(final String name, final Member author, final Locale locale, final String description) {
+    public Software(final String name, final Member author, final Locale locale, final String description) throws UniqueNameExpectedException {
         this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), null, locale, " ", description)));
     }
 

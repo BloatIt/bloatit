@@ -23,18 +23,14 @@ public class Quotation extends QuotationEntry {
     public final BigDecimal total;
 
     public Quotation(final BigDecimal total) {
-        super(null, null);
+        super();
         this.total = total;
-
     }
 
     public static class QuotationTotalEntry extends QuotationEntry {
 
-        private final String totalLabel;
-
-        public QuotationTotalEntry(final String label, final String comment, final String totalLabel) {
-            super(label, comment);
-            this.totalLabel = totalLabel;
+        public QuotationTotalEntry() {
+            super();
         }
 
         @Override
@@ -43,7 +39,6 @@ public class Quotation extends QuotationEntry {
             for (final QuotationEntry entry : entries) {
                 value = value.add(entry.getValue());
             }
-
             return value;
         }
 
@@ -51,19 +46,14 @@ public class Quotation extends QuotationEntry {
         public void accept(final QuotationVisitor visitor) {
             visitor.visit(this);
         }
-
-        public String getTotalLabel() {
-            return totalLabel;
-        }
-
     }
 
     public static class QuotationAmountEntry extends QuotationEntry {
 
         public final BigDecimal amount;
 
-        public QuotationAmountEntry(final String label, final String comment, final BigDecimal amount) {
-            super(label, comment);
+        public QuotationAmountEntry(final BigDecimal amount) {
+            super();
             this.amount = amount;
         }
 
@@ -76,15 +66,14 @@ public class Quotation extends QuotationEntry {
         public void accept(final QuotationVisitor visitor) {
             visitor.visit(this);
         }
-
     }
 
     public static class QuotationProxyEntry extends QuotationEntry { // NO_UCD
 
         public final QuotationEntry reference;
 
-        public QuotationProxyEntry(final String label, final String comment, final QuotationEntry reference) {
-            super(label, comment);
+        public QuotationProxyEntry(final QuotationEntry reference) {
+            super();
             this.reference = reference;
         }
 
@@ -104,8 +93,8 @@ public class Quotation extends QuotationEntry {
         public final BigDecimal percent;
         public final QuotationEntry reference;
 
-        public QuotationPercentEntry(final String label, final String comment, final QuotationEntry reference, final BigDecimal percent) {
-            super(label, comment);
+        public QuotationPercentEntry(final QuotationEntry reference, final BigDecimal percent) {
+            super();
             this.reference = reference;
             this.percent = percent;
         }
@@ -120,14 +109,36 @@ public class Quotation extends QuotationEntry {
             visitor.visit(this);
         }
     }
+    
+    public static class QuotationMultiplyEntry extends QuotationEntry {
+        
+        public final BigDecimal multiplyBy;
+        public final QuotationEntry reference;
+        
+        public QuotationMultiplyEntry(final QuotationEntry reference, final BigDecimal multiplyBy) {
+            super();
+            this.reference = reference;
+            this.multiplyBy = multiplyBy;
+        }
+        
+        @Override
+        public BigDecimal getValue() {
+            return reference.getValue().multiply(multiplyBy);
+        }
+        
+        @Override
+        public void accept(final QuotationVisitor visitor) {
+            visitor.visit(this);
+        }
+    }
 
     public static class QuotationDifferenceEntry extends QuotationEntry {
 
         public final QuotationEntry reference1;
         public final QuotationEntry reference2;
 
-        public QuotationDifferenceEntry(final String label, final String comment, final QuotationEntry reference1, final QuotationEntry reference2) {
-            super(label, comment);
+        public QuotationDifferenceEntry(final QuotationEntry reference1, final QuotationEntry reference2) {
+            super();
             this.reference1 = reference1;
             this.reference2 = reference2;
 
@@ -145,15 +156,6 @@ public class Quotation extends QuotationEntry {
 
     }
 
-    public static String padding(final String output) {
-        final StringBuilder o = new StringBuilder();
-        o.append(output);
-        while (output.length() < 40) {
-            o.append(' ');
-        }
-        return o.toString();
-    }
-
     public interface QuotationVisitor {
         void visit(QuotationTotalEntry entry);
 
@@ -162,6 +164,8 @@ public class Quotation extends QuotationEntry {
         void visit(QuotationProxyEntry entry);
 
         void visit(QuotationPercentEntry entry);
+        
+        void visit(QuotationMultiplyEntry entry);
 
         void visit(QuotationDifferenceEntry entry);
 

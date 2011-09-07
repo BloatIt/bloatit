@@ -261,6 +261,7 @@
 .quotation_totals_lines_block {
     float: right;
     padding-right: 18px;
+    width: 350px;
 }
 
 .quotation_totals_lines {
@@ -271,7 +272,7 @@
     margin:  0px;
     margin-top:  40px;
     border: none;
-    width: auto;
+    width: 100%;
     
     tr:nth-child(1), tr:nth-child(2n+1), tr:nth-child(2n) {
         background-color: transparent;
@@ -316,8 +317,7 @@
             //.box-flex;
             font-size: 1.1em;
             //width: 300px;
-            
-         
+            min-width: 190px;
         }        
     }
     
@@ -331,9 +331,15 @@
     
     
     .quotation_total_line_ht {
+        color: @light_text_color;
+        font-size: 0.8em;
+
         .label {
             padding-top:  12px;
         }     
+        .money {
+            color: @light_text_color;
+        }
     }
     
     .quotation_total_line_total {
@@ -348,6 +354,7 @@
         margin-top:  10px;
         
          .money {
+            padding-top:  14px;
             font-size: 1.8em;
             color: @link_title_color;
             font-weight: bold;
@@ -372,7 +379,7 @@
             padding-left: 10px;
 
 
-            border-left: 1px solid @border_color;
+            // border-left: 1px solid @border_color;
         
         }
         
