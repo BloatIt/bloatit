@@ -149,7 +149,7 @@ public final class SoftwarePage extends ElveosPage {
 
         @Override
         public XmlNode generate(final Feature feature) {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.Other);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.OTHER);
         }
     };
 }

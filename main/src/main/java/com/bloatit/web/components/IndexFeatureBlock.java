@@ -62,7 +62,7 @@ public class IndexFeatureBlock extends HtmlDiv {
             indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(highlightFeature.getFeature().getSoftware())));
 
             // Generate progess bar and text
-            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), FeaturesTools.FeatureContext.IndexPage));
+            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), FeaturesTools.FeatureContext.INDEX_PAGE));
 
             indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 

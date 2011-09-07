@@ -174,7 +174,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     featureSummaryBottom.add(featureSummaryPopularity);
 
                     HtmlDiv featureSummaryProgress;
-                    featureSummaryProgress = generateProgressBlock(feature, FeaturesTools.FeatureContext.FeaturePage);
+                    featureSummaryProgress = generateProgressBlock(feature, FeaturesTools.FeatureContext.FEATURE_PAGE);
                     featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////

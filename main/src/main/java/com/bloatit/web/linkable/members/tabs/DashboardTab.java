@@ -18,6 +18,7 @@ import com.bloatit.model.lists.FollowList;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.visitor.AbstractModelClassVisitor;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.features.FeaturesTools.FeatureContext;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.MemberPageUrl;
 
@@ -63,7 +64,7 @@ public class DashboardTab extends HtmlTab {
             HtmlDiv logo;
             try {
                 logo = new SoftwaresTools.Logo(f.getSoftware());
-                progress = FeaturesTools.generateProgress(f);
+                progress = FeaturesTools.generateProgress(f, FeatureContext.OTHER);
                 title = FeaturesTools.generateFeatureTitle(f);
             } catch (UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Cannot access feature in dashboard");

@@ -55,10 +55,10 @@ public class FeaturesTools {
     private static final String IMPORTANT_CSS_CLASS = "important";
 
     public enum FeatureContext {
-        FeaturePage,
-        FeatureListPage,
-        IndexPage,
-        Other,
+        FEATURE_PAGE,
+        FEATURE_LIST_PAGE,
+        INDEX_PAGE,
+        OTHER,
     }
     
     public static String getTitle(final Feature feature) {
@@ -161,7 +161,7 @@ public class FeaturesTools {
 
             if (feature.getFeatureState() == FeatureState.DEVELOPPING) {
                 barLabel = new HtmlText(Context.tr("In developement"));
-            } else if (feature.getFeatureState() == FeatureState.PENDING && context != FeatureContext.FeaturePage) {
+            } else if (feature.getFeatureState() == FeatureState.PENDING && context != FeatureContext.FEATURE_PAGE) {
                 final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature, FeatureTabKey.offers);
                 offersFeatureUrl.setAnchor("feature_tab_pane");
                 barLabel = offersFeatureUrl.getHtmlLink(Context.tr("make an offer"));
