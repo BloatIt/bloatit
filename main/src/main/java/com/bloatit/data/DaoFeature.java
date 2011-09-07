@@ -640,6 +640,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the int
      */
     public int countOpenBugs() {
+        if (selectedOffer == null){
+            return 0;
+        }
         final Query query = SessionManager.getNamedQuery("feature.getBugs.byNonState.size");
         query.setEntity("offer", this.selectedOffer);
         query.setParameter("state", DaoBug.BugState.RESOLVED);
@@ -665,6 +668,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the closed bugs
      */
     public PageIterable<DaoBug> getClosedBugs() {
+        if (this.selectedOffer == null) {
+            return new EmptyPageIterable<DaoBug>();
+        }
         return new QueryCollection<DaoBug>("feature.getBugs.byState").setEntity("offer", this.selectedOffer).setParameter("state",
                                                                                                                           DaoBug.BugState.RESOLVED);
     }
