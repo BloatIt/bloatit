@@ -28,6 +28,7 @@ import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.mailsender.MailServer;
@@ -67,7 +68,7 @@ public class BloatitExampleDB { // NO_UCD
     private Software perroquet;
     private Software mageia;
 
-    public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException, UniqueNameExpectedException {
         System.setProperty("log4J.path", ConfigurationManager.SHARE_DIR + "/log");
         MailServer.getInstance().initialize();
 
@@ -181,7 +182,7 @@ public class BloatitExampleDB { // NO_UCD
 
     }
 
-    public void generateMageiaSoftware() {
+    public void generateMageiaSoftware() throws UniqueNameExpectedException {
         // Mageia software
 
         final String mageiaTitle = "Mageia est un fork de Mandriva Linux, reposant sur une association de type 1901 composée de contributeurs reconnus et élus pour leur travail. ";
@@ -190,7 +191,7 @@ public class BloatitExampleDB { // NO_UCD
         mageia.setImage(getImage(yoann, "mageia.png"));
     }
 
-    public void generateLibreOfficeSoftware() {
+    public void generateLibreOfficeSoftware() throws UniqueNameExpectedException {
         // LibreOffice software
 
         final String libreOfficeTitle = "LibreOffice (souvent abrégé en LibO) est une suite bureautique, dérivée directement de OpenOffice.org, créée par The Document Foundation. Cet embranchement a eu lieu le 28 septembre 2010, dans la continuité du rachat de Sun Microsystems par Oracle. ";
@@ -200,7 +201,7 @@ public class BloatitExampleDB { // NO_UCD
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
     }
 
-    public void generatePerroquetSoftware() {
+    public void generatePerroquetSoftware() throws UniqueNameExpectedException {
         // Perroquet software
 
         final String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères ";
@@ -210,7 +211,7 @@ public class BloatitExampleDB { // NO_UCD
         perroquet.setImage(getImage(fred, "perroquet.png"));
     }
 
-    public void generateVlcSoftware() {
+    public void generateVlcSoftware() throws UniqueNameExpectedException {
         // VLC software
 
         final String vlcTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
@@ -519,7 +520,7 @@ public class BloatitExampleDB { // NO_UCD
         return FileMetadataManager.createFromLocalFile(author, null, path, name, "Projet's logo image");
     }
 
-    public static void main(final String[] args) throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public static void main(final String[] args) throws UnauthorizedOperationException, NotEnoughMoneyException, UniqueNameExpectedException {
         System.out.println("Begining database generation");
         new BloatitExampleDB();
         System.out.println("Database generation ended");

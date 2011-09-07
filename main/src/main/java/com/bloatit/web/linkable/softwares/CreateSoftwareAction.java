@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.softwares;
 
 import java.util.Locale;
 
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
@@ -23,6 +24,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
@@ -32,6 +34,7 @@ import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.url.CreateSoftwareActionUrl;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 /**
  * A response to a form used to create a new feature
@@ -93,24 +96,29 @@ public final class CreateSoftwareAction extends LoggedElveosAction {
     public Url doProcessRestricted(final Member me) {
         final Locale langLocale = new Locale(lang);
 
-        final Software p = new Software(softwareName, me, langLocale, description);
+        try {
+            Software p = new Software(softwareName, me, langLocale, description);
 
-        if (image != null) {
-            final FileConstraintChecker fcc = new FileConstraintChecker(image);
-            if (fcc.isImageAvatar() != null) {
-                for (final String message : fcc.isImageAvatar()) {
-                    session.notifyWarning(message);
+            if (image != null) {
+                final FileConstraintChecker fcc = new FileConstraintChecker(image);
+                if (fcc.isImageAvatar() != null) {
+                    for (final String message : fcc.isImageAvatar()) {
+                        session.notifyWarning(message);
+                    }
+                    return Context.getSession().pickPreferredPage();
                 }
-                return Context.getSession().pickPreferredPage();
+                final FileMetadata fileImage = FileMetadataManager.createFromTempFile(me, null, image, imageFileName, "Image for the software '"
+                        + softwareName + "'");
+                p.setImage(fileImage);
             }
-            final FileMetadata fileImage = FileMetadataManager.createFromTempFile(me, null, image, imageFileName, "Image for the software '"
-                    + softwareName + "'");
-            p.setImage(fileImage);
+
+            final SoftwarePageUrl to = new SoftwarePageUrl(p);
+
+            return to;
+        } catch (UniqueNameExpectedException e) {
+            Context.getSession().notifyError(Context.tr("A software with the same name already exists."));
+            return doProcessErrors();
         }
-
-        final SoftwarePageUrl to = new SoftwarePageUrl(p);
-
-        return to;
     }
 
     @Override
