@@ -226,7 +226,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlRadioButtonGroup isFinishedInput = new HtmlRadioButtonGroup(isFinishedData.getName());
         // isFinishedInput.addErrorMessages(isFinishedData.getErrorMessages());
         isFinishedInput.addRadioButton("true", Context.tr("Finish your Offer"));
-        isFinishedInput.addRadioButton("false", Context.tr("Add an other lot"));
+        isFinishedInput.addRadioButton("false", Context.tr("Add another milestone"));
         offerForm.add(isFinishedInput);
         isFinishedInput.setDefaultValue(isFinishedData.getSuggestedValue());
 
