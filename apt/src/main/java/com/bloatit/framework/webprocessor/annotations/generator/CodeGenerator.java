@@ -357,7 +357,7 @@ public class CodeGenerator {
             
             final Method setter2 = clazz.addMethod("void", "set" + Utils.firstCharUpper(param.getAttributeName()));
             setter2.addParameter(param.getTypeWithoutTemplate(), "other");
-            setter.addLine("this." + param.getAttributeName() + ".setValue(other, force);");
+            setter2.addLine("this." + param.getAttributeName() + ".setValue(other, false);");
 
             doRegister.addLine("register(" + param.getAttributeName() + ");");
 
