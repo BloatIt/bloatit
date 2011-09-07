@@ -4474,7 +4474,7 @@ msgstr "Connexion réussie."
 
 #: com/bloatit/web/linkable/login/LoginAction.java:70
 msgid "Your account has not been validated yet. Please check your emails."
-msgstr "Votre accompte n'est pas encore validé. Veuillez vérifier vos emails."
+msgstr "Votre compte n'est pas encore validé. Veuillez vérifier vos emails."
 
 #: com/bloatit/web/linkable/login/LoginAction.java:77
 msgid "Login failed. Wrong login or password. Password lost ? <0::Recover it>."
