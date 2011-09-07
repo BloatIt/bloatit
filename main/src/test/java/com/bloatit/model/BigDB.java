@@ -38,12 +38,13 @@ import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
 
 public class BigDB {
 
     private static final int nbUsers = 100;
 
-    public BigDB() {
+    public BigDB() throws UniqueNameExpectedException {
 
         SessionManager.beginWorkUnit();
 
@@ -194,7 +195,7 @@ public class BigDB {
         return (int) (Math.random() * max);
     }
 
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws UniqueNameExpectedException {
         new BigDB();
     }
 }

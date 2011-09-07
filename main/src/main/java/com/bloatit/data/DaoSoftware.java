@@ -36,6 +36,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
 
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -109,10 +110,11 @@ public class DaoSoftware extends DaoIdentifiable {
      * @param name The name of the software
      * @param description a description of the software.
      * @return the newly created daoSoftware.
+     * @throws UniqueNameExpectedException
      * @throws NonOptionalParameterException if any of the parameters is null or
      *             empty.
      */
-    public static DaoSoftware createAndPersist(final String name, final DaoDescription description) {
+    public static DaoSoftware createAndPersist(final String name, final DaoDescription description) throws UniqueNameExpectedException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoSoftware software = new DaoSoftware(name, description);
         try {
@@ -125,10 +127,13 @@ public class DaoSoftware extends DaoIdentifiable {
         return software;
     }
 
-    private DaoSoftware(final String name, final DaoDescription description) {
+    private DaoSoftware(final String name, final DaoDescription description) throws UniqueNameExpectedException {
         super();
         if (name == null || name.isEmpty() || description == null) {
             throw new NonOptionalParameterException();
+        }
+        if (exists(name)) {
+            throw new UniqueNameExpectedException();
         }
         this.name = name;
         this.description = description;

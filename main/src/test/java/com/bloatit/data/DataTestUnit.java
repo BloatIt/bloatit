@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.bloatit.data.DaoFileMetadata.FileType;
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
 
 public class DataTestUnit {
 
@@ -36,7 +37,7 @@ public class DataTestUnit {
     protected static DaoSoftware project;
     
     @BeforeClass
-    public static void createDB() {
+    public static void createDB() throws UniqueNameExpectedException {
         SessionManager.generateTestSessionFactory();
         SessionManager.beginWorkUnit();
         tom = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);

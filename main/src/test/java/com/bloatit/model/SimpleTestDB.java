@@ -36,6 +36,8 @@ import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 
@@ -83,7 +85,6 @@ public class SimpleTestDB {
         publicGroup.getContact().setName("publicGroup");
         publicGroup.getContact().setCountry("Mars");
 
-
         privateGroup = DaoTeam.createAndPersiste("privateGroup", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);
 
         publicGroup.addMember(tom, true);
@@ -123,7 +124,12 @@ public class SimpleTestDB {
             getYoBankTransaction().setAuthorized();
             getYoBankTransaction().setValidated();
 
-            publicGroupBankTransaction = DaoBankTransaction.createAndPersist("test", "token2", publicGroup, new BigDecimal("1000"), new BigDecimal("1100"), "order2");
+            publicGroupBankTransaction = DaoBankTransaction.createAndPersist("test",
+                                                                             "token2",
+                                                                             publicGroup,
+                                                                             new BigDecimal("1000"),
+                                                                             new BigDecimal("1100"),
+                                                                             "order2");
             publicGroupBankTransaction.setAuthorized();
             publicGroupBankTransaction.setValidated();
 
@@ -133,7 +139,11 @@ public class SimpleTestDB {
             e.printStackTrace();
         }
 
-        project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(tom, null, Locale.FRANCE, "title", "descrip"));
+        try {
+            project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(tom, null, Locale.FRANCE, "title", "descrip"));
+        } catch (UniqueNameExpectedException e) {
+            throw new BadProgrammerException(e);
+        }
 
         feature = DaoFeature.createAndPersist(yo,
                                               null,
