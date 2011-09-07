@@ -196,20 +196,11 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     @Override
-    public void delete() throws UnauthorizedOperationException {
-        if (isDeleted()) {
-            return;
-        }
-
-        if (!getRights().hasAdminUserPrivilege()) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
-
+    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
         for (final Kudos kudos : getKudos()) {
-            kudos.delete();
+            kudos.delete(delOrder);
         }
-
-        super.delete();
+        super.delete(delOrder);
     }
 
     private KudosList getKudos() {
