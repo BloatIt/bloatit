@@ -37,6 +37,7 @@ import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 import com.bloatit.web.url.FileResourceUrl;
+import com.bloatit.web.url.ModifyFeaturePageUrl;
 
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
@@ -116,14 +117,12 @@ public final class FeatureTabPane extends HtmlPageComponent {
             {
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
                 final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
-                // final HtmlParagraph description = new HtmlParagraph(new
-                // HtmlRawTextRenderer(translatedDescription.getText()));
                 final HtmlElement description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
                 descriptionText.add(description);
 
             }
             descriptionBlock.add(descriptionText);
-            
+
             // Attachements
             for (final FileMetadata attachment : feature.getFiles()) {
                 final HtmlParagraph attachmentPara = new HtmlParagraph();
@@ -137,6 +136,12 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
             final HtmlDiv descriptionFooter = new HtmlDiv("description_footer");
             {
+                if (feature.canModify()) {
+                    HtmlDiv modifyFeature = new HtmlDiv("float_right");
+                    modifyFeature.add(new ModifyFeaturePageUrl(feature).getHtmlLink(Context.tr("Modify the feature")));
+                    descriptionFooter.add(modifyFeature);
+                }
+
                 descriptionFooter.add(new UserContentAuthorBlock(feature));
 
                 // KEEP THIS CODE, will be restored someday

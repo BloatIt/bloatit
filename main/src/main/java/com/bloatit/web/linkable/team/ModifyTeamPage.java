@@ -134,6 +134,11 @@ public class ModifyTeamPage extends LoggedElveosPage {
         rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Public"));
         rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("Protected"));
         rightInput.setComment(Context.tr("Public teams can be joined by anybody without an invitation."));
+        if (rightData.getSuggestedValue() != null) {
+            rightInput.setDefaultStringValue(rightData.getSuggestedValue());
+        }else{
+            rightInput.setDefaultValue(team.getJoinRight().toString());
+        }
         form.add(rightInput);
 
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
