@@ -56,6 +56,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgMercanetVISA;
     private String imgMercanetMastercard;
     private String imgMercanetCB;
+    private String imgAtom;
     private BigDecimal defaultChargingAmount;
     private ResourceFinder finder;
     private int feedItemNumber;
@@ -213,7 +214,9 @@ public class WebConfiguration extends ReloadableConfiguration {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMercanetCB);
     }
     
-    
+    public static String getAtomImg() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgAtom);
+    }
 
     public static BigDecimal getDefaultChargingAmount() {
         return configuration.defaultChargingAmount;
@@ -256,6 +259,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgMercanetVISA = properties.getString("bloatit.img.mercanet.visa");
         imgMercanetMastercard = properties.getString("bloatit.img.mercanet.mastercard");
         imgMercanetCB = properties.getString("bloatit.img.mercanet.cb");
+        imgAtom = properties.getString("bloatit.img.atom");
 
         // OTHERS
         defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");
@@ -283,7 +287,4 @@ public class WebConfiguration extends ReloadableConfiguration {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
         }
     }
-
-    
-
 }

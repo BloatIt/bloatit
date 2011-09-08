@@ -90,4 +90,8 @@ public final class FeatureManager {
         return AuthToken.isAuthenticated();
     }
 
+    public static FeatureList getAllByCreationDate() {
+        return new FeatureList(DaoFeature.getAllByCreationDate());
+    }
+
 }

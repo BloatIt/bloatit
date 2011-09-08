@@ -15,6 +15,7 @@ package com.bloatit.web.pages;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
@@ -28,6 +29,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.masters.HtmlHeaderLink;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Image;
 import com.bloatit.model.feature.FeatureManager;
@@ -40,12 +42,14 @@ import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.NewsFeedSideBlock;
 import com.bloatit.web.components.SideBarButton;
+import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureProcessUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
+import com.bloatit.web.url.FeatureAtomFeedUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -122,6 +126,7 @@ public final class IndexPage extends ElveosPage {
 
         // Display of a button to create a feature
         twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeatureProcessUrl(), WebConfiguration.getImgIdea()));
+        twoColumnLayout.addRight(new SideBarButton(Context.tr("Elveos Atom feed"), new FeatureAtomFeedUrl(), WebConfiguration.getAtomImg(), false));
 
         // Adding doc
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
@@ -185,10 +190,14 @@ public final class IndexPage extends ElveosPage {
 
         // Count of releases
         int releaseNb = ReleaseManager.getReleaseCount();
-        final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Release", 
-                                                                                       "{0}&nbsp;Releases", 
-                                                                                       releaseNb, 
-                                                                                       releaseNb));
+        final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Release", "{0}&nbsp;Releases", releaseNb, releaseNb));
         summaryBox.add(releaseCount);
+    }
+
+    @Override
+    protected ArrayList<HtmlHeaderLink> getLinks() {
+        ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
+        list.add(ElveosAtomFeed.generateHeaderLink(new FeatureAtomFeedUrl(), Context.tr("Feature feed")));
+        return list;
     }
 }
