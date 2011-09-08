@@ -19,6 +19,7 @@ package com.bloatit.framework.utils.i18n;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.sun.mail.handlers.message_rfc822;
 
 /**
  * <p>
@@ -193,7 +195,7 @@ public final class Localizator {
      * @see #tr(String)
      */
     public String trn(final String singular, final String plural, final long amount) {
-        if(locale.getLanguage().equals("fr")) {
+        if (locale.getLanguage().equals("fr")) {
             // In french, 0 use the singular
             return correctTr(i18n.trn(singular, plural, (amount > 1 ? amount : 1)));
         }
@@ -233,9 +235,9 @@ public final class Localizator {
      * @see org.slf4j.helpers.MessageFormatter
      */
     public String trn(final String singular, final String plural, final long amount, final Object... parameters) {
-        if(locale.getLanguage().equals("fr")) {
+        if (locale.getLanguage().equals("fr")) {
             // In french, 0 use the singular
-            return correctTr(i18n.trn(singular, plural, (amount > 1 ? amount : 1) , parameters));
+            return correctTr(i18n.trn(singular, plural, (amount > 1 ? amount : 1), parameters));
         }
         return correctTr(i18n.trn(singular, plural, amount, parameters));
     }
@@ -529,10 +531,11 @@ public final class Localizator {
             final String favLang[] = favLangs[0].split(SEPARATORS_REGEX);
 
             Locale l;
-            if (favLang.length < 2) {
+            if (favLang.length < 2 || (!favLang[1].toUpperCase().matches("[A-Z]{2}"))) {
                 l = new Locale(favLang[0]);
             } else {
-                l = new Locale(favLang[0], favLang[1]);
+
+                l = new Locale(favLang[0], favLang[1].toUpperCase());
             }
 
             if (!l.getLanguage().isEmpty() && l.getCountry().isEmpty()) {
