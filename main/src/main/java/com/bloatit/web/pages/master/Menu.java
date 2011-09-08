@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlButton;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlSearch;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Image;
 import com.bloatit.web.url.DocumentationPageUrl;
@@ -71,7 +72,7 @@ public class Menu extends HtmlDiv {
         // Search form
         final FeatureListPageUrl formUrl = new FeatureListPageUrl();
         final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
-        HtmlSearch searchField = new HtmlSearch(formUrl.getSearchStringParameter().getName());
+        HtmlTextField searchField = new HtmlTextField(formUrl.getSearchStringParameter().getName());
         searchForm.add(searchField);
         searchField.addAttribute("placeholder", Context.tr("Search"));
 
