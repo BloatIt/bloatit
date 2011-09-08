@@ -90,11 +90,6 @@ public class WithdrawMoneyPage extends LoggedElveosPage {
 
         form.add(new HtmlSubmit(tr("Submit")));
 
-        // Plop
-        final HtmlDiv testIban = new HtmlDiv();
-        testIban.addText(Context.tr("You can test the page with the following IBAN: GB87 BARC 2065 8244 9716 55"));
-        master.add(testIban);
-
         return master;
     }
 

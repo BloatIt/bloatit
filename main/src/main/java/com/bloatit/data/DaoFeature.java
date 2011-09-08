@@ -453,6 +453,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public void setDescription(String newDescription, Locale locale) {
         getDescription().getTranslation(locale).setText(newDescription, getMember());
     }
+    
+    public void setTitle(String title, Locale locale) {
+        getDescription().getTranslation(locale).setTitle(title);
+    }
 
     // @Override
     // public void setIsDeleted(final Boolean isDeleted) {

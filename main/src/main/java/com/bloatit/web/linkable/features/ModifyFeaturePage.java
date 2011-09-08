@@ -15,6 +15,7 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
@@ -56,6 +57,20 @@ public class ModifyFeaturePage extends LoggedElveosPage {
         ModifyFeatureActionUrl modifyUrl = new ModifyFeatureActionUrl(Context.getSession().getShortKey(), feature);
         HtmlForm modifyForm = new HtmlForm(modifyUrl.urlString());
         master.addLeft(modifyForm);
+
+        // Title of the feature
+        final FieldData descriptionFieldData = modifyUrl.getTitleParameter().pickFieldData();
+        final HtmlTextField titleInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
+        titleInput.addErrorMessages(descriptionFieldData.getErrorMessages());
+        titleInput.setCssClass("input_long_400px");
+        titleInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
+        if (descriptionFieldData.getSuggestedValue() == null) {
+            titleInput.setDefaultValue(feature.getTitle());
+        } else {
+            titleInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
+        }
+
+        modifyForm.add(titleInput);
 
         // Linked software
         final FieldData softwareFieldData = modifyUrl.getSoftwareParameter().pickFieldData();

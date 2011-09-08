@@ -255,4 +255,5 @@ public interface Feature extends KudosableInterface, Commentable {
 
     void setSoftware(Software software) throws UnauthorizedOperationException;
 
+    void setTitle(String title, final Locale locale) throws UnauthorizedOperationException;
 }
