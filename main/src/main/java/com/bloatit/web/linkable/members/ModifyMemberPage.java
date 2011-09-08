@@ -33,6 +33,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlFormBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -94,6 +95,19 @@ public class ModifyMemberPage extends LoggedElveosPage {
             }
             deleteFN.setComment(Context.tr("Checking this box will delete your full name, hence your login will be used again."));
             nameBlock.add(deleteFN);
+            
+            // /////
+            // User description
+            final FieldData descriptionFD = targetUrl.getDescriptionParameter().pickFieldData();
+            HtmlTextArea description = new HtmlTextArea(descriptionFD.getName(), 30, 80);
+            if (descriptionFD.getSuggestedValue() != null && !descriptionFD.getSuggestedValue().isEmpty()) {
+                description.setDefaultValue(descriptionFD.getSuggestedValue());
+            } else if (loggedUser.getDescription() != null) {
+                description.setDefaultValue(loggedUser.getDescription());
+            }
+            description.setComment(Context.tr("Introduce yourself in less than 200 characters."));
+            nameBlock.add(description);
+            
 
             final HtmlFormBlock passwordBlock = new HtmlFormBlock(Context.tr("User password"));
             form.add(passwordBlock);

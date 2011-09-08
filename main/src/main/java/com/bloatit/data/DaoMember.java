@@ -256,8 +256,8 @@ public class DaoMember extends DaoActor {
     @Basic(optional = false)
     private Locale locale;
 
-//    @Column(length = 1024)
-//    private String userDescription;
+    @Column(length = 1024)
+    private String description;
 
     @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -412,7 +412,7 @@ public class DaoMember extends DaoActor {
         this.salt = salt;
         this.karma = 0;
         this.fullname = "";
-//        this.userDescription = "";
+        this.description = "";
     }
 
     /**
@@ -566,6 +566,10 @@ public class DaoMember extends DaoActor {
      */
     void setSalt(final String salt) {
         this.salt = salt;
+    }
+
+    public void setDescription(String userDescription) {
+        this.description = userDescription;
     }
 
     public void setEmailToActivate(final String emailToActivate) {
@@ -901,6 +905,10 @@ public class DaoMember extends DaoActor {
         this.avatar = avatar;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public String getEmailToActivate() {
         return this.emailToActivate;
     }
@@ -951,13 +959,4 @@ public class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
-
-//    public String getUserDescription() {
-//        return userDescription;
-//    }
-//
-//    public void setUserDescription(String userDescription) {
-//        this.userDescription = userDescription;
-//    }
-
 }

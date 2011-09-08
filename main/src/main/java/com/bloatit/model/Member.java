@@ -262,6 +262,11 @@ public final class Member extends Actor<DaoMember> implements User {
         }
     }
 
+    public void setDescription(final String userDescription) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtMember.UserDescription(), Action.WRITE);
+        getDao().setDescription(userDescription);
+    }
+
     private String libravatar(final String email) {
         final String digest = DigestUtils.md5Hex(email.toLowerCase());
         // return "http://cdn.libravatar.org/avatar/" + digest +
@@ -330,6 +335,11 @@ public final class Member extends Actor<DaoMember> implements User {
     @Override
     public ActivationState getActivationState() {
         return getDao().getActivationState();
+    }
+
+    public String getDescription() throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtMember.UserDescription(), Action.READ);
+        return getDao().getDescription();
     }
 
     public String getActivationKey() {
@@ -419,7 +429,7 @@ public final class Member extends Actor<DaoMember> implements User {
         }
         return getLogin();
     }
-    
+
     public String getEmail() throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Email(), Action.READ);
         return getEmailUnprotected();

@@ -51,12 +51,8 @@ import com.bloatit.web.url.ModifyMemberPageUrl;
 public class ModifyMemberAction extends LoggedElveosAction {
     @RequestParam(role = Role.POST)
     @Optional
-    @MinConstraint(
-        min = 7,
-        message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(
-        max = 255,
-        message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(min = 7, message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 255, message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String password;
 
     @RequestParam(role = Role.POST)
@@ -65,32 +61,25 @@ public class ModifyMemberAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @Optional
-    @MinConstraint(
-        min = 7,
-        message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(
-        max = 255,
-        message = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(min = 7, message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 255, message = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
     @Optional
-    @MinConstraint(
-        min = 4,
-        message = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(
-        max = 255,
-        message = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 200, message = @tr("Number of characters for your description has to be inferior to %constraint% but was %valueLength% characters long."))
+    private final String description;
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    @MinConstraint(min = 4, message = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 255, message = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String email;
 
     @RequestParam(role = Role.POST)
     @Optional
-    @MinConstraint(
-        min = 1,
-        message = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(
-        max = 30,
-        message = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(min = 1, message = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 30, message = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String fullname;
 
     @RequestParam(role = Role.POST)
@@ -138,6 +127,7 @@ public class ModifyMemberAction extends LoggedElveosAction {
         this.deleteFullName = url.getDeleteFullName();
         this.currentPassword = url.getCurrentPassword();
         this.deleteAvatar = url.getDeleteAvatar();
+        this.description = url.getDescription();
         this.url = url;
     }
 
@@ -165,7 +155,11 @@ public class ModifyMemberAction extends LoggedElveosAction {
                 final Mail activationMail = new Mail(email, Context.tr("Elveos.org new email activation"), content, "member-domodify");
 
                 MailServer.getInstance().send(activationMail);
-
+            }
+            
+            // DESCRIPTION
+            if (description != null && ! description.isEmpty()){
+                me.setDescription(description);
             }
 
             // FULLNAME
@@ -320,5 +314,6 @@ public class ModifyMemberAction extends LoggedElveosAction {
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
         session.addParameter(url.getDeleteFullNameParameter());
+        session.addParameter(url.getDescriptionParameter());
     }
 }

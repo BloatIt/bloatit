@@ -32,7 +32,9 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -216,6 +218,11 @@ public final class MemberPage extends ElveosPage {
             karma.addText(Context.tr("Karma: "));
             memberIdList.add(new PlaceHolderElement().add(karma).addText("" + member.getKarma()));
 
+            if (member.getDescription() != null) {
+                HtmlBranch memberDescription = new HtmlDiv("member_description").add(new HtmlMarkdownRenderer(member.getDescription()));
+                memberId.add(memberDescription);
+            }
+
         } catch (final UnauthorizedOperationException e) {
             getSession().notifyError("An error prevented us from displaying user information. Please notify us.");
             throw new ShallNotPassException("Error while gathering user information", e);
@@ -242,7 +249,7 @@ public final class MemberPage extends ElveosPage {
         tabPane.addTab(activity);
         tabPane.addTab(new AccountTab(member, tr("Account"), ACCOUNT_TAB));
         long nb;
-        if ((nb = (member.getInvitationCount()+member.getMilestoneToInvoice().size())) > 0) {
+        if ((nb = (member.getInvitationCount() + member.getMilestoneToInvoice().size())) > 0) {
             tabPane.addTab(new TasksTab(member, tr("Tasks&nbsp;({0})", nb), TASKS_TAB));
         }
 
