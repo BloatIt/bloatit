@@ -175,6 +175,18 @@ import com.bloatit.framework.utils.PageIterable;
                              	   "FROM com.bloatit.data.DaoContribution as c " +
                                    "WHERE c.feature = :this " +
                                    "AND c.state != :state "),
+                                   
+                       @NamedQuery(
+                             name="feature.getAll.orderByCreationDate", 
+                             query="FROM com.bloatit.data.DaoFeature " +
+                                   "WHERE featureState != :featureState " +
+                                   "ORDER BY creationDate DESC "),
+                       @NamedQuery(
+                             name="feature.getAll.orderByCreationDate.size", 
+                             query="SELECT COUNT(*)" +
+                             	   "FROM com.bloatit.data.DaoFeature " +
+                                   "WHERE featureState != :featureState "),
+                                   
                      }
              )
 // @formatter:on
@@ -453,7 +465,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public void setDescription(String newDescription, Locale locale) {
         getDescription().getTranslation(locale).setText(newDescription, getMember());
     }
-    
+
     public void setTitle(String title, Locale locale) {
         getDescription().getTranslation(locale).setTitle(title);
     }
@@ -682,6 +694,14 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         }
         return new QueryCollection<DaoBug>("feature.getBugs.byState").setEntity("offer", this.selectedOffer).setParameter("state",
                                                                                                                           DaoBug.BugState.RESOLVED);
+    }
+
+    // ======================================================================
+    // Static accessors.
+    // ======================================================================
+
+    public static PageIterable<DaoFeature> getAllByCreationDate() {
+        return new QueryCollection<DaoFeature>("feature.getAll.orderByCreationDate").setParameter("featureState", FeatureState.DISCARDED);
     }
 
     // ======================================================================

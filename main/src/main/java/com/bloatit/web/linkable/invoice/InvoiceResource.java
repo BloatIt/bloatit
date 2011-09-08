@@ -27,8 +27,6 @@ import com.bloatit.web.url.InvoiceResourceUrl;
 
 /**
  * A invoice file
- * 
- * @author fred
  */
 @ParamContainer("invoice")
 public final class InvoiceResource extends Resource {

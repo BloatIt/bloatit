@@ -53,6 +53,7 @@ import com.bloatit.web.linkable.admin.notify.AdminGlobalNotificationAction;
 import com.bloatit.web.linkable.admin.notify.AdminGlobalNotificationPage;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminAction;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminPage;
+import com.bloatit.web.linkable.atom.FeatureAtomFeed;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -520,6 +521,13 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (ChangePrepaidAmountActionUrl.matches(pageCode)) {
             return new ChangePrepaidAmountAction(new ChangePrepaidAmountActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        
+        // ////////
+        // Atom
+        // ////////
+        if(FeatureAtomFeedUrl.matches(pageCode)){
+            return new FeatureAtomFeed(new FeatureAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
