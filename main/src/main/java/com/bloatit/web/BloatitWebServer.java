@@ -117,6 +117,7 @@ import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
+import com.bloatit.web.linkable.money.ChangePrepaidAmountAction;
 import com.bloatit.web.linkable.money.PaymentAction;
 import com.bloatit.web.linkable.money.PaymentAutoresponseAction;
 import com.bloatit.web.linkable.money.PaymentProcess;
@@ -518,6 +519,9 @@ public class BloatitWebServer extends WebProcessor {
         if (ModifyFeatureActionUrl.matches(pageCode)) {
             return new ModifyFeatureAction(new ModifyFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (ChangePrepaidAmountActionUrl.matches(pageCode)) {
+            return new ChangePrepaidAmountAction(new ChangePrepaidAmountActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
         
         // ////////
         // Atom
@@ -544,7 +548,8 @@ public class BloatitWebServer extends WebProcessor {
         if (ContributionInvoicingProcessUrl.matches(pageCode)) {
             return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
-
+        
+        
         
         // Create feature process
         if (CreateFeatureProcessUrl.matches(pageCode)) {

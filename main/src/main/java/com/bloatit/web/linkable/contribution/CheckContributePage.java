@@ -54,6 +54,7 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.ChangePrepaidAmountActionUrl;
 import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributeActionUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -70,30 +71,18 @@ public final class CheckContributePage extends QuotationPage {
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
 
-    @Optional
-    @RequestParam(message = @tr("The amount to load on your account must be a positive integer."))
-    @MinConstraint(min = 0, message = @tr("You must specify a positive value."))
-    @MaxConstraint(max = 100000, message = @tr("We cannot accept such a generous offer."))
-    @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
-    private BigDecimal preload;
-
     private final CheckContributePageUrl url;
 
     public CheckContributePage(final CheckContributePageUrl url) {
         super(url);
         this.url = url;
-        preload = url.getPreload();
         process = url.getProcess();
     }
 
     @Override
     public HtmlElement createBodyContentOnParameterError() throws RedirectException {
         if (url.getMessages().hasMessage()) {
-            if (url.getProcessParameter().getMessages().isEmpty()) {
-                if (!url.getPreloadParameter().getMessages().isEmpty()) {
-                    preload = process.getAccountChargingAmount() != null ? process.getAccountChargingAmount() : BigDecimal.ZERO;
-                }
-            } else {
+            if (!url.getProcessParameter().getMessages().isEmpty()) {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
@@ -232,13 +221,6 @@ public final class CheckContributePage extends QuotationPage {
         if (process.isLocked()) {
             getSession().notifyWarning(tr("You have a payment in progress. The contribution is locked."));
         }
-        try {
-            if (!process.getAccountChargingAmount().equals(preload) && preload != null) {
-                process.setAmountToCharge(preload);
-            }
-        } catch (final IllegalWriteException e) {
-            getSession().notifyWarning(tr("The preload amount is locked during the payment process."));
-        }
 
         // Total
         final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAccountChargingAmount());
@@ -254,7 +236,7 @@ public final class CheckContributePage extends QuotationPage {
 
         final HtmlLineTableModel model = new HtmlLineTableModel();
 
-        //Charge account line
+        // Charge account line
         HtmlChargeAccountLine line;
         try {
             final ContributePageUrl contributePageUrl = new ContributePageUrl(process);
@@ -264,8 +246,7 @@ public final class CheckContributePage extends QuotationPage {
                 model.addLine(new HtmlPrepaidLine(actor));
             }
 
-            final CheckContributePageUrl recalculateUrl = url.clone();
-            recalculateUrl.setPreload(null);
+            final ChangePrepaidAmountActionUrl recalculateUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process);
             line = new HtmlChargeAccountLine(true, process.getAccountChargingAmount(), actor, recalculateUrl);
             model.addLine(line);
         } catch (final UnauthorizedOperationException e) {
@@ -295,25 +276,21 @@ public final class CheckContributePage extends QuotationPage {
             payBlock.add(invoicingContactLink);
         }
 
-        
-        
         // Add show/hide charge account line
         final HtmlParagraph showChargeAccountLink = new HtmlParagraph(Context.tr("+ charge your elveos account"), "prepaid_line_fake_link");
-        
-        
+
         final JsShowHide showHideFees = new JsShowHide(group, !process.getAccountChargingAmount().equals(BigDecimal.ZERO));
         showHideFees.addActuator(showChargeAccountLink);
         showHideFees.addListener(line);
         showHideFees.apply();
 
-        
         final HtmlTable lines = new HtmlTable(model);
         lines.setCssClass("quotation_details_lines");
         group.add(lines);
         group.add(showChargeAccountLink);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process.getAmount().subtract(account), line.getMoneyField(), summary));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process.getAmount().subtract(account), line.getMoneyField(), summary, process));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);
