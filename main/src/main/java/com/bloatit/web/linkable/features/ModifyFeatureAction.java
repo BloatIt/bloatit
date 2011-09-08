@@ -29,12 +29,18 @@ public class ModifyFeatureAction extends LoggedElveosAction {
     @NonOptional(@tr("You have to specify a feature number."))
     private final Feature feature;
 
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You forgot to write a title"))
+    @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
+    @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
+    private final String title;
+
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     @MaxConstraint(max = 800000, message = @tr("The description must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
     private String description;
-    
+
     @Optional
     @RequestParam(role = Role.POST)
     private final Software software;
@@ -47,6 +53,7 @@ public class ModifyFeatureAction extends LoggedElveosAction {
         this.feature = url.getFeature();
         this.description = url.getDescription();
         this.software = url.getSoftware();
+        this.title = url.getTitle();
     }
 
     @Override
@@ -54,6 +61,7 @@ public class ModifyFeatureAction extends LoggedElveosAction {
         try {
             feature.setDescription(description, feature.getDescription().getDefaultLocale());
             feature.setSoftware(software);
+            feature.setTitle(title, feature.getDescription().getDefaultLocale());
         } catch (UnauthorizedOperationException e) {
             throw new ShallNotPassException("User cannot modify a feature, we checked right before tho ...");
         }
@@ -85,5 +93,6 @@ public class ModifyFeatureAction extends LoggedElveosAction {
     protected void transmitParameters() {
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSoftwareParameter());
+        session.addParameter(url.getTitleParameter());
     }
 }

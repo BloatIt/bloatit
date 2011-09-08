@@ -585,6 +585,18 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         }
         getDao().setDescription(newDescription, locale);
     }
+    
+    @Override
+    public void setTitle(String title, final Locale locale) throws UnauthorizedOperationException {
+        if (!canModify()) {
+            throw new UnauthorizedOperationException(Action.WRITE);
+        }
+        if (getDescription().getTranslation(locale) == null) {
+            throw new BadProgrammerException("Cannot modify a feature description for a non existing language. Should be a new translation");
+        }
+        
+        getDao().setTitle(title, locale);
+    }
 
     @Override
     public void setSoftware(Software software) throws UnauthorizedOperationException {
