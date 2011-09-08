@@ -29,7 +29,6 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtBug;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.model.visitor.ModelClassVisitor;
 
@@ -154,21 +153,12 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     }
 
     @Override
-    public void delete() throws UnauthorizedOperationException {
-        if (isDeleted()) {
-            return;
-        }
-
-        if (!getRights().hasAdminUserPrivilege()) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
-
+    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
         // Delete all comments from the bug
         for (final Comment comment : getComments()) {
-            comment.delete();
+            comment.delete(delOrder);
         }
-
-        super.delete();
+        super.delete(delOrder);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

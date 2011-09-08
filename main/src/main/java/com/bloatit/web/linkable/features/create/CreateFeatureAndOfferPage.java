@@ -9,15 +9,15 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.offer;
+package com.bloatit.web.linkable.features.create;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlHidden;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -37,44 +36,47 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
-import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
-import com.bloatit.model.Offer;
-import com.bloatit.web.components.SideBarFeatureBlock;
+import com.bloatit.model.Software;
+import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.SidebarMarkdownHelp;
-import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.features.OfferBlock;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.MakeOfferPageUrl;
-import com.bloatit.web.url.OfferActionUrl;
+import com.bloatit.web.url.CreateFeatureAndOfferActionUrl;
+import com.bloatit.web.url.CreateFeatureAndOfferPageUrl;
+import com.bloatit.web.url.CreateFeaturePageUrl;
 
-@ParamContainer("offer/create")
-public final class MakeOfferPage extends CreateUserContentPage {
+/**
+ * Page that hosts the form to create a new Feature
+ */
+@ParamContainer("feature/%process%/createwithoffer")
+public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
-    @RequestParam(message = @tr("I cannot find the feature number: ''%value%''."))
-    @NonOptional(@tr("The feature id is not optional !"))
-    private final Feature feature;
-
-    @RequestParam
-    @Optional
-    private final Offer offer;
-
-    private final MakeOfferPageUrl url;
-
-    public MakeOfferPage(final MakeOfferPageUrl url) {
+    private static final int SPECIF_INPUT_NB_LINES = 20;
+    private static final int SPECIF_INPUT_NB_COLUMNS = 100;
+    public static final int FILE_MAX_SIZE_MIO = 2;
+    
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(role = Role.PAGENAME)
+    CreateFeatureProcess process;
+    
+    
+    private final CreateFeatureAndOfferPageUrl url;
+    
+    public CreateFeatureAndOfferPage(final CreateFeatureAndOfferPageUrl url) {
         super(url);
         this.url = url;
-        this.feature = url.getFeature();
-        this.offer = url.getOffer();
+        this.process = url.getProcess();
     }
 
     @Override
     protected String createPageTitle() {
-        return Context.tr("Make an offer");
+        return Context.tr("Create new feature");
     }
 
     @Override
@@ -83,33 +85,28 @@ public final class MakeOfferPage extends CreateUserContentPage {
     }
 
     @Override
-    public String getRefusalReason() {
-        return Context.tr("You must be logged to make an offer");
-    }
-
-    @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
-        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addLeft(generateOfferForm(loggedUser));
-
-        layout.addRight(new SideBarFeatureBlock(feature));
-        layout.addRight(new SidebarMarkdownHelp());
-
-        return layout;
+        return generateFeatureCreationForm(loggedUser);
     }
 
-    private HtmlTitleBlock generateOfferForm(final Member me) {
-        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
+    private HtmlElement generateFeatureCreationForm(final Member loggedUser) {
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        if (offer != null) {
-            offerPageContainer.add(new OfferBlock(offer, true));
-        }
+        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Create a feature"), 1);
 
         // Create offer form
-        final OfferActionUrl offerActionUrl = new OfferActionUrl(getSession().getShortKey(), url.getFeature());
-        offerActionUrl.setDraftOffer(offer);
+        final CreateFeatureAndOfferActionUrl offerActionUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey(), process);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
 
+        // Title of the feature
+        final FieldData descriptionFieldData = offerActionUrl.getDescriptionParameter().pickFieldData();
+        final HtmlTextField titleInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
+        titleInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
+        titleInput.addErrorMessages(descriptionFieldData.getErrorMessages());
+        titleInput.setCssClass("input_long_400px");
+        titleInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
+        offerForm.add(titleInput);
+        
         // Price field
         final FieldData priceData = offerActionUrl.getPriceParameter().pickFieldData();
         final HtmlMoneyField priceInput = new HtmlMoneyField(priceData.getName(), Context.tr("Offer price"));
@@ -118,18 +115,30 @@ public final class MakeOfferPage extends CreateUserContentPage {
         priceInput.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
         offerForm.add(priceInput);
 
+        // Linked software
+        final FieldData softwareFieldData = offerActionUrl.getSoftwareParameter().pickFieldData();
+        final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
+
+        softwareInput.addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
+        softwareInput.addDropDownElement("", Context.tr("New software"));
+        for (final Software software : SoftwareManager.getAll()) {
+            softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
+        }
+        softwareInput.setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
+        
+        if (softwareFieldData.getSuggestedValue() != null) {
+            softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
+        }
+        
+        offerForm.add(softwareInput);
+        
         // asTeam
-        if (offer == null) {
-            offerForm.add(new AsTeamField(offerActionUrl,
-                                          me,
+        offerForm.add(new AsTeamField(offerActionUrl,
+                                          loggedUser,
                                           UserTeamRight.TALK,
                                           Context.tr("In the name of "),
                                           Context.tr("Write this offer in the name of a team, and offer the contributions to this team.")));
-        }
-        if (offer != null && offer.getAsTeam() != null) {
-            offerForm.add(new HtmlHidden(offerActionUrl.getTeamParameter().getName(), offer.getAsTeam().getId().toString()));
-        }
-
+        
         // Date field
         final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
         final HtmlDateField dateInput = new HtmlDateField(dateData.getName(), Context.tr("Release date"), Context.getLocalizator().getLocale());
@@ -138,13 +147,32 @@ public final class MakeOfferPage extends CreateUserContentPage {
         dateInput.setComment(Context.tr("You will have to release this feature before the release date."));
         offerForm.add(dateInput);
 
-        // Description
-        final FieldData descriptionData = offerActionUrl.getDescriptionParameter().pickFieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(), Context.tr("Description"), 10, 80);
-        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
-        descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
-        descriptionInput.setComment(Context.tr("Describe your offer. This description must be accurate because it will be used to validate the conformity at the end of the development."));
-        offerForm.add(descriptionInput);
+        // Specification
+        final FieldData specificationData = offerActionUrl.getSpecificationParameter().pickFieldData();
+        final HtmlTextArea specificationInput = new HtmlTextArea(specificationData.getName(), Context.tr("Description"), 10, 80);
+        //@formatter:off
+        
+        final String suggestedValue = tr(
+                "Be precise, don't forget to specify :\n" + 
+                " - The expected result\n" + 
+                " - On which system it has to work (Windows/Mac/Linux ...)\n" +
+                " - When do you want to have the result\n" + 
+                " - In which free license the result must be.\n" +
+                "\n" + 
+                "You can also join a diagram, or a design/mockup of the expected user interface.\n" +
+                "\n" + 
+                "Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
+                );
+        //@formatter:on
+
+        if (specificationData.getSuggestedValue() == null || specificationData.getSuggestedValue().isEmpty()) {
+            specificationInput.setDefaultValue(suggestedValue);
+        } else {
+            specificationInput.setDefaultValue(specificationData.getSuggestedValue());
+        }
+        specificationInput.addErrorMessages(specificationData.getErrorMessages());
+        specificationInput.setComment(Context.tr("Describe the feature and your offer. This description must be accurate because it will be used to validate the conformity at the end of the development."));
+        offerForm.add(specificationInput);
 
         // license
         final FieldData licenseData = offerActionUrl.getLicenseParameter().pickFieldData();
@@ -172,7 +200,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         // locale
         offerForm.add(new LanguageField(offerActionUrl, //
                                         Context.tr("description language"), //
-                                        Context.tr("The language of the offer description.")));
+                                        Context.tr("The language of the description.")));
 
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
@@ -234,20 +262,30 @@ public final class MakeOfferPage extends CreateUserContentPage {
         offerForm.add(offerButton);
 
         offerPageContainer.add(offerForm);
-        return offerPageContainer;
+
+        layout.addLeft(offerPageContainer);
+
+        // RightColunm
+        layout.addRight(new SideBarDocumentationBlock("create_feature"));
+        layout.addRight(new SideBarDocumentationBlock("cc_by"));
+        layout.addRight(new SidebarMarkdownHelp());
+
+        return layout;
+    }
+
+    @Override
+    public String getRefusalReason() {
+        return tr("You must be logged to create a new feature.");
     }
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return MakeOfferPage.generateBreadcrumb(feature);
+        return CreateFeatureAndOfferPage.generateBreadcrumb(process);
     }
 
-    private static Breadcrumb generateBreadcrumb(final Feature feature) {
-        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
-
-        breadcrumb.pushLink(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make an offer")));
-
+    private static Breadcrumb generateBreadcrumb(CreateFeatureProcess process) {
+        final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
+        breadcrumb.pushLink(new CreateFeaturePageUrl(process).getHtmlLink(tr("Create a feature")));
         return breadcrumb;
     }
-
 }

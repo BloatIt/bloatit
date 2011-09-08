@@ -124,6 +124,9 @@ public final class CreateTeamPage extends LoggedElveosPage {
         rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("Protected"));
         rightInput.setDefaultValue(rightData.getSuggestedValue());
         rightInput.setComment(Context.tr("Public teams can be joined by anybody without an invitation."));
+        if (rightData.getSuggestedValue() != null) {
+            rightInput.setDefaultStringValue(rightData.getSuggestedValue());
+        }
         form.add(rightInput);
 
         form.add(new HtmlSubmit(Context.tr("Submit")));

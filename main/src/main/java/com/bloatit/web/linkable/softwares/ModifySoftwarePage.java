@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
+import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -116,6 +117,10 @@ public final class ModifySoftwarePage extends LoggedElveosPage {
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the project : list all features, add siteweb links, etc."));
         addSoftwareForm.add(descriptionInput);
+        
+        // Markdown previewer
+        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(descriptionInput);
+        addSoftwareForm.add(mdPreview);
 
         final HtmlFileInput softwareImageInput = new HtmlFileInput(CreateSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
         softwareImageInput.setComment("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px.");

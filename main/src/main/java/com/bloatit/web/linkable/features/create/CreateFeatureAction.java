@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.features;
+package com.bloatit.web.linkable.features.create;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.FileConstraintChecker;
@@ -34,11 +34,12 @@ import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.IndexPageUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("features/docreate")
+@ParamContainer("feature/%process%/docreate")
 public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a title"))
@@ -46,9 +47,9 @@ public final class CreateFeatureAction extends UserContentAction {
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
     private final String description;
 
-    @NonOptional(@tr("You forgot to write a specification"))
-    @MinConstraint(min = 10, message = @tr("The specification must have at least %constraint% chars."))
-    @MaxConstraint(max = 800000, message = @tr("The specification must be %constraint% chars length max."))
+    @NonOptional(@tr("You forgot to write a description"))
+    @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
+    @MaxConstraint(max = 800000, message = @tr("The description must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
     private final String specification;
 
@@ -56,6 +57,11 @@ public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     private final Software software;
 
+    
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(role = Role.PAGENAME)
+    private final CreateFeatureProcess process;
+    
     private final CreateFeatureActionUrl url;
 
     public CreateFeatureAction(final CreateFeatureActionUrl url) {
@@ -65,13 +71,19 @@ public final class CreateFeatureAction extends UserContentAction {
         this.description = url.getDescription();
         this.specification = url.getSpecification();
         this.software = url.getSoftware();
+        this.process = url.getProcess();
     }
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyError(Context.tr("You have to specify a valid language."));
-            return new CreateFeaturePageUrl();
+            if(process == null) {
+                return new IndexPageUrl();
+            } else {
+                return new CreateFeaturePageUrl(process);
+            }
+            
         }
         return NO_ERROR;
     }
@@ -80,12 +92,17 @@ public final class CreateFeatureAction extends UserContentAction {
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, software);
         propagateAttachedFileIfPossible(feature);
+        process.close();
         return new FeaturePageUrl(feature, FeatureTabKey.description);
     }
 
     @Override
     protected Url doProcessErrors() {
-        return new CreateFeaturePageUrl();
+        if(process == null) {
+            return new IndexPageUrl();
+        } else {
+            return new CreateFeaturePageUrl(process);
+        }
     }
 
     @Override

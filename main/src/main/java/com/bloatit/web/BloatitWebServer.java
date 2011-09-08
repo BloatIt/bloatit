@@ -71,11 +71,18 @@ import com.bloatit.web.linkable.documentation.DocumentationPage;
 import com.bloatit.web.linkable.documentation.DocumentationRootPage;
 import com.bloatit.web.linkable.errors.PageForbidden;
 import com.bloatit.web.linkable.errors.PageNotFound;
-import com.bloatit.web.linkable.features.CreateFeatureAction;
-import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturePageAlias;
+import com.bloatit.web.linkable.features.ModifyFeatureAction;
+import com.bloatit.web.linkable.features.ModifyFeaturePage;
+import com.bloatit.web.linkable.features.create.ChooseFeatureTypeAction;
+import com.bloatit.web.linkable.features.create.ChooseFeatureTypePage;
+import com.bloatit.web.linkable.features.create.CreateFeatureAction;
+import com.bloatit.web.linkable.features.create.CreateFeatureAndOfferAction;
+import com.bloatit.web.linkable.features.create.CreateFeatureAndOfferPage;
+import com.bloatit.web.linkable.features.create.CreateFeaturePage;
+import com.bloatit.web.linkable.features.create.CreateFeatureProcess;
 import com.bloatit.web.linkable.invoice.ContributionInvoiceResource;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsAction;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsPage;
@@ -171,9 +178,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (FeatureListPageUrl.matches(pageCode)) {
             return new FeatureListPage(new FeatureListPageUrl(pageCode, postGetParameters, session.getParameters()));
-        }
-        if (CreateFeaturePageUrl.matches(pageCode)) {
-            return new CreateFeaturePage(new CreateFeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (FeaturePageUrl.matches(pageCode)) {
             return new FeaturePage(new FeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -340,6 +344,9 @@ public class BloatitWebServer extends WebProcessor {
         if (CancelContributionPageUrl.matches(pageCode)) {
             return new CancelContributionPage(new CancelContributionPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (ModifyFeaturePageUrl.matches(pageCode)) {
+            return new ModifyFeaturePage(new ModifyFeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -361,9 +368,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (OfferActionUrl.matches(pageCode)) {
             return new OfferAction(new OfferActionUrl(pageCode, postGetParameters, session.getParameters()));
-        }
-        if (CreateFeatureActionUrl.matches(pageCode)) {
-            return new CreateFeatureAction(new CreateFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (SignUpActionUrl.matches(pageCode)) {
             return new SignUpAction(new SignUpActionUrl(pageCode, postGetParameters, session.getParameters()));
@@ -510,6 +514,9 @@ public class BloatitWebServer extends WebProcessor {
         if (CancelContributionActionUrl.matches(pageCode)) {
             return new CancelContributionAction(new CancelContributionActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (ModifyFeatureActionUrl.matches(pageCode)) {
+            return new ModifyFeatureAction(new ModifyFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Process
@@ -530,6 +537,30 @@ public class BloatitWebServer extends WebProcessor {
             return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
+        
+        // Create feature process
+        if (CreateFeatureProcessUrl.matches(pageCode)) {
+            return new CreateFeatureProcess(new CreateFeatureProcessUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ChooseFeatureTypeActionUrl.matches(pageCode)) {
+            return new ChooseFeatureTypeAction(new ChooseFeatureTypeActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ChooseFeatureTypePageUrl.matches(pageCode)) {
+            return new ChooseFeatureTypePage(new ChooseFeatureTypePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (CreateFeatureActionUrl.matches(pageCode)) {
+            return new CreateFeatureAction(new CreateFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (CreateFeaturePageUrl.matches(pageCode)) {
+            return new CreateFeaturePage(new CreateFeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (CreateFeatureAndOfferPageUrl.matches(pageCode)) {
+            return new CreateFeatureAndOfferPage(new CreateFeatureAndOfferPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (CreateFeatureAndOfferActionUrl.matches(pageCode)) {
+            return new CreateFeatureAndOfferAction(new CreateFeatureAndOfferActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        
         // Resource page
         try {
             if (FileResourceUrl.matches(pageCode)) {

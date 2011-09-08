@@ -128,19 +128,10 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     }
 
     @Override
-    public void delete() throws UnauthorizedOperationException {
-        if (isDeleted()) {
-            return;
-        }
-
-        if (!getRights().hasAdminUserPrivilege()) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
-
-        super.delete();
-
+    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+        super.delete(delOrder);
         for (final Comment comment : getComments()) {
-            comment.delete();
+            comment.delete(delOrder);
         }
     }
 

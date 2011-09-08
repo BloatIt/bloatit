@@ -19,6 +19,7 @@
 package com.bloatit.web.linkable.admin.master;
 
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.SessionManager;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -47,6 +48,7 @@ public abstract class AdminAction extends LoggedElveosAction {
      */
     public AdminAction(final AdminActionUrl url) {
         super(url);
+        SessionManager.getSessionFactory().getCurrentSession().disableFilter("usercontent.nonDeleted");
     }
 
     @Override

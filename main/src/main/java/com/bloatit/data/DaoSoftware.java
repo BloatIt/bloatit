@@ -157,7 +157,7 @@ public class DaoSoftware extends DaoIdentifiable {
     }
 
     /**
-     * @param description the new name of the software.
+     * @param DESCRIPTION the new name of the software.
      */
     public void setName(final String name) {
         this.name = name;

@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
 import javax.persistence.Basic;
@@ -449,6 +450,14 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         this.featureState = featureState;
     }
 
+    public void setDescription(String newDescription, Locale locale) {
+        getDescription().getTranslation(locale).setText(newDescription, getMember());
+    }
+    
+    public void setTitle(String title, Locale locale) {
+        getDescription().getTranslation(locale).setTitle(title);
+    }
+
     // @Override
     // public void setIsDeleted(final Boolean isDeleted) {
     // if (isDeleted) {
@@ -640,7 +649,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the int
      */
     public int countOpenBugs() {
-        if (selectedOffer == null){
+        if (selectedOffer == null) {
             return 0;
         }
         final Query query = SessionManager.getNamedQuery("feature.getBugs.byNonState.size");

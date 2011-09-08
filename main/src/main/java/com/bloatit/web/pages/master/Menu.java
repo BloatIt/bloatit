@@ -26,14 +26,8 @@ import com.bloatit.framework.webprocessor.components.form.HtmlButton;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlSearch;
-import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Image;
-import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
-import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
@@ -50,8 +44,6 @@ public class Menu extends HtmlDiv {
         final HtmlDiv mainMenu = new HtmlDiv("main_menu", "main_menu");
 
         final HtmlLink featureList = new FeatureListPageUrl().getHtmlLink(tr("Feature requests"));
-
-        new CreateFeaturePageUrl().getHtmlLink(tr("New request"));
 
         final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl("brainstorm");
         final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(tr("Brainstorms"));

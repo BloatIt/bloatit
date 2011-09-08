@@ -44,7 +44,7 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.CreateFeaturePageUrl;
+import com.bloatit.web.url.CreateFeatureProcessUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 
 @ParamContainer("features")
@@ -260,7 +260,7 @@ public final class FeatureListPage extends ElveosPage {
 
         // //////////
         // Right bar
-        layout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
+        layout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeatureProcessUrl(), WebConfiguration.getImgIdea()));
         layout.addRight(new SideBarDocumentationBlock("feature"));
 
         return layout;

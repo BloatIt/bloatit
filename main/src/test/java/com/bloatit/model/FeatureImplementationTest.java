@@ -353,6 +353,8 @@ public class FeatureImplementationTest extends ModelTestUnit {
     public void testCancelDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
         final Feature feature = createFeatureAddOffer120AddContribution120BeginDev();
 
+        Mockit.setUpMock(DaoFeature.class, new MockFeatureValidationTimeOut());
+        
         try {
             feature.cancelDevelopment();
             fail();
@@ -377,6 +379,8 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(0, feature.getContribution().intValue());
 
         assertEquals(FeatureState.DISCARDED, feature.getFeatureState());
+        
+        Mockit.tearDownMocks();
     }
 
     @Test
@@ -520,7 +524,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         new TaskUpdateDevelopingState(feature.getId(), new Date());
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (final InterruptedException e) {
             fail();
         }

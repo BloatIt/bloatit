@@ -25,12 +25,11 @@ import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
-import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
@@ -61,7 +60,7 @@ public final class SoftwarePage extends ElveosPage {
     private final String name;
 
     private final SoftwarePageUrl url;
-    
+
     @SubParamContainer
     private HtmlPagedList<Feature> pagedFeatureList;
 
@@ -94,27 +93,20 @@ public final class SoftwarePage extends ElveosPage {
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
-        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
+        final HtmlCachedMarkdownRenderer description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
         layout.addLeft(description);
-        
-        
-        
+
         PageIterable<Feature> features = software.getFeatures();
-        
+
         if (features.size() > 0) {
-            
+
             layout.addLeft(new HtmlTitle(Context.tr("Related features"), 1));
             final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem();
             final SoftwarePageUrl clonedUrl = url.clone();
             pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, features, clonedUrl, clonedUrl.getPagedFeatureListUrl());
             layout.addLeft(pagedFeatureList);
-        } 
-        
-        
-        
-        
-        
-        
+        }
+
         return layout;
     }
 
@@ -139,8 +131,7 @@ public final class SoftwarePage extends ElveosPage {
 
         return breadcrumb;
     }
-    
-    
+
     private static class FeaturesListItem implements HtmlRenderer<Feature> {
 
         public FeaturesListItem() {
