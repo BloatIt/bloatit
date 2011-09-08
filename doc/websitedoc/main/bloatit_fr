@@ -3,7 +3,7 @@ Bloatit, le moteur d'Elveos
 
 Le site elveos.org utilise un framework web en Java nommé Bloatit.
 
-Ce framework a été développé spécifiquement pour l'occasion et utilise FCGI ou SCGI pour communiquer avec un serveur web. Bloatit a été pensé pour être utilisable avec d'autre site et même si le framework n'est pas encore dissocié dans le code source d'elveos.
+Ce framework a été développé spécifiquement pour l'occasion et utilise FCGI ou SCGI pour communiquer avec un serveur web. Bloatit a été pensé pour être utilisable avec d'autres sites et même si le framework n'est pas encore dissocié dans le code source d'elveos.
 
 
 Dépendances
