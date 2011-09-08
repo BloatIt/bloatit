@@ -603,9 +603,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         final boolean isDeveloping = getFeatureState() == FeatureState.DEVELOPPING;
         if (isDeveloping) {
             assert getSelectedOffer() != null;
-            assert getValidatedOffer() != null;
-            assert getSelectedOffer().equals(getValidatedOffer());
-            assert getValidatedOffer().isFinished() == false;
+            assert getSelectedOffer().isFinished() == false;
         }
         return isDeveloping;
     }
