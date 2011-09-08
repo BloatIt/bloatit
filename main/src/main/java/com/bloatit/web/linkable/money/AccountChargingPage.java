@@ -19,13 +19,9 @@ import javax.mail.IllegalWriteException;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
-import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
-import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -42,7 +38,6 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
-import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.QuotationPage;
@@ -54,6 +49,7 @@ import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.ChangePrepaidAmountActionUrl;
 import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 import com.bloatit.web.url.StaticAccountChargingPageUrl;
 
@@ -67,30 +63,19 @@ public final class AccountChargingPage extends QuotationPage {
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountChargingProcess process;
 
-    @Optional
-    @RequestParam(message = @tr("The amount to load on your account must be a positive integer."))
-    @MaxConstraint(max = 100000, message = @tr("We cannot accept such a generous offer."))
-    @MinConstraint(min = 1, message = @tr("You must specify a positive value."))
-    @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
-    private BigDecimal preload;
 
     private final AccountChargingPageUrl url;
 
     public AccountChargingPage(final AccountChargingPageUrl url) {
         super(url);
         this.url = url;
-        preload = url.getPreload();
         process = url.getProcess();
     }
 
     @Override
     public HtmlElement createBodyContentOnParameterError() throws RedirectException {
         if (url.getMessages().hasMessage()) {
-            if (url.getProcessParameter().getMessages().isEmpty()) {
-                if (!url.getPreloadParameter().getMessages().isEmpty()) {
-                    preload = process.getAccountChargingAmount() != null ? process.getAccountChargingAmount() : BigDecimal.ZERO;
-                }
-            } else {
+            if (!url.getProcessParameter().getMessages().isEmpty()) {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
@@ -127,19 +112,6 @@ public final class AccountChargingPage extends QuotationPage {
         if (process.isLocked()) {
             getSession().notifyWarning(tr("You have a payment in progress, you cannot change the amount."));
         }
-        try {
-            if (!process.getAccountChargingAmount().equals(preload) && preload != null) {
-                process.setAmountToCharge(preload);
-                process.setAmountToPayBeforeComission(preload);
-            }
-            if (process.getAccountChargingAmount().equals(BigDecimal.ZERO)) {
-
-                process.setAmountToCharge(WebConfiguration.getDefaultChargingAmount());
-                process.setAmountToPayBeforeComission(WebConfiguration.getDefaultChargingAmount());
-            }
-        } catch (final IllegalWriteException e) {
-            getSession().notifyWarning(tr("You have a payment in progress, you cannot change the amount."));
-        }
 
         group.add(ContactBox.generate(actor, process));
 
@@ -148,8 +120,7 @@ public final class AccountChargingPage extends QuotationPage {
 
         final HtmlLineTableModel model = new HtmlLineTableModel();
 
-        final AccountChargingPageUrl recalculateUrl = url.clone();
-        recalculateUrl.setPreload(null);
+        final ChangePrepaidAmountActionUrl recalculateUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process, false);
         final HtmlChargeAccountLine line = new HtmlChargeAccountLine(false, process.getAccountChargingAmount(), actor, recalculateUrl);
 
         model.addLine(line);
@@ -180,7 +151,7 @@ public final class AccountChargingPage extends QuotationPage {
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, BigDecimal.ZERO, line.getMoneyField(), summary));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, BigDecimal.ZERO, line.getMoneyField(), summary, process));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);
