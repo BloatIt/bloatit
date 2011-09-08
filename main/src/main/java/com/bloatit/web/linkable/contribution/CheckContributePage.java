@@ -246,7 +246,7 @@ public final class CheckContributePage extends QuotationPage {
                 model.addLine(new HtmlPrepaidLine(actor));
             }
 
-            final ChangePrepaidAmountActionUrl recalculateUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process, false);
+            final ChangePrepaidAmountActionUrl recalculateUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process);
             line = new HtmlChargeAccountLine(true, process.getAccountChargingAmount(), actor, recalculateUrl);
             model.addLine(line);
         } catch (final UnauthorizedOperationException e) {

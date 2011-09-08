@@ -222,7 +222,9 @@ public class HtmlTotalSummary extends HtmlTable {
                 final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("quotation.js");
                 quotationUpdateScriptTemplate.addNamedParameter("pre_total", staticAmount.toPlainString());
                 quotationUpdateScriptTemplate.addNamedParameter("charge_field_id", variableField.getId());
-                quotationUpdateScriptTemplate.addNamedParameter("callback_url", new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process, true).urlString());
+                ChangePrepaidAmountActionUrl changePrepaidAmountActionUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process);
+                changePrepaidAmountActionUrl.setSilent(true);
+                quotationUpdateScriptTemplate.addNamedParameter("callback_url", changePrepaidAmountActionUrl.urlString());
                 quotationUpdateScriptTemplate.addNamedParameter("commission_variable_rate", String.valueOf(BankTransaction.COMMISSION_VARIABLE_RATE));
                 quotationUpdateScriptTemplate.addNamedParameter("commission_fix_rate", String.valueOf(BankTransaction.COMMISSION_FIX_RATE));
                 quotationUpdateScriptTemplate.addNamedParameter("input_offset", "0");

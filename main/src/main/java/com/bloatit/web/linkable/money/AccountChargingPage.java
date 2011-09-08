@@ -120,7 +120,7 @@ public final class AccountChargingPage extends QuotationPage {
 
         final HtmlLineTableModel model = new HtmlLineTableModel();
 
-        final ChangePrepaidAmountActionUrl recalculateUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process, false);
+        final ChangePrepaidAmountActionUrl recalculateUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process);
         final HtmlChargeAccountLine line = new HtmlChargeAccountLine(false, process.getAccountChargingAmount(), actor, recalculateUrl);
 
         model.addLine(line);
