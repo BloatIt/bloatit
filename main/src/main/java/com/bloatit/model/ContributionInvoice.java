@@ -120,7 +120,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
         final String receiverCountry = recipientContact.getCountry();
         final Date invoiceDate = DateUtils.now();
 
-        final BigDecimal taxRate = emitterActor.getContact().getTaxRate().multiply(BigDecimal.valueOf(100));
+        final BigDecimal taxRate = emitterActor.getContact().getTaxRate();
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
@@ -163,7 +163,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                        invoiceDate,
                                                        deliveryName,
                                                        priceExcludingTax,
-                                                       taxRate,
+                                                       taxRate.multiply(BigDecimal.valueOf(100)),
                                                        taxAmount,
                                                        totalPrice,
                                                        sellerLegalId,
