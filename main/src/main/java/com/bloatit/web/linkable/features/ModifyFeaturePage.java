@@ -84,7 +84,7 @@ public class ModifyFeaturePage extends LoggedElveosPage {
         softwareInput.setComment(Context.tr("The software of the feature request. Select 'new software' if your feature is the creation of a new software."));
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
-        } else {
+        } else if (feature.getSoftware() != null) {
             softwareInput.setDefaultValue(feature.getSoftware().getId().toString());
         }
         modifyForm.add(softwareInput);

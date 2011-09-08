@@ -60,7 +60,9 @@ public class ModifyFeatureAction extends LoggedElveosAction {
     protected Url doProcessRestricted(Member me) {
         try {
             feature.setDescription(description, feature.getDescription().getDefaultLocale());
-            feature.setSoftware(software);
+            if (software != null){
+                feature.setSoftware(software);
+            }
             feature.setTitle(title, feature.getDescription().getDefaultLocale());
         } catch (UnauthorizedOperationException e) {
             throw new ShallNotPassException("User cannot modify a feature, we checked right before tho ...");
