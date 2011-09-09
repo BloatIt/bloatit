@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.members.tabs.dashboard;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -61,7 +62,7 @@ public class DashboardRenderer extends HtmlLeaf {
             leftColumnBlock.add(nextStep);
 
             nextStep.add(new HtmlTitle(Context.tr("Next step"), 2));
-            HtmlParagraph nextStepContent = new HtmlParagraph("Something TODO here !!");
+            HtmlParagraph nextStepContent = new HtmlParagraph(entry.getNextStep());
             nextStepContent.setCssClass("content");
             nextStep.add(nextStepContent);
 
@@ -69,20 +70,25 @@ public class DashboardRenderer extends HtmlLeaf {
             HtmlDiv rightColumn = new HtmlDiv("right_column");
             entryDiv.add(rightColumn);
 
-            HtmlDiv rgtColumnEntry = new HtmlDiv("right_entry");
-            HtmlDiv featureState = new HtmlDiv("state");
-            featureState.addText("Offer");
-            rgtColumnEntry.add(featureState);
+            for (DashboardStep step : entry.getSteps()) {
+                HtmlDiv rgtColumnEntry = new HtmlDiv("right_entry");
+                HtmlDiv featureState = new HtmlDiv("state");
+                featureState.addText(step.getStep());
+                rgtColumnEntry.add(featureState);
 
-            HtmlDiv statusBox = new HtmlDiv("status_box");
-            HtmlDiv stateStatus = new HtmlDiv("state_status");
-            rgtColumnEntry.add(statusBox);
-            statusBox.add(stateStatus);
-            stateStatus.addText("Do something");
+                HtmlDiv statusBox = new HtmlDiv("status_box");
+                rgtColumnEntry.add(statusBox);
+                HtmlDiv stateStatus = new HtmlDiv("state_status");
+                statusBox.add(stateStatus);
+                HtmlList itemsList = new HtmlList();
+                stateStatus.add(itemsList);
 
-            rightColumn.add(rgtColumnEntry);
-            rightColumn.add(rgtColumnEntry);
-            rightColumn.add(rgtColumnEntry);
+                for (String str : step.getItems()) {
+                    itemsList.add(str);
+                }
+
+                rightColumn.add(rgtColumnEntry);
+            }
         }
     }
 
