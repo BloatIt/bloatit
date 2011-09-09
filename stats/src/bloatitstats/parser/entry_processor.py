@@ -12,6 +12,7 @@ class entry_processor:
     nb_new_linkable = 0
     nb_new_useragent = 0
     nb_new_referer = 0
+    nb_skipped = 0
     first_request_date = None
     last_request_date = None
         
@@ -55,7 +56,7 @@ class entry_processor:
         cursor.execute('SELECT id FROM meta WHERE last_parsed_entry_date >= datetime(?)', (self.date,))
         is_already_parse = cursor.fetchone()
         if is_already_parse:
-            print 'Log entry already parsed. Skipping.' 
+            entry_processor.nb_skipped += 1
             return
         
         if not entry_processor.first_request_date:

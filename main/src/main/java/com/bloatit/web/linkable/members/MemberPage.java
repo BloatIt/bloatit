@@ -25,6 +25,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlBlockquote;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -164,15 +165,24 @@ public final class MemberPage extends ElveosPage {
         master.add(main);
 
         // Member ID card
-        final HtmlDiv memberId = new HtmlDiv("member_id");
-
-        // Avatar
-        final HtmlDiv avatarDiv = new HtmlDiv("float_left");
+        
+     // Avatar
+        final HtmlDiv avatarDiv = new HtmlDiv("member_avatar");
         avatarDiv.add(MembersTools.getMemberAvatar(member));
-        memberId.add(avatarDiv);
+        main.add(avatarDiv);
+        
+        
+        final HtmlDiv memberId = new HtmlDiv("member_id");
         main.add(memberId);
-
         try {
+            // Description
+            if (member.getDescription() != null) {
+                HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlMarkdownRenderer(member.getDescription())));
+                memberId.add(memberDescription);
+            }
+
+            
+
             final HtmlList memberIdList = new HtmlList();
             memberId.add(memberIdList);
 
@@ -217,11 +227,6 @@ public final class MemberPage extends ElveosPage {
             final HtmlSpan karma = new HtmlSpan("id_category");
             karma.addText(Context.tr("Karma: "));
             memberIdList.add(new PlaceHolderElement().add(karma).addText("" + member.getKarma()));
-
-            if (member.getDescription() != null) {
-                HtmlBranch memberDescription = new HtmlDiv("member_description").add(new HtmlMarkdownRenderer(member.getDescription()));
-                memberId.add(memberDescription);
-            }
 
         } catch (final UnauthorizedOperationException e) {
             getSession().notifyError("An error prevented us from displaying user information. Please notify us.");
