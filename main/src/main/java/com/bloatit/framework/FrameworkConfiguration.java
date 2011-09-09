@@ -99,14 +99,11 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private MicroBlogManager microBlogs;
 
     private String mercanetApiPath;
-
     private String mercanetRequestBin;
-
     private String mercanetResponseBin;
-
     private String mercanetPatfilePath;
-    
     private String mercanetMerchantId;
+    private Boolean mercanetEnabled;
 
     private FrameworkConfiguration() {
         super();
@@ -370,6 +367,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static String getMercanetMerchantId() {
         return configuration.mercanetMerchantId;
     }
+    
+    public static Boolean isMercanetEnabled() {
+        return configuration.mercanetEnabled;
+    }
 
     private void loadConfiguration() {
 
@@ -401,6 +402,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         mercanetResponseBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.response.bin");
         mercanetPatfilePath = ConfigurationManager.getConfigDir() + properties.getString("mercanet.pathfile.path");
         mercanetMerchantId = properties.getString("mercanet.merchant.id");
+        mercanetEnabled  = properties.getBoolean("mercanet.enabled");
 
         // Mail configuration
         mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");
