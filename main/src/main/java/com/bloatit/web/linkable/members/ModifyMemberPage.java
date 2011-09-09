@@ -62,11 +62,9 @@ public class ModifyMemberPage extends LoggedElveosPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-
         final HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Change member settings"));
         layout.addLeft(title);
-
 
         try {
             // ///////
@@ -91,7 +89,7 @@ public class ModifyMemberPage extends LoggedElveosPage {
 
             // User description
             final FieldData descriptionFD = targetUrl.getDescriptionParameter().pickFieldData();
-            HtmlTextArea description = new HtmlTextArea(descriptionFD.getName(),Context.tr("Description"), 20, 100);
+            HtmlTextArea description = new HtmlTextArea(descriptionFD.getName(), Context.tr("Description"), 20, 100);
             if (descriptionFD.getSuggestedValue() != null && !descriptionFD.getSuggestedValue().isEmpty()) {
                 description.setDefaultValue(descriptionFD.getSuggestedValue());
             } else if (loggedUser.getDescription() != null) {
@@ -105,7 +103,7 @@ public class ModifyMemberPage extends LoggedElveosPage {
             final HtmlFileInput avatarInput = new HtmlFileInput(avatarField.getName(), Context.tr("Avatar image file"));
             avatarInput.setComment(tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"));
             nameBlock.add(avatarInput);
-            
+
             // Delete avatar
             final FieldData deleteAvatarFieldData = targetUrl.getDeleteAvatarParameter().pickFieldData();
             final HtmlCheckbox deleteAvatar = new HtmlCheckbox(deleteAvatarFieldData.getName(), Context.tr("Delete avatar"), LabelPosition.BEFORE);
@@ -116,7 +114,6 @@ public class ModifyMemberPage extends LoggedElveosPage {
             nameBlock.add(deleteAvatar);
             nameBlock.add(new HtmlSubmit(Context.tr("Submit")));
 
-            
             // ///////
             // password
             final ModifyPasswordActionUrl passwordUrl = new ModifyPasswordActionUrl(getSession().getShortKey());
@@ -128,19 +125,22 @@ public class ModifyMemberPage extends LoggedElveosPage {
             final FieldData currentPasswordFieldData = passwordUrl.getCurrentPasswordParameter().pickFieldData();
             final HtmlPasswordField currentPasswordInput = new HtmlPasswordField(currentPasswordFieldData.getName(), tr("Current password"));
             currentPasswordInput.addErrorMessages(currentPasswordFieldData.getErrorMessages());
-            currentPasswordInput.setComment(Context.tr("This is useful only if you intend to change your password."));
+            currentPasswordInput.addAttribute("autocomplete", "off");
             passwordBlock.add(currentPasswordInput);
 
             // Password
             final FieldData passwordFieldData = passwordUrl.getPasswordParameter().pickFieldData();
             final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), tr("New password"));
             passwordInput.addErrorMessages(passwordFieldData.getErrorMessages());
+            passwordInput.addAttribute("autocomplete", "off");
+            passwordInput.setComment(Context.tr("7 characters minimum."));
             passwordBlock.add(passwordInput);
 
             // Password check
             final FieldData passwordCheckFieldData = passwordUrl.getPasswordCheckParameter().pickFieldData();
             final HtmlPasswordField passwordCheckInput = new HtmlPasswordField(passwordCheckFieldData.getName(), tr("Reenter new password"));
             passwordCheckInput.addErrorMessages(passwordCheckFieldData.getErrorMessages());
+            passwordCheckInput.addAttribute("autocomplete", "off");
             passwordBlock.add(passwordCheckInput);
             passwordBlock.add(new HtmlSubmit(Context.tr("Submit")));
 
@@ -182,7 +182,7 @@ public class ModifyMemberPage extends LoggedElveosPage {
             langInput.setDefaultValue(detailUrl.getLangParameter().getStringValue(), loggedUser.getLocale().getLanguage());
             detailBlock.add(langInput);
             detailBlock.add(new HtmlSubmit(Context.tr("Submit")));
-            
+
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Couldn't access logged member information", e);
         }
