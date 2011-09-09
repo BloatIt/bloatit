@@ -194,12 +194,12 @@ public class ModifyMemberPage extends LoggedElveosPage {
 
     @Override
     public String getRefusalReason() {
-        return Context.tr("You must be logged to modify your personnal information");
+        return Context.tr("You must be logged to modify your personal informations.");
     }
 
     @Override
     protected String createPageTitle() {
-        return Context.tr("Modify member information");
+        return Context.tr("Modify member informations");
     }
 
     @Override

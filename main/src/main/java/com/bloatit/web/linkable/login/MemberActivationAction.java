@@ -15,6 +15,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -24,6 +25,7 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
+import com.bloatit.web.url.ModifyMemberPageUrl;
 
 /**
  * A response to a form used to create a new feature
@@ -59,14 +61,14 @@ public final class MemberActivationAction extends ElveosAction {
 
                     // Auto login after activation
                     AuthToken.authenticate(member);
-                    session.notifyGood(Context.tr("Activation sucess, you are now logged."));
+                    session.notifyGood(new HtmlMixedText(Context.tr("Activation success, you are now logged. You can <0::add an avatar and introduce yourself>."), new ModifyMemberPageUrl().getHtmlLink()));
 
                 } else {
                     session.notifyWarning(Context.tr("Wrong activation key for this member."));
                 }
             } else if (member.hasEmailToActivate()) {
                 if (member.activateEmail(key)) {
-                    session.notifyGood(Context.tr("Email activation sucess."));
+                    session.notifyGood(Context.tr("Email activation success."));
                 } else {
                     session.notifyWarning(Context.tr("Wrong email activation key for this member."));
                 }
