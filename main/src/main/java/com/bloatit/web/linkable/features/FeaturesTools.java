@@ -244,7 +244,7 @@ public class FeaturesTools {
             feature.getComments();
             final Long commentsCount = feature.getCommentsCount();
 
-            final int contributionsCount = feature.getContributions().size();
+            final int contributionsCount = feature.getContributions(false).size();
 
             final FeaturePageUrl commentsFeatureUrl = new FeaturePageUrl(feature, FeatureTabKey.description);
             commentsFeatureUrl.setAnchor("comments_block");
