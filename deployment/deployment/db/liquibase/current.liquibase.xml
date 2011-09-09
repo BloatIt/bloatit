@@ -19,4 +19,5 @@
     <include file="liquibase/actor-taxrate.xml" />
     <include file="liquibase/follow.xml" />
     <include file="liquibase/add-mercanet.xml" />
+    <include file="liquibase/member-add-description.xml" />
 </databaseChangeLog>

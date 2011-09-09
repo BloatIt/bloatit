@@ -199,7 +199,7 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                     name = "members.exceptRole",
                                     query = "FROM com.bloatit.data.DaoMember " +
                                             "WHERE role != :role " +
-                                            "ORDER BY coalesce(fullname, login) ASC"),
+                                            "ORDER BY CONCAT(coalesce(fullname, ''), login) ASC"),
                         @NamedQuery(
                                     name = "members.exceptRole.size",
                                     query = "SELECT count(*) " +
@@ -255,6 +255,9 @@ public class DaoMember extends DaoActor {
 
     @Basic(optional = false)
     private Locale locale;
+
+    @Column(length = 1024)
+    private String description;
 
     @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -409,6 +412,7 @@ public class DaoMember extends DaoActor {
         this.salt = salt;
         this.karma = 0;
         this.fullname = "";
+        this.description = "";
     }
 
     /**
@@ -562,6 +566,10 @@ public class DaoMember extends DaoActor {
      */
     void setSalt(final String salt) {
         this.salt = salt;
+    }
+
+    public void setDescription(String userDescription) {
+        this.description = userDescription;
     }
 
     public void setEmailToActivate(final String emailToActivate) {
@@ -897,6 +905,10 @@ public class DaoMember extends DaoActor {
         this.avatar = avatar;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public String getEmailToActivate() {
         return this.emailToActivate;
     }
@@ -947,5 +959,4 @@ public class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
-
 }

@@ -19,7 +19,6 @@ package com.bloatit.framework.utils.i18n;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Collections;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +36,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.sun.mail.handlers.message_rfc822;
 
 /**
  * <p>

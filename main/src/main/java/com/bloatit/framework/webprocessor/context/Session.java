@@ -12,7 +12,6 @@
 
 package com.bloatit.framework.webprocessor.context;
 
-import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
