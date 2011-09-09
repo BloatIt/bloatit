@@ -144,7 +144,7 @@ public class FeaturesTools {
                 myProgressValue = (float) Math.floor(myProgressValue);
             }
 
-            if (!futureAmount.equals(BigDecimal.ZERO)) {
+            if (futureAmount.compareTo(BigDecimal.ZERO) != 0) {
                 futureProgressValue = feature.getRelativeProgression(futureAmount);
                 if (futureProgressValue > 0.0f && futureProgressValue < Math.min(progressValue / 2, 5f)) {
                     futureProgressValue = Math.min(progressValue / 2, 5f);

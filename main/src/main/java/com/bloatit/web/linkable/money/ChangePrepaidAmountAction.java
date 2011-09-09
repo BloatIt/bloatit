@@ -61,19 +61,19 @@ public class ChangePrepaidAmountAction extends LoggedElveosAction {
         try {
             if (process instanceof AccountChargingProcess) {
 
-                if (!process.getAccountChargingAmount().equals(preload) && preload != null) {
+                if (preload != null && process.getAccountChargingAmount().compareTo(preload) != 0) {
 
                     process.setAmountToCharge(preload);
                     process.setAmountToPayBeforeComission(preload);
                 }
-                if (process.getAccountChargingAmount().equals(BigDecimal.ZERO)) {
+                if (process.getAccountChargingAmount().compareTo(BigDecimal.ZERO) == 0) {
 
                     process.setAmountToCharge(WebConfiguration.getDefaultChargingAmount());
                     process.setAmountToPayBeforeComission(WebConfiguration.getDefaultChargingAmount());
                 }
                 return new AccountChargingPageUrl((AccountChargingProcess) process);
             } else if (process instanceof ContributionProcess) {
-                if (!process.getAccountChargingAmount().equals(preload) && preload != null) {
+                if (preload != null && process.getAccountChargingAmount().compareTo(preload) != 0) {
                     process.setAmountToCharge(preload);
                 }
                 return new CheckContributePageUrl((ContributionProcess) process);

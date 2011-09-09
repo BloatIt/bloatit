@@ -72,7 +72,7 @@ public final class CheckContributeAction extends UserContentAction {
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
 
         try {
-            if (!process.getAmount().equals(amount)) {
+            if (process.getAmount().compareTo(amount) != 0) {
                 process.setAmount(amount);
             }
             if (!(process.getComment() == comment || (process.getComment() != null && process.getComment().equals(comment)))) {
