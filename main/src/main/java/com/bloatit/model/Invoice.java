@@ -130,7 +130,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
         final String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
 
-        final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate().multiply(BigDecimal.valueOf(100));
+        final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
@@ -180,7 +180,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                            invoiceDate,
                                            deliveryName,
                                            priceExcludingTax,
-                                           taxRate,
+                                           taxRate.multiply(new BigDecimal("100")),
                                            taxAmount,
                                            totalPrice,
                                            internalInvoiceNumber,

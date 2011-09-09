@@ -14,6 +14,8 @@ package com.bloatit.web.linkable.features;
 // import java.util.Random;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.ArrayList;
+
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.search.FeatureSearch;
 import com.bloatit.data.search.FeatureSearch.SortMethod;
@@ -32,6 +34,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.masters.HtmlHeaderLink;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.WebConfiguration;
@@ -39,12 +42,14 @@ import com.bloatit.web.components.HtmlFeatureSummary;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
+import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureProcessUrl;
+import com.bloatit.web.url.FeatureAtomFeedUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 
 @ParamContainer("features")
@@ -261,6 +266,7 @@ public final class FeatureListPage extends ElveosPage {
         // //////////
         // Right bar
         layout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeatureProcessUrl(), WebConfiguration.getImgIdea()));
+        layout.addRight(new SideBarButton(Context.tr("Elveos Atom feed"), new FeatureAtomFeedUrl(), WebConfiguration.getAtomImg(), false));
         layout.addRight(new SideBarDocumentationBlock("feature"));
 
         return layout;
@@ -344,5 +350,12 @@ public final class FeatureListPage extends ElveosPage {
     @Override
     protected Breadcrumb createBreadcrumb() {
         return FeatureListPage.generateBreadcrumb();
+    }
+    
+    @Override
+    protected ArrayList<HtmlHeaderLink> getLinks() {
+        ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
+        list.add(ElveosAtomFeed.generateHeaderLink(new FeatureAtomFeedUrl(), Context.tr("Feature feed")));
+        return list;
     }
 }

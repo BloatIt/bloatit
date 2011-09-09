@@ -87,7 +87,7 @@ function QuotationDifferenceEntry(id, reference1, reference2) {
 //Settings
 var chargeField = "${charge_field_id}";
 var pretotal = ${pre_total};
-var callbackUrl = "${fallback_url}";
+var callbackUrl = "${callback_url}";
 var commissionVariableRate = ${commission_variable_rate};
 var commissionFixRate = ${commission_fix_rate};
 var inputOffset = ${input_offset};
@@ -125,7 +125,7 @@ function update() {
 
     //Update process
     var http = new XMLHttpRequest();
-    http.open('GET', callbackUrl+"?preload="+newValue, true);
+    http.open('GET', callbackUrl+"?silent=true&preload="+newValue, true);
     http.send(null);
 };
 

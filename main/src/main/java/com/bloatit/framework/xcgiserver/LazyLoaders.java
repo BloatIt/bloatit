@@ -68,7 +68,7 @@ class LazyLoaders {
                 if (aValue.length == 2) {
                     map.put(aValue[0].trim(), aValue[1].trim());
                 } else {
-                    Log.framework().error("Malformed cookie value: " + namedValue);
+                    Log.framework().warn("Malformed cookie value: " + namedValue);
                 }
             }
             return map;

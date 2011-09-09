@@ -17,6 +17,7 @@
 package com.bloatit.framework.webprocessor.masters;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 
@@ -146,6 +147,8 @@ public abstract class Page implements Linkable {
      */
     protected abstract Set<Robot> getRobots();
 
+    protected abstract ArrayList<HtmlHeaderLink> getLinks();
+
     // -----------------------------------------------------------------------
     // Template method pattern: procedure.
     // -----------------------------------------------------------------------
@@ -198,12 +201,14 @@ public abstract class Page implements Linkable {
             pageHeader.addJs(js);
         }
 
+        for (final HtmlHeaderLink link : getLinks()) {
+            pageHeader.addHeaderLink(link);
+        }
+
         for (final XmlNode node : page.getAllPostNode()) {
             bodyContent.add(node);
         }
-        
-        
-        
+
         return page;
     }
 

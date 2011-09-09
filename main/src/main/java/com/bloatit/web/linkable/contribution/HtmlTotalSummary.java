@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.BankTransaction;
+import com.bloatit.web.actions.AccountProcess;
 import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
@@ -35,12 +36,13 @@ import com.bloatit.web.linkable.money.Quotation.QuotationProxyEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationTotalEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationVisitor;
 import com.bloatit.web.linkable.money.QuotationEntry;
+import com.bloatit.web.url.ChangePrepaidAmountActionUrl;
 import com.bloatit.web.url.QuotationPageUrl;
 
 public class HtmlTotalSummary extends HtmlTable {
 
-    public HtmlTotalSummary(final StandardQuotation quotation, final boolean showFeesDetails, final QuotationPageUrl myUrl) {
-        this(quotation, showFeesDetails, myUrl, null, null, null);
+    public HtmlTotalSummary(final StandardQuotation quotation, final boolean showFeesDetails, final QuotationPageUrl myUrl, AccountProcess process) {
+        this(quotation, showFeesDetails, myUrl, null, null, null, process);
     }
 
     public HtmlTotalSummary(final StandardQuotation quotation,
@@ -48,8 +50,8 @@ public class HtmlTotalSummary extends HtmlTable {
                             final QuotationPageUrl myUrl,
                             final BigDecimal staticAmount,
                             final HtmlElement variableField,
-                            final HtmlBranch scriptContainer) {
-        super(new HtmlTotalSummaryModel(quotation, showFeesDetails, myUrl, staticAmount, variableField, scriptContainer));
+                            final HtmlBranch scriptContainer, AccountProcess process) {
+        super(new HtmlTotalSummaryModel(quotation, showFeesDetails, myUrl, staticAmount, variableField, scriptContainer, process));
         this.setCssClass("quotation_totals_lines");
 
     }
@@ -68,7 +70,7 @@ public class HtmlTotalSummary extends HtmlTable {
                                      final QuotationPageUrl myUrl,
                                      final BigDecimal staticAmount,
                                      final HtmlElement variableField,
-                                     final HtmlBranch scriptContainer) {
+                                     final HtmlBranch scriptContainer,  AccountProcess process) {
             // Subtotal
             final HtmlTableLine subtotalLine = new HtmlTableLine();
             addLine(subtotalLine);
@@ -220,7 +222,9 @@ public class HtmlTotalSummary extends HtmlTable {
                 final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("quotation.js");
                 quotationUpdateScriptTemplate.addNamedParameter("pre_total", staticAmount.toPlainString());
                 quotationUpdateScriptTemplate.addNamedParameter("charge_field_id", variableField.getId());
-                quotationUpdateScriptTemplate.addNamedParameter("fallback_url", myUrl.urlString());
+                ChangePrepaidAmountActionUrl changePrepaidAmountActionUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process);
+                changePrepaidAmountActionUrl.setSilent(true);
+                quotationUpdateScriptTemplate.addNamedParameter("callback_url", changePrepaidAmountActionUrl.urlString());
                 quotationUpdateScriptTemplate.addNamedParameter("commission_variable_rate", String.valueOf(BankTransaction.COMMISSION_VARIABLE_RATE));
                 quotationUpdateScriptTemplate.addNamedParameter("commission_fix_rate", String.valueOf(BankTransaction.COMMISSION_FIX_RATE));
                 quotationUpdateScriptTemplate.addNamedParameter("input_offset", "0");

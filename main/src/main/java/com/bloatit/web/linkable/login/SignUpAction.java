@@ -8,6 +8,7 @@ import java.util.Locale;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
+import com.bloatit.framework.webprocessor.annotations.LengthConstraint;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -56,6 +57,8 @@ public final class SignUpAction extends ElveosAction {
     private final String email;
 
     @RequestParam(name = "bloatit_country", role = Role.POST)
+    @LengthConstraint(length = 2, message = @tr("The country code must be %constraint% length."))
+    @NonOptional(@tr("You have to specify a country."))
     private final String country;
 
     @RequestParam(name = "bloatit_lang", role = Role.POST)

@@ -184,7 +184,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
                                                                                                      .getTwoDecimalEuroString()));
             } else {
                 amountBlock = new HtmlDiv("quotation_detail_line_field");
-                final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(), Method.GET);
+                final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(), Method.POST);
 
                 moneyField = new HtmlMoneyField("preload");
                 if (amountToCharge == null) {

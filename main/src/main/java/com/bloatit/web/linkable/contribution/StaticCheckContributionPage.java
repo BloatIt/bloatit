@@ -132,7 +132,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process));
         summary.add(new HtmlClearer());
         summary.add(new HtmlPayBlock(quotation,
                                      process.getTeam(),
