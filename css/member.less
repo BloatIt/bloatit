@@ -48,6 +48,19 @@
 }
 
 .dashboard {
+
+    .software_logo {
+        max-height: 50px;
+        max-width: 50px;
+    }
+    
+    .feature_complete_title feature_title{
+        font-size: 0.85em;
+    }
+    
+    .progress_text{
+        font-size: 0.7em;
+    }
     
     .entry {
         border: 1px solid #E1E1E1;
@@ -56,8 +69,13 @@
         margin-top: 15px;
     
         .left_column{
-            min-width: 300px;
+            min-width: 325px;
             display:table-cell;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 20px;
+            vertical-align: middle;
+
             
             .block {
                 display: block;
@@ -66,7 +84,9 @@
             .feature_box {
                 .progress_box {
                     display: inline-block;
-                    width: 275px;
+                    margin-top: 5px;
+                    margin-bottom: 10px;
+                    width: 100%
                 }
             }
             
@@ -93,6 +113,7 @@
         .right_column{
             display:table-cell;
             width: 100%;
+            padding-right: 20px;
             
             .right_entry {
                 width: 100%;
