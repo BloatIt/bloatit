@@ -18,6 +18,7 @@ package com.bloatit.web.pages.master;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +38,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
+import com.bloatit.framework.webprocessor.masters.HtmlHeaderLink;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
@@ -201,5 +203,10 @@ public abstract class ElveosPage extends Page {
         logoTextDiv.addText(tr("the collaborative platform for free software funding"));
         logoDiv.add(logoTextDiv);
         return logoDiv;
+    }
+
+    @Override
+    protected ArrayList<HtmlHeaderLink> getLinks() {
+        return new ArrayList<HtmlHeaderLink>();
     }
 }

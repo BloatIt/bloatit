@@ -51,6 +51,7 @@ public final class Header extends HtmlElement {
 
     private final PlaceHolderElement cssPh;
     private final PlaceHolderElement jsPh;
+    private final PlaceHolderElement linkPh;
 
     protected Header(final String title, final String description, final Set<Robot> robots) {
         super("head");
@@ -130,11 +131,15 @@ public final class Header extends HtmlElement {
         link.addAttribute("media", "handheld, all");
         add(link);
 
-        // Place for custome page CSS if needed
+        // Place for custom links from page
+        linkPh = new PlaceHolderElement();
+        add(linkPh);
+
+        // Place for custom page CSS if needed
         cssPh = new PlaceHolderElement();
         add(cssPh);
 
-        // Place for custome page Javascript, if needed
+        // Place for custom page Javascript, if needed
         jsPh = new PlaceHolderElement();
         add(jsPh);
 
@@ -194,9 +199,22 @@ public final class Header extends HtmlElement {
         jsPh.add(jsLink);
     }
 
+    protected void addHeaderLink(HtmlHeaderLink link) {
+        final HtmlElement headerLink = new HtmlGenericElement("link"){
+            @Override
+            public boolean selfClosable() {
+                return true;
+            }
+        };
+        headerLink.addAttribute("href", link.getHref());
+        headerLink.addAttribute("type", link.getType());
+        headerLink.addAttribute("rel", link.getRel());
+        headerLink.addAttribute("title", link.getTitle());
+        linkPh.add(headerLink);
+    }
+
     @Override
     public boolean selfClosable() {
         return false;
     }
-
 }

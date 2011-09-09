@@ -91,15 +91,21 @@ body {
         margin-right: 20px;
     }
 
-    input[type=search]{
-	height: 23px;
-	border: 1px solid @border_color;
-	padding: 0px;
-	.rounded_corners_top_left(4px);
-	.rounded_corners_bottom_left(4px);
-	padding-left: 7px;
-	width: 150px;
-	color: rgb(175, 175, 175);
+    input[type=text] {
+	    height: 23px;
+	    border: 1px solid @border_color;
+	    padding: 0px;
+	    .rounded_corners_top_left(4px);
+	    .rounded_corners_bottom_left(4px);
+	    padding-left: 7px;
+	    width: 150px;
+	    color: rgb(175, 175, 175);
+    }
+    
+    input[type=text]:active, input[type=text]:focus {
+        border: 1px solid @border_color;
+        color: rgb(100,100,100);
+        outline: none;
     }
 
     .field {

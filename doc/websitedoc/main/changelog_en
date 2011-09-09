@@ -1,0 +1,26 @@
+Changelog
+=========
+
+Version 1.1.5
+-------------
+ 
+### Features
+ 
+ - Add RSS/Atom feed on feature list.
+ - An author can now modify its feature if it has no contribution or offer from another member.
+ - You can now use markdown in software's description.
+ - Modify feature requests creation process to allow to add an offer.
+
+### Bug fix
+
+ - Fix paged lists (for exemple in members list page).
+ - Fix country code parsing on unknown country.
+ - Fix crash when try to create an already existing software.
+ - A lot of wording or spelling fix.
+ - Fix plurials (in french, zero is followed by singular).
+ - Fix progress bar alignment in index page.
+ - Limit paged list to 100 entry max.
+ - Fix default team visibility when creating or editing teams.
+ - Fix a concurent access problem in notifications list of user.
+ - Fix a tax rate bug in invoices generation.
+ - Fix css for search bar for webkit.

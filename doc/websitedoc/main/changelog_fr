@@ -1,0 +1,28 @@
+Changelog
+=========
+
+Version 1.1.5
+-------------
+
+### Fonctionnalités
+ 
+ - Ajout de flux RSS/Atom sur la liste des demandes.
+ - Un auteur peut maintenant modifier un demande qu'il a rédigé si elle n'a pas de contributions ou d'offres d'un autre membre.
+ - Il est maintenant possible d'utilise du markdown pour la description des logiciels.
+ - Modification du processus de création de demande pour faire une offre durant la création.
+
+### Correction de bug
+
+ - Correction des listes paginés (notament dans la liste des membres).
+ - Correction du parsing des codes de pays pour les pays inconnus.
+ - Correction d'un crash lors d'une tentative de créer un logiciel qui existe déjà.
+ - Beaucoup de correction d'orthographe ou de phrasé.
+ - Correction des pluriels (en français, zero est suivi du singulier).
+ - Correction de l'alignement des barres de progression sur la page d'acceuil.
+ - Limitation des listes paginés à 100 entrées maximum.
+ - Correction de la visibilité par défaut lors de l'édition ou de la création d'une équipe.
+ - Correction d'un bug d'accès concurrent à la liste de notifications d'un utilisateur.
+ - Correction d'un bug de taxes dans la génération de factures.
+ - Correction du css de la barre de recherche pour webkit.
+ 
+

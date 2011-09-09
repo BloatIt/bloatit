@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -63,7 +64,7 @@ public final class Session {
     private Integer memberId;
     private Locale memberLocale;
 
-    private final Deque<ErrorMessage> notificationList = new ArrayDeque<ErrorMessage>();
+    private final Deque<ErrorMessage> notificationList = new LinkedBlockingDeque<ErrorMessage>();
     private final SessionParameters parameters = new SessionParameters();
 
     private UrlDump lastStablePage = null;

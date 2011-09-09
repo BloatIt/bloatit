@@ -43,6 +43,7 @@ import com.bloatit.framework.webprocessor.components.writers.IndentedHtmlStream;
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
 import com.bloatit.framework.webprocessor.components.writers.SimpleHtmlStream;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.masters.AtomFeed;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.web.HtmlTools;
 
@@ -322,5 +323,14 @@ public final class HttpResponse {
             return new SimpleHtmlStream(outputStream);
         }
         return new IndentedHtmlStream(outputStream);
+    }
+
+    public void writeAtomFeed(AtomFeed feed) throws IOException {
+        addField(HttpReponseField.contentType("text/xml"));
+        addField(HttpReponseField.vary("Accept-Encoding"));
+        addField(HttpReponseField.acceptRanges("bytes"));
+        writeHeader();
+        
+        feed.write(output);
     }
 }

@@ -28,9 +28,17 @@ public class SideBarButton extends SideBarElementLayout {
     private final HtmlLink link;
 
     public SideBarButton(final String text, final Url to, final String imgUri) {
-        // Display of a button to create a feature
+        this(text, to, imgUri, true);
+    }
+
+    public SideBarButton(final String text, final Url to, final String imgUri, boolean decorated) {
         final SideBarElementLayout createBox = new SideBarElementLayout();
-        final HtmlDiv buttonMasterDiv = new HtmlDiv("side_bar_button");
+        final HtmlDiv buttonMasterDiv;
+        if (decorated) {
+            buttonMasterDiv = new HtmlDiv("side_bar_button");
+        } else {
+            buttonMasterDiv = new HtmlDiv("side_bar_button_undecorated");
+        }
         link = new HtmlLink(to.urlString(), buttonMasterDiv);
         link.setCssClass("side_bar_button_link");
 
@@ -40,14 +48,18 @@ public class SideBarButton extends SideBarElementLayout {
             buttonMasterDiv.add(img);
             final HtmlDiv textBlock = new HtmlDiv("side_bar_button_text_box");
             { // Box to hold text of the button
-                final HtmlDiv textDiv = new HtmlDiv("button side_bar_button_text");
+                HtmlDiv textDiv;
+                if (decorated) {
+                    textDiv = new HtmlDiv("button side_bar_button_text");
+                } else {
+                    textDiv = new HtmlDiv("side_bar_button_text");
+                }
                 textBlock.add(textDiv);
                 textDiv.addText(text);
             }
             buttonMasterDiv.add(textBlock);
         }
         createBox.add(link);
-
         add(link);
     }
 

@@ -373,7 +373,7 @@ public class InvoicePdfGenerator {
         final PdfPTable table = new PdfPTable(2);
         table.addCell(createTableBodyCell("Sub Total"));
         table.addCell(createTableBodyCell(amountNoTaxes));
-        table.addCell(createTableBodyCell("Taxes (" + taxRate.setScale(TAX_RATE_SCALE, BigDecimal.ROUND_HALF_EVEN).toPlainString() + " %)"));
+        table.addCell(createTableBodyCell("Taxes (" + taxRate.multiply(new BigDecimal("100")).setScale(TAX_RATE_SCALE, BigDecimal.ROUND_HALF_EVEN).toPlainString() + " %)"));
         table.addCell(createTableBodyCell(taxAmount));
         table.addCell(createTableBodyCell("Total (taxes included)"));
         table.addCell(createTableBodyCell(amountTaxesIncluded));
