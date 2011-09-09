@@ -9,7 +9,6 @@ repositories {
 
 dependencies {
     compile project(':apt')
-    compile project(':paylineWebservice')
 
     compile 'org.xnap.commons:gettext-commons:0.9.6'
     compile 'org.hibernate:hibernate-core:3.6.6.Final'

@@ -168,7 +168,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     public BankTransaction(final Actor<?> author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
         super(DaoBankTransaction.createAndPersist(author.getDao(), value, valuePayed, orderReference));
-        Reporting.reporter.reportAccountCharging(value + " from " + author.getLogin() + " (" + author.getId() + ")");
+        Reporting.reporter.reportAccountCharging(value + "(" + valuePayed + ") from " + author.getLogin() + " (" + author.getId() + ")");
     }
 
     /**

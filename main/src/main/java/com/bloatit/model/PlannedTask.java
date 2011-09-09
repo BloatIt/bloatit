@@ -18,10 +18,10 @@ package com.bloatit.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.model.ModelAccessor;
@@ -40,7 +40,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
     private static final long serialVersionUID = 7423363701470187880L;
 
-    private static final ConcurrentMap<Id, PlannedTask> tasks = new ConcurrentHashMap<Id, PlannedTask>();
+    private static final Map<Id, PlannedTask> tasks = new ConcurrentHashMap<Id, PlannedTask>();
     /**
      * The timer class is thread safe.
      */

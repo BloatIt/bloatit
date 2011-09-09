@@ -106,7 +106,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAccountChargingAmount());
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
         try {
-            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotal.getValue())) {
+            if (process.getAmountToPayBeforeComission().compareTo(quotation.subTotal.getValue()) != 0) {
                 process.setAmountToPayBeforeComission(quotation.subTotal.getValue());
             }
         } catch (final IllegalWriteException e) {

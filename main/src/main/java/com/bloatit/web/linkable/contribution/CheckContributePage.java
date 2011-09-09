@@ -223,7 +223,7 @@ public final class CheckContributePage extends QuotationPage {
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
 
         try {
-            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotal.getValue())) {
+            if (process.getAmountToPayBeforeComission().compareTo(quotation.subTotal.getValue()) != 0) {
                 process.setAmountToPayBeforeComission(quotation.subTotal.getValue());
             }
         } catch (final IllegalWriteException e) {
@@ -275,7 +275,7 @@ public final class CheckContributePage extends QuotationPage {
         // Add show/hide charge account line
         final HtmlParagraph showChargeAccountLink = new HtmlParagraph(Context.tr("+ charge your elveos account"), "prepaid_line_fake_link");
 
-        final JsShowHide showHideFees = new JsShowHide(group, !process.getAccountChargingAmount().equals(BigDecimal.ZERO));
+        final JsShowHide showHideFees = new JsShowHide(group, process.getAccountChargingAmount().compareTo(BigDecimal.ZERO) != 0);
         showHideFees.addActuator(showChargeAccountLink);
         showHideFees.addListener(line);
         showHideFees.apply();

@@ -5,6 +5,7 @@ import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Image;
 import com.bloatit.model.NewsFeed;
@@ -46,7 +47,7 @@ public class NewsFeedSideBlock extends SideBarElementLayout {
 
             HtmlDiv itemContent = new HtmlDiv("item_content");
             HtmlDiv itemDate = new HtmlDiv("item_date");
-            itemContent.addText(news.getMessage());
+            itemContent.add(new HtmlCachedMarkdownRenderer(news.getMessage()));
             itemDate.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(news.getCreationDate())));
             feedItem.add(itemContent);
             feedItem.add(itemDate);

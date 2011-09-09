@@ -566,13 +566,49 @@ tbody {
 
 }
 
+
+blockquote p {
+    padding: 0px 10px 0px 10px;
+    margin: 0px 10px 0px 10px;
+}
+
+
+
+blockquote:before, blockquote:after {
+    display:block;
+    cursor:default;
+    line-height:1em;
+    font-weight:bold;
+    font-size:1.6em;
+    color:rgb(0,82,108);
+    font-family: Georgia, 'Times New Roman', serif;
+}
+
+blockquote:before {
+    content: "❝";
+    margin-bottom : -0.5em;
+}
+
+blockquote:after {
+    content: "❞";
+    text-align:right;
+    margin-top : -0.5em;
+}
+
+
 blockquote {
-    border: 1px solid @border_color;
-    border-left: 3px solid @dark_border_color;
-    margin: 10px 0 10px 10px;
-    padding-left: 5px;
-    padding-right: 0;
-    background-color: @default_background_color;   
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    
+    padding:0px 20px 0px 20px;
+    
+    width: 400px;
+    line-height:1.4em;
+    font-style: italic;
+    color: rgb(60,60,60);
+    font-size: 1.0em;
 }
 
 dd {

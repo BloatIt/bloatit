@@ -89,7 +89,7 @@ public class ModifyMemberPage extends LoggedElveosPage {
 
             // User description
             final FieldData descriptionFD = targetUrl.getDescriptionParameter().pickFieldData();
-            HtmlTextArea description = new HtmlTextArea(descriptionFD.getName(), Context.tr("Description"), 20, 100);
+            HtmlTextArea description = new HtmlTextArea(descriptionFD.getName(), Context.tr("Description"), 4, 75);
             if (descriptionFD.getSuggestedValue() != null && !descriptionFD.getSuggestedValue().isEmpty()) {
                 description.setDefaultValue(descriptionFD.getSuggestedValue());
             } else if (loggedUser.getDescription() != null) {
