@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -12,25 +11,19 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.model.MoneyWithdrawal;
-import com.bloatit.model.Team;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.actions.AccountProcess;
 import com.bloatit.web.actions.LoggedElveosAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
-import com.bloatit.web.linkable.members.MemberPage;
-import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.ChangePrepaidAmountActionUrl;
 import com.bloatit.web.url.CheckContributePageUrl;
-import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
 @ParamContainer("account/changeprepaid/%process%")
 public class ChangePrepaidAmountAction extends LoggedElveosAction {
@@ -68,19 +61,19 @@ public class ChangePrepaidAmountAction extends LoggedElveosAction {
         try {
             if (process instanceof AccountChargingProcess) {
 
-                if (!process.getAccountChargingAmount().equals(preload) && preload != null) {
+                if (preload != null && process.getAccountChargingAmount().compareTo(preload) != 0) {
 
                     process.setAmountToCharge(preload);
                     process.setAmountToPayBeforeComission(preload);
                 }
-                if (process.getAccountChargingAmount().equals(BigDecimal.ZERO)) {
+                if (process.getAccountChargingAmount().compareTo(BigDecimal.ZERO) == 0) {
 
                     process.setAmountToCharge(WebConfiguration.getDefaultChargingAmount());
                     process.setAmountToPayBeforeComission(WebConfiguration.getDefaultChargingAmount());
                 }
                 return new AccountChargingPageUrl((AccountChargingProcess) process);
             } else if (process instanceof ContributionProcess) {
-                if (!process.getAccountChargingAmount().equals(preload) && preload != null) {
+                if (preload != null && process.getAccountChargingAmount().compareTo(preload) != 0) {
                     process.setAmountToCharge(preload);
                 }
                 return new CheckContributePageUrl((ContributionProcess) process);

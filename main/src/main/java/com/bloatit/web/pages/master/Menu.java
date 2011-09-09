@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.form.HtmlButton;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
-import com.bloatit.framework.webprocessor.components.form.HtmlSearch;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Image;

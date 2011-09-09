@@ -20,12 +20,8 @@ import javax.mail.IllegalWriteException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
-import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -227,7 +223,7 @@ public final class CheckContributePage extends QuotationPage {
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
 
         try {
-            if (!process.getAmountToPayBeforeComission().equals(quotation.subTotal.getValue())) {
+            if (process.getAmountToPayBeforeComission().compareTo(quotation.subTotal.getValue()) != 0) {
                 process.setAmountToPayBeforeComission(quotation.subTotal.getValue());
             }
         } catch (final IllegalWriteException e) {
@@ -279,7 +275,7 @@ public final class CheckContributePage extends QuotationPage {
         // Add show/hide charge account line
         final HtmlParagraph showChargeAccountLink = new HtmlParagraph(Context.tr("+ charge your elveos account"), "prepaid_line_fake_link");
 
-        final JsShowHide showHideFees = new JsShowHide(group, !process.getAccountChargingAmount().equals(BigDecimal.ZERO));
+        final JsShowHide showHideFees = new JsShowHide(group, process.getAccountChargingAmount().compareTo(BigDecimal.ZERO) != 0);
         showHideFees.addActuator(showChargeAccountLink);
         showHideFees.addListener(line);
         showHideFees.apply();
