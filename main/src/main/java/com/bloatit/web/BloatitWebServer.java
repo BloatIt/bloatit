@@ -107,8 +107,10 @@ import com.bloatit.web.linkable.login.SignUpPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
+import com.bloatit.web.linkable.members.ModifyDetailAction;
 import com.bloatit.web.linkable.members.ModifyMemberAction;
 import com.bloatit.web.linkable.members.ModifyMemberPage;
+import com.bloatit.web.linkable.members.ModifyPasswordAction;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugDeleteAction;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugEditPage;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugsListPage;
@@ -320,10 +322,14 @@ public class BloatitWebServer extends WebProcessor {
             return new ExceptionAdministrationPage(new ExceptionAdministrationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ContributionInvoicingInformationsPageUrl.matches(pageCode)) {
-            return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(pageCode, postGetParameters, session.getParameters()));
+            return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(pageCode,
+                                                                                                          postGetParameters,
+                                                                                                          session.getParameters()));
         }
         if (ContributionInvoicingInformationsActionUrl.matches(pageCode)) {
-            return new ContributionInvoicingInformationsAction(new ContributionInvoicingInformationsActionUrl(pageCode, postGetParameters, session.getParameters()));
+            return new ContributionInvoicingInformationsAction(new ContributionInvoicingInformationsActionUrl(pageCode,
+                                                                                                              postGetParameters,
+                                                                                                              session.getParameters()));
         }
         if (AdminGlobalNotificationPageUrl.matches(pageCode)) {
             return new AdminGlobalNotificationPage(new AdminGlobalNotificationPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -468,6 +474,12 @@ public class BloatitWebServer extends WebProcessor {
         if (ModifyMemberActionUrl.matches(pageCode)) {
             return new ModifyMemberAction(new ModifyMemberActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (ModifyDetailActionUrl.matches(pageCode)) {
+            return new ModifyDetailAction(new ModifyDetailActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ModifyPasswordActionUrl.matches(pageCode)) {
+            return new ModifyPasswordAction(new ModifyPasswordActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
         if (LostPasswordActionUrl.matches(pageCode)) {
             return new LostPasswordAction(new LostPasswordActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
@@ -522,11 +534,11 @@ public class BloatitWebServer extends WebProcessor {
         if (ChangePrepaidAmountActionUrl.matches(pageCode)) {
             return new ChangePrepaidAmountAction(new ChangePrepaidAmountActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        
+
         // ////////
         // Atom
         // ////////
-        if(FeatureAtomFeedUrl.matches(pageCode)){
+        if (FeatureAtomFeedUrl.matches(pageCode)) {
             return new FeatureAtomFeed(new FeatureAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
@@ -548,9 +560,7 @@ public class BloatitWebServer extends WebProcessor {
         if (ContributionInvoicingProcessUrl.matches(pageCode)) {
             return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        
-        
-        
+
         // Create feature process
         if (CreateFeatureProcessUrl.matches(pageCode)) {
             return new CreateFeatureProcess(new CreateFeatureProcessUrl(pageCode, postGetParameters, session.getParameters()));
@@ -573,7 +583,7 @@ public class BloatitWebServer extends WebProcessor {
         if (CreateFeatureAndOfferActionUrl.matches(pageCode)) {
             return new CreateFeatureAndOfferAction(new CreateFeatureAndOfferActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        
+
         // Resource page
         try {
             if (FileResourceUrl.matches(pageCode)) {
@@ -585,7 +595,7 @@ public class BloatitWebServer extends WebProcessor {
             if (ContributionInvoiceResourceUrl.matches(pageCode)) {
                 return new ContributionInvoiceResource(new ContributionInvoiceResourceUrl(pageCode, postGetParameters, session.getParameters()));
             }
-            
+
         } catch (final PageNotFoundException e) {
             return new PageNotFound(new PageNotFoundUrl());
         }

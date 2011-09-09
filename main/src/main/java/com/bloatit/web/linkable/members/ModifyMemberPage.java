@@ -44,8 +44,10 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.LoggedElveosPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.ModifyDetailActionUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
+import com.bloatit.web.url.ModifyPasswordActionUrl;
 
 @ParamContainer(value = "member/modify", protocol = Protocol.HTTPS)
 public class ModifyMemberPage extends LoggedElveosPage {
@@ -60,46 +62,36 @@ public class ModifyMemberPage extends LoggedElveosPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl(getSession().getShortKey());
 
         final HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Change member settings"));
         layout.addLeft(title);
 
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
-        layout.addLeft(form);
-        form.enableFileUpload();
 
         try {
-            final HtmlFormBlock nameBlock = new HtmlFormBlock(Context.tr("User name"));
-            form.add(nameBlock);
             // ///////
+            // name etc.
+            final ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl(getSession().getShortKey());
+            final HtmlForm nameForm = new HtmlForm(targetUrl.urlString());
+            nameForm.enableFileUpload();
+            layout.addLeft(nameForm);
+            final HtmlFormBlock nameBlock = new HtmlFormBlock(Context.tr("Name and description"));
+            nameForm.add(nameBlock);
             // Full name
             final FieldData fullnameFieldData = targetUrl.getFullnameParameter().pickFieldData();
             final HtmlTextField fullnameInput = new HtmlTextField(fullnameFieldData.getName(), tr("Full name"));
             fullnameInput.addErrorMessages(fullnameFieldData.getErrorMessages());
             if (fullnameFieldData.getSuggestedValue() != null && !fullnameFieldData.getSuggestedValue().isEmpty()) {
                 fullnameInput.setDefaultValue(fullnameFieldData.getSuggestedValue());
-            } else if (loggedUser.getFullname() != null) {
+            } else if (loggedUser.getFullname() != null && !loggedUser.getFullname().isEmpty()) {
                 fullnameInput.setDefaultValue(loggedUser.getFullname());
             }
             fullnameInput.setComment(Context.tr("If you set a value to your fullname, it will be used instead of your login to designate you."));
             nameBlock.add(fullnameInput);
 
-            // ///////
-            // Delete Full name
-            final FieldData deleteFNFieldData = targetUrl.getDeleteFullNameParameter().pickFieldData();
-            final HtmlCheckbox deleteFN = new HtmlCheckbox(deleteFNFieldData.getName(), Context.tr("Delete full name"), LabelPosition.BEFORE);
-            if (loggedUser.getFullname() == null || loggedUser.getFullname().isEmpty()) {
-                deleteFN.addAttribute("disabled", "disabled");
-            }
-            deleteFN.setComment(Context.tr("Checking this box will delete your full name, hence your login will be used again."));
-            nameBlock.add(deleteFN);
-            
-            // /////
             // User description
             final FieldData descriptionFD = targetUrl.getDescriptionParameter().pickFieldData();
-            HtmlTextArea description = new HtmlTextArea(descriptionFD.getName(), 30, 80);
+            HtmlTextArea description = new HtmlTextArea(descriptionFD.getName(),Context.tr("Description"), 20, 100);
             if (descriptionFD.getSuggestedValue() != null && !descriptionFD.getSuggestedValue().isEmpty()) {
                 description.setDefaultValue(descriptionFD.getSuggestedValue());
             } else if (loggedUser.getDescription() != null) {
@@ -107,35 +99,60 @@ public class ModifyMemberPage extends LoggedElveosPage {
             }
             description.setComment(Context.tr("Introduce yourself in less than 200 characters."));
             nameBlock.add(description);
-            
 
-            final HtmlFormBlock passwordBlock = new HtmlFormBlock(Context.tr("User password"));
-            form.add(passwordBlock);
+            // Avatar
+            final FieldData avatarField = targetUrl.getAvatarParameter().pickFieldData();
+            final HtmlFileInput avatarInput = new HtmlFileInput(avatarField.getName(), Context.tr("Avatar image file"));
+            avatarInput.setComment(tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"));
+            nameBlock.add(avatarInput);
+            
+            // Delete avatar
+            final FieldData deleteAvatarFieldData = targetUrl.getDeleteAvatarParameter().pickFieldData();
+            final HtmlCheckbox deleteAvatar = new HtmlCheckbox(deleteAvatarFieldData.getName(), Context.tr("Delete avatar"), LabelPosition.BEFORE);
+            if (loggedUser.getAvatar() == null && loggedUser.getAvatar().isNull()) {
+                deleteAvatar.addAttribute("disabled", "disabled");
+            }
+            deleteAvatar.setComment(Context.tr("Checking this box will delete your avatar. If you have a libravatar it will be used instead."));
+            nameBlock.add(deleteAvatar);
+            nameBlock.add(new HtmlSubmit(Context.tr("Submit")));
+
+            
             // ///////
+            // password
+            final ModifyPasswordActionUrl passwordUrl = new ModifyPasswordActionUrl(getSession().getShortKey());
+            final HtmlForm passwordForm = new HtmlForm(passwordUrl.urlString());
+            layout.addLeft(passwordForm);
+            final HtmlFormBlock passwordBlock = new HtmlFormBlock(Context.tr("Password"));
+            passwordForm.add(passwordBlock);
             // Current password
-            final FieldData currentPasswordFieldData = targetUrl.getCurrentPasswordParameter().pickFieldData();
+            final FieldData currentPasswordFieldData = passwordUrl.getCurrentPasswordParameter().pickFieldData();
             final HtmlPasswordField currentPasswordInput = new HtmlPasswordField(currentPasswordFieldData.getName(), tr("Current password"));
             currentPasswordInput.addErrorMessages(currentPasswordFieldData.getErrorMessages());
             currentPasswordInput.setComment(Context.tr("This is useful only if you intend to change your password."));
             passwordBlock.add(currentPasswordInput);
 
-            // ///////
             // Password
-            final FieldData passwordFieldData = targetUrl.getPasswordParameter().pickFieldData();
+            final FieldData passwordFieldData = passwordUrl.getPasswordParameter().pickFieldData();
             final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), tr("New password"));
             passwordInput.addErrorMessages(passwordFieldData.getErrorMessages());
             passwordBlock.add(passwordInput);
 
-            // ///////
             // Password check
-            final FieldData passwordCheckFieldData = targetUrl.getPasswordCheckParameter().pickFieldData();
+            final FieldData passwordCheckFieldData = passwordUrl.getPasswordCheckParameter().pickFieldData();
             final HtmlPasswordField passwordCheckInput = new HtmlPasswordField(passwordCheckFieldData.getName(), tr("Reenter new password"));
             passwordCheckInput.addErrorMessages(passwordCheckFieldData.getErrorMessages());
             passwordBlock.add(passwordCheckInput);
+            passwordBlock.add(new HtmlSubmit(Context.tr("Submit")));
 
             // ///////
+            // Details
+            final ModifyDetailActionUrl detailUrl = new ModifyDetailActionUrl(getSession().getShortKey());
+            final HtmlForm detailForm = new HtmlForm(detailUrl.urlString());
+            layout.addLeft(detailForm);
+            final HtmlFormBlock detailBlock = new HtmlFormBlock(Context.tr("Details"));
+            detailForm.add(detailBlock);
             // Email
-            final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
+            final FieldData emailFieldData = detailUrl.getEmailParameter().pickFieldData();
             final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), tr("Email"));
             if (loggedUser.hasEmailToActivate()) {
                 emailInput.setComment(Context.tr("Waiting for activation: {0}", loggedUser.getEmailToActivate()));
@@ -146,46 +163,26 @@ public class ModifyMemberPage extends LoggedElveosPage {
                 emailInput.setDefaultValue(loggedUser.getEmail());
             }
             emailInput.addErrorMessages(emailFieldData.getErrorMessages());
-            form.add(emailInput);
+            detailBlock.add(emailInput);
 
-            // ///////
             // Country
-            final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName(), tr("Country"));
+            final HtmlDropDown countryInput = new HtmlDropDown(detailUrl.getCountryParameter().getName(), tr("Country"));
             for (final Country entry : Country.getAvailableCountries()) {
                 countryInput.addDropDownElement(entry.getCode(), entry.getName());
             }
-            if (targetUrl.getCountryParameter().getStringValue() != null && !targetUrl.getCountryParameter().getStringValue().isEmpty()) {
-                countryInput.setDefaultValue(targetUrl.getCountryParameter().getStringValue());
+            if (detailUrl.getCountryParameter().getStringValue() != null && !detailUrl.getCountryParameter().getStringValue().isEmpty()) {
+                countryInput.setDefaultValue(detailUrl.getCountryParameter().getStringValue());
             } else {
                 countryInput.setDefaultValue(loggedUser.getLocale().getCountry());
             }
-            form.add(countryInput);
+            detailBlock.add(countryInput);
 
-            // ///////
             // Language
-            final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName(), tr("Language"));
-            langInput.setDefaultValue(targetUrl.getLangParameter().getStringValue(), loggedUser.getLocale().getLanguage());
-            form.add(langInput);
-
-            // ///////
-            // Avatar
-            final FieldData avatarField = targetUrl.getAvatarParameter().pickFieldData();
-            final HtmlFileInput avatarInput = new HtmlFileInput(avatarField.getName(), Context.tr("Avatar image file"));
-            avatarInput.setComment(tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"));
-            form.add(avatarInput);
-
-            // ///////
-            // Delete avatar
-            final FieldData deleteAvatarFieldData = targetUrl.getDeleteAvatarParameter().pickFieldData();
-            final HtmlCheckbox deleteAvatar = new HtmlCheckbox(deleteAvatarFieldData.getName(), Context.tr("Delete avatar"), LabelPosition.BEFORE);
-            if (loggedUser.getAvatar() == null && loggedUser.getAvatar().isNull()) {
-                deleteAvatar.addAttribute("disabled", "disabled");
-            }
-            deleteAvatar.setComment(Context.tr("Checking this box will delete your avatar. If you have a libravatar it will be used instead."));
-            form.add(deleteAvatar);
-
-            final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
-            form.add(submit);
+            final LanguageSelector langInput = new LanguageSelector(detailUrl.getLangParameter().getName(), tr("Language"));
+            langInput.setDefaultValue(detailUrl.getLangParameter().getStringValue(), loggedUser.getLocale().getLanguage());
+            detailBlock.add(langInput);
+            detailBlock.add(new HtmlSubmit(Context.tr("Submit")));
+            
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Couldn't access logged member information", e);
         }
