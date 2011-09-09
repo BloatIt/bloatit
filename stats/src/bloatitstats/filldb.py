@@ -38,6 +38,7 @@ def showNews():
     else:
         print "New elements:"
         print "  - request: %d" % entry_processor.nb_new_request
+	print "  - skipped: %d" % entry_processor.nb_skipped
         print "  - linkable: %d" % entry_processor.nb_new_linkable
         print "  - visitor: %d" % entry_processor.nb_new_visitor
         print "  - useragent: %d" % entry_processor.nb_new_useragent
