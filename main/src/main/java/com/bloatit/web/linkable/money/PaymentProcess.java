@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.bank.MercanetAPI;
 import com.bloatit.framework.bank.MercanetAPI.PaymentMethod;
 import com.bloatit.framework.bank.MercanetResponse;
@@ -97,6 +98,11 @@ public class PaymentProcess extends WebProcess {
     @Override
     protected synchronized Url doProcess() {
 
+        if(!FrameworkConfiguration.isMercanetEnabled()) {
+            session.notifyError(Context.tr("The payment system is temporaly disable. Thanks to retry later."));
+            return session.getLastStablePage();
+        }
+        
         url.getParentProcess().addChildProcess(this);
 
         if (tos == null || !tos.booleanValue()) {
