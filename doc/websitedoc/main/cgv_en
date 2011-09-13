@@ -1,4 +1,115 @@
 Terms of Sales
 ==============
 
-The Terms of Sales are not yet translated to english. You can read them in french: [Conditions Générales de Vente](/fr/documentation/cgv)
+Object
+-----
+
+### Terms of sales acceptance 
+
+The terms of sales as set forth herein as well as any additional terms and conditions that may appear on the face hereof shall constitute the entire agreement between *Linkeos* and every person doing a contribution on the *elveos website*.
+
+** Please read attentively the terms of sales, print it and keep a copy**
+
+Contributing to a feature request on the *elveos website* implicate the acceptance without condition of the herein Terms of sales.
+
+<!--
+
+Ces conditions générales de vente prévaudront sur toutes autres conditions générales ou particulières non expressément agréées par *Linkeos*.
+
+-->
+
+### Terms of sales modifications
+
+*Linkeos* reserves the right to modify the terms of sales at any time. In this case, the conditions will be those in effect at the time of the order by the buyer.
+
+### Droit applicable et juridiction compétente
+
+Les présentes conditions générales de vente sont soumises au droit français. Tous les litiges relatifs à la relation commerciale existant entre Vous et Nous sont soumis à la compétence des juridictions françaises.
+
+Définitions
+-----------
+
+**Utilisateur** : Les utilisateurs sont toutes les personnes qui utilisent le *site elveos* ou un des services proposés sur le *site elveos*, même en simple consultation. Un utilisateur peut être identifié ou non.
+
+**Demande** : Sur le *site elveos*, une *demande* est une demande de fonctionnalité sur un logiciel libre.
+
+**Contribution** : Sur le *site elveos* une *contribution* est une somme d'argent qu'un *membre* donne pour la réalisation d'une *demande*. 
+
+**Achat** : Sur le *site elveos* un *achat* est réalisé lorsque l'utilisateur réalise une transaction bancaire : lors d'une contribution ou d'un chargement de compte.
+
+**Client** : On the *elveos website* a client is a user that perform a payment.
+
+**Tarif** : Sur le *site elveos*, le *tarif* appliqué correspond aux charges prélevées par *Linkeos*.
+
+Mentions légales
+----------------
+
+    Société :
+    Linkeos SAS 
+    SAS au capital de 10 500,00 euros
+
+    Adresse :
+    66 BIS RUE DU CHATEAU C O H2NA EURL, 
+    92600 ASNIERES SUR SEINE 
+
+    Courriel :
+    contact@linkeos.com 
+
+    Immatriculée au Registre du Commerce et des Sociétés :
+    RCS Nanterre 533 206 074 Paris, 
+    représentée par Yoann PLÉNET
+
+Validation
+----------
+
+You declare to have read and accepted these Terms of sales before online paying. A payment is worth acceptance of these Terms of sales.
+
+Unless proved otherwise, the data recorded by *Linkeos* constitute the proof of all transactions made by *Linkeos* and its customers.
+
+Price
+----
+
+Prices are in euros and include all taxes (VAT plus other taxes if any).
+
+During the *purchase*, the amount charged to the customer is the amount of purchase plus the charges applied by elveos.
+
+*Linkeos* reserves the right to change *rates* at any time. The *rate* applicable is the one in effect during the purchase validation.
+
+Payment
+--------
+
+The payment are made on the *elveos website* by credit card (VISA, Master Card, CB).
+
+The credit card debit is done as soon as the payment is validated. 
+
+The *elveos website* subject to a security system.
+
+The online payment system used by the *elveos website* is provided by third parties. It undertakes to maintain a maximum level of security for user bank informations. However, in case of failure in the payment system, elveos cannot be held responsible.
+
+Reimbursement
+-------------
+
+At any time before a *feature request* goes "into development" ([see the life cycle of a request] (/en/documentation/feature_lifecycle)) the user can cancel its *contribution*.
+
+Following a cancellation the amount of the *contribution* shall be credited on the internal account of the user. He can retrieve it through a request to withdraw money.
+
+In all cases, the charges taken by elveos will never be repaid. 
+
+Support
+--------
+
+For all information, question or even reclamation, the elveos support is available at contact@elveos.org
+
+Responsibility
+--------------
+
+*Linkeos* takes no responsibility for the adequacy between the demand and the development.
+
+*Linkeos* leaves 7 (seven) days for users to report the bugs encountered. Seven days after the last bug was closed, the development will be validated.
+
+*Linkeos* considers these seven days as sufficient to report the development problems. As such, after this validation, no claim will be accepted.
+
+After the development, the user can always contact the developer to report bugs.
+
+
+*Version 0.1-beta written on September 13, 2011
