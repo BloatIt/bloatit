@@ -1,4 +1,218 @@
 Terms of use
 ===========
 
-The Terms of Use are not yet translated to english. You can read them in french: [Conditions Générales d'utilisation](/fr/documentation/cgu)
+This a draft of the english version of the Terms of Use. The complete version is available in french: [Conditions Générales d'utilisation](/fr/documentation/cgu)
+
+Welcome on the elveos.org website (hereinafter referred "elveos website").
+Le *elveos website* is edited by the Linkeos SAS company (hereinafter referred "Linkeos").
+
+Subject
+-------
+
+### Agreement
+
+The following are terms of a legal agreement between you and *Linkeos*. By accessing, browsing, or using this Web site, you acknowledge that you have read, understood, and agree to be bound by these terms and to comply with all applicable laws and regulations. If you do not agree to these terms, please do not use this Web site.
+
+### Modification
+
+*Linkeos* may, without notice to you, at any time revise these Terms of Use and any other information contained in this Web site by updating this posting. *Linkeos* may also make improvements or changes in the products, services, or programs described in this site at any time without notice.
+
+### Applicable law and jurisdiction
+
+These Terms and Conditions are governed and will be interpreted in accordance with French courts. The French courts shall have exclusive jurisdiction to settle any claim or dispute which might arise out of or in connection with these terms and conditions.
+
+Definitions
+------------
+
+**User**: Users are all the people who use the *elveos website* or one of the services offered on the *elveos website*. Users can be logged in or not.
+
+**Member**: A member is a logged in user. He previously created an account on the *elveos website* providing a login and a password.
+
+**Team**: A team is a group of members.
+
+**User content**: User content designate all the data a user share with other users on the *elveos website*, including, but not restricted to, text data (comments, features, offers) and files uploaded on the website (for example users' avatars).
+
+**Personal data**: Personal user data designate all the data he hands to the *elveos website* but doesn't wish to see publicly available. The email address or the invoicing address are personal data on the *elveos website*.
+
+**Consensus**: On  the *elveos website** a consensus is reached on a given subject when there are at least 5 opionions from different members, and three quarters of these opionions are the same.
+
+**Feature request**: On the *elveos website*, a *feature* designate 
+
+**Contribution**: 
+
+**Offer**: 
+
+Legal notice
+------------
+
+    Company :
+    Linkeos SAS 
+    Company with a 10 500,00 € capital
+
+    Address :
+    66 BIS RUE DU CHATEAU C O H2NA EURL, 
+    92600 ASNIERES SUR SEINE 
+    FRANCE
+
+    email :
+    contact@linkeos.com 
+
+    Registered :
+    RCS Nanterre 533 206 074, 
+    represented by Yoann PLÉNET
+
+
+Description of service
+----------------------
+
+### Service
+
+*Elveos website* is a website for collaborative funding of open source software. He puts into relation users that want a new feature on a piece of open source software, and developers ready to implement these features. *Linkeos* cannot offer its services on the *elveos website* to implement a *feature request*.
+
+*Linkeos* doesn't sell the implentation of the demand. It merely helps establishing the relationship between the developer and the user ; and helps tracking the advancement. For more information please refere to the [Terms of sale](/en/documentation/cgv)
+
+### Elveos internal account
+
+Every *member* and every *team* is offered to use an *elveos internal account*. The account is like an online wallet that the user can use to store money. A *member* can add money on his *elveos internal account* using the means of payment available on the *elveos website*. If his user rights are sufficient, a *member* can also add money on a *team* internal account. In any case putting money on the *elveos internal accout* is subject to a fee described in the terms of sales.
+
+A *member* can withdraw money from his *elveos internal account*. In a similar fashion, if he has sufficient user rights, he can withdraw money from a *team internal account*. The fees from the money withdrawal are always 
+charged to the member.
+
+The balance of the *elveos internal account* is in euro. 
+
+*Linkeos* is committed not to use the money given by the users until it is withdrawn from the *elveos internal account*.
+
+### Contribution and payment
+
+When a user contribute on a *feature request*, *Linkeos* immediatly takes the money.
+
+Until the *feature request* changes to state "in development", the user can cancel his contribution. Money will hence be placed on his *elveos internal account*. He can then withdraw this money (se paragraph *elveos internal account*). The reimbursed amount does not include the fee previously taken by elveos.
+
+Once the *feature request* changes into "in development" the contributions cannot be canceled.
+
+If the development fails, the contributors are reimbursed.
+
+### Access to the services
+
+The *elveos website* can be accessed by any user with an internet access. All costs relating to the access to the *elveos website* are exclusively the responsibility of the user.
+
+*Linkeos* cannot be held responsible for any malfunction of the network, servers or any other event beyond the reasonable control which prevent or degrade access to the *elveos website*.
+
+Linkeos reserves the right to interrupt, temporarily suspend or modify, without notice, access to all or part of the *elveos site* to ensure the maintenance, updating or otherwise. The interruption is not subject to any obligation or compensation.
+
+Linkeos is committed, to the extent possible, and if that does not impede the development of the *elveos website*, to comply with W3C recommendations.
+Page rendering and service accessibility are not guaranteed by Linkeos.
+
+Login
+-----
+
+When signing up, every member give  to the *elveos website* a login, a password and an email address.
+The password is used to verify the identity of the member.
+
+The email address must allow *elveos website* to contact the member, and should be kept updated.
+
+All these informations are strictly private data and cannot be given, even temporarily, to another user.
+
+*Linkeos* can suppress a user account that do not respect these conditions.
+
+Intellectual property
+---------------------
+
+Every *user content* for which no license is specified is under the **Creative Commons Attribution-Sharealike 2.0** (http://creativecommons.org/licenses/by-sa/2.0/fr/deed.fr).
+Users can specify a different license. This license must be one of the free licenses listed on the GNU website: http://www.gnu.org/licenses/license-list.html.
+
+*Linkeos* cannot be held responsible for the publication of *user content* tat do not respect intellectual property. You can address a reclamation to remove such content by sending an email to contact+author@elveos.org. Any such claim must prove that the plaintiff has the rights to the content, otherwise *Linkeos* will not pursue such a claim.
+
+*Elveos website* is distributed under the AGPL v3 license. Sources are available on https://gitorious.org/bloatit/bloatit/ .
+
+
+User content
+------------
+
+The *user* is responsible for the publication of all the *user content* he publishes on the *elveos website*. Similarly, he is responsible for the texts or opinions that formula.
+
+Linkeos reserves the right to remove at any time, without notice, warning or justification all or part of a user content. The user will have no claim to this title. The user will have no claim to this title.
+
+Validation of a development
+---------------------------
+
+*Linkeos* alone has the power to validate a development (called *right to validation*) and then to transfer the money to the developer.
+*Linkeos* may assert their *right to validation* at any time, regardless of the state of development and against the opinion of users if needed.
+
+*Elveos website* aims to ease the development and funding of free software. For this it is necessary that the *elveos website* create trust between the developers, contributors and *elveos website*. With this in mind:
+
+1. *Linkeos* is committed to leave at least 7 days after a development is finished, for the users to give their opinion on the result. This duration may be increased in case of difficulty accessing the site elveos.
+
+2. *Linkeos* is committed to abide by the opinion of the users unless no consensus is reached, or if deemed necessary.
+
+*Linkeos* considers the 7 days available to the users to validate a development as sufficient to report problems. Hence, after this validation, no claim will be accepted.
+
+After the development is finished, the user can contact the developer to report anyh bugs he finds.
+
+Canceling a development or a feature request
+--------------------------------------------
+
+*Linkeos* alone has the power to cancel a *feature request* (called *right to cancel*) and then to reimburse every contributor.
+*Linkeos* may assert their *right to cancel* at any time, regardless of the state of development and against the opinion of users if needed. Canceling a *feature request* will cancel the linked development if any.
+
+The *right to cancel* will be used :
+
+1. If there is a consensus from the *contributors* that a *feature request* should be canceled, and to the extent Linkeos considers it justified to cancel it, *Linkeos* is committed to use its *right to cancel* on the feature request.
+
+2. *Linkeos* is commited to use its *right to cancel* on a feature request that matches at least one of the following criteria :
+
+  - No developer made an offer of development 1 month after the last contributions
+  - A developer made an offer more than one month ago, and more than one month passed since the last contribution
+  - A developer does not meet the deadlin he specified in the development offer 
+
+*Linkeos* hwoever reservers the possibility to exercise its right of cancellation at any time, regardless of the status of the application and against the advice of users.
+
+Personal data
+--------------
+
+Aware that the collection and processing of personal data over the Internet must respect fundamental rights, *Linkeos* agrees that any processing of personal data on the site elveos is consistent with french Law No. 78 -17 6 January 1978 relating to computers, files and liberties. As such, the *elveos website* have been declared to the CNIL under number 1526817.
+
+The user has the right to access (Article 34 to 38 of the 1978 Act) and the right to rectify (Article 36 of the 1978 Act) his personal data.
+
+The user can exercise this right at any time by sending an email to contact@elveos.org to correct, complete, clarify, update or delete information about them. The request will be taken into account in a maximum of 15 days.
+
+*Linkeos* will not distribute *personal information* or names assigned to the site elveos. In no event *Linkeos* will sell the *personal data* or *user content* from the *elveos website* to companies, associations or individuals.
+
+Hyperlinks
+----------
+
+The *elveos website* offers hyperlinks to websites published and/or managed by third parties.
+
+Because there is no control on these external resources, the user acknowledges that *Linkeos* takes no responsibility for the providing of these resources, and cannot be held responsible for their content.
+
+Abuse
+------
+
+Linkeos reserves the right to ban any user of the *elveos website* who do not respect the law or these Terms of Use.
+
+Linkeos considers the following list (non exhaustive) as abusive usage concerning the elveos rules :
+
+* Use for publicity purposes
+* Use to improve the ranking of another website
+* Any other use that may adversely affect directly or indirectly *Linkeos*, *elveos website* or its partners
+* More generally, any use which may cause prejudice
+
+International
+-------------
+
+*Elveos website* can be accessed from any country without restriction.
+
+These terms are applied to users regardless of the country from which they access the site elveos and their nationality.
+
+*Linkeos* provides content and information regarding to elveos site in French and/or English and may eventually translate into other languages​​, with no obligation of delay or result.
+
+Assistance 
+----------
+
+For any information or claim, please contact us using the email addresse: contact@elveos.org.
+
+*Version 0.1-beta redacted on Septembre the 13th, 2011*
+
+
+
+
