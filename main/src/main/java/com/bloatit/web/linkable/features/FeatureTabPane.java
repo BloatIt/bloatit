@@ -96,7 +96,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
         // });
 
         // Create Bugtracker tab only after preparation
-        if (feature.getFeatureState() == FeatureState.DEVELOPPING && feature.getFeatureState() == FeatureState.FINISHED) {
+        if (feature.getFeatureState() == FeatureState.DEVELOPPING || feature.getFeatureState() == FeatureState.FINISHED) {
 
             tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", feature.countOpenBugs()), FeatureTabKey.bugs.name()) {
                 @Override
