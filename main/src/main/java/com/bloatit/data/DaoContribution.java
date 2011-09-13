@@ -53,7 +53,9 @@ import com.bloatit.framework.utils.PageIterable;
 @NamedQueries(value = { @NamedQuery(
                            cacheable=true,
                            name = "contribution.getMoneyRaised",
-                           query = "SELECT sum(amount) FROM DaoContribution"),
+                           query = "SELECT sum(amount) " +
+                           		   "FROM DaoContribution " +
+                           		   "WHERE state != :state"),
                         @NamedQuery(
                                     name = "contribution.getInvoices",
                                     query = "FROM com.bloatit.data.DaoContributionInvoice invoice_ " +
@@ -141,7 +143,10 @@ public class DaoContribution extends DaoUserContent {
      * @return the money raised
      */
     public static BigDecimal getMoneyRaised() {
-        final Query q = SessionManager.getNamedQuery("contribution.getMoneyRaised");
+        final Query q = SessionManager
+                .getNamedQuery("contribution.getMoneyRaised")
+                .setParameter("state", State.CANCELED);
+
         return (BigDecimal) q.uniqueResult();
     }
 
