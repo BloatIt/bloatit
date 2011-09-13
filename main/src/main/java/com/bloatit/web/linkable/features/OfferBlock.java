@@ -19,6 +19,7 @@ import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Milestone;
@@ -80,18 +81,18 @@ public final class OfferBlock extends HtmlDiv {
 
                         authorPara.addText(tr(" by "));
                         authorPara.add(new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName()));
-                        
+
                         final HtmlSpan karma = new HtmlSpan("karma");
                         karma.addAttribute("title", Context.tr("{0} karma's ", offer.getMember().getDisplayName()));
                         karma.addText(HtmlTools.compressKarma(offer.getMember().getKarma()));
                         authorPara.add(karma);
-                        
+
                     } else {
                         HtmlLink author = null;
                         author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
-                        
+
                         final HtmlSpan karma = new HtmlSpan("karma");
                         karma.addAttribute("title", Context.tr("{0} karma's ", offer.getMember().getDisplayName()));
                         karma.addText(HtmlTools.compressKarma(offer.getMember().getKarma()));
@@ -169,7 +170,7 @@ public final class OfferBlock extends HtmlDiv {
                         descriptionLabel.addText(tr("Offer's description: "));
                         description.add(descriptionLabel);
                         description.add(new XmlText("<br />"));
-                        description.addText(lot.getDescription());
+                        description.add(new HtmlMarkdownRenderer(lot.getDescription()));
                     }
                     offerRightBottomColumn.add(description);
 
@@ -198,7 +199,7 @@ public final class OfferBlock extends HtmlDiv {
                             }
                             lotBlock.add(offerLotPriceBlock);
 
-                            final HtmlTitle lotTitle = new HtmlTitle(tr("Lot {0} - ", i) + getLotState(lot), 2);
+                            final HtmlTitle lotTitle = new HtmlTitle(tr("Milestone {0} - ", i) + getLotState(lot), 2);
                             lotBlock.add(lotTitle);
 
                             final HtmlParagraph datePara = new HtmlParagraph();
@@ -215,7 +216,7 @@ public final class OfferBlock extends HtmlDiv {
                             lotBlock.add(datePara);
 
                             final HtmlParagraph description = new HtmlParagraph();
-                            description.addText(lot.getDescription());
+                            description.add(new HtmlMarkdownRenderer(lot.getDescription()));
                             lotBlock.add(description);
 
                             generateAddReleaseLink(lot, lotBlock);
