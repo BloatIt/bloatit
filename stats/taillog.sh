@@ -30,6 +30,9 @@ echo "$GREPED" | cksum | grep -o -R "[0-5]" | head -3 | \
       read green
       read red
       read blue
+      [ -z "$blue" ] && blue=0
+      [ -z "$red" ] && red=0
+      [ -z "$green" ] && green=0
       echo $line | sed -u -E "s/KEY='([^']*)'/$($echo -e "\\x1b[48;5;$(( 16 + ($red * 36) + ($green * 6) + $blue ))m")\1$($echo -e $NORMAL)/g"
      )
 fi
