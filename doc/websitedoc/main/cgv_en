@@ -1,4 +1,110 @@
 Terms of Sales
 ==============
 
-The Terms of Sales are not yet translated to english. You can read them in french: [Conditions Générales de Vente](/fr/documentation/cgv)
+
+This is a draft of the English version of the Terms of sales. The complete version is available in french: [Conditions Générales de vente](/fr/documentation/cgv)
+
+Subject
+-----
+
+### Terms of sales acceptance 
+
+The terms of sales as set forth herein as well as any additional terms and conditions that may appear on the face hereof shall constitute the entire agreement between *Linkeos* and every person doing a contribution on the *elveos website*.
+
+** Please read attentively the terms of sales, print it and keep a copy**
+
+Contributing to a feature request on the *elveos website* implicate the acceptance without condition of the herein Terms of sales.
+
+### Terms of sales modifications
+
+*Linkeos* reserves the right to modify the terms of sales at any time. In this case, the conditions will be those in effect at the time of the order by the buyer.
+
+### Applicable law and jurisdiction
+
+These Terms and Conditions are governed and will be interpreted in accordance with French courts. The French courts shall have exclusive jurisdiction to settle any claim or dispute which might arise out of or in connection with these terms and conditions.
+
+Definitions
+-----------
+
+**User**: Users are all the people who use the *elveos website* or one of the services offered on the *elveos website*. Users can be logged in or not.
+
+**Contribution** : On the *elveos website*, a contribution is when a user puts some money on a feature requests.
+
+**purchase** : On the *elveos website*, a purchase is a payment : an internal account loading. 
+
+**Client** : On the *elveos website* a client is a user that perform a payment.
+
+Legal notice
+------------
+
+    Company :
+    Linkeos SAS 
+    Company with a 10 500,00 € capital
+
+    Address :
+    66 BIS RUE DU CHATEAU C O H2NA EURL, 
+    92600 ASNIERES SUR SEINE 
+    FRANCE
+
+    Email :
+    contact@linkeos.com 
+
+    Registered :
+    RCS Nanterre 533 206 074, 
+    represented by Yoann PLÉNET
+
+
+Validation
+----------
+
+You declare to have read and accepted these Terms of sales before online paying. A payment is worth acceptance of these Terms of sales.
+
+Unless proved otherwise, the data recorded by *Linkeos* constitute the proof of all transactions made by *Linkeos* and its customers.
+
+Price
+----
+
+Prices are in euros and include all taxes (VAT plus other taxes if any).
+
+During the *purchase*, the amount charged to the customer is the amount of purchase plus the charges applied by elveos.
+
+*Linkeos* reserves the right to change *rates* at any time. The *rate* applicable is the one in effect during the purchase validation.
+
+Payment
+--------
+
+The payment are made on the *elveos website* by credit card (VISA, Master Card, CB).
+
+The credit card debit is done as soon as the payment is validated. 
+
+The *elveos website* subject to a security system.
+
+The online payment system used by the *elveos website* is provided by third parties. It undertakes to maintain a maximum level of security for user bank informations. However, in case of failure in the payment system, elveos cannot be held responsible.
+
+Reimbursement
+-------------
+
+At any time before a *feature request* goes "into development" ([see the life cycle of a request] (/en/documentation/feature_lifecycle)) the user can cancel its *contribution*.
+
+Following a cancellation the amount of the *contribution* shall be credited on the internal account of the user. He can retrieve it through a request to withdraw money.
+
+In all cases, the charges taken by elveos will never be repaid. 
+
+Support
+--------
+
+For all information, question or even reclamation, the elveos support is available at contact@elveos.org
+
+Responsibility
+--------------
+
+*Linkeos* takes no responsibility for the adequacy between the demand and the development.
+
+*Linkeos* leaves 7 (seven) days for users to report the bugs encountered. Seven days after the last bug was closed, the development will be validated.
+
+*Linkeos* considers these seven days as sufficient to report the development problems. As such, after this validation, no claim will be accepted.
+
+After the development, the user can always contact the developer to report bugs.
+
+
+*Version 0.1-beta written on September 13, 2011*

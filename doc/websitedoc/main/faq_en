@@ -1,4 +1,108 @@
 FAQ
 ===
 
-The FAQ is not translated in english yet. You can read the [french FAQ](/fr/documentation/faq).
+##Who are we? / finance / website (are you scammer/profiteers?)
+
+- **Who are we? Whe created this website?**
+We are three former studients of INSA Lyne, Frédéric, Thomas and Yoann. We left our respective jobs to  embark on the adventure of starting a business. 
+
+- **How Elveos is funded?**
+We take a commission on money coming into the website. The answer to the next question will tell you more.
+
+- **A commission is charge on it I give? Which ?**
+Yes, a commission is charged on the money that is entrusted to elveos. When you load your elveos account, you pay a commission. Then, all internal transactions on Elveos are free. It is also possible that you have to pay withdrawal fees. if you are in euro, transfers are free. Otherwise you'll pay bank transaction fees.
+
+- **Elveos est-il géré par une entreprise à but lucratif ?**
+Elveos n'est pas géré par une association à but non lucratif, mais bien par une entreprise (SAS). Nous n'avons bien évidemment pas pour but de devenir millionnaire, mais simplement de pouvoir vivre de notre travail, tout en pouvant contribuer à améliorer le logiciel libre.
+
+
+- **Is Elveos managed by a for-profit business?**
+Elveos is not managed by a non-profit organisation, but by a company (French SAS). We have obviously not intended to be a millionaire, but simply to make a living from our work, while being able to help improve free software.
+
+- **10% + 0.30€ is expensive !**
+10% + € 0.30 may seem high. It should however realize that on that amount, we must pay VAT and bank transaction fees. Elveos recovers in the end ~ 7% of each transaction, allowing us to pay for lodging, miscellaneous expenses, and eventually we pay salaries.
+
+- **10% + € 0.30? why not just 10%**
+To encourage users to make a large payment instead of several short because we have to pay charges on each bank transaction.
+
+- **Do your site is sustainable?**
+We are a young company and we could fail.
+If this were to happen, we will do everything to try to continue to support the site ... but we can not really tell you more because we have not yet considered this scenario in detail.
+
+- **What will you do with my personal information?**
+Elveos ** never ** do not distribute your personal data to third.
+Furthermore we do everything we can to make it as safe as possible ... With us no password or credit card number stored in the clear.
+
+- **Will you put advertisement on the site elveos.org?**
+No.
+We do not like advertising on the internet, therefore we do not want to put it.
+
+##Free software, licence
+
+- **Under what license the programs are distributed? What licenses are allowed on the site?**
+All free licenses is the mean of the Open Source Initiative are allowed. The program developed on Elveos must be free software.
+
+- **Do you believe in free software?**
+Yes. Elveos website is licensed under the GNU Affero. We regularly contribute to various free software projects  (eg Perroquet, exxEditor ...). We created this site in order to provide a new way of funding free software and to improve them.
+
+##Feature requester
+
+- **I have an idea, but it's complicated and I can not explain itself properly**
+We plan to create braintorms feature to address this use case. However we have not done yet.
+In the meantime, feel free to create feature requests, even incomplete, people can be improved through the comments. We are aware that this is not the optimal process, but it will come.
+
+- **Who will choose the developer?**
+Contributors.
+When a developer thinks he can make the development, he will make an offer on the elveos website. If the offer does not appeal to contributors (too expensive, net experienced enough developer ...) they can vote against the offer (negative vote). Instead they like the offer they can vote for this offer.
+
+- **Who has the right to vote to choose the developer?**
+Everyone who contribute on the feature request.
+
+- **What happens if there is a difference between the developer's offer and the request?**
+If you find the difference unacceptable, you can vote *against* the offer.
+If you find the difference unacceptable but not enough people share your opinion, you can cancel your contribution before the development start.
+
+- **What happens if nobody wants to develop my idea?**
+If you feel that the request will never succeed, you can cancel your contribution.
+If you think there is real potential in your request, but it does not take off, check that you have explained what you want correctly ... and feel free to talk about on forums, your blog ...
+
+- **When the money being debited from my account?**
+Once you decide to contribute.
+Elveos takes money at the contribution. This ensures to the developer that money is available.
+
+- **Who decides if the software conforms to my expectations?**
+You.
+At the end of development, the developer release its creation on the Elveos website. Then, you can test it and report the bugs.
+You have 7 days minimum to report bugs. After that, when there are no more important bugs, development will be considered validated, and the developer will be paid. It will no longer be possible to report problems on Elveos. However, you can contact the developer!
+
+- **Who sets the amount needed to implement my idea?**
+The developer.
+A developer interested in implementing your idea can create an offer, in which he should set an amount.
+
+- **What happens if contributors give more money than requested by the developer?**
+The developer receives the all the contributions, including the surplus.
+
+
+##Développeurs
+
+- **Can I develop proprietary software in response of a feature resquest?**
+No. Only the developments made under a license recognized by the OSI are allowed on the elveos website.
+
+- **When will I get paid for my work? Under what conditions?**
+The money will be transferred to the Elveos account of the developer at least 7 days after the first release and as soon as the last critical bug has been closed.
+Then, the developer may be paid the money into his bank account by making a withdrawal request.
+
+- **I'm a developer, I like to contribute to free software, but I prefer to do it for free.**
+It's a very respectable attitude! Other developers, however, are not willing/able to do so for free.
+Developing using Elveos, you will receive money into an internal Elveos account , then you can help (without charge) on another projet, perhaps allowing a developer who can not afford to work for free to participate too.
+
+##Process
+
+- **The amount requested by the developer has been reached, why the development doesn't start yet ?**
+There is a short delay to wait for contributors to ensure that the offer is correct.
+This will prevent such a developer makes a "fake" offer with the exact amount of the sum of contributions, which would block the request.
+
+- **There are more bugs, but the feature request is not validated. Why?**
+The development is approved and the request closed 7 days after the last important bug has been validated.
+This delay allows users to test the release.
+In addition, when the conditions are met, we carry out manually validate the request for a final check that there are no problems.
