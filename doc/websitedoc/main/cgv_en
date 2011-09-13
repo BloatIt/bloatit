@@ -1,7 +1,10 @@
 Terms of Sales
 ==============
 
-Object
+
+This is a draft of the English version of the Terms of sales. The complete version is available in french: [Conditions Générales de vente](/fr/documentation/cgv)
+
+Subject
 -----
 
 ### Terms of sales acceptance 
@@ -12,52 +15,44 @@ The terms of sales as set forth herein as well as any additional terms and condi
 
 Contributing to a feature request on the *elveos website* implicate the acceptance without condition of the herein Terms of sales.
 
-<!--
-
-Ces conditions générales de vente prévaudront sur toutes autres conditions générales ou particulières non expressément agréées par *Linkeos*.
-
--->
-
 ### Terms of sales modifications
 
 *Linkeos* reserves the right to modify the terms of sales at any time. In this case, the conditions will be those in effect at the time of the order by the buyer.
 
-### Droit applicable et juridiction compétente
+### Applicable law and jurisdiction
 
-Les présentes conditions générales de vente sont soumises au droit français. Tous les litiges relatifs à la relation commerciale existant entre Vous et Nous sont soumis à la compétence des juridictions françaises.
+These Terms and Conditions are governed and will be interpreted in accordance with French courts. The French courts shall have exclusive jurisdiction to settle any claim or dispute which might arise out of or in connection with these terms and conditions.
 
-Définitions
+Definitions
 -----------
 
-**Utilisateur** : Les utilisateurs sont toutes les personnes qui utilisent le *site elveos* ou un des services proposés sur le *site elveos*, même en simple consultation. Un utilisateur peut être identifié ou non.
+**User**: Users are all the people who use the *elveos website* or one of the services offered on the *elveos website*. Users can be logged in or not.
 
-**Demande** : Sur le *site elveos*, une *demande* est une demande de fonctionnalité sur un logiciel libre.
+**Contribution** : On the *elveos website*, a contribution is when a user puts some money on a feature requests.
 
-**Contribution** : Sur le *site elveos* une *contribution* est une somme d'argent qu'un *membre* donne pour la réalisation d'une *demande*. 
-
-**Achat** : Sur le *site elveos* un *achat* est réalisé lorsque l'utilisateur réalise une transaction bancaire : lors d'une contribution ou d'un chargement de compte.
+**purchase** : On the *elveos website*, a purchase is a payment : an internal account loading. 
 
 **Client** : On the *elveos website* a client is a user that perform a payment.
 
-**Tarif** : Sur le *site elveos*, le *tarif* appliqué correspond aux charges prélevées par *Linkeos*.
+Legal notice
+------------
 
-Mentions légales
-----------------
-
-    Société :
+    Company :
     Linkeos SAS 
-    SAS au capital de 10 500,00 euros
+    Company with a 10 500,00 € capital
 
-    Adresse :
+    Address :
     66 BIS RUE DU CHATEAU C O H2NA EURL, 
     92600 ASNIERES SUR SEINE 
+    FRANCE
 
-    Courriel :
+    Email :
     contact@linkeos.com 
 
-    Immatriculée au Registre du Commerce et des Sociétés :
-    RCS Nanterre 533 206 074 Paris, 
-    représentée par Yoann PLÉNET
+    Registered :
+    RCS Nanterre 533 206 074, 
+    represented by Yoann PLÉNET
+
 
 Validation
 ----------
@@ -112,4 +107,4 @@ Responsibility
 After the development, the user can always contact the developer to report bugs.
 
 
-*Version 0.1-beta written on September 13, 2011
+*Version 0.1-beta written on September 13, 2011*
