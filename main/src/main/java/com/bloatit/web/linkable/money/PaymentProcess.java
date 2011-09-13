@@ -99,7 +99,7 @@ public class PaymentProcess extends WebProcess {
     protected synchronized Url doProcess() {
 
         if(!FrameworkConfiguration.isMercanetEnabled()) {
-            session.notifyError(Context.tr("The payment system is temporaly disable. Thanks to retry later."));
+            session.notifyError(Context.tr("The payment system is temporarily disabled. Please retry later."));
             return session.getLastStablePage();
         }
         
