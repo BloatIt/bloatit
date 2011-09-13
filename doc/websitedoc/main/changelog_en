@@ -1,6 +1,30 @@
 Changelog
 =========
 
+Version 1.1.7
+-------------
+
+### Features
+
+ - A member can now add a description of itself.
+ - Improvement on modify member page.
+ - The amount to pay is now displayed in the fisrt page of the contribution process.
+ - Improvement of notification messages for account activation and modify member..
+ - The design of member page is now better.
+ - Add a mean to disable bank connexion if we have problems.
+ - Link are now clickable in news feed.
+ - The offer description use now the markdown.
+ - English translation for CGU, CGV and FAQ.
+ 
+### Bug fix
+
+ - Fix potential bugs with amounts comparaison.
+ - Fix autocomplete on password field of modify member page.
+ - Fix wording and translation.
+ - Consider canceled contribution in contribution count, and contribute amount.
+ - Fix offer deletion.
+ - Fix bugs tab.
+
 Version 1.1.5
 -------------
  
