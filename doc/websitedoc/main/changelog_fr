@@ -1,6 +1,30 @@
 Changelog
 =========
 
+Version 1.1.7
+-------------
+
+### Fonctionnalités
+
+ - Ajout de la possibilité pour un membre d'ajouter une description de lui même.
+ - Amélioration de la page d'édition d'un membre.
+ - Ajout du montant à payer sur la première page de processus de contribution.
+ - Amélioration des messages de notifications pour l'activation du compte ou la modification des informations personnelles.
+ - Amélioration du design de la page membre.
+ - Ajout d'un moyen de désactiver l'interconnexion bancaire en cas de problème.
+ - Les liens sont maintenant cliquable dans le flux d'actualités.
+ - La description de l'offre utilise du markdown.
+ - Traduction de des CGU, CGV et FAQ en anglais
+ 
+### Correction de bug
+
+ - Correction de bug potentiels sur des comparaisons de montants
+ - Correction de l'autocompletion sur le mot de passe dans la page d'édition de membre
+ - Correction de wording ou de traduction
+ - Prise en comtpe de l'annulation des contributions dans les compteurs de nombre de contribution et le compteur de la page d'accueil. 
+ - Correction de la suppression des offres.
+ - L'onglet bug s'affiche correctement sur les demandes en développement.
+ 
 Version 1.1.5
 -------------
 
