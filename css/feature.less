@@ -241,28 +241,89 @@ display:table-cell;
 }
 
 .description_block {
-    padding: 1em;
+    margin: 0px;
+    padding: 0em;
     padding-bottom: 0.5em;
     
-}
+    /*padding: 1em;*/
+    
+    .language_bar {
+        height: 31px;   
+        margin-bottom: 0px;
+        
+        .language_block {
+            float: right;
+            padding-top: 4px;
+            height: 26px;  
 
-.description_text {
-    margin-top: 0em;
-    margin-bottom: 0.5em;
+            border-left: 1px solid @border_color;
+            border-bottom: 1px solid @border_color;
+            .rounded_corners_bottom_left (10px);
+            background-color: rgb(240,240,255);
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .language_link {
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+       
+    }
+    
+    
+    
+    .language_button {
+        float: right;
+        width: 30px;
+        height: 30px;
+        
+        border-left: 1px solid @border_color;
+        border-bottom: 1px solid @border_color;
+        .rounded_corners_bottom_left (10px);
+        
+        background-color: rgb(240,240,255);
+        
+        margin-top: 0px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        
+        .fake_link {
+            margin: 0px;       
+            margin-top: 4px; 
+            text-align: center;
+        }
+    }
+    
+    .description_text {
+    margin: 0px;
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.5em;
+    
     font-size: 0.9em;
+    
+    }
+    
+    .description_separator {
+        width: 200px;
+        height:1px;
+        border-top: 2px solid @border_color;
+        margin-left: 1em;        
+    }
+
+    .description_footer {
+        margin-top: 2px;
+        margin-left: 1em;
+    }
+
     
 }
 
-.description_separator {
-    width: 200px;
-    height:1px;
-    border-top: 2px solid @border_color;
-        
-}
 
-.description_footer {
-    margin-top: 2px;
-}
+
 
 .description_details {
     display: table-cell;
