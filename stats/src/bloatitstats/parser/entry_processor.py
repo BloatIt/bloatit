@@ -145,12 +145,12 @@ class entry_processor:
         
 
     def _get_or_create_referer(self, cursor):
-        cursor.execute('SELECT id FROM externalurl WHERE external_url=?', (self.http_referer,))
+        cursor.execute('SELECT id FROM externalurl WHERE external_url=?', (self.toAscii(self.http_referer),))
         referer_id = cursor.fetchone()
         if not referer_id:
-            url = urlparse(self.http_referer)
+            url = urlparse(self.toAscii(self.http_referer))
             cursor.execute('''INSERT INTO externalurl (scheme, netloc, path, params, query, fragment, external_url)
-                VALUES (?,?,?,?,?,?,?)''', (url.scheme, url.netloc, url.path, url.params, url.query, url.fragment, self.http_referer))
+                VALUES (?,?,?,?,?,?,?)''', (url.scheme, url.netloc, url.path, url.params, url.query, url.fragment, self.toAscii(self.http_referer)))
             referer_id = cursor.lastrowid
             entry_processor.nb_new_referer += 1
         else:
@@ -165,3 +165,6 @@ class entry_processor:
             VALUES (?, ?, ?, datetime(?), datetime(?), '0')''', (visitor_id, useragent_id, referer_id, self.date, self.date))
         entry_processor.nb_new_visit += 1
         return cursor.lastrowid
+        
+    def toAscii(self, string):
+        return string.decode("utf-8").encode("ascii", "ignore")
