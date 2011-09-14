@@ -154,6 +154,8 @@ import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
+import com.bloatit.web.linkable.translation.TranslateAction;
+import com.bloatit.web.linkable.translation.TranslatePage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.SiteMapPage;
@@ -582,6 +584,14 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (CreateFeatureAndOfferActionUrl.matches(pageCode)) {
             return new CreateFeatureAndOfferAction(new CreateFeatureAndOfferActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        
+        // Translation
+        if (TranslatePageUrl.matches(pageCode)) {
+            return new TranslatePage(new TranslatePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (TranslateActionUrl.matches(pageCode)) {
+            return new TranslateAction(new TranslateActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // Resource page

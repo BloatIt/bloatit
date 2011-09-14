@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -92,7 +93,7 @@ public final class SoftwarePage extends ElveosPage {
         }
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
-        final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
+        final Translation translatedDescription = software.getDescription().getTranslationOrDefault(Language.fromLocale(defaultLocale));
         final HtmlCachedMarkdownRenderer description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
         layout.addLeft(description);
 

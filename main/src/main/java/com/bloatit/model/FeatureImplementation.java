@@ -35,6 +35,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.feature.AbstractFeatureState;
 import com.bloatit.model.feature.DevelopingState;
 import com.bloatit.model.feature.DiscardedState;
@@ -100,13 +101,13 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     public FeatureImplementation(final Member author,
                                  final Team team,
-                                 final Locale locale,
+                                 final Language language,
                                  final String title,
                                  final String description,
                                  final Software software) {
         this(DaoFeature.createAndPersist(author.getDao(),
                                          DaoGetter.get(team),
-                                         DaoDescription.createAndPersist(author.getDao(), DaoGetter.get(team), locale, title, description),
+                                         DaoDescription.createAndPersist(author.getDao(), DaoGetter.get(team), language, title, description),
                                          DaoGetter.get(software)));
     }
 
@@ -210,7 +211,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public Offer addOffer(final BigDecimal amount,
                           final String description,
                           final String license,
-                          final Locale local,
+                          final Language language,
                           final Date dateExpire,
                           final int secondsBeforeValidation) throws UnauthorizedOperationException {
         tryAccess(new RgtFeature.Offer(), Action.WRITE);
@@ -220,7 +221,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                       amount,
                                       description,
                                       license,
-                                      local,
+                                      language,
                                       dateExpire,
                                       secondsBeforeValidation);
         return doAddOffer(offer);
@@ -575,27 +576,27 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public void setDescription(String newDescription, final Locale locale) throws UnauthorizedOperationException {
+    public void setDescription(String newDescription, final Language language) throws UnauthorizedOperationException {
         if (!canModify()) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
 
-        if (getDescription().getTranslation(locale) == null) {
+        if (getDescription().getTranslation(language) == null) {
             throw new BadProgrammerException("Cannot modify a feature description for a non existing language. Should be a new translation");
         }
-        getDao().setDescription(newDescription, locale);
+        getDao().setDescription(newDescription, language);
     }
     
     @Override
-    public void setTitle(String title, final Locale locale) throws UnauthorizedOperationException {
+    public void setTitle(String title, final Language language) throws UnauthorizedOperationException {
         if (!canModify()) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
-        if (getDescription().getTranslation(locale) == null) {
+        if (getDescription().getTranslation(language) == null) {
             throw new BadProgrammerException("Cannot modify a feature description for a non existing language. Should be a new translation");
         }
         
-        getDao().setTitle(title, locale);
+        getDao().setTitle(title, language);
     }
 
     @Override

@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.bloatit.data.DaoFileMetadata.FileType;
+import com.bloatit.framework.utils.i18n.Language;
 
 public class DaoUserContentTest {
 
@@ -62,11 +63,11 @@ public class DaoUserContentTest {
             (DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED)).addMember(yo, true);
         }
 
-        final DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, null, Locale.FRANCE, "title", "descrip"));
+        final DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, null, Language.FR, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(fred, null, null, "/dev/", "null", FileType.JPG, 12));
 
         feature = DaoFeature.createAndPersist(yo, null, DaoDescription.createAndPersist(yo, null,
-                                                                                  new Locale("fr"),
+                                                                                  Language.FR,
                                                                                   "Ma super demande !",
                                                                                   "Ceci est la descption de ma demande :) "), project);
 

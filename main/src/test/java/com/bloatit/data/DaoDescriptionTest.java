@@ -24,33 +24,34 @@ import java.util.Locale;
 import org.junit.Test;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+import com.bloatit.framework.utils.i18n.Language;
 
 public class DaoDescriptionTest extends DataTestUnit {
 
     @Test
     public void testCreateAndPersist() {
-        DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Locale.FRANCE, "A title", "a text");
+        DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Language.FR, "A title", "a text");
 
         try {
-            DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Locale.FRANCE, "", "a text");
+            DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Language.FR, "", "a text");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Locale.FRANCE, "A title", "");
+            DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Language.FR, "A title", "");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Locale.FRANCE, "A title", null);
+            DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Language.FR, "A title", null);
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Locale.FRANCE, null, "a text");
+            DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, Language.FR, null, "a text");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
@@ -62,7 +63,7 @@ public class DaoDescriptionTest extends DataTestUnit {
             assertTrue(true);
         }
         try {
-            DaoDescription.createAndPersist(null, null, Locale.FRANCE, "A title", "a text");
+            DaoDescription.createAndPersist(null, null, Language.FR, "A title", "a text");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);

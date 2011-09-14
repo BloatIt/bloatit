@@ -39,6 +39,7 @@ import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.exceptions.UniqueNameExpectedException;
+import com.bloatit.framework.utils.i18n.Language;
 
 public class BigDB {
 
@@ -85,7 +86,7 @@ public class BigDB {
 
         final DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(members.get(0),
                                                                                                         null,
-                                                                                                        Locale.FRANCE,
+                                                                                                        Language.FR,
                                                                                                         "title",
                                                                                                         "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(members.get(0), null, null, "/dev/", "null", FileType.JPG, 12));
@@ -95,7 +96,7 @@ public class BigDB {
                                                                    null,
                                                                    DaoDescription.createAndPersist(members.get(i),
                                                                                                    null,
-                                                                                                   new Locale("fr"),
+                                                                                                   Language.FR,
                                                                                                    fortune(140),
                                                                                                    fortune(1000) + fortune(1000) + fortune(1000)),
                                                                    project);
@@ -125,7 +126,7 @@ public class BigDB {
                                               null,
                                               feature,
                                               new BigDecimal((pick(50) + 10) * 10),
-                                              DaoDescription.createAndPersist(member, null, new Locale("fr"), "Offre", fortune(254)),
+                                              DaoDescription.createAndPersist(member, null, Language.FR, "Offre", fortune(254)),
                                               "GNU GPL",
                                               new Date(System.currentTimeMillis() + 200),
                                               0));

@@ -26,6 +26,7 @@ import com.bloatit.data.DaoOffer;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.UnauthorizedOperationException;
 
@@ -91,7 +92,7 @@ public interface Feature extends KudosableInterface, Commentable {
      *             {@link FeatureState#PENDING} or
      *             {@link FeatureState#PREPARING}.
      */
-    Offer addOffer(BigDecimal amount, String description, String license, Locale locale, Date expireDate, int secondsBeforeValidation)
+    Offer addOffer(BigDecimal amount, String description, String license, Language language, Date expireDate, int secondsBeforeValidation)
             throws UnauthorizedOperationException;
 
     /**
@@ -251,9 +252,9 @@ public interface Feature extends KudosableInterface, Commentable {
 
     BigDecimal getContributionOf(Member member);
 
-    void setDescription(String newDescription, Locale locale) throws UnauthorizedOperationException;
+    void setDescription(String newDescription, Language language) throws UnauthorizedOperationException;
 
     void setSoftware(Software software) throws UnauthorizedOperationException;
 
-    void setTitle(String title, final Locale locale) throws UnauthorizedOperationException;
+    void setTitle(String title, final Language language) throws UnauthorizedOperationException;
 }

@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -62,8 +63,8 @@ public class FeaturesTools {
     }
     
     public static String getTitle(final Feature feature) {
-        final Locale defaultLocale = Context.getLocalizator().getLocale();
-        final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
+        final Locale defaultLocale = new Locale(Context.getLocalizator().getLocale().getLanguage());
+        final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(Language.fromLocale(defaultLocale));
         return translatedDescription.getTitle();
     }
 

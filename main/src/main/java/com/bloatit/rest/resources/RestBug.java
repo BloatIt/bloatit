@@ -170,12 +170,12 @@ public class RestBug extends RestElement<Bug> {
     }
 
     /**
-     * @see com.bloatit.model.Bug#getLocale()
+     * @see com.bloatit.model.Bug#getLanguage()
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(LocaleAdapter.class)
-    public Locale getLocale() {
-        return model.getLocale();
+    public Locale getLanguage() {
+        return model.getLanguage().getLocale();
     }
 
     /**

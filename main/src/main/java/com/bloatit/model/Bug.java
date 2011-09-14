@@ -17,13 +17,13 @@
 package com.bloatit.model;
 
 import java.util.Date;
-import java.util.Locale;
 
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoComment;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
@@ -96,9 +96,9 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
         final Milestone milestone,
         final String title,
         final String description,
-        final Locale locale,
+        final Language language,
         final Level errorLevel) {
-        super(DaoBug.createAndPersist(member.getDao(), DaoGetter.get(team), milestone.getDao(), title, description, locale, errorLevel));
+        super(DaoBug.createAndPersist(member.getDao(), DaoGetter.get(team), milestone.getDao(), title, description, language, errorLevel));
     }
 
     /**
@@ -195,11 +195,11 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
      * Gets the locale in which this bug is written.
      * 
      * @return the locale
-     * @see com.bloatit.data.DaoBug#getLocale()
+     * @see com.bloatit.data.DaoBug#getLanguage()
      */
     // no right management: this is public data
-    public Locale getLocale() {
-        return getDao().getLocale();
+    public Language getLanguage() {
+        return getDao().getLanguage();
     }
 
     /**

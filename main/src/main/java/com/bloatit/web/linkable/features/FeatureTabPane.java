@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -34,6 +35,7 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.Description;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Translation;
@@ -43,6 +45,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyFeaturePageUrl;
+import com.bloatit.web.url.TranslatePageUrl;
 
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
@@ -131,11 +134,12 @@ public final class FeatureTabPane extends HtmlPageComponent {
             final Locale defaultLocale;
             
             if(language == null) {
-                defaultLocale = Context.getLocalizator().getLocale();
+                defaultLocale = new Locale(Context.getLocalizator().getLocale().getLanguage());
             } else {
                 defaultLocale =  language;
             }
-            final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
+            Description featureDescription = feature.getDescription();
+            final Translation translatedDescription = featureDescription.getTranslationOrDefault(Language.fromLocale(defaultLocale));
             
             JsShowHide jsShowHide = new JsShowHide(descriptionBlock, false);
             
@@ -144,18 +148,20 @@ public final class FeatureTabPane extends HtmlPageComponent {
                 final HtmlDiv languageBlock = new HtmlDiv("language_block");
                 {
                     final FeaturePageUrl featureUrl = new FeaturePageUrl(feature, activeTabKey);
-                    PageIterable<Translation> translations = feature.getDescription().getTranslations();
+                    PageIterable<Translation> translations = featureDescription.getTranslations();
                     
                     for(Translation translation : translations) {
                         
-                        featureUrl.getFeatureTabPaneUrl().setLanguage(translation.getLocale());
-                        HtmlLink link = featureUrl.getHtmlLink(translation.getLocale().getLanguage());
+                        //featureUrl.getFeatureTabPaneUrl().setLanguage(translation.getLanguage());
+                        HtmlLink link = featureUrl.getHtmlLink(translation.getLanguage().getCode());
                         link.setCssClass("language_link");
                         
                         languageBlock.add(link);
                     }
                     
-                    HtmlLink link = new PageNotFoundUrl().getHtmlLink(Context.tr("translate"));
+                    
+                    TranslatePageUrl translatePageUrl = new TranslatePageUrl(featureDescription, defaultLocale);
+                    HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
                     languageBlock.add(link);
                 
                     
@@ -167,11 +173,12 @@ public final class FeatureTabPane extends HtmlPageComponent {
             
             final HtmlDiv languageButton = new HtmlDiv("language_button");
             {
-                HtmlParagraph link = new HtmlParagraph(translatedDescription.getLocale().getLanguage(), "fake_link");
+                HtmlParagraph link = new HtmlParagraph(translatedDescription.getLanguage().getCode(), "fake_link");
                 languageButton.add(link);
                 jsShowHide.addActuator(link);
             }
             descriptionBlock.add(languageButton);
+            jsShowHide.setHasFallback(false);
             jsShowHide.apply();
             
             final HtmlDiv descriptionText = new HtmlDiv("description_text");

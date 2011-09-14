@@ -29,6 +29,7 @@ import org.junit.Test;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.data.search.FeatureSearch;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.i18n.Language;
 
 /**
  * I assume the DaoGroupMemberTest is run without error.
@@ -41,7 +42,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                                null,
                                                                DaoDescription.createAndPersist(yo,
                                                                                                null,
-                                                                                               new Locale("fr"),
+                                                                                               Language.FR,
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
                                                                project);
@@ -55,7 +56,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                                null,
                                                                DaoDescription.createAndPersist(yo,
                                                                                                null,
-                                                                                               new Locale("fr"),
+                                                                                               Language.FR,
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
                                                                project);
@@ -71,7 +72,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                                null,
                                                                DaoDescription.createAndPersist(yo,
                                                                                                null,
-                                                                                               new Locale("fr"),
+                                                                                               Language.FR,
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
                                                                project);
@@ -88,7 +89,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                          null,
                                                          DaoDescription.createAndPersist(yo,
                                                                                          null,
-                                                                                         new Locale("fr"),
+                                                                                         Language.FR,
                                                                                          "Ma super demande !",
                                                                                          "Ceci est la descption de ma demande :) "),
                                                          project);
@@ -117,7 +118,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                          null,
                                                          DaoDescription.createAndPersist(yo,
                                                                                          null,
-                                                                                         new Locale("fr"),
+                                                                                         Language.FR,
                                                                                          "Ma super demande !",
                                                                                          "Ceci est la descption de ma demande :) "),
                                                          project);
@@ -133,7 +134,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                          null,
                                                          DaoDescription.createAndPersist(yo,
                                                                                          null,
-                                                                                         new Locale("fr"),
+                                                                                         Language.FR,
                                                                                          "Ma super demande !",
                                                                                          "Ceci est la descption de ma demande :) "),
                                                          project);
@@ -156,7 +157,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                                null,
                                                                DaoDescription.createAndPersist(yo,
                                                                                                null,
-                                                                                               new Locale("fr"),
+                                                                                               Language.FR,
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
                                                                project);
@@ -181,7 +182,7 @@ public class DaoFeatureTest extends DataTestUnit {
                             null,
                             feature,
                             new BigDecimal("200"),
-                            DaoDescription.createAndPersist(fred, null, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
+                            DaoDescription.createAndPersist(fred, null, Language.FR, "Ma super offre !", "Ceci est la descption de mon Offre:) "),
                             "GNU GPL",
                             DateUtils.tomorrow(),
                             0);
@@ -195,7 +196,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                          null,
                                                          DaoDescription.createAndPersist(yo,
                                                                                          null,
-                                                                                         new Locale("fr"),
+                                                                                         Language.FR,
                                                                                          "Ma super demande !",
                                                                                          "Ceci est la descption de ma demande :) "),
                                                          project);
@@ -227,7 +228,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                                null,
                                                                DaoDescription.createAndPersist(yo,
                                                                                                null,
-                                                                                               new Locale("fr"),
+                                                                                               Language.FR,
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
                                                                project);
@@ -257,7 +258,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                                null,
                                                                DaoDescription.createAndPersist(yo,
                                                                                                null,
-                                                                                               new Locale("fr"),
+                                                                                               Language.FR,
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
                                                                project);

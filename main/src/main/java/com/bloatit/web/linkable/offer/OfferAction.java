@@ -17,6 +17,7 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -113,12 +114,12 @@ public final class OfferAction extends UserContentAction {
         try {
             Milestone constructingMilestone;
             if (draftOffer == null) {
-                constructingOffer = feature.addOffer(price, description, license, getLocale(), expiryDate.getJavaDate(), daysBeforeValidation
+                constructingOffer = feature.addOffer(price, description, license, Language.fromLocale(getLocale()), expiryDate.getJavaDate(), daysBeforeValidation
                         * DateUtils.SECOND_PER_DAY);
                 constructingMilestone = constructingOffer.getMilestones().iterator().next();
             } else {
                 constructingOffer = draftOffer;
-                constructingMilestone = draftOffer.addMilestone(price, description, getLocale(), expiryDate.getJavaDate(), daysBeforeValidation
+                constructingMilestone = draftOffer.addMilestone(price, description, Language.fromLocale(getLocale()), expiryDate.getJavaDate(), daysBeforeValidation
                         * DateUtils.SECOND_PER_DAY);
             }
             if (percentFatal != null && percentMajor != null) {

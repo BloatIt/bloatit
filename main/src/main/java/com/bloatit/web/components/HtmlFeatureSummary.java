@@ -17,6 +17,7 @@ import java.util.Locale;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
@@ -182,7 +183,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      * @throws UnauthorizedOperationException
      */
     private XmlNode generateTitle() throws UnauthorizedOperationException {
-        final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
+        final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(Language.fromLocale(defaultLocale));
 
         final HtmlTitle title = new HtmlTitle(1);
         title.setCssClass("feature_title");

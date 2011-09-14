@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 
 import javax.persistence.Basic;
@@ -58,6 +57,7 @@ import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 
 /**
  * A DaoFeature is a kudosable content. It has a translatable description, and
@@ -462,12 +462,12 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         this.featureState = featureState;
     }
 
-    public void setDescription(String newDescription, Locale locale) {
-        getDescription().getTranslation(locale).setText(newDescription, getMember());
+    public void setDescription(String newDescription, Language language) {
+        getDescription().getTranslation(language).setText(newDescription, getMember());
     }
 
-    public void setTitle(String title, Locale locale) {
-        getDescription().getTranslation(locale).setTitle(title);
+    public void setTitle(String title, Language language) {
+        getDescription().getTranslation(language).setTitle(title);
     }
 
     // @Override
