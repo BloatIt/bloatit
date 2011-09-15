@@ -34,11 +34,13 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Description;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Translation;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.UserContentAuthorBlock;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -58,12 +60,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
     @RequestParam(role = Role.PAGENAME)
     @NonOptional(@tr("The tab is not optional."))
     private FeatureTabKey activeTabKey;
-    
-    
-    @RequestParam()
-    @Optional
-    private Locale language;
-
+ 
     // Useful for Url generation Do not delete
     @SuppressWarnings("unused")
     private FeatureContributorsComponent contribution;
@@ -75,7 +72,6 @@ public final class FeatureTabPane extends HtmlPageComponent {
         super();
         this.feature = feature;
         activeTabKey = url.getActiveTabKey();
-        language = url.getLanguage();
 
         final FeaturePageUrl featureUrl = new FeaturePageUrl(feature, activeTabKey);
 
@@ -131,55 +127,24 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {
-            final Locale defaultLocale;
+            final Locale defaultLocale = new Locale(Context.getLocalizator().getLocale().getLanguage());
             
-            if(language == null) {
-                defaultLocale = new Locale(Context.getLocalizator().getLocale().getLanguage());
-            } else {
-                defaultLocale =  language;
-            }
             Description featureDescription = feature.getDescription();
             final Translation translatedDescription = featureDescription.getTranslationOrDefault(Language.fromLocale(defaultLocale));
             
-            JsShowHide jsShowHide = new JsShowHide(descriptionBlock, false);
+            if(AuthToken.isAuthenticated()) {
             
-            final HtmlDiv languageBar = new HtmlDiv("language_bar");
-            {
-                final HtmlDiv languageBlock = new HtmlDiv("language_block");
+                final HtmlDiv languageButton = new HtmlDiv("language_button");
                 {
-                    final FeaturePageUrl featureUrl = new FeaturePageUrl(feature, activeTabKey);
-                    PageIterable<Translation> translations = featureDescription.getTranslations();
-                    
-                    for(Translation translation : translations) {
-                        
-                        //featureUrl.getFeatureTabPaneUrl().setLanguage(translation.getLanguage());
-                        HtmlLink link = featureUrl.getHtmlLink(translation.getLanguage().getCode());
-                        link.setCssClass("language_link");
-                        
-                        languageBlock.add(link);
-                    }
-                    
+                    HtmlParagraph currentLanguage = new HtmlParagraph(translatedDescription.getLanguage().getCode());
+                    languageButton.add(currentLanguage);
                     
                     TranslatePageUrl translatePageUrl = new TranslatePageUrl(featureDescription, defaultLocale);
                     HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
-                    languageBlock.add(link);
-                
-                    
+                    languageButton.add(link);
                 }
-                languageBar.add(languageBlock);
+                descriptionBlock.add(languageButton);
             }
-            descriptionBlock.add(languageBar);
-            jsShowHide.addListener(languageBar);
-            
-            final HtmlDiv languageButton = new HtmlDiv("language_button");
-            {
-                HtmlParagraph link = new HtmlParagraph(translatedDescription.getLanguage().getCode(), "fake_link");
-                languageButton.add(link);
-                jsShowHide.addActuator(link);
-            }
-            descriptionBlock.add(languageButton);
-            jsShowHide.setHasFallback(false);
-            jsShowHide.apply();
             
             final HtmlDiv descriptionText = new HtmlDiv("description_text");
             {
