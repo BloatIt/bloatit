@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 1.1.8
+-------------
+
+### Features
+ - Set default page size to 36.
+ - Add experimental translation system
+
+
 Version 1.1.7
 -------------
 
