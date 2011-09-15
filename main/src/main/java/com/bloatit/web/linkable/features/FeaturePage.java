@@ -16,6 +16,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import org.springframework.web.util.HtmlUtils;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -51,6 +52,7 @@ public final class FeaturePage extends ElveosPage {
     private FeatureTabPane featureTabPane;
 
     @SuppressWarnings("unused")
+    //@RequestParam(role = Role.PRETTY, generatedFrom = "feature.getDescription().getTranslationOrDefault(feature.getDescription().getDefaultlanguage())")
     @RequestParam(role = Role.PRETTY, generatedFrom = "feature")
     @Optional("Title")
     private final String title;
@@ -174,10 +176,12 @@ public final class FeaturePage extends ElveosPage {
     @Override
     protected String createPageTitle() {
         if (feature != null) {
+            String featureTitle = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle();
+            
             if (feature.getSoftware() == null) {
-                return feature.getTitle();
+                return featureTitle;
             } else {
-                return Context.tr("{0} - {1}", feature.getTitle(), feature.getSoftware().getName());
+                return Context.tr("{0} - {1}", featureTitle, feature.getSoftware().getName());
             }
         }
         return Context.tr("feature not found.");
@@ -185,7 +189,7 @@ public final class FeaturePage extends ElveosPage {
 
     @Override
     protected String getPageDescription() {
-        String title = feature.getTitle();
+        String title = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle();
         if (title.endsWith(".") || title.endsWith(":") || title.endsWith("!") || title.endsWith("?")) {
             title = title.substring(0, title.length() - 1);
         }

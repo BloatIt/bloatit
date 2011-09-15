@@ -65,7 +65,7 @@ public class ModifyFeaturePage extends LoggedElveosPage {
         titleInput.setCssClass("input_long_400px");
         titleInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
         if (descriptionFieldData.getSuggestedValue() == null) {
-            titleInput.setDefaultValue(feature.getTitle());
+            titleInput.setDefaultValue(feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getTitle());
         } else {
             titleInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
         }
@@ -97,7 +97,7 @@ public class ModifyFeaturePage extends LoggedElveosPage {
                                                                      CreateFeaturePage.SPECIF_INPUT_NB_COLUMNS);
 
         if (specificationFieldData.getSuggestedValue() == null || specificationFieldData.getSuggestedValue().isEmpty()) {
-            specificationInput.setDefaultValue(feature.getDescription().getDefaultTranslation().getText());
+            specificationInput.setDefaultValue(feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getText());
         } else {
             specificationInput.setDefaultValue(specificationFieldData.getSuggestedValue());
         }

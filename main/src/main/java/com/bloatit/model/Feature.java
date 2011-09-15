@@ -231,10 +231,9 @@ public interface Feature extends KudosableInterface, Commentable {
      */
     Offer getValidatedOffer();
 
-    /**
-     * @see #getDescription()
-     */
+    @Deprecated
     String getTitle();
+    
 
     FeatureState getFeatureState();
 

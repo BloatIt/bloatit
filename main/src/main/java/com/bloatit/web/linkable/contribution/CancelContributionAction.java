@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.contribution;
 
 import com.bloatit.data.DaoContribution;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -40,7 +41,7 @@ public class CancelContributionAction extends LoggedElveosAction {
             mixed = new HtmlMixedText(Context.tr("Your {0} contribution on the feature <0::> has been canceled.",
                                                  Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString()),
                                       new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.description).getHtmlLink(Context.tr(contribution.getFeature()
-                                                                                                                                                  .getTitle())));
+                                                                                                                                      .getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle())));
         } catch (UnauthorizedOperationException e) {
             throw new ShallNotPassException("User get info on his contribution");
         }

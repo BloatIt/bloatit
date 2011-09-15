@@ -700,6 +700,11 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
+    public String getTitle() {
+        return getDescription().getTranslation(getDescription().getDefaultLanguage()).getTitle();
+    }
+    
+    @Override
     public BigDecimal getContributionMax() {
         BigDecimal contributionMax = getDao().getContributionMax();
         if (contributionMax == null) {
@@ -764,11 +769,6 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             return getSelectedOffer();
         }
         return null;
-    }
-
-    @Override
-    public String getTitle() {
-        return getDescription().getDefaultTranslation().getTitle();
     }
 
     @Override

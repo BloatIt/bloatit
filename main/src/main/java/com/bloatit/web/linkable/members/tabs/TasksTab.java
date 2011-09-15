@@ -19,6 +19,7 @@ package com.bloatit.web.linkable.members.tabs;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -77,7 +78,7 @@ public class TasksTab extends HtmlTab {
 
         for (final Milestone milestone : milestoneToInvoice) {
             final HtmlParagraph p = new HtmlParagraph();
-            p.addText("Invoicing " + milestone.getOffer().getFeature().getTitle() + " - Milestone " + milestone.getPosition());
+            p.addText("Invoicing " + milestone.getOffer().getFeature().getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle() + " - Milestone " + milestone.getPosition());
             p.add(new ContributionInvoicingProcessUrl(milestone.getOffer().getAuthor(), milestone).getHtmlLink("Generate invoices"));
             incoiving.add(p);
         }

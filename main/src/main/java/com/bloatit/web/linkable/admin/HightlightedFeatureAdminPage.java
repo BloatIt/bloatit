@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
@@ -116,7 +117,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
         final HtmlDropDown featureInput = new HtmlDropDown(featureFieldData.getName(), "Feature");
         final PageIterable<Feature> features = FeatureManager.getFeatures();
         for (final Feature feature : features) {
-            featureInput.addDropDownElement(String.valueOf(feature.getId()), feature.getTitle());
+            featureInput.addDropDownElement(String.valueOf(feature.getId()), feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle());
         }
         featureInput.setDefaultValue(featureFieldData.getSuggestedValue());
         newHightlightedFeatureForm.add(featureInput);
@@ -217,7 +218,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
 
                 @Override
                 public XmlNode getBody() {
-                    return new FeaturePageUrl(feature.getFeature(), FeatureTabKey.description).getHtmlLink(feature.getFeature().getTitle());
+                    return new FeaturePageUrl(feature.getFeature(), FeatureTabKey.description).getHtmlLink(feature.getFeature().getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle());
                 }
             });
 

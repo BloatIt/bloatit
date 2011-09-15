@@ -90,8 +90,8 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                           Software.create(DaoSoftware.getByName("VLC")));
         assertEquals(feature.getAuthor(), memberTom);
         assertEquals(feature.getDescription().getDefaultLanguage(), Locale.FRENCH.getLanguage());
-        assertEquals(feature.getDescription().getDefaultTranslation().getTitle(), "title");
-        assertEquals(feature.getDescription().getDefaultTranslation().getText(), "Description");
+        assertEquals(feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getTitle(), "title");
+        assertEquals(feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getText(), "Description");
     }
 
     @Test
