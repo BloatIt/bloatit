@@ -117,6 +117,10 @@ public final class TranslateAction extends LoggedElveosAction {
     @Override
     protected void transmitParameters() {
         session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getTitleParameter());
+        session.addParameter(url.getContentParameter());
+        session.addParameter(url.getSourceLanguageParameter());
+        session.addParameter(url.getTargetLanguageParameter());        
     }
 
 }
