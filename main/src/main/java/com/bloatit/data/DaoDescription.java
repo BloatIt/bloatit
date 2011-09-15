@@ -34,6 +34,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.Language;
 
@@ -84,6 +85,9 @@ public class DaoDescription extends DaoIdentifiable {
                                                   final String title,
                                                   final String description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        if (member == null || language == null || title == null || title.isEmpty() || description == null || description.isEmpty()) {
+            throw new NonOptionalParameterException();
+        }
         final DaoDescription descr = new DaoDescription(member, team, language, title, description);
         try {
             session.save(descr);
