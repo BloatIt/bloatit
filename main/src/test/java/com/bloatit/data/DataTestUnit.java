@@ -25,6 +25,7 @@ import org.junit.BeforeClass;
 
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.exceptions.UniqueNameExpectedException;
+import com.bloatit.framework.utils.i18n.Language;
 
 public class DataTestUnit {
 
@@ -54,7 +55,7 @@ public class DataTestUnit {
         b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);
         b219.addMember(yo, true);
 
-        project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, null, Locale.FRANCE, "title", "descrip"));
+        project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, null, Language.FR, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(fred, null, null, "/dev/", "null", FileType.JPG, 12));
         SessionManager.endWorkUnitAndFlush();
     }

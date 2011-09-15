@@ -27,6 +27,7 @@ import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MilestoneContributionAmountList;
@@ -111,9 +112,9 @@ public final class Milestone extends Identifiable<DaoMilestone> {
      * @return the bug added in this milestone.
      * @throws UnauthorizedOperationException
      */
-    public Bug addBug(final String title, final String description, final Locale locale, final Level errorLevel)
+    public Bug addBug(final String title, final String description, final Language language, final Level errorLevel)
             throws UnauthorizedOperationException {
-        final Bug bug = new Bug(AuthToken.getMember(), AuthToken.getAsTeam(), this, title, description, locale, errorLevel);
+        final Bug bug = new Bug(AuthToken.getMember(), AuthToken.getAsTeam(), this, title, description, language, errorLevel);
         getDao().addBug(bug.getDao());
         return bug;
     }

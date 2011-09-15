@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -96,7 +97,7 @@ public final class CreateExternalServiceAction extends UserContentAction {
     public Url doDoProcessRestricted(Member me, Team asTeam) {
         final Locale langLocale = new Locale(lang);
 
-        final ExternalService p = new ExternalService(me, asTeam, new Description(me, asTeam, langLocale, serviceName, description));
+        final ExternalService p = new ExternalService(me, asTeam, new Description(me, asTeam, Language.fromLocale(langLocale), serviceName, description));
 
         if (image != null) {
             final FileConstraintChecker fcc = new FileConstraintChecker(image);

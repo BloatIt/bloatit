@@ -33,12 +33,12 @@ import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoTransaction;
-import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 
 public class SimpleTestDB {
@@ -140,14 +140,14 @@ public class SimpleTestDB {
         }
 
         try {
-            project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(tom, null, Locale.FRANCE, "title", "descrip"));
+            project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(tom, null,Language.FR, "title", "descrip"));
         } catch (UniqueNameExpectedException e) {
             throw new BadProgrammerException(e);
         }
 
         feature = DaoFeature.createAndPersist(yo,
                                               null,
-                                              DaoDescription.createAndPersist(yo, null, new Locale("fr"), "Mon titre", "Ceci est une description"),
+                                              DaoDescription.createAndPersist(yo, null, Language.FR, "Mon titre", "Ceci est une description"),
                                               project);
 
         project.setImage(DaoFileMetadata.createAndPersist(tom, null, feature, "/dev/", "null", FileType.JPG, 12));
@@ -177,7 +177,7 @@ public class SimpleTestDB {
                                           null,
                                           feature,
                                           new BigDecimal("200"),
-                                          DaoDescription.createAndPersist(fred, null, new Locale("fr"), "Mon Offre", "Voici la description"),
+                                          DaoDescription.createAndPersist(fred, null, Language.FR, "Mon Offre", "Voici la description"),
                                           "GNU GPL",
                                           DateUtils.tomorrow(),
                                           0));
@@ -186,15 +186,14 @@ public class SimpleTestDB {
 
             final DaoFeature feature1 = DaoFeature.createAndPersist(fred, null, DaoDescription.createAndPersist(fred,
                                                                                                                 null,
-                                                                                                                new Locale("en"),
+                                                                                                                Language.EN,
                                                                                                                 "I try it in English",
                                                                                                                 "Hello world"), project);
-            feature1.getDescription().addTranslation(new DaoTranslation(tom,
+            feature1.getDescription().addTranslation(tom,
                                                                         null,
-                                                                        feature1.getDescription(),
-                                                                        new Locale("fr"),
+                                                                        Language.FR,
                                                                         "J'essaie en anglais",
-                                                                        "Salut le monde"));
+                                                                        "Salut le monde");
             feature1.addContribution(yo, null, new BigDecimal("12"), "I'm so generous too");
             feature1.addContribution(fred, null, new BigDecimal("11"), "I'm so generous too");
         } catch (final NotEnoughMoneyException e1) {

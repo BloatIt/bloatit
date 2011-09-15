@@ -159,12 +159,12 @@ public class RestTranslation extends RestElement<Translation> {
     }
 
     /**
-     * @see com.bloatit.model.Translation#getLocale()
+     * @see com.bloatit.model.Translation#getLanguage()
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(LocaleAdapter.class)
-    public Locale getLocale() {
-        return model.getLocale();
+    public Locale getLanguage() {
+        return model.getLanguage().getLocale();
     }
 
     /**

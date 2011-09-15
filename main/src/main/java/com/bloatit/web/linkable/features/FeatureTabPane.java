@@ -16,28 +16,38 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.Description;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Translation;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.UserContentAuthorBlock;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyFeaturePageUrl;
+import com.bloatit.web.url.TranslatePageUrl;
 
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
@@ -50,13 +60,17 @@ public final class FeatureTabPane extends HtmlPageComponent {
     @RequestParam(role = Role.PAGENAME)
     @NonOptional(@tr("The tab is not optional."))
     private FeatureTabKey activeTabKey;
-
+ 
     // Useful for Url generation Do not delete
     @SuppressWarnings("unused")
     private FeatureContributorsComponent contribution;
 
+
+    private final Feature feature;
+
     protected FeatureTabPane(final FeatureTabPaneUrlComponent url, final Feature feature) {
         super();
+        this.feature = feature;
         activeTabKey = url.getActiveTabKey();
 
         final FeaturePageUrl featureUrl = new FeaturePageUrl(feature, activeTabKey);
@@ -113,10 +127,24 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {
+            final Locale defaultLocale = new Locale(Context.getLocalizator().getLocale().getLanguage());
+            
+            Description featureDescription = feature.getDescription();
+            final Translation translatedDescription = featureDescription.getTranslationOrDefault(Language.fromLocale(defaultLocale));
+            
+            if(AuthToken.isAuthenticated()) {
+            
+                final HtmlDiv languageButton = new HtmlDiv("language_button");
+                {
+                    TranslatePageUrl translatePageUrl = new TranslatePageUrl(featureDescription, defaultLocale);
+                    HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
+                    languageButton.add(link);
+                }
+                descriptionBlock.add(languageButton);
+            }
+            
             final HtmlDiv descriptionText = new HtmlDiv("description_text");
             {
-                final Locale defaultLocale = Context.getLocalizator().getLocale();
-                final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
                 final HtmlElement description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
                 descriptionText.add(description);
 

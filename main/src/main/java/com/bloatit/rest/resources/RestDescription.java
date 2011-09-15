@@ -165,7 +165,7 @@ public class RestDescription extends RestElement<Description> {
     @XmlAttribute
     @XmlJavaTypeAdapter(LocaleAdapter.class)
     public Locale getDefaultLocale() {
-        return model.getDefaultLocale();
+        return model.getDefaultLanguage().getLocale();
     }
 
     // ---------------------------------------------------------------------------------------

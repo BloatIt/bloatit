@@ -45,6 +45,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.feature.TaskUpdateDevelopingState;
@@ -60,7 +61,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                                                          null,
                                                                                          DaoDescription.createAndPersist(memberTom.getDao(),
                                                                                                                          null,
-                                                                                                                         Locale.FRANCE,
+                                                                                                                         Language.FR,
                                                                                                                          "title",
                                                                                                                          "description"),
                                                                                          DaoSoftware.getByName("VLC")));
@@ -73,7 +74,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                                         null,
                                                                         DaoDescription.createAndPersist(memberTom.getDao(),
                                                                                                         null,
-                                                                                                        Locale.FRANCE,
+                                                                                                        Language.FR,
                                                                                                         "title",
                                                                                                         "description"),
                                                                         DaoSoftware.getByName("VLC")));
@@ -83,12 +84,12 @@ public class FeatureImplementationTest extends ModelTestUnit {
     public void testFeature() {
         final Feature feature = new FeatureImplementation(memberTom,
                                                           null,
-                                                          Locale.FRANCE,
+                                                          Language.FR,
                                                           "title",
                                                           "Description",
                                                           Software.create(DaoSoftware.getByName("VLC")));
         assertEquals(feature.getAuthor(), memberTom);
-        assertEquals(feature.getDescription().getDefaultLocale(), Locale.FRANCE);
+        assertEquals(feature.getDescription().getDefaultLanguage(), Locale.FRENCH.getLanguage());
         assertEquals(feature.getDescription().getDefaultTranslation().getTitle(), "title");
         assertEquals(feature.getDescription().getDefaultTranslation().getText(), "Description");
     }
@@ -271,7 +272,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         try {
             AuthToken.authenticate(memeberFred);
-            feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
+            feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3",Language.FR, DateUtils.tomorrow(), 0);
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
@@ -299,7 +300,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
         AuthToken.authenticate(memberTom);
-        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
         AuthToken.authenticate(memberYo);
@@ -325,7 +326,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         AuthToken.authenticate(memberTom);
 
-        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
         assertNotNull(feature.getSelectedOffer());
@@ -444,7 +445,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         AuthToken.authenticate(memberTom);
 
-        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
 
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
@@ -466,15 +467,15 @@ public class FeatureImplementationTest extends ModelTestUnit {
         final Offer offer = feature.addOffer(BigDecimal.TEN,
                                              "description",
                                              "GNU GPL V3",
-                                             Locale.FRENCH,
+                                             Language.FR,
                                              DateUtils.tomorrow(),
                                              DateUtils.SECOND_PER_WEEK);
 
         AuthToken.authenticate(memberTom);
-        offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
-        offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
-        offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);
-        offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(8), DateUtils.SECOND_PER_WEEK);
+        offer.addMilestone(BigDecimal.TEN, "description", Language.FR, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
+        offer.addMilestone(BigDecimal.TEN, "description", Language.FR, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
+        offer.addMilestone(BigDecimal.TEN, "description", Language.FR, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);
+        offer.addMilestone(BigDecimal.TEN, "description", Language.FR, DateUtils.nowPlusSomeDays(8), DateUtils.SECOND_PER_WEEK);
 
         AuthToken.authenticate(memberYo);
         feature.addContribution(new BigDecimal("12"), null);
@@ -565,11 +566,11 @@ public class FeatureImplementationTest extends ModelTestUnit {
         final Comment comm2 = feature.addComment("Do it your way, ignore tom he's obviously wrong !");
 
         AuthToken.authenticate(loser);
-        final Offer offer = feature.addOffer(new BigDecimal("300"), "Beautiful offer", "AGPL", new Locale("fr", "fr"), DateUtils.tomorrow(), 100);
+        final Offer offer = feature.addOffer(new BigDecimal("300"), "Beautiful offer", "AGPL", Language.FR, DateUtils.tomorrow(), 100);
         final Milestone milestone = offer.getCurrentMilestone();
         final Release release = milestone.addRelease("Beta 1", "0.1", new Locale("fr", "fr"), null);
 
-        final Bug bug1 = milestone.addBug("A new bug 1", "This is a new bug description 1", new Locale("en", "us"), Level.FATAL);
+        final Bug bug1 = milestone.addBug("A new bug 1", "This is a new bug description 1", Language.EN, Level.FATAL);
         AuthToken.authenticate(memeberFred);
         final Comment bugComm11 = bug1.addComment("plop");
         AuthToken.authenticate(memberTom);
@@ -577,11 +578,11 @@ public class FeatureImplementationTest extends ModelTestUnit {
         AuthToken.authenticate(memberYo);
         final Comment bugComm12 = bug1.addComment("plap");
         AuthToken.authenticate(memeberFred);
-        final Bug bug2 = milestone.addBug("A new bug 2", "This is a new bug description 2", new Locale("en", "us"), Level.MAJOR);
+        final Bug bug2 = milestone.addBug("A new bug 2", "This is a new bug description 2", Language.EN, Level.MAJOR);
         AuthToken.authenticate(memberYo);
-        final Bug bug3 = milestone.addBug("A new bug 3", "This is a new bug description 3", new Locale("en", "us"), Level.MINOR);
+        final Bug bug3 = milestone.addBug("A new bug 3", "This is a new bug description 3", Language.EN, Level.MINOR);
         AuthToken.authenticate(memberTom);
-        final Bug bug4 = milestone.addBug("A new bug 4", "This is a new bug description 4", new Locale("en", "us"), Level.FATAL);
+        final Bug bug4 = milestone.addBug("A new bug 4", "This is a new bug description 4", Language.EN, Level.FATAL);
         AuthToken.authenticate(memeberFred);
         final Comment bugComm41 = bug4.addComment("plop");
         AuthToken.authenticate(memberTom);
