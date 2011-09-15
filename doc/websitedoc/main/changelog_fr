@@ -1,6 +1,17 @@
 Changelog
 =========
 
+
+Version 1.1.9
+-------------
+
+### Features
+ - Small improve in software page
+
+### Bug fix
+ - Escape xml characters in atom feed
+ - Fix translate form
+
 Version 1.1.8
 -------------
 
