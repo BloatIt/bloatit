@@ -136,9 +136,6 @@ public final class FeatureTabPane extends HtmlPageComponent {
             
                 final HtmlDiv languageButton = new HtmlDiv("language_button");
                 {
-                    HtmlParagraph currentLanguage = new HtmlParagraph(translatedDescription.getLanguage().getCode());
-                    languageButton.add(currentLanguage);
-                    
                     TranslatePageUrl translatePageUrl = new TranslatePageUrl(featureDescription, defaultLocale);
                     HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
                     languageButton.add(link);
