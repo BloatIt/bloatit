@@ -16,27 +16,29 @@
 //
 package com.bloatit.framework.webprocessor.components.meta;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
-/**
- * <p>
- * An <code>HtmlElement</code> represents any HtmlNode which is not raw text,
- * hence it should be the mother class of all HtmlTags that are created.
- * </p>
- */
-public abstract class HtmlElement extends XmlElement {
-    public HtmlElement(final String tag) {
+public abstract class HtmlElement extends HtmlNode {
+
+    private final List<HtmlNode> children = new ArrayList<HtmlNode>();
+
+    protected HtmlElement(final String tag) {
         super(tag);
     }
 
     public HtmlElement() {
-        super();
+        super((HtmlTag) null);
     }
 
     protected HtmlElement(final HtmlElement element) {
-        super(element);
+        super(element.tag);
+        for (final HtmlNode child : element.children) {
+            this.children.add(child);
+        }
     }
 
     /**
@@ -99,62 +101,62 @@ public abstract class HtmlElement extends XmlElement {
     public abstract boolean selfClosable();
 
     /**
-     * This method should be overridden by any components needing some special
-     * css files.
+     * <p>
+     * Add an attribute to an element
+     * </p>
+     * <p>
+     * Special treatment will happen if the attribute <code>name</code> is
+     * <code>id<code>
+     * </p>
+     * <p>
+     * Example :
      * 
-     * @return the list of custom css files needed by this component or null if
-     *         no special css is needed
-     */
-    @Override
-    protected List<String> getCustomCss() {
-        return null;
-    }
-
-    /**
-     * This method should be overridden by any components needing some special
-     * javascript files.
+     * <pre>
+     * HtmlElement e = new HtmlElement(&quot;img&quot;);
+     * e.addAttribute(&quot;src&quot;, &quot;example.com/plop.png&quot;);
      * 
-     * @return the list of custom js file needed by this component or null if no
-     *         special js is needed
-     */
-    @Override
-    protected List<String> getCustomJs() {
-        return null;
-    }
-    
-    /**
-     * This method should be overridden by any components needing some special
-     * javascript files.
+     * </pre>
      * 
-     * @return the list of custom element needed by this component or null if no
-     *         special element is needed
+     * will be used to create : {@code <img src="example.com/plop.png />}
+     * </p>
+     * 
+     * @param name the name of the attribute to add
+     * @param value the value of the attribute to add
+     * @return itself
      */
-    @Override
-    protected List<XmlNode> getPostNodes() {
-        return null;
-    }
-
-    @Override
-    protected final void writeTagAndOffspring(final QueryResponseStream txt) {
-        if (selfClosable() && !hasChild()) {
-            txt.writeNewLineChar();
-            txt.writeIndentation();
-            txt.writeRawText(tag.getSelfClosingTag());
-            txt.writeNewLineChar();
-            txt.writeIndentation();
-        } else {
-            txt.indent();
-            txt.writeNewLineChar();
-            txt.writeIndentation();
-            txt.writeRawText(tag.getOpenTag());
-            for (final XmlNode html : this) {
-                if (html != null) {
-                    html.write(txt);
-                }
-            }
-            txt.unindent();
-            txt.writeLine(tag.getCloseTag());
-            txt.writeIndentation();
+    public HtmlElement addAttribute(final String name, final String value) {
+        if (tag == null) {
+            throw new BadProgrammerException("Are you trying to add an attribute to a PlaceHolderElement ?");
         }
+        tag.addAttribute(name, value);
+        return this;
     }
+
+    /**
+     * Add a son to this HtmlElement
+     * 
+     * @param html the htmlNode son to add
+     * @return itself
+     */
+    protected HtmlElement add(final HtmlNode html) {
+        children.add(html);
+        return this;
+    }
+
+    /**
+     * Adds some raw text to this HtmlElement
+     * 
+     * @param text the text to add
+     * @return itself
+     */
+    protected HtmlElement addText(final String text) {
+        children.add(new HtmlText(text));
+        return this;
+    }
+
+    @Override
+    public final Iterator<HtmlNode> iterator() {
+        return children.iterator();
+    }
+
 }

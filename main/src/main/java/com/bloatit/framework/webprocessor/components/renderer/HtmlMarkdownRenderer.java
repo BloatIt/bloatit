@@ -20,7 +20,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.parsers.MarkdownParser;
 import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
 
 /**
  * <p>
@@ -43,7 +43,7 @@ public class HtmlMarkdownRenderer extends HtmlDiv {
         parser = new MarkdownParser();
         try {
             renderered = parser.parse(text);
-            add(new XmlText(renderered));
+            add(new HtmlNonEscapedText(renderered));
         } catch (final ParsingException e) {
             throw new BadProgrammerException("An error occured during markdown parsing", e);
         }

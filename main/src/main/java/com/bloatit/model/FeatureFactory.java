@@ -16,8 +16,6 @@
 //
 package com.bloatit.model;
 
-import java.util.Locale;
-
 import com.bloatit.framework.utils.i18n.Language;
 
 public class FeatureFactory {

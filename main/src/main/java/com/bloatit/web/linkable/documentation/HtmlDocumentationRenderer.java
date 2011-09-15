@@ -30,7 +30,8 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 
@@ -131,7 +132,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                 add(content);
             } else {
                 Log.framework().trace("Using cache for documentation file " + path);
-                add(new HtmlDiv("markdown_block").add(new XmlText(mdc.htmlString)));
+                add(new HtmlDiv("markdown_block").add(new HtmlNonEscapedText(mdc.htmlString)));
             }
             fis.close();
             return true;

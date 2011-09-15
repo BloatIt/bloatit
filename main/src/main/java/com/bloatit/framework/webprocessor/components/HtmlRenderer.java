@@ -12,9 +12,9 @@
 
 package com.bloatit.framework.webprocessor.components;
 
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 public interface HtmlRenderer<T> {
 
-    XmlNode generate(T item);
+    HtmlNode generate(T item);
 }

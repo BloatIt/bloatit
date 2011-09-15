@@ -23,7 +23,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.web.actions.AccountProcess;
@@ -78,14 +78,14 @@ public class HtmlTotalSummary extends HtmlTable {
 
             subtotalLine.addCell(new HtmlTableCell("label") {
                 @Override
-                public XmlNode getBody() {
+                public HtmlNode getBody() {
                     return new HtmlText(tr("Subtotal"));
                 }
             });
 
             final HtmlTableCell quotationSubTotal = new HtmlTableCell("money") {
                 @Override
-                public XmlNode getBody() {
+                public HtmlNode getBody() {
                     return new HtmlText(Context.getLocalizator().getCurrency(quotation.subTotal.getValue()).getTwoDecimalEuroString());
                 }
             };
@@ -106,14 +106,14 @@ public class HtmlTotalSummary extends HtmlTable {
 
                 feesHTLine.addCell(new HtmlTableCell("label") {
                     @Override
-                    public XmlNode getBody() {
+                    public HtmlNode getBody() {
                         return new HtmlMixedText(tr("Fees <0::>"), detailSpan);
                     }
                 });
 
                 final HtmlTableCell quotationFee = new HtmlTableCell("money") {
                     @Override
-                    public XmlNode getBody() {
+                    public HtmlNode getBody() {
                         return new HtmlText(Context.getLocalizator().getCurrency(quotation.fees.getValue()).getTwoDecimalEuroString());
                     }
                 };
@@ -135,7 +135,7 @@ public class HtmlTotalSummary extends HtmlTable {
 
             final HtmlTableCell cellDetailsLabel = new HtmlTableCell("label") {
                 @Override
-                public XmlNode getBody() {
+                public HtmlNode getBody() {
                     return feesDetailLabel;
                 }
             };
@@ -159,7 +159,7 @@ public class HtmlTotalSummary extends HtmlTable {
 
             final HtmlTableCell cellDetailsMoney = new HtmlTableCell("money") {
                 @Override
-                public XmlNode getBody() {
+                public HtmlNode getBody() {
                     return feesDetailMoney;
                 }
             };
@@ -178,14 +178,14 @@ public class HtmlTotalSummary extends HtmlTable {
 
             totalTTCLine.addCell(new HtmlTableCell("label") {
                 @Override
-                public XmlNode getBody() {
+                public HtmlNode getBody() {
                     return new HtmlText(tr("Total TTC"));
                 }
             });
 
             final HtmlTableCell quotationTotalTTC = new HtmlTableCell("money") {
                 @Override
-                public XmlNode getBody() {
+                public HtmlNode getBody() {
                     return new HtmlText(Context.getLocalizator().getCurrency(quotation.totalTTC.getValue()).getTwoDecimalEuroString());
                 }
             };
@@ -199,14 +199,14 @@ public class HtmlTotalSummary extends HtmlTable {
 
             totalHTLine.addCell(new HtmlTableCell("label") {
                 @Override
-                public XmlNode getBody() {
+                public HtmlNode getBody() {
                     return new HtmlText(tr("Total HT"));
                 }
             });
 
             final HtmlTableCell quotationTotalHT = new HtmlTableCell("money") {
                 @Override
-                public XmlNode getBody() {
+                public HtmlNode getBody() {
                     return new HtmlText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getTwoDecimalEuroString());
                 }
             };

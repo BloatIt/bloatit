@@ -40,8 +40,6 @@ import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.writers.IndentedHtmlStream;
-import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
-import com.bloatit.framework.webprocessor.components.writers.SimpleHtmlStream;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.AtomFeed;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
@@ -156,8 +154,7 @@ public final class HttpResponse {
                     encodedStream = new DeflaterOutputStream(buffer);
                 }
 
-                final QueryResponseStream htmlText = buildHtmlStream(encodedStream);
-                page.write(htmlText);
+                page.write(encodedStream);
                 encodedStream.flush();
                 encodedStream.close();
                 final byte[] byteArray = buffer.toByteArray();
@@ -169,7 +166,7 @@ public final class HttpResponse {
             case NONE:
             default:
                 writeHeader();
-                page.write(buildHtmlStream(output));
+                page.write(output);
                 break;
         }
     }
@@ -316,13 +313,6 @@ public final class HttpResponse {
         } else {
             headers.add(HttpReponseField.setCookie("session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; HttpOnly "));
         }
-    }
-
-    private QueryResponseStream buildHtmlStream(final OutputStream outputStream) {
-        if (FrameworkConfiguration.isHtmlMinified()) {
-            return new SimpleHtmlStream(outputStream);
-        }
-        return new IndentedHtmlStream(outputStream);
     }
 
     public void writeAtomFeed(AtomFeed feed) throws IOException {

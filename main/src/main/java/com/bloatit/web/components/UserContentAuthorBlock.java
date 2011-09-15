@@ -10,7 +10,7 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.HtmlTools;
@@ -45,7 +45,7 @@ public class UserContentAuthorBlock extends HtmlDiv {
     }
 
     @Override
-    public HtmlBranch add(final XmlNode html) {
+    public HtmlBranch add(final HtmlNode html) {
         return commentInfo.add(html);
     }
 

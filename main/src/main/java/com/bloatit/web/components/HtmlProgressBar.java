@@ -13,7 +13,7 @@
 package com.bloatit.web.components;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 public class HtmlProgressBar extends HtmlDiv {
 
@@ -21,7 +21,7 @@ public class HtmlProgressBar extends HtmlDiv {
         this(null, null, progressList);
     }
 
-    public HtmlProgressBar(final XmlNode label, final String styleSuffix, final float... progressList) {
+    public HtmlProgressBar(final HtmlNode label, final String styleSuffix, final float... progressList) {
         super("progress_bar_block" + (styleSuffix != null ? "_" + styleSuffix : ""));
 
         add(new HtmlDiv("progress_bar_background"));

@@ -35,7 +35,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureImplementation;
@@ -158,7 +158,7 @@ public class FeaturesTools {
                 cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT - futureProgressValue;
             }
 
-            XmlNode barLabel = new PlaceHolderElement();
+            HtmlNode barLabel = new PlaceHolderElement();
 
             if (feature.getFeatureState() == FeatureState.DEVELOPPING) {
                 barLabel = new HtmlText(Context.tr("In developement"));

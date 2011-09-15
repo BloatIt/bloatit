@@ -33,7 +33,7 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlT
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
@@ -75,7 +75,7 @@ public class ActivityTab extends HtmlTab {
     }
 
     @Override
-    public XmlNode generateBody() {
+    public HtmlNode generateBody() {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Displaying list of user recent activity
@@ -109,7 +109,7 @@ public class ActivityTab extends HtmlTab {
         }
 
         @Override
-        public XmlNode generate(final UserContent<? extends DaoUserContent> content) {
+        public HtmlNode generate(final UserContent<? extends DaoUserContent> content) {
             return content.accept(new ActivityVisitor() {
                 @Override
                 public HtmlElement visit(final Translation model) {

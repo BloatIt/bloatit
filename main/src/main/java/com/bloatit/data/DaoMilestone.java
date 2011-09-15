@@ -203,6 +203,7 @@ public class DaoMilestone extends DaoIdentifiable {
     private DaoOffer offer;
 
     /** The invoices */
+    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "milestone")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

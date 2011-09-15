@@ -21,7 +21,7 @@ import com.bloatit.framework.utils.cache.MemoryCache;
 import com.bloatit.framework.utils.parsers.MarkdownParser;
 import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
 import com.bloatit.web.HtmlTools;
 
 public class HtmlCachedMarkdownRenderer extends HtmlDiv {
@@ -41,12 +41,12 @@ public class HtmlCachedMarkdownRenderer extends HtmlDiv {
             try {
                 final String renderered = parser.parse(HtmlTools.escape(text));
                 MemoryCache.getInstance().cache(text, renderered);
-                add(new XmlText(renderered));
+                add(new HtmlNonEscapedText(renderered));
             } catch (final ParsingException e) {
                 throw new BadProgrammerException("An error occured during markdown parsing", e);
             }
         } else {
-            add(new XmlText(cached));
+            add(new HtmlNonEscapedText(cached));
         }
     }
 }

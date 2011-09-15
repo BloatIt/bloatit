@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 public final class HtmlGenericTableModel<U> extends HtmlTable.HtmlTableModel {
 
@@ -35,12 +35,12 @@ public final class HtmlGenericTableModel<U> extends HtmlTable.HtmlTableModel {
     }
 
     public static abstract class ColumnGenerator<U> {
-        public abstract XmlNode getBody(U element);
+        public abstract HtmlNode getBody(U element);
     }
 
     public static abstract class StringColumnGenerator<U> extends ColumnGenerator<U> {
         @Override
-        public XmlNode getBody(final U element) {
+        public HtmlNode getBody(final U element) {
             return new HtmlText(getStringBody(element));
         }
 
@@ -48,17 +48,17 @@ public final class HtmlGenericTableModel<U> extends HtmlTable.HtmlTableModel {
     }
 
     private static class Column<U> {
-        public final XmlNode header;
+        public final HtmlNode header;
         public final ColumnGenerator<U> generator;
 
-        public Column(final XmlNode header, final ColumnGenerator<U> generator) {
+        public Column(final HtmlNode header, final ColumnGenerator<U> generator) {
             super();
             this.header = header;
             this.generator = generator;
         }
     }
 
-    public void addColumn(final XmlNode name, final ColumnGenerator<U> generator) {
+    public void addColumn(final HtmlNode name, final ColumnGenerator<U> generator) {
         columns.add(new Column<U>(name, generator));
     }
 
@@ -72,12 +72,12 @@ public final class HtmlGenericTableModel<U> extends HtmlTable.HtmlTableModel {
     }
 
     @Override
-    public XmlNode getHeader(final int column) {
+    public HtmlNode getHeader(final int column) {
         return columns.get(column).header;
     }
 
     @Override
-    public XmlNode getBody(final int column) {
+    public HtmlNode getBody(final int column) {
         return columns.get(column).generator.getBody(element);
     }
 

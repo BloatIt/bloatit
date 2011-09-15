@@ -35,8 +35,8 @@ import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -170,7 +170,7 @@ public abstract class Page implements Linkable {
             bodyContent = createBody();
         }
 
-        page.add(new XmlText("<!DOCTYPE html>"));
+        page.add(new HtmlNonEscapedText("<!DOCTYPE html>"));
 
         final HtmlBranch html = new HtmlGenericElement("html");
         page.add(html);
@@ -205,7 +205,7 @@ public abstract class Page implements Linkable {
             pageHeader.addHeaderLink(link);
         }
 
-        for (final XmlNode node : page.getAllPostNode()) {
+        for (final HtmlNode node : page.getAllPostNode()) {
             bodyContent.add(node);
         }
 

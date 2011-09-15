@@ -32,7 +32,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.HtmlHeaderLink;
 import com.bloatit.model.Feature;
@@ -289,7 +289,7 @@ public final class FeatureListPage extends ElveosPage {
         }
 
         @Override
-        public XmlNode generate(final Feature feature) {
+        public HtmlNode generate(final Feature feature) {
             return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.FeatureListPage);
         }
     };

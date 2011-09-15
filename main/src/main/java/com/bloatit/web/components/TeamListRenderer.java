@@ -20,7 +20,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.team.TeamTools;
 import com.bloatit.web.url.TeamPageUrl;
@@ -31,7 +31,7 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 public class TeamListRenderer implements HtmlRenderer<Team> {
     @Override
-    public XmlNode generate(final Team team) {
+    public HtmlNode generate(final Team team) {
         final TeamPageUrl teamUrl = new TeamPageUrl(team);
         final HtmlDiv box = new HtmlDiv("team_box");
 

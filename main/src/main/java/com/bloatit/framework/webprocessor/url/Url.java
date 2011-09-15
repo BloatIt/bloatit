@@ -28,8 +28,8 @@ import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 
@@ -166,7 +166,7 @@ public abstract class Url implements Cloneable {
         // by configuration
     }
 
-    public final HtmlLink getHtmlLink(final XmlNode data) {
+    public final HtmlLink getHtmlLink(final HtmlNode data) {
         return new HtmlLink(urlString(), data);
     }
 

@@ -19,7 +19,7 @@ package com.bloatit.web.linkable.members.tabs;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.AccountComponent;
@@ -33,7 +33,7 @@ public class AccountTab extends HtmlTab {
     }
 
     @Override
-    public XmlNode generateBody() {
+    public HtmlNode generateBody() {
         final HtmlDiv master = new HtmlDiv("tab_pane");
         try {
             master.add(new AccountComponent(member));

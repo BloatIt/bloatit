@@ -22,7 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Translation;
@@ -182,7 +182,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      * @return
      * @throws UnauthorizedOperationException
      */
-    private XmlNode generateTitle() throws UnauthorizedOperationException {
+    private HtmlNode generateTitle() throws UnauthorizedOperationException {
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(Language.fromLocale(defaultLocale));
 
         final HtmlTitle title = new HtmlTitle(1);

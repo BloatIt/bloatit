@@ -34,6 +34,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -75,7 +76,7 @@ public final class TestPage extends ElveosPage {
         anotherDiv.add(htb);
         htb.add(new HtmlTitle("nested title", 5));
         htb.add(new HtmlText(tr("some text without paragraph")));
-        htb.add(new HtmlParagraph(new HtmlText("and some with a span <span style=\"font-size: 16pt ; color: fuchsia ; background-color: #FFFFFF ;\">plop</span>")));
+        htb.add(new HtmlParagraph(new HtmlNonEscapedText("and some with a span <span style=\"font-size: 16pt ; color: fuchsia ; background-color: #FFFFFF ;\">plop</span>")));
 
         return div;
     }

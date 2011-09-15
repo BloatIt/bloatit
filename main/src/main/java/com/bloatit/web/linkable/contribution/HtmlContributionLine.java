@@ -26,7 +26,7 @@ import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
@@ -69,7 +69,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new SoftwaresTools.SmallLogo(feature.getSoftware());
         }
     }
@@ -81,7 +81,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlText(localizator.getCurrency(feature.getContribution()).getSimpleEuroString());
         }
     }
@@ -93,7 +93,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlText(localizator.getCurrency(feature.getContribution().add(amount)).getSimpleEuroString());
         }
     }
@@ -105,7 +105,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up");
         }
     }
@@ -117,7 +117,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlDiv("").addText(tr("Contribution"));
         }
     }
@@ -129,7 +129,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlDiv("").addText(FeaturesTools.getTitle(feature));
         }
     }
@@ -141,7 +141,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
 
             final HtmlDiv amountBlock = new HtmlDiv();
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amount).getTwoDecimalEuroString()));

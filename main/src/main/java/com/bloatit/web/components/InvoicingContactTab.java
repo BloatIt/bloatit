@@ -24,7 +24,7 @@ import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
@@ -49,7 +49,7 @@ public class InvoicingContactTab extends HtmlTab {
     }
 
     @Override
-    public XmlNode generateBody() {
+    public HtmlNode generateBody() {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
         final HtmlDiv modify = new HtmlDiv("float_right");

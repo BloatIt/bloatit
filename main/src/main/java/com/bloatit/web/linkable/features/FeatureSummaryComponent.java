@@ -38,7 +38,7 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
@@ -211,7 +211,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         }
     }
 
-    private XmlNode generateIdenticaShareItem() {
+    private HtmlNode generateIdenticaShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
 
         final HtmlDiv identicaBlock = new HtmlDiv("identica");
@@ -231,7 +231,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return item;
     }
 
-    private XmlNode generateTwitterShareItem() {
+    private HtmlNode generateTwitterShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
 
         final HtmlLink actionLink = new HtmlLink("https://twitter.com/share", "Tweet");
@@ -242,8 +242,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         item.add(new PlaceHolderElement() {
             @Override
-            protected List<XmlNode> getPostNodes() {
-                List<XmlNode> nodes = new ArrayList<XmlNode>();
+            protected List<HtmlNode> getPostNodes() {
+                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 script.addAttribute("src", "https://platform.twitter.com/widgets.js");
                 nodes.add(script);
@@ -254,13 +254,13 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return item;
     }
 
-    private XmlNode generateLinkedInShareItem() {
+    private HtmlNode generateLinkedInShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
 
         item.add(new PlaceHolderElement() {
             @Override
-            protected List<XmlNode> getPostNodes() {
-                List<XmlNode> nodes = new ArrayList<XmlNode>();
+            protected List<HtmlNode> getPostNodes() {
+                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 nodes.add(script);
                 script.addAttribute("src", "https://platform.linkedin.com/in.js");
@@ -277,13 +277,13 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return item;
     }
 
-    private XmlNode generatePlusoneShareItem() {
+    private HtmlNode generatePlusoneShareItem() {
         final HtmlDiv item = new HtmlDiv("share_item");
 
         item.add(new PlaceHolderElement() {
             @Override
-            protected List<XmlNode> getPostNodes() {
-                List<XmlNode> nodes = new ArrayList<XmlNode>();
+            protected List<HtmlNode> getPostNodes() {
+                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 nodes.add(script);
                 script.addAttribute("src", "https://apis.google.com/js/plusone.js");

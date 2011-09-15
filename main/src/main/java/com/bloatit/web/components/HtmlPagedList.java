@@ -27,7 +27,7 @@ import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.url.HtmlPagedListUrlComponent;
 
@@ -64,8 +64,8 @@ public class HtmlPagedList<T> extends HtmlDiv {
                          final PageIterable<T> itemList,
                          final Url url2,
                          final HtmlPagedListUrlComponent url,
-                         final XmlNode preListElement,
-                         final XmlNode postListElement) {
+                         final HtmlNode preListElement,
+                         final HtmlNode postListElement) {
 
         super("paged_list");
         this.currentPage = url.getCurrentPage();
@@ -188,12 +188,12 @@ public class HtmlPagedList<T> extends HtmlDiv {
         return span;
     }
 
-    private XmlNode generateLink(final int i, final boolean longBlock) {
+    private HtmlNode generateLink(final int i, final boolean longBlock) {
         final String iString = Integer.valueOf(i).toString();
         return generateLink(i, iString, longBlock, null);
     }
 
-    private XmlNode generateLink(final int page, final String text, final boolean longBlock, final String rel) {
+    private HtmlNode generateLink(final int page, final String text, final boolean longBlock, final String rel) {
         final String iString = Integer.valueOf(page).toString();
         final String css = (longBlock ? "long_block" : "short_block");
         if (page != currentPage) {
@@ -212,11 +212,11 @@ public class HtmlPagedList<T> extends HtmlDiv {
         return new HtmlSpan(css + "_active").addText(iString);
     }
 
-    private XmlNode generateEmptyLongBlock() {
+    private HtmlNode generateEmptyLongBlock() {
         return new HtmlSpan("long_block");
     }
 
-    private XmlNode generateShortBlock(final String text) {
+    private HtmlNode generateShortBlock(final String text) {
         return new HtmlSpan("short_block").addText(text);
     }
 }

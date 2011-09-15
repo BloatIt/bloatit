@@ -23,7 +23,7 @@ import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
@@ -93,7 +93,7 @@ public final class SoftwareListPage extends ElveosPage {
         }
 
         @Override
-        public XmlNode generate(final Software software) {
+        public HtmlNode generate(final Software software) {
             final SoftwarePageUrl softwareUrl = new SoftwarePageUrl(software);
             final HtmlDiv box = new HtmlDiv("software_box");
 
