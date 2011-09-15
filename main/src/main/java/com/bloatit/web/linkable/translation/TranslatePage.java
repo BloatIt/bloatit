@@ -104,6 +104,7 @@ public final class TranslatePage extends LoggedElveosPage {
         
         final HtmlTextField sourceTitleInput = new HtmlTextField("", tr("Title"));
         sourceTitleInput.setCssClass("input_long_400px");
+        sourceTitleInput.addAttribute("readonly", "readonly");
         sourceTitleInput.setDefaultValue(sourceTranslation.getTitle());
         sourceColumn.add(sourceTitleInput);
 
@@ -112,6 +113,7 @@ public final class TranslatePage extends LoggedElveosPage {
                                                                      30,
                                                                      80);
 
+        sourceSpecificationInput.addAttribute("readonly", "readonly");
         sourceSpecificationInput.setDefaultValue(sourceTranslation.getText());
         sourceColumn.add(sourceSpecificationInput);
 
