@@ -138,8 +138,9 @@ public abstract class AtomFeed implements Linkable {
         }
 
         private String formatRFC3339(Date date) {
-            String timestamp = new SimpleDateFormat("yyyy-MM-dd'T'h:m:ssZ").format(new Date());
-            return timestamp.replaceAll("(..)$", ":$1");
+            //                           2002-10-02T15:00:00Z
+            //                           2011-09-08T7:23:27Z
+            return new SimpleDateFormat("yyyy-MM-dd'T'hh:m:ss'Z'").format(date);
         }
 
         public void addFeedHeader(XmlElement all) {
