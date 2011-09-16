@@ -1,4 +1,4 @@
-package com.bloatit.web.actions;
+package com.bloatit.web.linkable.master;
 
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;

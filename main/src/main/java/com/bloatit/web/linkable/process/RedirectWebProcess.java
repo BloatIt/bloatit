@@ -1,6 +1,7 @@
-package com.bloatit.web.actions;
+package com.bloatit.web.linkable.process;
 
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.web.linkable.master.WebProcess;
 
 public class RedirectWebProcess extends WebProcess {
 

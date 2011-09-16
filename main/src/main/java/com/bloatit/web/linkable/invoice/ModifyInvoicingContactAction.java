@@ -25,7 +25,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.ModifyContactPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 

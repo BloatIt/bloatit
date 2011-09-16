@@ -12,7 +12,6 @@
 package com.bloatit.web.linkable.master;
 
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.web.actions.ElveosAction;
 
 public abstract class AliasAction extends ElveosAction {
 

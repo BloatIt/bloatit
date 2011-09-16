@@ -33,7 +33,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.ElveosAction;
+import com.bloatit.web.linkable.master.ElveosAction;
 import com.bloatit.web.url.RecoverPasswordActionUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
 

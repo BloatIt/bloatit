@@ -33,7 +33,7 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlDump;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
-import com.bloatit.web.actions.WebProcess;
+import com.bloatit.web.linkable.master.WebProcess;
 import com.bloatit.web.url.IndexPageUrl;
 
 /**

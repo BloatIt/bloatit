@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.actions;
+package com.bloatit.web.linkable.process;
 
 import java.math.BigDecimal;
 
@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.web.linkable.master.WebProcess;
 import com.bloatit.web.linkable.money.PaymentProcess;
 import com.bloatit.web.url.AccountProcessUrl;
 

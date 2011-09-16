@@ -37,7 +37,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;

@@ -29,7 +29,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.CreateSoftwareActionUrl;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;

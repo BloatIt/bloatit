@@ -22,7 +22,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.web.actions.ElveosAction;
+import com.bloatit.web.linkable.master.ElveosAction;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
