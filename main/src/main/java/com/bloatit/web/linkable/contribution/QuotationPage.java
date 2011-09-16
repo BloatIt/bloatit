@@ -19,7 +19,7 @@ package com.bloatit.web.linkable.contribution;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.web.pages.LoggedElveosPage;
+import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.url.QuotationPageUrl;
 
 @ParamContainer("quotationPage")

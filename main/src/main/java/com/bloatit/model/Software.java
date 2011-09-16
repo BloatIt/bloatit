@@ -28,6 +28,7 @@ import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.DuplicateDataException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class Software extends Identifiable<DaoSoftware> {
 

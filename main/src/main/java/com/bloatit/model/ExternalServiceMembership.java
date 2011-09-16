@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public class ExternalServiceMembership extends Identifiable<DaoExternalServiceMembership> {
 

@@ -25,6 +25,7 @@ import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtTranslation;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * A description must be created through the Feature class. (For example, you

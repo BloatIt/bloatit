@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.BankTransaction;
-import com.bloatit.web.actions.AccountProcess;
 import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
@@ -36,6 +35,7 @@ import com.bloatit.web.linkable.money.Quotation.QuotationProxyEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationTotalEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationVisitor;
 import com.bloatit.web.linkable.money.QuotationEntry;
+import com.bloatit.web.linkable.process.AccountProcess;
 import com.bloatit.web.url.ChangePrepaidAmountActionUrl;
 import com.bloatit.web.url.QuotationPageUrl;
 

@@ -30,7 +30,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;

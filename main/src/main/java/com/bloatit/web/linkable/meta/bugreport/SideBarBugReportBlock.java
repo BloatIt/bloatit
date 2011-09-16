@@ -27,7 +27,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
+import com.bloatit.web.linkable.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.url.MetaBugsListPageUrl;
 import com.bloatit.web.url.MetaReportBugActionUrl;
 

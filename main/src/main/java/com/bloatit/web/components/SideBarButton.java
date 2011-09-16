@@ -22,7 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Image;
-import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
+import com.bloatit.web.linkable.master.sidebar.SideBarElementLayout;
 
 public class SideBarButton extends SideBarElementLayout {
     private final HtmlLink link;

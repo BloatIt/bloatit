@@ -28,7 +28,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.web.actions.WebProcess;
+import com.bloatit.web.linkable.master.WebProcess;
 import com.bloatit.web.url.ModifyContactPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 

@@ -45,6 +45,7 @@
 
 		<!-- Echo all executed SQL to stdout -->
 		<property name="hibernate.show_sql">false</property>
+		<property name="hibernate.format_sql ">false</property>
 
 		<!-- second level cache -->
 		<property name="hibernate.cache.use_second_level_cache">true</property>
@@ -93,6 +94,7 @@
 		<mapping class="com.bloatit.data.DaoNewsFeed" />
 		<mapping class="com.bloatit.data.DaoExternalService" />
 		<mapping class="com.bloatit.data.DaoExternalServiceMembership" />
+		<mapping class="com.bloatit.data.DaoFollow" />
 		<mapping class="com.bloatit.data.DaoConfiguration" />
 	</session-factory>
 </hibernate-configuration>

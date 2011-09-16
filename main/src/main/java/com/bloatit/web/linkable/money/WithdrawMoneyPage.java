@@ -21,11 +21,11 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.LoggedElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
-import com.bloatit.web.pages.LoggedElveosPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
 

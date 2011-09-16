@@ -51,9 +51,9 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlAuthorLink;
+import com.bloatit.web.linkable.master.HtmlPageComponent;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.CreateReleasePageUrl;
 import com.bloatit.web.url.FeatureModerationPageUrl;
@@ -174,7 +174,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     featureSummaryBottom.add(featureSummaryPopularity);
 
                     HtmlDiv featureSummaryProgress;
-                    featureSummaryProgress = generateProgressBlock(feature, FeaturesTools.FeatureContext.FeaturePage);
+                    featureSummaryProgress = generateProgressBlock(feature, FeaturesTools.FeatureContext.FEATURE_PAGE);
                     featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////

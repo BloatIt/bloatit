@@ -22,7 +22,7 @@ import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.managers.MoneyWithdrawalManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.admin.master.AdminPage;
-import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminActionUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;

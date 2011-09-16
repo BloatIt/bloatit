@@ -22,6 +22,7 @@ import com.bloatit.data.DaoActor;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
+import com.bloatit.model.lists.FollowList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtActor;
 import com.bloatit.model.right.RgtMember;
@@ -192,6 +193,10 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public abstract Image getAvatar();
 
+    public FollowList getFollowedContent() {
+        return new FollowList(getDao().getFollowedContent());
+    }
+
     // /////////////////
     // Can ...
 
@@ -245,7 +250,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     public boolean hasInvoicingContact() throws UnauthorizedPrivateAccessException {
         return hasInvoicingContact(false);
     }
-    
+
     public boolean hasInvoicingContact(boolean all) throws UnauthorizedPrivateAccessException {
         final Contact contact = getContact();
         if (contact.getName() == null) {

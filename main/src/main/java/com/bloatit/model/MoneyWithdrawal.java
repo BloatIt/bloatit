@@ -18,6 +18,7 @@ import com.bloatit.model.right.UnauthorizedBankDataAccessException;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.UnauthorizedReadOnlyBankDataAccessException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 
 /**

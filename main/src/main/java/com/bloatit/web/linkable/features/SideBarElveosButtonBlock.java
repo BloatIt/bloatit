@@ -17,7 +17,7 @@ import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
-import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
+import com.bloatit.web.linkable.master.sidebar.SideBarElementLayout;
 
 public class SideBarElveosButtonBlock extends SideBarElementLayout {
 

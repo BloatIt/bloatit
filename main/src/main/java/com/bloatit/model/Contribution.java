@@ -26,6 +26,7 @@ import com.bloatit.model.lists.ContributionInvoiceList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtContribution;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * This is a financial contribution.

@@ -151,4 +151,35 @@
 .transition {
     -moz-transition: all 1s ease-in-out;
 }
+
+.triangle-border(@round_size, @border_color, @back_color, @text_color){
+    position:relative;
+    padding:15px;
+    //margin:1em 0 3em;
+    border:1px solid @border_color;
+    color:@text_color;
+    background:@back_color;
+    -webkit-border-radius:@round_size;
+    -moz-border-radius:@round_size;
+    border-radius:@round_size;
+    margin-left:30px; 
+}
+
+/* creates the smaller  triangle */
+.triangle-border-after(@round_size, @border_color, @back_color, @text_color) {
+    content:"";
+    position:absolute;
+    bottom:-13px; /* value = - border-top-width - border-bottom-width */
+    left:47px; /* value = (:before left) + (:before border-left) - (:after border-left) */
+    border-width:13px 13px 0;
+    border-style:solid;
+    border-color:@border_color transparent;
+    display:block; 
+    width:0;
+    top:16px; /* value = (:before top) + (:before border-top) - (:after border-top) */
+    bottom:auto;
+    left:-21px; /* value = - border-left-width - border-right-width */
+    border-width:9px 21px 9px 0;
+    border-color:transparent @back_color;
+}
     

@@ -30,6 +30,7 @@ import com.bloatit.model.invoicePdf.InvoicePdfGenerator;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtInvoice;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * This is a invoice.

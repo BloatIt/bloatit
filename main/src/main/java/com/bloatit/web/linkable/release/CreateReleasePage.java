@@ -29,11 +29,11 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.linkable.usercontent.LanguageField;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateReleaseActionUrl;
 import com.bloatit.web.url.CreateReleasePageUrl;
 

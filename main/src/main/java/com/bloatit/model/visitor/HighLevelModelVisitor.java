@@ -11,13 +11,13 @@ import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Follow;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
-import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
@@ -50,6 +50,8 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
     public abstract T visitAbstract(Transaction model);
 
     public abstract T visitAbstract(MoneyWithdrawal model);
+    
+    public abstract T visitAbstract(Follow model);
 
     @Override
     public final T visit(final ExternalAccount model) {
@@ -145,7 +147,7 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
     public final T visit(final Translation model) {
         return visitAbstract(model);
     }
-    
+
     @Override
     public final T visit(final ExternalService model) {
         return visitAbstract(model);
@@ -158,6 +160,11 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
 
     @Override
     public final T visit(final MoneyWithdrawal model) {
+        return visitAbstract(model);
+    }
+
+    @Override
+    public final T visit(final Follow model) {
         return visitAbstract(model);
     }
 }

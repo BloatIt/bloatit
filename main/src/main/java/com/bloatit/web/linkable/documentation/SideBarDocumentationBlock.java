@@ -20,7 +20,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer.DocumentationType;
-import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
+import com.bloatit.web.linkable.master.sidebar.SideBarElementLayout;
 
 public class SideBarDocumentationBlock extends SideBarElementLayout {
     public SideBarDocumentationBlock(final String key) {

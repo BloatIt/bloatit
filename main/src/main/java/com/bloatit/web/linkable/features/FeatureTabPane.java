@@ -37,7 +37,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Translation;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.UserContentAuthorBlock;
-import com.bloatit.web.pages.master.HtmlPageComponent;
+import com.bloatit.web.linkable.master.HtmlPageComponent;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 import com.bloatit.web.url.FileResourceUrl;

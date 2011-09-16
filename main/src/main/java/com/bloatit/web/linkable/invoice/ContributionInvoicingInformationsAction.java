@@ -23,7 +23,7 @@ import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Member;
 import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
 
 /**

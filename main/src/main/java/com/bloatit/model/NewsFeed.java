@@ -6,6 +6,7 @@ import com.bloatit.data.DaoNewsFeed;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * News feed are used to display some updated to the users of the website

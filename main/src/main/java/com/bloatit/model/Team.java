@@ -35,6 +35,7 @@ import com.bloatit.model.right.RgtTeam;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * This is a team ... There are member in it.

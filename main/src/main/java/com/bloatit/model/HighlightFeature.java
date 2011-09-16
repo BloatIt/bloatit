@@ -22,6 +22,7 @@ import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class HighlightFeature extends Identifiable<DaoHighlightFeature> {
 

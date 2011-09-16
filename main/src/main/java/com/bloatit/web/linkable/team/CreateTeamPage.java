@@ -34,9 +34,9 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.LoggedElveosPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.LoggedElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 

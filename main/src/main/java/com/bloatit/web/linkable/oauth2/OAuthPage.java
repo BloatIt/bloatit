@@ -29,10 +29,10 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Member;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.LoggedElveosPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.IndexPage;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.LoggedElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.OAuthPageUrl;
 

@@ -55,6 +55,7 @@ import com.bloatit.model.right.RgtFeature;
 import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class FeatureImplementation extends Kudosable<DaoFeature> implements Feature {
 
@@ -108,6 +109,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                          DaoGetter.get(team),
                                          DaoDescription.createAndPersist(author.getDao(), DaoGetter.get(team), language, title, description),
                                          DaoGetter.get(software)));
+        follow(author);
     }
 
     /**
@@ -203,7 +205,16 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                                                       amount,
                                                                       comment);
         setStateObject(getStateObject().eventAddContribution());
+
+        // Contributing automatically puts the feature in your follow list
+        follow(AuthToken.getMember());
+
         return Contribution.create(contribution);
+    }
+
+    @Override
+    public void follow(Member member) {
+        new Follow(this, member);
     }
 
     @Override
@@ -223,6 +234,9 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                       language,
                                       dateExpire,
                                       secondsBeforeValidation);
+
+        follow(AuthToken.getMember());
+
         return doAddOffer(offer);
     }
 

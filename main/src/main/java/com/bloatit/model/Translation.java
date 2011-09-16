@@ -22,6 +22,7 @@ import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtTranslation;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class Translation extends Kudosable<DaoTranslation> {
 

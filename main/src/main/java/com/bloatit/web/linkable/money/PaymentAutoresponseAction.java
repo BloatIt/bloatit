@@ -29,7 +29,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Payment;
 import com.bloatit.model.managers.BankTransactionManager;
-import com.bloatit.web.actions.ElveosAction;
+import com.bloatit.web.linkable.master.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.PaymentAutoresponseActionUrl;
 

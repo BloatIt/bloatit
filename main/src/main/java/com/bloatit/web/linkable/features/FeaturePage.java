@@ -31,11 +31,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.tools.CommentTools;
 import com.bloatit.web.linkable.usercontent.CommentForm;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.ElveosPage;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 

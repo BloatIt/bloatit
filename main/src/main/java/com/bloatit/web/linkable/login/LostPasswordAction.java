@@ -31,7 +31,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.web.actions.ElveosAction;
+import com.bloatit.web.linkable.master.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.LostPasswordActionUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;

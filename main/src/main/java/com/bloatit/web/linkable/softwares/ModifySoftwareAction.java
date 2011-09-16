@@ -33,7 +33,7 @@ import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.model.right.DuplicateDataException;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.ModifySoftwareActionUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;

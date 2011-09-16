@@ -19,7 +19,7 @@ package com.bloatit.web.components;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
+import com.bloatit.web.linkable.master.sidebar.TitleSideBarElementLayout;
 
 public class SideBarUserContentBlock extends TitleSideBarElementLayout {
     public SideBarUserContentBlock(final UserContentInterface userContent) {

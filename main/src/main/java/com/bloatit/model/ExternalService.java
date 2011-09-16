@@ -2,6 +2,7 @@ package com.bloatit.model;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalService;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public class ExternalService extends UserContent<DaoExternalService> {
     /**

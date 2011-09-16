@@ -19,7 +19,7 @@ package com.bloatit.web.linkable.features.create;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.web.actions.WebProcess;
+import com.bloatit.web.linkable.master.WebProcess;
 import com.bloatit.web.url.ChooseFeatureTypePageUrl;
 import com.bloatit.web.url.CreateFeatureAndOfferPageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;

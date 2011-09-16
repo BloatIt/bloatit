@@ -249,11 +249,22 @@ public interface Feature extends KudosableInterface, Commentable {
 
     void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
 
+    /**
+     * @param member the member that made the contributions
+     * @return the sum the contributions made by <code>member</code>
+     */
     BigDecimal getContributionOf(Member member);
-
-    void setDescription(String newDescription, Language language) throws UnauthorizedOperationException;
+    
+    void setDescription(String newDescription, final Language language) throws UnauthorizedOperationException;
 
     void setSoftware(Software software) throws UnauthorizedOperationException;
 
     void setTitle(String title, final Language language) throws UnauthorizedOperationException;
+
+    /**
+     * Makes <code>member</code> start following the feature
+     * 
+     * @param member the member that will follow the feature
+     */
+    void follow(Member member);
 }

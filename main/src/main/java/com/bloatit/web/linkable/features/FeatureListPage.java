@@ -33,6 +33,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.HtmlHeaderLink;
 import com.bloatit.model.Feature;
@@ -42,12 +43,12 @@ import com.bloatit.web.components.HtmlFeatureSummary;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
+import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.ElveosPage;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureProcessUrl;
 import com.bloatit.web.url.FeatureAtomFeedUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
@@ -290,7 +291,7 @@ public final class FeatureListPage extends ElveosPage {
 
         @Override
         public HtmlNode generate(final Feature feature) {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.FeatureListPage);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.FEATURE_LIST_PAGE);
         }
     };
 

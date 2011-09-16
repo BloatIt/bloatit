@@ -58,10 +58,16 @@ import com.bloatit.framework.utils.PageIterable;
                            query = "select count(*) from DaoActor where login = :login"),
                        @NamedQuery(
                            name = "actor.getBankTransactions",
-                           query = "from DaoBankTransaction as t where t.author = :author order by t.creationDate DESC"),
+                           query = "from DaoBankTransaction as t where t.author = :this order by t.creationDate DESC"),
                        @NamedQuery(
                            name = "actor.getBankTransactions.size",
-                           query = "select count(*) from DaoBankTransaction where author = :author")
+                           query = "select count(*) from DaoBankTransaction where author = :this"),
+                       @NamedQuery(
+                           name = "actor.getFollowedContent",
+                           query = "from DaoFollow where actor = :this order by creationDate DESC"),
+                       @NamedQuery(
+                           name = "actor.getFollowedContent.size",
+                           query = "select count(*) from DaoFollow where actor = :this"),
 })
 // @formatter:on
 public abstract class DaoActor extends DaoIdentifiable {
@@ -88,7 +94,6 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     @Embedded
     private DaoContact contact;
-
     // ======================================================================
     // HQL static requests.
     // ======================================================================
@@ -207,7 +212,12 @@ public abstract class DaoActor extends DaoIdentifiable {
      *         recent first.
      */
     public PageIterable<DaoBankTransaction> getBankTransactions() {
-        return new QueryCollection<DaoBankTransaction>("actor.getBankTransactions").setEntity("author", this);
+        return new QueryCollection<DaoBankTransaction>("actor.getBankTransactions").setEntity("this", this);
+    }
+
+    public PageIterable<DaoFollow> getFollowedContent() {
+//        return new MappedList<DaoFollow>(followedContents);
+        return new QueryCollection<DaoFollow>("actor.getFollowedContent").setEntity("this", this);
     }
 
     // ======================================================================

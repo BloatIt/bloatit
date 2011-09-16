@@ -30,6 +30,7 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtBug;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * This is a bug report. A bug report is associated with a milestone. it is

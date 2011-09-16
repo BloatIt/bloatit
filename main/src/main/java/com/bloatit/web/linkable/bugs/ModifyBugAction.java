@@ -27,7 +27,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.ElveosAction;
+import com.bloatit.web.linkable.master.ElveosAction;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;

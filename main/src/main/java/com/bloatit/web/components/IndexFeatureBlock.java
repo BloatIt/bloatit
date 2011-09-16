@@ -33,9 +33,9 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.pages.tools.HightlightedFeaturesTools;
+import com.bloatit.web.linkable.tools.HightlightedFeaturesTools;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class IndexFeatureBlock extends HtmlDiv {
@@ -62,7 +62,7 @@ public class IndexFeatureBlock extends HtmlDiv {
             indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(highlightFeature.getFeature().getSoftware())));
 
             // Generate progess bar and text
-            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), FeaturesTools.FeatureContext.IndexPage));
+            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), FeaturesTools.FeatureContext.INDEX_PAGE));
 
             indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 

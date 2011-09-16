@@ -34,7 +34,7 @@ import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.IdentifiableInterface;
 import com.bloatit.model.managers.CommentManager;
-import com.bloatit.web.actions.WebProcess;
+import com.bloatit.web.linkable.master.WebProcess;
 
 public final class Loaders {
 

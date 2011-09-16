@@ -69,7 +69,7 @@
 	</appender>
 
 	<!-- must be before the root element -->
-	<logger name="org.hibernate">
+	<logger name="org.hibernate" >
 		<level value="error" />
 	</logger>
 	<logger name="com.bloatit.data">

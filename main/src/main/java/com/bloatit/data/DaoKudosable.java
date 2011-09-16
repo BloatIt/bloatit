@@ -83,7 +83,6 @@ public abstract class DaoKudosable extends DaoUserContent {
      * </p>
      */
     public enum PopularityState {
-
         /** The VALIDATED. */
         VALIDATED,
         /** The PENDING. */

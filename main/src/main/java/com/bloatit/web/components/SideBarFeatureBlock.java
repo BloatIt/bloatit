@@ -26,9 +26,9 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.master.HtmlDefineParagraph;
+import com.bloatit.web.linkable.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class SideBarFeatureBlock extends TitleSideBarElementLayout {
@@ -42,7 +42,7 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
             add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(feature.getSoftware())));
             add(new HtmlDefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
             
-            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount, FeaturesTools.FeatureContext.Other)));
+            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount, FeaturesTools.FeatureContext.OTHER)));
             add(new HtmlParagraph(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(tr("more details..."))));
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException(e);

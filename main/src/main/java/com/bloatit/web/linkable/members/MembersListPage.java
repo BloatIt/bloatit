@@ -31,10 +31,10 @@ import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.ElveosPage;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.IndexPage;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 

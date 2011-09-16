@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
@@ -41,9 +42,9 @@ import com.bloatit.web.components.HtmlFeatureSummary;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.linkable.features.FeaturesTools;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.ElveosPage;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
@@ -145,7 +146,7 @@ public final class SoftwarePage extends ElveosPage {
 
         @Override
         public HtmlNode generate(final Feature feature) {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.Other);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.OTHER);
         }
     };
 }

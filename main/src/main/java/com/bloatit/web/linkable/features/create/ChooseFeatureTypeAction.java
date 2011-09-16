@@ -18,7 +18,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.ChooseFeatureTypeActionUrl;
 import com.bloatit.web.url.ChooseFeatureTypePageUrl;
 import com.bloatit.web.url.IndexPageUrl;

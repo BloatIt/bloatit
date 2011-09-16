@@ -36,14 +36,14 @@ import com.bloatit.model.Contact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.LoggedElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.LoggedElveosPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyContactPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 

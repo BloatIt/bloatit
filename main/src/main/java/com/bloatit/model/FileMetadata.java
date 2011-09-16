@@ -24,6 +24,7 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtFileMetadata;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class FileMetadata extends UserContent<DaoFileMetadata> {
 

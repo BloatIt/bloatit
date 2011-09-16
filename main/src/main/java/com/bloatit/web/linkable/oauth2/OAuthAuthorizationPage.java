@@ -26,9 +26,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.managers.ExternalServiceManager;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.ElveosPage;
+import com.bloatit.web.linkable.IndexPage;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.OAuthAuthorizationPageUrl;
 

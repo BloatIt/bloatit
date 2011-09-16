@@ -31,7 +31,7 @@ import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.MilestoneManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
-import com.bloatit.web.actions.WebProcess;
+import com.bloatit.web.linkable.master.WebProcess;
 import com.bloatit.web.url.ContributionInvoicingInformationsPageUrl;
 import com.bloatit.web.url.ContributionInvoicingProcessUrl;
 import com.bloatit.web.url.MemberPageUrl;

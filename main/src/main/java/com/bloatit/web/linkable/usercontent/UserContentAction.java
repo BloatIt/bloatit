@@ -35,7 +35,7 @@ import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.UserContentActionUrl;
 
 @ParamContainer("usercontent/docreate")

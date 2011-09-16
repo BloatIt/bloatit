@@ -27,7 +27,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.ElveosAction;
+import com.bloatit.web.linkable.master.ElveosAction;
 import com.bloatit.web.url.PaymentResponseActionUrl;
 
 @ParamContainer(value = "payment/doresponse", protocol = Protocol.HTTPS)

@@ -28,7 +28,7 @@ import com.bloatit.model.Description;
 import com.bloatit.model.Member;
 import com.bloatit.model.Translation;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.LoggedElveosAction;
+import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.TranslateActionUrl;
 
 /**

@@ -32,6 +32,7 @@ import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Follow;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
@@ -40,7 +41,6 @@ import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.MilestoneContributionAmount;
-import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.NewsFeed;
 import com.bloatit.model.Offer;
@@ -49,6 +49,7 @@ import com.bloatit.model.Software;
 import com.bloatit.model.Team;
 import com.bloatit.model.Transaction;
 import com.bloatit.model.Translation;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 
@@ -184,6 +185,11 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 
     @Override
     public RestElement<?> visit(ExternalServiceMembership externalService) {
+        throw new NotImplementedException();
+    }
+    
+    @Override
+    public RestElement<?> visit(Follow follow) {
         throw new NotImplementedException();
     }
 }

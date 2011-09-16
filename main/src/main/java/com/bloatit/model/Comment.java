@@ -23,6 +23,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtComment;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**
  * The Class Comment.
