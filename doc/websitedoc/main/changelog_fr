@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 1.1.10
+-------------
+
+### Bug fix
+ - Fix crash using other language than fr or en.
 
 Version 1.1.9
 -------------
