@@ -1,7 +1,7 @@
 System architecture
 ===================
 
-Elveos.org website has for now only one server.
+Elveos.org website run on only one server.
 
 
 ![system architecture](/resources/en/img/archi_doc.png)
@@ -10,27 +10,21 @@ Elveos.org website has for now only one server.
 Bloatit framework
 -----------------
 
-It's the application core. Bloatit is developed in Java. Contrary to the usual Java website, Bloat does not need application server and does not use servlet. It uses a "classical" web server with [FCGI](http://www.fastcgi.com/devkit/doc/fcgi-spec.html).
+It's the application core. Bloatit is developed in Java. Unlike the usual Java websites, Bloat does not need application server and does not use servlet. It uses a "classical" web server with [FCGI](http://www.fastcgi.com/devkit/doc/fcgi-spec.html).
 
-Bloat uses a relational database to store most of the information.
-
-More information on the site engine are available on this documentation page : [Bloatit, engine of elveos](/en/documentation/bloatit))
-
-
+More informations on this site engine are available on this documentation page : [Bloatit, engine of elveos](/en/documentation/bloatit))
 
 
 Database server
 ---------------
 
-Bloatit currently uses PostgreSQL as relational database. This choice was made because of doubts about the durability of the freedom of MySQL.
-
-The use Hibernate make that we can quite easily change the database in case of problems.
+We uses posgresql and hibernate for the data storage. 
 
 Web server
 ---------
-Bloatit currently uses  Lighttpd as web server. The choice of this server has no real justification except that which is known to be good. By digging, we could say that this is a revenge against Apache, because it has a relationship with Maven and maven is evil ! We will soon begin experiments with Ngix.
+Bloatit currently uses  Lighttpd as web server. The choice of this server has no real justification except that it is known to be good. By digging, we could say that this is a revenge against Apache, because it has a relationship with Maven and maven is evil! We will soon begin experiments with Ngix.
 
-The use FCGI make that we can easily change the web server.
+The use of FCGI make that we can easily change the web server.
 
 Operating system
 ----------------
@@ -43,7 +37,7 @@ Host
 We chose OVH as host, because they are based in France and have always been effective for previous services.
 
 
-The choose of the VPS ([http://www.ovh.com/fr/vps/](http://www.ovh.com/fr/vps/)) rather than a normal dedicated server is due to facilities to increase the charge for a virtualized solution.
+We choose the VPS ([http://www.ovh.com/fr/vps/](http://www.ovh.com/fr/vps/)) solution.
 
 Currently, the theorical characteristics are:
 
