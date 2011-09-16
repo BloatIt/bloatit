@@ -559,6 +559,35 @@ public final class Localizator {
             }
         }
 
+        // Filter available language
+        if (currentLocale != null) {
+            boolean valid = false;
+            for (LanguageDescriptor languageDescriptor : availableLanguages.values()) {
+                if (currentLocale.getLanguage().equals(languageDescriptor.getCode())) {
+                    valid = true;
+                    break;
+                }
+            }
+
+            if (!valid) {
+                currentLocale = new Locale(DEFAULT_LOCALE.getLanguage(), currentLocale.getCountry());
+            }
+        }
+
+        if (favLanguage != null) {
+            boolean valid = false;
+            for (LanguageDescriptor languageDescriptor : availableLanguages.values()) {
+                if (favLanguage.getLanguage().equals(languageDescriptor.getCode())) {
+                    valid = true;
+                    break;
+                }
+            }
+
+            if (!valid) {
+                favLanguage = new Locale(DEFAULT_LOCALE.getLanguage(), favLanguage.getCountry());
+            }
+        }
+
         if (currentLocale == null && favLanguage == null) {
             return DEFAULT_LOCALE;
         }
