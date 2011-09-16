@@ -101,6 +101,6 @@ We give contributors a short delay so they can ensure the offer matches their ne
 This will prevent a developer making a "fake" offer with the exact amount of the sum of contributions, which would block the request.
 
 - **There are no more bugs, but the feature request is not validated. Why?**
-There is a minimum delay of 7 days after the release have been done before the it can be validated.
+There is a minimum delay of 7 days after the release have been done and the development can be validated.
 This delay allows users to test the release.
 In addition, when the conditions are met, we manually validate the request for a final check that there are no problems.
