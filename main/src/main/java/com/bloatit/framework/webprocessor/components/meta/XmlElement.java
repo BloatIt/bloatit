@@ -52,7 +52,7 @@ public class XmlElement extends XmlNode {
      * @param html the htmlNode son to add
      * @return itself
      */
-    protected XmlElement add(final XmlNode html) {
+    public XmlElement add(final XmlNode html) {
         children.add(html);
         return this;
     }
@@ -63,7 +63,7 @@ public class XmlElement extends XmlNode {
      * @param text the text to add
      * @return itself
      */
-    protected XmlElement addText(final String text) {
+    public XmlElement addText(final String text) {
         children.add(new XmlText(text));
         return this;
     }

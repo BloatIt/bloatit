@@ -12,6 +12,7 @@ import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.MemberPageUrl;
 
 /**
  * A feed used to display the recent features in the elveos website
@@ -19,7 +20,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("featurefeed")
 public class FeatureAtomFeed extends ElveosAtomFeed {
     private Date updateDate;
-    
+
     public FeatureAtomFeed(Url url) {
         super(url);
     }
@@ -31,11 +32,13 @@ public class FeatureAtomFeed extends ElveosAtomFeed {
             Translation translation = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
             FeedEntry entry = new FeedEntry(translation.getTitle(),
                                             new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
-                                            "featurefeed-" + feature.getId(),
+                                            new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
                                             feature.getCreationDate(),
-                                            translation.getText());
+                                            translation.getText(),
+                                            feature.getMember().getDisplayName(),
+                                            new MemberPageUrl(feature.getMember()).externalUrlString());
             addFeedEntry(entry, Position.LAST);
-            if(first){
+            if (first) {
                 updateDate = feature.getCreationDate();
             }
         }
@@ -48,7 +51,7 @@ public class FeatureAtomFeed extends ElveosAtomFeed {
 
     @Override
     public Date getUpdatedDate() {
-        if(updateDate != null){
+        if (updateDate != null) {
             return updateDate;
         }
         return new Date();

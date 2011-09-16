@@ -2,13 +2,13 @@ package com.bloatit.framework.webprocessor.masters;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.Date;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.webprocessor.components.meta.XmlElement;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 /**
@@ -46,20 +46,6 @@ public abstract class AtomFeed implements Linkable {
 
     /**
      * Adds a new entry to the feed
-     * 
-     * @param title The title of the feed entry
-     * @param link The link to the content of the feed entry
-     * @param id A unique id for the feed entry
-     * @param updated The update date for the feed entry
-     * @param summary The summary of the feed entry
-     * @param position The position <i>FIRST</i> or <i>LAST</i> in the feed
-     */
-    public void addFeedEntry(String title, String link, String id, Date updated, String summary, Position position) {
-        addFeedEntry(new FeedEntry(title, link, id, updated, summary), position);
-    }
-
-    /**
-     * Adds a new entry to the feed
      */
     public void addFeedEntry(FeedEntry feedentry, Position position) {
         switch (position) {
@@ -81,29 +67,35 @@ public abstract class AtomFeed implements Linkable {
     public final void write(OutputStream output) throws IOException {
         AtomSerializer serializer = new AtomSerializer(this);
         output.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>".getBytes());
-        output.write("<feed xmlns=\"http://www.w3.org/2005/Atom\">".getBytes());
-        output.write(serializer.getFeedHeader().getBytes());
-        output.write(serializer.getFeedBody().getBytes());
-        output.write("</feed>".getBytes());
+
+        XmlElement feed = new XmlElement("feed").addAttribute("xmlns", "http://www.w3.org/2005/Atom");
+        serializer.addFeedHeader(feed);
+        serializer.addFeedBody(feed);
+
+        feed.write(output);
     }
 
     /**
      * Describes an entry of the feed
      */
     public class FeedEntry {
+        private final String author;
+        private final String authorUri;
         private final String title;
         private final String link;
         private final String id;
         private final Date updated;
         private final String summary;
 
-        public FeedEntry(String title, String link, String id, Date updated, String summary) {
+        public FeedEntry(String title, String link, String id, Date updated, String summary, String author, String authorUri) {
             super();
             this.title = title;
             this.link = link;
             this.id = id;
             this.updated = updated;
             this.summary = summary;
+            this.author = author;
+            this.authorUri = authorUri;
         }
 
         public String getTitle() {
@@ -125,85 +117,73 @@ public abstract class AtomFeed implements Linkable {
         public String getSummary() {
             return summary;
         }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public String getAuthorUri() {
+            return authorUri;
+        }
     }
 
     /**
      * Serialize an atom feed into a string
      */
     private class AtomSerializer {
-        DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         private final AtomFeed feed;
 
         public AtomSerializer(AtomFeed feed) {
             this.feed = feed;
         }
 
-        public String getFeedHeader() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("<title>");
-            sb.append(feed.getFeedTitle());
-            sb.append("</title>");
+        private String formatRFC3339(Date date) {
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd'T'h:m:ssZ").format(new Date());
+            return timestamp.replaceAll("(..)$", ":$1");
+        }
+
+        public void addFeedHeader(XmlElement all) {
+            all.add(new XmlElement("title").addText(feed.getFeedTitle()));
 
             if (getFeedSubtitle() != null) {
-                sb.append("<subtitle>");
-                sb.append(feed.getFeedSubtitle());
-                sb.append("</subtitle>");
+                all.add(new XmlElement("subtitle").addText(feed.getFeedSubtitle()));
             }
 
             if (getLink() != null) {
-                sb.append("<link>");
-                sb.append(feed.getLink());
-                sb.append("</link>");
+                final XmlElement link = new XmlElement("link");
+                all.add(link);
+                link.addAttribute("href", feed.getLink());
+                link.addAttribute("rel", "self");
+                link.addAttribute("type", "application/rss+xml");
             }
 
-            sb.append("<updated>");
-            sb.append(ISO8601Local.format(feed.getUpdatedDate()));
-            sb.append("</updated>");
-            sb.append("<author>");
-            {
-                sb.append("<name>");
-                sb.append(feed.getAuthorName());
-                sb.append("</name>");
-                sb.append("<email>");
-                sb.append(feed.getAuthorEmail());
-                sb.append("</email>");
-            }
-            sb.append("</author>");
+            all.add(new XmlElement("updated").addText(formatRFC3339(feed.getUpdatedDate())));
+
+            final XmlElement author = new XmlElement("author");
+            all.add(author);
+            author.add(new XmlElement("name").addText(feed.getAuthorName()));
+            author.add(new XmlElement("email").addText(feed.getAuthorEmail()));
 
             if (getId() != null) {
-                sb.append(feed.getId());
-                sb.append("</id>");
+                all.add(new XmlElement("id").addText(feed.getId()));
             }
-
-            return sb.toString();
         }
 
-        public String getFeedBody() {
-            StringBuilder sb = new StringBuilder();
-
+        public void addFeedBody(XmlElement all) {
             for (FeedEntry entry : feed.entries) {
-                sb.append("<entry>");
-                {
-                    sb.append("<title>");
-                    sb.append(entry.getTitle());
-                    sb.append("</title>");
-                    sb.append("<link href=\"");
-                    sb.append(entry.getLink());
-                    sb.append("\" />");
-                    sb.append("<id>");
-                    sb.append(entry.getId());
-                    sb.append("</id>");
-                    sb.append("<updated>");
-                    sb.append(ISO8601Local.format(entry.getUpdated()));
-                    sb.append("</updated>");
-                    sb.append("<summary>");
-                    sb.append(entry.summary);
-                    sb.append("</summary>");
-                }
-                sb.append("</entry>");
-            }
+                final XmlElement xmlEntry = new XmlElement("entry");
+                all.add(xmlEntry);
 
-            return sb.toString();
+                xmlEntry.add(new XmlElement("title").addText(entry.getTitle()));
+                xmlEntry.add(new XmlElement("link").addAttribute("href", entry.getLink()));
+                xmlEntry.add(new XmlElement("id").addText(entry.getId()));
+                xmlEntry.add(new XmlElement("updated").addText(formatRFC3339(entry.getUpdated())));
+                final XmlElement author = new XmlElement("author");
+                xmlEntry.add(author);
+                author.add(new XmlElement("name").addText(entry.getAuthor()));
+                author.add(new XmlElement("uri").addText(entry.getAuthorUri()));
+                xmlEntry.add(new XmlElement("summary").addText(entry.summary));
+            }
         }
     }
 }

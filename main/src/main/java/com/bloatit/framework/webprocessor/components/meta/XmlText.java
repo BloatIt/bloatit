@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.springframework.web.util.HtmlUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 
 public class XmlText extends XmlNode {
 
@@ -13,7 +13,7 @@ public class XmlText extends XmlNode {
 
     public XmlText(String content) {
         super(null);
-        this.content = HtmlUtils.htmlEscape(content);
+        this.content = StringEscapeUtils.escapeXml(content);
     }
 
     @SuppressWarnings("unchecked")
