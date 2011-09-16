@@ -39,7 +39,6 @@ import com.bloatit.framework.restprocessor.RestResource;
 import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.writers.IndentedHtmlStream;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.AtomFeed;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
@@ -236,13 +235,10 @@ public final class HttpResponse {
             addField(new HttpReponseField("Access-Control-Allow-Origin", "*"));
             writeHeader();
 
-            final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
-            htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
-            htmlText.writeLine("<rest result=\"ok\" request=\"" + HtmlTools.escape(resource.getRequest()) + "\" >");
-            htmlText.indent();
-            htmlText.writeLine(resourceXml);
-            htmlText.unindent();
-            htmlText.writeLine("</rest>");
+            output.write("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n".getBytes());
+            output.write(("<rest result=\"ok\" request=\"" + HtmlTools.escape(resource.getRequest()) + "\" >\n").getBytes());
+            output.write(resourceXml.getBytes());
+            output.write("</rest>\n".getBytes());
         } catch (final Exception e) {
             Log.rest().fatal("Exception while marshalling RestResource " + resource.getUnderlying(), e);
             writeRestError(StatusCode.ERROR_SERV_500_INTERNAL_SERVER_ERROR, "Error while marhsalling the Object", e);
@@ -275,24 +271,19 @@ public final class HttpResponse {
         // ajax requests).
         addField(new HttpReponseField("Access-Control-Allow-Origin", "*"));
         writeHeader();
-        final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
-        htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
-        htmlText.indent();
-
+        output.write("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n".getBytes());
         final StringWriter sw = new StringWriter();
         final PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         final String stackTrace = sw.toString();
 
         if (stackTrace != null && !stackTrace.isEmpty()) {
-            htmlText.writeLine("<error code=\"" + status.toString() + "\" reason=\"" + message + "\" >");
-            htmlText.writeLine(HtmlTools.escape(stackTrace));
-            htmlText.writeLine("</error>");
+            output.write(("<error code=\"" + status.toString() + "\" reason=\"" + message + "\" >\n").getBytes());
+            output.write((HtmlTools.escape(stackTrace) + "\n").getBytes());
+            output.write("</error>\n".getBytes());
         } else {
-            htmlText.writeLine("<error reason=\"" + HtmlTools.escape(status.toString()) + "\" />");
+            output.write(("<error reason=\"" + HtmlTools.escape(status.toString()) + "\" />\n").getBytes());
         }
-
-        htmlText.unindent();
     }
 
     private void writeHeader() throws IOException {
@@ -320,7 +311,7 @@ public final class HttpResponse {
         addField(HttpReponseField.vary("Accept-Encoding"));
         addField(HttpReponseField.acceptRanges("bytes"));
         writeHeader();
-        
+
         feed.write(output);
     }
 }
