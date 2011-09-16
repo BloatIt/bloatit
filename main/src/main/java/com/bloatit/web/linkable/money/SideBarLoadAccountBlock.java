@@ -6,8 +6,8 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.SideBarButton;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
+import com.bloatit.web.linkable.master.HtmlDefineParagraph;
+import com.bloatit.web.linkable.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 
 public class SideBarLoadAccountBlock extends TitleSideBarElementLayout {

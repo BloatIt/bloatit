@@ -33,9 +33,9 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.pages.tools.HightlightedFeaturesTools;
+import com.bloatit.web.linkable.tools.HightlightedFeaturesTools;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class IndexFeatureBlock extends HtmlDiv {

@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.pages.master.sidebar;
+package com.bloatit.web.linkable.master;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 
-public class SideBarElementLayout extends HtmlDiv {
-    public SideBarElementLayout() {
-        super("side_bar_element");
+public class BoxLayout extends HtmlDiv {
+
+    public BoxLayout() {
+        super("content_box");
     }
 }

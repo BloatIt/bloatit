@@ -31,6 +31,10 @@ import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.PopularityVoteAction;
+import com.bloatit.web.linkable.CommentReplyPage;
+import com.bloatit.web.linkable.IndexPage;
+import com.bloatit.web.linkable.SiteMapPage;
+import com.bloatit.web.linkable.TestPage;
 import com.bloatit.web.linkable.admin.AdminHomePage;
 import com.bloatit.web.linkable.admin.AdministrationAction;
 import com.bloatit.web.linkable.admin.DeclareHightlightedFeatureAction;
@@ -156,10 +160,6 @@ import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.linkable.translation.TranslateAction;
 import com.bloatit.web.linkable.translation.TranslatePage;
-import com.bloatit.web.pages.CommentReplyPage;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.SiteMapPage;
-import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.*;
 
 public class BloatitWebServer extends WebProcessor {

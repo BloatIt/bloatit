@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.pages.tools;
+package com.bloatit.web.linkable.tools;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 

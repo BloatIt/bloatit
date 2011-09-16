@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.tools;
+package com.bloatit.web.linkable.tools;
 
 import java.util.HashMap;
 import java.util.Map;

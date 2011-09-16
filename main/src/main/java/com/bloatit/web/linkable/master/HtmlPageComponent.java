@@ -10,7 +10,7 @@
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.pages.master;
+package com.bloatit.web.linkable.master;
 
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 

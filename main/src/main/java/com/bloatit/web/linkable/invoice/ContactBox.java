@@ -24,7 +24,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.actions.WebProcess;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
+import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 
 public class ContactBox extends HtmlDiv {

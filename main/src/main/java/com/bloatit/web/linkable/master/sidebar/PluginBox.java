@@ -1,7 +1,7 @@
 /*
  * 
  */
-package com.bloatit.web.pages.master.sidebar;
+package com.bloatit.web.linkable.master.sidebar;
 
 import java.util.ArrayList;
 

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.pages.tools;
+package com.bloatit.web.linkable.tools;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -50,11 +50,11 @@ import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.visitor.ModelClassVisitor;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.release.ReleasePage;
 import com.bloatit.web.linkable.softwares.SoftwarePage;
 import com.bloatit.web.linkable.team.TeamPage;
-import com.bloatit.web.pages.master.Breadcrumb;
 
 public class BreadcrumbTools {
 

@@ -28,10 +28,10 @@ import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdown
 import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.ElveosPage;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.IndexPage;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MetaBugDeleteActionUrl;
 import com.bloatit.web.url.MetaBugEditPageUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;

@@ -10,7 +10,7 @@
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.pages;
+package com.bloatit.web.linkable;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
@@ -44,9 +44,9 @@ import com.bloatit.web.components.NewsFeedSideBlock;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.ElveosPage;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureProcessUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.FeatureAtomFeedUrl;

@@ -17,7 +17,7 @@
 package com.bloatit.web.linkable.usercontent;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.web.pages.LoggedElveosPage;
+import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.url.CreateUserContentPageUrl;
 
 /**

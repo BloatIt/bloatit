@@ -12,7 +12,7 @@
 package com.bloatit.web.linkable.documentation;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.web.pages.master.AliasAction;
+import com.bloatit.web.linkable.master.AliasAction;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
 

@@ -54,7 +54,7 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.activity.ActivityVisitor;
 import com.bloatit.web.linkable.features.FeaturesTools;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
+import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;

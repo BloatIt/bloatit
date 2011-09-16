@@ -42,7 +42,7 @@ import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpResponse;
-import com.bloatit.web.pages.master.HtmlNotification;
+import com.bloatit.web.linkable.master.HtmlNotification;
 
 public abstract class Page implements Linkable {
 

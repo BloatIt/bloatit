@@ -255,11 +255,11 @@ public interface Feature extends KudosableInterface, Commentable {
      */
     BigDecimal getContributionOf(Member member);
     
-    void setDescription(String newDescription, Locale locale) throws UnauthorizedOperationException;
+    void setDescription(String newDescription, final Language language) throws UnauthorizedOperationException;
 
     void setSoftware(Software software) throws UnauthorizedOperationException;
 
-    void setTitle(String title, final Locale locale) throws UnauthorizedOperationException;
+    void setTitle(String title, final Language language) throws UnauthorizedOperationException;
 
     /**
      * Makes <code>member</code> start following the feature

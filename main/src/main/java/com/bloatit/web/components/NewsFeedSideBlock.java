@@ -12,7 +12,7 @@ import com.bloatit.model.NewsFeed;
 import com.bloatit.model.managers.NewsFeedManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.WebConfiguration;
-import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
+import com.bloatit.web.linkable.master.sidebar.SideBarElementLayout;
 
 public class NewsFeedSideBlock extends SideBarElementLayout {
     public NewsFeedSideBlock() {

@@ -34,9 +34,9 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Description;
 import com.bloatit.model.Member;
 import com.bloatit.model.Translation;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.LoggedElveosPage;
-import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.linkable.IndexPage;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.url.TranslateActionUrl;
 import com.bloatit.web.url.TranslatePageUrl;
 

@@ -34,11 +34,11 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.components.TeamListRenderer;
+import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.ElveosPage;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
+import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 

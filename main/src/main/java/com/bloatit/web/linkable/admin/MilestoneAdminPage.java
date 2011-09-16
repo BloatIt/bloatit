@@ -43,8 +43,8 @@ import com.bloatit.model.Release;
 import com.bloatit.model.admin.MilestoneAdminListFactory;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.linkable.IndexPage;
+import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.url.MilestoneAdminPageUrl;
 
 @ParamContainer("admin/milestones")

@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages.master;
+package com.bloatit.web.linkable.master;
 
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.actions.ElveosAction;
