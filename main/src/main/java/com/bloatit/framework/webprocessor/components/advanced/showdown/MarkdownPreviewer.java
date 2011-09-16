@@ -22,7 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 
 public class MarkdownPreviewer extends HtmlLeaf {
@@ -43,7 +43,7 @@ public class MarkdownPreviewer extends HtmlLeaf {
         output.setId(id);
         final HtmlGenericElement script = new HtmlGenericElement("script");
 
-        script.add(new XmlText("setup_wmd({ input: \"" + source.getInputId() + "\", button_bar: \"" + source.getButtonBarId() + "\", preview: \""
+        script.add(new HtmlText("setup_wmd({ input: \"" + source.getInputId() + "\", button_bar: \"" + source.getButtonBarId() + "\", preview: \""
                 + output.getId() + "\", output: \"copy_html\" });"));
         previewer.add(script);
     }

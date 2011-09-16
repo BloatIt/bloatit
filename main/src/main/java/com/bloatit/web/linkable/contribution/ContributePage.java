@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.TemplateFile;
@@ -47,12 +46,10 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.money.QuotationEntry;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.ChangePrepaidAmountActionUrl;
 import com.bloatit.web.url.CheckContributeActionUrl;
 import com.bloatit.web.url.ContributePageUrl;
 

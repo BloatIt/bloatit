@@ -57,8 +57,6 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 @ParamContainer("feature/%process%/createwithoffer")
 public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
-    private static final int SPECIF_INPUT_NB_LINES = 20;
-    private static final int SPECIF_INPUT_NB_COLUMNS = 100;
     public static final int FILE_MAX_SIZE_MIO = 2;
     
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))

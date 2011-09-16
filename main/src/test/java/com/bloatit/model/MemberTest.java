@@ -29,7 +29,6 @@ import com.bloatit.data.DaoMember;
 import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.Language;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;

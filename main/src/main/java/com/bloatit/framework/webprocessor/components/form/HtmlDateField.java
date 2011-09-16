@@ -22,7 +22,8 @@ import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.web.WebConfiguration;
 
 /**
@@ -110,13 +111,13 @@ class DateInputBlock extends InputBlock {
         input.addAttribute("autocomplete", "off");
         input.setId(id);
         script = new HtmlGenericElement("script");
-        script.add(new XmlText("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n"));
-        script.add(new XmlText("$(function() {\n" + //
+        script.add(new HtmlNonEscapedText("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n"));
+        script.add(new HtmlNonEscapedText("$(function() {\n" + //
                 "    $( \"#" + id + "\" ).datepicker({ "));
 
         script.add(options = new PlaceHolderElement());
 
-        script.add(new XmlText(" }); \n " + //
+        script.add(new HtmlNonEscapedText(" }); \n " + //
                 "});"));
         container.add(script);
         container.add(input);
@@ -144,6 +145,6 @@ class DateInputBlock extends InputBlock {
         }
 
         option += "\"" + optionName + "\" : \"" + optionValue + "\"";
-        options.add(new XmlText(option));
+        options.add(new HtmlText(option));
     }
 }

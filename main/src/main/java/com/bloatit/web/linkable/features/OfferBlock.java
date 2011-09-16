@@ -17,8 +17,8 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.FeatureImplementation;
@@ -169,7 +169,7 @@ public final class OfferBlock extends HtmlDiv {
                         final HtmlSpan descriptionLabel = new HtmlSpan("offer_block_label");
                         descriptionLabel.addText(tr("Offer's description: "));
                         description.add(descriptionLabel);
-                        description.add(new XmlText("<br />"));
+                        description.add(new HtmlNonEscapedText("<br />"));
                         description.add(new HtmlMarkdownRenderer(lot.getDescription()));
                     }
                     offerRightBottomColumn.add(description);
@@ -330,7 +330,7 @@ public final class OfferBlock extends HtmlDiv {
         return "";
     }
 
-    private XmlNode generatePopularityBlock() {
+    private HtmlNode generatePopularityBlock() {
         final HtmlDiv offerSummaryPopularity = new HtmlDiv("offer_popularity");
         {
             final HtmlParagraph popularityText = new HtmlParagraph(tr("Popularity"), "offer_popularity_text");

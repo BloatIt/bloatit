@@ -21,7 +21,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 public class TitleSideBarElementLayout extends SideBarElementLayout {
 
@@ -46,7 +46,7 @@ public class TitleSideBarElementLayout extends SideBarElementLayout {
     }
 
     @Override
-    public HtmlBranch add(final XmlNode element) {
+    public HtmlBranch add(final HtmlNode element) {
         body.add(element);
         return this;
     }

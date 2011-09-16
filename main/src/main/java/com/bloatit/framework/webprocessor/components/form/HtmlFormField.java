@@ -19,8 +19,8 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Messages;
 
@@ -250,7 +250,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         setComment(new HtmlText(comment));
     }
 
-    public void setComment(final XmlNode comment) {
+    public void setComment(final HtmlNode comment) {
         final HtmlDiv commentBlock = new HtmlDiv("comment");
         commentBlock.add(comment);
         this.commentPh.add(commentBlock);

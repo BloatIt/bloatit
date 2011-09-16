@@ -25,8 +25,8 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Image;
@@ -57,7 +57,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return MembersTools.getMemberAvatarSmall(actor);
         }
     }
@@ -69,7 +69,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             try {
                 return new HtmlText(Context.getLocalizator().getCurrency(actor.getInternalAccount().getAmount()).getSimpleEuroString());
             } catch (final UnauthorizedOperationException e) {
@@ -85,7 +85,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getSimpleEuroString());
         }
     }
@@ -97,7 +97,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()), "money up");
         }
     }
@@ -109,7 +109,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
 
             final HtmlDiv prepaidAccount = new HtmlDiv("title");
             prepaidAccount.addText(tr("Prepaid from internal account"));
@@ -133,7 +133,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
 
             try {
                 return new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()

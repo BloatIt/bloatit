@@ -31,8 +31,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.Sorter;
 import com.bloatit.framework.utils.Sorter.Order;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -47,7 +47,7 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLine
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
@@ -495,7 +495,7 @@ public class AccountComponent extends HtmlPageComponent {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             if (up) {
                 return new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up");
             }
@@ -514,7 +514,7 @@ public class AccountComponent extends HtmlPageComponent {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             final PlaceHolderElement titleCell = new PlaceHolderElement();
             final HtmlDiv dateDiv = new HtmlDiv("date");
             dateDiv.addText(Context.getLocalizator().getDate(date).toString(FormatStyle.LONG));
@@ -536,7 +536,7 @@ public class AccountComponent extends HtmlPageComponent {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             final PlaceHolderElement descriptionCell = new PlaceHolderElement();
             descriptionCell.addText(title);
             descriptionCell.add(description);
@@ -554,7 +554,7 @@ public class AccountComponent extends HtmlPageComponent {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             final HtmlDiv moneyCell = new HtmlDiv();
             String amountString = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
             if (amount.compareTo(BigDecimal.ZERO) > 0) {

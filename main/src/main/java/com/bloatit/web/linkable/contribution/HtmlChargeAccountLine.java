@@ -30,8 +30,8 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
@@ -74,7 +74,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return MembersTools.getMemberAvatarSmall(actor);
         }
     }
@@ -87,7 +87,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             try {
                 BigDecimal initialAmount;
                 if (isContributing) {
@@ -111,7 +111,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
 
             try {
                 BigDecimal initialAmount;
@@ -134,7 +134,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up");
         }
     }
@@ -146,7 +146,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             final HtmlDiv internalAccount = new HtmlDiv("title");
             internalAccount.addText(tr("Internal account"));
             final HtmlDiv internalAccountDetails = new HtmlDiv("details");
@@ -163,7 +163,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
             return new HtmlDiv("").addText(tr("Load money in your internal account for future contributions."));
         }
     }
@@ -175,7 +175,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         }
 
         @Override
-        public XmlNode getBody() {
+        public HtmlNode getBody() {
 
             final HtmlDiv amountBlock;
             if (recalculateTargetForm == null) {

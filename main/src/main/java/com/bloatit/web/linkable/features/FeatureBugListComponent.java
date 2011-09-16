@@ -22,8 +22,8 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlTableModel;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Feature;
@@ -81,7 +81,7 @@ public class FeatureBugListComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getHeader(final int column) {
+        public HtmlNode getHeader(final int column) {
             HtmlText text = null;
             switch (column) {
                 case 0:
@@ -107,8 +107,8 @@ public class FeatureBugListComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getBody(final int column) {
-            XmlNode text = null;
+        public HtmlNode getBody(final int column) {
+            HtmlNode text = null;
             switch (column) {
                 case 0:
                     text = new HtmlText(bug.getState().toString());

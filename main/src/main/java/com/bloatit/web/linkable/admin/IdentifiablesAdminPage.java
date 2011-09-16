@@ -37,7 +37,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.IdentifiableInterface;
 import com.bloatit.model.admin.IdentifiableAdminListFactory;
@@ -112,7 +112,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
 
         tableModel.addColumn(new HtmlCheckbox("id_all", LabelPosition.BEFORE), new ColumnGenerator<V>() {
             @Override
-            public XmlNode getBody(final V element) {
+            public HtmlNode getBody(final V element) {
                 final HtmlCheckbox htmlCheckbox = new HtmlCheckbox("id", LabelPosition.BEFORE);
                 htmlCheckbox.addAttribute("value", element.getId().toString());
                 return htmlCheckbox;

@@ -18,7 +18,6 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Locale;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoComment;

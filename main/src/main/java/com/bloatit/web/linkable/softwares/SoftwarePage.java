@@ -29,7 +29,7 @@ import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
@@ -144,7 +144,7 @@ public final class SoftwarePage extends ElveosPage {
         }
 
         @Override
-        public XmlNode generate(final Feature feature) {
+        public HtmlNode generate(final Feature feature) {
             return new HtmlFeatureSummary(feature, Compacity.NORMAL, FeaturesTools.FeatureContext.Other);
         }
     };

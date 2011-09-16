@@ -34,8 +34,8 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -116,7 +116,7 @@ public class ConfigurationAdminPage extends AdminPage {
         }
 
         @Override
-        public XmlNode getHeader(final int column) {
+        public HtmlNode getHeader(final int column) {
             switch (column) {
                 case NAME:
                     return new HtmlText(Context.tr("Configuration"));
@@ -130,7 +130,7 @@ public class ConfigurationAdminPage extends AdminPage {
         }
 
         @Override
-        public XmlNode getBody(final int column) {
+        public HtmlNode getBody(final int column) {
             switch (column) {
                 case NAME:
                     return new HtmlText(configuration.getName());

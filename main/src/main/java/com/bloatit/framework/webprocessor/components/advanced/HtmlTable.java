@@ -22,7 +22,7 @@ import java.util.List;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 /**
  * This class display an html table using a data model (HtmlTableModel) For the
@@ -100,9 +100,9 @@ public class HtmlTable extends HtmlGenericElement {
     public static abstract class HtmlTableModel {
         public abstract int getColumnCount();
 
-        public abstract XmlNode getHeader(int column);
+        public abstract HtmlNode getHeader(int column);
 
-        public abstract XmlNode getBody(int column);
+        public abstract HtmlNode getBody(int column);
 
         /**
          * Switch to next line and indicate if the next line exist
@@ -158,12 +158,12 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         @Override
-        public XmlNode getHeader(final int column) {
+        public HtmlNode getHeader(final int column) {
             return null;
         }
 
         @Override
-        public XmlNode getBody(final int column) {
+        public HtmlNode getBody(final int column) {
             if (lines.size() > currentLine) {
                 return lines.get(currentLine).getCells().get(column).getBody();
             }
@@ -251,7 +251,7 @@ public class HtmlTable extends HtmlGenericElement {
                 this.css = css;
             }
 
-            public abstract XmlNode getBody();
+            public abstract HtmlNode getBody();
 
             public String getCss() {
                 return css;
@@ -285,7 +285,7 @@ public class HtmlTable extends HtmlGenericElement {
             }
 
             @Override
-            public XmlNode getBody() {
+            public HtmlNode getBody() {
                 return new PlaceHolderElement();
             }
 

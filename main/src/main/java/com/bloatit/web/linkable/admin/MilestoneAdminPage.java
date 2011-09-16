@@ -35,7 +35,7 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableMo
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
@@ -113,7 +113,7 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
         });
         tableModel.addColumn(tr("Release"), new ColumnGenerator<Milestone>() {
             @Override
-            public XmlNode getBody(final Milestone element) {
+            public HtmlNode getBody(final Milestone element) {
 
                 final PlaceHolderElement place = new PlaceHolderElement();
                 for (final Release release : element.getReleases()) {
@@ -125,7 +125,7 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
         });
         tableModel.addColumn(tr("Should validated"), new ColumnGenerator<Milestone>() {
             @Override
-            public XmlNode getBody(final Milestone element) {
+            public HtmlNode getBody(final Milestone element) {
                 final PlaceHolderElement place = new PlaceHolderElement();
                 for (final Level level : EnumSet.allOf(Level.class)) {
                     try {

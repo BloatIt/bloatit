@@ -14,7 +14,7 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
@@ -31,7 +31,7 @@ public class SideBarElveosButtonBlock extends SideBarElementLayout {
         add(generateScript());
     }
 
-    private XmlNode generateForm() {
+    private HtmlNode generateForm() {
         final HtmlDiv item = new HtmlDiv("elveos_button_generator");
 
         final HtmlDiv outputExample = new HtmlDiv();
@@ -74,7 +74,7 @@ public class SideBarElveosButtonBlock extends SideBarElementLayout {
         return item;
     }
 
-    private XmlNode generateScript() {
+    private HtmlNode generateScript() {
 
         final HtmlScript script = new HtmlScript();
 

@@ -18,7 +18,7 @@ package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 public class HtmlDefineParagraph extends HtmlParagraph {
 
@@ -28,7 +28,7 @@ public class HtmlDefineParagraph extends HtmlParagraph {
         addText(text);
     }
 
-    public HtmlDefineParagraph(final String key, final XmlNode body) {
+    public HtmlDefineParagraph(final String key, final HtmlNode body) {
         setCssClass("define_p");
 
         add(new HtmlSpan("define_key").addText(key));
@@ -36,7 +36,7 @@ public class HtmlDefineParagraph extends HtmlParagraph {
 
     }
 
-    public XmlNode addCssClass(final String css) {
+    public HtmlNode addCssClass(final String css) {
         setCssClass("define_p " + css);
         return this;
     }

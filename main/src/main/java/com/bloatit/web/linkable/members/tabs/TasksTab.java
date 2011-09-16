@@ -26,7 +26,7 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
@@ -44,7 +44,7 @@ public class TasksTab extends HtmlTab {
     }
 
     @Override
-    public XmlNode generateBody() {
+    public HtmlNode generateBody() {
 
         final HtmlDiv master = new HtmlDiv("tab_pane");
 

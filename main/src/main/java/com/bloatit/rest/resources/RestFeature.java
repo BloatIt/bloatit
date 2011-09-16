@@ -36,7 +36,6 @@ import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.rest.adapters.DateAdapter;

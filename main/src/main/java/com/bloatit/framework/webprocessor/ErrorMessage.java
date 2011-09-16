@@ -18,7 +18,7 @@ package com.bloatit.framework.webprocessor;
 
 import java.util.Date;
 
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 public class ErrorMessage {
     public enum Level {
@@ -27,16 +27,16 @@ public class ErrorMessage {
 
     private final Date creationDate;
     private final Level level;
-    private final XmlNode message;
+    private final HtmlNode message;
 
-    public ErrorMessage(final Level level, final XmlNode message) {
+    public ErrorMessage(final Level level, final HtmlNode message) {
         super();
         this.level = level;
         this.message = message;
         this.creationDate = new Date();
     }
 
-    public XmlNode getMessage() {
+    public HtmlNode getMessage() {
         return message;
     }
 

@@ -105,9 +105,9 @@ public final class Description extends Identifiable<DaoDescription> {
         return tr;
     }
 
-    private Translation getDefaultTranslation() {
-        return Translation.create(getDao().getDefaultTranslation());
-    }
+//    private Translation getDefaultTranslation() {
+//        return Translation.create(getDao().getDefaultTranslation());
+//    }
 
     public Language getDefaultLanguage() {
         return getDao().getDefaultLanguage();

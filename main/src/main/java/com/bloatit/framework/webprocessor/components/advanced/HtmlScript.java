@@ -17,7 +17,7 @@
 package com.bloatit.framework.webprocessor.components.advanced;
 
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
 
 public class HtmlScript extends HtmlLeaf {
     public HtmlScript() {
@@ -26,7 +26,7 @@ public class HtmlScript extends HtmlLeaf {
     }
 
     public HtmlScript append(final String script) {
-        add(new XmlText(script));
+        add(new HtmlNonEscapedText(script));
         return this;
     }
 

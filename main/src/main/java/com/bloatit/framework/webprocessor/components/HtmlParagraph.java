@@ -19,7 +19,6 @@ package com.bloatit.framework.webprocessor.components;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
 
 public class HtmlParagraph extends HtmlBranch {
 
@@ -48,7 +47,7 @@ public class HtmlParagraph extends HtmlBranch {
         add(new com.bloatit.framework.webprocessor.components.meta.HtmlText(text));
     }
 
-    public HtmlParagraph(final XmlText htmlText) {
+    public HtmlParagraph(final HtmlText htmlText) {
         super("p");
         add(htmlText);
     }

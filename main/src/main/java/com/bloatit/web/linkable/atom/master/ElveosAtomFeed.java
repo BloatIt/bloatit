@@ -24,7 +24,7 @@ public abstract class ElveosAtomFeed extends AtomFeed {
     }
 
     public String getLink() {
-        return null;
+        return privateUrl.externalUrlString();
     }
 
     public abstract Date getUpdatedDate();
@@ -37,8 +37,8 @@ public abstract class ElveosAtomFeed extends AtomFeed {
         return "contact@elveos.org";
     }
 
-    public String getId() {
-        return null;
+    public final String getId() {
+        return "https://elveos.org/";
     }
 
     public static HtmlHeaderLink generateHeaderLink(Url url, String feedTitle) {

@@ -29,8 +29,8 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlTableModel;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -50,7 +50,7 @@ public class MembersTab extends HtmlTab {
     }
 
     @Override
-    public XmlNode generateBody() {
+    public HtmlNode generateBody() {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Members
@@ -103,7 +103,7 @@ public class MembersTab extends HtmlTab {
         }
 
         @Override
-        public XmlNode getHeader(final int column) {
+        public HtmlNode getHeader(final int column) {
             if (column == 0) {
                 return new HtmlText(Context.tr("Member name"));
             }
@@ -128,7 +128,7 @@ public class MembersTab extends HtmlTab {
         }
 
         @Override
-        public XmlNode getBody(final int column) {
+        public HtmlNode getBody(final int column) {
             switch (column) {
                 case 0: // Name
                     return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
@@ -149,7 +149,7 @@ public class MembersTab extends HtmlTab {
             }
         }
 
-        private XmlNode getUserRightStatus(final UserTeamRight right) {
+        private HtmlNode getUserRightStatus(final UserTeamRight right) {
 
             final PlaceHolderElement ph = new PlaceHolderElement();
 

@@ -11,19 +11,9 @@
  */
 package com.bloatit.framework.utils.i18n;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.Locale;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
 
-import com.bloatit.common.Log;
-import com.bloatit.framework.LocalesConfiguration;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.MeanUserException;
-import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 
 /**
  * <p>

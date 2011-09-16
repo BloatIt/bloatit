@@ -31,8 +31,8 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlTableModel;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
@@ -136,7 +136,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getHeader(final int column) {
+        public HtmlNode getHeader(final int column) {
             String value;
             switch (column) {
                 case 0:
@@ -180,7 +180,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getBody(final int column) {
+        public HtmlNode getBody(final int column) {
             HtmlSpan val = new HtmlSpan();
             try {
                 switch (column) {
@@ -262,7 +262,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getHeader(final int column) {
+        public HtmlNode getHeader(final int column) {
             String value = "";
 
             switch (column) {
@@ -293,7 +293,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getBody(final int column) {
+        public HtmlNode getBody(final int column) {
             String value = "";
 
             switch (column) {

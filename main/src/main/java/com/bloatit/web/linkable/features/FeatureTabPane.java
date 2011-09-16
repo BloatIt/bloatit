@@ -16,10 +16,8 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -29,13 +27,10 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
-import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Description;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
@@ -82,21 +77,21 @@ public final class FeatureTabPane extends HtmlPageComponent {
         tabPane.addTab(new HtmlTab(Context.tr("Description"), FeatureTabKey.description.name()) {
             @SuppressWarnings("synthetic-access")
             @Override
-            public XmlNode generateBody() {
+            public HtmlNode generateBody() {
                 return generateDescriptionTabContent(feature);
             }
         });
 
         tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions(false).size()), FeatureTabKey.contributions.name()) {
             @Override
-            public XmlNode generateBody() {
+            public HtmlNode generateBody() {
                 return new FeatureContributorsComponent(feature);
             }
         });
 
         tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), FeatureTabKey.offers.name()) {
             @Override
-            public XmlNode generateBody() {
+            public HtmlNode generateBody() {
                 return new FeatureOfferListComponent(feature);
             }
         });
@@ -114,7 +109,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
             tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", feature.countOpenBugs()), FeatureTabKey.bugs.name()) {
                 @Override
-                public XmlNode generateBody() {
+                public HtmlNode generateBody() {
                     return new FeatureBugListComponent(feature);
                 }
             });
@@ -123,7 +118,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
         add(tabPane);
     }
 
-    private XmlNode generateDescriptionTabContent(final Feature feature) {
+    private HtmlNode generateDescriptionTabContent(final Feature feature) {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {

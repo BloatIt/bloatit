@@ -25,7 +25,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
@@ -89,7 +89,7 @@ public final class MembersListPage extends ElveosPage {
 
         @SuppressWarnings("synthetic-access")
         @Override
-        public XmlNode generate(final Member member) {
+        public HtmlNode generate(final Member member) {
             final MemberPageUrl memberUrl = new MemberPageUrl(member);
             final HtmlDiv box = new HtmlDiv("member_box");
 

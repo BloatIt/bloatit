@@ -12,7 +12,7 @@
 package com.bloatit.framework.webprocessor.components.advanced;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.url.Url;
 
 public final class HtmlTabBlock extends HtmlDiv {
@@ -101,6 +101,6 @@ public final class HtmlTabBlock extends HtmlDiv {
             return title;
         }
 
-        abstract public XmlNode generateBody();
+        abstract public HtmlNode generateBody();
     }
 }

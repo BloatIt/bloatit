@@ -16,35 +16,73 @@
 //
 package com.bloatit.framework.webprocessor.components.meta;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Collections;
+import java.util.Iterator;
+
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.web.HtmlTools;
 
-/**
- * <p>
- * Class used to directly escaped text into a page
- * </p>
- * <p>
- * Usage :
- * 
- * <pre>
- * {@code another_component.add(new HtmlText("A lot of beautiful text here"));}
- * </pre>
- * 
- * </p>
- * <p>
- * All the text inputed into an HtmlText will be escaped using the
- * <code>HtmlTools.escape(text)</code> method. It is therefore safe to display
- * using this method, but cannot be used to display an html tag.<br />
- * Html Tags should be displayed using {@link XmlText}
- * </p>
- */
-public class HtmlText extends XmlText {
+public class HtmlText extends HtmlNode {
+    protected String content;
+
+    private HtmlText(final HtmlText text) {
+        super();
+        this.content = text.content;
+    }
+
+    @Override
+    public HtmlText clone() {
+        return new HtmlText(this);
+    }
 
     /**
-     * Creates a component to add text to a page
+     * Creates a component to add raw Html to a page
      * 
-     * @param text the Html text to add to add
+     * @param content the Html string to add
      */
-    public HtmlText(final String text) {
-        super(HtmlTools.escape(text));
+    public HtmlText(final String content) {
+        super();
+        if (content == null) {
+            throw new NonOptionalParameterException();
+        }
+        this.content = HtmlTools.escape(content);
+    }
+
+    protected HtmlText(final String content, boolean escapeContent) {
+        super();
+        if (content == null) {
+            throw new NonOptionalParameterException();
+        }
+        if (escapeContent) {
+            this.content = HtmlTools.escape(content);
+        } else {
+            this.content = content;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public final Iterator<HtmlNode> iterator() {
+        return Collections.EMPTY_LIST.iterator();
+    }
+
+    /**
+     * Do not use Only present as a quick hack to write a tad cleaner html
+     * content
+     */
+    public String _getContent() {
+        return content;
+    }
+
+    @Override
+    public final void write(OutputStream out) throws IOException {
+        out.write(content.getBytes());
+    }
+
+    @Override
+    protected boolean selfClosable() {
+        return false;
     }
 }

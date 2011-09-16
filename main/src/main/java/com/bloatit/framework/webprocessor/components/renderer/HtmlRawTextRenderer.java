@@ -19,6 +19,7 @@ package com.bloatit.framework.webprocessor.components.renderer;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.web.HtmlTools;
 
 /**
@@ -26,14 +27,13 @@ import com.bloatit.web.HtmlTools;
  * Renders a user text the same way he entered it
  * </p>
  */
-public final class HtmlRawTextRenderer extends HtmlTextRenderer {
+public final class HtmlRawTextRenderer extends HtmlText {
 
     public HtmlRawTextRenderer(final String text) {
-        super(text);
+        super(doRender(text), false);
     }
 
-    @Override
-    protected String doRender(final String text) {
+    private static String doRender(final String text) {
         final String t = HtmlTools.escape(text);
         final StringBuilder sb = new StringBuilder();
         final StringCharacterIterator it = new StringCharacterIterator(t);

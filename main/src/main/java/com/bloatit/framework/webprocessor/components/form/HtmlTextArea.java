@@ -12,7 +12,7 @@
 package com.bloatit.framework.webprocessor.components.form;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 /**
  * <p>
@@ -40,7 +40,7 @@ public final class HtmlTextArea extends HtmlStringFormField {
     }
 
     @Override
-    public void setComment(final XmlNode comment) {
+    public void setComment(final HtmlNode comment) {
         final HtmlDiv commentBlock = new HtmlDiv("comment_after");
         commentBlock.add(comment);
         this.commentPh.add(commentBlock);
