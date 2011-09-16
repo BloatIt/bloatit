@@ -525,7 +525,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         new TaskUpdateDevelopingState(feature.getId(), new Date());
         try {
-            Thread.sleep(100);
+            Thread.sleep(1000);
         } catch (final InterruptedException e) {
             fail();
         }
