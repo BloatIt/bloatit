@@ -2,11 +2,11 @@
 Teams
 ===========
 
-Members of elveos can be grouped into teams. Each member can belong to as many teams as they wish.
+Members of elveos can be grouped into teams. A member can belong to as many teams as he wish.
 
-A team may represent an association, a company or any group of people. A team has an account, and can contribute to feature request or receive money.
+A team may represent an foundation, a company or any group of people. A team has an internal account (allowing it to pay and to be paid), and can contribute to feature request or receive money.
 
-There are two different kind of teams: public teams and private teams. Anyone can join a public team, but we have to be invited to join a private team.
+There are two different kind of teams: public teams and private teams. Anyone can join a public team, but you have to be invited to join a private team.
 
 Rights
 ----------
@@ -15,7 +15,7 @@ The team members may have separate roles. The team creator is the team administr
 
 Here are the rights that you may have when you're in a team:
 
-  - Consult: right to see informations about this team
+  - Consult: right to see information about this team
 
   - Talk: right to speak on the behalf of the team
 
@@ -25,7 +25,7 @@ Here are the rights that you may have when you're in a team:
 
   - Promote: right to give (or remove) rights to other team members
 
-  - Banking: the right to access, to change this team bank information (including cash out, or make contributions)
+  - Banking: the right to access, to change this team bank information (including withdraw money, or make contributions)
 
 Act on behalf of a team
 ------------------------
@@ -34,7 +34,7 @@ In elveos many actions can be made on the behalf of a team.
 
 For example: 
 
- - A developer may make an offer on the behalf of an association. In this case, it is not the developer who gets the money, but the association.
+ - A developer may make an offer on the behalf of an foundation. In this case, it is not the developer who gets the money, but the foundation.
 
  - A user can write a comment on the  behalf of his company, thereby he act as  ahis company spokesman.
 
