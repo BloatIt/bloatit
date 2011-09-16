@@ -18,7 +18,6 @@ package com.bloatit.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
@@ -35,7 +34,9 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 
 /**
  * A description is a localized text with a title. In fact a the data are stored
@@ -57,7 +58,7 @@ import com.bloatit.framework.utils.PageIterable;
 public class DaoDescription extends DaoIdentifiable {
 
     // @Field(index = Index.UN_TOKENIZED)
-    private Locale defaultLocale;
+    private String defaultLocale;
 
     /**
      * This is a set of translation of this description
@@ -80,11 +81,14 @@ public class DaoDescription extends DaoIdentifiable {
      */
     public static DaoDescription createAndPersist(final DaoMember member,
                                                   final DaoTeam team,
-                                                  final Locale locale,
+                                                  final Language language,
                                                   final String title,
                                                   final String description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoDescription descr = new DaoDescription(member, team, locale, title, description);
+        if (member == null || language == null || title == null || title.isEmpty() || description == null || description.isEmpty()) {
+            throw new NonOptionalParameterException();
+        }
+        final DaoDescription descr = new DaoDescription(member, team, language, title, description);
         try {
             session.save(descr);
         } catch (final HibernateException e) {
@@ -99,15 +103,15 @@ public class DaoDescription extends DaoIdentifiable {
      * Create a daoDescription. Set the default locale to "locale"
      * 
      * @param member is the author of this description
-     * @param locale is the locale in which the description is written.
+     * @param language is the locale in which the description is written.
      * @param title is the title of the description
      * @param description is the main text of the description (the actual
      *            description)
      */
-    private DaoDescription(final DaoMember member, final DaoTeam team, final Locale locale, final String title, final String description) {
+    private DaoDescription(final DaoMember member, final DaoTeam team, final Language language, final String title, final String description) {
         super();
-        setDefaultLocale(locale);
-        this.translations.add(new DaoTranslation(member, team, this, locale, title, description));
+        setDefaultLanguage(language);
+        this.translations.add(new DaoTranslation(member, team, this, language, title, description));
     }
 
     /**
@@ -115,17 +119,17 @@ public class DaoDescription extends DaoIdentifiable {
      * 
      * @param translation a new translation
      */
-    public void addTranslation(final DaoTranslation translation) {
-        this.translations.add(translation);
+    public void addTranslation(final DaoMember member, final DaoTeam team, final Language language, final String title, final String description) {
+        this.translations.add(new DaoTranslation(member, team, this, language, title, description));
     }
 
     /**
      * Change the default locale.
      * 
-     * @param defaultLocale the new local.
+     * @param defaultLanguage the new local.
      */
-    public void setDefaultLocale(final Locale defaultLocale) {
-        this.defaultLocale = defaultLocale;
+    public void setDefaultLanguage(final Language defaultLanguage) {
+        this.defaultLocale = defaultLanguage.getCode();
     }
 
     // ======================================================================
@@ -137,7 +141,7 @@ public class DaoDescription extends DaoIdentifiable {
      *         locale)
      */
     public DaoTranslation getDefaultTranslation() {
-        return getTranslation(getDefaultLocale());
+        return getTranslation(getDefaultLanguage());
     }
 
     /**
@@ -156,9 +160,9 @@ public class DaoDescription extends DaoIdentifiable {
      * @param locale the locale in which we want the description
      * @return null if no translation exists for this locale.
      */
-    public DaoTranslation getTranslation(final Locale locale) {
+    public DaoTranslation getTranslation(final Language language) {
         final Query q = SessionManager.getNamedQuery("description.getTranslations.byLocale");
-        q.setLocale("locale", locale);
+        q.setString("locale", language.getCode());
         q.setEntity("this", this);
         return (DaoTranslation) q.uniqueResult();
     }
@@ -166,8 +170,8 @@ public class DaoDescription extends DaoIdentifiable {
     /**
      * @return the local in which this description has been originally written.
      */
-    public Locale getDefaultLocale() {
-        return this.defaultLocale;
+    public Language getDefaultLanguage() {
+        return Language.fromString(this.defaultLocale);
     }
 
     // ======================================================================

@@ -125,9 +125,9 @@ public final class ModifySoftwareAction extends LoggedElveosAction {
     public Url doProcessRestricted(final Member me) {
 
         // Description
-        if (!isEmpty(description.trim()) && !description.equals(software.getDescription().getDefaultTranslation().getText())) {
+        if (!isEmpty(description.trim()) && !description.equals(software.getDescription().getTranslation(software.getDescription().getDefaultLanguage()).getText())) {
             try {
-                software.getDescription().getDefaultTranslation().setText(description, me);
+                software.getDescription().getTranslation(software.getDescription().getDefaultLanguage()).setText(description, me);
             } catch (final UnauthorizedOperationException e) {
                 throw new BadProgrammerException("Fail to update software description");
             }

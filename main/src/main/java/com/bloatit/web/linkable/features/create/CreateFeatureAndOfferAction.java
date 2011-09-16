@@ -19,6 +19,7 @@ import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -142,14 +143,14 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         // Create feature
-        final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, software);
+        final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, software);
         propagateAttachedFileIfPossible(feature);
         
         // Create offer
         Offer constructingOffer;
         try {
             Milestone constructingMilestone;
-            constructingOffer = feature.addOffer(price, specification, license, getLocale(), expiryDate.getJavaDate(), daysBeforeValidation
+            constructingOffer = feature.addOffer(price, specification, license, Language.fromLocale(getLocale()), expiryDate.getJavaDate(), daysBeforeValidation
                     * DateUtils.SECOND_PER_DAY);
             constructingMilestone = constructingOffer.getMilestones().iterator().next();
             

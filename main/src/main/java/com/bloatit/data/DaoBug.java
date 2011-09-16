@@ -18,7 +18,6 @@ package com.bloatit.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
@@ -39,6 +38,7 @@ import org.hibernate.annotations.OrderBy;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 
 /**
  * Represent a bug on a Released part of a milestone. It is like a bug in a
@@ -87,7 +87,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * This is the language in which the description is written.
      */
     @Basic(optional = false)
-    private Locale locale;
+    private String locale;
 
     @Basic(optional = false)
     @Enumerated
@@ -111,16 +111,16 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
                    final DaoMilestone milestone,
                    final String title,
                    final String description,
-                   final Locale locale,
+                   final Language language,
                    final Level level) {
         super(member, team);
-        if (title == null || description == null || milestone == null || locale == null || level == null || description.isEmpty()) {
+        if (title == null || description == null || milestone == null || language == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.milestone = milestone;
         this.title = title;
         this.description = new DaoString(description, member);
-        this.locale = locale;
+        this.locale = language.getCode();
         this.level = level;
         this.state = BugState.PENDING;
     }
@@ -142,10 +142,10 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
                                           final DaoMilestone milestone,
                                           final String title,
                                           final String description,
-                                          final Locale locale,
+                                          final Language language,
                                           final Level level) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoBug bug = new DaoBug(member, team, milestone, title, description, locale, level);
+        final DaoBug bug = new DaoBug(member, team, milestone, title, description, language, level);
         try {
             session.save(bug);
         } catch (final HibernateException e) {
@@ -213,8 +213,8 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * 
      * @return the locale
      */
-    public Locale getLocale() {
-        return this.locale;
+    public Language getLanguage() {
+        return Language.fromString(this.locale);
     }
 
     /**

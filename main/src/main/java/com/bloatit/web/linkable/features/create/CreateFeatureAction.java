@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.features.create;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -90,7 +91,7 @@ public final class CreateFeatureAction extends UserContentAction {
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-        final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, software);
+        final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, software);
         propagateAttachedFileIfPossible(feature);
         process.close();
         return new FeaturePageUrl(feature, FeatureTabKey.description);

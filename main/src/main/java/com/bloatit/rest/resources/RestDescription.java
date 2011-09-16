@@ -144,7 +144,7 @@ public class RestDescription extends RestElement<Description> {
      */
     @XmlElement
     public RestTranslation getDefaultTranslation() {
-        final RestTranslation restTranslation = new RestTranslation(model.getDefaultTranslation());
+        final RestTranslation restTranslation = new RestTranslation(model.getTranslation(model.getDefaultLanguage()));
         if (restTranslation.isNull()) {
             return null;
         }
@@ -165,7 +165,7 @@ public class RestDescription extends RestElement<Description> {
     @XmlAttribute
     @XmlJavaTypeAdapter(LocaleAdapter.class)
     public Locale getDefaultLocale() {
-        return model.getDefaultLocale();
+        return model.getDefaultLanguage().getLocale();
     }
 
     // ---------------------------------------------------------------------------------------

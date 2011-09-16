@@ -8,11 +8,11 @@ FAQ
 Nous sommes trois anciens élèves de l'INSA Lyon, Frédéric, Thomas et Yoann. On a quitté nos emplois respectifs pour se lancer dans l'aventure de la création d'entreprise. 
 
 - **Comment est financé Elveos ?**
-Nous prélevons une commission sur les entrées d'argent dans le site. La réponse à la questions suivante vous en dira un peu plus.
+Nous prélevons une commission sur les entrées d'argent dans le site. La réponse à la question suivante vous en dira un peu plus.
 
 - **Une commission est-elle prélevée sur ce que je donne ? Laquelle ?**
 Oui, une commission est prélevée sur l'argent qui est confié à Elveos. Lorsque vous chargez votre compte elveos, vous payez une commission. Ensuite toutes les transactions internes à Elveos sont gratuites. 
-Il se peut aussi que vous ayez à payer des frais de retrait. Si vous êtes en zone euro, les virements sont gratuits. Dans le cas contraire vous aurez à payer un frais de transaction bancaire.
+Il se peut aussi que vous ayez à payer des frais de retrait. Si vous êtes en zone euro, les virements sont gratuits. Dans le cas contraire vous aurez à payer des frais de transaction bancaire.
 
 - **Elveos est-il géré par une entreprise à but lucratif ?**
 Elveos n'est pas géré par une association à but non lucratif, mais bien par une entreprise (SAS). Nous n'avons bien évidemment pas pour but de devenir millionnaire, mais simplement de pouvoir vivre de notre travail, tout en pouvant contribuer à améliorer le logiciel libre.
@@ -39,10 +39,10 @@ Nous n'aimons pas la publicité sur internet, nous ne souhaitons donc pas en met
 ##Logiciel libre, licence
 
 - **Sous quelles licences les programmes sont ils distribués ? Quelles licences sont autorisées sur le site ?**
-Toutes les licences libres au sens de la Open Source Initiative sont autorisées. Les programmes développeur sur Elveos doivent être des logiciels libres.
+Toutes les licences libres au sens de la Open Source Initiative sont autorisées. Les programmes développés sur Elveos doivent être des logiciels libres.
 
 - **Croyez vous au logiciel libre ?**
-Oui le site Elveos est sous licence GNU affero. Nous contribuons régulièrement à divers projets libre (par exemple Perroquet, exxEditor ...). Nous avons créé ce site dans le but de fournir un nouveau moyen de financement au logiciel libre, et de permettre aux logiciels libres de s'améliorer.
+Oui le site Elveos est sous licence GNU Affero. Nous contribuons régulièrement à divers projets libre (par exemple Perroquet, exxEditor ...). Nous avons créé ce site dans le but de fournir un nouveau moyen de financement au logiciel libre, et de permettre aux logiciels libres de s'améliorer.
 
 ##Demandeur
 
@@ -58,8 +58,8 @@ Lorsqu'un développeur pense pouvoir faire le développement, il va déposer une
 Tous les gens qui ont contribué sur la demande.
 
 - **Que se passe-t-il s'il y a une différence entre l'offre du développeur et la demande ?**
-Si le changement vous semble réhibitoire, vous pouvez voter *contre* l'offre.
-Si le changement vous semble rédhibitoire mais que trop peu de personnes partagent votre opinion, vous avez toujours la possibilité d'annuler votre contribution.
+Si la différence vous semble rédhibitoire, vous pouvez voter *contre* l'offre.
+Si la différence vous semble rédhibitoire mais que trop peu de personnes partagent votre opinion, vous avez la possibilité d'annuler votre contribution avant le début de développement.
 
 - **Que se passe-t-il si personne ne veut développer mon idée ?**
 Si vous sentez que la demande n'aboutira jamais, vous pouvez annuler votre contribution.
@@ -86,8 +86,8 @@ Le développeur reçoit l'intégralité des contributions, y compris celles en s
 - **Est-ce que je peux répondre à une demande en développant un logiciel propriétaire ?**
 Non. Uniquement les développements réalisés sous une license reconnue par l'OSI sont autorisés sur le site elveos.
 
-- **Quand est-ce que je serai payé pour mon travail ? Sous quelles conditions ?**
-L'argent sera versé sur le compte elveos du développeur 7 jours minimum après la première livraison et dès que le dernier bug critique ait été clos.
+- **Quand serai-je payé pour mon travail ? Sous quelles conditions ?**
+L'argent sera versé sur le compte elveos du développeur 7 jours minimum après la première livraison et dès que le dernier bug critique aura été clos.
 Le développeur pourra par la suite se faire verser l'argent sur son compte bancaire en faisant une demande de retrait.
 
 - **Je suis développeur, j’aime contribuer au logiciel libre, mais je préfère le faire gratuitement.**
@@ -97,11 +97,11 @@ En faisant un développement sur elveos, vous recevrez l'argent sur un compte in
 ##Le processus
 
 - **Le montant demandé par le développeur a été atteint, pourquoi le développement ne commence-t'il pas ?**
-Il y a un court délai à attendre permettant aux contributeurs de s'assurer que l'offre leur convient
+Il y a un court délai à attendre permettant aux contributeurs de s'assurer que l'offre leur convient.
 Ceci évitera par exemple qu'un développeur fasse une offre "bidon" du montant exacte de la somme des contributions, ce qui bloquerait la demande.
 
 - **Il n'y a plus de bugs, mais la demande n'est pas validée. Pourquoi ?**
-Le développement est validé, et la demande fermée, 7 jours après que le dernier bug ait été validé.
+Le développement est validé, et la demande fermée, 7 jours après que le dernier bug important ait été validé.
 Ce délai permet aux utilisateurs de tester le développement.
 De plus, lors que les conditions sont remplies, nous nous chargeons de valider manuellement la demande, pour vérifier une dernière fois qu'il n'y a pas de problèmes.
 

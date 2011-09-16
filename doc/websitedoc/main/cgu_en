@@ -1,7 +1,7 @@
 Terms of use
 ===========
 
-This a draft of the english version of the Terms of Use. The complete version is available in french: [Conditions Générales d'utilisation](/fr/documentation/cgu)
+This is a draft of the English version of the Terms of Use. The complete version is available in french: [Conditions Générales d'utilisation](/fr/documentation/cgu)
 
 Welcome on the elveos.org website (hereinafter referred "elveos website").
 Le *elveos website* is edited by the Linkeos SAS company (hereinafter referred "Linkeos").
@@ -34,13 +34,11 @@ Definitions
 
 **Personal data**: Personal user data designate all the data he hands to the *elveos website* but doesn't wish to see publicly available. The email address or the invoicing address are personal data on the *elveos website*.
 
-**Consensus**: On  the *elveos website** a consensus is reached on a given subject when there are at least 5 opionions from different members, and three quarters of these opionions are the same.
+**Consensus**: On  the *elveos website** a consensus is reached on a given subject when there are at least 5 opinions from different members, and three quarters of these opinions are the same.
 
-**Feature request**: On the *elveos website*, a *feature* designate 
+**Contribution** : On the *elveos website*, a contribution is when a user puts some money on a feature requests.
 
-**Contribution**: 
-
-**Offer**: 
+**Offer**: On the *elveos website* an offer is a developer offer answering to a feature requests.
 
 Legal notice
 ------------
@@ -54,7 +52,7 @@ Legal notice
     92600 ASNIERES SUR SEINE 
     FRANCE
 
-    email :
+    Email :
     contact@linkeos.com 
 
     Registered :
@@ -69,11 +67,11 @@ Description of service
 
 *Elveos website* is a website for collaborative funding of open source software. He puts into relation users that want a new feature on a piece of open source software, and developers ready to implement these features. *Linkeos* cannot offer its services on the *elveos website* to implement a *feature request*.
 
-*Linkeos* doesn't sell the implentation of the demand. It merely helps establishing the relationship between the developer and the user ; and helps tracking the advancement. For more information please refere to the [Terms of sale](/en/documentation/cgv)
+*Linkeos* doesn't sell the implementation of the demand. It merely helps establishing the relationship between the developer and the user ; and helps tracking the advancement. For more information please refer to the [Terms of sale](/en/documentation/cgv)
 
 ### Elveos internal account
 
-Every *member* and every *team* is offered to use an *elveos internal account*. The account is like an online wallet that the user can use to store money. A *member* can add money on his *elveos internal account* using the means of payment available on the *elveos website*. If his user rights are sufficient, a *member* can also add money on a *team* internal account. In any case putting money on the *elveos internal accout* is subject to a fee described in the terms of sales.
+Every *member* and every *team* is offered to use an *elveos internal account*. The account is like an online wallet that the user can use to store money. A *member* can add money on his *elveos internal account* using the means of payment available on the *elveos website*. If his user rights are sufficient, a *member* can also add money on a *team* internal account. In any case putting money on the *elveos internal account* is subject to a fee described in the terms of sales.
 
 A *member* can withdraw money from his *elveos internal account*. In a similar fashion, if he has sufficient user rights, he can withdraw money from a *team internal account*. The fees from the money withdrawal are always 
 charged to the member.
@@ -84,9 +82,9 @@ The balance of the *elveos internal account* is in euro.
 
 ### Contribution and payment
 
-When a user contribute on a *feature request*, *Linkeos* immediatly takes the money.
+When a user contribute on a *feature request*, *Linkeos* immediately takes the money.
 
-Until the *feature request* changes to state "in development", the user can cancel his contribution. Money will hence be placed on his *elveos internal account*. He can then withdraw this money (se paragraph *elveos internal account*). The reimbursed amount does not include the fee previously taken by elveos.
+Until the *feature request* changes to state "in development", the user can cancel his contribution. Money will hence be placed on his *elveos internal account*. He can then withdraw this money (see paragraph *elveos internal account*). The reimbursed amount does not include the fee previously taken by elveos.
 
 Once the *feature request* changes into "in development" the contributions cannot be canceled.
 
@@ -121,7 +119,7 @@ Intellectual property
 Every *user content* for which no license is specified is under the **Creative Commons Attribution-Sharealike 2.0** (http://creativecommons.org/licenses/by-sa/2.0/fr/deed.fr).
 Users can specify a different license. This license must be one of the free licenses listed on the GNU website: http://www.gnu.org/licenses/license-list.html.
 
-*Linkeos* cannot be held responsible for the publication of *user content* tat do not respect intellectual property. You can address a reclamation to remove such content by sending an email to contact+author@elveos.org. Any such claim must prove that the plaintiff has the rights to the content, otherwise *Linkeos* will not pursue such a claim.
+*Linkeos* cannot be held responsible for the publication of *user content* that do not respect intellectual property. You can address a reclamation to remove such content by sending an email to contact+author@elveos.org. Any such claim must prove that the plaintiff has the rights to the content, otherwise *Linkeos* will not pursue such a claim.
 
 *Elveos website* is distributed under the AGPL v3 license. Sources are available on https://gitorious.org/bloatit/bloatit/ .
 
@@ -147,7 +145,7 @@ Validation of a development
 
 *Linkeos* considers the 7 days available to the users to validate a development as sufficient to report problems. Hence, after this validation, no claim will be accepted.
 
-After the development is finished, the user can contact the developer to report anyh bugs he finds.
+After the development is finished, the user can contact the developer to report any bugs he finds.
 
 Canceling a development or a feature request
 --------------------------------------------
@@ -204,15 +202,14 @@ International
 
 These terms are applied to users regardless of the country from which they access the site elveos and their nationality.
 
-*Linkeos* provides content and information regarding to elveos site in French and/or English and may eventually translate into other languages​​, with no obligation of delay or result.
+*Linkeos* provides content and information regarding to *elveos website* in French and/or English and may eventually translate into other languages, with no obligation of delay or result.
 
 Assistance 
 ----------
 
-For any information or claim, please contact us using the email addresse: contact@elveos.org.
+For any information or claim, please contact us using the email address: contact@elveos.org.
 
-*Version 0.1-beta redacted on Septembre the 13th, 2011*
-
+*Version 0.1-beta redacted on September the 13th, 2011*
 
 
 

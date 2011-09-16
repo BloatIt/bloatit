@@ -319,7 +319,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final Description model) {
-            return visitAbstract(model.getDefaultTranslation());
+            return visitAbstract(model.getTranslation(model.getDefaultLanguage()));
         }
 
         @Override
@@ -412,7 +412,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final Description model) {
-            return visitAbstract(model.getDefaultTranslation());
+            return visitAbstract(model.getTranslation(model.getDefaultLanguage()));
         }
 
         @Override

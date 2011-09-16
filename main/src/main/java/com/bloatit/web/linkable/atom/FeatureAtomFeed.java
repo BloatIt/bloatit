@@ -2,9 +2,12 @@ package com.bloatit.web.linkable.atom;
 
 import java.util.Date;
 
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Translation;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
@@ -25,11 +28,12 @@ public class FeatureAtomFeed extends ElveosAtomFeed {
     public void generate() {
         boolean first = true;
         for (Feature feature : FeatureManager.getAllByCreationDate()) {
-            FeedEntry entry = new FeedEntry(feature.getTitle(),
+            Translation translation = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
+            FeedEntry entry = new FeedEntry(translation.getTitle(),
                                             new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
                                             "featurefeed-" + feature.getId(),
                                             feature.getCreationDate(),
-                                            feature.getDescription().getDefaultTranslation().getText());
+                                            translation.getText());
             addFeedEntry(entry, Position.LAST);
             if(first){
                 updateDate = feature.getCreationDate();

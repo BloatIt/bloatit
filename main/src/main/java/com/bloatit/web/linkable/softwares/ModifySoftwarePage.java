@@ -112,7 +112,7 @@ public final class ModifySoftwarePage extends LoggedElveosPage {
         if (descriptionData.getSuggestedValue() != null && !descriptionData.getSuggestedValue().isEmpty()) {
             descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         } else {
-            descriptionInput.setDefaultValue(software.getDescription().getDefaultTranslation().getText());
+            descriptionInput.setDefaultValue(software.getDescription().getTranslation(software.getDescription().getDefaultLanguage()).getText());
         }
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the project : list all features, add siteweb links, etc."));

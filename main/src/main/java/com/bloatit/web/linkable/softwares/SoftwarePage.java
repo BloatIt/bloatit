@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -75,38 +76,42 @@ public final class SoftwarePage extends ElveosPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
+        HtmlDiv softwarePage = new HtmlDiv("software_page");
+        
         if (AuthToken.isAuthenticated()) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
-            layout.addLeft(modify);
+            softwarePage.add(modify);
             modify.add(new ModifySoftwarePageUrl(software).getHtmlLink(Context.tr("Modify software description")));
         }
 
         HtmlTitle softwareName;
         softwareName = new HtmlTitle(software.getName(), 1);
-        layout.addLeft(softwareName);
+        softwarePage.add(softwareName);
 
         final FileMetadata image = software.getImage();
         if (image != null) {
-            layout.addLeft(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
+            softwarePage.add(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
         }
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
-        final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
+        final Translation translatedDescription = software.getDescription().getTranslationOrDefault(Language.fromLocale(defaultLocale));
         final HtmlCachedMarkdownRenderer description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
-        layout.addLeft(description);
+        softwarePage.add(description);
 
         PageIterable<Feature> features = software.getFeatures();
 
         if (features.size() > 0) {
 
-            layout.addLeft(new HtmlTitle(Context.tr("Related features"), 1));
+            softwarePage.add(new HtmlTitle(Context.tr("Related features"), 1));
             final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem();
             final SoftwarePageUrl clonedUrl = url.clone();
             pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, features, clonedUrl, clonedUrl.getPagedFeatureListUrl());
-            layout.addLeft(pagedFeatureList);
+            softwarePage.add(pagedFeatureList);
         }
 
+        layout.addLeft(softwarePage);
+        
         return layout;
     }
 

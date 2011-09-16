@@ -18,14 +18,16 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
+import com.bloatit.framework.utils.i18n.Language;
+
 public class FeatureFactory {
 
     public static Feature createFeature(final Member author,
                                         final Team team,
-                                        final Locale locale,
+                                        final Language language,
                                         final String title,
                                         final String description,
                                         final Software software) {
-        return new FeatureImplementation(author, team, locale, title, description, software);
+        return new FeatureImplementation(author, team, language, title, description, software);
     }
 }

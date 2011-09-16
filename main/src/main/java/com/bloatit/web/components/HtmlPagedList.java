@@ -47,7 +47,7 @@ public class HtmlPagedList<T> extends HtmlDiv {
     @Optional("1")
     private final Integer currentPage;
     @RequestParam(name = PAGE_SIZE_FIELD_NAME)
-    @Optional("30")
+    @Optional("36")
     @MaxConstraint(max = 100, message = @tr("Page size must be inferior to %constraint%."))
     @MinConstraint(min = 1, message = @tr("Page size must be superior or equal to %constraint%."))
     private final Integer pageSize;

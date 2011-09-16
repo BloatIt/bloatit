@@ -15,6 +15,7 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -76,7 +77,7 @@ public final class ReportBugAction extends UserContentAction {
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         Bug bug;
         try {
-            bug = milestone.addBug(title, description, getLocale(), level.getLevel());
+            bug = milestone.addBug(title, description, Language.fromLocale(getLocale()), level.getLevel());
             propagateAttachedFileIfPossible(bug);
             return new BugPageUrl(bug);
         } catch (final UnauthorizedOperationException e) {

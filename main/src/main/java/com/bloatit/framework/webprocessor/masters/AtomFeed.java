@@ -10,6 +10,7 @@ import java.util.Date;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.xcgiserver.HttpResponse;
+import com.bloatit.web.HtmlTools;
 
 /**
  * The root class to create atom feeds
@@ -99,11 +100,11 @@ public abstract class AtomFeed implements Linkable {
 
         public FeedEntry(String title, String link, String id, Date updated, String summary) {
             super();
-            this.title = title;
+            this.title = HtmlTools.escape(title);
             this.link = link;
             this.id = id;
             this.updated = updated;
-            this.summary = summary;
+            this.summary = HtmlTools.escape(summary);
         }
 
         public String getTitle() {

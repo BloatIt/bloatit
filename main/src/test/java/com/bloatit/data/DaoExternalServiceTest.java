@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.i18n.Language;
 
 public class DaoExternalServiceTest extends DataTestUnit {
 
@@ -18,7 +19,7 @@ public class DaoExternalServiceTest extends DataTestUnit {
         final EnumSet<RightLevel> set = EnumSet.of(RightLevel.CONTRIBUTE, RightLevel.CREATE_OFFER);
         DaoExternalService service = DaoExternalService.createAndPersist(fred,
                                                                          null,
-                                                                         DaoDescription.createAndPersist(fred, null, Locale.FRENCH, "title", "coucou"));
+                                                                         DaoDescription.createAndPersist(fred, null, Language.FR, "title", "coucou"));
 
         final DaoExternalServiceMembership membership = DaoExternalServiceMembership.createAndPersist(fred, service, "Test", set);
 
@@ -32,7 +33,7 @@ public class DaoExternalServiceTest extends DataTestUnit {
         final EnumSet<RightLevel> set = EnumSet.of(RightLevel.CONTRIBUTE, RightLevel.CREATE_OFFER);
         DaoExternalService service = DaoExternalService.createAndPersist(fred,
                                                                          null,
-                                                                         DaoDescription.createAndPersist(fred, null, Locale.FRENCH, "title", "coucou"));
+                                                                         DaoDescription.createAndPersist(fred, null, Language.FR, "title", "coucou"));
 
         final DaoExternalServiceMembership membership = DaoExternalServiceMembership.createAndPersist(fred, service, "Test", set);
         final Date tomorrow = DateUtils.tomorrow();

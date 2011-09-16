@@ -16,8 +16,6 @@
 //
 package com.bloatit.data;
 
-import java.util.Locale;
-
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -35,6 +33,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+import com.bloatit.framework.utils.i18n.Language;
 
 /**
  * A translation is a version of a description in a specific language. It
@@ -47,7 +46,7 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 public class DaoTranslation extends DaoKudosable {
 
     @Basic(optional = false)
-    private Locale locale;
+    private String locale;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     @Field(index = Index.TOKENIZED, store = Store.NO)
@@ -76,17 +75,17 @@ public class DaoTranslation extends DaoKudosable {
     public DaoTranslation(final DaoMember member,
                           final DaoTeam team,
                           final DaoDescription description,
-                          final Locale locale,
+                          final Language language,
                           final String title,
                           final String text) {
         super(member, team);
-        if (description == null || locale == null || title == null || text == null) {
+        if (description == null || language == null || title == null || text == null) {
             throw new NonOptionalParameterException();
         }
         if (title.isEmpty() || text.isEmpty()) {
             throw new NonOptionalParameterException();
         }
-        this.locale = locale;
+        this.locale = language.getCode();
         this.title = title;
         this.text = new DaoString(text, member);
         this.description = description;
@@ -95,8 +94,8 @@ public class DaoTranslation extends DaoKudosable {
     /**
      * @return the local of this translation
      */
-    public Locale getLocale() {
-        return this.locale;
+    public Language getLanguage() {
+        return Language.fromString(this.locale);
     }
 
     /**

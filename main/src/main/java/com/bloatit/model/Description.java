@@ -20,8 +20,12 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.visitor.ModelClassVisitor;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtTranslation;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 /**
  * A description must be created through the Feature class. (For example, you
@@ -61,8 +65,8 @@ public final class Description extends Identifiable<DaoDescription> {
      * @param description is the main text of the description (the actual
      *            description)
      */
-    public Description(final Member member, final Team team, final Locale locale, final String title, final String description) {
-        super(DaoDescription.createAndPersist(member.getDao(), DaoGetter.get(team), locale, title, description));
+    public Description(final Member member, final Team team, final Language language, final String title, final String description) {
+        super(DaoDescription.createAndPersist(member.getDao(), DaoGetter.get(team), language, title, description));
     }
 
     /**
@@ -72,12 +76,13 @@ public final class Description extends Identifiable<DaoDescription> {
         super(dao);
     }
 
-    public void addTranslation(final Translation translation) {
-        getDao().addTranslation(translation.getDao());
+    public void addTranslation(final Member member, final Team team, final Language language, final String title, final String description) throws UnauthorizedOperationException {
+        tryAccess(new RgtTranslation.Text(), Action.WRITE);
+        getDao().addTranslation(member.getDao(), DaoGetter.get(team), language, title, description);
     }
 
-    public void setDefaultLocale(final Locale defaultLocale) {
-        getDao().setDefaultLocale(defaultLocale);
+    public void setDefaultLanguage(final Language defaultLanguage) {
+        getDao().setDefaultLanguage(defaultLanguage);
     }
 
     /**
@@ -89,24 +94,24 @@ public final class Description extends Identifiable<DaoDescription> {
         return new TranslationList(getDao().getTranslations());
     }
 
-    public Translation getTranslation(final Locale locale) {
-        return Translation.create(getDao().getTranslation(locale));
+    public Translation getTranslation(final Language language) {
+        return Translation.create(getDao().getTranslation(language));
     }
 
-    public Translation getTranslationOrDefault(final Locale locale) {
-        final Translation tr = getTranslation(locale);
+    public Translation getTranslationOrDefault(final Language language) {
+        final Translation tr = getTranslation(language);
         if (tr == null) {
-            return getTranslation(getDefaultLocale());
+            return getTranslation(getDefaultLanguage());
         }
         return tr;
     }
 
-    public Translation getDefaultTranslation() {
+    private Translation getDefaultTranslation() {
         return Translation.create(getDao().getDefaultTranslation());
     }
 
-    public Locale getDefaultLocale() {
-        return getDao().getDefaultLocale();
+    public Language getDefaultLanguage() {
+        return getDao().getDefaultLanguage();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

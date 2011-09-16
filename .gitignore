@@ -53,3 +53,6 @@ main/src/main/resources/build.properties
 main/src/main/resources/i18n/
 paylineWebservice/src/main/resources/build.properties
 
+stats/src/glefiles/
+stats/src/output/
+stats/src/tables/

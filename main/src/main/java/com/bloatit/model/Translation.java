@@ -16,10 +16,9 @@
 //
 package com.bloatit.model;
 
-import java.util.Locale;
-
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtTranslation;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -39,6 +38,8 @@ public final class Translation extends Kudosable<DaoTranslation> {
         }
     }
 
+    
+    
     @SuppressWarnings("synthetic-access")
     public static Translation create(final DaoTranslation dao) {
         return new MyCreator().create(dao);
@@ -47,13 +48,13 @@ public final class Translation extends Kudosable<DaoTranslation> {
     private Translation(final DaoTranslation dao) {
         super(dao);
     }
-
+    
     public String getTitle() {
         return getDao().getTitle();
     }
 
-    public Locale getLocale() {
-        return getDao().getLocale();
+    public Language getLanguage() {
+        return getDao().getLanguage();
     }
 
     public String getText() {
@@ -61,12 +62,12 @@ public final class Translation extends Kudosable<DaoTranslation> {
     }
 
     public void setTitle(final String title) throws UnauthorizedOperationException {
-        tryAccess(new RgtTranslation.Text(), Action.READ);
+        tryAccess(new RgtTranslation.Text(), Action.WRITE);
         getDao().setTitle(title);
     }
 
     public void setText(final String text, final Member author) throws UnauthorizedOperationException {
-        tryAccess(new RgtTranslation.Text(), Action.READ);
+        tryAccess(new RgtTranslation.Text(), Action.WRITE);
         getDao().setText(text, author.getDao());
     }
 

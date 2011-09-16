@@ -100,14 +100,15 @@ public final class SiteMapPage extends ElveosPage {
             personalLinkList.add(new MemberPageUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My page")));
             personalLinkList.add(MemberPage.myAccountUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My account")));
             personalLinkList.add(MemberPage.myMessagesUrl(AuthToken.getMember()).getHtmlLink(Context.tr("My messages")));
+            personalLinkList.add(new LogoutActionUrl(getSession().getShortKey()).getHtmlLink(Context.tr("Logout")));
+            personalLinkList.add(new AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
             personalLinkList.add(new HtmlText(Context.tr("My account")));
             personalLinkList.add(new HtmlText(Context.tr("My messages")));
+            personalLinkList.add(new HtmlText(Context.tr("Logout")));
+            personalLinkList.add(new HtmlText(Context.tr("Charge account")));
         }
-
-        personalLinkList.add(new LogoutActionUrl(getSession().getShortKey()).getHtmlLink(Context.tr("Logout")));
-        personalLinkList.add(new AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
 
         final HtmlTitle titleDocumenation = new HtmlTitle(Context.tr("Main documentation pages"), 2);
         layout.addLeft(titleDocumenation);

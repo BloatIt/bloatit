@@ -31,6 +31,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.Sorter;
 import com.bloatit.framework.utils.Sorter.Order;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -194,7 +195,7 @@ public class AccountComponent extends HtmlPageComponent {
         private HtmlDiv generateContributionDescription() {
             final HtmlDiv description = new HtmlDiv("description");
             final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
-            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", contribution.getFeature().getTitle()), softwareLink);
+            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", contribution.getFeature().getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle() ), softwareLink);
 
             HtmlSpan status = new HtmlSpan();
 
@@ -301,7 +302,7 @@ public class AccountComponent extends HtmlPageComponent {
             final HtmlDiv description = new HtmlDiv("description");
             FeatureImplementation feature = milestone.getOffer().getFeature();
             final HtmlSpan softwareLink = new SoftwaresTools.Link(feature.getSoftware());
-            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", feature.getTitle()), softwareLink);
+            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle()), softwareLink);
 
             String statusString = "";
             switch (feature.getFeatureState()) {

@@ -21,6 +21,7 @@ import java.util.Locale;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.exceptions.UniqueNameExpectedException;
+import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
@@ -60,7 +61,7 @@ public final class Software extends Identifiable<DaoSoftware> {
      * @throws UniqueNameExpectedException 
      */
     public Software(final String name, final Member author, final Locale locale, final String description) throws UniqueNameExpectedException {
-        this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), null, locale, " ", description)));
+        this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), null, Language.fromLocale(locale), " ", description)));
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
