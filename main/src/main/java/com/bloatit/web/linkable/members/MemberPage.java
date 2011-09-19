@@ -181,7 +181,7 @@ public final class MemberPage extends ElveosPage {
         main.add(memberId);
         try {
             // Description
-            if (member.getDescription() != null) {
+            if (member.getDescription() != null && !member.getDescription().isEmpty()) {
                 HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlMarkdownRenderer(member.getDescription())));
                 memberId.add(memberDescription);
             }
