@@ -118,12 +118,12 @@ public final class CreateTeamPage extends LoggedElveosPage {
 
         // PUBLIC / PRIVATE
         final FieldData rightData = target.getRightParameter().pickFieldData();
-        final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Type of the team : "));
+        final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Team membership : "));
         rightInput.addErrorMessages(rightData.getErrorMessages());
-        rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Public"));
-        rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("Protected"));
+        rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Open to all"));
+        rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("By invitation"));
         rightInput.setDefaultValue(rightData.getSuggestedValue());
-        rightInput.setComment(Context.tr("Public teams can be joined by anybody without an invitation."));
+        rightInput.setComment(Context.tr("\"Open to all\" teams can be joined by anybody without an invitation."));
         if (rightData.getSuggestedValue() != null) {
             rightInput.setDefaultStringValue(rightData.getSuggestedValue());
         }

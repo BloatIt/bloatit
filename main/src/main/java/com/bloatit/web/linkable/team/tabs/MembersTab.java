@@ -103,6 +103,26 @@ public class MembersTab extends HtmlTab {
         }
 
         @Override
+        public String getTitle(final int column) {
+            switch (column) {
+                case CONSULT:
+                    return Context.tr("The user can see informations relative to this team. Every member of a team can do this");
+                case TALK:
+                    return Context.tr("The user is allowed to express the team opinion");
+                case MODIFY:
+                    return Context.tr("The user can modify the team informations (contact, description …)");
+                case INVITE:
+                    return Context.tr("The user can invite other people to join the team (private teams only)");
+                case PROMOTE:
+                    return Context.tr("The user can change the rights of the members of the team");
+                case BANK:
+                    return Context.tr("The user can access and modify the team bank informations (he can also withdraw money from the team account)");
+                default:
+                    return null;
+            }
+        }
+        
+        @Override
         public HtmlNode getHeader(final int column) {
             if (column == 0) {
                 return new HtmlText(Context.tr("Member name"));
