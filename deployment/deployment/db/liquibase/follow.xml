@@ -42,7 +42,7 @@
 	            nb	INTEGER;
             BEGIN SET CONSTRAINTS ALL DEFERRED;
 	            RAISE NOTICE 'Now gathering contributions';
-	            FOR c IN SELECT * FROM daocontribution, daousercontent WHERE daocontribution.id = daousercontent.id LOOP
+	            FOR c IN SELECT * FROM daocontribution, daousercontent WHERE daocontribution.id = daousercontent.id AND isdeleted='false' LOOP
 		            SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = c.member_id AND followed_id = c.feature_id;
 		            RAISE NOTICE 'SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = % AND followed_id = % ==> %' , c.member_id, c.feature_id, nb;
 		            IF nb = 0 THEN 
@@ -69,7 +69,7 @@
                 nb	INTEGER;
             BEGIN SET CONSTRAINTS ALL DEFERRED;
                 RAISE NOTICE 'Now gathering features';
-                FOR c IN SELECT * FROM daofeature, daousercontent WHERE daofeature.id = daousercontent.id LOOP
+                FOR c IN SELECT * FROM daofeature, daousercontent WHERE daofeature.id = daousercontent.id AND isdeleted='false' LOOP
 	                SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = c.member_id AND followed_id = c.id;
 	                RAISE NOTICE 'SELECT COUNT(*) INTO nb FROM daofollow WHERE actor_id = % AND followed_id = % ==> %' , c.member_id, c.id, nb;
 	                IF nb = 0 THEN 
