@@ -137,8 +137,8 @@ public abstract class DaoActor extends DaoIdentifiable {
         if (login == null) {
             throw new NonOptionalParameterException("login cannot be null");
         }
-        if (login.length() < 3) {
-            throw new MalformedArgumentException("login length must be > 2");
+        if (login.length() < 2) {
+            throw new MalformedArgumentException("login length must be > 1");
         }
         if (!login.trim().equals(login)) {
             throw new MalformedArgumentException("The login cannot begin or end with spaces.");
