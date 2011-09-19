@@ -85,7 +85,7 @@ public final class MemberPage extends ElveosPage {
     private DashboardTab dashboard;
 
     @RequestParam(name = MEMBER_TAB_PANE)
-    @Optional(DASHBOARD_TAB)
+    @Optional(ACTIVITY_TAB)
     private final String activeTabKey;
 
     @NonOptional(@tr("You have to specify a member number."))
@@ -181,7 +181,7 @@ public final class MemberPage extends ElveosPage {
         main.add(memberId);
         try {
             // Description
-            if (member.getDescription() != null) {
+            if (member.getDescription() != null && !member.getDescription().isEmpty()) {
                 HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlMarkdownRenderer(member.getDescription())));
                 memberId.add(memberDescription);
             }
@@ -257,6 +257,7 @@ public final class MemberPage extends ElveosPage {
 
         // Dashboard tab
         dashboard = new DashboardTab(member, tr("Dashboard"), DASHBOARD_TAB, url);
+        dashboard.setEasterEgg(true);
         tabPane.addTab(dashboard);
 
         // Activity tab

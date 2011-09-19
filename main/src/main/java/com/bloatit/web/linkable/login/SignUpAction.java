@@ -34,7 +34,7 @@ import com.bloatit.web.url.SignUpPageUrl;
 public final class SignUpAction extends ElveosAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Login cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("The login must have at least %constraint% chars."))
+    @MinConstraint(min = 2, message = @tr("The login must have at least %constraint% chars."))
     @MaxConstraint(max = 15, message = @tr("The login must be %constraint% chars length max."))
     private final String login;
 

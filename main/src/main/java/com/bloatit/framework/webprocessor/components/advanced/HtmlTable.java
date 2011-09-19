@@ -67,6 +67,10 @@ public class HtmlTable extends HtmlGenericElement {
                 if (getModel().getId(i) != null) {
                     td.setId(getModel().getId(i));
                 }
+                if(getModel().getTitle(i) != null) {
+                    td.addAttribute("title", getModel().getTitle(i));
+                }
+                
 
                 if (getModel().getColspan(i) != 1) {
                     td.addAttribute("colspan", String.valueOf(getModel().getColspan(i)));
@@ -85,6 +89,9 @@ public class HtmlTable extends HtmlGenericElement {
             columnCount = getModel().getColumnCount();
             for (int i = 0; i < columnCount; i++) {
                 final HtmlGenericElement th = new HtmlGenericElement("th");
+                if(getModel().getTitle(i) != null) {
+                    th.addAttribute("title", getModel().getTitle(i));
+                }
                 th.add(getModel().getHeader(i));
                 tr.add(th);
             }
@@ -135,6 +142,10 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         public String getId(final int column) {
+            return null;
+        }
+
+        public String getTitle(int column) {
             return null;
         }
 

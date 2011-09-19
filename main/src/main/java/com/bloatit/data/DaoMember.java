@@ -199,12 +199,14 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                     name = "members.exceptRole",
                                     query = "FROM com.bloatit.data.DaoMember " +
                                             "WHERE role != :role " +
+                                            "AND state = 1 " +
                                             "ORDER BY CONCAT(coalesce(fullname, ''), login) ASC"),
                         @NamedQuery(
                                     name = "members.exceptRole.size",
                                     query = "SELECT count(*) " +
                                     		"FROM com.bloatit.data.DaoMember " +
-                                            "WHERE role != :role "),
+                                            "WHERE role != :role " +
+                                            "AND state = 1"),
                    }
 
              )

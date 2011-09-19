@@ -1,6 +1,20 @@
 Changelog
 =========
 
+Version 1.1.11
+-------------
+### Features
+ - The minimum size for login is now 2 characters
+ - Hide none activated members in members list
+ - Add tooltips to team roles
+
+### Bug fix
+ - Fix members list css with long login
+ - Improve wording for teams membership
+ - Update FAQ
+ - Small fix in atom feed
+ - Hide description block if there is no description
+
 Version 1.1.10
 -------------
 

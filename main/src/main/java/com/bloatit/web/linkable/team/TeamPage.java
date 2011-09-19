@@ -192,7 +192,7 @@ public final class TeamPage extends ElveosPage {
         final HtmlList informationsList = new HtmlList();
 
         // Visibility
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (team.isPublic() ? Context.tr("Public") : Context.tr("Private"))));
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Membership: "), (team.isPublic() ? Context.tr("Open to all") : Context.tr("By invitation"))));
 
         // Creation date
         try {

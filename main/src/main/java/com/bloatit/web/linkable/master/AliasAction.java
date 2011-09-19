@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.linkable.master;
 
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 
 public abstract class AliasAction extends ElveosAction {
@@ -35,7 +36,7 @@ public abstract class AliasAction extends ElveosAction {
 
     @Override
     protected Url doProcessErrors() {
-        return null;
+        return new PageNotFoundUrl();
     }
 
     @Override
