@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+         
+	<changeSet author="Thomas Guyard" id="20110919 add a foreignkey member/account">
+		<comment>Add foreign key on member and account (following hibernate inheritance strategie)</comment>
+		<addForeignKeyConstraint constraintName="FKCSTRACCOUNTEXTERNALACCOUNT"
+			referencedTableName="daoaccount" baseColumnNames="id"
+			baseTableName="daoexternalaccount" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="FKCSTRACCOUNTINTERNALACCOUNT"
+			baseTableName="daointernalaccount" referencedTableName="daoaccount"
+			baseColumnNames="id" referencedColumnNames="id" />
+			
+		<addForeignKeyConstraint constraintName="FKCSTRACTORMEMBER"
+			baseTableName="daomember" referencedTableName="daoactor"
+			baseColumnNames="id" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="FKCSTRACTORTEAM"
+			baseTableName="daoteam" referencedTableName="daoactor"
+			baseColumnNames="id" referencedColumnNames="id" />
+	</changeSet>
+
+</databaseChangeLog>
