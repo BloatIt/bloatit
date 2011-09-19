@@ -349,7 +349,7 @@ public class CodeGenerator {
             for (final ParameterDescription generatedParam : desc.getParameterGeneratedFromMe(param)) {
                 setter.addLine("try {");
                 setter.addLine("    " + generatedParam.getAttributeName() + ".setValue(" + param.getAttributeName() + ".getValue().get"
-                        + Utils.firstCharUpper(generatedParam.getAttributeName()) + "(), false);");
+                        + Utils.firstCharUpper(generatedParam.getAttributeName()) + "(), force);");
                 setter.addLine("} catch (final Exception e) {");
                 setter.addLine("    Log.framework().warn(\"Error in pretty value generation.\", e);");
                 setter.addLine("}");
