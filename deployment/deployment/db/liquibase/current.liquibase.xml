@@ -21,4 +21,5 @@
     <include file="liquibase/add-mercanet.xml" />
     <include file="liquibase/member-add-description.xml" />
     <include file="liquibase/add-foreign-key-on-usercontent.xml" />
+    <include file="liquibase/add-foreign-key-on-member.xml" />
 </databaseChangeLog>
