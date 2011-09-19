@@ -3,6 +3,6 @@ task linkGeneratedJar(type: Exec, dependsOn: jar){
     // workingDir = file('.')
     originJar = 'build/libs/apt-' + version + '.jar'
     cibleJar = 'build/libs/apt.jar'
-    commandLine = [ 'ln', '-s', originJar, cibleJar ]
+    commandLine = [ 'ln', '-sf', originJar, cibleJar ]
 }
 build.dependsOn 'linkGeneratedJar'
