@@ -22,6 +22,7 @@ import java.util.Date;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
+import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoContribution.State;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
@@ -47,6 +48,7 @@ import com.bloatit.model.feature.TaskUpdateDevelopingState;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
+import com.bloatit.model.lists.FollowList;
 import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.right.Action;
@@ -273,6 +275,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                                                AuthToken.getMember().getDao(),
                                                                text);
         getDao().addComment(comment);
+
         return Comment.create(comment);
     }
 
@@ -372,6 +375,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                 if (hlFeature.getFeature().getId().equals(getId())) {
                     hlFeature.getDao().delete();
                 }
+            }
+        }
+
+        if (delOrder) {
+            for (Follow f : new FollowList(DaoFollow.getFollow(getDao()))) {
+                f.delete();
             }
         }
     }
@@ -599,7 +608,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         }
         getDao().setDescription(newDescription, language);
     }
-    
+
     @Override
     public void setTitle(String title, final Language language) throws UnauthorizedOperationException {
         if (!canModify()) {
@@ -608,7 +617,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         if (getDescription().getTranslation(language) == null) {
             throw new BadProgrammerException("Cannot modify a feature description for a non existing language. Should be a new translation");
         }
-        
+
         getDao().setTitle(title, language);
     }
 
@@ -716,7 +725,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public String getTitle() {
         return getDescription().getTranslation(getDescription().getDefaultLanguage()).getTitle();
     }
-    
+
     @Override
     public BigDecimal getContributionMax() {
         BigDecimal contributionMax = getDao().getContributionMax();

@@ -52,7 +52,6 @@ public abstract class WebProcessor implements XcgiProcessor {
             Context.reInitializeContext(httpHeader, session);
 
             try {
-
                 // If pagename contains upper case char then redirect to the
                 // same page with lower case.
                 final String pageCode = httpHeader.getPageName();
@@ -60,7 +59,6 @@ public abstract class WebProcessor implements XcgiProcessor {
                     response.writeRedirect(StatusCode.REDIRECTION_300_MULTIPLE_CHOICES,
                                            createLowerCaseUrl(httpHeader.getLanguage(), httpHeader.getQueryString(), pageCode));
                 } else {
-
                     ModelAccessor.authenticate(key);
 
                     // Normal case !
@@ -69,12 +67,19 @@ public abstract class WebProcessor implements XcgiProcessor {
 
                 }
             } catch (final ShallNotPassException e) {
-                Log.framework().fatal("Right management error", e);
-                final Linkable linkable = constructLinkable(PageForbiddenUrl.getPageName(), parameters, session);
                 try {
+                    Log.framework().fatal("Right management error", e);
+                    final Linkable linkable = constructLinkable(PageForbiddenUrl.getPageName(), parameters, session);
                     linkable.writeToHttp(response, this);
                 } catch (final RedirectException e1) {
                     throw new ExternalErrorException("Cannot create error page after and error in right management.", e1);
+                } finally { 
+                    try {
+                        ModelAccessor.rollback();
+                    } catch (final RuntimeException e1) {
+                        Log.framework().fatal("Couldn't rollback after shall not pass", e);
+                        throw e1;
+                    }
                 }
             } catch (final PageNotFoundException e) {
                 Log.framework().info("Page not found", e);
@@ -88,19 +93,23 @@ public abstract class WebProcessor implements XcgiProcessor {
             } catch (final RedirectException e) {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(StatusCode.REDIRECTION_303_SEE_OTHER, e.getUrl().urlString());
-            } finally {
-                ModelAccessor.close();
             }
-
         } catch (final RuntimeException e) {
             response.writeException(e);
             try {
                 ModelAccessor.rollback();
             } catch (final RuntimeException e1) {
-                Log.framework().fatal("Unknown error", e);
+                Log.framework().fatal("Couldn't rollback after runtime exception", e);
                 throw e1;
             }
             throw e;
+        } finally {
+            try {
+                ModelAccessor.close();
+            } catch (final RuntimeException e) {
+                Log.framework().fatal("Couldn't close model", e);
+                throw e;
+            }
         }
         return true;
     }

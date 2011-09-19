@@ -28,6 +28,7 @@ import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.StopFollowActionUrl;
 
 @ParamContainer(value = "dashboardTab", isComponent = true)
 public class DashboardTab extends HtmlTab {
@@ -90,11 +91,13 @@ public class DashboardTab extends HtmlTab {
                     break;
                 case FINISHED:
                     // FINISHED !!!
-                    nextStep = new HtmlMixedText(Context.tr("Feature finished ! <0::TODO stop following>"), new IndexPageUrl().getHtmlLink());
+                    nextStep = new HtmlMixedText(Context.tr("Feature finished ! <0::TODO stop following>"),
+                                                 new StopFollowActionUrl(Context.getSession().getShortKey(), follow).getHtmlLink());
                     break;
                 case DISCARDED:
                     // Discarded :'( very very sad
-                    nextStep = new HtmlMixedText(Context.tr("Feature canceled ! <0::TODO stop following>"), new IndexPageUrl().getHtmlLink());
+                    nextStep = new HtmlMixedText(Context.tr("Feature canceled ! <0::TODO stop following>"),
+                                                 new StopFollowActionUrl(Context.getSession().getShortKey(), follow).getHtmlLink());
                     break;
             }
             DashboardEntry entry = new DashboardEntry(f, nextStep, "TODO : Use me or remove me ?", new Date());

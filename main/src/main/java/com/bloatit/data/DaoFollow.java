@@ -16,6 +16,9 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Field;
 
+import com.bloatit.data.queries.QueryCollection;
+import com.bloatit.framework.utils.PageIterable;
+
 @Entity
 //@formatter:off
 @NamedQueries(value = { 
@@ -24,6 +27,17 @@ import org.hibernate.search.annotations.Field;
                            query = "FROM DaoFollow " +
                                    "WHERE actor = :follower " +
                                    "AND followed = :content "),
+                                   
+                       @NamedQuery(
+                           name =  "follow.getByFeature",
+                           query = "FROM DaoFollow " +
+                                   "WHERE followed = :feature "),
+                                   
+                       @NamedQuery(
+                           name =  "follow.getByFeature.size",
+                           query = "SELECT COUNT(*) " +
+                           		   "FROM DaoFollow " +
+                                   "WHERE followed = :feature "),
                         }
 
              )
@@ -113,6 +127,10 @@ public class DaoFollow extends DaoIdentifiable {
         this.followState = FollowState.ACTIVE;
     }
 
+    public void delete() {
+        SessionManager.getSessionFactory().getCurrentSession().delete(this);
+    }
+
     // ======================================================================
     // Getters
     // ======================================================================
@@ -170,6 +188,14 @@ public class DaoFollow extends DaoIdentifiable {
      */
     public static DaoFollow getFollow(DaoFeature content, DaoActor follower) {
         return (DaoFollow) SessionManager.getNamedQuery("follow.find").setEntity("follower", follower).setEntity("content", content).uniqueResult();
+    }
+
+    /**
+     * @param feature the feature for which you want to find follows
+     * @return all the follow for the matching <code>feature</code>
+     */
+    public static PageIterable<DaoFollow> getFollow(DaoFeature feature) {
+        return new QueryCollection<DaoFollow>("follow.getByFeature").setEntity("feature", feature);
     }
 
     // ======================================================================

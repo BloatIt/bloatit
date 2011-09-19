@@ -30,6 +30,7 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
+import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoInternalAccount;
@@ -153,6 +154,9 @@ public class GenericConstructor {
         }
         if (clazz.equals(NewsFeed.class)) {
             return DaoNewsFeed.class;
+        }
+        if (clazz.equals(Follow.class)) {
+            return DaoFollow.class;
         }
 
         Log.model().error("Dao class not found for class: " + clazz.getCanonicalName());

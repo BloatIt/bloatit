@@ -115,6 +115,7 @@ import com.bloatit.web.linkable.members.ModifyDetailAction;
 import com.bloatit.web.linkable.members.ModifyMemberAction;
 import com.bloatit.web.linkable.members.ModifyMemberPage;
 import com.bloatit.web.linkable.members.ModifyPasswordAction;
+import com.bloatit.web.linkable.members.tabs.dashboard.StopFollowAction;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugDeleteAction;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugEditPage;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugsListPage;
@@ -535,6 +536,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (ChangePrepaidAmountActionUrl.matches(pageCode)) {
             return new ChangePrepaidAmountAction(new ChangePrepaidAmountActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (StopFollowActionUrl.matches(pageCode)) {
+            return new StopFollowAction(new StopFollowActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////

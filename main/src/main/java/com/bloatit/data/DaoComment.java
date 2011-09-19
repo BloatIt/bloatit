@@ -131,6 +131,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        
         return comment;
     }
 

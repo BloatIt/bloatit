@@ -17,6 +17,7 @@
 package com.bloatit.model;
 
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
@@ -33,6 +34,8 @@ import com.bloatit.model.feature.TaskUpdateDevelopingState;
 import com.bloatit.model.right.AuthToken;
 
 public class Model implements com.bloatit.framework.model.Model {
+    AtomicBoolean isClosed = new AtomicBoolean(true);
+
     public Model() {
         // do nothing
     }
@@ -91,6 +94,7 @@ public class Model implements com.bloatit.framework.model.Model {
         Log.model().trace("Open a new transaction.");
         AuthToken.unAuthenticate();
         DataManager.open();
+        isClosed.set(false);
     }
 
     /*
@@ -99,17 +103,27 @@ public class Model implements com.bloatit.framework.model.Model {
      */
     @Override
     public void close() {
-        Log.model().trace("Close the current transaction.");
-        CacheManager.clear();
-        DataManager.close();
+        if (!isClosed.get()) {
+            Log.model().trace("Close the current transaction.");
+            CacheManager.clear();
+            DataManager.close();
+            isClosed.set(true);
+        } else {
+            Log.model().trace("Transaction already closed.");
+        }
     }
 
     @Override
     public void rollback() {
-        CacheManager.clear();
-        DataManager.rollback();
+        if (!isClosed.get()) {
+            CacheManager.clear();
+            DataManager.rollback();
+            isClosed.set(true);
+        } else {
+            Log.model().trace("Transaction already closed.");
+        }
     }
-    
+
     @Override
     public void flush() {
         Log.model().trace("Flush the current transaction.");
