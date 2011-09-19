@@ -50,7 +50,7 @@ public final class HtmlTabBlock extends HtmlDiv {
         if (tab.getTabKey().equals(activeTabKey)) {
             addTabHeader(tab, true);
             tabBody.add(tab.generateBody());
-        } else {
+        } else if(!tab.isEasterEgg()) {
             addTabHeader(tab, false);
         }
     }
@@ -87,10 +87,12 @@ public final class HtmlTabBlock extends HtmlDiv {
     public abstract static class HtmlTab {
         private final String title;
         private final String tabKey;
+        private boolean isEasterEgg;
 
         public HtmlTab(final String title, final String tabKey) {
             this.title = title;
             this.tabKey = tabKey;
+            this.setEasterEgg(false);
         }
 
         public String getTabKey() {
@@ -101,6 +103,15 @@ public final class HtmlTabBlock extends HtmlDiv {
             return title;
         }
 
+        public boolean isEasterEgg() {
+            return isEasterEgg;
+        }
+
+        public void setEasterEgg(boolean isEasterEgg) {
+            this.isEasterEgg = isEasterEgg;
+        }
+
         abstract public HtmlNode generateBody();
+
     }
 }
