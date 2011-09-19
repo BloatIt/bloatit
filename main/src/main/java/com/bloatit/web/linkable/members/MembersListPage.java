@@ -93,7 +93,7 @@ public final class MembersListPage extends ElveosPage {
             final MemberPageUrl memberUrl = new MemberPageUrl(member);
             final HtmlDiv box = new HtmlDiv("member_box");
 
-            box.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
+            
 
             final HtmlDiv textBox = new HtmlDiv("member_text");
             HtmlLink htmlLink;
@@ -105,6 +105,8 @@ public final class MembersListPage extends ElveosPage {
             textBox.add(htmlLink);
             textBox.add(karma);
             box.add(textBox);
+            box.add(new HtmlDiv("member_avatar").add(MembersTools.getMemberAvatar(member)));
+            
             box.add(new HtmlClearer());
 
             return box;
