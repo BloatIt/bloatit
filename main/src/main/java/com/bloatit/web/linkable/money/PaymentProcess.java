@@ -103,6 +103,11 @@ public class PaymentProcess extends WebProcess {
             return session.getLastStablePage();
         }
         
+        if(parentProcess.getAmountToPayBeforeComission().compareTo(BigDecimal.ZERO) == 0) {
+            session.notifyWarning(Context.tr("You must pay at least 1 €."));
+            return session.getLastStablePage();
+        }
+        
         url.getParentProcess().addChildProcess(this);
 
         if (tos == null || !tos.booleanValue()) {
