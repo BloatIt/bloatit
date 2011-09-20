@@ -272,7 +272,7 @@ public final class OfferBlock extends HtmlDiv {
                                                                                  String.valueOf(lot.getFatalBugsPercent()) + "%");
         validationDetailsDiv.add(fatalBugPourcentPara);
 
-        final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(tr("Payment when no fatal bug: "),
+        final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(tr("Payment when no major bug: "),
                                                                                  String.valueOf(lot.getMajorBugsPercent()) + "%");
         validationDetailsDiv.add(majorBugPourcentPara);
 
