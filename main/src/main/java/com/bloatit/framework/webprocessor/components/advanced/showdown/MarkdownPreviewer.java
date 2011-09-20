@@ -19,10 +19,9 @@ package com.bloatit.framework.webprocessor.components.advanced.showdown;
 import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
-import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 
 public class MarkdownPreviewer extends HtmlLeaf {
@@ -41,10 +40,10 @@ public class MarkdownPreviewer extends HtmlLeaf {
         previewer.add(output);
         final String id = "blmdprev-" + RandomStringUtils.randomAlphabetic(10);
         output.setId(id);
-        final HtmlGenericElement script = new HtmlGenericElement("script");
+        final HtmlScript script = new HtmlScript();
 
-        script.add(new HtmlText("setup_wmd({ input: \"" + source.getInputId() + "\", button_bar: \"" + source.getButtonBarId() + "\", preview: \""
-                + output.getId() + "\", output: \"copy_html\" });"));
+        script.append("setup_wmd({ input: \"" + source.getInputId() + "\", button_bar: \"" + source.getButtonBarId() + "\", preview: \""
+                + output.getId() + "\", output: \"copy_html\" });");
         previewer.add(script);
     }
 }
