@@ -20,6 +20,7 @@ import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
@@ -55,30 +56,6 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
         addAttribute("value", defaultValueAsString);
     }
 
-    /**
-     * <p>
-     * Adds an option to the date picker
-     * </p>
-     * <p>
-     * Example of options :
-     * 
-     * <pre>
-     * myDateField.addDatePickerOption(&quot;minDate&quot;, &quot;0&quot;); // Sets the minimum date to
-     * // today
-     * myDateField.addDatePickerOption(&quot;formatDate&quot;, &quot;yy-mm-dd&quot;); // Sets the date
-     * // format to
-     * // 2011-03-09
-     * </pre>
-     * 
-     * </p>
-     * 
-     * @param name the name of the option
-     * @param value the value of the option
-     */
-    public void addDatePickerOption(final String name, final String value) {
-        ((DateInputBlock) getInputBlock()).addDatePickerOption(name, value);
-    }
-
     @Override
     protected List<String> getCustomCss() {
         final ArrayList<String> custom = new ArrayList<String>();
@@ -101,7 +78,7 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
 class DateInputBlock extends InputBlock {
     private final PlaceHolderElement container;
     private final HtmlSimpleInput input;
-    private final HtmlGenericElement script;
+    private final HtmlScript script;
     private PlaceHolderElement options;
     private boolean firstOption = true;
 
@@ -110,20 +87,15 @@ class DateInputBlock extends InputBlock {
         input = new HtmlSimpleInput("text");
         input.addAttribute("autocomplete", "off");
         input.setId(id);
-        script = new HtmlGenericElement("script");
-        script.add(new HtmlNonEscapedText("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n"));
-        script.add(new HtmlNonEscapedText("$(function() {\n" + //
-                "    $( \"#" + id + "\" ).datepicker({ "));
-
-        script.add(options = new PlaceHolderElement());
-
-        script.add(new HtmlNonEscapedText(" }); \n " + //
-                "});"));
+        script = new HtmlScript();
+        script.append("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n");
+        script.append("$(function() {\n" + //
+                "    $( \"#" + id + "\" ).datepicker({\"minDate\": 0, \"dateFormat\": \"yy-mm-dd\" }); \n " + //
+                "});");
         container.add(script);
         container.add(input);
 
-        addDatePickerOption("minDate", "0");
-        addDatePickerOption("dateFormat", "yy-mm-dd");
+        
     }
 
     @Override
@@ -136,15 +108,4 @@ class DateInputBlock extends InputBlock {
         return container;
     }
 
-    public void addDatePickerOption(final String optionName, final String optionValue) {
-        String option = "";
-        if (!firstOption) {
-            option += ", ";
-        } else {
-            firstOption = false;
-        }
-
-        option += "\"" + optionName + "\" : \"" + optionValue + "\"";
-        options.add(new HtmlText(option));
-    }
 }
