@@ -284,16 +284,16 @@ public class BloatitExampleDB { // NO_UCD
         final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
                                                                      celesteMilestone1Description,
                                                                      "GNU GPL V3",
-                                                                     Language.fromLocale(celeste.getLocale()),
+                                                                     Language.FR,
                                                                      DateUtils.nowPlusSomeDays(2),
                                                                      0);
 
         AuthToken.authenticate(celeste);
         final String celesteMilestone2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
-        celesteOffer.addMilestone(new BigDecimal(1000), celesteMilestone2Description, Language.fromLocale(celeste.getLocale()), DateUtils.nowPlusSomeDays(3), 0);
+        celesteOffer.addMilestone(new BigDecimal(1000), celesteMilestone2Description, Language.FR, DateUtils.nowPlusSomeDays(3), 0);
 
         final String celesteMilestone3Description = "Pour finir, je vais faire le packaging en tar.gz, deb, rpm et exe de la version patché pour une utilisatation immédiate. Je vais aussi proposer le patch upstream et créer un petit jeu de test fonctionnels.";
-        celesteOffer.addMilestone(new BigDecimal(700), celesteMilestone3Description, Language.fromLocale(celeste.getLocale()), DateUtils.nowPlusSomeDays(4), 0);
+        celesteOffer.addMilestone(new BigDecimal(700), celesteMilestone3Description, Language.FR, DateUtils.nowPlusSomeDays(4), 0);
 
         AuthToken.authenticate(cerbere);
         celesteOffer.voteUp();
@@ -335,7 +335,7 @@ public class BloatitExampleDB { // NO_UCD
         addPerroquetInMageiaFeature.addOffer(new BigDecimal(200),
                                              hydrePerroquetOfferDescription,
                                              "GNU GPL V3",
-                                             Language.fromLocale(hydre.getLocale()),
+                                             Language.FR,
                                              DateUtils.tomorrow(),
                                              0);
         // Contributions
@@ -354,13 +354,13 @@ public class BloatitExampleDB { // NO_UCD
         AuthToken.authenticate(elephantman);
         firstMilestone.addBug("Faible qualité graphique pour les éléphants",
                               "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau",
-                              Language.fromLocale(elephantman.getLocale()),
+                              Language.FR,
                               Level.MINOR);
 
         AuthToken.authenticate(yoann);
         firstMilestone.addBug("Fichier de conf système manquant",
                               "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger",
-                              Language.fromLocale(yoann.getLocale()),
+                              Language.FR,
                               Level.MAJOR);
 
         return addPerroquetInMageiaFeature;
@@ -377,7 +377,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final Feature colorPickerFeature = FeatureFactory.createFeature(yoann,
                                                                         null,
-                                                                        Language.fromLocale(yoann.getLocale()),
+                                                                        Language.FR,
                                                                         colorPickerFeatureTitle,
                                                                         colorPickerFeatureDescription,
                                                                         libreOffice);
@@ -392,11 +392,11 @@ public class BloatitExampleDB { // NO_UCD
 
         final String featureTitle = "Jolie template par défaut dans Libre Office ";
 
-        final Feature feature = FeatureFactory.createFeature(yoann, null, Language.fromLocale(yoann.getLocale()), featureTitle, featureDescription, libreOffice);
+        final Feature feature = FeatureFactory.createFeature(yoann, null, Language.FR, featureTitle, featureDescription, libreOffice);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         AuthToken.authenticate(celeste);
-        feature.addOffer(new BigDecimal(1000), offerDescription, "GNU GPL V3", Language.fromLocale(celeste.getLocale()), DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal(1000), offerDescription, "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
@@ -416,11 +416,11 @@ public class BloatitExampleDB { // NO_UCD
 
         final String featureTitle = "Support des langues arabe";
 
-        final Feature feature = FeatureFactory.createFeature(yoann, null, Language.fromLocale(yoann.getLocale()), featureTitle, featureDescription, perroquet);
+        final Feature feature = FeatureFactory.createFeature(yoann, null, Language.FR, featureTitle, featureDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         AuthToken.authenticate(fred);
-        feature.addOffer(new BigDecimal(750), offerDescription, "GNU GPL V3", Language.fromLocale(fred.getLocale()), DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal(750), offerDescription, "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
 
         // Contributions
         AuthToken.authenticate(yoann);
@@ -437,11 +437,11 @@ public class BloatitExampleDB { // NO_UCD
 
         final String featureTitle = "Suppression du paquet emacs déprécié";
 
-        final Feature feature = FeatureFactory.createFeature(thomas, null, Language.fromLocale(thomas.getLocale()), featureTitle, featureDescription, mageia);
+        final Feature feature = FeatureFactory.createFeature(thomas, null, Language.FR, featureTitle, featureDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";
         AuthToken.authenticate(cerbere);
-        feature.addOffer(new BigDecimal(300), offerDescription, "GNU GPL V3", Language.fromLocale(cerbere.getLocale()), DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal(300), offerDescription, "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
