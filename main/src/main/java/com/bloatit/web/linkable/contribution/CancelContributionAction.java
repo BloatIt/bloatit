@@ -64,7 +64,7 @@ public class CancelContributionAction extends LoggedElveosAction {
             Context.getSession().notifyWarning(Context.tr("You cannot cancel a contribution you didn't make."));
             return new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.description);
         }
-        if (contribution.getState() != DaoContribution.State.PENDING) {
+        if (contribution.getState() != DaoContribution.ContributionState.PENDING) {
             Context.getSession().notifyWarning(Context.tr("You cannot cancel an already canceled contribution."));
             return new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.description);
         }

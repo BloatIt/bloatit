@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.bloatit.data.DaoContribution.ContributionState;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
@@ -166,7 +167,12 @@ public class RestContribution extends RestElement<Contribution> {
             throw new RestException(StatusCode.ERROR_CLI_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on Contribution", e);
         }
     }
-
+    
+    @XmlAttribute
+    public ContributionState getState() {
+        return model.getState();
+    }
+    
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
@@ -184,7 +190,7 @@ public class RestContribution extends RestElement<Contribution> {
     public RestMember getAuthor() {
         return new RestMember(model.getMember());
     }
-
+    
     /**
      * @see com.bloatit.model.UserContent#getAsTeam()
      */

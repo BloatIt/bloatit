@@ -88,8 +88,7 @@ public class DaoContribution extends DaoUserContent {
      * The state of a contribution should follow the state of the associated
      * feature.
      */
-    public enum State {
-
+    public enum ContributionState {
         /** The PENDING. */
         PENDING,
         /** The VALIDATED. */
@@ -110,7 +109,7 @@ public class DaoContribution extends DaoUserContent {
 
     @Basic(optional = false)
     @Enumerated
-    private State state;
+    private ContributionState state;
 
     @Column(length = COMMENT_MAX_LENGTH, updatable = false)
     private String comment;
@@ -145,7 +144,7 @@ public class DaoContribution extends DaoUserContent {
     public static BigDecimal getMoneyRaised() {
         final Query q = SessionManager
                 .getNamedQuery("contribution.getMoneyRaised")
-                .setParameter("state", State.CANCELED);
+                .setParameter("state", ContributionState.CANCELED);
 
         return (BigDecimal) q.uniqueResult();
     }
@@ -173,7 +172,7 @@ public class DaoContribution extends DaoUserContent {
             throw new BadProgrammerException("The amount of a contribution cannot be <= 0.", null);
         }
         this.amount = amount;
-        this.state = State.PENDING;
+        this.state = ContributionState.PENDING;
         this.feature = feature;
         this.comment = comment;
         this.percentDone = 0;
@@ -199,7 +198,7 @@ public class DaoContribution extends DaoUserContent {
      * @return the amount of the payment for the milestone
      */
     BigDecimal validate(final DaoMilestone milestone, final int percent) throws NotEnoughMoneyException {
-        if (this.state != State.PENDING) {
+        if (this.state != ContributionState.PENDING) {
             throw new BadProgrammerException("Cannot validate a contribution if its state isn't PENDING");
         }
         if (percent > 100 || percent <= 0 || (this.percentDone + percent) > 100) {
@@ -214,7 +213,7 @@ public class DaoContribution extends DaoUserContent {
         } catch (final NotEnoughMoneyException e) {
             // If it fails then there is a bug in our code. Set the state to
             // canceled and throw a fatalError.
-            this.state = State.CANCELED;
+            this.state = ContributionState.CANCELED;
             throw new BadProgrammerException("Not enough money exception on cancel !!", e);
         }
         try {
@@ -226,10 +225,10 @@ public class DaoContribution extends DaoUserContent {
             this.percentDone += percent;
             this.alreadyGivenMoney = this.alreadyGivenMoney.add(moneyToGive);
             if (this.percentDone == 100) {
-                this.state = State.VALIDATED;
+                this.state = ContributionState.VALIDATED;
             }
         } catch (final NotEnoughMoneyException e) {
-            this.state = State.CANCELED;
+            this.state = ContributionState.CANCELED;
             throw e;
         }
         return moneyToGive;
@@ -249,7 +248,7 @@ public class DaoContribution extends DaoUserContent {
      * Set the state to CANCELED. (Unblock the blocked amount.)
      */
     public void cancel() {
-        if (this.state != State.PENDING) {
+        if (this.state != ContributionState.PENDING) {
             throw new BadProgrammerException("Cannot cancel a contribution if its state isn't PENDING");
         }
         try {
@@ -259,7 +258,7 @@ public class DaoContribution extends DaoUserContent {
         } catch (final NotEnoughMoneyException e) {
             throw new BadProgrammerException("Not enough money exception on cancel !!", e);
         }
-        this.state = State.CANCELED;
+        this.state = ContributionState.CANCELED;
     }
 
     /**
@@ -276,7 +275,7 @@ public class DaoContribution extends DaoUserContent {
      * 
      * @return the state
      */
-    public State getState() {
+    public ContributionState getState() {
         return this.state;
     }
 

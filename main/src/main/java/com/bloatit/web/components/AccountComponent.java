@@ -130,7 +130,7 @@ public class AccountComponent extends HtmlPageComponent {
             }
 
             for (final Contribution contribution : contributions) {
-                if (contribution.getState() == com.bloatit.data.DaoContribution.State.CANCELED) {
+                if (contribution.getState() == com.bloatit.data.DaoContribution.ContributionState.CANCELED) {
                     sorter.add(new ContributionCanceledLine(contribution), contribution.getCreationDate());
                 } else {
                     if (contribution.getFeature().getFeatureState() != FeatureState.DISCARDED) {

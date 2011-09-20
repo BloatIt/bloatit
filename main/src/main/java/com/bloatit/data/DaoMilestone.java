@@ -370,7 +370,7 @@ public class DaoMilestone extends DaoIdentifiable {
         }
         for (final DaoContribution contribution : this.offer.getFeature().getContributions()) {
             try {
-                if (contribution.getState() == DaoContribution.State.PENDING) {
+                if (contribution.getState() == DaoContribution.ContributionState.PENDING) {
                     final BigDecimal amount = contribution.validate(this, percent);
                     contribtutionAmounts.add(DaoMilestoneContributionAmount.updateOrCreate(this, contribution, amount));
                     lastPaymentDate = DateUtils.now();
