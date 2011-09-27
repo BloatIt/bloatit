@@ -537,10 +537,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public PageIterable<DaoContribution> getContributions(boolean isCanceled) {
         if (isCanceled) {
             return new QueryCollection<DaoContribution>("feature.getContribution.canceled").setParameter("this", this)
-                                                                                           .setParameter("state", DaoContribution.State.CANCELED);
+                                                                                           .setParameter("state", DaoContribution.ContributionState.CANCELED);
         }
         return new QueryCollection<DaoContribution>("feature.getContribution.notcanceled").setParameter("this", this)
-                                                                                          .setParameter("state", DaoContribution.State.CANCELED);
+                                                                                          .setParameter("state", DaoContribution.ContributionState.CANCELED);
 
     }
 
@@ -601,7 +601,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public BigDecimal getContributionMin() {
         return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.min")
                                           .setEntity("this", this)
-                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .setParameter("state", DaoContribution.ContributionState.CANCELED)
                                           .uniqueResult();
     }
 
@@ -613,7 +613,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public BigDecimal getContributionMax() {
         return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.max")
                                           .setEntity("this", this)
-                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .setParameter("state", DaoContribution.ContributionState.CANCELED)
                                           .uniqueResult();
     }
 
@@ -625,7 +625,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public BigDecimal getContributionAvg() {
         return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg")
                                           .setEntity("this", this)
-                                          .setParameter("state", DaoContribution.State.CANCELED)
+                                          .setParameter("state", DaoContribution.ContributionState.CANCELED)
                                           .uniqueResult();
     }
 

@@ -198,7 +198,7 @@ msgstr "{0} (<0::annuler le retrait>)"
 
 #: com/bloatit/web/components/AccountComponent.java:392
 msgid "Withdrew money failure"
-msgstr "Éched de retrait d'argent"
+msgstr "Échec de retrait d'argent"
 
 #: com/bloatit/web/components/AccountComponent.java:394
 msgid "Withdrew money"

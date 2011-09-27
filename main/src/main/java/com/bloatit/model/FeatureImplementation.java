@@ -23,7 +23,7 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoFollow;
-import com.bloatit.data.DaoContribution.State;
+import com.bloatit.data.DaoContribution.ContributionState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -411,7 +411,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         getDao().setFeatureState(FeatureState.DISCARDED);
 
         for (final Contribution contribution : getContributionsUnprotected()) {
-            if (contribution.getState() == State.PENDING) {
+            if (contribution.getState() == ContributionState.PENDING) {
                 contribution.cancel();
             }
         }

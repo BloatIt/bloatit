@@ -19,7 +19,7 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoContribution.State;
+import com.bloatit.data.DaoContribution.ContributionState;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ContributionInvoiceList;
@@ -141,12 +141,12 @@ public final class Contribution extends UserContent<DaoContribution> {
         return getDao().getComment();
     }
 
-    public State getState() {
+    public ContributionState getState() {
         return getDao().getState();
     }
 
     public boolean isCancelable() {
-        return (getState() == State.PENDING && (getFeature().getFeatureState() == DaoFeature.FeatureState.PENDING || getFeature().getFeatureState() == DaoFeature.FeatureState.PREPARING));
+        return (getState() == ContributionState.PENDING && (getFeature().getFeatureState() == DaoFeature.FeatureState.PENDING || getFeature().getFeatureState() == DaoFeature.FeatureState.PREPARING));
     }
     
     // /////////////////////////////////////////////////////////////////////////////////////////
