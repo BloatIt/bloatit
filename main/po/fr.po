@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-19 15:42+0200\n"
+"POT-Creation-Date: 2011-09-27 12:34+0200\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -57,180 +57,184 @@ msgstr "il y a {0} secondes"
 msgid "The id of the resource is incorrect or missing"
 msgstr "L'id de la ressource est manquante ou incorrecte"
 
-#: com/bloatit/web/components/AccountComponent.java:81
-#: com/bloatit/web/components/AccountComponent.java:92
+#: com/bloatit/web/components/AccountComponent.java:82
+#: com/bloatit/web/components/AccountComponent.java:93
 #, java-format
 msgid "Account informations – {0}"
 msgstr "Informations du compte – {0}"
 
-#: com/bloatit/web/components/AccountComponent.java:101
+#: com/bloatit/web/components/AccountComponent.java:102
 msgid "The team currently has "
 msgstr "L'équipe a actuellement "
 
-#: com/bloatit/web/components/AccountComponent.java:103
+#: com/bloatit/web/components/AccountComponent.java:104
 msgid "You currently have "
 msgstr "Vous avez actuellement "
 
-#: com/bloatit/web/components/AccountComponent.java:171
+#: com/bloatit/web/components/AccountComponent.java:172
 msgid "No operations occured on your account yet."
 msgstr "Pour le moment, aucune opération n'a eu lieu sur votre compte."
 
-#: com/bloatit/web/components/AccountComponent.java:191
-#: com/bloatit/web/components/AccountComponent.java:297
+#: com/bloatit/web/components/AccountComponent.java:192
+#: com/bloatit/web/components/AccountComponent.java:298
 msgid "Feature summary"
 msgstr "Résumé de la demande"
 
-#: com/bloatit/web/components/AccountComponent.java:198
-#: com/bloatit/web/components/AccountComponent.java:305
+#: com/bloatit/web/components/AccountComponent.java:199
+#: com/bloatit/web/components/AccountComponent.java:306
 #, java-format
 msgid "{0} (<0::>)"
 msgstr "{0} (<0::>)"
 
-#: com/bloatit/web/components/AccountComponent.java:204
-#: com/bloatit/web/components/AccountComponent.java:310
+#: com/bloatit/web/components/AccountComponent.java:205
+#: com/bloatit/web/components/AccountComponent.java:311
 #: com/bloatit/web/linkable/tools/HightlightedFeaturesTools.java:16
 msgid "In development"
 msgstr "En développement"
 
-#: com/bloatit/web/components/AccountComponent.java:207
-#: com/bloatit/web/components/AccountComponent.java:313
+#: com/bloatit/web/components/AccountComponent.java:208
+#: com/bloatit/web/components/AccountComponent.java:314
 #: com/bloatit/web/linkable/tools/HightlightedFeaturesTools.java:19
 msgid "Success"
 msgstr "Succès"
 
-#: com/bloatit/web/components/AccountComponent.java:210
-#: com/bloatit/web/components/AccountComponent.java:316
+#: com/bloatit/web/components/AccountComponent.java:211
+#: com/bloatit/web/components/AccountComponent.java:317
 msgid "Failed"
 msgstr "Échec"
 
-#: com/bloatit/web/components/AccountComponent.java:214
+#: com/bloatit/web/components/AccountComponent.java:215
 msgid "(Cancel contribution)"
 msgstr "(Annuler la contribution)"
 
-#: com/bloatit/web/components/AccountComponent.java:215
+#: com/bloatit/web/components/AccountComponent.java:216
 msgid "Funding "
 msgstr "Financement "
 
-#: com/bloatit/web/components/AccountComponent.java:220
-#: com/bloatit/web/components/AccountComponent.java:324
+#: com/bloatit/web/components/AccountComponent.java:221
+#: com/bloatit/web/components/AccountComponent.java:325
 msgid "Description: "
 msgstr "Description : "
 
-#: com/bloatit/web/components/AccountComponent.java:221
-#: com/bloatit/web/components/AccountComponent.java:325
-#: com/bloatit/web/components/AccountComponent.java:382
-#: com/bloatit/web/components/AccountComponent.java:384
+#: com/bloatit/web/components/AccountComponent.java:222
+#: com/bloatit/web/components/AccountComponent.java:326
+#: com/bloatit/web/components/AccountComponent.java:387
+#: com/bloatit/web/components/AccountComponent.java:389
 msgid "Status: "
 msgstr "Etat : "
 
-#: com/bloatit/web/components/AccountComponent.java:228
+#: com/bloatit/web/components/AccountComponent.java:229
 #, java-format
 msgid "milestone {0}"
 msgstr "lot {0}"
 
-#: com/bloatit/web/components/AccountComponent.java:231
+#: com/bloatit/web/components/AccountComponent.java:232
 msgid "Invoices: "
 msgstr "Factures&nbsp;: "
 
-#: com/bloatit/web/components/AccountComponent.java:240
+#: com/bloatit/web/components/AccountComponent.java:241
 msgid "Contributed to a <0::feature>"
 msgstr "Contribution à une <0::demande>"
 
-#: com/bloatit/web/components/AccountComponent.java:261
+#: com/bloatit/web/components/AccountComponent.java:262
 msgid "Contributed to a failed <0::feature>"
 msgstr "Contribution à une <0::demande> en échec"
 
-#: com/bloatit/web/components/AccountComponent.java:284
+#: com/bloatit/web/components/AccountComponent.java:285
 msgid "Contribution canceled (<0::feature>)"
 msgstr "Contribution annulée (<0::demande>)"
 
-#: com/bloatit/web/components/AccountComponent.java:320
+#: com/bloatit/web/components/AccountComponent.java:321
 msgid "Funding"
 msgstr "Financement"
 
-#: com/bloatit/web/components/AccountComponent.java:332
+#: com/bloatit/web/components/AccountComponent.java:333
 msgid "Payed for <0::milestone> development"
 msgstr "Paiement pour le développement d'un <0::lot>"
 
-#: com/bloatit/web/components/AccountComponent.java:351
+#: com/bloatit/web/components/AccountComponent.java:353
 msgid "Withdrawal summary"
 msgstr "Résumé du retrait"
 
-#: com/bloatit/web/components/AccountComponent.java:361
+#: com/bloatit/web/components/AccountComponent.java:366
 #: com/bloatit/web/linkable/admin/DisplayableMilestoneState.java:29
 #: com/bloatit/web/linkable/admin/withdraw/MoneyWithdrawalAdminPage.java:99
 #: com/bloatit/web/linkable/features/OfferBlock.java:325
 msgid "Canceled"
 msgstr "Annulée"
 
-#: com/bloatit/web/components/AccountComponent.java:364
+#: com/bloatit/web/components/AccountComponent.java:369
 #: com/bloatit/web/linkable/admin/DisplayableState.java:28
 msgid "Rejected"
 msgstr "Rejeté"
 
-#: com/bloatit/web/components/AccountComponent.java:367
+#: com/bloatit/web/components/AccountComponent.java:372
 #: com/bloatit/web/linkable/admin/withdraw/MoneyWithdrawalAdminPage.java:92
 msgid "Complete"
 msgstr "Terminée"
 
-#: com/bloatit/web/components/AccountComponent.java:370
+#: com/bloatit/web/components/AccountComponent.java:375
 #: com/bloatit/web/linkable/admin/withdraw/MoneyWithdrawalAdminPage.java:78
 msgid "Requested"
 msgstr "Demandée"
 
-#: com/bloatit/web/components/AccountComponent.java:373
+#: com/bloatit/web/components/AccountComponent.java:378
 msgid "In progress"
 msgstr "En cours"
 
-#: com/bloatit/web/components/AccountComponent.java:377
+#: com/bloatit/web/components/AccountComponent.java:382
 #: com/bloatit/web/linkable/money/WithdrawMoneyPage.java:85
 msgid "IBAN: "
 msgstr "IBAN&nbsp;: "
 
-#: com/bloatit/web/components/AccountComponent.java:378
+#: com/bloatit/web/components/AccountComponent.java:383
 msgid "Reference: "
 msgstr "Référence&nbsp;: "
 
-#: com/bloatit/web/components/AccountComponent.java:381
+#: com/bloatit/web/components/AccountComponent.java:386
 #, java-format
 msgid "{0} (<0::cancel withdrawal>)"
 msgstr "{0} (<0::annuler le retrait>)"
 
-#: com/bloatit/web/components/AccountComponent.java:392
-msgid "Withdrew money failure"
-msgstr "Échec de retrait d'argent"
+#: com/bloatit/web/components/AccountComponent.java:398
+msgid "Withdrew money canceled"
+msgstr "Retrait d'argent annulé"
 
-#: com/bloatit/web/components/AccountComponent.java:394
+#: com/bloatit/web/components/AccountComponent.java:400
+msgid "Withdrew money failure"
+msgstr "Échec du retrait d'argent"
+
+#: com/bloatit/web/components/AccountComponent.java:403
 msgid "Withdrew money"
 msgstr "Retrait d'argent"
 
-#: com/bloatit/web/components/AccountComponent.java:408
+#: com/bloatit/web/components/AccountComponent.java:417
 msgid "Account loading summary"
 msgstr "Chargement du compte"
 
-#: com/bloatit/web/components/AccountComponent.java:415
-#: com/bloatit/web/components/AccountComponent.java:453
-#: com/bloatit/web/components/AccountComponent.java:478
+#: com/bloatit/web/components/AccountComponent.java:424
+#: com/bloatit/web/components/AccountComponent.java:462
+#: com/bloatit/web/components/AccountComponent.java:487
 msgid "You are not allowed to see this account informations."
 msgstr "Vous n'avez pas le droit de consulter ces informations bancaires."
 
-#: com/bloatit/web/components/AccountComponent.java:421
+#: com/bloatit/web/components/AccountComponent.java:430
 msgid "Total cost: "
 msgstr "Prix total : "
 
-#: com/bloatit/web/components/AccountComponent.java:426
+#: com/bloatit/web/components/AccountComponent.java:435
 msgid "Invoice: "
 msgstr "Facture : "
 
-#: com/bloatit/web/components/AccountComponent.java:434
+#: com/bloatit/web/components/AccountComponent.java:443
 msgid "Charged account"
 msgstr "Credit du compte"
 
-#: com/bloatit/web/components/AccountComponent.java:459
+#: com/bloatit/web/components/AccountComponent.java:468
 msgid "Charging account failure"
 msgstr "Échec du chargement du compte"
 
-#: com/bloatit/web/components/AccountComponent.java:484
+#: com/bloatit/web/components/AccountComponent.java:493
 msgid "Charging account aborted"
 msgstr "Abandon du chargement du compte"
 
@@ -963,7 +967,7 @@ msgid "You must choose a payment method."
 msgstr "Vous devez spécifier un moyen de payment."
 
 #: com/bloatit/web/linkable/money/PaymentProcess.java:75
-#: com/bloatit/web/linkable/money/PaymentProcess.java:109
+#: com/bloatit/web/linkable/money/PaymentProcess.java:114
 msgid "You must accept the terms of sales to continue."
 msgstr "Vous devez accepter les Conditions Générales de Vente pour continuer."
 
@@ -973,12 +977,16 @@ msgstr ""
 "Le système de paiement est temporairement désactivé. Merci de réessayer plus "
 "tard."
 
-#: com/bloatit/web/linkable/money/PaymentProcess.java:225
+#: com/bloatit/web/linkable/money/PaymentProcess.java:107
+msgid "You must pay at least 1 €."
+msgstr "Vous devez payer au moins 1 €"
+
+#: com/bloatit/web/linkable/money/PaymentProcess.java:230
 #, java-format
 msgid "Payment of {0} accepted."
 msgstr "Paiement de {0} accepté."
 
-#: com/bloatit/web/linkable/money/PaymentProcess.java:228
+#: com/bloatit/web/linkable/money/PaymentProcess.java:233
 #, java-format
 msgid "Payment canceled. Reason: {0}."
 msgstr "Paiment annulé. Raison&nbsp;: {0}."
@@ -1087,7 +1095,7 @@ msgstr "Vous avez un paiement en cours, vous ne pouvez modifier le montant."
 #: com/bloatit/web/linkable/money/AccountChargingPage.java:133
 #: com/bloatit/web/linkable/contribution/CheckContributePage.java:260
 msgid "Fill invoicing contact"
-msgstr "Coordonnées de facturation"
+msgstr "Coordonnées&nbsp;de&nbsp;facturation"
 
 #: com/bloatit/web/linkable/money/AccountChargingPage.java:135
 #: com/bloatit/web/linkable/contribution/CheckContributePage.java:262
@@ -1535,8 +1543,8 @@ msgid "You must be logged to contribute."
 msgstr "Vous devez être connecté pour contribuer."
 
 #: com/bloatit/web/linkable/contribution/HtmlContributionLine.java:121
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:156
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:162
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:159
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:165
 msgid "Contribution"
 msgstr "Contribution"
 
@@ -1903,6 +1911,13 @@ msgstr "Page interdite"
 #: com/bloatit/web/linkable/errors/PageForbidden.java:65
 msgid "Forbidden"
 msgstr "Interdit"
+
+#: com/bloatit/web/linkable/atom/FeatureAtomFeed.java:38
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:80
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:121
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:111
+msgid "New software"
+msgstr "Nouveau logiciel"
 
 #: com/bloatit/web/linkable/admin/KudosableAdminPageImplementation.java:44
 #: com/bloatit/web/linkable/admin/FeatureAdminPage.java:96
@@ -2524,7 +2539,7 @@ msgstr "Mise à jour des coordonnées de facturation"
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:267
 msgid "Invoicing contact"
-msgstr "Coordonnées de facturation"
+msgstr "Coordonnées&nbsp;de&nbsp;facturation"
 
 #: com/bloatit/web/linkable/invoice/ContactBox.java:35
 msgid "Invoicing name: "
@@ -2705,7 +2720,7 @@ msgstr ""
 "?"
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:370
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:63
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:62
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:78
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:103
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:251
@@ -3157,12 +3172,6 @@ msgstr "Logiciel"
 msgid "Select a software"
 msgstr "Sélectionnez un logiciel"
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:80
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:121
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:111
-msgid "New software"
-msgstr "Nouveau logiciel"
-
 #: com/bloatit/web/linkable/features/ModifyFeaturePage.java:84
 msgid ""
 "The software of the feature request. Select 'new software' if your feature "
@@ -3295,23 +3304,26 @@ msgid "Minimum time before validation: "
 msgstr "Durée minimum de la validation&nbsp;: "
 
 #: com/bloatit/web/linkable/features/OfferBlock.java:271
-#: com/bloatit/web/linkable/features/OfferBlock.java:275
 msgid "Payment when no fatal bug: "
 msgstr "Paiement en l'absence de bug fatal&nbsp;: "
+
+#: com/bloatit/web/linkable/features/OfferBlock.java:275
+msgid "Payment when no major bug: "
+msgstr "Paiement en l'absence de bug majeur&nbsp;: "
 
 #: com/bloatit/web/linkable/features/OfferBlock.java:279
 msgid "Payment when no minor bug: "
 msgstr "Paiement en l'absence de bug mineur&nbsp;: "
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:54
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:53
 msgid "No selected offer"
 msgstr "Aucune offre sélectionnée"
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:56
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:55
 msgid "No offer"
 msgstr "Aucune offre"
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:61
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:60
 msgid ""
 "There is not yet offer to develop this feature. The first offer will be "
 "selected by default."
@@ -3319,15 +3331,15 @@ msgstr ""
 "Il n'y a pas encore d'offre pour développer cette demande. La première offre "
 "sera sélectionnée par défaut."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:80
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:79
 msgid "Selected offer"
 msgstr "Offre sélectionnée"
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:87
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:86
 msgid "The selected offer is the one with the more popularity."
 msgstr "L'offre sélectionnée est la plus populaire."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:98
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:97
 #, java-format
 msgid ""
 "This offer will be validated in about <0::>. After this time, the offer will "
@@ -3337,11 +3349,11 @@ msgstr ""
 "l''offre passer dans l''état \"en développement\" dès que le montant requis "
 "est disponible ({0} manquant)."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:106
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:105
 msgid "This offer will go into development in about <0::>."
 msgstr "Cette offre passera en développement dans environ <0::>."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:113
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:112
 #, java-format
 msgid ""
 "This offer is validated and will go into development as soon as the "
@@ -3350,55 +3362,55 @@ msgstr ""
 "Cette offre est validée et va passer en développement dès que le montant "
 "requis est disponible ({0} manquant)."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:125
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:124
 msgid "Offer in development"
 msgstr "Offre en développement"
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:127
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:126
 msgid "This offer is in development. You can discuss about it in the comments."
 msgstr ""
 "Cette offre est en développement. Vous pouvez en discuter dans les "
 "commentaires."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:129
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:128
 msgid "Test the last release and report bugs."
 msgstr "Testez la dernière livraison et créez des rapport de bugs."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:137
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:136
 msgid "Finished offer"
 msgstr "Offre terminée"
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:139
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:138
 msgid "This offer is finished."
 msgstr "Cette offre est terminée."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:145
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:144
 msgid "Feature discarded ..."
 msgstr "Demande annulée ..."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:159
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:158
 #, java-format
 msgid "Unselected offer ({0})"
 msgid_plural "Unselected offers ({0})"
 msgstr[0] "Offre non sélectionnée ({0})"
 msgstr[1] "Offres non sélectionnées ({0})"
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:162
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:161
 msgid "Make a concurrent offer"
 msgstr "Faire une offre concurrente"
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:163
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:162
 msgid "Vote on a competing offer to select it."
 msgstr "Voter pour une offre concurrente pour la selectionner."
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:175
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:174
 #, java-format
 msgid "Old offer ({0})"
 msgid_plural "Old offers ({0})"
 msgstr[0] "Ancienne offre ({0})"
 msgstr[1] "Anciennes offres ({0})"
 
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:178
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:177
 msgid "These offers have not been selected and will never be developed."
 msgstr ""
 "Ces offres n'ont pas été sélectionnées et ne seront jamais développées."
@@ -4256,56 +4268,56 @@ msgstr " <0::> - (<1::>)"
 msgid "Milestones to invoice"
 msgstr "Lots pour lesquels il faut créer une facture"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:48
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:49
 msgid "Content you follow"
 msgstr "Contenu que vous suivez"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:63
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:64
 msgid "No offer yet, <0::make an offer>"
 msgstr "Pas encore d'offre, <0::faire une offre>"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:68
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:69
 #, java-format
 msgid "{0}€ missing, <0::contribute> again"
 msgstr "{0}€ manquant, <0::contributer> à nouveau"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:70
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:71
 #, java-format
 msgid "{0}€ missing, <0::contribute>"
 msgstr "{0}€ manquant, <0::contributer>"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:77
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:84
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:78
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:85
 msgid "Developing, <0::make a release>"
 msgstr "En développement, <0::faire une livraison>"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:79
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:86
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:80
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:87
 msgid "Development ongoing, <0::make a release>"
 msgstr "Developpement en cours, <0::faire une livraison>"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:93
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:94
 msgid "Feature finished ! <0::TODO stop following>"
 msgstr "Demande terminée ! <0::TODO stop following>"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:97
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:99
 msgid "Feature canceled ! <0::TODO stop following>"
 msgstr "Demande annulée ! <0::TODO stop following>"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:145
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:148
 msgid "Creation"
 msgstr "Création"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:145
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:148
 msgid "You created this feature"
 msgstr "Vous avez créé cette demande"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:156
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:159
 #, java-format
 msgid "You contributed {0}"
 msgstr "Vous avez contribué {0}"
 
-#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:162
+#: com/bloatit/web/linkable/members/tabs/DashboardTab.java:165
 msgid "TODO contribute on this feature"
 msgstr "TODO contribuer à cet demande"
 
@@ -4386,6 +4398,18 @@ msgstr "Date : {0}"
 #: com/bloatit/web/linkable/members/tabs/dashboard/DashboardRenderer.java:64
 msgid "Next step"
 msgstr "Étape suivante"
+
+#: com/bloatit/web/linkable/members/tabs/dashboard/StopFollowAction.java:21
+msgid "You have to specify a follow number."
+msgstr "Vous devez spécifier un numéro de suivi."
+
+#: com/bloatit/web/linkable/members/tabs/dashboard/StopFollowAction.java:22
+msgid "I cannot find the follow number: ''%value%''."
+msgstr "Je ne peux pas trouver le suivi numéro: ''%value%''."
+
+#: com/bloatit/web/linkable/members/tabs/dashboard/StopFollowAction.java:58
+msgid "You must be logged to stop following content"
+msgstr "Vous devez être connecté arrêter de suivre un contenu"
 
 #: com/bloatit/web/linkable/usercontent/AttachmentField.java:33
 #: com/bloatit/web/linkable/usercontent/AttachmentField.java:42
@@ -5909,7 +5933,7 @@ msgstr "elveos.org&nbsp;: Demande de retrait d'argent"
 msgid "elveos.org: Money withdrawal complete"
 msgstr "elveos.org&nbsp;: Retrait d'argent terminé"
 
-#: com/bloatit/framework/webprocessor/components/advanced/showdown/MarkdownPreviewer.java:36
+#: com/bloatit/framework/webprocessor/components/advanced/showdown/MarkdownPreviewer.java:35
 msgid "Markdown preview"
 msgstr "Prévisualisation markdown"
 

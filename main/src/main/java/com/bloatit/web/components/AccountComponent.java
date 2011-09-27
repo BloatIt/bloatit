@@ -61,6 +61,7 @@ import com.bloatit.model.Milestone;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedReadOnlyBankDataAccessException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
@@ -348,7 +349,11 @@ public class AccountComponent extends HtmlPageComponent {
                 addCell(new MoneyVariationCell(false));
             }
             addCell(new TitleCell(moneyWithdrawal.getCreationDate(), generateTitle()));
-            addCell(new DescriptionCell(tr("Withdrawal summary"), generateContributionDescription()));
+            if(!failed) {
+                addCell(new DescriptionCell(tr("Withdrawal summary"), generateContributionDescription()));
+            } else {
+                addCell(new DescriptionCell("", generateContributionDescription()));
+            }
             addCell(new MoneyCell(moneyWithdrawal.getAmountWithdrawn().negate()));
         }
 
@@ -386,10 +391,14 @@ public class AccountComponent extends HtmlPageComponent {
             return description;
         }
 
-        private HtmlDiv generateTitle() {
+        private HtmlDiv generateTitle() throws UnauthorizedReadOnlyBankDataAccessException {
             final HtmlDiv title = new HtmlDiv("title");
             if (failed) {
-                title.addText(tr("Withdrew money failure"));
+                if(moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.CANCELED) {
+                    title.addText(tr("Withdrew money canceled"));
+                } else {
+                    title.addText(tr("Withdrew money failure"));
+                }
             } else {
                 title.addText(tr("Withdrew money"));
             }
