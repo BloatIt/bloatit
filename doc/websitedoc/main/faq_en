@@ -104,3 +104,14 @@ This will prevent a developer making a "fake" offer with the exact amount of the
 There is a minimum delay of 7 days after the release have been done and the development can be validated.
 This delay allows users to test the release.
 In addition, when the conditions are met, we manually validate the request for a final check that there are no problems.
+
+- **Is it possible to fund a program that does not exist yet?**
+Yes. To do this, when creating an feature request, choose "new software" in the "Software" menu.
+
+##Le site
+
+- **How long are the sessions?**
+Sessions last 15 days from the last action on the site. You can log out to destroy the session.
+
+- **Is it normal that I can edit and delete the little bugs in the bug tracker site?**
+Yes, this is a bug tracker succinct but it permet to easily manage and report bugs. To make more important bug reports, you should to go to the forge: http://elveos.indefero.net/p/elveos/issues/

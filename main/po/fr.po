@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 12:34+0200\n"
+"POT-Creation-Date: 2011-09-27 13:08+0200\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -3346,7 +3346,7 @@ msgid ""
 "go into development as soon as the requested amount is available ({0} left)."
 msgstr ""
 "Cette offre sera validée dans approximativement <0::>. Après cette durée, "
-"l''offre passer dans l''état \"en développement\" dès que le montant requis "
+"l''offre passera dans l''état \"en développement\" dès que le montant requis "
 "est disponible ({0} manquant)."
 
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:105
@@ -5174,11 +5174,11 @@ msgstr ""
 #: com/bloatit/web/linkable/master/Footer.java:59
 #, java-format
 msgid ""
-"The source code of elveos is available on gitorious.org, in the <0:: Bloatit "
+"The source code of elveos is available on indefero, in the <0:: Elveos "
 "public repository>. The current version is {0}."
 msgstr ""
-"Le code source d''elveos est disponible sur gitorious.org dans le <0:: dépôt "
-"public de Bloatit>. La version courante est {0}."
+"Le code source d''elveos est disponible sur indefero dans le <0:: dépôt "
+"public Elveos>. La version courante est {0}."
 
 #: com/bloatit/web/linkable/master/Footer.java:62
 msgid ""

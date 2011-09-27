@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 12:34+0200\n"
+"POT-Creation-Date: 2011-09-27 13:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4917,7 +4917,7 @@ msgstr ""
 #: com/bloatit/web/linkable/master/Footer.java:59
 #, java-format
 msgid ""
-"The source code of elveos is available on gitorious.org, in the <0:: Bloatit "
+"The source code of elveos is available on indefero, in the <0:: Elveos "
 "public repository>. The current version is {0}."
 msgstr ""
 
