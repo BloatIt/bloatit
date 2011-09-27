@@ -7,6 +7,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
@@ -30,7 +31,16 @@ public class FeatureAtomFeed extends ElveosAtomFeed {
         boolean first = true;
         for (Feature feature : FeatureManager.getAllByCreationDate()) {
             Translation translation = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
-            FeedEntry entry = new FeedEntry(translation.getTitle(),
+            String featureTitle = translation.getTitle();
+            Software software = feature.getSoftware();
+            String title;
+            if (software == null) {
+                title = Context.tr("New software") + " – " + featureTitle;
+            } else {
+                title = software.getName() + " – " + featureTitle;
+            }
+
+            FeedEntry entry = new FeedEntry(title,
                                             new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
                                             new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
                                             feature.getCreationDate(),
