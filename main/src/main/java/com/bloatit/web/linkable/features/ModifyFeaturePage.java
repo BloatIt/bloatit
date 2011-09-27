@@ -22,6 +22,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.create.CreateFeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
@@ -111,6 +112,8 @@ public class ModifyFeaturePage extends LoggedElveosPage {
 
         modifyForm.add(new HtmlSubmit(Context.tr("Modify the feature")));
 
+        master.addRight(new SidebarMarkdownHelp());
+        
         return master;
     }
 
