@@ -25,15 +25,15 @@ import java.io.IOException;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
-public class MetaBug {
+public class MetaFeedback {
     private final String id;
     private final String description;
 
-    protected MetaBug(final File file) throws IOException {
+    protected MetaFeedback(final File file) throws IOException {
         this(file.getName(), fileToString(file));
     }
 
-    private MetaBug(final String id, final String description) {
+    private MetaFeedback(final String id, final String description) {
         this.id = id;
         this.description = description;
 

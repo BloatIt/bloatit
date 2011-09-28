@@ -30,7 +30,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
-public class MetaBugManager {
+public class MetaFeedbackManager {
 
     public static boolean reportBug(final String bugReport) {
         final String dir = FrameworkConfiguration.getMetaBugsDirStorage();
@@ -51,7 +51,7 @@ public class MetaBugManager {
         return true;
     }
 
-    public static List<MetaBug> getOpenBugs() {
+    public static List<MetaFeedback> getOpenFeedbacks() {
         final String dir = FrameworkConfiguration.getMetaBugsDirStorage();
         final File dirFile = new File(dir);
         final File[] bugFiles = dirFile.listFiles();
@@ -63,11 +63,11 @@ public class MetaBugManager {
             }
         });
 
-        final List<MetaBug> bugList = new ArrayList<MetaBug>();
+        final List<MetaFeedback> bugList = new ArrayList<MetaFeedback>();
         for (final File bugFile : orderedFiles) {
             try {
                 if (!bugFile.getName().endsWith("-deleted")) {
-                    bugList.add(new MetaBug(bugFile));
+                    bugList.add(new MetaFeedback(bugFile));
                 }
             } catch (final IOException e) {
                 Log.framework().error("Fail to read a bugreport", e);
@@ -76,9 +76,9 @@ public class MetaBugManager {
         return bugList;
     }
 
-    public static MetaBug getById(final String bugId) {
-        final List<MetaBug> openBugs = getOpenBugs();
-        for (final MetaBug bug : openBugs) {
+    public static MetaFeedback getById(final String bugId) {
+        final List<MetaFeedback> openBugs = getOpenFeedbacks();
+        for (final MetaFeedback bug : openBugs) {
             if (bug.getId().equals(bugId)) {
                 return bug;
             }

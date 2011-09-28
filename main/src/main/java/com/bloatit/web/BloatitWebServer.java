@@ -116,11 +116,11 @@ import com.bloatit.web.linkable.members.ModifyMemberAction;
 import com.bloatit.web.linkable.members.ModifyMemberPage;
 import com.bloatit.web.linkable.members.ModifyPasswordAction;
 import com.bloatit.web.linkable.members.tabs.dashboard.StopFollowAction;
-import com.bloatit.web.linkable.meta.bugreport.MetaBugDeleteAction;
-import com.bloatit.web.linkable.meta.bugreport.MetaBugEditPage;
-import com.bloatit.web.linkable.meta.bugreport.MetaBugsListPage;
-import com.bloatit.web.linkable.meta.bugreport.MetaEditBugAction;
-import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
+import com.bloatit.web.linkable.meta.feedback.MetaEditFeedbackAction;
+import com.bloatit.web.linkable.meta.feedback.MetaFeedbackDeleteAction;
+import com.bloatit.web.linkable.meta.feedback.MetaFeedbackEditPage;
+import com.bloatit.web.linkable.meta.feedback.MetaFeedbackListPage;
+import com.bloatit.web.linkable.meta.feedback.MetaReportFeedbackAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
@@ -279,11 +279,11 @@ public class BloatitWebServer extends WebProcessor {
         if (MilestoneAdminPageUrl.matches(pageCode)) {
             return new MilestoneAdminPage(new MilestoneAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (MetaBugsListPageUrl.matches(pageCode)) {
-            return new MetaBugsListPage(new MetaBugsListPageUrl(pageCode, postGetParameters, session.getParameters()));
+        if (MetaFeedbackListPageUrl.matches(pageCode)) {
+            return new MetaFeedbackListPage(new MetaFeedbackListPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (MetaBugEditPageUrl.matches(pageCode)) {
-            return new MetaBugEditPage(new MetaBugEditPageUrl(pageCode, postGetParameters, session.getParameters()));
+            return new MetaFeedbackEditPage(new MetaFeedbackEditPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ConfigurationAdminPageUrl.matches(pageCode)) {
             return new ConfigurationAdminPage(new ConfigurationAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -452,13 +452,13 @@ public class BloatitWebServer extends WebProcessor {
             return new ConfigurationAdminAction(new ConfigurationAdminActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (MetaReportBugActionUrl.matches(pageCode)) {
-            return new MetaReportBugAction(new MetaReportBugActionUrl(pageCode, postGetParameters, session.getParameters()));
+            return new MetaReportFeedbackAction(new MetaReportFeedbackActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (MetaEditBugActionUrl.matches(pageCode)) {
-            return new MetaEditBugAction(new MetaEditBugActionUrl(pageCode, postGetParameters, session.getParameters()));
+            return new MetaEditFeedbackAction(new MetaEditFeedbackActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (MetaBugDeleteActionUrl.matches(pageCode)) {
-            return new MetaBugDeleteAction(new MetaBugDeleteActionUrl(pageCode, postGetParameters, session.getParameters()));
+            return new MetaFeedbackDeleteAction(new MetaFeedbackDeleteActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ChangeLanguageActionUrl.matches(pageCode)) {
             return new ChangeLanguageAction(new ChangeLanguageActionUrl(pageCode, postGetParameters, session.getParameters()));
@@ -589,7 +589,7 @@ public class BloatitWebServer extends WebProcessor {
         if (CreateFeatureAndOfferActionUrl.matches(pageCode)) {
             return new CreateFeatureAndOfferAction(new CreateFeatureAndOfferActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        
+
         // Translation
         if (TranslatePageUrl.matches(pageCode)) {
             return new TranslatePage(new TranslatePageUrl(pageCode, postGetParameters, session.getParameters()));

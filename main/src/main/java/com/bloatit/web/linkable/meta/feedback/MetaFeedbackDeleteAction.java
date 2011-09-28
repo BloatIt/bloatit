@@ -9,48 +9,48 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.meta.bugreport;
+package com.bloatit.web.linkable.meta.feedback;
 
-import com.bloatit.framework.meta.MetaBug;
-import com.bloatit.framework.meta.MetaBugManager;
+import com.bloatit.framework.meta.MetaFeedback;
+import com.bloatit.framework.meta.MetaFeedbackManager;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.MetaBugDeleteActionUrl;
-import com.bloatit.web.url.MetaBugsListPageUrl;
+import com.bloatit.web.url.MetaFeedbackListPageUrl;
+import com.bloatit.web.url.MetaFeedbackDeleteActionUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("meta/bug/dodelete")
-public final class MetaBugDeleteAction extends LoggedElveosAction {
+@ParamContainer("meta/feedback/dodelete")
+public final class MetaFeedbackDeleteAction extends LoggedElveosAction {
 
     @RequestParam
-    private final String bugId;
+    private final String feedbackId;
 
     // Keep it for consistency.
     @SuppressWarnings("unused")
-    private final MetaBugDeleteActionUrl url;
+    private final MetaFeedbackDeleteActionUrl url;
 
-    public MetaBugDeleteAction(final MetaBugDeleteActionUrl url) {
+    public MetaFeedbackDeleteAction(final MetaFeedbackDeleteActionUrl url) {
         super(url);
         this.url = url;
-        this.bugId = url.getBugId();
+        this.feedbackId = url.getFeedbackId();
     }
 
     @Override
     protected Url doProcessRestricted(final Member me) {
-        final MetaBug bug = MetaBugManager.getById(bugId);
+        final MetaFeedback bug = MetaFeedbackManager.getById(feedbackId);
         if (bug != null) {
             bug.delete();
-            session.notifyGood("Bug deleted.");
-            return new MetaBugsListPageUrl();
+            session.notifyGood("Feedback deleted.");
+            return new MetaFeedbackListPageUrl();
         }
-        session.notifyError(Context.tr("Bug id ''{0}'' doesn't exist. Maybe it has already been deleted.", bugId));
-        return new MetaBugsListPageUrl();
+        session.notifyError(Context.tr("Feedback id ''{0}'' doesn't exist. Maybe it has already been deleted.", feedbackId));
+        return new MetaFeedbackListPageUrl();
     }
 
     @Override
