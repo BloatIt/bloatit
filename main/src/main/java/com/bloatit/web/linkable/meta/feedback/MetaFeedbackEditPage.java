@@ -30,9 +30,9 @@ import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MetaFeedbackListPageUrl;
-import com.bloatit.web.url.MetaEditBugActionUrl;
+import com.bloatit.web.url.MetaEditFeedbackActionUrl;
 import com.bloatit.web.url.MetaFeedbackEditPageUrl;
+import com.bloatit.web.url.MetaFeedbackListPageUrl;
 
 @ParamContainer("meta/feedback/edit")
 public final class MetaFeedbackEditPage extends ElveosPage {
@@ -54,7 +54,7 @@ public final class MetaFeedbackEditPage extends ElveosPage {
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Feedback", 1);
 
-        final MetaEditBugActionUrl editBugActionUrl = new MetaEditBugActionUrl(getSession().getShortKey(), feedbackId);
+        final MetaEditFeedbackActionUrl editBugActionUrl = new MetaEditFeedbackActionUrl(getSession().getShortKey(), feedbackId);
         final HtmlForm form = new HtmlForm(editBugActionUrl.urlString());
 
         final FieldData descriptionFieldData = editBugActionUrl.getDescriptionParameter().pickFieldData();

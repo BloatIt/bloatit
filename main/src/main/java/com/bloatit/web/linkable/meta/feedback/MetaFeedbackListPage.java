@@ -32,9 +32,8 @@ import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.linkable.meta.bugreport.MetaBugsListPage;
-import com.bloatit.web.url.MetaBugDeleteActionUrl;
-import com.bloatit.web.url.MetaBugEditPageUrl;
+import com.bloatit.web.url.MetaFeedbackDeleteActionUrl;
+import com.bloatit.web.url.MetaFeedbackEditPageUrl;
 import com.bloatit.web.url.MetaFeedbackListPageUrl;
 
 @ParamContainer("meta/feedback/list")
@@ -58,9 +57,9 @@ public final class MetaFeedbackListPage extends ElveosPage {
             if (AuthToken.isAuthenticated()) {
                 final HtmlDiv editBox = new HtmlDiv("float_right");
                 feedbackBox.add(editBox);
-                editBox.add(new MetaBugEditPageUrl(feedback.getId()).getHtmlLink(tr("edit")));
+                editBox.add(new MetaFeedbackEditPageUrl(feedback.getId()).getHtmlLink(tr("edit")));
                 editBox.addText(" - ");
-                editBox.add(new MetaBugDeleteActionUrl(getSession().getShortKey(), feedback.getId()).getHtmlLink(tr("delete")));
+                editBox.add(new MetaFeedbackDeleteActionUrl(getSession().getShortKey(), feedback.getId()).getHtmlLink(tr("delete")));
             }
             feedbackBox.add(new HtmlCachedMarkdownRenderer(feedback.getDescription()));
             pageTitle.add(feedbackBox);
