@@ -282,7 +282,7 @@ public class BloatitWebServer extends WebProcessor {
         if (MetaFeedbackListPageUrl.matches(pageCode)) {
             return new MetaFeedbackListPage(new MetaFeedbackListPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (MetaBugEditPageUrl.matches(pageCode)) {
+        if (MetaFeedbackEditPageUrl.matches(pageCode)) {
             return new MetaFeedbackEditPage(new MetaFeedbackEditPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ConfigurationAdminPageUrl.matches(pageCode)) {
@@ -451,13 +451,13 @@ public class BloatitWebServer extends WebProcessor {
         if (ConfigurationAdminActionUrl.matches(pageCode)) {
             return new ConfigurationAdminAction(new ConfigurationAdminActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (MetaReportBugActionUrl.matches(pageCode)) {
+        if (MetaReportFeedbackActionUrl.matches(pageCode)) {
             return new MetaReportFeedbackAction(new MetaReportFeedbackActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (MetaEditBugActionUrl.matches(pageCode)) {
+        if (MetaEditFeedbackActionUrl.matches(pageCode)) {
             return new MetaEditFeedbackAction(new MetaEditFeedbackActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (MetaBugDeleteActionUrl.matches(pageCode)) {
+        if (MetaFeedbackDeleteActionUrl.matches(pageCode)) {
             return new MetaFeedbackDeleteAction(new MetaFeedbackDeleteActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ChangeLanguageActionUrl.matches(pageCode)) {

@@ -29,7 +29,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.linkable.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.url.MetaFeedbackListPageUrl;
-import com.bloatit.web.url.MetaReportBugActionUrl;
+import com.bloatit.web.url.MetaReportFeedbackActionUrl;
 
 public class SideBarFeedbackBlock extends TitleSideBarElementLayout {
 
@@ -44,7 +44,7 @@ public class SideBarFeedbackBlock extends TitleSideBarElementLayout {
 
         add(bugDetail);
 
-        final MetaReportBugActionUrl reportBugActionUrl = new MetaReportBugActionUrl();
+        final MetaReportFeedbackActionUrl reportBugActionUrl = new MetaReportFeedbackActionUrl();
         final HtmlForm form = new HtmlForm(reportBugActionUrl.urlString());
         final HtmlHidden hiddenUrl = new HtmlHidden(MetaReportFeedbackAction.FEEDBACK_URL, currentUrl.urlString());
 
