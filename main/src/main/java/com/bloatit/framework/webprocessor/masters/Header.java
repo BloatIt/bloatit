@@ -53,7 +53,7 @@ public final class Header extends HtmlElement {
     private final PlaceHolderElement jsPh;
     private final PlaceHolderElement linkPh;
 
-    protected Header(final String title, final String description, final Set<Robot> robots) {
+    protected Header(final String title, final String description, final String keywords, final Set<Robot> robots) {
         super("head");
 
         // Additiong of charset
@@ -73,7 +73,7 @@ public final class Header extends HtmlElement {
                 return true;
             }
         };
-        metaKeywords.addAttribute("keywords", Context.tr("free software funding, open-source, bulk purchases"));
+        metaKeywords.addAttribute("keywords", keywords);
         add(metaKeywords);
 
         // Addition of page description
