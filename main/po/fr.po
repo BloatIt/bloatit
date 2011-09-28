@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 13:08+0200\n"
+"POT-Creation-Date: 2011-09-28 12:56+0200\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -488,7 +488,7 @@ msgstr "Répondre à un commentaire"
 
 #: com/bloatit/web/linkable/CommentReplyPage.java:87
 #: com/bloatit/web/linkable/contribution/ContributePage.java:107
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:127
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:131
 #: com/bloatit/web/linkable/usercontent/CommentForm.java:51
 msgid "In the name of"
 msgstr "De la part de"
@@ -702,7 +702,7 @@ msgid "Create a team"
 msgstr "Créer une équipe"
 
 #: com/bloatit/web/linkable/SiteMapPage.java:79
-#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:135
+#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:137
 #: com/bloatit/web/linkable/softwares/ModifySoftwarePage.java:148
 #: com/bloatit/web/linkable/softwares/SoftwareListPage.java:73
 msgid "Add a software"
@@ -1196,17 +1196,17 @@ msgstr "Langue source&nbsp;: {0}"
 #: com/bloatit/web/linkable/translation/TranslatePage.java:105
 #: com/bloatit/web/linkable/translation/TranslatePage.java:132
 #: com/bloatit/web/linkable/features/FeatureBugListComponent.java:97
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:63
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:101
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:99
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:64
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:109
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:103
 msgid "Title"
 msgstr "Titre"
 
 #: com/bloatit/web/linkable/translation/TranslatePage.java:112
 #: com/bloatit/web/linkable/translation/TranslatePage.java:149
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:77
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:150
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:144
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:158
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:149
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:92
 #: com/bloatit/web/linkable/team/TeamPage.java:219
 msgid "Description"
@@ -1784,7 +1784,7 @@ msgid "A short title of the bug."
 msgstr "Une description courte du bug."
 
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:119
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:137
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:145
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:127
 msgid "In the name of "
 msgstr "Au nom de "
@@ -1806,12 +1806,11 @@ msgstr "Minimum 10 caractère. Vous pouvez entrez un longue description du bug."
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:181
 #: com/bloatit/web/linkable/login/SignUpPage.java:113
 #: com/bloatit/web/linkable/release/CreateReleasePage.java:109
-#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:106
+#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:91
 msgid "Language"
 msgstr "Langue"
 
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:134
-#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:109
 msgid "Language of the description."
 msgstr "Langue de la description."
 
@@ -1913,9 +1912,9 @@ msgid "Forbidden"
 msgstr "Interdit"
 
 #: com/bloatit/web/linkable/atom/FeatureAtomFeed.java:38
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:80
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:121
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:111
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:81
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:129
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:115
 msgid "New software"
 msgstr "Nouveau logiciel"
 
@@ -2010,9 +2009,9 @@ msgstr "Administration des demandes"
 
 #: com/bloatit/web/linkable/admin/HightlightedFeatureAdminPage.java:149
 #: com/bloatit/web/linkable/oauth2/CreateExternalServicePage.java:111
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:171
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:172
 #: com/bloatit/web/linkable/release/CreateReleasePage.java:114
-#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:116
+#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:118
 #: com/bloatit/web/linkable/softwares/ModifySoftwarePage.java:129
 msgid "submit"
 msgstr "valider"
@@ -2353,7 +2352,7 @@ msgstr "Vous devez spécifier la demande que vous voulez supprimer."
 #: com/bloatit/web/linkable/admin/moderation/FeatureModerationPage.java:34
 #: com/bloatit/web/linkable/admin/moderation/FeatureModerationAction.java:23
 #: com/bloatit/web/linkable/features/FeaturePageAlias.java:29
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:37
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:38
 #: com/bloatit/web/linkable/features/ModifyFeatureAction.java:28
 #: com/bloatit/web/linkable/features/FeaturePage.java:45
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:59
@@ -2926,7 +2925,7 @@ msgid "There is no open bug."
 msgstr "Il n'y a aucun bug ouvert."
 
 #: com/bloatit/web/linkable/features/FeaturePageAlias.java:30
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:38
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:39
 #: com/bloatit/web/linkable/features/ModifyFeatureAction.java:29
 #: com/bloatit/web/linkable/features/FeaturePage.java:46
 msgid "You have to specify a feature number."
@@ -3142,17 +3141,17 @@ msgid "translate"
 msgstr "traduire"
 
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:164
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:112
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:113
 msgid "Modify the feature"
 msgstr "Modifier la demande"
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:55
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:56
 msgid "Modify feature page"
 msgstr "Page de modification de demande"
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:66
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:105
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:103
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:67
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:113
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:107
 msgid ""
 "The title of the new feature must be permit to identify clearly the "
 "feature's specificity."
@@ -3160,19 +3159,19 @@ msgstr ""
 "Le titre de la nouvelle demande doit permettre d'identifier clairement la "
 "spécificité de la demande."
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:77
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:118
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:108
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:78
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:126
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:112
 msgid "Software"
 msgstr "Logiciel"
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:79
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:120
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:110
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:80
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:128
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:114
 msgid "Select a software"
 msgstr "Sélectionnez un logiciel"
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:84
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:85
 msgid ""
 "The software of the feature request. Select 'new software' if your feature "
 "is the creation of a new software."
@@ -3181,12 +3180,12 @@ msgstr ""
 "'Nouveau logiciel' si votre demande concerne un la création d'un nouveau "
 "logiciel."
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:95
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:96
 msgid "Enter the new description"
 msgstr "Donnez la nouvelle description"
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:105
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:156
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:106
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:160
 msgid ""
 "Enter a long description of the feature : list all features, describe them "
 "all ... Try to leave as little room for ambiguity as possible."
@@ -3194,17 +3193,17 @@ msgstr ""
 "Tapez une longue description de la demande : liste des fonctionnalités, "
 "décrivez les toutes... Essayez de laisser le moins d'ambiguité possible."
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:119
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:122
 msgid "You must be logged to modify a feature."
 msgstr "Vous devez être connecté pour modifier une demande."
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:125
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:128
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:217
 #: com/bloatit/web/linkable/team/ModifyTeamPage.java:172
 msgid "modify"
 msgstr "modifier"
 
-#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:131
+#: com/bloatit/web/linkable/features/ModifyFeaturePage.java:134
 msgid "Modify feature"
 msgstr "Modifier la demande"
 
@@ -3552,30 +3551,45 @@ msgstr ""
 
 #: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:77
 #: com/bloatit/web/linkable/features/create/ChooseFeatureTypePage.java:61
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:72
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:71
 msgid "Create new feature"
 msgstr "Créer une nouvelle demande"
 
 #: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:93
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:286
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:290
 #: com/bloatit/web/linkable/features/create/ChooseFeatureTypePage.java:74
 #: com/bloatit/web/linkable/features/create/ChooseFeatureTypePage.java:124
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:195
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:196
 msgid "Create a feature"
 msgstr "Créer une nouvelle demande"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:110
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:103
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:98
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:144
+msgid "Description language"
+msgstr "Langue de la description"
+
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:104
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:99
+msgid ""
+"The language of the title and description. These texts can be translated in "
+"other language later."
+msgstr ""
+"La langue du titre et de la description. Ces textes pourront être traduit "
+"dans d'autres langues plus tard."
+
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:118
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:116
 msgid "Offer price"
 msgstr "Prix de l'offre"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:113
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:121
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:119
 msgid "The price must be in euros (€) and can't contains cents."
 msgstr "Le prix doit être en euros (€) et ne doit pas contenir de centimes."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:125
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:115
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:133
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:119
 msgid ""
 "On what software do you want to have this feature. Select 'new software' if "
 "your feature is the creation of a new software."
@@ -3584,7 +3598,7 @@ msgstr ""
 "'Nouveau logiciel' si votre demande concerne un la création d'un nouveau "
 "logiciel."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:138
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:146
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:128
 msgid ""
 "Write this offer in the name of a team, and offer the contributions to this "
@@ -3593,18 +3607,18 @@ msgstr ""
 "Créer cette offre au nom d'une équipe, et donner les contributions à cette "
 "équipe."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:142
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:150
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:136
 msgid "Release date"
 msgstr "Date de livraison"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:145
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:153
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:139
 msgid "You will have to release this feature before the release date."
 msgstr "Vous devrez livrer cette fonctionnalité avant la date de livraison."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:154
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:138
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:162
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:142
 msgid ""
 "Be precise, don't forget to specify :\n"
 " - The expected result\n"
@@ -3630,7 +3644,7 @@ msgstr ""
 "Pensez à préciser si vous voulez que le résultat soit intégré \"upstream\" "
 "(dans la version officielle du logiciel à modifier)"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:172
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:180
 msgid ""
 "Describe the feature and your offer. This description must be accurate "
 "because it will be used to validate the conformity at the end of the "
@@ -3639,23 +3653,23 @@ msgstr ""
 "Décrivez votre demande et votre offre. Cette description doit être précise "
 "car elle sera utilisée pour valider la conformité à la fin du développement."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:177
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:153
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:185
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:158
 msgid "License"
 msgstr "Licence"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:178
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:154
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:186
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:159
 msgid "Select a license…"
 msgstr "Choisissez une licence…"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:189
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:165
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:197
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:170
 msgid "Other Open Source"
 msgstr "Autre Open Source"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:192
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:168
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:200
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:173
 msgid ""
 "Licenses must be <0::OSI-approved>. You should use one of the listed "
 "licenses to avoid <1::license proliferation>."
@@ -3663,31 +3677,22 @@ msgstr ""
 "Les licences doivent être <0::approuvées par l'OSI>. Vous devriez utiliser "
 "une des licences listés pour éviter une <1::proliferation de licences>."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:194
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:170
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:202
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:175
 msgid "http://en.wikipedia.org/wiki/License_proliferation"
 msgstr "http://en.wikipedia.org/wiki/License_proliferation"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:200
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:176
-msgid "description language"
-msgstr "langue de la description"
-
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:201
-msgid "The language of the description."
-msgstr "La langue de la description."
-
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:204
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:208
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:180
 msgid "Show validation details"
 msgstr "Afficher les détails de la validation"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:224
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:228
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:201
 msgid "Days before validation"
 msgstr "Nombre de jours avant validation"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:227
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:231
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:204
 msgid ""
 "The number of days to wait before this offer is can be validated. During "
@@ -3698,12 +3703,12 @@ msgstr ""
 "Pendant cette période les utilisateurs pourront créer des bug dans le bug "
 "tracker. Les bugs critiques devront être fermés avant la validation."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:232
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:236
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:209
 msgid "Percent gained when no FATAL bugs"
 msgstr "Pourcentage gagné quand il n'y a pas de bugs critiques"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:235
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:239
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:212
 msgid ""
 "If you want to add some warranty to the contributor you can say that you "
@@ -3720,12 +3725,12 @@ msgstr ""
 "devez préciser dans le champ prochain. Par défaut, 100% des contributions "
 "est transféré quand tous les bugs critiques sont fermés."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:242
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:246
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:219
 msgid "Percent gained when no MAJOR bugs"
 msgstr "Pourcentage gagné quand il n'y a plus de bugs MAJEURS"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:245
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:249
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:222
 msgid ""
 "If you specified a value for the 'FATAL bugs percent', you have to also "
@@ -3741,24 +3746,24 @@ msgstr ""
 "tous les bugs mineurs sont fermés. Assurez vous que (CRITIQUE + MAJEUR) <= "
 "100."
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:254
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:258
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:231
 msgid "Finish your Offer"
 msgstr "Finir votre offre"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:255
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:259
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:232
 msgid "Add another milestone"
 msgstr "Ajouter un lot"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:259
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:263
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:236
 msgid "Validate !"
 msgstr "Validez !"
 
-#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:276
+#: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferPage.java:280
 #: com/bloatit/web/linkable/features/create/ChooseFeatureTypePage.java:114
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:185
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:186
 msgid "You must be logged to create a new feature."
 msgstr "Vous devez être connecté pour créer une nouvelle demande."
 
@@ -3788,25 +3793,17 @@ msgstr ""
 "Vous utilisez un logiciel libre et vous avez une idée d'amélioration à "
 "soumettre."
 
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:88
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:87
 msgid "Create a new feature"
 msgstr "Créer une nouvelle demande"
 
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:128
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:132
 msgid "You can create this feature in the name of a team."
 msgstr "Vous pouvez créer cette demande au nom d'une équipe."
 
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:133
+#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:137
 msgid "Describe the feature"
 msgstr "Décrivez la demande"
-
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:165
-msgid "Description language"
-msgstr "Langue de la description"
-
-#: com/bloatit/web/linkable/features/create/CreateFeaturePage.java:165
-msgid "The language of the description you just wrote."
-msgstr "Langue de la description que vous venez d'écrire."
 
 #: com/bloatit/web/linkable/offer/OfferAction.java:49
 msgid "The target feature is mandatory to make an offer."
@@ -3847,17 +3844,17 @@ msgstr "L'identifiant de la demande n'est pas optionnel !"
 msgid "You must be logged to make an offer"
 msgstr "Vous devez être connecté pour faire une offre"
 
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:147
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:145
+msgid "The language of the offer description."
+msgstr "Langue de la description de l'offre."
+
+#: com/bloatit/web/linkable/offer/MakeOfferPage.java:152
 msgid ""
 "Describe your offer. This description must be accurate because it will be "
 "used to validate the conformity at the end of the development."
 msgstr ""
 "Décrivez votre offre. Cette description doit être précise car elle sera "
 "utilisée pour valider la conformité à la fin du développement."
-
-#: com/bloatit/web/linkable/offer/MakeOfferPage.java:177
-msgid "The language of the offer description."
-msgstr "Langue de la description de l'offre."
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:66
 #: com/bloatit/web/linkable/members/MemberPage.java:161
@@ -5007,12 +5004,20 @@ msgstr "Nom du logiciel"
 msgid "The name of the existing software."
 msgstr "Le nom du logiciel existant."
 
-#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:92
+#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:94
+msgid ""
+"Language of the description.  The description can be translated in other "
+"language later."
+msgstr ""
+"Langue de la description. La description pourra être traduite dans d'autres "
+"langues plus tard."
+
+#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:101
 #: com/bloatit/web/linkable/softwares/ModifySoftwarePage.java:108
 msgid "Describe the software"
 msgstr "Décrivez le logiciel"
 
-#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:97
+#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:106
 #: com/bloatit/web/linkable/softwares/ModifySoftwarePage.java:118
 msgid ""
 "Mininum 10 character. You can enter a long description of the project : list "
@@ -5021,7 +5026,7 @@ msgstr ""
 "Minimum 10 caractère. Vous pouvez entrer une longue description du projet : "
 "liste des fonctionnalités, liens vers le site, etc."
 
-#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:112
+#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:114
 #: com/bloatit/web/linkable/softwares/SoftwaresTools.java:37
 #: com/bloatit/web/linkable/softwares/SoftwaresTools.java:40
 #: com/bloatit/web/linkable/softwares/SoftwaresTools.java:49
@@ -5030,7 +5035,7 @@ msgstr ""
 msgid "Software logo"
 msgstr "Logo du logiciel"
 
-#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:125
+#: com/bloatit/web/linkable/softwares/CreateSoftwarePage.java:127
 #: com/bloatit/web/linkable/softwares/ModifySoftwarePage.java:138
 msgid "You must be logged to add a new software."
 msgstr "Vous devez être connecté pour ajouter un logiciel."
@@ -5133,11 +5138,17 @@ msgstr ""
 "projet. Elveos garantit aussi que, lorsque vous décidez de financer un "
 "projet, vous aurez soit ce que vous avez demandé, soit vous serez remboursé."
 
-#: com/bloatit/web/linkable/master/ElveosPage.java:198
+#: com/bloatit/web/linkable/master/ElveosPage.java:171
+msgid "free software funding, open-source, crowdfunding, bulk purchases"
+msgstr ""
+"financemement de logiciel libre, open-source, financement collaboratif, "
+"achat groupé"
+
+#: com/bloatit/web/linkable/master/ElveosPage.java:206
 msgid "elveos.org logo"
 msgstr "elveos.org logo"
 
-#: com/bloatit/web/linkable/master/ElveosPage.java:203
+#: com/bloatit/web/linkable/master/ElveosPage.java:211
 msgid "the collaborative platform for free software funding"
 msgstr "la plateforme de financement collaboratif pour les logiciels libres"
 
@@ -5937,9 +5948,18 @@ msgstr "elveos.org&nbsp;: Retrait d'argent terminé"
 msgid "Markdown preview"
 msgstr "Prévisualisation markdown"
 
-#: com/bloatit/framework/webprocessor/masters/Header.java:76
-msgid "free software funding, open-source, bulk purchases"
-msgstr "financemement de logiciel libre, open-source, achat groupé"
+#: com/bloatit/framework/webprocessor/components/form/HtmlDateField.java:90
+msgid "yyyy-mm-dd"
+msgstr "aaaa-mm-jj"
+
+#~ msgid "description language"
+#~ msgstr "langue de la description"
+
+#~ msgid "The language of the description."
+#~ msgstr "La langue de la description."
+
+#~ msgid "The language of the description you just wrote."
+#~ msgstr "Langue de la description que vous venez d'écrire."
 
 #~ msgid "Join right of the team: "
 #~ msgstr "Visibilité de l'équipe&nbsp;: "
