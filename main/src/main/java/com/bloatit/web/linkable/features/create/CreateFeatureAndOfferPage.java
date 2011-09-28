@@ -92,10 +92,18 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Create a feature"), 1);
 
+        
+        
         // Create offer form
         final CreateFeatureAndOfferActionUrl offerActionUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey(), process);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
 
+        // Locale
+        offerForm.add(new LanguageField(offerActionUrl, //
+                                        Context.tr("Description language"), //
+                                        Context.tr("The language of the title and description. These texts can be translated in other language later.")));
+
+        
         // Title of the feature
         final FieldData descriptionFieldData = offerActionUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextField titleInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
@@ -144,7 +152,7 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         dateInput.addErrorMessages(dateData.getErrorMessages());
         dateInput.setComment(Context.tr("You will have to release this feature before the release date."));
         offerForm.add(dateInput);
-
+        
         // Specification
         final FieldData specificationData = offerActionUrl.getSpecificationParameter().pickFieldData();
         final HtmlTextArea specificationInput = new HtmlTextArea(specificationData.getName(), Context.tr("Description"), 10, 80);
@@ -195,10 +203,6 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         offerForm.add(licenseInput);
 
-        // locale
-        offerForm.add(new LanguageField(offerActionUrl, //
-                                        Context.tr("description language"), //
-                                        Context.tr("The language of the description.")));
 
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));

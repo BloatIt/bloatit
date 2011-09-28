@@ -53,14 +53,13 @@ public final class CreateFeaturePage extends CreateUserContentPage {
     public static final int SPECIF_INPUT_NB_LINES = 20;
     public static final int SPECIF_INPUT_NB_COLUMNS = 100;
     public static final int FILE_MAX_SIZE_MIO = 2;
-    
+
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam(role = Role.PAGENAME)
     CreateFeatureProcess process;
-    
-    
+
     private final CreateFeaturePageUrl url;
-    
+
     public CreateFeaturePage(final CreateFeaturePageUrl url) {
         super(url);
         this.url = url;
@@ -94,6 +93,11 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         createFeatureTitle.add(createFeatureForm);
 
+        // Locale
+        createFeatureForm.add(new LanguageField(doCreateUrl, //
+                                        Context.tr("Description language"), //
+                                        Context.tr("The language of the title and description. These texts can be translated in other language later.")));
+
         // Title of the feature
         final FieldData descriptionFieldData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextField titleInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
@@ -113,11 +117,11 @@ public final class CreateFeaturePage extends CreateUserContentPage {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
         softwareInput.setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
-        
+
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }
-        
+
         createFeatureForm.add(softwareInput);
 
         // As team input
@@ -160,9 +164,6 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // Markdown previewer
         final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
         createFeatureForm.add(mdPreview);
-        
-        // Language
-        createFeatureForm.add(new LanguageField(doCreateUrl, tr("Description language"), tr("The language of the description you just wrote.")));
 
         // Attachment
         createFeatureForm.add(new AttachmentField(doCreateUrl, FILE_MAX_SIZE_MIO + " Mio"));

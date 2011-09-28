@@ -139,6 +139,11 @@ public final class MakeOfferPage extends CreateUserContentPage {
         dateInput.setComment(Context.tr("You will have to release this feature before the release date."));
         offerForm.add(dateInput);
 
+        // locale
+        offerForm.add(new LanguageField(offerActionUrl, //
+                                        Context.tr("Description language"), //
+                                        Context.tr("The language of the offer description.")));
+
         // Description
         final FieldData descriptionData = offerActionUrl.getDescriptionParameter().pickFieldData();
         final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionData.getName(), Context.tr("Description"), 10, 80);
@@ -170,11 +175,6 @@ public final class MakeOfferPage extends CreateUserContentPage {
                                                   new UrlString(Context.tr("http://en.wikipedia.org/wiki/License_proliferation")).getHtmlLink()));
 
         offerForm.add(licenseInput);
-
-        // locale
-        offerForm.add(new LanguageField(offerActionUrl, //
-                                        Context.tr("description language"), //
-                                        Context.tr("The language of the offer description.")));
 
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
