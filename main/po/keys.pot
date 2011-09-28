@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-28 12:56+0200\n"
+"POT-Creation-Date: 2011-09-28 14:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1213,7 +1213,7 @@ msgstr ""
 #: com/bloatit/web/linkable/features/ModifyFeatureAction.java:34
 #: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferAction.java:57
 #: com/bloatit/web/linkable/features/create/CreateFeatureAction.java:47
-#: com/bloatit/web/linkable/meta/bugreport/MetaEditBugAction.java:41
+#: com/bloatit/web/linkable/meta/feedback/MetaEditFeedbackAction.java:41
 msgid "The title must have at least %constraint% chars."
 msgstr ""
 
@@ -1221,7 +1221,7 @@ msgstr ""
 #: com/bloatit/web/linkable/features/ModifyFeatureAction.java:35
 #: com/bloatit/web/linkable/features/create/CreateFeatureAndOfferAction.java:58
 #: com/bloatit/web/linkable/features/create/CreateFeatureAction.java:48
-#: com/bloatit/web/linkable/meta/bugreport/MetaEditBugAction.java:40
+#: com/bloatit/web/linkable/meta/feedback/MetaEditFeedbackAction.java:40
 msgid "The title must be %constraint% chars length max."
 msgstr ""
 
@@ -1242,7 +1242,7 @@ msgstr ""
 #: com/bloatit/web/linkable/oauth2/CreateExternalServiceAction.java:52
 #: com/bloatit/web/linkable/features/ModifyFeatureAction.java:39
 #: com/bloatit/web/linkable/features/create/CreateFeatureAction.java:52
-#: com/bloatit/web/linkable/meta/bugreport/MetaReportBugAction.java:41
+#: com/bloatit/web/linkable/meta/feedback/MetaReportFeedbackAction.java:41
 #: com/bloatit/web/linkable/release/CreateReleaseAction.java:42
 #: com/bloatit/web/linkable/softwares/ModifySoftwareAction.java:57
 #: com/bloatit/web/linkable/softwares/CreateSoftwareAction.java:49
@@ -1252,7 +1252,7 @@ msgstr ""
 #: com/bloatit/web/linkable/translation/TranslateAction.java:60
 #: com/bloatit/web/linkable/features/ModifyFeatureAction.java:40
 #: com/bloatit/web/linkable/features/create/CreateFeatureAction.java:53
-#: com/bloatit/web/linkable/meta/bugreport/MetaReportBugAction.java:40
+#: com/bloatit/web/linkable/meta/feedback/MetaReportFeedbackAction.java:40
 msgid "The description must be %constraint% chars length max."
 msgstr ""
 
@@ -1508,7 +1508,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/contribution/HtmlContributionLine.java:151
 #: com/bloatit/web/linkable/contribution/HtmlPayBlock.java:82
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:60
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackListPage.java:61
 msgid "edit"
 msgstr ""
 
@@ -1778,7 +1778,6 @@ msgid "Level of the bug."
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:149
-#: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:56
 msgid "Report the bug"
 msgstr ""
 
@@ -1874,7 +1873,7 @@ msgid "Votable administration"
 msgstr ""
 
 #: com/bloatit/web/linkable/admin/AdminActionManager.java:28
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:62
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackListPage.java:63
 msgid "delete"
 msgstr ""
 
@@ -3325,7 +3324,6 @@ msgid "Feature {0}"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeaturePage.java:120
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:98
 msgid "Bugs"
 msgstr ""
 
@@ -3960,7 +3958,7 @@ msgid "Members list"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/MembersListPage.java:124
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugEditPage.java:106
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackEditPage.java:106
 #: com/bloatit/web/linkable/master/Menu.java:51
 #: com/bloatit/web/linkable/team/TeamPage.java:157
 msgid "Members"
@@ -4291,49 +4289,57 @@ msgstr ""
 msgid "Incorrect language, same player play again!"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugDeleteAction.java:52
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackDeleteAction.java:52
 #, java-format
-msgid "Bug id ''{0}'' doesn't exist. Maybe it has already been deleted."
+msgid "Feedback id ''{0}'' doesn't exist. Maybe it has already been deleted."
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugDeleteAction.java:63
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackDeleteAction.java:63
 msgid "You have to be logged in to delete a metaBug."
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaEditBugAction.java:42
-msgid "Error you forgot to write a title"
+#: com/bloatit/web/linkable/meta/feedback/MetaReportFeedbackAction.java:42
+msgid "Error you forgot to write a description"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaEditBugAction.java:87
-msgid "You have to be logged in to edit a metabug."
+#: com/bloatit/web/linkable/meta/feedback/SideBarFeedbackBlock.java:37
+msgid "Feedback/Bugs"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugEditPage.java:75
-#: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:54
+#: com/bloatit/web/linkable/meta/feedback/SideBarFeedbackBlock.java:43
+msgid ""
+"You can use the <0::feedback> system to report any problem or suggestion on "
+"elveos.org website."
+msgstr ""
+
+#: com/bloatit/web/linkable/meta/feedback/SideBarFeedbackBlock.java:54
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackEditPage.java:75
 msgid "You can use markdown syntax in this field."
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugEditPage.java:77
-msgid "Update the bug"
+#: com/bloatit/web/linkable/meta/feedback/SideBarFeedbackBlock.java:56
+msgid "Send feedback"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:37
-msgid "Bug report"
+#: com/bloatit/web/linkable/meta/feedback/MetaEditFeedbackAction.java:42
+msgid "Error you forgot to write a title"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:43
-msgid ""
-"You can use the <0::bug report> system to report any problem on elveos.org "
-"website."
+#: com/bloatit/web/linkable/meta/feedback/MetaEditFeedbackAction.java:87
+msgid "You have to be logged in to edit a metabug."
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:53
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackListPage.java:54
 #, java-format
-msgid "Bugs list ({0})"
+msgid "Feedback list ({0})"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaReportBugAction.java:42
-msgid "Error you forgot to write a description"
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackListPage.java:99
+msgid "Feedback"
+msgstr ""
+
+#: com/bloatit/web/linkable/meta/feedback/MetaFeedbackEditPage.java:77
+msgid "Update the feedback"
 msgstr ""
 
 #: com/bloatit/web/linkable/login/LostPasswordPage.java:66
