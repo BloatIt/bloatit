@@ -76,7 +76,7 @@ public class ModifyDetailAction extends LoggedElveosAction {
                 me.setEmailToActivate(email.trim());
 
                 final String activationKey = me.getEmailActivationKey();
-                final MemberActivationActionUrl url = new MemberActivationActionUrl(me.getLogin(), activationKey);
+                final MemberActivationActionUrl url = new MemberActivationActionUrl(activationKey, me.getLogin());
 
                 final String content = Context.tr("Hi {0},\n\nYou wanted to change the email for your Elveos.org account. Please click on the following link to activate your new email: \n\n {1}",
                                                   me.getLogin(),
@@ -117,7 +117,7 @@ public class ModifyDetailAction extends LoggedElveosAction {
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         try {
-            if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail()) && MemberManager.emailExists(email)) {
+            if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail()) && (MemberManager.emailExists(email) && !email.equals(me.getEmailToActivate()))) {
                 session.notifyError(Context.tr("Email already used."));
                 url.getEmailParameter().addErrorMessage(Context.tr("Email already used."));
                 return doProcessErrors();

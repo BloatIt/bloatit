@@ -9,13 +9,13 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.meta.bugreport;
+package com.bloatit.web.linkable.meta.feedback;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.meta.MetaBug;
-import com.bloatit.framework.meta.MetaBugManager;
+import com.bloatit.framework.meta.MetaFeedback;
+import com.bloatit.framework.meta.MetaFeedbackManager;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -30,31 +30,31 @@ import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MetaBugEditPageUrl;
-import com.bloatit.web.url.MetaBugsListPageUrl;
-import com.bloatit.web.url.MetaEditBugActionUrl;
+import com.bloatit.web.url.MetaEditFeedbackActionUrl;
+import com.bloatit.web.url.MetaFeedbackEditPageUrl;
+import com.bloatit.web.url.MetaFeedbackListPageUrl;
 
-@ParamContainer("meta/bug/edit")
-public final class MetaBugEditPage extends ElveosPage {
+@ParamContainer("meta/feedback/edit")
+public final class MetaFeedbackEditPage extends ElveosPage {
 
-    private final MetaBugEditPageUrl url;
+    private final MetaFeedbackEditPageUrl url;
 
     @RequestParam
-    private final String bugId;
+    private final String feedbackId;
 
-    public MetaBugEditPage(final MetaBugEditPageUrl url) {
+    public MetaFeedbackEditPage(final MetaFeedbackEditPageUrl url) {
         super(url);
         this.url = url;
-        this.bugId = url.getBugId();
+        this.feedbackId = url.getFeedbackId();
     }
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Bug", 1);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Feedback", 1);
 
-        final MetaEditBugActionUrl editBugActionUrl = new MetaEditBugActionUrl(getSession().getShortKey(), bugId);
+        final MetaEditFeedbackActionUrl editBugActionUrl = new MetaEditFeedbackActionUrl(getSession().getShortKey(), feedbackId);
         final HtmlForm form = new HtmlForm(editBugActionUrl.urlString());
 
         final FieldData descriptionFieldData = editBugActionUrl.getDescriptionParameter().pickFieldData();
@@ -64,17 +64,17 @@ public final class MetaBugEditPage extends ElveosPage {
         if (suggestedValue != null) {
             bugDescription.setDefaultValue(suggestedValue);
         } else {
-            final MetaBug byId = MetaBugManager.getById(bugId);
+            final MetaFeedback byId = MetaFeedbackManager.getById(feedbackId);
             if (byId == null) {
-                Context.getSession().notifyWarning("The bug you selected doesn't exist");
-                throw new RedirectException(new MetaBugsListPageUrl());
+                Context.getSession().notifyWarning("The feedback you selected doesn't exist");
+                throw new RedirectException(new MetaFeedbackListPageUrl());
             }
             bugDescription.setDefaultValue(byId.getDescription());
         }
 
         bugDescription.setComment(tr("You can use markdown syntax in this field."));
 
-        final HtmlSubmit submit = new HtmlSubmit(tr("Update the bug"));
+        final HtmlSubmit submit = new HtmlSubmit(tr("Update the feedback"));
 
         form.add(bugDescription);
         form.add(submit);
@@ -97,7 +97,7 @@ public final class MetaBugEditPage extends ElveosPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return MetaBugEditPage.generateBreadcrumb();
+        return MetaFeedbackEditPage.generateBreadcrumb();
     }
 
     private static Breadcrumb generateBreadcrumb() {

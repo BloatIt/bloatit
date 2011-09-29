@@ -86,6 +86,15 @@ public final class CreateSoftwarePage extends LoggedElveosPage {
         softwareNameInput.setComment(Context.tr("The name of the existing software."));
         addSoftwareForm.add(softwareNameInput);
 
+        // Language
+        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
+        final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
+        languageInput.setDefaultValue(languageData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
+        languageInput.addErrorMessages(languageData.getErrorMessages());
+        languageInput.setComment(Context.tr("Language of the description.  The description can be translated in other language later."));
+        addSoftwareForm.add(languageInput);
+
+        
         // Description
         final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionData.getName(),
@@ -101,13 +110,6 @@ public final class CreateSoftwarePage extends LoggedElveosPage {
         final MarkdownPreviewer mdPreview = new MarkdownPreviewer(descriptionInput);
         addSoftwareForm.add(mdPreview);
 
-        // Language
-        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
-        final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
-        languageInput.setDefaultValue(languageData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
-        languageInput.addErrorMessages(languageData.getErrorMessages());
-        languageInput.setComment(Context.tr("Language of the description."));
-        addSoftwareForm.add(languageInput);
 
         final HtmlFileInput softwareImageInput = new HtmlFileInput(CreateSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
         softwareImageInput.setComment("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px.");

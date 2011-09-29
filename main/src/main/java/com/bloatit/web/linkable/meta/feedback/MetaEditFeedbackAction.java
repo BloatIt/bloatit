@@ -9,11 +9,11 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.meta.bugreport;
+package com.bloatit.web.linkable.meta.feedback;
 
 import java.io.IOException;
 
-import com.bloatit.framework.meta.MetaBugManager;
+import com.bloatit.framework.meta.MetaFeedbackManager;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -25,45 +25,45 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.MetaBugsListPageUrl;
-import com.bloatit.web.url.MetaEditBugActionUrl;
+import com.bloatit.web.url.MetaFeedbackListPageUrl;
+import com.bloatit.web.url.MetaEditFeedbackActionUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("meta/bug/doedit")
-public final class MetaEditBugAction extends LoggedElveosAction {
+@ParamContainer("meta/feedback/doedit")
+public final class MetaEditFeedbackAction extends LoggedElveosAction {
 
-    private static final String BUG_DESCRIPTION = "bug_description";
+    private static final String FEEDBACK_DESCRIPTION = "feedback_description";
 
-    @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
+    @RequestParam(name = FEEDBACK_DESCRIPTION, role = Role.POST)
     @MaxConstraint(max = 800, message = @tr("The title must be %constraint% chars length max."))
     @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
     @NonOptional(@tr("Error you forgot to write a title"))
     private final String description;
 
     @RequestParam
-    private final String bugId;
+    private final String feedbackId;
 
-    private final MetaEditBugActionUrl url;
+    private final MetaEditFeedbackActionUrl url;
 
-    public MetaEditBugAction(final MetaEditBugActionUrl url) {
+    public MetaEditFeedbackAction(final MetaEditFeedbackActionUrl url) {
         super(url);
         this.url = url;
         this.description = url.getDescription();
-        this.bugId = url.getBugId();
+        this.feedbackId = url.getFeedbackId();
     }
 
     @Override
     protected Url doProcessRestricted(final Member me) {
         try {
-            MetaBugManager.getById(bugId).update(description);
-            session.notifyGood("Bug updated.");
+            MetaFeedbackManager.getById(feedbackId).update(description);
+            session.notifyGood("Feedback updated.");
         } catch (final IOException e) {
-            session.notifyError("A problem occur during the bug update process! Please report this bug! :)");
+            session.notifyError("A problem occur during the feedback update process! Please report this bug! :)");
             return doProcessErrors();
         }
-        return new MetaBugsListPageUrl();
+        return new MetaFeedbackListPageUrl();
     }
 
     @Override

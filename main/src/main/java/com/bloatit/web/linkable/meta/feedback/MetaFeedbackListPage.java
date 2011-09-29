@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.meta.bugreport;
+package com.bloatit.web.linkable.meta.feedback;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.meta.MetaBug;
-import com.bloatit.framework.meta.MetaBugManager;
+import com.bloatit.framework.meta.MetaFeedback;
+import com.bloatit.framework.meta.MetaFeedbackManager;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -32,15 +32,15 @@ import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.MetaBugDeleteActionUrl;
-import com.bloatit.web.url.MetaBugEditPageUrl;
-import com.bloatit.web.url.MetaBugsListPageUrl;
+import com.bloatit.web.url.MetaFeedbackDeleteActionUrl;
+import com.bloatit.web.url.MetaFeedbackEditPageUrl;
+import com.bloatit.web.url.MetaFeedbackListPageUrl;
 
-@ParamContainer("meta/bug/list")
-public final class MetaBugsListPage extends ElveosPage {
-    private final MetaBugsListPageUrl url;
+@ParamContainer("meta/feedback/list")
+public final class MetaFeedbackListPage extends ElveosPage {
+    private final MetaFeedbackListPageUrl url;
 
-    public MetaBugsListPage(final MetaBugsListPageUrl url) {
+    public MetaFeedbackListPage(final MetaFeedbackListPageUrl url) {
         super(url);
         this.url = url;
     }
@@ -48,21 +48,21 @@ public final class MetaBugsListPage extends ElveosPage {
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        final List<MetaBug> bugList = MetaBugManager.getOpenBugs();
+        final List<MetaFeedback> feedbackList = MetaFeedbackManager.getOpenFeedbacks();
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(tr("Bugs list ({0})", bugList.size()), 1);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(tr("Feedback list ({0})", feedbackList.size()), 1);
 
-        for (final MetaBug bug : bugList) {
-            final HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
+        for (final MetaFeedback feedback : feedbackList) {
+            final HtmlDiv feedbackBox = new HtmlDiv("meta_bug_box");
             if (AuthToken.isAuthenticated()) {
                 final HtmlDiv editBox = new HtmlDiv("float_right");
-                bugBox.add(editBox);
-                editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));
+                feedbackBox.add(editBox);
+                editBox.add(new MetaFeedbackEditPageUrl(feedback.getId()).getHtmlLink(tr("edit")));
                 editBox.addText(" - ");
-                editBox.add(new MetaBugDeleteActionUrl(getSession().getShortKey(), bug.getId()).getHtmlLink(tr("delete")));
+                editBox.add(new MetaFeedbackDeleteActionUrl(getSession().getShortKey(), feedback.getId()).getHtmlLink(tr("delete")));
             }
-            bugBox.add(new HtmlCachedMarkdownRenderer(bug.getDescription()));
-            pageTitle.add(bugBox);
+            feedbackBox.add(new HtmlCachedMarkdownRenderer(feedback.getDescription()));
+            pageTitle.add(feedbackBox);
 
         }
 
@@ -73,7 +73,7 @@ public final class MetaBugsListPage extends ElveosPage {
 
     @Override
     protected String createPageTitle() {
-        return "Bugs list";
+        return "Feedback list";
     }
 
     @Override
@@ -90,12 +90,12 @@ public final class MetaBugsListPage extends ElveosPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return MetaBugsListPage.generateBreadcrumb();
+        return MetaFeedbackListPage.generateBreadcrumb();
     }
 
     private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
-        breadcrumb.pushLink(new MetaBugsListPageUrl().getHtmlLink(tr("Bugs")));
+        breadcrumb.pushLink(new MetaFeedbackListPageUrl().getHtmlLink(tr("Feedback")));
         return breadcrumb;
     }
 }

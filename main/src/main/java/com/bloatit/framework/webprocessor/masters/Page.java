@@ -138,6 +138,14 @@ public abstract class Page implements Linkable {
      * @return the string describing the page
      */
     protected abstract String getPageDescription();
+    
+    /**
+     * A method that returns the list of the keywords inserted inside the
+     * {@code <meta name="keywords">} tag in page header.
+     * 
+     * @return the string describing the site
+     */
+    protected abstract String getPageKeyWords();
 
     /**
      * A method that returns the list of page specific robots information
@@ -176,7 +184,7 @@ public abstract class Page implements Linkable {
         page.add(html);
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
         html.addAttribute("xml:lang", Context.getLocalizator().getCode());
-        pageHeader = new Header(getTitle(), getPageDescription(), getRobots());
+        pageHeader = new Header(getTitle(), getPageDescription(), getPageKeyWords(),  getRobots());
         html.add(pageHeader);
 
         html.add(bodyContent);

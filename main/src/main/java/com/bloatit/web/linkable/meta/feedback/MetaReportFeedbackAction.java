@@ -9,12 +9,12 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.meta.bugreport;
+package com.bloatit.web.linkable.meta.feedback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.bloatit.framework.meta.MetaBugManager;
+import com.bloatit.framework.meta.MetaFeedbackManager;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -25,48 +25,48 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.master.ElveosAction;
-import com.bloatit.web.url.MetaReportBugActionUrl;
+import com.bloatit.web.url.MetaReportFeedbackActionUrl;
 
 /**
- * An action used to create a bug
+ * An action used to create a feedback
  */
-@ParamContainer("meta/bugreport/doreport")
-public final class MetaReportBugAction extends ElveosAction {
+@ParamContainer("meta/feedback/doreport")
+public final class MetaReportFeedbackAction extends ElveosAction {
 
-    private static final String BUG_DESCRIPTION = "bug_description";
-    protected static final String BUG_URL = "bug_url";
+    private static final String FEEDBACK_DESCRIPTION = "feedback_description";
+    protected static final String FEEDBACK_URL = "feedback_url";
 
-    @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
+    @RequestParam(name = FEEDBACK_DESCRIPTION, role = Role.POST)
     @MaxConstraint(max = 80000, message = @tr("The description must be %constraint% chars length max."))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     @NonOptional(@tr("Error you forgot to write a description"))
     private final String description;
 
-    @RequestParam(name = BUG_URL, role = Role.POST)
-    private final String bugUrl;
+    @RequestParam(name = FEEDBACK_URL, role = Role.POST)
+    private final String feedbackUrl;
 
-    private final MetaReportBugActionUrl url;
+    private final MetaReportFeedbackActionUrl url;
 
-    public MetaReportBugAction(final MetaReportBugActionUrl url) {
+    public MetaReportFeedbackAction(final MetaReportFeedbackActionUrl url) {
         super(url);
         this.url = url;
         this.description = url.getDescription();
-        this.bugUrl = url.getBugUrl();
+        this.feedbackUrl = url.getFeedbackUrl();
     }
 
     @Override
     protected Url doProcess() {
         String bugReport = "";
-        bugReport += "* **Url:** " + bugUrl + "\n";
+        bugReport += "* **Url:** " + feedbackUrl + "\n";
         bugReport += "* **Author:** " + (AuthToken.isAuthenticated() ? AuthToken.getMember().getLogin() : "not logged") + "\n";
         bugReport += "* **Date:** " + new SimpleDateFormat().format(new Date()) + "\n";
         bugReport += "\n";
         bugReport += description;
 
-        if (MetaBugManager.reportBug(bugReport)) {
-            session.notifyGood("Bug reported, Thanks!");
+        if (MetaFeedbackManager.reportBug(bugReport)) {
+            session.notifyGood("Feedback reported, Thanks!");
         } else {
-            session.notifyError("A problem occur during the bug report process! Please report this bug! :)");
+            session.notifyError("A problem occur during the feedback report process! Please report this bug! :)");
         }
         return session.getLastVisitedPage();
     }

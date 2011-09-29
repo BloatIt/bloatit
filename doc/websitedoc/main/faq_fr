@@ -105,3 +105,15 @@ Le développement est validé, et la demande fermée, 7 jours après que le dern
 Ce délai permet aux utilisateurs de tester le développement.
 De plus, lors que les conditions sont remplies, nous nous chargeons de valider manuellement la demande, pour vérifier une dernière fois qu'il n'y a pas de problèmes.
 
+- **Est-il possible de financer un logiciel qui n'existe pas encore ?**
+Oui. Pour cela, lors de la création d'une demande, il faut choisir "nouveau logiciel" dans le menu déroulant "Logiciel".
+
+##Le site
+
+- **Combien de temps durent les sessions ?**
+Les sessions durent 15 jours à partir de la dernière action sur le site. Il est possible de se déconnecter pour détruire la session.
+
+- **Est-ce normal que je puisse modifier et supprimer des bugs dans le petit bug tracker du site ?**
+Oui, il s'agit d'un bug tracker sommaire mais qui permet de signaler et gérer facilement les bugs. Pour faire des rapports de bug plus important, il est conseillé d'aller sur la forge : http://elveos.indefero.net/p/elveos/issues/
+
+

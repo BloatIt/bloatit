@@ -162,6 +162,14 @@ public abstract class ElveosPage extends Page {
                 + "Elveos offers a streamlined process for the user, from the description of his needs, to the validation of the project ; "
                 + "Elveos also guarantees that when you decide to fund a project, you will either get what you asked, or be reimbursed.");
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final String getPageKeyWords() {
+        return Context.tr("free software funding, open-source, crowdfunding, bulk purchases");
+    }
 
     @Override
     protected final String getTitle() {

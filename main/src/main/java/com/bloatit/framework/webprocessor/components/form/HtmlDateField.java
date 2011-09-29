@@ -25,6 +25,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlFormField.InputBlo
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.WebConfiguration;
 
 /**
@@ -86,6 +87,7 @@ class DateInputBlock extends InputBlock {
         container = new PlaceHolderElement();
         input = new HtmlSimpleInput("text");
         input.addAttribute("autocomplete", "off");
+        input.addAttribute("placeholder", Context.tr("yyyy-mm-dd"));
         input.setId(id);
         script = new HtmlScript();
         script.append("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n");

@@ -1,6 +1,25 @@
 Changelog
 =========
 
+Version 1.1.14
+--------------
+
+### Features
+- Add contribution state in REST
+- Add software name in atom feed
+- Improve canceled withdraw style and wording
+- Update documentation
+- Add markdown help in modify feature page
+- Add crowdfunding in meta keywords in html header
+- Add a placeholder in datepicker fields
+- Add documentation about translations near to concerned fields
+- Rename "bug report system" into "feedback system"
+
+### Bug fix
+ - Fix bug javascript regression : datepicker and markdown preview now work correctly
+ - Fix crash if a member try to contribute less than 1 €
+ - Fix spelling and improve wording
+
 Version 1.1.13
 -------------
 ### Features

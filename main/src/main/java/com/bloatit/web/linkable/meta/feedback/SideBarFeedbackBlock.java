@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.linkable.meta.bugreport;
+package com.bloatit.web.linkable.meta.feedback;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
@@ -28,32 +28,32 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.linkable.master.sidebar.TitleSideBarElementLayout;
-import com.bloatit.web.url.MetaBugsListPageUrl;
-import com.bloatit.web.url.MetaReportBugActionUrl;
+import com.bloatit.web.url.MetaFeedbackListPageUrl;
+import com.bloatit.web.url.MetaReportFeedbackActionUrl;
 
-public class SideBarBugReportBlock extends TitleSideBarElementLayout {
+public class SideBarFeedbackBlock extends TitleSideBarElementLayout {
 
-    public SideBarBugReportBlock(final Url currentUrl) {
-        setTitle(tr("Bug report"));
+    public SideBarFeedbackBlock(final Url currentUrl) {
+        setTitle(tr("Feedback/Bugs"));
 
         final HtmlParagraph bugDetail = new HtmlParagraph();
 
-        final HtmlLink htmlLink = new MetaBugsListPageUrl().getHtmlLink();
+        final HtmlLink htmlLink = new MetaFeedbackListPageUrl().getHtmlLink();
         htmlLink.setNoFollow();
-        bugDetail.add(new HtmlMixedText(tr("You can use the <0::bug report> system to report any problem on elveos.org website."), htmlLink));
+        bugDetail.add(new HtmlMixedText(tr("You can use the <0::feedback> system to report any problem or suggestion on elveos.org website."), htmlLink));
 
         add(bugDetail);
 
-        final MetaReportBugActionUrl reportBugActionUrl = new MetaReportBugActionUrl();
+        final MetaReportFeedbackActionUrl reportBugActionUrl = new MetaReportFeedbackActionUrl();
         final HtmlForm form = new HtmlForm(reportBugActionUrl.urlString());
-        final HtmlHidden hiddenUrl = new HtmlHidden(MetaReportBugAction.BUG_URL, currentUrl.urlString());
+        final HtmlHidden hiddenUrl = new HtmlHidden(MetaReportFeedbackAction.FEEDBACK_URL, currentUrl.urlString());
 
         final FieldData descriptionFieldData = reportBugActionUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea bugDescription = new HtmlTextArea(descriptionFieldData.getName(), 5, 50);
         bugDescription.setDefaultValue(descriptionFieldData.getSuggestedValue());
         bugDescription.setComment(tr("You can use markdown syntax in this field."));
 
-        final HtmlSubmit submit = new HtmlSubmit(tr("Report the bug"));
+        final HtmlSubmit submit = new HtmlSubmit(tr("Send feedback"));
 
         form.add(hiddenUrl);
         form.add(bugDescription);
