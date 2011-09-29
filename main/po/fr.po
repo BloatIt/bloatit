@@ -3928,7 +3928,7 @@ msgstr "Email"
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:158
 #, java-format
 msgid "Waiting for activation: {0}"
-msgstr "En attente d'activation&nbsp;: {0}"
+msgstr "En attente d''activation&nbsp;: {0}"
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:197
 msgid "You must be logged to modify your personal informations."
