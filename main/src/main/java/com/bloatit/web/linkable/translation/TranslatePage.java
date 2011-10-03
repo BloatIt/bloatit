@@ -111,11 +111,13 @@ public final class TranslatePage extends LoggedElveosPage {
         // Source
         sourceColumn.add(new HtmlTitle(Context.tr("Source language: {0}", sourceLanguage.getLocale().getDisplayLanguage()), 2));
 
-        final HtmlTextField sourceTitleInput = new HtmlTextField("", tr("Title"));
-        sourceTitleInput.setCssClass("input_long_400px");
-        sourceTitleInput.addAttribute("readonly", "readonly");
-        sourceTitleInput.setDefaultValue(sourceTranslation.getTitle());
-        sourceColumn.add(sourceTitleInput);
+        if (type == DescriptionType.FEATURE) {
+            final HtmlTextField sourceTitleInput = new HtmlTextField("", tr("Title"));
+            sourceTitleInput.setCssClass("input_long_400px");
+            sourceTitleInput.addAttribute("readonly", "readonly");
+            sourceTitleInput.setDefaultValue(sourceTranslation.getTitle());
+            sourceColumn.add(sourceTitleInput);
+        }
 
         final HtmlTextArea sourceSpecificationInput = new HtmlTextArea("", tr("Description"), 30, 80);
 
@@ -150,7 +152,7 @@ public final class TranslatePage extends LoggedElveosPage {
 
             translateForm.add(titleInput);
         } else {
-            HtmlHidden hidden = new HtmlHidden(titleFieldData.getName(), "John-Doe");
+            HtmlHidden hidden = new HtmlHidden(titleFieldData.getName(), "John-Doe-software");
             translateForm.add(hidden);
         }
 

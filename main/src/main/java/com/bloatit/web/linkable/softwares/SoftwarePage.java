@@ -80,6 +80,8 @@ public final class SoftwarePage extends ElveosPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
+        HtmlDiv softwarePage = new HtmlDiv("software_page");
+
         if (AuthToken.isAuthenticated()) {
             final HtmlDiv languageButton = new HtmlDiv("language_button");
             TranslatePageUrl translatePageUrl = new TranslatePageUrl(software.getDescription(),
@@ -88,10 +90,8 @@ public final class SoftwarePage extends ElveosPage {
             HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
             languageButton.add(link);
 
-            layout.addLeft(languageButton);
+            softwarePage.add(languageButton);
         }
-
-        HtmlDiv softwarePage = new HtmlDiv("software_page");
 
         HtmlTitle softwareName;
         softwareName = new HtmlTitle(software.getName(), 1);
