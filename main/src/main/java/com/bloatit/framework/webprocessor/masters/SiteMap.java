@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
@@ -26,13 +27,7 @@ public abstract class SiteMap implements Linkable {
     private final ArrayDeque<SiteMapEntry> entries;
 
     public enum ChangeFrequency {
-        ALWAYS,
-        HOURLY,
-        DAILY,
-        WEEKLY,
-        MONTHLY,
-        YEARLY,
-        NEVER
+        ALWAYS, HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY, NEVER
     }
 
     protected SiteMap() {
@@ -59,30 +54,31 @@ public abstract class SiteMap implements Linkable {
      */
     public final void write(OutputStream output) throws IOException {
         output.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>".getBytes());
-        
-        //TODO: optimize for big website
-        
-        
-        //Extract languages
+
+        if (entries.size() > 10000) {
+            Log.framework().error("WARNING: the sitemap has " + entries.size() + " entries !");
+        }
+
+        // TODO: optimize for big website
+
+        // Extract languages
         List<Locale> localeList = new ArrayList<Locale>();
         Map<String, LanguageDescriptor> availableLanguages = Localizator.getAvailableLanguages();
-        
-        for(LanguageDescriptor value: availableLanguages.values()) {
+
+        for (LanguageDescriptor value : availableLanguages.values()) {
             localeList.add(new Locale(value.getCode()));
         }
-        
-        
-        
+
         XmlElement siteMap = new XmlElement("urlset").addAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
-        for(Locale locale: localeList) {
-            for(SiteMapEntry entry: entries) {
+
+        for (SiteMapEntry entry : entries) {
+            for (Locale locale : localeList) {
                 siteMap.add(entry.generate(locale));
             }
         }
-        
+
         siteMap.write(output);
-        
-        
+
     }
 
     /**
@@ -99,36 +95,33 @@ public abstract class SiteMap implements Linkable {
             this.changeFrequency = changeFrequency;
             this.lastModified = lastModified;
             this.priority = priority;
-            
+
         }
 
         public XmlNode generate(Locale language) {
             XmlElement siteMapUrl = new XmlElement("url");
-            
+
             XmlElement locTag = new XmlElement("loc");
             locTag.addText(url.externalUrlString(language));
             siteMapUrl.add(locTag);
-            
+
             XmlElement changeFreqTag = new XmlElement("changefreq");
             changeFreqTag.addText(changeFrequency.toString().toLowerCase());
             siteMapUrl.add(changeFreqTag);
-            
+
             XmlElement priorityTag = new XmlElement("priority");
             priorityTag.addText(String.valueOf(priority));
             siteMapUrl.add(priorityTag);
-            
-            
-            if(lastModified != null) {
+
+            if (lastModified != null) {
                 XmlElement lastMod = new XmlElement("lastmod");
                 lastMod.addText(new SimpleDateFormat("yyyy-MM-dd").format(lastModified));
                 siteMapUrl.add(lastMod);
             }
-            
-            
-            
+
             return siteMapUrl;
         }
 
     }
-    
+
 }
