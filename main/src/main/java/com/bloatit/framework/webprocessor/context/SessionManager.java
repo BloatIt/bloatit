@@ -183,7 +183,6 @@ public final class SessionManager {
                         // Just ignore session
                     }
                 }
-
             }
 
             // Close the streams
@@ -212,6 +211,7 @@ public final class SessionManager {
                                                     final String language,
                                                     final String country) throws WrongSessionKeyFormatException {
         final Session session = new Session(key, shortKey, ipAddress, memberId, language, country);
+        
         activeSessions.put(key, session);
     }
 

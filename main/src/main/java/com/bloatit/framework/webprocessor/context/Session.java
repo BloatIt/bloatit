@@ -331,5 +331,4 @@ public final class Session {
     public boolean isValid(final String ipAddress) {
         return !isExpired() && (this.ipAddress == ipAddress || (this.ipAddress != null && this.ipAddress.equals(ipAddress)));
     }
-
 }
