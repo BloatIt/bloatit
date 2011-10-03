@@ -18,6 +18,7 @@ package com.bloatit.framework.webprocessor.url;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
@@ -101,11 +102,21 @@ public abstract class Url implements Cloneable {
     }
 
     private String internalUrlString(boolean multilanguage) {
+        return internalUrlString(multilanguage, null);
+    }
+    
+    private String internalUrlString(boolean multilanguage, Locale forcedLanguage) {
         final StringBuilder sb = new StringBuilder();
         if (Context.getSession() != null && !multilanguage) {
             Context.getLocalizator();
             boolean found = false;
-            String langCode = Context.getLocalizator().getCode();
+            String langCode;
+            if(forcedLanguage == null) {
+                langCode = Context.getLocalizator().getCode();
+            } else {
+                langCode = forcedLanguage.getLanguage();
+            }
+                
             for (Entry<String, LanguageDescriptor> lang : Localizator.getAvailableLanguages().entrySet()) {
                 if (lang.getValue().getCode().equals(langCode)) {
                     found = true;
@@ -141,25 +152,33 @@ public abstract class Url implements Cloneable {
         return parameters;
     }
 
+    public final String externalUrlString(Locale forcedLanguage) {
+        return externalUrlString(false, forcedLanguage);
+    }
+    
     public final String externalUrlString() {
-        return externalUrlString(false);
+        return externalUrlString(false, null);
     }
 
     public final String externalUrlString(boolean multilanguage) {
+       return externalUrlString(multilanguage, null);
+    }
+    
+    public final String externalUrlString(boolean multilanguage, Locale forcedLanguage) {
         if (Context.getHeader() != null) {
             final HttpHeader header = Context.getHeader();
             if (FrameworkConfiguration.isHttpsEnabled() && (getProtocol() == Protocol.HTTPS || (header.isHttps() && getProtocol() == Protocol.AUTO))) {
-                return "https://" + header.getHttpHost() + internalUrlString(multilanguage);
+                return "https://" + header.getHttpHost() + internalUrlString(multilanguage, forcedLanguage);
             }
 
             if (!FrameworkConfiguration.isHttpsEnabled() || getProtocol() == Protocol.HTTP || (!header.isHttps() && getProtocol() == Protocol.AUTO)) {
-                return "http://" + header.getHttpHost() + internalUrlString(multilanguage);
+                return "http://" + header.getHttpHost() + internalUrlString(multilanguage, forcedLanguage);
             }
 
             Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
-            return "http://" + header.getHttpHost() + internalUrlString(multilanguage);
+            return "http://" + header.getHttpHost() + internalUrlString(multilanguage, forcedLanguage);
         }
-        return "http://elveos.org/" + internalUrlString(multilanguage); // FIXME
+        return "http://elveos.org/" + internalUrlString(multilanguage, forcedLanguage); // FIXME
                                                                         // :
                                                                         // Replace
         // http://elveos.org
