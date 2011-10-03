@@ -46,6 +46,7 @@ import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.translation.TranslatePage.DescriptionType;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
@@ -79,24 +80,19 @@ public final class SoftwarePage extends ElveosPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        
-
-                
         HtmlDiv softwarePage = new HtmlDiv("software_page");
 
-        
         if (AuthToken.isAuthenticated()) {
             final HtmlDiv languageButton = new HtmlDiv("language_button");
-            TranslatePageUrl translatePageUrl = new TranslatePageUrl(software.getDescription(), new Locale(Context.getLocalizator()
-                                                                                                                  .getLocale()
-                                                                                                                  .getLanguage()));
+            TranslatePageUrl translatePageUrl = new TranslatePageUrl(software.getDescription(),
+                                                                     new Locale(Context.getLocalizator().getLocale().getLanguage()),
+                                                                     DescriptionType.SOFTWARE);
             HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
             languageButton.add(link);
 
             softwarePage.add(languageButton);
         }
 
-        
         HtmlTitle softwareName;
         softwareName = new HtmlTitle(software.getName(), 1);
         softwarePage.add(softwareName);
@@ -110,7 +106,7 @@ public final class SoftwarePage extends ElveosPage {
         final Translation translatedDescription = software.getDescription().getTranslationOrDefault(Language.fromLocale(defaultLocale));
         final HtmlCachedMarkdownRenderer description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
         softwarePage.add(description);
-        
+
         if (AuthToken.isAuthenticated()) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
