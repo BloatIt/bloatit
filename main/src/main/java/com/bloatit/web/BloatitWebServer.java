@@ -60,6 +60,7 @@ import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminPage;
 import com.bloatit.web.linkable.aliases.FeaturePageAlias;
 import com.bloatit.web.linkable.aliases.IndexPageAlias;
 import com.bloatit.web.linkable.atom.FeatureAtomFeed;
+import com.bloatit.web.linkable.atom.SoftwareAtomFeed;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -552,6 +553,9 @@ public class BloatitWebServer extends WebProcessor {
         // ////////
         if (FeatureAtomFeedUrl.matches(pageCode)) {
             return new FeatureAtomFeed(new FeatureAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (SoftwareAtomFeedUrl.matches(pageCode)) {
+            return new SoftwareAtomFeed(new SoftwareAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
