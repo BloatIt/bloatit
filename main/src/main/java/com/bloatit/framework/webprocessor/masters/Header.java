@@ -52,6 +52,7 @@ public final class Header extends HtmlElement {
     private final PlaceHolderElement cssPh;
     private final PlaceHolderElement jsPh;
     private final PlaceHolderElement linkPh;
+    private final PlaceHolderElement metaPh;
 
     protected Header(final String title, final String description, final String keywords, final Set<Robot> robots) {
         super("head");
@@ -131,6 +132,10 @@ public final class Header extends HtmlElement {
         link.addAttribute("media", "handheld, all");
         add(link);
 
+        // Place for custom meta from page
+        metaPh = new PlaceHolderElement();
+        add(metaPh);
+        
         // Place for custom links from page
         linkPh = new PlaceHolderElement();
         add(linkPh);
@@ -197,6 +202,10 @@ public final class Header extends HtmlElement {
         jsLink.addAttribute("src", js);
 
         jsPh.add(jsLink);
+    }
+    
+    public void addMeta(HtmlElement meta) {
+        metaPh.add(meta);
     }
 
     protected void addHeaderLink(HtmlHeaderLink link) {
