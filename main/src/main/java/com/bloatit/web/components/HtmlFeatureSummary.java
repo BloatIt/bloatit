@@ -19,6 +19,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
@@ -33,6 +34,7 @@ import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.features.FeaturesTools.FeatureContext;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.SoftwarePageUrl;
 
 public final class HtmlFeatureSummary extends HtmlDiv {
 
@@ -99,7 +101,6 @@ public final class HtmlFeatureSummary extends HtmlDiv {
 
         final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_summary_bottom");
         {
-
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
             {
                 // Add software image
@@ -148,10 +149,8 @@ public final class HtmlFeatureSummary extends HtmlDiv {
         final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_summary_bottom");
         {
             featureSummaryBottom.add(generatePopularityBlock());
-
             final HtmlDiv featureSummaryBottomCenter = new HtmlDiv("feature_summary_bottom_center");
             {
-
                 featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature, context));
                 
                 featureSummaryBottomCenter.add(FeaturesTools.generateDetails(feature, false));
@@ -190,7 +189,9 @@ public final class HtmlFeatureSummary extends HtmlDiv {
 
         if (feature.getSoftware() != null) {
             final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
-            softwareSpan.addText(feature.getSoftware().getName());
+            HtmlLink softwareLink = new SoftwarePageUrl(feature.getSoftware()).getHtmlLink(feature.getSoftware().getName());
+//            softwareSpan.addText(feature.getSoftware().getName());
+            softwareSpan.add(softwareLink);
             title.add(softwareSpan);
             title.addText(" – ");
         }
