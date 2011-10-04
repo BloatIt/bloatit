@@ -38,6 +38,8 @@ public class FeatureSearch extends Search<DaoFeature> {
                           "description.translations.text.content",
                           "description.translations.title",
 
+                          "software.name",
+                          
                           // Feature state
                           "featureState",
                           "progress",

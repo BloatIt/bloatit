@@ -142,6 +142,7 @@ import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.CreateReleaseAction;
 import com.bloatit.web.linkable.release.CreateReleasePage;
 import com.bloatit.web.linkable.release.ReleasePage;
+import com.bloatit.web.linkable.sitemap.ElveosSiteMap;
 import com.bloatit.web.linkable.softwares.CreateSoftwareAction;
 import com.bloatit.web.linkable.softwares.CreateSoftwarePage;
 import com.bloatit.web.linkable.softwares.ModifySoftwareAction;
@@ -541,6 +542,13 @@ public class BloatitWebServer extends WebProcessor {
             return new StopFollowAction(new StopFollowActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
+        // ////////
+        // Sitemap
+        // ////////
+        if (ElveosSiteMapUrl.matches(pageCode)) {
+            return new ElveosSiteMap(new ElveosSiteMapUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        
         // ////////
         // Atom
         // ////////
