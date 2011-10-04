@@ -56,7 +56,7 @@ import com.bloatit.web.url.IndexPageUrl;
 /**
  * Index of elveos website
  */
-@ParamContainer("index")
+@ParamContainer("")
 public final class IndexPage extends ElveosPage {
 
     private final IndexPageUrl url;
