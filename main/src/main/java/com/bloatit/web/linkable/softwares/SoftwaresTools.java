@@ -20,6 +20,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Image;
@@ -37,7 +38,9 @@ public class SoftwaresTools {
                 add(new HtmlImage(new Image(WebConfiguration.getImgSoftwareNoLogo()), tr("Software logo"), "software_logo"));
             } else {
                 final FileResourceUrl imageUrl = new FileResourceUrl(software.getImage());
-                add(new HtmlImage(imageUrl, tr("Software logo"), "software_logo"));
+                HtmlLink softwareLink = new SoftwarePageUrl(software).getHtmlLink();
+                add(softwareLink);
+                softwareLink.add(new HtmlImage(imageUrl, tr("Software logo"), "software_logo"));
             }
         }
     }
