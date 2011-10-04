@@ -35,6 +35,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
 
 import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
@@ -62,6 +65,7 @@ import com.bloatit.framework.utils.PageIterable;
 public class DaoSoftware extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = true)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String name;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
