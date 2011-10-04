@@ -74,7 +74,8 @@ public final class Header extends HtmlElement {
                 return true;
             }
         };
-        metaKeywords.addAttribute("keywords", keywords);
+        metaKeywords.addAttribute("name", "keywords");
+        metaKeywords.addAttribute("content", keywords);
         add(metaKeywords);
 
         // Addition of page description

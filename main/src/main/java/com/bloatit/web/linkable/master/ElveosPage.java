@@ -178,19 +178,7 @@ public abstract class ElveosPage extends Page {
     
     @Override
     protected final ArrayList<HtmlElement> getMetas(){
-        ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();
-        
-        // <meta http-equiv="content-language" content="en">
-        HtmlGenericElement language = new HtmlGenericElement("meta"){
-            @Override
-            public boolean selfClosable() {
-                return true;
-            }
-        };
-        language.addAttribute("http-equiv", "content-language");
-        language.addAttribute("content", Context.getLocalizator().getLanguageCode());
-        metas.add(language);
-        
+        ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();        
         return metas;
     }
 
