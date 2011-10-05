@@ -2,6 +2,17 @@
 $("#software_chooser_search_id").show();
 $(".new_software_checkbox_block").show();
 
+
+Array.prototype.contains = function (element) {
+for (var i = 0; i < this.length; i++) {
+    if (this[i] == element) {
+        return true;
+    }
+    }
+    return false;
+}
+
+
 function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
 
     this.targetInputElement = targetInputElement;
@@ -133,20 +144,13 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
                 this.addLine(i,entry, '', '');
             }
         } else {
-            regexp = new RegExp("^(.*)("+userInput+")(.*)$","i");
+            regexp1 = new RegExp("^()("+userInput+")(.*)$","i");
+            this.addLinesWithRegExp(regexp1)
             
-            for(var i = 0; i < this.entryList.length; i++) {
-                var entry = this.entryList[i];
-                var match = regexp.exec(entry);
+            
+            regexp2 = new RegExp("^(.*)("+userInput+")(.*)$","i");
+            this.addLinesWithRegExp(regexp2)
 
-                if(match != null) {
-                    if(match[1].length == 0 && match[3].length == 0) {
-                        this.hasExactMatch = true;
-                    }
-                
-                    this.addLine(i, match[1], match[2], match[3]  )
-                }
-            }
         }
         
         
@@ -213,7 +217,26 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
     }
     
     
+    this.addLinesWithRegExp = function(regexp) {
+        for(var i = 0; i < this.entryList.length; i++) {
+                var entry = this.entryList[i];
+                var match = regexp.exec(entry);
+
+                if(match != null) {
+                    if(match[1].length == 0 && match[3].length == 0) {
+                        this.hasExactMatch = true;
+                    }
+                
+                    this.addLine(i, match[1], match[2], match[3]  )
+                }
+            }
+        }
+    
     this.addLine = function(index, preMatch, matchString, postMatch) {
+
+        if(this.activeList.contains(index)) {
+            return;
+        }
 
         this.activeList.push(index);
         var currentIndex = this.activeList.length-1
