@@ -130,11 +130,14 @@ public class SoftwaresTools {
                 // New software checkbox
                 HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
                 newSoftwareCheckBoxBlock.addAttribute("style", "display:none;");
+                
                 softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
                 HtmlSimpleInput checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
                 checkboxInput.setId("software_chooser_checkbox_id");
+                checkboxInput.addAttribute("autocomplete", "off");
                 newSoftwareCheckBoxBlock.add(checkboxInput);
+                
                 newSoftwareCheckBoxBlock.addText(Context.tr("The feature is related to a new software."));
 
                 // Search input

@@ -1,4 +1,4 @@
-$("#software_chooser_failback").hide();
+//$("#software_chooser_failback").hide();
 $("#software_chooser_search_id").show();
 $(".new_software_checkbox_block").show();
 
@@ -151,7 +151,9 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         
         
         tomComment = "";
-        if(this.activeList.length == 0 && userInput.length > 0 && userInput[0].toLowerCase() == userInput[0]) {
+        if(userInput.length < 3) {
+            tomComment = '<div class="lenght_comment">The sofware name must have at least 3 characters</div>';
+        } else if(this.activeList.length == 0 && userInput[0].toLowerCase() == userInput[0]) {
              tomComment = '<div class="tom_comment">A sofware name is often prettier with a capital</div>';
         }
         this.softwareAdder.html("<p>Add <strong>"+userInput+"</strong> to Elveos</p>"+tomComment);
@@ -192,7 +194,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         }
         
         
-        if(userInput.length ==0 || this.hasExactMatch && !$(this.softwareAdder.children()[0]).hasClass('entry_disabled')) {
+        if(userInput.length < 3 || this.hasExactMatch && !$(this.softwareAdder.children()[0]).hasClass('entry_disabled')) {
                $(this.softwareAdder.children()[0]).addClass('entry_disabled');
         } else if(!this.hasExactMatch && $(this.softwareAdder.children()[0]).hasClass('entry_disabled')) {
                 $(this.softwareAdder.children()[0]).removeClass('entry_disabled');
@@ -242,7 +244,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
     this.select = function(index) {
         
         if(index == "new") {
-            if(userInput.length ==0 || this.hasExactMatch) {
+            if(userInput.length < 3 || this.hasExactMatch) {
                 return;
             }
             
@@ -322,10 +324,18 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         
         this.targetInputElement.val(this.entryList[this.activeList[this.selection]]);        
         this.valueChange(this.keyList[this.activeList[this.selection]]);
-        
+        this.hasExactMatch = true;
         this.hide();
         
         
+    }
+    
+    this.cancel = function() {
+        if(!this.hasExactMatch) {
+            this.targetInputElement.val("");
+        }
+        
+        this.hide();
     }
 
     this.valueChange = function() {
@@ -339,4 +349,23 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
 var softwareNameList = ${software_name_list};
 var softwareIdList = ${software_id_list};
 
-new Dropdown($("#software_chooser_block_id"), $("#software_chooser_search_id"), softwareNameList,softwareIdList );
+var dropdown = new Dropdown($("#software_chooser_block_id"), $("#software_chooser_search_id"), softwareNameList,softwareIdList );
+
+dropdown.valueChange = function(value) {
+    $("#software_chooser_failback").val(value)
+}
+
+$("#software_chooser_checkbox_id").click (function () {
+    var thisCheck = $(this);
+    if (thisCheck.is (':checked'))
+    {
+        dropdown.cancel()
+        $("#software_chooser_search_id").hide();
+        $("#software_chooser_failback").val("")
+           
+    } else {
+        $("#software_chooser_search_id").show();
+    }
+});
+
+
