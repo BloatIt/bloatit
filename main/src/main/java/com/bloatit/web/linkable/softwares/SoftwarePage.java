@@ -39,7 +39,9 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlFeatureSummary;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -47,8 +49,10 @@ import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.translation.TranslatePage.DescriptionType;
+import com.bloatit.web.url.FeatureAtomFeedUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;
+import com.bloatit.web.url.SoftwareAtomFeedUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 import com.bloatit.web.url.TranslatePageUrl;
 
@@ -80,6 +84,8 @@ public final class SoftwarePage extends ElveosPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
+        layout.addRight(new SideBarButton(Context.tr("Follow {0}", software.getName()), new SoftwareAtomFeedUrl(software), WebConfiguration.getAtomImg(), false));
+         
         HtmlDiv softwarePage = new HtmlDiv("software_page");
 
         if (AuthToken.isAuthenticated()) {

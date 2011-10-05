@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.master;
 
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 
 public abstract class AliasAction extends ElveosAction {
 
@@ -43,4 +44,8 @@ public abstract class AliasAction extends ElveosAction {
     protected void transmitParameters() {
     }
 
+    @Override
+    protected StatusCode getRedirectionType() {
+        return StatusCode.REDIRECTION_301_MOVED_PERMANENTLY;
+    }
 }

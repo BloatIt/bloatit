@@ -27,8 +27,11 @@ public abstract class AtomFeed implements Linkable {
 
     @Override
     public void writeToHttp(HttpResponse response, WebProcessor webServer) throws RedirectException, IOException {
+        generate();
         response.writeAtomFeed(this);
     }
+    
+    public abstract void generate();
 
     public abstract String getFeedTitle();
 

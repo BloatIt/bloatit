@@ -75,7 +75,7 @@ public class HttpHeader {
         final String firstWord = splitedUri[0];
 
         if (firstWord.isEmpty()) {
-            pageName = "index";
+            pageName = "";
             language = DEFAULT_LANG;
         } else if (LangExists(firstWord)) {
             language = firstWord;

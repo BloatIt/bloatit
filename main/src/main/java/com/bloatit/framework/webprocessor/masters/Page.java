@@ -156,6 +156,8 @@ public abstract class Page implements Linkable {
     protected abstract Set<Robot> getRobots();
 
     protected abstract ArrayList<HtmlHeaderLink> getLinks();
+    
+    protected abstract ArrayList<HtmlElement> getMetas();
 
     // -----------------------------------------------------------------------
     // Template method pattern: procedure.
@@ -182,8 +184,7 @@ public abstract class Page implements Linkable {
 
         final HtmlBranch html = new HtmlGenericElement("html");
         page.add(html);
-        html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-        html.addAttribute("xml:lang", Context.getLocalizator().getCode());
+        html.addAttribute("lang", Context.getLocalizator().getCode());
         pageHeader = new Header(getTitle(), getPageDescription(), getPageKeyWords(),  getRobots());
         html.add(pageHeader);
 
@@ -201,10 +202,15 @@ public abstract class Page implements Linkable {
         // Abstract method cf: template method pattern
         addWaitingNotifications();
 
+        for(final HtmlElement meta : getMetas()){
+            pageHeader.addMeta(meta);
+        }
+        
         // Do not forget to add the css/js files.
         for (final String css : page.getAllCss()) {
             pageHeader.addCss(css);
         }
+        
         for (final String js : page.getAllJs()) {
             pageHeader.addJs(js);
         }
@@ -212,11 +218,11 @@ public abstract class Page implements Linkable {
         for (final HtmlHeaderLink link : getLinks()) {
             pageHeader.addHeaderLink(link);
         }
-
+        
         for (final HtmlNode node : page.getAllPostNode()) {
             bodyContent.add(node);
         }
-
+        
         return page;
     }
 

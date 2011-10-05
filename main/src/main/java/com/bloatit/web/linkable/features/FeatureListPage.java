@@ -12,8 +12,6 @@
 package com.bloatit.web.linkable.features;
 
 // import java.util.Random;
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import java.util.ArrayList;
 
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -33,7 +31,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.HtmlHeaderLink;
 import com.bloatit.model.Feature;
@@ -74,6 +71,7 @@ public final class FeatureListPage extends ElveosPage {
     private static final String SORT_BY_CREATION_DATE = "creation_date";
     private static final String SORT_BY_EXPIRATION_DATE = "expiration_date";
     private static final String SORT_CODE = "sort";
+    
     @RequestParam(name = SORT_CODE)
     @Optional(SORT_BY_RELEVANCE)
     private final String sort;
@@ -344,7 +342,7 @@ public final class FeatureListPage extends ElveosPage {
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         final FeatureListPageUrl featureListPageUrl = new FeatureListPageUrl();
-        breadcrumb.pushLink(featureListPageUrl.getHtmlLink(tr("Features")));
+        breadcrumb.pushLink(featureListPageUrl.getHtmlLink(Context.tr("Features")));
         return breadcrumb;
     }
 

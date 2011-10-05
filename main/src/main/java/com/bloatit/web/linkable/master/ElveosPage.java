@@ -175,6 +175,12 @@ public abstract class ElveosPage extends Page {
     protected final String getTitle() {
         return "Elveos – " + createPageTitle();
     }
+    
+    @Override
+    protected final ArrayList<HtmlElement> getMetas(){
+        ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();        
+        return metas;
+    }
 
     @Override
     protected final void addNotification(final HtmlNotification note) {

@@ -52,19 +52,22 @@ public abstract class WebProcessor implements XcgiProcessor {
             Context.reInitializeContext(httpHeader, session);
 
             try {
-                // If pagename contains upper case char then redirect to the
-                // same page with lower case.
-                final String pageCode = httpHeader.getPageName();
-                if (pageCode.matches(".*[A-Z].*")) {
+                String pageCode = httpHeader.getPageName();
+                final String requestLanguage = httpHeader.getLanguage();
+                
+                if(requestLanguage.equalsIgnoreCase("default")){
+                    // Redirect to same page but with language code set 
+                    String redirectUrl = createLowerCaseUrl(Context.getLocalizator().getLanguageCode(), httpHeader.getQueryString(), pageCode);
+                    response.writeRedirect(StatusCode.REDIRECTION_307_TEMPORARY_REDIRECT,  redirectUrl);
+                } else if (pageCode.matches(".*[A-Z].*")) {
+                    // Redirect to same page but in lower case
                     response.writeRedirect(StatusCode.REDIRECTION_300_MULTIPLE_CHOICES,
                                            createLowerCaseUrl(httpHeader.getLanguage(), httpHeader.getQueryString(), pageCode));
                 } else {
-                    ModelAccessor.authenticate(key);
-
                     // Normal case !
+                    ModelAccessor.authenticate(key);
                     final Linkable linkable = constructLinkable(pageCode, parameters, session);
                     linkable.writeToHttp(response, this);
-
                 }
             } catch (final ShallNotPassException e) {
                 try {
@@ -128,5 +131,4 @@ public abstract class WebProcessor implements XcgiProcessor {
     }
 
     public abstract Linkable constructLinkable(final String pageCode, final Parameters postGetParameters, final Session session);
-
 }
