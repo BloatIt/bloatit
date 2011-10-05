@@ -18,13 +18,32 @@ package com.bloatit.web.linkable.softwares;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import com.bloatit.common.Log;
+import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDownElement;
+import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput;
+import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
+import com.bloatit.framework.webprocessor.components.form.HtmlStringFormField;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Image;
 import com.bloatit.model.Software;
+import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.linkable.money.QuotationEntry;
+import com.bloatit.web.url.ChangePrepaidAmountActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
@@ -64,4 +83,138 @@ public class SoftwaresTools {
             }
         }
     }
+    
+    
+    
+    public static class SoftwareChooserElement extends HtmlStringFormField {
+        
+        
+        public SoftwareChooserElement(final String name) {
+            super(new SoftwareInputBlock(), name);
+            initSoftwareChooser();
+        }
+
+        public SoftwareChooserElement(final String name, final String label) {
+            super(new SoftwareInputBlock(), name, label);
+            initSoftwareChooser();
+        }
+
+        public void initSoftwareChooser() {
+            setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
+        }
+        
+        /**
+         * Sets the default value of the drop down menu
+         * <p>
+         * The default value is set based on the <i>value</i> field of the
+         * {@link #addDropDownElement(String, String)} method (the code which is not
+         * visible from the user).
+         * </p>
+         * 
+         * @param value the code of the default element
+         */
+        @Override
+        protected void doSetDefaultValue(final String value) {
+            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+            softwareInputBlock.setDefaultValue(value);
+            
+            
+        }
+        
+        
+        
+        static class SoftwareInputBlock extends InputBlock {
+
+            private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
+            private HtmlGenericElement failbackSelectElement;
+            private HtmlDiv softwareChooserBlock;
+
+            
+            public SoftwareInputBlock() {
+                softwareChooserBlock = new HtmlDiv("software_chooser_block");
+                softwareChooserBlock.setId("software_chooser_block_id");
+                
+                // New software checkbox
+                HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
+                softwareChooserBlock.add(newSoftwareCheckBoxBlock);
+                
+                HtmlSimpleInput checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
+                checkboxInput.setId("software_chooser_checkbox_id");
+                newSoftwareCheckBoxBlock.add(checkboxInput);
+                newSoftwareCheckBoxBlock.addText(Context.tr("The feature is related to a new software."));
+                
+                
+                // Search input
+                HtmlElement searchSoftwareInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.TEXT_INPUT));
+                searchSoftwareInput.setId("software_chooser_search_id");
+                searchSoftwareInput.addAttribute("placeholder", Context.tr("Choose a software"));
+                searchSoftwareInput.addAttribute("autocomplete", "off");
+                softwareChooserBlock.add(searchSoftwareInput);
+                
+                
+                failbackSelectElement = new HtmlGenericElement("select");
+                failbackSelectElement.setId("software_chooser_failback");
+                
+                addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
+                addDropDownElement("", Context.tr("New software"));
+                for (final Software software : SoftwareManager.getAll()) {
+                    addDropDownElement(String.valueOf(software.getId()), software.getName());
+                }
+                
+                softwareChooserBlock.add(failbackSelectElement);
+                
+                //Add js
+                final HtmlScript softwareChooserScript = new HtmlScript();
+
+                final TemplateFile softwareChooserScriptTemplate = new TemplateFile("software_chooser.js");
+                
+                try {
+                    softwareChooserScript.append(softwareChooserScriptTemplate.getContent(null));
+                } catch (final IOException e) {
+                    Log.web().error("Fail to generate software chooser script", e);
+                }
+
+                softwareChooserBlock.add(softwareChooserScript);
+
+                
+                
+            }
+            
+            @Override
+            public HtmlElement getInputElement() {
+                return failbackSelectElement;
+            }
+
+            public void setDefaultValue(String value) {
+                final HtmlDropDownElement checkedElement = elements.get(value);
+                if (checkedElement != null) {
+                    checkedElement.addAttribute("selected", "selected");
+                }
+                
+            }
+
+            @Override
+            public HtmlElement getContentElement() {
+                return softwareChooserBlock;
+            }
+          
+            public HtmlDropDownElement addDropDownElement(final String value, final String displayName) {
+                final HtmlDropDownElement opt = new HtmlDropDownElement();
+                opt.addText(displayName);
+                opt.addAttribute("value", value);
+                failbackSelectElement.add(opt);
+                elements.put(value, opt);
+                return opt;
+            }
+            
+            
+        }
+       
+ 
+        
+    }
+
+
+    
+    
 }

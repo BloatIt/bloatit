@@ -715,3 +715,41 @@ form .fake_link {
     font-size: 0.8em;
     color: @error_color;
 }
+
+.dropdown_panel {
+    position: absolute;
+    width: 250px;
+    //min-height: 30px;
+    border: 1px solid @border_color;
+    background: @light_background_color;
+    .shadow;
+    z-index:5;
+    
+    .list_container {
+        padding-left: 20px;
+        padding-right: 40px;
+        p {
+            margin-top : 0px;
+            margin-bottom : 0px;
+            padding-bottom : 5px;
+            padding-top : 5px;
+            padding-left : 15px;
+            padding-right : 15px;
+        }
+        
+        .entry_selected {
+            //background: @hightlight_background_color;
+            background: @default_background_color;
+            color: @link_selected_color;
+        }
+    }
+    
+    .result_count {
+        color: @light_text_color;
+        font-size: 0.8em;
+        text-align: right;
+        margin: 5px;
+    }
+    
+    
+}
