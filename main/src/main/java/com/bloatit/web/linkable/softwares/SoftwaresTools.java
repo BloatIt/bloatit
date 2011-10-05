@@ -83,12 +83,9 @@ public class SoftwaresTools {
             }
         }
     }
-    
-    
-    
+
     public static class SoftwareChooserElement extends HtmlStringFormField {
-        
-        
+
         public SoftwareChooserElement(final String name) {
             super(new SoftwareInputBlock(), name);
             initSoftwareChooser();
@@ -102,13 +99,13 @@ public class SoftwaresTools {
         public void initSoftwareChooser() {
             setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
         }
-        
+
         /**
          * Sets the default value of the drop down menu
          * <p>
          * The default value is set based on the <i>value</i> field of the
-         * {@link #addDropDownElement(String, String)} method (the code which is not
-         * visible from the user).
+         * {@link #addDropDownElement(String, String)} method (the code which is
+         * not visible from the user).
          * </p>
          * 
          * @param value the code of the default element
@@ -117,57 +114,68 @@ public class SoftwaresTools {
         protected void doSetDefaultValue(final String value) {
             SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setDefaultValue(value);
-            
-            
+
         }
-        
-        
-        
+
         static class SoftwareInputBlock extends InputBlock {
 
             private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
             private HtmlGenericElement failbackSelectElement;
             private HtmlDiv softwareChooserBlock;
 
-            
             public SoftwareInputBlock() {
                 softwareChooserBlock = new HtmlDiv("software_chooser_block");
                 softwareChooserBlock.setId("software_chooser_block_id");
-                
+
                 // New software checkbox
                 HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
+                newSoftwareCheckBoxBlock.addAttribute("style", "display:none;");
                 softwareChooserBlock.add(newSoftwareCheckBoxBlock);
-                
+
                 HtmlSimpleInput checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
                 checkboxInput.setId("software_chooser_checkbox_id");
                 newSoftwareCheckBoxBlock.add(checkboxInput);
                 newSoftwareCheckBoxBlock.addText(Context.tr("The feature is related to a new software."));
-                
-                
+
                 // Search input
                 HtmlElement searchSoftwareInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.TEXT_INPUT));
                 searchSoftwareInput.setId("software_chooser_search_id");
+                searchSoftwareInput.addAttribute("style", "display:none;");
                 searchSoftwareInput.addAttribute("placeholder", Context.tr("Choose a software"));
                 searchSoftwareInput.addAttribute("autocomplete", "off");
                 softwareChooserBlock.add(searchSoftwareInput);
-                
-                
+
                 failbackSelectElement = new HtmlGenericElement("select");
                 failbackSelectElement.setId("software_chooser_failback");
-                
+
                 addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
                 addDropDownElement("", Context.tr("New software"));
+
+                StringBuilder jsSoftwareNameList = new StringBuilder("[");
+                StringBuilder jsSoftwareIdList = new StringBuilder("[");
+
                 for (final Software software : SoftwareManager.getAll()) {
                     addDropDownElement(String.valueOf(software.getId()), software.getName());
+                    jsSoftwareNameList.append("\"");
+                    jsSoftwareNameList.append(software.getName());
+                    jsSoftwareNameList.append("\",");
+
+                    jsSoftwareIdList.append("\"");
+                    jsSoftwareIdList.append(software.getId());
+                    jsSoftwareIdList.append("\",");
                 }
-                
+                jsSoftwareNameList.append("]");
+                jsSoftwareIdList.append("]");
+
                 softwareChooserBlock.add(failbackSelectElement);
-                
-                //Add js
+
+                // Add js
                 final HtmlScript softwareChooserScript = new HtmlScript();
 
                 final TemplateFile softwareChooserScriptTemplate = new TemplateFile("software_chooser.js");
-                
+                softwareChooserScriptTemplate.addNamedParameter("software_name_list", jsSoftwareNameList.toString());
+                softwareChooserScriptTemplate.addNamedParameter("software_id_list", jsSoftwareIdList.toString());
+
                 try {
                     softwareChooserScript.append(softwareChooserScriptTemplate.getContent(null));
                 } catch (final IOException e) {
@@ -176,10 +184,8 @@ public class SoftwaresTools {
 
                 softwareChooserBlock.add(softwareChooserScript);
 
-                
-                
             }
-            
+
             @Override
             public HtmlElement getInputElement() {
                 return failbackSelectElement;
@@ -190,14 +196,14 @@ public class SoftwaresTools {
                 if (checkedElement != null) {
                     checkedElement.addAttribute("selected", "selected");
                 }
-                
+
             }
 
             @Override
             public HtmlElement getContentElement() {
                 return softwareChooserBlock;
             }
-          
+
             public HtmlDropDownElement addDropDownElement(final String value, final String displayName) {
                 final HtmlDropDownElement opt = new HtmlDropDownElement();
                 opt.addText(displayName);
@@ -206,15 +212,9 @@ public class SoftwaresTools {
                 elements.put(value, opt);
                 return opt;
             }
-            
-            
+
         }
-       
- 
-        
+
     }
 
-
-    
-    
 }
