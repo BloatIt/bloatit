@@ -86,13 +86,13 @@ public class SoftwaresTools {
 
     public static class SoftwareChooserElement extends HtmlStringFormField {
 
-        public SoftwareChooserElement(final String name) {
+        public SoftwareChooserElement(final String name, final String newSoftwareName) {
             super(new SoftwareInputBlock(name), name);
             initSoftwareChooser();
         }
 
-        public SoftwareChooserElement(final String name, final String label) {
-            super(new SoftwareInputBlock(name), name, label);
+        public SoftwareChooserElement(final String name, final String newSoftwareName , final String label) {
+            super(new SoftwareInputBlock(newSoftwareName), name, label);
             initSoftwareChooser();
         }
 
@@ -116,12 +116,19 @@ public class SoftwaresTools {
             softwareInputBlock.setDefaultValue(value);
 
         }
+        
+        public void setNewSoftwareDefaultValue(String suggestedValue) {
+            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+            softwareInputBlock.setNewSoftwareDefaultValue(suggestedValue);
+        }
 
         static class SoftwareInputBlock extends InputBlock {
 
             private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
             private HtmlGenericElement fallbackSelectElement;
             private HtmlDiv softwareChooserBlock;
+            private HtmlElement createInput;
+            private HtmlElement searchSoftwareInput;
 
             public SoftwareInputBlock(String name) {
                 softwareChooserBlock = new HtmlDiv("software_chooser_block");
@@ -140,17 +147,15 @@ public class SoftwaresTools {
                 
                 newSoftwareCheckBoxBlock.addText(Context.tr("The feature is related to a new software."));
 
-                // Search input
-                HtmlElement searchSoftwareInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.TEXT_INPUT));
+                searchSoftwareInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.TEXT_INPUT));
                 searchSoftwareInput.setId("software_chooser_search_id");
                 searchSoftwareInput.addAttribute("style", "display:none;");
                 searchSoftwareInput.addAttribute("placeholder", Context.tr("Choose a software"));
                 searchSoftwareInput.addAttribute("autocomplete", "off");
                 softwareChooserBlock.add(searchSoftwareInput);
                 
-                // Hidden create input
-                HtmlElement createInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.HIDDEN_INPUT));
-                searchSoftwareInput.addAttribute("name", name+"_create_software");
+                createInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.HIDDEN_INPUT));
+                createInput.addAttribute("name", name);
                 createInput.setId("software_chooser_create");
                 softwareChooserBlock.add(createInput);
                 
@@ -206,8 +211,14 @@ public class SoftwaresTools {
                 if (checkedElement != null) {
                     checkedElement.addAttribute("selected", "selected");
                 }
+                
 
             }
+            
+            public void setNewSoftwareDefaultValue(String suggestedValue) {
+                createInput.addAttribute("value", suggestedValue);
+            }
+            
 
             @Override
             public HtmlElement getContentElement() {
@@ -224,6 +235,8 @@ public class SoftwaresTools {
             }
 
         }
+
+        
 
     }
 

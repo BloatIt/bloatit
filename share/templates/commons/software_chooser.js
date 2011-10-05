@@ -1,4 +1,4 @@
-//$("#software_chooser_fallback").hide();
+$("#software_chooser_fallback").hide();
 $("#software_chooser_search_id").show();
 $(".new_software_checkbox_block").show();
 
@@ -414,5 +414,21 @@ $("#software_chooser_checkbox_id").click (function () {
         $("#software_chooser_search_id").show();
     }
 });
+
+if($("#software_chooser_create").val().length > 0) {
+    $("#software_chooser_search_id").val($("#software_chooser_create").val())
+} else {
+    var val = $("#software_chooser_fallback").val()
+    if(val.val().length > 0) {
+        for(var i = 0; i< softwareIdList.length; i++) {
+            if(softwareIdList[i] == val) {
+                
+                 $("#software_chooser_search_id").val(softwareNameList[i]);
+                break;
+            }
+        }
+    
+    }
+}
 
 
