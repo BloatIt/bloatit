@@ -1,4 +1,4 @@
-//$("#software_chooser_failback").hide();
+//$("#software_chooser_fallback").hide();
 $("#software_chooser_search_id").show();
 $(".new_software_checkbox_block").show();
 
@@ -30,7 +30,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         this.targetInputElement.bind('focusout',  function() {This.focusout();});
         this.targetInputElement.bind('keypress',  function(event) {This.keypress(event);});
         this.targetInputElement.bind('input',  function() {This.change();});
-        $("form").bind('keypress',  function(event) {if(event.keyCode == 13 && targetInputElement.is(":focus") ) {return false;}});
+        $("form").bind('keypress',  function(event) {if(event.keyCode == 13) {return false;}});
 
         this.maxResult = 5;
     }
@@ -345,10 +345,16 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
             return;
         }
         
-        this.targetInputElement.val(this.entryList[this.activeList[this.selection]]);        
-        this.valueChange(this.keyList[this.activeList[this.selection]]);
-        this.hasExactMatch = true;
-        this.hide();
+        if(this.selection == 'new') {
+            this.askCreate(this.targetInputElement.val());
+            this.hasExactMatch = true;
+            this.hide();    
+        } else {
+            this.targetInputElement.val(this.entryList[this.activeList[this.selection]]);        
+            this.valueChange(this.keyList[this.activeList[this.selection]]);
+            this.hasExactMatch = true;
+            this.hide();
+        }
         
         
     }
@@ -361,7 +367,11 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         this.hide();
     }
 
-    this.valueChange = function() {
+    this.valueChange = function(value) {
+        //To overwrite
+    }
+    
+    this.askCreate = function(newName) {
         //To overwrite
     }
 
@@ -375,18 +385,32 @@ var softwareIdList = ${software_id_list};
 var dropdown = new Dropdown($("#software_chooser_block_id"), $("#software_chooser_search_id"), softwareNameList,softwareIdList );
 
 dropdown.valueChange = function(value) {
-    $("#software_chooser_failback").val(value)
+    $("#software_chooser_fallback").val(value)
 }
 
+dropdown.askCreate = function(newName) {
+    $("#software_chooser_create").val(newName)
+     $("#software_chooser_fallback").val("")
+}
+
+
+var lastChoosenValue
+var lastNewSoftwareValue
 $("#software_chooser_checkbox_id").click (function () {
     var thisCheck = $(this);
     if (thisCheck.is (':checked'))
     {
         dropdown.cancel()
         $("#software_chooser_search_id").hide();
-        $("#software_chooser_failback").val("")
+
+        lastChoosenValue = $("#software_chooser_fallback").val()
+        lastNewSoftwareValue = $("#software_chooser_create").val()
+        $("#software_chooser_fallback").val("")
+        $("#software_chooser_create").val("")
            
     } else {
+        $("#software_chooser_fallback").val(lastChoosenValue)
+        $("#software_chooser_create").val(lastNewSoftwareValue)
         $("#software_chooser_search_id").show();
     }
 });

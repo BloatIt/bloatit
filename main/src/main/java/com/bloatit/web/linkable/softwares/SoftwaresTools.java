@@ -87,12 +87,12 @@ public class SoftwaresTools {
     public static class SoftwareChooserElement extends HtmlStringFormField {
 
         public SoftwareChooserElement(final String name) {
-            super(new SoftwareInputBlock(), name);
+            super(new SoftwareInputBlock(name), name);
             initSoftwareChooser();
         }
 
         public SoftwareChooserElement(final String name, final String label) {
-            super(new SoftwareInputBlock(), name, label);
+            super(new SoftwareInputBlock(name), name, label);
             initSoftwareChooser();
         }
 
@@ -120,10 +120,10 @@ public class SoftwaresTools {
         static class SoftwareInputBlock extends InputBlock {
 
             private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
-            private HtmlGenericElement failbackSelectElement;
+            private HtmlGenericElement fallbackSelectElement;
             private HtmlDiv softwareChooserBlock;
 
-            public SoftwareInputBlock() {
+            public SoftwareInputBlock(String name) {
                 softwareChooserBlock = new HtmlDiv("software_chooser_block");
                 softwareChooserBlock.setId("software_chooser_block_id");
 
@@ -147,9 +147,16 @@ public class SoftwaresTools {
                 searchSoftwareInput.addAttribute("placeholder", Context.tr("Choose a software"));
                 searchSoftwareInput.addAttribute("autocomplete", "off");
                 softwareChooserBlock.add(searchSoftwareInput);
+                
+                // Hidden create input
+                HtmlElement createInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.HIDDEN_INPUT));
+                searchSoftwareInput.addAttribute("name", name+"_create_software");
+                createInput.setId("software_chooser_create");
+                softwareChooserBlock.add(createInput);
+                
 
-                failbackSelectElement = new HtmlGenericElement("select");
-                failbackSelectElement.setId("software_chooser_failback");
+                fallbackSelectElement = new HtmlGenericElement("select");
+                fallbackSelectElement.setId("software_chooser_fallback");
 
                 addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
                 addDropDownElement("", Context.tr("New software"));
@@ -170,7 +177,7 @@ public class SoftwaresTools {
                 jsSoftwareNameList.append("]");
                 jsSoftwareIdList.append("]");
 
-                softwareChooserBlock.add(failbackSelectElement);
+                softwareChooserBlock.add(fallbackSelectElement);
 
                 // Add js
                 final HtmlScript softwareChooserScript = new HtmlScript();
@@ -191,7 +198,7 @@ public class SoftwaresTools {
 
             @Override
             public HtmlElement getInputElement() {
-                return failbackSelectElement;
+                return fallbackSelectElement;
             }
 
             public void setDefaultValue(String value) {
@@ -211,7 +218,7 @@ public class SoftwaresTools {
                 final HtmlDropDownElement opt = new HtmlDropDownElement();
                 opt.addText(displayName);
                 opt.addAttribute("value", value);
-                failbackSelectElement.add(opt);
+                fallbackSelectElement.add(opt);
                 elements.put(value, opt);
                 return opt;
             }
