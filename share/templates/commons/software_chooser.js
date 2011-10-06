@@ -28,7 +28,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         This = this
         this.targetInputElement.bind('focusin', function() {This.focusin();});
         this.targetInputElement.bind('focusout',  function() {This.focusout();});
-        this.targetInputElement.bind('keypress',  function(event) {This.keypress(event);});
+        this.targetInputElement.bind('keydown',  function(event) {This.keypress(event);});
         this.targetInputElement.bind('input',  function() {This.change();});
         $("form").bind('keypress',  function(event) {if(event.keyCode == 13) {return false;}});
 

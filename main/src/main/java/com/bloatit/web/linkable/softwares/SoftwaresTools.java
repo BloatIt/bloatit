@@ -101,7 +101,7 @@ public class SoftwaresTools {
         }
 
         public void initSoftwareChooser() {
-            setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
+            setComment(Context.tr("On what software do you want to have this feature."));
         }
 
         /**
@@ -156,7 +156,7 @@ public class SoftwaresTools {
                 checkboxInput.addAttribute("name", newSoftwareCheckboxName);
                 newSoftwareCheckBoxBlock.add(checkboxInput);
                 HtmlBranch checkBoxLabel = new HtmlGenericElement("label");
-                checkBoxLabel.addText(Context.tr("The feature is related to a new software."));
+                checkBoxLabel.addText(Context.tr("The Feature consists in creating a new software."));
                 checkBoxLabel.addAttribute("for", "software_chooser_checkbox_id");
                 newSoftwareCheckBoxBlock.add(checkBoxLabel);
 
