@@ -6,6 +6,7 @@ class queries:
     def __init__(self, cursor, output):
         self.cursor = cursor
         self.output = output
+        self.cursor.execute("create table IF NOT EXISTS mydates (time datetime)")
         
     def _print_result(self):
         for row in self.cursor:
