@@ -44,6 +44,7 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.linkable.usercontent.LanguageField;
@@ -123,18 +124,16 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         // Linked software
         final FieldData softwareFieldData = offerActionUrl.getSoftwareParameter().pickFieldData();
-        final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
-
-        softwareInput.addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
-        softwareInput.addDropDownElement("", Context.tr("New software"));
-        for (final Software software : SoftwareManager.getAll()) {
-            softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
-        }
-        softwareInput.setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
-        
+        final FieldData newSoftwareNameFieldData = offerActionUrl.getNewSoftwareNameParameter().pickFieldData();
+        final SoftwaresTools.SoftwareChooserElement softwareInput =  new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),newSoftwareNameFieldData.getName() , Context.tr("Software"));
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }
+        
+        if (newSoftwareNameFieldData.getSuggestedValue() != null) {
+            softwareInput.setNewSoftwareDefaultValue(newSoftwareNameFieldData.getSuggestedValue());
+        }
+
         
         offerForm.add(softwareInput);
         

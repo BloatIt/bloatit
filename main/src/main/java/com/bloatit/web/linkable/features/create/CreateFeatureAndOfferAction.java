@@ -12,8 +12,10 @@
 package com.bloatit.web.linkable.features.create;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
@@ -37,6 +39,7 @@ import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
+import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
@@ -102,6 +105,9 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     private final Software software;
 
+    @Optional
+    @RequestParam(role = Role.POST)
+    private final String newSoftwareName;
     
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam(role = Role.PAGENAME)
@@ -116,6 +122,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         this.description = url.getDescription();
         this.specification = url.getSpecification();
         this.software = url.getSoftware();
+        this.newSoftwareName = url.getNewSoftwareName();
         this.process = url.getProcess();
         this.license = url.getLicense();
         this.expiryDate = url.getExpiryDate();
@@ -137,13 +144,33 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
             }
             
         }
+        
+        if(software == null && newSoftwareName != null &&  newSoftwareName.equals("--invalid--")) {
+            session.notifyError(Context.tr("You have to specify a valid software."));
+            if (process == null) {
+                return new IndexPageUrl();
+            } else {
+                return new CreateFeaturePageUrl(process);
+            }
+        }
         return NO_ERROR;
     }
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+        
+        Software softwareToUse = software;
+
+        if (software == null && newSoftwareName != null && !newSoftwareName.isEmpty()) {
+            try {
+                softwareToUse = new Software(newSoftwareName, me, Locale.ENGLISH, "No description yet.");
+            } catch (UniqueNameExpectedException e) {
+                softwareToUse = SoftwareManager.getByName(newSoftwareName);
+            }
+
+        }
         // Create feature
-        final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, software);
+        final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, softwareToUse);
         propagateAttachedFileIfPossible(feature);
         
         // Create offer
@@ -208,6 +235,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         session.addParameter(url.getPercentMajorParameter());
         session.addParameter(url.getIsFinishedParameter());
         session.addParameter(url.getLicenseParameter());
+        session.addParameter(url.getNewSoftwareNameParameter());
     }
 
     @Override

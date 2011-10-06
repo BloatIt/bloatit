@@ -32,6 +32,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         this.targetInputElement.bind('input',  function() {This.change();});
         $("form").bind('keypress',  function(event) {if(event.keyCode == 13) {return false;}});
 
+        this.lastChoose = this.targetInputElement.val();
         this.maxResult = 5;
     }
 
@@ -82,18 +83,22 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
     this.focusout = function() {
 
         userInput = this.targetInputElement.val();
-        if(userInput.length == 0) {
+            
+        if(this.hasExactMatch) {
+            this.chooseSelection();
+        } else {
             var that = this;
             
             window.setTimeout(function() {
-            that.hide()
+            that.cancel()
             }, 150);
-        } else if(this.hasExactMatch) {
-            this.chooseSelection();
         }
         
         
     }
+    
+
+    
     
     this.keypress = function(event) {
         
@@ -118,6 +123,15 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         if(event.keyCode == 38) {
             if(this.isShown) {
                 this.selectPrevious();
+            }
+        }
+        
+        if(event.keyCode == 9) {
+            if(this.isShown) {
+                this.chooseSelection();
+                
+            } else {
+                return true     
             }
         }
         
@@ -157,7 +171,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         tomComment = "";
         if(userInput.length < 3) {
             tomComment = '<div class="lenght_comment">The sofware name must have at least 3 characters</div>';
-        } else if(this.activeList.length == 0 && userInput[0].toLowerCase() == userInput[0]) {
+        } else if(userInput[0].toLowerCase() == userInput[0]) {
              tomComment = '<div class="tom_comment">A sofware name is often prettier with a capital</div>';
         }
         this.softwareAdder.html("<p>Add <strong>"+userInput+"</strong> to Elveos</p>"+tomComment);
@@ -347,11 +361,13 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         
         if(this.selection == 'new') {
             this.askCreate(this.targetInputElement.val());
+            this.lastChoose = this.targetInputElement.val();
             this.hasExactMatch = true;
             this.hide();    
         } else {
             this.targetInputElement.val(this.entryList[this.activeList[this.selection]]);        
             this.valueChange(this.keyList[this.activeList[this.selection]]);
+            this.lastChoose = this.entryList[this.activeList[this.selection]];
             this.hasExactMatch = true;
             this.hide();
         }
@@ -359,9 +375,14 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         
     }
     
+    this.set = function(value) {
+        this.lastChoose = value;
+        this.targetInputElement.val(value);
+    }
+    
     this.cancel = function() {
         if(!this.hasExactMatch) {
-            this.targetInputElement.val("");
+            this.targetInputElement.val(this.lastChoose);
         }
         
         this.hide();
@@ -382,10 +403,16 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
 var softwareNameList = ${software_name_list};
 var softwareIdList = ${software_id_list};
 
+
+if($("#software_chooser_create").val().length == 0) {
+    $("#software_chooser_create").val('--invalid--');
+}
+
 var dropdown = new Dropdown($("#software_chooser_block_id"), $("#software_chooser_search_id"), softwareNameList,softwareIdList );
 
 dropdown.valueChange = function(value) {
     $("#software_chooser_fallback").val(value)
+    $("#software_chooser_create").val("")
 }
 
 dropdown.askCreate = function(newName) {
@@ -415,15 +442,14 @@ $("#software_chooser_checkbox_id").click (function () {
     }
 });
 
-if($("#software_chooser_create").val().length > 0) {
-    $("#software_chooser_search_id").val($("#software_chooser_create").val())
+if($("#software_chooser_create").val().length > 0 && $("#software_chooser_create").val() != '--invalid--') {
+    dropdown.set($("#software_chooser_create").val())
 } else {
     var val = $("#software_chooser_fallback").val()
-    if(val.val().length > 0) {
+    if(val.length > 0) {
         for(var i = 0; i< softwareIdList.length; i++) {
             if(softwareIdList[i] == val) {
-                
-                 $("#software_chooser_search_id").val(softwareNameList[i]);
+                dropdown.set(softwareNameList[i]);
                 break;
             }
         }

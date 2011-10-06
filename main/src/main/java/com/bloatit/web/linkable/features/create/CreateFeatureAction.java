@@ -92,9 +92,16 @@ public final class CreateFeatureAction extends UserContentAction {
             } else {
                 return new CreateFeaturePageUrl(process);
             }
-
         }
-
+        
+        if(software == null && newSoftwareName != null &&  newSoftwareName.equals("--invalid--")) {
+            session.notifyError(Context.tr("You have to specify a valid software."));
+            if (process == null) {
+                return new IndexPageUrl();
+            } else {
+                return new CreateFeaturePageUrl(process);
+            }
+        }
         return NO_ERROR;
     }
 
