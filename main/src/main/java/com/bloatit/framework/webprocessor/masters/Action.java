@@ -53,7 +53,7 @@ public abstract class Action implements Linkable {
                 final Linkable linkable = server.constructLinkable(url.getCode().toLowerCase(), parameters, session);
                 linkable.writeToHttp(response, server);
             } else {
-                response.writeRedirect(StatusCode.REDIRECTION_302_FOUND, url.urlString());
+                response.writeRedirect(getRedirectionType(), url.urlString());
             }
 
         } else {
@@ -77,6 +77,21 @@ public abstract class Action implements Linkable {
             return checkParameters;
         }
         return doProcess();
+    }
+
+    /**
+     * Indicates the redirection type (300, 301 ...) to use at then end of this
+     * action.
+     * <p>
+     * The default type is StatusCode.REDIRECTION_302_FOUND. Actions that need
+     * to change this behavior should override this method and change the return
+     * value.
+     * </p>
+     * 
+     * @return the redirection type to use for this action
+     */
+    protected StatusCode getRedirectionType() {
+        return StatusCode.REDIRECTION_302_FOUND;
     }
 
     /**

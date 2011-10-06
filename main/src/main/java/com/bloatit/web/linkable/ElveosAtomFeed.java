@@ -1,4 +1,4 @@
-package com.bloatit.web.linkable.atom.master;
+package com.bloatit.web.linkable;
 
 import java.util.Date;
 
@@ -12,9 +12,10 @@ public abstract class ElveosAtomFeed extends AtomFeed {
     protected ElveosAtomFeed(Url url) {
         super();
         this.privateUrl = url;
+        generate();
     }
 
-    
+    public abstract void generate();
 
     public abstract String getFeedTitle();
 

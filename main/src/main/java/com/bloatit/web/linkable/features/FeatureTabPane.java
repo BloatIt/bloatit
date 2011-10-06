@@ -38,6 +38,7 @@ import com.bloatit.model.Translation;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.UserContentAuthorBlock;
 import com.bloatit.web.linkable.master.HtmlPageComponent;
+import com.bloatit.web.linkable.translation.TranslatePage.DescriptionType;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 import com.bloatit.web.url.FileResourceUrl;
@@ -131,7 +132,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
             
                 final HtmlDiv languageButton = new HtmlDiv("language_button");
                 {
-                    TranslatePageUrl translatePageUrl = new TranslatePageUrl(featureDescription, defaultLocale);
+                    TranslatePageUrl translatePageUrl = new TranslatePageUrl(featureDescription, defaultLocale, DescriptionType.FEATURE);
                     HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
                     languageButton.add(link);
                 }

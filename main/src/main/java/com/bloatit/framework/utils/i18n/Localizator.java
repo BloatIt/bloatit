@@ -478,7 +478,13 @@ public final class Localizator {
         } else {
             // Other cases
             if (Context.getSession().getMemberId() != null) {
-                locale = Context.getSession().getMemberLocale();
+                Locale memberLocale = Context.getSession().getMemberLocale();
+                if (getAvailableLanguages().containsKey(memberLocale.getLanguage())) {
+                    locale = memberLocale;
+                } else {
+                    locale = new Locale(DEFAULT_LOCALE.getLanguage(), memberLocale.getCountry());
+                }
+
             } else {
                 locale = browserLocaleHeuristic(browserLangs);
             }

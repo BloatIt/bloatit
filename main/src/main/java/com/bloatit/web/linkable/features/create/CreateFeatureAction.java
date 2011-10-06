@@ -11,7 +11,10 @@
  */
 package com.bloatit.web.linkable.features.create;
 
+import java.util.Locale;
+
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.utils.i18n.Language;
@@ -30,6 +33,7 @@ import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
+import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -58,11 +62,14 @@ public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     private final Software software;
 
-    
+    @Optional
+    @RequestParam(role = Role.POST)
+    private final String newSoftwareName;
+
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam(role = Role.PAGENAME)
     private final CreateFeatureProcess process;
-    
+
     private final CreateFeatureActionUrl url;
 
     public CreateFeatureAction(final CreateFeatureActionUrl url) {
@@ -72,6 +79,7 @@ public final class CreateFeatureAction extends UserContentAction {
         this.description = url.getDescription();
         this.specification = url.getSpecification();
         this.software = url.getSoftware();
+        this.newSoftwareName = url.getNewSoftwareName();
         this.process = url.getProcess();
     }
 
@@ -79,19 +87,31 @@ public final class CreateFeatureAction extends UserContentAction {
     protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyError(Context.tr("You have to specify a valid language."));
-            if(process == null) {
+            if (process == null) {
                 return new IndexPageUrl();
             } else {
                 return new CreateFeaturePageUrl(process);
             }
-            
+
         }
+
         return NO_ERROR;
     }
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-        final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, software);
+        Software softwareToUse = software;
+
+        if (software == null && newSoftwareName != null && !newSoftwareName.isEmpty()) {
+            try {
+                softwareToUse = new Software(newSoftwareName, me, Locale.ENGLISH, "No description yet.");
+            } catch (UniqueNameExpectedException e) {
+                softwareToUse = SoftwareManager.getByName(newSoftwareName);
+            }
+
+        }
+
+        final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, softwareToUse);
         propagateAttachedFileIfPossible(feature);
         process.close();
         return new FeaturePageUrl(feature, FeatureTabKey.description);
@@ -99,7 +119,7 @@ public final class CreateFeatureAction extends UserContentAction {
 
     @Override
     protected Url doProcessErrors() {
-        if(process == null) {
+        if (process == null) {
             return new IndexPageUrl();
         } else {
             return new CreateFeaturePageUrl(process);
@@ -116,6 +136,7 @@ public final class CreateFeatureAction extends UserContentAction {
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSpecificationParameter());
         session.addParameter(url.getSoftwareParameter());
+        session.addParameter(url.getNewSoftwareNameParameter());
     }
 
     @Override

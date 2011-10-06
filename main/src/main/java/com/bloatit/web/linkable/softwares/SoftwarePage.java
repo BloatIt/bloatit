@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -38,16 +39,22 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlFeatureSummary;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.translation.TranslatePage.DescriptionType;
+import com.bloatit.web.url.FeatureAtomFeedUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifySoftwarePageUrl;
+import com.bloatit.web.url.SoftwareAtomFeedUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
+import com.bloatit.web.url.TranslatePageUrl;
 
 @ParamContainer("softwares/%software%")
 public final class SoftwarePage extends ElveosPage {
@@ -58,7 +65,7 @@ public final class SoftwarePage extends ElveosPage {
 
     @SuppressWarnings("unused")
     @RequestParam(role = Role.PRETTY, generatedFrom = "software")
-    @Optional("john-do")
+    @Optional("john-doe")
     private final String name;
 
     private final SoftwarePageUrl url;
@@ -77,13 +84,19 @@ public final class SoftwarePage extends ElveosPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
+        layout.addRight(new SideBarButton(Context.tr("Follow {0}", software.getName()), new SoftwareAtomFeedUrl(software), WebConfiguration.getAtomImg(), false));
+         
         HtmlDiv softwarePage = new HtmlDiv("software_page");
-        
+
         if (AuthToken.isAuthenticated()) {
-            // Link to change account settings
-            final HtmlDiv modify = new HtmlDiv("float_right");
-            softwarePage.add(modify);
-            modify.add(new ModifySoftwarePageUrl(software).getHtmlLink(Context.tr("Modify software description")));
+            final HtmlDiv languageButton = new HtmlDiv("language_button");
+            TranslatePageUrl translatePageUrl = new TranslatePageUrl(software.getDescription(),
+                                                                     new Locale(Context.getLocalizator().getLocale().getLanguage()),
+                                                                     DescriptionType.SOFTWARE);
+            HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
+            languageButton.add(link);
+
+            softwarePage.add(languageButton);
         }
 
         HtmlTitle softwareName;
@@ -100,10 +113,16 @@ public final class SoftwarePage extends ElveosPage {
         final HtmlCachedMarkdownRenderer description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
         softwarePage.add(description);
 
+        if (AuthToken.isAuthenticated()) {
+            // Link to change account settings
+            final HtmlDiv modify = new HtmlDiv("float_right");
+            softwarePage.add(modify);
+            modify.add(new ModifySoftwarePageUrl(software).getHtmlLink(Context.tr("Modify software description")));
+        }
+
         PageIterable<Feature> features = software.getFeatures();
 
         if (features.size() > 0) {
-
             softwarePage.add(new HtmlTitle(Context.tr("Related features"), 1));
             final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem();
             final SoftwarePageUrl clonedUrl = url.clone();
@@ -112,7 +131,7 @@ public final class SoftwarePage extends ElveosPage {
         }
 
         layout.addLeft(softwarePage);
-        
+
         return layout;
     }
 

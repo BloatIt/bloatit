@@ -19,7 +19,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
  */
 public class HtmlSimpleInput extends HtmlLeaf {
 
-    protected enum InputType {
+    public enum InputType {
         TEXT_INPUT, PASSWORD_INPUT, FILE_INPUT, CHECKBOX_INPUT, RADIO_INPUT, BUTTON_INPUT, SUBMIT_INPUT, RESET_INPUT, HIDDEN_INPUT
     }
 
@@ -33,7 +33,7 @@ public class HtmlSimpleInput extends HtmlLeaf {
     private static final String RESET = "reset";
     private static final String HIDDEN = "hidden";
 
-    protected HtmlSimpleInput(final String type) {
+    public HtmlSimpleInput(final String type) {
         super("input");
         addAttribute("type", type);
     }
@@ -43,7 +43,7 @@ public class HtmlSimpleInput extends HtmlLeaf {
         return this;
     }
 
-    protected static String getInput(final InputType type) {
+    public static String getInput(final InputType type) {
         switch (type) {
             case TEXT_INPUT:
                 return TEXT;

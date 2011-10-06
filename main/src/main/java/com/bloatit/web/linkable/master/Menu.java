@@ -32,6 +32,7 @@ import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
+import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 
 public class Menu extends HtmlDiv {
@@ -45,8 +46,11 @@ public class Menu extends HtmlDiv {
 
         final HtmlLink featureList = new FeatureListPageUrl().getHtmlLink(tr("Feature requests"));
 
-        final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl("brainstorm");
-        final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(tr("Brainstorms"));
+//        final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl("brainstorm");
+//        final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(tr("Brainstorms"));
+        
+        final HtmlLink softwareList = new SoftwareListPageUrl().getHtmlLink(tr("Software"));
+        
         final HtmlLink teamList = new TeamsPageUrl().getHtmlLink(tr("Teams"));
         final HtmlLink memberList = new MembersListPageUrl().getHtmlLink(tr("Members"));
 
@@ -57,7 +61,8 @@ public class Menu extends HtmlDiv {
         final HtmlDiv featureAndBrainStormMenu = new HtmlDiv("menu_item");
         featureAndBrainStormMenu.add(featureList);
         featureAndBrainStormMenu.add(separator);
-        featureAndBrainStormMenu.add(brainstormList);
+//        featureAndBrainStormMenu.add(brainstormList);
+        featureAndBrainStormMenu.add(softwareList);
         mainMenu.add(featureAndBrainStormMenu);
 
         final HtmlDiv teamAndMemberMenu = new HtmlDiv("menu_item");

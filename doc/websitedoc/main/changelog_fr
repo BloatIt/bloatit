@@ -1,6 +1,21 @@
 Changelog
 =========
 
+Version 1.1.15
+--------------
+
+### Features
+ - Creation of an atom feed informing of new features on a software
+ - Various improvement with the handling of the various site languages
+ - Addition of a xml sitemap
+ - Software name can be used as a search criteria for features
+ - Addition of a combo box to choose a software during the creation of a feature request
+ - Addition of a way to translate the description of a software
+
+### Bug fixes
+ - Correction of the https issues caused by libravatar
+ - Fix of a bug preventing to validate an email after changing it
+
 Version 1.1.14
 --------------
 

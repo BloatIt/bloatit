@@ -82,10 +82,10 @@ public class BloatitExampleDB { // NO_UCD
         admin.getDao().setRole(Role.ADMIN);
 
         chogall = createMember("chogall", "Cho'gall", Locale.UK);
-        cerbere = createMember("cerbere", "Cerbère", Locale.KOREA);
-        hydre = createMember("hydre", "Hydre", Locale.GERMANY);
-        elephantman = createMember("elephantman", "ElephantMan", Locale.JAPAN);
-        celeste = createMember("celeste", "Céleste", Locale.CHINA);
+        cerbere = createMember("cerbere", "Cerbère", Locale.FRANCE);
+        hydre = createMember("hydre", "Hydre", Locale.US);
+        elephantman = createMember("elephantman", "ElephantMan", Locale.CANADA);
+        celeste = createMember("celeste", "Céleste", Locale.UK);
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
         AuthToken.authenticate(fred);

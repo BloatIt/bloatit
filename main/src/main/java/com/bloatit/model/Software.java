@@ -94,7 +94,10 @@ public final class Software extends Identifiable<DaoSoftware> {
      */
     public final FeatureList getFeatures() {
         return new FeatureList(getDao().getFeatures());
-
+    }
+    
+    public FeatureList getFeaturesByCreationDate() {
+        return new FeatureList(getDao().getFeaturesByCreationDate());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -120,5 +123,4 @@ public final class Software extends Identifiable<DaoSoftware> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
 }

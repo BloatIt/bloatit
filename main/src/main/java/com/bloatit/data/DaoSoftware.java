@@ -35,8 +35,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.exceptions.UniqueNameExpectedException;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -51,10 +56,22 @@ import com.bloatit.framework.utils.PageIterable;
                            name = "software.byName",
                            query = "FROM DaoSoftware WHERE name = :name"),
                        @NamedQuery(
-                                   name = "software.byName.size",
-                                   query = "SELECT count(*) FROM DaoSoftware WHERE name = :name"),
-                       }
-             )
+                            name = "software.byName.size",
+                            query = "SELECT count(*) FROM DaoSoftware WHERE name = :name"),
+                       @NamedQuery(
+                             name="software.getFeatures.orderByCreationDate", 
+                             query="FROM com.bloatit.data.DaoFeature " +
+                                   "WHERE featureState != :featureState " +
+                                   "AND software = :software " +
+                                   "ORDER BY creationDate DESC "),
+                       @NamedQuery(
+                             name="software.getFeatures.orderByCreationDate.size", 
+                             query="SELECT COUNT(*)" +
+                                   "FROM com.bloatit.data.DaoFeature " +
+                                   "WHERE featureState != :featureState " +
+                                   "AND software = :software ")
+                    }
+            )
 // @formatter:on
 /**
  * A DaoSoftware represent a software on which we can add some new feature.
@@ -62,6 +79,7 @@ import com.bloatit.framework.utils.PageIterable;
 public class DaoSoftware extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = true)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String name;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -188,6 +206,11 @@ public class DaoSoftware extends DaoIdentifiable {
         return new MappedUserContentList<DaoFeature>(this.features);
     }
 
+    public PageIterable<DaoFeature> getFeaturesByCreationDate() {
+        return new QueryCollection<DaoFeature>("software.getFeatures.orderByCreationDate").setParameter("featureState", FeatureState.DISCARDED)
+                                                                                          .setEntity("software", this);
+    }
+
     /**
      * @return the name
      */
@@ -254,5 +277,4 @@ public class DaoSoftware extends DaoIdentifiable {
 
         return true;
     }
-
 }

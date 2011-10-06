@@ -57,7 +57,10 @@ import com.bloatit.web.linkable.admin.notify.AdminGlobalNotificationAction;
 import com.bloatit.web.linkable.admin.notify.AdminGlobalNotificationPage;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminAction;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminPage;
+import com.bloatit.web.linkable.aliases.FeaturePageAlias;
+import com.bloatit.web.linkable.aliases.IndexPageAlias;
 import com.bloatit.web.linkable.atom.FeatureAtomFeed;
+import com.bloatit.web.linkable.atom.SoftwareAtomFeed;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -78,7 +81,6 @@ import com.bloatit.web.linkable.errors.PageForbidden;
 import com.bloatit.web.linkable.errors.PageNotFound;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.features.FeaturePageAlias;
 import com.bloatit.web.linkable.features.ModifyFeatureAction;
 import com.bloatit.web.linkable.features.ModifyFeaturePage;
 import com.bloatit.web.linkable.features.create.ChooseFeatureTypeAction;
@@ -142,6 +144,7 @@ import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.CreateReleaseAction;
 import com.bloatit.web.linkable.release.CreateReleasePage;
 import com.bloatit.web.linkable.release.ReleasePage;
+import com.bloatit.web.linkable.sitemap.ElveosSiteMap;
 import com.bloatit.web.linkable.softwares.CreateSoftwareAction;
 import com.bloatit.web.linkable.softwares.CreateSoftwarePage;
 import com.bloatit.web.linkable.softwares.ModifySoftwareAction;
@@ -188,9 +191,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (FeaturePageUrl.matches(pageCode)) {
             return new FeaturePage(new FeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
-        }
-        if (FeaturePageAliasUrl.matches(pageCode)) {
-            return new FeaturePageAlias(new FeaturePageAliasUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (SiteMapPageUrl.matches(pageCode)) {
             return new SiteMapPage(new SiteMapPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -542,10 +542,20 @@ public class BloatitWebServer extends WebProcessor {
         }
 
         // ////////
+        // Sitemap
+        // ////////
+        if (ElveosSiteMapUrl.matches(pageCode)) {
+            return new ElveosSiteMap(new ElveosSiteMapUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+
+        // ////////
         // Atom
         // ////////
         if (FeatureAtomFeedUrl.matches(pageCode)) {
             return new FeatureAtomFeed(new FeatureAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (SoftwareAtomFeedUrl.matches(pageCode)) {
+            return new SoftwareAtomFeed(new SoftwareAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
@@ -565,6 +575,16 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (ContributionInvoicingProcessUrl.matches(pageCode)) {
             return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+
+        // ////////
+        // ALIAS
+        // ////////
+        if (FeaturePageAliasUrl.matches(pageCode)) {
+            return new FeaturePageAlias(new FeaturePageAliasUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (IndexPageAliasUrl.matches(pageCode)) {
+            return new IndexPageAlias(new IndexPageAliasUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // Create feature process

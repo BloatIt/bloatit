@@ -41,6 +41,7 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.AtomFeed;
+import com.bloatit.framework.webprocessor.masters.SiteMap;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.web.HtmlTools;
 
@@ -313,5 +314,14 @@ public final class HttpResponse {
         writeHeader();
 
         feed.write(output);
+    }
+    
+    public void writeSiteMap(SiteMap siteMap) throws IOException {
+        addField(HttpReponseField.contentType("text/xml"));
+        addField(HttpReponseField.vary("Accept-Encoding"));
+        addField(HttpReponseField.acceptRanges("bytes"));
+        writeHeader();
+
+        siteMap.write(output);
     }
 }

@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlHidden;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
@@ -46,14 +47,22 @@ import com.bloatit.web.url.TranslatePageUrl;
 @ParamContainer("translation/%description%/translate")
 public final class TranslatePage extends LoggedElveosPage {
 
-    @RequestParam(role=Role.PAGENAME)
+    @RequestParam(role = Role.PAGENAME)
     @NonOptional(@tr("You have to specify a description to translate."))
     private final Description description;
-    
+
     @RequestParam
     @NonOptional(@tr("You have to specify a source language."))
     private final Locale sourceLanguage;
-    
+
+    @RequestParam(role = Role.GET)
+    @NonOptional(@tr("You have to specify a type of description."))
+    private DescriptionType type;
+
+    public enum DescriptionType {
+        SOFTWARE, FEATURE
+    }
+
     private final TranslatePageUrl url;
 
     public TranslatePage(final TranslatePageUrl url) {
@@ -61,6 +70,7 @@ public final class TranslatePage extends LoggedElveosPage {
         this.url = url;
         description = url.getDescription();
         sourceLanguage = url.getSourceLanguage();
+        type = url.getType();
     }
 
     @Override
@@ -75,83 +85,83 @@ public final class TranslatePage extends LoggedElveosPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
-        
-        //Temporary language chooser
+
+        // Temporary language chooser
         Language sourceLanguage = description.getDefaultLanguage();
         Language targetLanguage;
-        
-        if(sourceLanguage.equals(Language.FR)) {
+
+        if (sourceLanguage.equals(Language.FR)) {
             targetLanguage = Language.EN;
         } else {
             targetLanguage = Language.FR;
         }
-        
+
         Translation targetTranslation = description.getTranslation(targetLanguage);
         Translation sourceTranslation = description.getTranslation(sourceLanguage);
-        
+
         final HtmlDiv layout = new HtmlDiv("translate_page");
-        
-        
+
         final HtmlDiv sourceColumn = new HtmlDiv("source_column");
         final HtmlDiv targetColumn = new HtmlDiv("target_column");
-        
+
         layout.add(new HtmlTitle(Context.tr("Translate"), 1));
         layout.add(sourceColumn);
         layout.add(targetColumn);
-        
-        // Source
-        sourceColumn.add(new HtmlTitle(Context.tr("Source language: {0}",  sourceLanguage.getLocale().getDisplayLanguage()), 2));
-        
-        final HtmlTextField sourceTitleInput = new HtmlTextField("", tr("Title"));
-        sourceTitleInput.setCssClass("input_long_400px");
-        sourceTitleInput.addAttribute("readonly", "readonly");
-        sourceTitleInput.setDefaultValue(sourceTranslation.getTitle());
-        sourceColumn.add(sourceTitleInput);
 
-        final HtmlTextArea sourceSpecificationInput = new HtmlTextArea("",
-                                                                     tr("Description"),
-                                                                     30,
-                                                                     80);
+        // Source
+        sourceColumn.add(new HtmlTitle(Context.tr("Source language: {0}", sourceLanguage.getLocale().getDisplayLanguage()), 2));
+
+        if (type == DescriptionType.FEATURE) {
+            final HtmlTextField sourceTitleInput = new HtmlTextField("", tr("Title"));
+            sourceTitleInput.setCssClass("input_long_400px");
+            sourceTitleInput.addAttribute("readonly", "readonly");
+            sourceTitleInput.setDefaultValue(sourceTranslation.getTitle());
+            sourceColumn.add(sourceTitleInput);
+        }
+
+        final HtmlTextArea sourceSpecificationInput = new HtmlTextArea("", tr("Description"), 30, 80);
 
         sourceSpecificationInput.addAttribute("readonly", "readonly");
         sourceSpecificationInput.setDefaultValue(sourceTranslation.getText());
         sourceColumn.add(sourceSpecificationInput);
 
-        
-        
         // Target
-        
         targetColumn.add(new HtmlTitle(Context.tr("Target language: {0}", targetLanguage.getLocale().getDisplayLanguage()), 2));
-        
-        TranslateActionUrl translateUrl = new TranslateActionUrl(Context.getSession().getShortKey(), description, sourceLanguage.getLocale() , targetLanguage);
+
+        TranslateActionUrl translateUrl = new TranslateActionUrl(Context.getSession().getShortKey(),
+                                                                 description,
+                                                                 sourceLanguage.getLocale(),
+                                                                 targetLanguage);
         HtmlForm translateForm = new HtmlForm(translateUrl.urlString());
         targetColumn.add(translateForm);
-        
-        // Title of the description
+
         final FieldData titleFieldData = translateUrl.getTitleParameter().pickFieldData();
-        final HtmlTextField titleInput = new HtmlTextField(titleFieldData.getName(), tr("Title"));
-        titleInput.addErrorMessages(titleFieldData.getErrorMessages());
-        titleInput.setCssClass("input_long_400px");
+        // Title of the description
+        if (type == DescriptionType.FEATURE) {
+            final HtmlTextField titleInput = new HtmlTextField(titleFieldData.getName(), tr("Title"));
+            titleInput.addErrorMessages(titleFieldData.getErrorMessages());
+            titleInput.setCssClass("input_long_400px");
 
-        if (titleFieldData.getSuggestedValue() == null) {
-            if(targetTranslation != null) {
-                titleInput.setDefaultValue(targetTranslation.getTitle());
+            if (titleFieldData.getSuggestedValue() == null) {
+                if (targetTranslation != null) {
+                    titleInput.setDefaultValue(targetTranslation.getTitle());
+                }
+            } else {
+                titleInput.setDefaultValue(titleFieldData.getSuggestedValue());
             }
-        } else {
-            titleInput.setDefaultValue(titleFieldData.getSuggestedValue());
-        }
 
-        translateForm.add(titleInput);
+            translateForm.add(titleInput);
+        } else {
+            HtmlHidden hidden = new HtmlHidden(titleFieldData.getName(), "John-Doe-software");
+            translateForm.add(hidden);
+        }
 
         // Content of the description
         final FieldData contentFieldData = translateUrl.getContentParameter().pickFieldData();
-        final MarkdownEditor specificationInput = new MarkdownEditor(contentFieldData.getName(),
-                                                                     tr("Description"),
-                                                                     30,
-                                                                     80);
+        final MarkdownEditor specificationInput = new MarkdownEditor(contentFieldData.getName(), tr("Description"), 30, 80);
 
         if (contentFieldData.getSuggestedValue() == null || contentFieldData.getSuggestedValue().isEmpty()) {
-            if(targetTranslation != null) {
+            if (targetTranslation != null) {
                 specificationInput.setDefaultValue(targetTranslation.getText());
             }
         } else {
@@ -162,22 +172,18 @@ public final class TranslatePage extends LoggedElveosPage {
 
         translateForm.add(new HtmlSubmit(Context.tr("Save translation")));
 
-        
-        
-        
         return layout;
     }
 
-    
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return TranslatePage.generateBreadcrumb(description, sourceLanguage);
+        return TranslatePage.generateBreadcrumb(description, sourceLanguage, type);
     }
 
-    private static Breadcrumb generateBreadcrumb(Description description, Locale sourceLanguage) {
+    private static Breadcrumb generateBreadcrumb(Description description, Locale sourceLanguage, DescriptionType type) {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
-        breadcrumb.pushLink(new TranslatePageUrl(description, sourceLanguage).getHtmlLink(tr("Translation")));
+        breadcrumb.pushLink(new TranslatePageUrl(description, sourceLanguage, type).getHtmlLink(tr("Translation")));
 
         return breadcrumb;
     }

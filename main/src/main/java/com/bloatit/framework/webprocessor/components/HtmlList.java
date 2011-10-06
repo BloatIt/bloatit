@@ -43,6 +43,11 @@ public class HtmlList extends HtmlLeaf {
     public final HtmlList add(final String element) {
         return add(new HtmlText(element));
     }
+    
+    @Override
+    public boolean selfClosable() {
+        return false;
+    }
 
     @Override
     public final HtmlList add(final HtmlNode element) {
