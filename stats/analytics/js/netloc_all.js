@@ -1,0 +1,1 @@
+var netloc_all = [ ['linuxfr.org',1368,],['t.co',742,],['www.google.com',163,],['www.google.fr',137,],['identi.ca',119,],];

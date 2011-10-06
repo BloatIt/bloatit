@@ -41,8 +41,7 @@ $(document).ready(function(){
             tickInterval: '1 days',
             tickOptions: {
                 formatString: '%a %d %b',
-                fontSize: '7pt',
-                //fontFamily: 'Tahoma',
+                fontSize: '10pt',
                 angle: -30
             }
         },
@@ -88,8 +87,7 @@ $(document).ready(function(){
                 tickRenderer: $.jqplot.CanvasAxisTickRenderer
             },
             tickOptions: {
-                fontSize: '12pt',
-                //fontFamily: 'Tahoma',
+                fontSize: '10pt',
                 angle: -30
             }
 
