@@ -1,0 +1,1 @@
+var ua_all = [ ['unknown',11564,],['Linux',8704,],['Windows',3519,],['Mac OS',786,],['iPhone OS',84,],['JVM',63,],['BSD',51,],['RIM OS',5,],['Firefox',8894,],['Googlebot',5135,],['unknown',2591,],['Safari',1640,],['Netscape Navigator',1172,],['Sogou',792,],['XML Sitemaps Generator',719,],['Feedfetcher-Google',617,],['IE',434,],['Yahoo!',322,],];

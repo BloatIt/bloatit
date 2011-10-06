@@ -4,7 +4,7 @@
 # DO NOT MOVE ME !
 
 DB_PATH=~/.local/share/bloatit/stats.db
-export PYTHONPATH=$PYTHONPATH:$PWD
+export PYTHONPATH=$PYTHONPATH:$PWD/../src/
 
 LAST_FETCH_FILE=".$(id -u -n).$(ip addr | grep link/ether | grep -o -E "..:..:..:..:..:.." | head -1).lastFetch"
 
@@ -22,4 +22,4 @@ else
    find . -iname 'infos.log*' -exec grep 'Access:' {} \; 
 fi
 [ $? = 0 ] && touch $LAST_FETCH_FILE 
-" | sed -E "s/(2011-..-..) (..:..:..),.../\\1T\\2/g"|  python bloatitstats/filldb.py -d $DB_PATH
+" | sed -E "s/(2011-..-..) (..:..:..),.../\\1T\\2/g"|  python ../src/bloatitstats/filldb.py -d $DB_PATH

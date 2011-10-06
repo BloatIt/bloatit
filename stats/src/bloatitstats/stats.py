@@ -3,38 +3,30 @@ import getopt, sys
 from bloatitstats.commun.database import database
 from queries.queries import queries
 
-def print_stats(datafile):
+def print_stats(datafile, output):
     base = database(datafile)
     base.create_table()
-    q = queries(base.cursor)
-    
-    print 'Query on USER AGENT'
-    print '\nNb requests'
-    q.nb_requests()
-    print '\nNb visits'
-    q.nb_request_by_os()
-    
-    print '\n\nQuery on USER AGENT'
-    print '\nNb request by os family'
-    q.nb_request_by_os()
-    print '\nNb request by os'
-    q.nb_request_by_os_name()
-    print '\nNb request by user agent name'
-    q.nb_request_by_ua_name()
-    print '\nNb request by user agent family'
-    q.nb_request_by_ua()
-    print '\nshow the unknown user agents'
-    q.all_unknown_ua()
-    print '\nshow the unknown operating systems'
-    q.all_unknown_os()
-    
-    print '\n\nQuery on USER AGENT'
-    print '\nNb request by referer netloc'
-    q.nb_request_by_netloc()
-    
-    print '\n\nQuery on Visits'
-    print '\nNb visits by visit size (size is the nb of requests in a visit)'
-    q.nb_visit_by_visit_size()
+    q = queries(base.cursor, output)
+    print "generate graph"
+    q.generate_graph_all()
+    q.generate_graph_monthly()
+    q.generate_graph_daily()
+    print "generate main chart"
+    q.generate_main_chart_daily()
+    q.generate_main_chart_monthly()
+    q.generate_main_chart_all()
+    print "generate nb request by ua"
+    q.nb_request_by_ua_all()
+    q.nb_request_by_ua_daily()
+    q.nb_request_by_ua_monthly()
+    print "generate nb request by netloc"
+    q.nb_request_by_netloc_all()
+    q.nb_request_by_netloc_daily()
+    q.nb_request_by_netloc_monthly()
+    print "generate nb visit by visit size"
+    q.nb_visit_by_visit_size_all()
+    q.nb_visit_by_visit_size_daily()
+    q.nb_visit_by_visit_size_monthly()
 
 version='0.1'
 
@@ -45,6 +37,7 @@ def usage():
 -h --help              Show this help.
 -v --version           Print the version number and exit.
 -d --database FILE     Use 'FILE' as a database (default is ./stats.db)
+-o --output FOLDER     Output the js files in the 'FOLDER'
 
 '''
 
@@ -58,6 +51,7 @@ def main():
         sys.exit(2)
         
     database = './stats.db'
+    output = './js'
     for o, a in opts:
         if o in ('-v', '--version'):
             print 'version: ' + version
@@ -65,6 +59,8 @@ def main():
         elif o in ("-h", "--help"):
             usage()
             sys.exit()
+        elif o in ("-o", "--output"):
+            output = a
         elif o in ("-d", "--database"):
             database = a
         else:
@@ -72,7 +68,7 @@ def main():
             usage()
             sys.exit()
             
-    print_stats(database)
+    print_stats(database, output)
             
 
 if __name__ == "__main__":
