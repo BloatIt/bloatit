@@ -472,4 +472,16 @@ if($("#software_chooser_create").val().length > 0 && $("#software_chooser_create
     }
 }
 
+if($("#software_chooser_checkbox_id").is (':checked'))
+{
+    dropdown.cancel()
+    $("#software_chooser_search_id").hide();
+
+    lastChoosenValue = $("#software_chooser_fallback").val()
+    lastNewSoftwareValue = $("#software_chooser_create").val()
+    $("#software_chooser_fallback").val("")
+    $("#software_chooser_create").val("")
+       
+}
+
 

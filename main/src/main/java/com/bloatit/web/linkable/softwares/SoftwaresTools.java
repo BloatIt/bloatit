@@ -90,13 +90,13 @@ public class SoftwaresTools {
 
     public static class SoftwareChooserElement extends HtmlStringFormField {
 
-        public SoftwareChooserElement(final String name, final String newSoftwareName) {
-            super(new SoftwareInputBlock(name), name);
+        public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName) {
+            super(new SoftwareInputBlock(name, newSoftwareCheckboxName), name);
             initSoftwareChooser();
         }
 
-        public SoftwareChooserElement(final String name, final String newSoftwareName , final String label) {
-            super(new SoftwareInputBlock(newSoftwareName), name, label);
+        public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName , final String label) {
+            super(new SoftwareInputBlock(newSoftwareName, newSoftwareCheckboxName), name, label);
             initSoftwareChooser();
         }
 
@@ -125,6 +125,11 @@ public class SoftwaresTools {
             SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setNewSoftwareDefaultValue(suggestedValue);
         }
+        
+        public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
+            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+            softwareInputBlock.setNewSoftwareCheckboxDefaultValue(suggestedValue);
+        }
 
         static class SoftwareInputBlock extends InputBlock {
 
@@ -133,8 +138,9 @@ public class SoftwaresTools {
             private HtmlDiv softwareChooserBlock;
             private HtmlElement createInput;
             private HtmlElement searchSoftwareInput;
+            private HtmlSimpleInput checkboxInput;
 
-            public SoftwareInputBlock(String name) {
+            public SoftwareInputBlock(String name, String newSoftwareCheckboxName) {
                 softwareChooserBlock = new HtmlDiv("software_chooser_block");
                 softwareChooserBlock.setId("software_chooser_block_id");
 
@@ -144,9 +150,10 @@ public class SoftwaresTools {
                 
                 softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
-                HtmlSimpleInput checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
+                checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
                 checkboxInput.setId("software_chooser_checkbox_id");
                 checkboxInput.addAttribute("autocomplete", "off");
+                checkboxInput.addAttribute("name", newSoftwareCheckboxName);
                 newSoftwareCheckBoxBlock.add(checkboxInput);
                 HtmlBranch checkBoxLabel = new HtmlGenericElement("label");
                 checkBoxLabel.addText(Context.tr("The feature is related to a new software."));
@@ -225,6 +232,13 @@ public class SoftwaresTools {
                 createInput.addAttribute("value", suggestedValue);
             }
             
+            public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
+                if(suggestedValue.equals("true")) {
+                    checkboxInput.addAttribute("checked", "checked");    
+                }
+                
+            }
+            
 
             @Override
             public HtmlElement getContentElement() {
@@ -241,6 +255,8 @@ public class SoftwaresTools {
             }
 
         }
+
+        
 
         
 

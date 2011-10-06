@@ -111,13 +111,18 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // Linked software
         final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
         final FieldData newSoftwareNameFieldData = doCreateUrl.getNewSoftwareNameParameter().pickFieldData();
-        final SoftwaresTools.SoftwareChooserElement softwareInput =  new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),newSoftwareNameFieldData.getName() , Context.tr("Software"));
+        final FieldData newSoftwareFieldData = doCreateUrl.getNewSoftwareParameter().pickFieldData();
+        final SoftwaresTools.SoftwareChooserElement softwareInput =  new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),newSoftwareNameFieldData.getName(), newSoftwareFieldData.getName() , Context.tr("Software"));
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }
         
         if (newSoftwareNameFieldData.getSuggestedValue() != null) {
             softwareInput.setNewSoftwareDefaultValue(newSoftwareNameFieldData.getSuggestedValue());
+        }
+        
+        if (newSoftwareFieldData.getSuggestedValue() != null) {
+            softwareInput.setNewSoftwareCheckboxDefaultValue(newSoftwareFieldData.getSuggestedValue());
         }
 
         createFeatureForm.add(softwareInput);

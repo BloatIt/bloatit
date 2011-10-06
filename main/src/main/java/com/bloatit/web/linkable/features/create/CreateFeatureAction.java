@@ -66,6 +66,10 @@ public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     private final String newSoftwareName;
 
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final Boolean newSoftware;
+    
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam(role = Role.PAGENAME)
     private final CreateFeatureProcess process;
@@ -81,6 +85,7 @@ public final class CreateFeatureAction extends UserContentAction {
         this.software = url.getSoftware();
         this.newSoftwareName = url.getNewSoftwareName();
         this.process = url.getProcess();
+        this.newSoftware = url.getNewSoftware();
     }
 
     @Override
@@ -144,6 +149,7 @@ public final class CreateFeatureAction extends UserContentAction {
         session.addParameter(url.getSpecificationParameter());
         session.addParameter(url.getSoftwareParameter());
         session.addParameter(url.getNewSoftwareNameParameter());
+        session.addParameter(url.getNewSoftwareParameter());
     }
 
     @Override
