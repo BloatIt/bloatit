@@ -113,7 +113,7 @@ $(document).ready(function(){
         show: true,
         location: 'ne'
     },
-    title: 'Monthly user agent',
+    title: 'Where do the visitor came from',
     series:[{
         label: netloc_ticks[0],
     }, {
