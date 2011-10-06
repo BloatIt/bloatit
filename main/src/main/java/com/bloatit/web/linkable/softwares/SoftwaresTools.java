@@ -36,6 +36,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlDropDownElement;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
 import com.bloatit.framework.webprocessor.components.form.HtmlStringFormField;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.BankTransaction;
@@ -147,8 +148,10 @@ public class SoftwaresTools {
                 checkboxInput.setId("software_chooser_checkbox_id");
                 checkboxInput.addAttribute("autocomplete", "off");
                 newSoftwareCheckBoxBlock.add(checkboxInput);
-                
-                newSoftwareCheckBoxBlock.addText(Context.tr("The feature is related to a new software."));
+                HtmlBranch checkBoxLabel = new HtmlGenericElement("label");
+                checkBoxLabel.addText(Context.tr("The feature is related to a new software."));
+                checkBoxLabel.addAttribute("for", "software_chooser_checkbox_id");
+                newSoftwareCheckBoxBlock.add(checkBoxLabel);
 
                 searchSoftwareInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.TEXT_INPUT));
                 searchSoftwareInput.setId("software_chooser_search_id");

@@ -716,11 +716,17 @@ form .fake_link {
     color: @error_color;
 }
 
-.new_software_checkbox_block {
-        font-size: 0.9em;
-        padding-bottom: 5px;
-}
+.software_chooser_block {
 
+    .new_software_checkbox_block {
+            font-size: 0.9em;
+            padding-bottom: 5px;
+    }
+    label {
+        font-weight: normal;
+    }
+
+}
 .dropdown_panel {
     position: absolute;
     width: 250px;
@@ -764,6 +770,9 @@ form .fake_link {
         padding-left: 20px;
         padding-right: 10px;
         min-height: 40px;
+        
+        
+        
         p {
             margin-top : 5px;
             margin-bottom : 5px;
