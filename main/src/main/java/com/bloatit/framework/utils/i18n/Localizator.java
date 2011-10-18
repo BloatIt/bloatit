@@ -542,7 +542,7 @@ public final class Localizator {
 
             float weigth;
             if (favLangs.length > 1) {
-                weigth = Float.parseFloat(favLangs[1].substring("q=".length()));
+                weigth = Float.parseFloat(favLangs[1].trim().substring("q=".length()));
             } else {
                 weigth = 1;
             }
