@@ -30,11 +30,15 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         this.targetInputElement.bind('focusout',  function() {This.focusout();});
         this.targetInputElement.bind('keydown',  function(event) {This.keypress(event);});
         this.targetInputElement.bind('input',  function() {This.change();});
-        $("form").bind('keypress',  function(event) {if(event.keyCode == 13) {return false;}});
+        $("form").bind('keypress',  function(event) {
+                                if(event.keyCode == 13 && This.recentFocusOut()) {
+                                    return false;
+                                }});
 
         this.lastChoose = this.getFieldValue();
         this.maxResult = 5;
         this.canceling = false;
+        this.focusoutTime = null;
     }
 
     this.show = function() {
@@ -75,14 +79,14 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
     }
     
     this.focusin = function() {
-
+        this.focusoutTime = new Date().getTime();
         if(this.getFieldValue().length > 0) {
             this.show();
         }
     }
     
     this.focusout = function() {
-    
+        this.focusoutTime = new Date().getTime();
         if(this.hasExactMatch) {
             this.chooseSelection();
         } else {
@@ -96,11 +100,30 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         
     }
     
+    this.recentFocusOut = function() {
+        if(this.focusoutTime == null) {
+            return false;
+        }
 
-    
+        if(this.isShown) {
+            return true;
+        }
+
+        if(this.targetInputElement.is(":focus")) {
+            return true;
+        }
+
+        if(Date.getTime() - this.focusoutTime  < 1000) {
+            return true;
+        }
+
+        return false;
+
+    }
     
     this.keypress = function(event) {
-        
+        this.focusoutTime = new Date().getTime();
+
         console.log("key event"+ event.keyCode);
         //ESCAPE
         if(event.keyCode == 27) {
