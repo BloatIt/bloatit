@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-27 17:43+0200\n"
+"POT-Creation-Date: 2011-10-27 18:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4795,7 +4795,7 @@ msgid "details"
 msgstr ""
 
 #: com/bloatit/web/linkable/contribution/HtmlTotalSummary.java:110
-msgid "Fees (10% + 0.30 €) <0::>"
+msgid "Fees (10&nbsp;% + 0.30&nbsp;€) <0::>"
 msgstr ""
 
 #: com/bloatit/web/linkable/contribution/HtmlTotalSummary.java:131
@@ -4883,7 +4883,9 @@ msgid "Choose amount: "
 msgstr ""
 
 #: com/bloatit/web/linkable/contribution/ContributePage.java:101
-msgid "The minimum is 1€. Don't use cents. Elveos take 10% + 0,30 € for fees."
+msgid ""
+"The minimum is 1€. Don't use cents. Elveos takes 10&nbsp;% + 0,30&nbsp;€ for "
+"fees."
 msgstr ""
 
 #: com/bloatit/web/linkable/contribution/ContributePage.java:108
