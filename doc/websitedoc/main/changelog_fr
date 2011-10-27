@@ -1,6 +1,20 @@
 Changelog
 =========
 
+Version 1.1.19
+--------------
+
+### Features
+ - Add details on Elveos fees (10% + 0.30 €)
+ - Update translate
+
+### Bug fixes
+ - Fix bug with language choise when a member is logged
+ - Fix error when bnf.fr bot comes on website
+ - It's not possible to type enter on a page with a software picker
+ - Fix a crash if a admin force a feature in developement state
+
+
 Version 1.1.15
 --------------
 
