@@ -98,7 +98,7 @@ public final class ContributePage extends CreateUserContentPage {
             contributionValue = process.getAmount();
         }
         contribInput.addErrorMessages(amountData.getErrorMessages());
-        contribInput.setComment(Context.tr("The minimum is 1€. Don't use cents."));
+        contribInput.setComment(Context.tr("The minimum is 1€. Don't use cents. Elveos 10% + 0,30 € for fees."));
 
         // Input field : As team
         final AsTeamField teamField = new AsTeamField(formActionUrl,

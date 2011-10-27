@@ -107,7 +107,7 @@ public class HtmlTotalSummary extends HtmlTable {
                 feesHTLine.addCell(new HtmlTableCell("label") {
                     @Override
                     public HtmlNode getBody() {
-                        return new HtmlMixedText(tr("Fees <0::>"), detailSpan);
+                        return new HtmlMixedText(tr("Fees (10% + 0.30 €) <0::>"), detailSpan);
                     }
                 });
 
