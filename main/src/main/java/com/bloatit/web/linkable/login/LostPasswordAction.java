@@ -54,7 +54,7 @@ public class LostPasswordAction extends ElveosAction {
 
     public LostPasswordAction(final LostPasswordActionUrl url) {
         super(url);
-        this.email = url.getEmail();
+        this.email = url.getEmail().trim();
         this.url = url;
     }
 
