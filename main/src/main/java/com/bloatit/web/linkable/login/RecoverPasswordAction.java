@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -78,6 +79,11 @@ public class RecoverPasswordAction extends ElveosAction {
 
     @Override
     protected Url doProcess() {
+
+        if (member.getActivationState() == ActivationState.VALIDATING) {
+            member.activate(resetKey);
+        }
+
         AuthToken.authenticate(member);
         try {
             member.setPassword(newPassword);
