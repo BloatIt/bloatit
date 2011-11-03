@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 1.1.21
+--------------
+
+### Bug fixes
+ - add a trim for email field of password recovery page
+ - fix the prepaid amount field: it can be set to zero
+ - various fix for REST API code and documentation
+
+
 Version 1.1.20
 --------------
 
