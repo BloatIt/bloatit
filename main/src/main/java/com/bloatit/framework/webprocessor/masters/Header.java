@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.WebConfiguration;
 
 public final class Header extends HtmlElement {

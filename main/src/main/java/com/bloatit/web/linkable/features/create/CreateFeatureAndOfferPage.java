@@ -37,8 +37,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Member;
-import com.bloatit.model.Software;
-import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureListPage;
