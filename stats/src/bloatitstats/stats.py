@@ -1,30 +1,38 @@
 #!python
 import getopt, sys
 from bloatitstats.commun.database import database
-from queries.queries import queries
+from queries.ua_queries import ua_queries
+from queries.referer_queries import referer_queries
+from queries.main_chart_queries import main_chart_queries
+from queries.visits_queries import visits_queries
+from queries.graph_queries import graph_queries
 
 def print_stats(datafile, output):
     base = database(datafile)
     base.create_table()
-    q = queries(base.cursor, output)
+
     print "generate graph"
-    q.generate_graph_all()
-    q.generate_graph_monthly()
+    q = graph_queries(base.cursor, output)
     q.generate_graph_daily()
+    q.generate_graph_monthly()
+
     print "generate main chart"
+    q = main_chart_queries(base.cursor, output)
     q.generate_main_chart_daily()
     q.generate_main_chart_monthly()
-    q.generate_main_chart_all()
+
     print "generate nb request by ua"
-    q.nb_request_by_ua_all()
+    q = ua_queries(base.cursor, output)
     q.nb_request_by_ua_daily()
     q.nb_request_by_ua_monthly()
+
     print "generate nb request by netloc"
-    q.nb_request_by_netloc_all()
+    q = referer_queries(base.cursor, output)
     q.nb_request_by_netloc_daily()
     q.nb_request_by_netloc_monthly()
+
     print "generate nb visit by visit size"
-    q.nb_visit_by_visit_size_all()
+    q = visits_queries(base.cursor, output)
     q.nb_visit_by_visit_size_daily()
     q.nb_visit_by_visit_size_monthly()
 
