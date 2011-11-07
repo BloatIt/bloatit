@@ -53,7 +53,7 @@ class Client(object):
             raise ValueError("Client_id and client_secret must be set.")
 
         self.http = httplib2.Http(cache=cache, timeout=timeout,
-            proxy_info=proxy_info)
+            proxy_info=proxy_info, disable_ssl_certificate_validation=True)
 
     @staticmethod
     def _parse_response(content):
@@ -118,6 +118,7 @@ class Client(object):
 
         print uri
         print args
+
 
         response, content = self.http.request(uri, method='POST', body=body,
             headers=headers)

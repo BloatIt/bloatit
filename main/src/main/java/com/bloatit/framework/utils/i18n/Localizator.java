@@ -479,7 +479,7 @@ public final class Localizator {
             // Other cases
             if (Context.getSession().getMemberId() != null) {
                 Locale memberLocale = Context.getSession().getMemberLocale();
-                if (getAvailableLanguages().containsKey(memberLocale.getLanguage())) {
+                if (isAvailableLanguage(memberLocale.getLanguage())) {
                     locale = memberLocale;
                 } else {
                     locale = new Locale(DEFAULT_LOCALE.getLanguage(), memberLocale.getCountry());
@@ -490,6 +490,21 @@ public final class Localizator {
             }
         }
         return locale;
+    }
+    
+    /**
+     * Indicates if the language described by <code>languageCode</code> exists or not
+     * @param languageCode the coce of the ISO language that wants to work
+     * @return <i>true</i> if <code>languageCode</code> exists, false otherwise
+     */
+    public static boolean isAvailableLanguage(String languageCode){
+        for(Entry<String, LanguageDescriptor> e : getAvailableLanguages().entrySet()){
+            LanguageDescriptor ld = e.getValue();
+            if(ld.getCode().equals(languageCode)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -527,7 +542,7 @@ public final class Localizator {
 
             float weigth;
             if (favLangs.length > 1) {
-                weigth = Float.parseFloat(favLangs[1].substring("q=".length()));
+                weigth = Float.parseFloat(favLangs[1].trim().substring("q=".length()));
             } else {
                 weigth = 1;
             }

@@ -28,12 +28,17 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         This = this
         this.targetInputElement.bind('focusin', function() {This.focusin();});
         this.targetInputElement.bind('focusout',  function() {This.focusout();});
-        this.targetInputElement.bind('keypress',  function(event) {This.keypress(event);});
+        this.targetInputElement.bind('keydown',  function(event) {This.keypress(event);});
         this.targetInputElement.bind('input',  function() {This.change();});
-        $("form").bind('keypress',  function(event) {if(event.keyCode == 13) {return false;}});
+        $("form").bind('keypress',  function(event) {
+                                if(event.keyCode == 13 && This.recentFocusOut()) {
+                                    return false;
+                                }});
 
-        this.lastChoose = this.targetInputElement.val();
+        this.lastChoose = this.getFieldValue();
         this.maxResult = 5;
+        this.canceling = false;
+        this.focusoutTime = null;
     }
 
     this.show = function() {
@@ -74,16 +79,14 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
     }
     
     this.focusin = function() {
-
-        if(this.targetInputElement.val().length > 0) {
+        this.focusoutTime = new Date().getTime();
+        if(this.getFieldValue().length > 0) {
             this.show();
         }
     }
     
     this.focusout = function() {
-
-        userInput = this.targetInputElement.val();
-            
+        this.focusoutTime = new Date().getTime();
         if(this.hasExactMatch) {
             this.chooseSelection();
         } else {
@@ -97,16 +100,43 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         
     }
     
-
-    
-    
-    this.keypress = function(event) {
-        
-        console.log("key event"+ event.keyCode);
-        if(event.keyCode == 27) {
-            this.hide();
+    this.recentFocusOut = function() {
+        if(this.focusoutTime == null) {
             return false;
         }
+
+        if(this.isShown) {
+            return true;
+        }
+
+        if(this.targetInputElement.is(":focus")) {
+            return true;
+        }
+
+        if(Date.getTime() - this.focusoutTime  < 1000) {
+            return true;
+        }
+
+        return false;
+
+    }
+    
+    this.keypress = function(event) {
+        this.focusoutTime = new Date().getTime();
+
+        console.log("key event"+ event.keyCode);
+        //ESCAPE
+        if(event.keyCode == 27) {
+            
+            var that = this;
+            
+            window.setTimeout(function() {
+            that.cancel()
+            }, 150);
+            return true;
+        }
+        
+        //ENTER
         if(event.keyCode == 13 && this.isShown) {
             this.chooseSelection();
             return false;
@@ -126,8 +156,9 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
             }
         }
         
+        //Tab
         if(event.keyCode == 9) {
-            if(this.isShown) {
+            if(this.isShown && this.selection != "new") {
                 this.chooseSelection();
                 
             } else {
@@ -142,13 +173,17 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
     }
     
     this.change = function() {
+        console.log("change");
         this.updateSearch();
     }
     
+    this.getFieldValue = function() {
+        return $.trim(this.targetInputElement.val());
+    }
+    
     this.updateSearch = function() {
-        userInput = this.targetInputElement.val();
+        userInput = this.getFieldValue();
         console.log("update search: "+ userInput);
-        
         this.hasExactMatch = false;
         this.emptyList()
 
@@ -355,13 +390,14 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
 
     
     this.chooseSelection = function() {
+        console.log("chooseSelection");
         if(this.selection == -1) {
             return;
         }
         
         if(this.selection == 'new') {
-            this.askCreate(this.targetInputElement.val());
-            this.lastChoose = this.targetInputElement.val();
+            this.askCreate(this.getFieldValue());
+            this.lastChoose = this.getFieldValue();
             this.hasExactMatch = true;
             this.hide();    
         } else {
@@ -381,7 +417,9 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
     }
     
     this.cancel = function() {
+        console.log("cancel");
         if(!this.hasExactMatch) {
+            console.log("no match, revert to "+ this.lastChoose);
             this.targetInputElement.val(this.lastChoose);
         }
         
@@ -455,6 +493,18 @@ if($("#software_chooser_create").val().length > 0 && $("#software_chooser_create
         }
     
     }
+}
+
+if($("#software_chooser_checkbox_id").is (':checked'))
+{
+    dropdown.cancel()
+    $("#software_chooser_search_id").hide();
+
+    lastChoosenValue = $("#software_chooser_fallback").val()
+    lastNewSoftwareValue = $("#software_chooser_create").val()
+    $("#software_chooser_fallback").val("")
+    $("#software_chooser_create").val("")
+       
 }
 
 

@@ -46,7 +46,7 @@ import com.bloatit.rest.resources.RestKudos;
  * </pre>
  * <p>
  */
-@XmlRootElement(name = "kudoss")
+@XmlRootElement(name = "kudos")
 public class RestKudosList extends RestListBinder<RestKudos, Kudos> {
 
     /**
@@ -69,7 +69,7 @@ public class RestKudosList extends RestListBinder<RestKudos, Kudos> {
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElement(name = "kudos")
+    @XmlElement(name = "kudo")
     @XmlIDREF
     public List<RestKudos> getKudoss() {
         final List<RestKudos> kudoss = new ArrayList<RestKudos>();

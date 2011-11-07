@@ -14,7 +14,7 @@ class Authenticator():
         self.get_tokens_path='oauth/get_authtoken'
         self.host='https://elveos.org'
         self.redirect_uri= 'oauth://auth'
-        self.client_id = '07196662cab0563be208dc82f4cc8ae9'
+        self.client_id = 'c52e9f0226f9c83a464270bf7d9def95'
         self.client_secret = "c'est un secret !"   
         
     def authenticate(self):        

@@ -23,15 +23,12 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
-import com.bloatit.model.Software;
-import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -111,13 +108,18 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // Linked software
         final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
         final FieldData newSoftwareNameFieldData = doCreateUrl.getNewSoftwareNameParameter().pickFieldData();
-        final SoftwaresTools.SoftwareChooserElement softwareInput =  new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),newSoftwareNameFieldData.getName() , Context.tr("Software"));
+        final FieldData newSoftwareFieldData = doCreateUrl.getNewSoftwareParameter().pickFieldData();
+        final SoftwaresTools.SoftwareChooserElement softwareInput =  new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),newSoftwareNameFieldData.getName(), newSoftwareFieldData.getName() , Context.tr("Software"));
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }
         
         if (newSoftwareNameFieldData.getSuggestedValue() != null) {
             softwareInput.setNewSoftwareDefaultValue(newSoftwareNameFieldData.getSuggestedValue());
+        }
+        
+        if (newSoftwareFieldData.getSuggestedValue() != null) {
+            softwareInput.setNewSoftwareCheckboxDefaultValue(newSoftwareFieldData.getSuggestedValue());
         }
 
         createFeatureForm.add(softwareInput);

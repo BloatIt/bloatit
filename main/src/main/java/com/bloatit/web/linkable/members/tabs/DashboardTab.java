@@ -12,7 +12,6 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlT
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Feature;
@@ -25,7 +24,6 @@ import com.bloatit.web.linkable.members.tabs.dashboard.DashboardRenderer;
 import com.bloatit.web.linkable.members.tabs.dashboard.DashboardStep;
 import com.bloatit.web.linkable.members.tabs.dashboard.DashboardStep.StepState;
 import com.bloatit.web.url.ContributionProcessUrl;
-import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.StopFollowActionUrl;

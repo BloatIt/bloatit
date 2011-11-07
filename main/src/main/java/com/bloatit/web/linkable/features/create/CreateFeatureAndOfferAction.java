@@ -99,8 +99,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
 
     @RequestParam(role = Role.POST, suggestedValue = "true")
     private final Boolean isFinished;
-    
-    
+
     @Optional
     @RequestParam(role = Role.POST)
     private final Software software;
@@ -108,11 +107,15 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @Optional
     @RequestParam(role = Role.POST)
     private final String newSoftwareName;
-    
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final Boolean newSoftware;
+
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam(role = Role.PAGENAME)
     private final CreateFeatureProcess process;
-    
+
     private final CreateFeatureAndOfferActionUrl url;
 
     public CreateFeatureAndOfferAction(final CreateFeatureAndOfferActionUrl url) {
@@ -131,21 +134,23 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         this.percentFatal = url.getPercentFatal();
         this.percentMajor = url.getPercentMajor();
         this.isFinished = url.getIsFinished();
+        this.newSoftware = url.getNewSoftware();
+
     }
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyError(Context.tr("You have to specify a valid language."));
-            if(process == null) {
+            if (process == null) {
                 return new IndexPageUrl();
             } else {
                 return new CreateFeaturePageUrl(process);
             }
-            
+
         }
-        
-        if(software == null && newSoftwareName != null &&  newSoftwareName.equals("--invalid--")) {
+
+        if (software == null && newSoftwareName != null && newSoftwareName.equals("--invalid--")) {
             session.notifyError(Context.tr("You have to specify a valid software."));
             if (process == null) {
                 return new IndexPageUrl();
@@ -158,7 +163,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-        
+
         Software softwareToUse = software;
 
         if (software == null && newSoftwareName != null && !newSoftwareName.isEmpty()) {
@@ -172,15 +177,19 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         // Create feature
         final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, softwareToUse);
         propagateAttachedFileIfPossible(feature);
-        
+
         // Create offer
         Offer constructingOffer;
         try {
             Milestone constructingMilestone;
-            constructingOffer = feature.addOffer(price, specification, license, Language.fromLocale(getLocale()), expiryDate.getJavaDate(), daysBeforeValidation
-                    * DateUtils.SECOND_PER_DAY);
+            constructingOffer = feature.addOffer(price,
+                                                 specification,
+                                                 license,
+                                                 Language.fromLocale(getLocale()),
+                                                 expiryDate.getJavaDate(),
+                                                 daysBeforeValidation * DateUtils.SECOND_PER_DAY);
             constructingMilestone = constructingOffer.getMilestones().iterator().next();
-            
+
             if (percentFatal != null && percentMajor != null) {
                 constructingMilestone.updateMajorFatalPercent(percentFatal, percentMajor);
             }
@@ -195,23 +204,22 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
             Context.getSession().notifyError(Context.tr("Error creating an offer. Please notify us."));
             throw new ShallNotPassException("Error creating an offer", e);
         }
-        
+
         if (isFinished) {
             process.close();
-            return new FeaturePageUrl(feature, FeatureTabKey.description);    
+            return new FeaturePageUrl(feature, FeatureTabKey.description);
         }
-        
+
         final MakeOfferPageUrl returnUrl = new MakeOfferPageUrl(feature);
         returnUrl.setOffer(constructingOffer);
         process.close();
         return returnUrl;
-        
-        
+
     }
 
     @Override
     protected Url doProcessErrors() {
-        if(process == null) {
+        if (process == null) {
             return new IndexPageUrl();
         } else {
             return new CreateFeatureAndOfferPageUrl(process);
@@ -236,6 +244,8 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         session.addParameter(url.getIsFinishedParameter());
         session.addParameter(url.getLicenseParameter());
         session.addParameter(url.getNewSoftwareNameParameter());
+        session.addParameter(url.getNewSoftwareParameter());
+
     }
 
     @Override

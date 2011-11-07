@@ -37,8 +37,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Member;
-import com.bloatit.model.Software;
-import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -59,14 +57,13 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
     public static final int FILE_MAX_SIZE_MIO = 2;
-    
+
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam(role = Role.PAGENAME)
     CreateFeatureProcess process;
-    
-    
+
     private final CreateFeatureAndOfferPageUrl url;
-    
+
     public CreateFeatureAndOfferPage(final CreateFeatureAndOfferPageUrl url) {
         super(url);
         this.url = url;
@@ -93,8 +90,6 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Create a feature"), 1);
 
-        
-        
         // Create offer form
         final CreateFeatureAndOfferActionUrl offerActionUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey(), process);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
@@ -104,7 +99,6 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
                                         Context.tr("Description language"), //
                                         Context.tr("The language of the title and description. These texts can be translated in other language later.")));
 
-        
         // Title of the feature
         final FieldData descriptionFieldData = offerActionUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextField titleInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
@@ -113,7 +107,7 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         titleInput.setCssClass("input_long_400px");
         titleInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
         offerForm.add(titleInput);
-        
+
         // Price field
         final FieldData priceData = offerActionUrl.getPriceParameter().pickFieldData();
         final HtmlMoneyField priceInput = new HtmlMoneyField(priceData.getName(), Context.tr("Offer price"));
@@ -125,25 +119,33 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         // Linked software
         final FieldData softwareFieldData = offerActionUrl.getSoftwareParameter().pickFieldData();
         final FieldData newSoftwareNameFieldData = offerActionUrl.getNewSoftwareNameParameter().pickFieldData();
-        final SoftwaresTools.SoftwareChooserElement softwareInput =  new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),newSoftwareNameFieldData.getName() , Context.tr("Software"));
+        final FieldData newSoftwareFieldData = offerActionUrl.getNewSoftwareParameter().pickFieldData();
+
+        final SoftwaresTools.SoftwareChooserElement softwareInput = new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),
+                                                                                                              newSoftwareNameFieldData.getName(),
+                                                                                                              newSoftwareFieldData.getName(),
+                                                                                                              Context.tr("Software"));
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }
-        
+
         if (newSoftwareNameFieldData.getSuggestedValue() != null) {
             softwareInput.setNewSoftwareDefaultValue(newSoftwareNameFieldData.getSuggestedValue());
         }
 
-        
+        if (newSoftwareFieldData.getSuggestedValue() != null) {
+            softwareInput.setNewSoftwareCheckboxDefaultValue(newSoftwareFieldData.getSuggestedValue());
+        }
+
         offerForm.add(softwareInput);
-        
+
         // asTeam
         offerForm.add(new AsTeamField(offerActionUrl,
-                                          loggedUser,
-                                          UserTeamRight.TALK,
-                                          Context.tr("In the name of "),
-                                          Context.tr("Write this offer in the name of a team, and offer the contributions to this team.")));
-        
+                                      loggedUser,
+                                      UserTeamRight.TALK,
+                                      Context.tr("In the name of "),
+                                      Context.tr("Write this offer in the name of a team, and offer the contributions to this team.")));
+
         // Date field
         final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
         final HtmlDateField dateInput = new HtmlDateField(dateData.getName(), Context.tr("Release date"), Context.getLocalizator().getLocale());
@@ -151,7 +153,7 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         dateInput.addErrorMessages(dateData.getErrorMessages());
         dateInput.setComment(Context.tr("You will have to release this feature before the release date."));
         offerForm.add(dateInput);
-        
+
         // Specification
         final FieldData specificationData = offerActionUrl.getSpecificationParameter().pickFieldData();
         final HtmlTextArea specificationInput = new HtmlTextArea(specificationData.getName(), Context.tr("Description"), 10, 80);
@@ -202,7 +204,6 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         offerForm.add(licenseInput);
 
-
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
         showHideLink.setCssClass("fake_link");
@@ -214,7 +215,8 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         final boolean percentFatalChanged = !(offerActionUrl.getPercentFatalParameter().getDefaultSuggestedValue().equals(percentFatalData.getSuggestedValue()));
         final boolean daysBeforeValidationChanged = !(offerActionUrl.getDaysBeforeValidationParameter().getDefaultSuggestedValue().equals(nbDaysData.getSuggestedValue()));
 
-        final JsShowHide showHideValidationDetails = new JsShowHide(offerForm, percentMajorChanged || percentFatalChanged || daysBeforeValidationChanged);
+        final JsShowHide showHideValidationDetails = new JsShowHide(offerForm, percentMajorChanged || percentFatalChanged
+                || daysBeforeValidationChanged);
         showHideValidationDetails.setHasFallback(false);
         showHideValidationDetails.addActuator(showHideLink);
         showHideValidationDetails.addListener(validationDetails);

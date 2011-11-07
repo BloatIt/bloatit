@@ -21,7 +21,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.TemplateFile;
@@ -31,20 +30,17 @@ import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDownElement;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
 import com.bloatit.framework.webprocessor.components.form.HtmlStringFormField;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Image;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.WebConfiguration;
-import com.bloatit.web.linkable.money.QuotationEntry;
-import com.bloatit.web.url.ChangePrepaidAmountActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
@@ -89,18 +85,18 @@ public class SoftwaresTools {
 
     public static class SoftwareChooserElement extends HtmlStringFormField {
 
-        public SoftwareChooserElement(final String name, final String newSoftwareName) {
-            super(new SoftwareInputBlock(name), name);
+        public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName) {
+            super(new SoftwareInputBlock(name, newSoftwareCheckboxName), name);
             initSoftwareChooser();
         }
 
-        public SoftwareChooserElement(final String name, final String newSoftwareName , final String label) {
-            super(new SoftwareInputBlock(newSoftwareName), name, label);
+        public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName , final String label) {
+            super(new SoftwareInputBlock(newSoftwareName, newSoftwareCheckboxName), name, label);
             initSoftwareChooser();
         }
 
         public void initSoftwareChooser() {
-            setComment(Context.tr("On what software do you want to have this feature. Select 'new software' if your feature is the creation of a new software."));
+            setComment(Context.tr("On what software do you want to have this feature."));
         }
 
         /**
@@ -124,6 +120,11 @@ public class SoftwaresTools {
             SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setNewSoftwareDefaultValue(suggestedValue);
         }
+        
+        public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
+            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+            softwareInputBlock.setNewSoftwareCheckboxDefaultValue(suggestedValue);
+        }
 
         static class SoftwareInputBlock extends InputBlock {
 
@@ -132,8 +133,9 @@ public class SoftwaresTools {
             private HtmlDiv softwareChooserBlock;
             private HtmlElement createInput;
             private HtmlElement searchSoftwareInput;
+            private HtmlSimpleInput checkboxInput;
 
-            public SoftwareInputBlock(String name) {
+            public SoftwareInputBlock(String name, String newSoftwareCheckboxName) {
                 softwareChooserBlock = new HtmlDiv("software_chooser_block");
                 softwareChooserBlock.setId("software_chooser_block_id");
 
@@ -143,12 +145,15 @@ public class SoftwaresTools {
                 
                 softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
-                HtmlSimpleInput checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
+                checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
                 checkboxInput.setId("software_chooser_checkbox_id");
                 checkboxInput.addAttribute("autocomplete", "off");
+                checkboxInput.addAttribute("name", newSoftwareCheckboxName);
                 newSoftwareCheckBoxBlock.add(checkboxInput);
-                
-                newSoftwareCheckBoxBlock.addText(Context.tr("The feature is related to a new software."));
+                HtmlBranch checkBoxLabel = new HtmlGenericElement("label");
+                checkBoxLabel.addText(Context.tr("The Feature consists in creating a new software."));
+                checkBoxLabel.addAttribute("for", "software_chooser_checkbox_id");
+                newSoftwareCheckBoxBlock.add(checkBoxLabel);
 
                 searchSoftwareInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.TEXT_INPUT));
                 searchSoftwareInput.setId("software_chooser_search_id");
@@ -222,6 +227,13 @@ public class SoftwaresTools {
                 createInput.addAttribute("value", suggestedValue);
             }
             
+            public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
+                if(suggestedValue.equals("true")) {
+                    checkboxInput.addAttribute("checked", "checked");    
+                }
+                
+            }
+            
 
             @Override
             public HtmlElement getContentElement() {
@@ -238,6 +250,8 @@ public class SoftwaresTools {
             }
 
         }
+
+        
 
         
 

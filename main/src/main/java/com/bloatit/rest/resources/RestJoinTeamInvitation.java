@@ -73,7 +73,7 @@ import com.bloatit.rest.list.RestJoinTeamInvitationList;
  * return a RestJoinTeamInvitationList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "jointeaminvitation")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
     private JoinTeamInvitation model;

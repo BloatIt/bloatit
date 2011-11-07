@@ -22,11 +22,11 @@ import java.util.Date;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoContribution.ContributionState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
@@ -399,6 +399,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         if (getSelectedOffer().isFinished()) {
             throw new BadProgrammerException("Cannot be in development state and have no milestone left.");
         }
+        
+        if(!getValidationDate().before(new Date())) {
+        	//Force to a valide date
+        	getDao().setValidationDate(new Date());
+        }
+        
         getDao().setFeatureState(FeatureState.DEVELOPPING);
         getSelectedOffer().getCurrentMilestone().setDevelopingUnprotected();
         new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentMilestone().getExpirationDate());
