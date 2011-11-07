@@ -35,7 +35,7 @@ class queries:
         self.cursor.execute('''SELECT quote(useragent.%s), count(*)
                                FROM visit 
                                JOIN useragent ON useragent.id = id_useragent
-                               WHERE begin_date > date('now', '-%i days')
+                               WHERE begin_date > date('now', '-%i days', 'localtime')
                                GROUP BY useragent.%s
                                ORDER BY count(*) DESC
                                LIMIT 10 ''' % (component, nbdays, component))
@@ -73,7 +73,7 @@ class queries:
                   JOIN externalurl ON externalurl.id=id_externalurl
                 WHERE (useragent.typ = 'Browser' )
                 AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                AND begin_date > date('now', '-30 days') 
+                AND begin_date > date('now', '-30 days', 'localtime') 
                 AND url NOT LIKE '/__/resource%%' 
                 AND url NOT LIKE '/rest/%%' 
                 AND url NOT LIKE '/favicon.ico%%' 
@@ -83,17 +83,17 @@ class queries:
                 AND netloc = %s 
                 GROUP BY strftime('%%Y%%m%%d', begin_date), netloc)
             ON time = date
-            WHERE time > date('now', '-30 days') ''' % row[0])
+            WHERE time > date('now', '-30 days', 'localtime') ''' % row[0])
             self._double_array_serialize(f, self.cursor, "netloc_%i" % i)
             i += 1
 
     def nb_request_by_netloc_daily(self):
         f = open(self.output + "/netloc_daily.js", "w")
         self.cursor.execute('''delete from mydates''')
-        for i in range(2, 32) :
+        for i in range(0, 30) :
             self.cursor.execute(''' 
             INSERT INTO mydates (time) 
-            VALUES (strftime('%%Y-%%m-%%d %%H:00:00', datetime('now', '-%i hours')))''' % i )
+            VALUES (strftime('%%Y-%%m-%%d %%H:00:00', datetime('now', '-%i hours', 'localtime')))''' % i )
 
         result = []
         self._nb_request_by_netloc(2)
@@ -114,7 +114,7 @@ class queries:
                   JOIN externalurl ON externalurl.id=id_externalurl
                 WHERE (useragent.typ = 'Browser' )
                 AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                AND begin_date > date('now', '-2 days') 
+                AND begin_date > date('now', '-2 days', 'localtime') 
                 AND url NOT LIKE '/__/resource%%' 
                 AND url NOT LIKE '/rest/%%' 
                 AND url NOT LIKE '/favicon.ico%%' 
@@ -124,7 +124,7 @@ class queries:
                 AND netloc = %s 
                 GROUP BY strftime('%%Y%%m%%d', begin_date), netloc)
             ON time = date
-            WHERE time > date('now', '-2 days') ''' % row[0])
+            WHERE time > date('now', '-2 days', 'localtime') ''' % row[0])
             self._double_array_serialize(f, self.cursor, "netloc_%i" % i)
             i += 1
 
@@ -142,7 +142,7 @@ class queries:
             WHERE netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net', '') 
             AND netloc NOT LIKE '%%.local' 
-            AND begin_date > date('now', '-%i days')
+            AND begin_date > date('now', '-%i days', 'localtime')
             GROUP BY netloc 
             ORDER BY count(netloc) DESC 
             LIMIT 5 ''' % nbdays)
@@ -170,7 +170,7 @@ class queries:
               JOIN externalurl ON externalurl.id=id_externalurl
               WHERE (useragent.typ = 'Browser' )
               AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-              AND begin_date > date('now', '-%i days')
+              AND begin_date > date('now', '-%i days', 'localtime')
               AND netloc NOT LIKE '%%elveos.org' 
               AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
               AND netloc NOT LIKE '%%.local'
@@ -179,6 +179,7 @@ class queries:
               AND url NOT LIKE '/favicon.ico%%' 
               AND url NOT LIKE '%%.png' 
               AND url NOT LIKE '%%featurefeed%%' 
+              AND url NOT LIKE '%%softwarefeed%%' 
               AND url NOT LIKE '/__/%%login' 
               AND url NOT LIKE '%%/doactivate%%' 
               AND url NOT LIKE '%%.txt' 
@@ -272,13 +273,14 @@ class queries:
             AND url NOT LIKE '/favicon.ico%' 
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%featurefeed%' 
+              AND url NOT LIKE '%%softwarefeed%%' 
             AND url NOT LIKE '/__/%login' 
             AND url NOT LIKE '%/doactivate%' 
             AND url NOT LIKE '%.txt' 
             AND url NOT LIKE '%resource%' 
             GROUP BY strftime('%Y%m%d', begin_date))
         ON time = date
-        WHERE time > date('now', '-30 days') ''')
+        WHERE time > date('now', '-30 days', 'localtime') ''')
         result_member = list()
         for line in self.cursor:
             result_member.append([line[0], line[1]])
@@ -295,7 +297,7 @@ class queries:
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND visitor.userid = -1
-            AND begin_date > date('now', '-30 days') 
+            AND begin_date > date('now', '-30 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -303,6 +305,7 @@ class queries:
             AND url NOT LIKE '/rest/%' 
             AND url NOT LIKE '/favicon.ico%' 
             AND url NOT LIKE '%featurefeed%' 
+              AND url NOT LIKE '%%softwarefeed%%' 
             AND url NOT LIKE '%/doactivate%' 
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '/__/%login' 
@@ -310,7 +313,7 @@ class queries:
             AND url NOT LIKE '%resource%' 
             GROUP BY strftime('%Y%m%d', begin_date) ) 
         ON time = date
-        WHERE time > date('now', '-30 days')
+        WHERE time > date('now', '-30 days', 'localtime')
         ''')
         result_non_member = list()
         for line in self.cursor:
@@ -329,7 +332,7 @@ class queries:
                       JOIN externalurl ON externalurl.id=id_externalurl
                     WHERE (useragent.typ = 'Browser' )
                     AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                    AND begin_date > date('now', '-30 days') 
+                    AND begin_date > date('now', '-30 days', 'localtime') 
                     AND netloc NOT LIKE '%%elveos.org' 
                     AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
                     AND netloc NOT LIKE '%%.local'
@@ -339,6 +342,7 @@ class queries:
                     AND url NOT LIKE '%.png' 
                     AND url NOT LIKE '%.txt' 
                     AND url NOT LIKE '%featurefeed%' 
+              AND url NOT LIKE '%%softwarefeed%%' 
                     AND url NOT LIKE '/__/%login' 
                     AND url NOT LIKE '%/doactivate%' 
                     AND url NOT LIKE '%resource%' 
@@ -346,7 +350,7 @@ class queries:
              WHERE nbRequests = 1
              GROUP BY nbRequests , strftime('%Y%m%d', begin_date))
         ON time = date
-        WHERE time > date('now', '-30 days')
+        WHERE time > date('now', '-30 days', 'localtime')
         ''')
         result = list()
         i = 0
@@ -365,10 +369,10 @@ class queries:
             -- (useragent.typ = 'Browser' ) 
             -- AND visitor.userid != -1
             -- AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date('now', '-30 days') 
+            AND begin_date > date('now', '-30 days', 'localtime') 
             GROUP BY strftime('%Y%m%d', begin_date))
         ON time = date
-        WHERE time > date('now', '-30 days')
+        WHERE time > date('now', '-30 days', 'localtime')
         ''')
         result = list()
         i = 0
@@ -386,10 +390,10 @@ class queries:
        
     def generate_main_chart_daily(self):
         self.cursor.execute('''delete from mydates''')
-        for i in range(2, 32) :
+        for i in range(0, 30) :
             self.cursor.execute(''' 
             INSERT INTO mydates (time) 
-            VALUES (strftime('%%Y-%%m-%%d %%H:00:00', datetime('now', '-%i hours')))''' % i )
+            VALUES (strftime('%%Y-%%m-%%d %%H:00:00', datetime('now', '-%i hours', 'localtime')))''' % i )
 
         f = open(self.output + "/visits_daily.js", "w")
         # Visit member
@@ -404,7 +408,7 @@ class queries:
             WHERE (useragent.typ = 'Browser' )
             AND visitor.userid != -1
             AND visitor.userid > 16 AND visitor.userid != 43
-            AND begin_date > date('now', '-2 days') 
+            AND begin_date > date('now', '-2 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -412,13 +416,14 @@ class queries:
             AND url NOT LIKE '/rest/%' 
             AND url NOT LIKE '/favicon.ico%' 
             AND url NOT LIKE '%featurefeed%' 
+              AND url NOT LIKE '%%softwarefeed%%' 
             AND url NOT LIKE '/__/%login' 
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%.txt' 
             AND url NOT LIKE '%resource%'
             GROUP BY strftime('%d%H', begin_date))
         ON time = date
-        WHERE time > date('now', '-2 days')
+        WHERE time > date('now', '-2 days', 'localtime')
         ''')
         result_member = list()
         for line in self.cursor:
@@ -436,11 +441,12 @@ class queries:
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND visitor.userid = -1
-            AND begin_date > date('now', '-2 days') 
+            AND begin_date > date('now', '-2 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
             AND url NOT LIKE '%featurefeed%' 
+              AND url NOT LIKE '%%softwarefeed%%' 
             AND url NOT LIKE '/__/%login' 
             AND url NOT LIKE '/__/resource%' 
             AND url NOT LIKE '/rest/%' 
@@ -450,7 +456,7 @@ class queries:
             AND url NOT LIKE '%resource%'
             GROUP BY strftime('%d%H', begin_date) ) 
         ON time = date
-        WHERE time > date('now', '-2 days')
+        WHERE time > date('now', '-2 days', 'localtime')
         ''')
         result_non_member = list()
         for line in self.cursor:
@@ -468,11 +474,12 @@ class queries:
                       JOIN externalurl ON externalurl.id=id_externalurl
                 WHERE (useragent.typ = 'Browser' )
                 AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                AND begin_date > date('now', '-2 days') 
+                AND begin_date > date('now', '-2 days', 'localtime') 
                 AND netloc NOT LIKE '%%elveos.org' 
                 AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
                 AND netloc NOT LIKE '%%.local'
                 AND url NOT LIKE '%featurefeed%' 
+              AND url NOT LIKE '%%softwarefeed%%' 
                 AND url NOT LIKE '/__/%login' 
                 AND url NOT LIKE '/__/resource%' 
                 AND url NOT LIKE '/rest/%' 
@@ -484,7 +491,7 @@ class queries:
              WHERE nbRequests = 1
              GROUP BY nbRequests , strftime('%d%H', begin_date))
         ON time = date
-        WHERE time > date('now', '-2 days')
+        WHERE time > date('now', '-2 days', 'localtime')
         ''')
         result = list()
         i = 0
@@ -504,7 +511,7 @@ class queries:
             -- (useragent.typ = 'Browser' ) 
             -- AND visitor.userid != -1
             -- AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date('now', '-2 days') 
+            AND begin_date > date('now', '-2 days', 'localtime') 
             GROUP BY strftime('%d%H', begin_date))
         ON time = date
         WHERE time > date('now', '-2 days')
@@ -582,8 +589,8 @@ class queries:
         self._generate_graph(2)
         f = open(self.output + '/void_daily.js', 'w')
         self._json_serialize(f, "void", self.graph["void"], "void_tree")
-        f = open(self.output + '/feature_daily.js', 'w')
-        self._json_serialize(f, "feature", self.graph["feature"], "feature_tree")
+        #f = open(self.output + '/feature_daily.js', 'w')
+        #self._json_serialize(f, "feature", self.graph["feature"], "feature_tree")
 
     def generate_graph_monthly(self):
         self._generate_graph(30)
@@ -612,11 +619,12 @@ class queries:
                             WHERE typ = 'Browser' 
                             AND (visitor.userid > 16 OR visitor.userid = -1)
                             AND visitor.userid != 43 
-                            AND begin_date > date('now', '-%i days') 
+                            AND begin_date > date('now', '-%i days', 'localtime') 
                             AND netloc NOT LIKE '%%elveos.org%%' 
                             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
                             AND netloc NOT LIKE '%%.local'
                             AND url NOT LIKE '%%featurefeed%%' 
+              AND url NOT LIKE '%%softwarefeed%%' 
                             AND url NOT LIKE '/__/resource%%' 
                             AND url NOT LIKE '/rest/%%' 
                             AND url NOT LIKE '/favicon.ico%%' 
