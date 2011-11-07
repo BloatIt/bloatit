@@ -41,9 +41,22 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
  */
 @Entity
 //@formatter:off
-@NamedQueries(value = { @NamedQuery(
+@NamedQueries(value = { 
+                        @NamedQuery(
                            name = "bankTransaction.byToken",
                            query = "from DaoBankTransaction where token = :token"),
+                       @NamedQuery(
+                                   name = "bankTransaction.sumByDates",
+                                   query = "SELECT sum(value) FROM DaoBankTransaction " +
+                                   		"WHERE modificationDate > :from " +
+                                   		"AND modificationDate <= :to " +
+                                   		"AND state = :state "),
+               		@NamedQuery(
+               		            name = "bankTransaction.countByDates",
+               		            query = "SELECT count(*) FROM DaoBankTransaction " +
+               		                    "WHERE modificationDate > :from " +
+               		                    "AND modificationDate <= :to " +
+               		                    "AND state = :state "),
                      }
              )
 // @formatter:on
@@ -146,6 +159,22 @@ public class DaoBankTransaction extends DaoIdentifiable {
         return (DaoBankTransaction) SessionManager.getNamedQuery("bankTransaction.byToken").setString("token", token).uniqueResult();
     }
 
+    public static BigDecimal getSum(Date from, Date to) {
+        return (BigDecimal) SessionManager.getNamedQuery("bankTransaction.sumByDates")
+                                          .setDate("from", from)
+                                          .setDate("to", to)
+                                          .setParameter("state", State.VALIDATED)
+                                          .uniqueResult();
+    }
+
+    public static Long getCount(Date from, Date to) {
+        return (Long) SessionManager.getNamedQuery("bankTransaction.countByDates")
+                                    .setDate("from", from)
+                                    .setDate("to", to)
+                                    .setParameter("state", State.VALIDATED)
+                                    .uniqueResult();
+    }
+
     // ======================================================================
     // Construction
     // ======================================================================
@@ -223,15 +252,12 @@ public class DaoBankTransaction extends DaoIdentifiable {
         this.creationDate = new Date();
         this.modificationDate = (Date) this.creationDate.clone();
     }
-    
+
     /**
      * throw a {@link NonOptionalParameterException} if any of the parameters is
      * null (or string isEmpty).
      */
-    private DaoBankTransaction(final DaoActor author,
-                               final BigDecimal value,
-                               final BigDecimal valuePayed,
-                               final String orderReference) {
+    private DaoBankTransaction(final DaoActor author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
         super();
         checkOptionnal(author, value, valuePayed, orderReference);
 
