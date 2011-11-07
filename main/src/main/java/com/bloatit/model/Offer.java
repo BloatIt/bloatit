@@ -74,6 +74,8 @@ public final class Offer extends Kudosable<DaoOffer> {
                            license,
                            dateExpire,
                            secondsBeforeValidation));
+        Reporting.reporter.reportOffer("by " + member.getDisplayName() + " on "
+                + feature.getDescription().getTranslationOrDefault(language).getTitle());
     }
 
     private Offer(final DaoOffer dao) {

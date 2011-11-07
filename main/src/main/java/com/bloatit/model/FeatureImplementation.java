@@ -112,6 +112,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                          DaoDescription.createAndPersist(author.getDao(), DaoGetter.get(team), language, title, description),
                                          DaoGetter.get(software)));
         follow(author);
+        Reporting.reporter.reportNewFeature(title);
     }
 
     /**
