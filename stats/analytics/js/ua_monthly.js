@@ -1,1 +1,0 @@
-var ua = [ ['unknown',10452,],['Linux',5761,],['Windows',2070,],['JVM',466,],['Mac OS',419,],['iPhone OS',58,],['BSD',10,],['OS/2',4,],['Palm OS',3,],['RIM OS',2,],['Firefox',5878,],['Googlebot',4036,],['unknown',1830,],['Feedfetcher-Google',1414,],['Safari',1155,],['Sogou',1130,],['Python-urllib',905,],['Netscape Navigator',658,],['Java',466,],['SimplePie',285,],];
