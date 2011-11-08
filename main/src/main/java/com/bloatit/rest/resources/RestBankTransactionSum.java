@@ -12,25 +12,33 @@ import com.bloatit.model.BankTransaction;
 
 @XmlRootElement(name = "banktransaction")
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestBankTransactionSum extends RestElement<BankTransaction>{
-    private final BigDecimal sum;
+public class RestBankTransactionSum extends RestElement<BankTransaction> {
     private final Long count;
+    private final BigDecimal chargedValue;
+    private final BigDecimal paidValue;
 
     public RestBankTransactionSum() {
-        this.sum = BigDecimal.ZERO;
         this.count = 0L;
+        this.chargedValue = BigDecimal.ZERO;
+        this.paidValue = BigDecimal.ZERO;
     }
-    
-    public RestBankTransactionSum(BigDecimal value, Long count) {
-        this.sum = value;
+
+    public RestBankTransactionSum(Long count, BigDecimal chargedValue, BigDecimal paidValue) {
         this.count = count;
+        this.chargedValue = chargedValue;
+        this.paidValue = paidValue;
     }
 
     @XmlAttribute
-    public BigDecimal getSum() {
-        return sum;
+    public BigDecimal getChargedValue() {
+        return chargedValue;
     }
-    
+
+    @XmlAttribute
+    public BigDecimal getPaidValue() {
+        return paidValue;
+    }
+
     @XmlAttribute
     public Long getCount() {
         return count;

@@ -18,10 +18,10 @@
  */
 package com.bloatit.model.managers;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import com.bloatit.data.DaoBankTransaction;
+import com.bloatit.data.DaoBankTransaction.DaoBankTransactionSum;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.lists.BankTransactionList;
@@ -35,8 +35,8 @@ public class BankTransactionManager {
         return new BankTransactionList(DBRequests.getAll(DaoBankTransaction.class));
     }
 
-    public static BigDecimal getSum(Date from, Date to) {
-        return DaoBankTransaction.getSum(from, to);
+    public static DaoBankTransactionSum getSum(Date from, Date to) {
+        return DaoBankTransaction.getBankTransactionSum(from, to);
     }
 
     public static Long getCount(Date from, Date to) {

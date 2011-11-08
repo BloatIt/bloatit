@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.bloatit.data.DaoBankTransaction.DaoBankTransactionSum;
 import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
@@ -141,11 +142,9 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      */
     @REST(name = "banktransactions", method = RequestMethod.GET, params = { "from", "to" })
     public static RestBankTransactionSum getBankTransactionsSum(final String from, String to) {
-        BigDecimal sum = BankTransactionManager.getSum(DateUtils.nowMinusSomeDays(Integer.parseInt(from)),
-                                                       DateUtils.nowMinusSomeDays(Integer.parseInt(to)));
-        Long count = BankTransactionManager.getCount(DateUtils.nowMinusSomeDays(Integer.parseInt(from)),
-                                                       DateUtils.nowMinusSomeDays(Integer.parseInt(to)));
-        return new RestBankTransactionSum(sum, count);
+        DaoBankTransactionSum sum = BankTransactionManager.getSum(DateUtils.nowMinusSomeDays(Integer.parseInt(from)),
+                                                                  DateUtils.nowMinusSomeDays(Integer.parseInt(to)));
+        return new RestBankTransactionSum(sum.count, sum.chargedValueSum, sum.paidValueSum);
     }
 
     // ---------------------------------------------------------------------------------------
