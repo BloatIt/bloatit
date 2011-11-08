@@ -6,10 +6,15 @@ from queries.referer_queries import referer_queries
 from queries.main_chart_queries import main_chart_queries
 from queries.visits_queries import visits_queries
 from queries.graph_queries import graph_queries
+from queries.dashboard_queries import dashboard_queries
 
 def print_stats(datafile, output):
     base = database(datafile)
     base.create_table()
+
+    print "generate dashboard"
+    q = dashboard_queries(base.cursor, output)
+    q.generate_dashboard()
 
     print "generate graph"
     q = graph_queries(base.cursor, output)
