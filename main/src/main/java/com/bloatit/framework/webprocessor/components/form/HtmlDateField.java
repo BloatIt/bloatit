@@ -77,9 +77,6 @@ class DateInputBlock extends InputBlock {
     private final PlaceHolderElement container;
     private final HtmlSimpleInput input;
     private final HtmlScript script;
-    private PlaceHolderElement options;
-    private boolean firstOption = true;
-
     public DateInputBlock(final String languageCode, final String id) {
         container = new PlaceHolderElement();
         input = new HtmlSimpleInput("text");
