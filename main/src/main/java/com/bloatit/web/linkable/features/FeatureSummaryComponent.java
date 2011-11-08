@@ -199,6 +199,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 feature_summary_share_external.add(generateTwitterShareItem());
                 feature_summary_share_external.add(generateLinkedInShareItem());
                 feature_summary_share_external.add(generatePlusoneShareItem());
+                feature_summary_share_external.add(generateFacebookShareItem());
 
                 // shareBlockShowHide.addListener(feature_summary_share_external);
                 // shareBlockShowHide.apply();
@@ -297,6 +298,35 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(element);
         element.addAttribute("size", "medium");
         element.addAttribute("href", new FeaturePageAliasUrl(feature).externalUrlString(true));
+
+        return item;
+    }
+
+    private HtmlNode generateFacebookShareItem() {
+        final HtmlDiv item = new HtmlDiv("share_item");
+
+        final HtmlGenericElement facebookRootElement = new HtmlGenericElement("div");
+        item.add(facebookRootElement);
+        facebookRootElement.addAttribute("id", "fb-root");
+
+        final HtmlScript script = new HtmlScript();
+        item.add(script);
+        script.append("(function(d, s, id) {\n"//
+                + "var js, fjs = d.getElementsByTagName(s)[0];\n"//
+                + "if (d.getElementById(id)) {return;}\n"//
+                + "js = d.createElement(s); js.id = id;\n"//
+                + "js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";\n"//
+                + "fjs.parentNode.insertBefore(js, fjs);\n" //
+                + "}(document, 'script', 'facebook-jssdk'));");//
+
+        final HtmlGenericElement element = new HtmlGenericElement("div");
+        item.add(element);
+        element.addAttribute("class", "fb-like");
+        element.addAttribute("data-href", new FeaturePageAliasUrl(feature).externalUrlString(true));
+        element.addAttribute("data-send", "false");
+        element.addAttribute("data-layout", "button_count");
+        element.addAttribute("data-width", "110");
+        element.addAttribute("data-show-faces", "false");
 
         return item;
     }
