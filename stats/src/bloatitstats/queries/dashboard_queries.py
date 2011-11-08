@@ -19,7 +19,7 @@ class rest_request:
             self.paidValue = float(attrs['paidValue'])
 
     def _run_rest_query(self):
-        conn = httplib.HTTPSConnection("localhost")
+        conn = httplib.HTTPSConnection("elveos.org")
         conn.request("GET", "/rest/banktransactions?from=%i&to=%i" % (self._from, self._to))
         reponse = conn.getresponse()
         self.data = reponse.read()
