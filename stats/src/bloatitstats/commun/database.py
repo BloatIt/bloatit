@@ -5,6 +5,9 @@ class database:
     def __init__(self, file):
         self.conn = sqlite3.connect(file)
         self.cursor = self.conn.cursor()
+        self.cursor.execute('''PRAGMA synchronous=OFF''')
+        self.cursor.execute('''PRAGMA cache_size=200000''')
+        self.cursor.execute('''PRAGMA count_changes=OFF''')
     
     def create_table(self):
         # Create table
@@ -82,9 +85,10 @@ class database:
                                  key TEXT,
                                  url TEXT);
         ''')
-        self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS meta(id INTEGER PRIMARY KEY, last_parsed_entry_date DATE);
-        ''')
+        self.cursor.execute('CREATE TABLE IF NOT EXISTS meta(id INTEGER PRIMARY KEY, last_parsed_entry_date DATE);')
+        self.cursor.execute('CREATE INDEX IF NOT EXISTS ua_index ON useragent (useragent);')
+        self.cursor.execute('CREATE INDEX IF NOT EXISTS remote_index ON request (remote_addr);')
+        self.cursor.execute('CREATE INDEX IF NOT EXISTS visitor_index ON visit (id_visitor);')
         
     def close_connection(self):
         

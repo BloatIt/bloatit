@@ -19,7 +19,7 @@ class visits_queries(queries):
     def _nb_visit_by_visit_size(self, nbdays):
         self.cursor.execute('''
         SELECT CASE WHEN thecount >= 10 THEN (thecount/10)*10 ELSE thecount END AS grouped , count(*) 
-        FROM (SELECT count(*) as thecount 
+        FROM (SELECT count(distinct(request.id)) as thecount 
               FROM request 
               JOIN visit ON id_visit=visit.id
               JOIN useragent ON id_useragent=useragent.id 
