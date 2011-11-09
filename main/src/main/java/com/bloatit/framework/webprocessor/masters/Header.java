@@ -135,7 +135,7 @@ public final class Header extends HtmlElement {
         // Place for custom meta from page
         metaPh = new PlaceHolderElement();
         add(metaPh);
-        
+
         // Place for custom links from page
         linkPh = new PlaceHolderElement();
         add(linkPh);
@@ -159,6 +159,20 @@ public final class Header extends HtmlElement {
         js.append("});");
         js.append("});");
         add(js);
+
+        String googleAnalyticId = FrameworkConfiguration.getGoogleAnalyticId();
+        if (googleAnalyticId != null) {
+            final HtmlScript gaJs = new HtmlScript();
+            gaJs.append("var _gaq = _gaq || [];\n");
+            gaJs.append("_gaq.push(['_setAccount', '" + googleAnalyticId + "']);\n");
+            gaJs.append("_gaq.push(['_trackPageview']);\n");
+            gaJs.append("(function() {\n");
+            gaJs.append("  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n");
+            gaJs.append("  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n");
+            gaJs.append("  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n");
+            gaJs.append("})();");
+            add(gaJs);
+        }
 
         // Page title
         add(new HtmlGenericElement("title").addText(title));
@@ -203,13 +217,13 @@ public final class Header extends HtmlElement {
 
         jsPh.add(jsLink);
     }
-    
+
     public void addMeta(HtmlElement meta) {
         metaPh.add(meta);
     }
 
     protected void addHeaderLink(HtmlHeaderLink link) {
-        final HtmlElement headerLink = new HtmlGenericElement("link"){
+        final HtmlElement headerLink = new HtmlGenericElement("link") {
             @Override
             public boolean selfClosable() {
                 return true;
