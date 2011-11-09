@@ -9,6 +9,7 @@ import java.util.Date;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.components.meta.XmlElement;
+import com.bloatit.framework.webprocessor.components.meta.XmlNonEscapedElement;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 /**
@@ -88,15 +89,15 @@ public abstract class AtomFeed implements Linkable {
         private final String link;
         private final String id;
         private final Date updated;
-        private final String summary;
+        private final String content;
 
-        public FeedEntry(String title, String link, String id, Date updated, String summary, String author, String authorUri) {
+        public FeedEntry(String title, String link, String id, Date updated, String content, String author, String authorUri) {
             super();
             this.title = title;
             this.link = link;
             this.id = id;
             this.updated = updated;
-            this.summary = summary;
+            this.content = content;
             this.author = author;
             this.authorUri = authorUri;
         }
@@ -117,8 +118,8 @@ public abstract class AtomFeed implements Linkable {
             return updated;
         }
 
-        public String getSummary() {
-            return summary;
+        public String getContent() {
+            return content;
         }
 
         public String getAuthor() {
@@ -184,7 +185,7 @@ public abstract class AtomFeed implements Linkable {
                 xmlEntry.add(author);
                 author.add(new XmlElement("name").addText(entry.getAuthor()));
                 author.add(new XmlElement("uri").addText(entry.getAuthorUri()));
-                xmlEntry.add(new XmlElement("summary").addText(entry.summary));
+                xmlEntry.add(new XmlElement("content").addAttribute("type", "html").addText(entry.content));
             }
         }
     }
