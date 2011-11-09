@@ -14,8 +14,6 @@ public abstract class ElveosAtomFeed extends AtomFeed {
         this.privateUrl = url;
     }
 
-    
-
     public abstract String getFeedTitle();
 
     public String getFeedSubtitle() {

@@ -1,6 +1,18 @@
 Changelog
 =========
 
+Version 1.1.25
+--------------
+
+### Features
+ - Use markdown renderer in atom feed
+
+Version 1.1.24
+--------------
+
+### Features
+ - Add google analytic integration
+
 Version 1.1.23
 --------------
 

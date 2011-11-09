@@ -2,7 +2,11 @@ package com.bloatit.web.linkable.atom;
 
 import java.util.Date;
 
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.cache.MemoryCache;
 import com.bloatit.framework.utils.i18n.Language;
+import com.bloatit.framework.utils.parsers.MarkdownParser;
+import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -12,6 +16,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
+import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -48,11 +53,22 @@ public class SoftwareAtomFeed extends ElveosAtomFeed {
                 title = software.getName() + " – " + featureTitle;
             }
 
+            String translationText = MemoryCache.getInstance().get(translation.getText());
+            if (translationText == null) {
+                final MarkdownParser parser = new MarkdownParser();
+                try {
+                    translationText = parser.parse(HtmlTools.escape(translation.getText()));
+                    MemoryCache.getInstance().cache(translation.getText(), translationText);
+                } catch (final ParsingException e) {
+                    throw new BadProgrammerException("An error occured during markdown parsing", e);
+                }
+            }
+
             FeedEntry entry = new FeedEntry(title,
                                             new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
                                             new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
                                             feature.getCreationDate(),
-                                            translation.getText(),
+                                            translationText,
                                             feature.getMember().getDisplayName(),
                                             new MemberPageUrl(feature.getMember()).externalUrlString());
             addFeedEntry(entry, Position.LAST);
