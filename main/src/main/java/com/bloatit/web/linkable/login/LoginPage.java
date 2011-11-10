@@ -14,7 +14,10 @@ package com.bloatit.web.linkable.login;
 import static com.bloatit.framework.webprocessor.context.Context.trc;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -41,9 +44,14 @@ public final class LoginPage extends ElveosPage {
 
     private final LoginPageUrl url;
 
+    @RequestParam
+    @Optional
+    private final Boolean invoice;
+    
     public LoginPage(final LoginPageUrl url) {
         super(url);
         this.url = url;
+        this.invoice = url.getInvoice();
     }
 
     @Override
@@ -81,7 +89,9 @@ public final class LoginPage extends ElveosPage {
             loginForm.add(loginOrSignUpDiv);
             final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
             loginOrSignUpDiv.add(submitButton);
-            loginOrSignUpDiv.add(new SignUpPageUrl().getHtmlLink(Context.tr("Sign up")));
+            SignUpPageUrl signUpPageUrl = new SignUpPageUrl();
+            signUpPageUrl.setInvoice(invoice);
+            loginOrSignUpDiv.add(signUpPageUrl.getHtmlLink(Context.tr("Sign up")));
 
             master.add(loginTitle);
         }
