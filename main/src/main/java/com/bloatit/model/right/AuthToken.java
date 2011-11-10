@@ -74,11 +74,6 @@ public final class AuthToken {
             throw new ElementNotFoundException("Authentication failed");
         }
 
-        if (tmp.getActivationState() != ActivationState.ACTIVE) {
-            Log.model().warn("Authentication with inactive or deleted account with login " + login);
-            throw new ElementNotFoundException("Authentication with inactive or deleted account.");
-        }
-
         This.get().memberId = tmp.getId();
         final Session session = Context.getSession();
         if (session != null) {

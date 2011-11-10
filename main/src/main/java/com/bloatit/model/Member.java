@@ -297,8 +297,17 @@ public final class Member extends Actor<DaoMember> implements User {
         }
         if (getActivationKey().equals(activationKey)) {
             getDao().setActivationState(ActivationState.ACTIVE);
+            addToKarma(10);
             return true;
         }
+        if (getResetKey().equals(activationKey)) {
+            getDao().setActivationState(ActivationState.ACTIVE);
+            addToKarma(10);
+            return true;
+        }
+        
+        
+        
         return false;
     }
 
