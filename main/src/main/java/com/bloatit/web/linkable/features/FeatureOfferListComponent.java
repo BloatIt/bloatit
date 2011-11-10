@@ -16,7 +16,6 @@ import static com.bloatit.framework.webprocessor.context.Context.trn;
 
 import java.math.BigDecimal;
 
-import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.datetime.TimeRenderer;

@@ -45,6 +45,7 @@ import com.bloatit.rest.list.RestTeamList;
 import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.rest.list.RestTranslationList;
 import com.bloatit.rest.resources.RestBankTransaction;
+import com.bloatit.rest.resources.RestBankTransactionSum;
 import com.bloatit.rest.resources.RestBug;
 import com.bloatit.rest.resources.RestComment;
 import com.bloatit.rest.resources.RestContribution;
@@ -104,6 +105,7 @@ public class BloatitRestServer extends RestServer {
                                                        // ENTITIES
                                                        RestMember.class,
                                                        RestBankTransaction.class,
+                                                       RestBankTransactionSum.class,
                                                        RestMilestone.class,
                                                        RestBug.class,
                                                        RestComment.class,

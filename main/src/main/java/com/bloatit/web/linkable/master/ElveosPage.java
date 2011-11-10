@@ -162,7 +162,7 @@ public abstract class ElveosPage extends Page {
                 + "Elveos offers a streamlined process for the user, from the description of his needs, to the validation of the project ; "
                 + "Elveos also guarantees that when you decide to fund a project, you will either get what you asked, or be reimbursed.");
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -175,10 +175,10 @@ public abstract class ElveosPage extends Page {
     protected final String getTitle() {
         return "Elveos – " + createPageTitle();
     }
-    
+
     @Override
-    protected final ArrayList<HtmlElement> getMetas(){
-        ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();        
+    protected final ArrayList<HtmlElement> getMetas() {
+        ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();
         return metas;
     }
 

@@ -1,1 +1,0 @@
-var ua = [ ['unknown',627,],['Linux',253,],['Windows',90,],['Mac OS',13,],['BSD',3,],['Googlebot',320,],['Firefox',241,],['Feedfetcher-Google',115,],['Sogou',54,],['Safari',47,],['Netscape Navigator',33,],['Netvibes feed reader',28,],['SimplePie',28,],['unknown',21,],['Mozilla',19,],];

@@ -22,11 +22,11 @@ import java.util.Date;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoContribution.ContributionState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.data.DaoFollow;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
@@ -112,6 +112,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                          DaoDescription.createAndPersist(author.getDao(), DaoGetter.get(team), language, title, description),
                                          DaoGetter.get(software)));
         follow(author);
+        Reporting.reporter.reportNewFeature(title);
     }
 
     /**
