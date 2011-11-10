@@ -10,7 +10,7 @@ class main_chart_queries(queries):
     def generate_main_chart_all(self):
          # Visit member
         self.cursor.execute('''
-        SELECT count(visit.id)  
+        SELECT count(distinct(visit.id))  
         FROM visit 
           JOIN useragent ON id_useragent=useragent.id 
           JOIN visitor ON id_visitor=visitor.id
@@ -23,7 +23,7 @@ class main_chart_queries(queries):
 
         # visit non member
         self.cursor.execute('''
-        SELECT  count(visit.id)
+        SELECT  count(distinct(visit.id))
         FROM visit 
         JOIN useragent ON id_useragent=useragent.id 
         JOIN visitor ON id_visitor=visitor.id
@@ -34,8 +34,8 @@ class main_chart_queries(queries):
 
         # tx rebond
         self.cursor.execute('''
-        SELECT  count(nbRequests)  
-        FROM (  SELECT begin_date, count(*) as nbRequests 
+        SELECT  count(nbRequests)
+        FROM   SELECT begin_date, count(request.id) as nbRequests 
                 FROM request 
                 JOIN visit ON id_visit=visit.id  
                 JOIN useragent ON id_useragent=useragent.id 
@@ -48,7 +48,7 @@ class main_chart_queries(queries):
             result.append(line[0])
 
         self.cursor.execute('''
-        SELECT  count(request.id)
+        SELECT  count(distinct(request.id))
             FROM request JOIN visit ON id_visit=visit.id  
             WHERE url like  '/__/payment/doautoresponse%' ''')
         for line in self.cursor:
@@ -70,7 +70,7 @@ class main_chart_queries(queries):
         # Visit member
         self.cursor.execute('''
         SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
-        SELECT strftime('%Y-%m-%d 00:00:00', begin_date) as date , count(visit.id) as nb
+        SELECT strftime('%Y-%m-%d 00:00:00', begin_date) as date , count(distinct(visit.id)) as nb
             FROM visit 
               JOIN request ON visit.id=request.id_visit
               JOIN useragent ON id_useragent=useragent.id 
@@ -104,7 +104,7 @@ class main_chart_queries(queries):
         # visit non member
         self.cursor.execute('''
         SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
-            SELECT strftime('%Y-%m-%d 00:00:00', begin_date) as date , count(visit.id) as nb  
+            SELECT strftime('%Y-%m-%d 00:00:00', begin_date) as date , count(distinct(visit.id)) as nb  
             FROM visit 
               JOIN request ON visit.id=request.id_visit
               JOIN useragent ON id_useragent=useragent.id 
@@ -139,12 +139,12 @@ class main_chart_queries(queries):
         self.cursor.execute('''
         SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
         SELECT strftime('%Y-%m-%d 00:00:00', begin_date) as date , COALESCE(count(nbRequests), 0) as nb
-             FROM ( SELECT begin_date, count(*) as nbRequests 
+             FROM ( SELECT begin_date, count(distinct(request.id)) as nbRequests 
                     FROM request 
-                      JOIN visit ON id_visit=visit.id  
-                      JOIN visitor ON id_visitor=visitor.id
-                      JOIN useragent ON id_useragent=useragent.id 
-                      JOIN externalurl ON externalurl.id=id_externalurl
+                       JOIN visit ON id_visit=visit.id  
+                       JOIN visitor ON id_visitor=visitor.id
+                       JOIN useragent ON id_useragent=useragent.id 
+                       JOIN externalurl ON externalurl.id=id_externalurl
                     WHERE (useragent.typ = 'Browser' )
                     AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
                     AND begin_date > date('now', '-30 days', 'localtime') 
@@ -157,7 +157,7 @@ class main_chart_queries(queries):
                     AND url NOT LIKE '%.png' 
                     AND url NOT LIKE '%.txt' 
                     AND url NOT LIKE '%featurefeed%' 
-              AND url NOT LIKE '%%softwarefeed%%' 
+                    AND url NOT LIKE '%%softwarefeed%%' 
                     AND url NOT LIKE '/__/%login' 
                     AND url NOT LIKE '%/doactivate%' 
                     AND url NOT LIKE '%resource%' 
@@ -177,7 +177,7 @@ class main_chart_queries(queries):
 
         self.cursor.execute('''
         SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
-        SELECT strftime('%Y-%m-%d 00:00:00', begin_date) as date , count(request.id) as nb
+        SELECT strftime('%Y-%m-%d 00:00:00', begin_date) as date , count(distinct(visit.id)) as nb
             FROM request JOIN visit ON id_visit=visit.id  
             WHERE url like  '/__/payment/doautoresponse%' 
             -- user agent is unknown !! (mercanet response)
@@ -215,7 +215,7 @@ class main_chart_queries(queries):
         # Visit member
         self.cursor.execute('''
         SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
-        SELECT strftime('%Y-%m-%d %H:00:00', begin_date) as date , count(visit.id) as nb
+        SELECT strftime('%Y-%m-%d %H:00:00', begin_date) as date , count(distinct(visit.id)) as nb
             FROM visit 
               JOIN request ON visit.id=request.id_visit
               JOIN useragent ON id_useragent=useragent.id 
@@ -249,7 +249,7 @@ class main_chart_queries(queries):
         # visit non member
         self.cursor.execute('''
         SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
-            SELECT strftime('%Y-%m-%d %H:00:00', begin_date) as date , count(visit.id) as nb  
+            SELECT strftime('%Y-%m-%d %H:00:00', begin_date) as date , count(distinct(visit.id)) as nb  
             FROM visit 
               JOIN useragent ON id_useragent=useragent.id 
               JOIN request ON visit.id=request.id_visit
@@ -283,7 +283,7 @@ class main_chart_queries(queries):
         self.cursor.execute('''
         SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
         SELECT strftime('%Y-%m-%d %H:00:00', begin_date) as date , COALESCE(count(nbRequests), 0) as nb
-             FROM (  SELECT begin_date, count(*) as nbRequests 
+             FROM (  SELECT begin_date, count(distinct(request.id)) as nbRequests 
                     FROM request JOIN visit ON id_visit=visit.id  
                       JOIN useragent ON id_useragent=useragent.id 
                       JOIN visitor ON id_visitor=visitor.id
@@ -320,7 +320,7 @@ class main_chart_queries(queries):
 
         self.cursor.execute('''
         SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
-        SELECT strftime('%Y-%m-%d %H:00:00', begin_date) as date , count(request.id) as nb
+        SELECT strftime('%Y-%m-%d %H:00:00', begin_date) as date , count(distinct(visit.id)) as nb
             FROM request JOIN visit ON id_visit=visit.id  
             WHERE url like  '/__/payment/doautoresponse%' 
             -- user agent is unknown !! (mercanet response)
