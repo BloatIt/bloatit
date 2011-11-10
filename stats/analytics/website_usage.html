@@ -2,11 +2,10 @@
 <html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
+    <link rel="icon" type="image/png" href="https://elveos.org/resources/commons/img/favicon-1.0.27-beta.png"/>
+    <title>Website usage</title>
 </head>
 </body>
-
-<a href="tableau_de_bord_monthly.html"> Tableau de bord du mois</a>
-
 <script language="javascript" type="text/javascript" src="jqplot/jquery.min.js"></script>
 <script language="javascript" type="text/javascript" src="jqplot/jquery.jqplot.min.js"></script>
 <script type="text/javascript" src="jqplot/plugins/jqplot.pointLabels.min.js"></script>
@@ -20,14 +19,40 @@
 <script type="text/javascript" src="jqplot/plugins/jqplot.pieRenderer.js"></script>
 
 <link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.min.css" />
+<script class="code" type="text/javascript">
+function gup( name ) {
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+    return "";
+  else
+    return results[1];
+}
 
-<script type="text/javascript" src="js/visits_daily.js"></script>
-<script type="text/javascript" src="js/ua_daily.js"></script>
-<script type="text/javascript" src="js/netloc_daily.js"></script>
-<script type="text/javascript" src="js/visit_size_daily.js"></script>
-<script language="javascript" type="text/javascript" src="js/void_daily.js"></script>
+function includeJs(jsFolder, jsFile) {
+  document.write('<script type="text/javascript" src="' + jsFolder + "/" + jsFile + '.js"></scr' + 'ipt>'); 
+}
 
-<script class="code" type="text/javascript" src="create_charts_daily.js"></script>
+theDate = gup('date');
+during = gup('during');
+if (during == ""){
+    during = "monthly"
+}
+if (theDate == ""){
+    jsfolder = "js";
+} else {
+    jsfolder = "js-" + theDate ;
+}
+
+includeJs(jsfolder, "visits_" + during);
+includeJs(jsfolder, "ua_" + during);
+includeJs(jsfolder, "netloc_" + during);
+includeJs(jsfolder, "visit_size_" + during);
+includeJs(jsfolder, "void_" + during);
+includeJs(".", "create_charts_" +during);
+</script>
 
 <!-- JIT Library File -->
 <link type="text/css" href="base.css" rel="stylesheet" />
@@ -38,10 +63,31 @@
 </head>
 <body onload="init();">
 
+<div id="content" ></div>
+
 <div id="mainchart" class='plot' style="margin-top:20px; margin-left:20px; width:1200px; height:500px;"></div>
 <div id="refererchart" class='plot' style="margin-top:20px; margin-left:20px; width:1200px; height:500px;"></div>
 <div id="uachart" class='plot' style="margin-top:20px; margin-left:20px; width:1200px; height:500px;"></div>
 <div id="visitsizechart" class='plot' style="margin-top:20px; margin-left:20px; width:1200px; height:500px;"></div>
 <div id="graph_void" class='plot' style="margin-top:20px; margin-left:20px; width:900px; height:900px;"></div>
+
+<script type="text/javascript">
+
+var str ='';
+str += '';
+str += '<h1>'+during+' Website usage (' + (theDate != "" ? theDate : "Now") + ')</h1>';
+str += '<div class="menu">';
+str += '  <p><a href="?during=daily&date=' + theDate+ '">Website usage of the day</a></p>';
+str += '  <p><a href="?during=monthly&date=' + theDate+ '">Website usage of the month</a></p>';
+str += '  <p><a href="dashboard.html?during=monthly&date=' + theDate+ '">Dashboard</a></p>';
+str += '  <p><form action="?during=' + theDate + '" method="get"></p>';
+str += '  date: <input type="text" name="date" />';
+str += '  <input type="submit" value="Submit" />';
+str += '  </form></p>';
+str += '</div>';
+
+document.getElementById('content').innerHTML=str;
+
+</script>
 
 </body>

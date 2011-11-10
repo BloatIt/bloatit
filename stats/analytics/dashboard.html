@@ -4,12 +4,37 @@
         <meta charset="UTF-8"/>
         <link rel="stylesheet" type="text/css" media="handheld, all" href="dashboard.css"/>
         <link rel="icon" type="image/png" href="https://elveos.org/resources/commons/img/favicon-1.0.27-beta.png"/>
-        <script type="text/javascript" src="js/dashboard.js"></script>
-        <script type="text/javascript" src="js/money.js"></script>
+
+<script class="code" type="text/javascript">
+function gup( name ) {
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+    return "";
+  else
+    return results[1];
+}
+
+function includeJs(jsFolder, jsFile) {
+  document.write('<script type="text/javascript" src="' + jsFolder + "/" + jsFile + '.js"></scr' + 'ipt>'); 
+}
+
+theDate = gup('date');
+if (theDate == ""){
+    jsfolder = "js";
+} else {
+    jsfolder = "js-" + theDate ;
+}
+
+includeJs(jsfolder, "dashboard");
+includeJs(jsfolder, "money");
+</script>
+
         <title>Dashboard</title>
     </head>
     <body>
-    <h1>The Elveos dashboard</h1>
     <div id="bilan"></div>
     <script type="text/javascript">
         
@@ -26,6 +51,21 @@ function percent(a,b){
 
 var table = document.getElementById('bilan');
 var str = '<table>';
+
+var str = '';
+str += '<h1>The elveos dashboard (' + (theDate != "" ? theDate : "Now") + ')</h1>';
+str += '<div class="menu">';
+str += '  <p><a href="website_usage.html?during=daily&date=' + theDate+ '">Website usage of the day</a></p>';
+str += '  <p><a href="website_usage.html?during=monthly&date=' + theDate+ '">Website usage of the month</a></p>';
+str += '  <p><a href="dashboard.html?during=monthly&date=' + theDate+ '">Dashboard</a></p>';
+str += '  <p><form action="?during=' + theDate + '" method="get"></p>';
+str += '  date: <input type="text" name="date" />';
+str += '  <input type="submit" value="Submit" />';
+str += '  </form></p>';
+str += '</div>';
+
+
+str += '<table>';
 str += '<thead>';
 str +='<th></th>';
 str +='<th class="month">30 jours</th>';
@@ -80,12 +120,13 @@ str +='  </tr>\n';
 str +='</tbody> \n';
 str +='</table>'
 
-str +='<table class="money">'
-str +='<tr><td>Burn Rate : </td><td>'+burnRate +' €/mois </td></tr>'
-str +='<tr><td>Trésorerie : </td><td>'+treso+' €</td></trv>'
-str +='<tr><td>Temps restant : </td><td>'+treso/burnRate+' mois</td></tr>'
-str +='</table>'
-
+if (window.burnRate !== undefined){
+    str +='<table class="money">'
+    str +='<tr><td>Burn Rate : </td><td>'+burnRate +' €/mois </td></tr>'
+    str +='<tr><td>Trésorerie : </td><td>'+treso+' €</td></trv>'
+    str +='<tr><td>Temps restant : </td><td>'+treso/burnRate+' mois</td></tr>'
+    str +='</table>'
+}
 
 table.innerHTML=str;
     </script>
