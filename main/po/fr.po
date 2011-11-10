@@ -1505,7 +1505,8 @@ msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:356
 msgid "You share this need and you want participate financially?"
-msgstr "Vous partagez ce besoin et vous souhaitez participer financièrement ?"
+msgstr ""
+"Vous partagez ce besoin et vous souhaitez participer financièrement&nbsp;?"
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:367
 msgid "You are a developer and want to be paid to achieve this request?"
@@ -3009,7 +3010,7 @@ msgstr "Rue"
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:139
 msgid "Extras"
-msgstr "Supplément d'adresse"
+msgstr "Complément d'adresse"
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:141
 msgid "Optional."

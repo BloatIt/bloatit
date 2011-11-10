@@ -68,6 +68,8 @@ public class RecoverPasswordPage extends ElveosPage {
             getSession().notifyWarning(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
             throw new PageNotFoundException();
         }
+        
+        member.activate(resetKey);
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
