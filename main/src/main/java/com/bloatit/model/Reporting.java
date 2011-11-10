@@ -40,6 +40,10 @@ public class Reporting {
         new PlannedTaskReport(DateUtils.tomorrow(), ID_REPORTING_TASK);
     }
 
+    public void reportServerStart() {
+        report("Server start", new Date().toString());
+    }
+    
     public void reportMemberCreation(String login) {
         report("Member creation", login);
     }
@@ -69,7 +73,7 @@ public class Reporting {
         values.add(value);
     }
 
-    private void report() {
+    public void report() {
         Date now = new Date();
         StringBuilder message = new StringBuilder();
 

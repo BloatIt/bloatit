@@ -28,6 +28,7 @@ import com.bloatit.framework.webprocessor.context.SessionCleanerTask;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 import com.bloatit.framework.xcgiserver.XcgiServer;
+import com.bloatit.model.Reporting;
 
 /**
  * This class represent the whole framework.
@@ -57,6 +58,7 @@ public class Framework {
             scgiServer.initialize();
             ModelAccessor.initialize(model);
             new SessionCleanerTask();
+            Reporting.reporter.reportServerStart();
         } catch (final ExternalErrorException e) {
             Log.framework().fatal("Error loading configuration file", e);
             return false;
@@ -93,6 +95,7 @@ public class Framework {
     }
 
     private void shutdown() {
+        Reporting.reporter.report();
         SessionManager.saveSessions();
         scgiServer.stop();
         MailServer.getInstance().quickStop();
