@@ -305,9 +305,7 @@ public final class Member extends Actor<DaoMember> implements User {
             addToKarma(10);
             return true;
         }
-        
-        
-        
+
         return false;
     }
 
@@ -531,7 +529,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return new TranslationList(getDao().getTranslations(asMemberOnly));
     }
 
-    protected void addToKarma(final int value) {
+    public void addToKarma(final int value) {
         getDao().addToKarma(value);
     }
 

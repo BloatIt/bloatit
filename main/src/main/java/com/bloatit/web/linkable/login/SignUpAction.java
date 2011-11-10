@@ -136,7 +136,7 @@ public final class SignUpAction extends ElveosAction {
         Context.getLocalizator().forceMemberChoice();
 
         // Try to set Invoicing informations
-        if (invoice) {
+        if (invoice!=null && invoice) {
             try {
                 m.getContact().setName(name);
                 m.getContact().setStreet(street);
@@ -195,7 +195,7 @@ public final class SignUpAction extends ElveosAction {
             isOk = false;
         }
 
-        if (invoice) {
+        if (invoice!= null && invoice) {
             isOk &= checkOptional(this.name, Context.tr("You must add a name."), url.getNameParameter());
             isOk &= checkOptional(this.street, Context.tr("You must add a street."), url.getStreetParameter());
             isOk &= checkOptional(this.postalCode, Context.tr("You must add a Postcode."), url.getPostalCodeParameter());

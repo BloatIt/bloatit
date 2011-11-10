@@ -410,7 +410,7 @@ public class DaoMember extends DaoActor {
         this.state = ActivationState.VALIDATING;
         this.password = password;
         this.salt = salt;
-        this.karma = 0;
+        this.karma = -10;
         this.fullname = "";
         this.description = "";
     }
