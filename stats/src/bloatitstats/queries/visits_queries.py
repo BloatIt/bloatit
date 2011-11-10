@@ -4,8 +4,8 @@ from queries import queries
 # Requests on visits size
 #
 class visits_queries(queries):    
-    def __init__(self, cursor, output):
-        super(visits_queries, self).__init__(cursor, output)
+    def __init__(self, cursor, output, refdate = 'now'):
+        super(visits_queries, self).__init__(cursor, output, refdate)
 
     def nb_visit_by_visit_size_monthly(self):
         self._nb_visit_by_visit_size(30)
@@ -27,7 +27,7 @@ class visits_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
               WHERE (useragent.typ = 'Browser' )
               AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-              AND begin_date > date('now', '-%i days', 'localtime')
+              AND begin_date > date(?, '-%i days', 'localtime')
               AND netloc NOT LIKE '%%elveos.org' 
               AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
               AND netloc NOT LIKE '%%.local'
@@ -42,5 +42,5 @@ class visits_queries(queries):
               AND url NOT LIKE '%%.txt' 
               AND url NOT LIKE '%%resource%%' 
               GROUP BY id_visit) 
-        GROUP BY grouped limit 20''' % nbdays)
+        GROUP BY grouped limit 20''' % nbdays, (self.refdate,))
 

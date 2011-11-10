@@ -4,8 +4,8 @@ from queries import queries
 # Requests on referer
 #
 class referer_queries(queries):        
-    def __init__(self, cursor, output):
-        super(referer_queries, self).__init__(cursor, output)
+    def __init__(self, cursor, output, refdate = 'now'):
+        super(referer_queries, self).__init__(cursor, output, refdate)
 
     def nb_request_by_netloc_monthly(self):
         f = open(self.output + "/netloc_monthly.js", "w")
@@ -13,7 +13,7 @@ class referer_queries(queries):
         for i in range(1, 31) :
             self.cursor.execute(''' 
             INSERT INTO mydates (time) 
-            VALUES (datetime('now', '-30 days', 'start of day', '+%i days'))''' % i )
+            VALUES (datetime(?, '-30 days', 'start of day', '+%i days'))''' % i , (self.refdate,))
 
         result = []
         self._nb_request_by_netloc(30)
@@ -34,7 +34,7 @@ class referer_queries(queries):
                   JOIN externalurl ON externalurl.id=id_externalurl
                 WHERE (useragent.typ = 'Browser' )
                 AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                AND begin_date > date('now', '-30 days', 'localtime') 
+                AND begin_date > date(?, '-30 days', 'localtime') 
                 AND url NOT LIKE '/__/resource%%' 
                 AND url NOT LIKE '/rest/%%' 
                 AND url NOT LIKE '/favicon.ico%%' 
@@ -44,7 +44,7 @@ class referer_queries(queries):
                 AND netloc = %s 
                 GROUP BY strftime('%%Y%%m%%d', begin_date), netloc)
             ON time = date
-            WHERE time > date('now', '-30 days', 'localtime') ''' % row[0])
+            WHERE time > date(?, '-30 days', 'localtime') ''' % row[0], (self.refdate, self.refdate))
             self._double_array_serialize(f, self.cursor, "netloc_%i" % i)
             i += 1
 
@@ -54,7 +54,7 @@ class referer_queries(queries):
         for i in range(0, 30) :
             self.cursor.execute(''' 
             INSERT INTO mydates (time) 
-            VALUES (strftime('%%Y-%%m-%%d %%H:00:00', datetime('now', '-%i hours', 'localtime')))''' % i )
+            VALUES (strftime('%%Y-%%m-%%d %%H:00:00', datetime(?, '-%i hours', 'localtime')))''' % i , (self.refdate,))
 
         result = []
         self._nb_request_by_netloc(2)
@@ -75,7 +75,7 @@ class referer_queries(queries):
                   JOIN externalurl ON externalurl.id=id_externalurl
                 WHERE (useragent.typ = 'Browser' )
                 AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                AND begin_date > date('now', '-2 days', 'localtime') 
+                AND begin_date > date(?, '-2 days', 'localtime') 
                 AND url NOT LIKE '/__/resource%%' 
                 AND url NOT LIKE '/rest/%%' 
                 AND url NOT LIKE '/favicon.ico%%' 
@@ -85,7 +85,7 @@ class referer_queries(queries):
                 AND netloc = %s 
                 GROUP BY strftime('%%Y%%m%%d', begin_date), netloc)
             ON time = date
-            WHERE time > date('now', '-2 days', 'localtime') ''' % row[0])
+            WHERE time > date(?, '-2 days', 'localtime') ''' % row[0], (self.refdate, self.refdate))
             self._double_array_serialize(f, self.cursor, "netloc_%i" % i)
             i += 1
 
@@ -103,7 +103,7 @@ class referer_queries(queries):
             WHERE netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net', '') 
             AND netloc NOT LIKE '%%.local' 
-            AND begin_date > date('now', '-%i days', 'localtime')
+            AND begin_date > date(?, '-%i days', 'localtime')
             GROUP BY netloc 
             ORDER BY count(netloc) DESC 
-            LIMIT 5 ''' % nbdays)
+            LIMIT 5 ''' % nbdays, (self.refdate,))

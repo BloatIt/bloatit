@@ -1,12 +1,20 @@
 from queries import queries
+from datetime import datetime, date, time
 import xml.parsers.expat
 import httplib
 
 
 class rest_request:
-    def __init__(self, from_, to):
-        self._from = from_
-        self._to = to
+    def __init__(self, from_, to, refdate = 'now'):
+        if refdate == 'now':
+            self._from = from_
+            self._to = to
+        else:
+            time = datetime.strptime(refdate, '%Y-%m-%dT%H:%M:%S')
+            diff = (datetime.now() - time).days
+            self._from = from_ - diff
+            self._to = to_ - diff
+            
 
     def run(self):
         self._run_rest_query()
@@ -31,8 +39,8 @@ class rest_request:
         
 
 class dashboard_queries(queries):    
-    def __init__(self, cursor, output):
-        super(dashboard_queries, self).__init__(cursor, output)
+    def __init__(self, cursor, output, refdate = 'now'):
+        super(dashboard_queries, self).__init__(cursor, output, refdate)
         self.nbvisits_last_month = 0
         self.nbvisits_month = 0
         self.nbvisits_day = 0
@@ -58,7 +66,7 @@ class dashboard_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date('now', '-30 days', 'localtime') 
+            AND begin_date > date(?, '-30 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -71,7 +79,7 @@ class dashboard_queries(queries):
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%.txt' 
             AND url NOT LIKE '%resource%'
-        ''')
+        ''', (self.refdate,))
         self.nbvisits_month = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
@@ -83,7 +91,7 @@ class dashboard_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date('now', '-1 day', 'localtime') 
+            AND begin_date > date(?, '-1 day', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -96,7 +104,7 @@ class dashboard_queries(queries):
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%.txt' 
             AND url NOT LIKE '%resource%'
-        ''')
+        ''', (self.refdate,))
         self.nbvisits_day = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
@@ -108,8 +116,8 @@ class dashboard_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date < date('now', '-30 days', 'localtime') 
-            AND begin_date > date('now', '-60 days', 'localtime') 
+            AND begin_date < date(?, '-30 days', 'localtime') 
+            AND begin_date > date(?, '-60 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -122,27 +130,27 @@ class dashboard_queries(queries):
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%.txt' 
             AND url NOT LIKE '%resource%'
-        ''')
+        ''', (self.refdate,self.refdate))
         self.nbvisits_last_month = self.cursor.fetchone()[0]
 
     def _generate_inscription_array(self):
         self.cursor.execute('''
         SELECT count(distinct(url)) from request where url like '%member/doactivate%' 
-            AND date > date('now', '-1 day', 'localtime') 
-        ''')
+            AND date > date(?, '-1 day', 'localtime') 
+        ''', (self.refdate,))
         self.nbinscription_day = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
         SELECT count(distinct(url)) from request where url like '%member/doactivate%' 
-            AND date > date('now', '-30 days', 'localtime') 
-        ''')
+            AND date > date(?, '-30 days', 'localtime') 
+        ''', (self.refdate,))
         self.nbinscription_month = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
         SELECT count(distinct(url)) from request where url like '%member/doactivate%' 
-            AND date < date('now', '-30 days', 'localtime') 
-            AND date > date('now', '-60 days', 'localtime') 
-        ''')
+            AND date < date(?, '-30 days', 'localtime') 
+            AND date > date(?, '-60 days', 'localtime') 
+        ''', (self.refdate,self.refdate))
         self.nbinscription_last_month = self.cursor.fetchone()[0]
 
     def _percent(self, a, b):
@@ -195,26 +203,25 @@ class dashboard_queries(queries):
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
             WHERE visitor.userid > 16 AND visitor.userid != 43 
-            AND begin_date > date('now', '-30 days', 'localtime') 
-            
-        ''')
+            AND begin_date > date(?, '-30 days', 'localtime') 
+        ''', (self.refdate,))
         self.nbmembers_month = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
             WHERE visitor.userid > 16 AND visitor.userid != 43 
-            AND begin_date > date('now', '-1 day', 'localtime') 
-        ''')
+            AND begin_date > date(?, '-1 day', 'localtime') 
+        ''', (self.refdate,))
         self.nbmembers_day = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
             WHERE visitor.userid > 16 AND visitor.userid != 43 
-            AND begin_date < date('now', '-30 days', 'localtime') 
-            AND begin_date > date('now', '-60 days', 'localtime') 
-        ''')
+            AND begin_date < date(?, '-30 days', 'localtime') 
+            AND begin_date > date(?, '-60 days', 'localtime') 
+        ''', (self.refdate,self.refdate))
         self.nbmembers_last_month = self.cursor.fetchone()[0]
 
     def _generate_visitors_array(self):
@@ -227,7 +234,7 @@ class dashboard_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date('now', '-30 days', 'localtime') 
+            AND begin_date > date(?, '-30 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -240,7 +247,7 @@ class dashboard_queries(queries):
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%.txt' 
             AND url NOT LIKE '%resource%'
-        ''')
+        ''', (self.refdate,))
         self.nbvisitors_month = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
@@ -252,7 +259,7 @@ class dashboard_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date('now', '-1 day', 'localtime') 
+            AND begin_date > date(?, '-1 day', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -265,7 +272,7 @@ class dashboard_queries(queries):
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%.txt' 
             AND url NOT LIKE '%resource%'
-        ''')
+        ''', (self.refdate,))
         self.nbvisitors_day = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
@@ -277,8 +284,8 @@ class dashboard_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date < date('now', '-30 days', 'localtime') 
-            AND begin_date > date('now', '-60 days', 'localtime') 
+            AND begin_date < date(?, '-30 days', 'localtime') 
+            AND begin_date > date(?, '-60 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -291,7 +298,7 @@ class dashboard_queries(queries):
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%.txt' 
             AND url NOT LIKE '%resource%'
-        ''')
+        ''', (self.refdate,self.refdate))
         self.nbvisitors_last_month = self.cursor.fetchone()[0]
 
 

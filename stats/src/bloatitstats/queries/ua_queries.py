@@ -5,8 +5,8 @@ from queries import queries
 # Request on USER AGENT
 #
 class ua_queries(queries):
-    def __init__(self, cursor, output):
-        super(ua_queries, self).__init__(cursor, output)
+    def __init__(self, cursor, output, refdate='now'):
+        super(ua_queries, self).__init__(cursor, output, refdate)
 
     def nb_request_by_ua_all(self):
         results = list()
@@ -28,10 +28,10 @@ class ua_queries(queries):
         self.cursor.execute('''SELECT quote(useragent.%s), count(*)
                                FROM visit 
                                JOIN useragent ON useragent.id = id_useragent
-                               WHERE begin_date > date('now', '-%i days', 'localtime')
+                               WHERE begin_date > date(?, '-%i days', 'localtime')
                                GROUP BY useragent.%s
                                ORDER BY count(*) DESC
-                               LIMIT 10 ''' % (component, nbdays, component))
+                               LIMIT 10 ''' % (component, nbdays, component), (self.refdate,))
         for row in self.cursor:
             results.append(row)
     
