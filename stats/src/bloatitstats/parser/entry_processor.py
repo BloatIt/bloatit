@@ -95,7 +95,7 @@ class entry_processor:
             entry_processor.nb_new_visitor += 1
         else:
             visitor_id = visitor_id[0]
-            if self.user_id == -1:
+            if self.user_id != -1:
                 cursor.execute('''UPDATE visitor SET userid=? WHERE id=?''', (self.user_id, visitor_id))
             
         # create user agent

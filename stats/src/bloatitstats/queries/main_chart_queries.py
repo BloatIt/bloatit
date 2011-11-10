@@ -4,8 +4,8 @@ from queries import queries
 # Main chart Monthly
 #
 class main_chart_queries(queries):
-    def __init__(self, cursor, output):
-        super(main_chart_queries, self).__init__(cursor, output)
+    def __init__(self, cursor, output, refdate = 'now'):
+        super(main_chart_queries, self).__init__(cursor, output, refdate)
 
     def generate_main_chart_all(self):
          # Visit member
@@ -64,7 +64,7 @@ class main_chart_queries(queries):
         for i in range(1, 31) :
             self.cursor.execute(''' 
             INSERT INTO mydates (time) 
-            VALUES (datetime('now', '-30 days', 'start of day', '+%i days'))''' % i )
+            VALUES (datetime(?, '-30 days', 'start of day', '+%i days'))'''% i, (self.refdate,))
         
         f = open(self.output + "/visits_monthly.js", "w")
         # Visit member
@@ -79,7 +79,7 @@ class main_chart_queries(queries):
             WHERE (useragent.typ = 'Browser' )
             AND visitor.userid != -1
             AND visitor.userid > 16 AND visitor.userid != 43
-            AND begin_date > date('now', '-30 days') 
+            AND begin_date > date(?, '-30 days') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -95,7 +95,7 @@ class main_chart_queries(queries):
             AND url NOT LIKE '%resource%' 
             GROUP BY strftime('%Y%m%d', begin_date))
         ON time = date
-        WHERE time > date('now', '-30 days', 'localtime') ''')
+        WHERE time > date(?, '-30 days', 'localtime') ''', (self.refdate,self.refdate))
         result_member = list()
         for line in self.cursor:
             result_member.append([line[0], line[1]])
@@ -112,7 +112,7 @@ class main_chart_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND visitor.userid = -1
-            AND begin_date > date('now', '-30 days', 'localtime') 
+            AND begin_date > date(?, '-30 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -128,8 +128,8 @@ class main_chart_queries(queries):
             AND url NOT LIKE '%resource%' 
             GROUP BY strftime('%Y%m%d', begin_date) ) 
         ON time = date
-        WHERE time > date('now', '-30 days', 'localtime')
-        ''')
+        WHERE time > date(?, '-30 days', 'localtime')
+        ''', (self.refdate, self.refdate))
         result_non_member = list()
         for line in self.cursor:
             result_non_member.append([line[0], line[1]])
@@ -147,7 +147,7 @@ class main_chart_queries(queries):
                        JOIN externalurl ON externalurl.id=id_externalurl
                     WHERE (useragent.typ = 'Browser' )
                     AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                    AND begin_date > date('now', '-30 days', 'localtime') 
+                    AND begin_date > date(?, '-30 days', 'localtime') 
                     AND netloc NOT LIKE '%%elveos.org' 
                     AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
                     AND netloc NOT LIKE '%%.local'
@@ -165,8 +165,8 @@ class main_chart_queries(queries):
              WHERE nbRequests = 1
              GROUP BY nbRequests , strftime('%Y%m%d', begin_date))
         ON time = date
-        WHERE time > date('now', '-30 days', 'localtime')
-        ''')
+        WHERE time > date(?, '-30 days', 'localtime')
+        ''', (self.refdate,self.refdate))
         result = list()
         i = 0
         for line in self.cursor:
@@ -184,11 +184,11 @@ class main_chart_queries(queries):
             -- (useragent.typ = 'Browser' ) 
             -- AND visitor.userid != -1
             -- AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date('now', '-30 days', 'localtime') 
+            AND begin_date > date(?, '-30 days', 'localtime') 
             GROUP BY strftime('%Y%m%d', begin_date))
         ON time = date
-        WHERE time > date('now', '-30 days', 'localtime')
-        ''')
+        WHERE time > date(?, '-30 days', 'localtime')
+        ''', (self.refdate,self.refdate))
         result = list()
         i = 0
         for line in self.cursor:
@@ -209,7 +209,7 @@ class main_chart_queries(queries):
         for i in range(0, 30) :
             self.cursor.execute(''' 
             INSERT INTO mydates (time) 
-            VALUES (strftime('%%Y-%%m-%%d %%H:00:00', datetime('now', '-%i hours', 'localtime')))''' % i )
+            VALUES (strftime('%%Y-%%m-%%d %%H:00:00', datetime(?, '-%i hours', 'localtime')))'''% i, (self.refdate,))
 
         f = open(self.output + "/visits_daily.js", "w")
         # Visit member
@@ -224,7 +224,7 @@ class main_chart_queries(queries):
             WHERE (useragent.typ = 'Browser' )
             AND visitor.userid != -1
             AND visitor.userid > 16 AND visitor.userid != 43
-            AND begin_date > date('now', '-2 days', 'localtime') 
+            AND begin_date > date(?, '-2 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -239,8 +239,8 @@ class main_chart_queries(queries):
             AND url NOT LIKE '%resource%'
             GROUP BY strftime('%d%H', begin_date))
         ON time = date
-        WHERE time > date('now', '-2 days', 'localtime')
-        ''')
+        WHERE time > date(?, '-2 days', 'localtime')
+        ''', (self.refdate,self.refdate))
         result_member = list()
         for line in self.cursor:
             result_member.append([line[0], line[1]])
@@ -257,7 +257,7 @@ class main_chart_queries(queries):
               JOIN externalurl ON externalurl.id=id_externalurl
             WHERE (useragent.typ = 'Browser' )
             AND visitor.userid = -1
-            AND begin_date > date('now', '-2 days', 'localtime') 
+            AND begin_date > date(?, '-2 days', 'localtime') 
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
@@ -272,8 +272,8 @@ class main_chart_queries(queries):
             AND url NOT LIKE '%resource%'
             GROUP BY strftime('%d%H', begin_date) ) 
         ON time = date
-        WHERE time > date('now', '-2 days', 'localtime')
-        ''')
+        WHERE time > date(?, '-2 days', 'localtime')
+        ''', (self.refdate,self.refdate))
         result_non_member = list()
         for line in self.cursor:
             result_non_member.append([line[0], line[1]])
@@ -290,7 +290,7 @@ class main_chart_queries(queries):
                       JOIN externalurl ON externalurl.id=id_externalurl
                 WHERE (useragent.typ = 'Browser' )
                 AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                AND begin_date > date('now', '-2 days', 'localtime') 
+                AND begin_date > date(?, '-2 days', 'localtime') 
                 AND netloc NOT LIKE '%%elveos.org' 
                 AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
                 AND netloc NOT LIKE '%%.local'
@@ -307,8 +307,8 @@ class main_chart_queries(queries):
              WHERE nbRequests = 1
              GROUP BY nbRequests , strftime('%d%H', begin_date))
         ON time = date
-        WHERE time > date('now', '-2 days', 'localtime')
-        ''')
+        WHERE time > date(?, '-2 days', 'localtime')
+        ''', (self.refdate,self.refdate))
         result = list()
         i = 0
 
@@ -327,11 +327,11 @@ class main_chart_queries(queries):
             -- (useragent.typ = 'Browser' ) 
             -- AND visitor.userid != -1
             -- AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date('now', '-2 days', 'localtime') 
+            AND begin_date > date(?, '-2 days', 'localtime') 
             GROUP BY strftime('%d%H', begin_date))
         ON time = date
-        WHERE time > date('now', '-2 days')
-        ''')
+        WHERE time > date(?, '-2 days')
+        ''', (self.refdate,self.refdate))
         result = list()
         i = 0
         for line in self.cursor:

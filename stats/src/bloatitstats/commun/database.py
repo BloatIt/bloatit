@@ -5,9 +5,6 @@ class database:
     def __init__(self, file):
         self.conn = sqlite3.connect(file)
         self.cursor = self.conn.cursor()
-        self.cursor.execute('''PRAGMA synchronous=OFF''')
-        self.cursor.execute('''PRAGMA cache_size=200000''')
-        self.cursor.execute('''PRAGMA count_changes=OFF''')
     
     def create_table(self):
         # Create table

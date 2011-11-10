@@ -2,8 +2,8 @@ from queries import queries
 import re
 
 class graph_queries(queries):
-    def __init__(self, cursor, output):
-        super(graph_queries, self).__init__(cursor, output)
+    def __init__(self, cursor, output, refdate = 'now'):
+        super(graph_queries, self).__init__(cursor, output, refdate)
 
     def _json_serialize(self, afile, nodename, edges, varname):
         afile.write('''var %s = [''' % varname)
@@ -56,15 +56,15 @@ class graph_queries(queries):
         self._generate_graph(30)
         f = open(self.output + '/void_monthly.js', 'w')
         self._json_serialize(f, "void", self.graph["void"], "void_tree")
-        f = open(self.output + '/feature_monthly.js', 'w')
-        self._json_serialize(f, "feature", self.graph["feature"], "feature_tree")
+#        f = open(self.output + '/feature_monthly.js', 'w')
+#        self._json_serialize(f, "feature", self.graph["feature"], "feature_tree")
 
     def generate_graph_all(self):
         self._generate_graph(800)
         f = open(self.output + '/void_all.js', 'w')
         self._json_serialize(f, "void", self.graph["void"], "void_tree")
-        f = open(self.output + '/feature_all.js', 'w')
-        self._json_serialize(f, "feature", self.graph["feature"], "feature_tree")
+#        f = open(self.output + '/feature_all.js', 'w')
+#        self._json_serialize(f, "feature", self.graph["feature"], "feature_tree")
 
 
     def _generate_graph(self, nbdays):
@@ -79,7 +79,7 @@ class graph_queries(queries):
                             WHERE typ = 'Browser' 
                             AND (visitor.userid > 16 OR visitor.userid = -1)
                             AND visitor.userid != 43 
-                            AND begin_date > date('now', '-%i days', 'localtime') 
+                            AND begin_date > date(?, '-%i days', 'localtime') 
                             AND netloc NOT LIKE '%%elveos.org%%' 
                             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
                             AND netloc NOT LIKE '%%.local'
@@ -91,7 +91,7 @@ class graph_queries(queries):
                             AND url NOT LIKE '%%.png' 
                             AND url NOT LIKE '%%.txt' 
                             AND url NOT LIKE '%%resource%%'
-                            ORDER BY visit.id, request.date ''' % nbdays)
+                            ORDER BY visit.id, request.date '''% nbdays, (self.refdate,) )
 
         lastid=-1
         for line in self.cursor:

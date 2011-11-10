@@ -8,36 +8,36 @@ from queries.visits_queries import visits_queries
 from queries.graph_queries import graph_queries
 from queries.dashboard_queries import dashboard_queries
 
-def print_stats(datafile, output):
+def print_stats(datafile, output, date):
     base = database(datafile)
     base.create_table()
 
     print "generate dashboard"
-    q = dashboard_queries(base.cursor, output)
+    q = dashboard_queries(base.cursor, output, date)
     q.generate_dashboard()
 
     print "generate graph"
-    q = graph_queries(base.cursor, output)
+    q = graph_queries(base.cursor, output, date)
     q.generate_graph_daily()
     q.generate_graph_monthly()
 
     print "generate main chart"
-    q = main_chart_queries(base.cursor, output)
+    q = main_chart_queries(base.cursor, output, date)
     q.generate_main_chart_daily()
     q.generate_main_chart_monthly()
 
     print "generate nb request by ua"
-    q = ua_queries(base.cursor, output)
+    q = ua_queries(base.cursor, output, date)
     q.nb_request_by_ua_daily()
     q.nb_request_by_ua_monthly()
 
     print "generate nb request by netloc"
-    q = referer_queries(base.cursor, output)
+    q = referer_queries(base.cursor, output, date)
     q.nb_request_by_netloc_daily()
     q.nb_request_by_netloc_monthly()
 
     print "generate nb visit by visit size"
-    q = visits_queries(base.cursor, output)
+    q = visits_queries(base.cursor, output, date)
     q.nb_visit_by_visit_size_daily()
     q.nb_visit_by_visit_size_monthly()
 
@@ -50,13 +50,14 @@ def usage():
 -h --help              Show this help.
 -v --version           Print the version number and exit.
 -d --database FILE     Use 'FILE' as a database (default is ./stats.db)
+-D --date DATE         Use 'DATE' as a starting date (default is 'now'). Use 'date +%Y-%m-%dT%H:%M:%S' format.
 -o --output FOLDER     Output the js files in the 'FOLDER'
 
 '''
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hvd:", ["help", "version", 'database'])
+        opts, args = getopt.getopt(sys.argv[1:], "hvd:D:o:", ["help", "version", 'database', 'date', 'output'])
     except getopt.GetoptError, err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -65,6 +66,7 @@ def main():
         
     database = './stats.db'
     output = './js'
+    date = 'now'
     for o, a in opts:
         if o in ('-v', '--version'):
             print 'version: ' + version
@@ -76,12 +78,14 @@ def main():
             output = a
         elif o in ("-d", "--database"):
             database = a
+        elif o in ("-D", "--date"):
+            date = a
         else:
             print 'ERROR: unknown option'
             usage()
             sys.exit()
             
-    print_stats(database, output)
+    print_stats(database, output, date)
             
 
 if __name__ == "__main__":
