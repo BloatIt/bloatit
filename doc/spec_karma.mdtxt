@@ -1,0 +1,72 @@
+Karma
+=====
+
+Généralités
+-----------
+
+Le karma d'un member commence sans aucun droit, avec un karma de DEFAULT_KARMA.
+
+L'activation du membre lui donne ACTIVATION_KARMA.
+
+
+Si le karma est inferieur ou égale à DEFAULT_KARMA, le membre n'est pas afficher dans la liste des membre.
+
+Le karma d'un utilisateur n'est pas visible tant qu'il n'est pas activé (dans la page membre par exemple).
+
+
+Contenu
+-------
+
+Pour poster un contenu, il faut avoir un karma suffissant.
+
+Un contenu commence avec une réputation correspondant au vote de l'auteur : INFLUENCE
+
+
+Les gens avec un karma positif ou null peuvent voter sur tous les contenus modifiant sa réputation.
+
+
+Il y a 2 boutons (+ ou -) ( pertinent ou inutile). La réputation du contenue varie d'une valeur égale à l'influence du votant, dans le sens du vote.
+
+Le karma de l'auteur ne varie que dans les plages de réputations suivante :
+
+
+
+HIDDEN_POPULARITY+1 à HIDDEN_POPULARITY+5 => +1 à +5 de karma
+-(HIDDEN_POPULARITY+1) à -(HIDDEN_POPULARITY+5) => -1 à -5 de karma
+
+Pour un commentaire:
++5 à +10 => +1 à +5 de karma
+-5 et -10 => -1 er -2 de karma
+
+La réputation d'un élément agit ainsi:
+- Un élement qui passe en dessous de HIDDEN_POPULARITY de réputation l'élement est masqué par défaut. Le bouton - est noté "spam". Il y a toujours un risque que des gens votes avec une ancienne valeur de karma.
+- Un élément doit remonter à PENDING_POPULARITY pour ne plus être masqué
+- Un élément qui passe en dessous de REJECTED_POPULARITY est supprimé du cite. Il est noté comme barré, et ne repassera plus automatiquement en un autre state.
+- Un élément qui passe au dessus de VALIDATED_POPULARITY est considéré comme validé : Il peut être tweeté, diffusé dans le flux rss, etc.
+
+Variations
+----------
+
+Les membres ayant un karma supérieurs à MAX_STABLE_KARMA perdent 1 de karma par semaine (min MAX_STABLE_KARMA).
+Les membres activés ayant un karma inférieurs à MIN_STABLE_KARMA gagnent 1 de karma par semaine (max MIN_STABLE_KARMA).
+
+Constantes
+----------
+
+DEFAULT_KARMA = -50
+ACTIVATION_KARMA = 50
+
+MAX_STABLE_KARMA = 49
+MIN_STABLE_KARMA = 0
+
+                        Comment  |  Feature  |  Offer |  Translation
+MIN_KARMA            =    -10    |     -10   |  -10   |       -10
+VALIDATED_POPULARITY =     5     |      5    |   5    |       5
+PENDING_POPULARITY   =     0     |      0    |   0    |       0
+HIDDEN_POPULARITY    =    -5     |     -5    |  -5    |      -5
+REJECTED_POPULARITY  =    -10    |     -10   |  -10   |      -10
+
+INFLUENCE = (Math.log10((INFLUENCE_GELIFICATOR + karma) / INFLUENCE_GELIFICATOR) * INFLUENCE_MULTIPLICATOR + INFLUENCE_BASE);  //1 for 0, 2 for 50, 3 for 200 karma, 4 for 1000
+INFLUENCE_MULTIPLICATOR = 2;
+INFLUENCE_GELIFICATOR = 20;
+INFLUENCE_BASE = 1;
