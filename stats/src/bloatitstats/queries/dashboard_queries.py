@@ -12,8 +12,8 @@ class rest_request:
         else:
             time = datetime.strptime(refdate, '%Y-%m-%dT%H:%M:%S')
             diff = (datetime.now() - time).days
-            self._from = from_ - diff
-            self._to = to_ - diff
+            self._from = from_ + diff
+            self._to = to + diff
             
 
     def run(self):
@@ -60,49 +60,15 @@ class dashboard_queries(queries):
         self.cursor.execute('''
         SELECT count(distinct(visit.id))
             FROM visit 
-              JOIN useragent ON id_useragent=useragent.id 
-              JOIN request ON visit.id=request.id_visit
-              JOIN visitor ON id_visitor=visitor.id
-              JOIN externalurl ON externalurl.id=id_externalurl
-            WHERE (useragent.typ = 'Browser' )
-            AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date(?, '-30 days', 'localtime') 
-            AND netloc NOT LIKE '%%elveos.org' 
-            AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
-            AND netloc NOT LIKE '%%.local'
-            AND url NOT LIKE '%featurefeed%' 
-            AND url NOT LIKE '%%softwarefeed%%' 
-            AND url NOT LIKE '/__/%login' 
-            AND url NOT LIKE '/__/resource%' 
-            AND url NOT LIKE '/rest/%' 
-            AND url NOT LIKE '/favicon.ico%' 
-            AND url NOT LIKE '%.png' 
-            AND url NOT LIKE '%.txt' 
-            AND url NOT LIKE '%resource%'
+            WHERE begin_date > date(?, '-30 days', 'localtime') 
+            AND real=1 
         ''', (self.refdate,))
         self.nbvisits_month = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
         SELECT count(distinct(visit.id))
             FROM visit 
-              JOIN useragent ON id_useragent=useragent.id 
-              JOIN request ON visit.id=request.id_visit
-              JOIN visitor ON id_visitor=visitor.id
-              JOIN externalurl ON externalurl.id=id_externalurl
-            WHERE (useragent.typ = 'Browser' )
-            AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date(?, '-1 day', 'localtime') 
-            AND netloc NOT LIKE '%%elveos.org' 
-            AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
-            AND netloc NOT LIKE '%%.local'
-            AND url NOT LIKE '%featurefeed%' 
-            AND url NOT LIKE '%%softwarefeed%%' 
-            AND url NOT LIKE '/__/%login' 
-            AND url NOT LIKE '/__/resource%' 
-            AND url NOT LIKE '/rest/%' 
-            AND url NOT LIKE '/favicon.ico%' 
-            AND url NOT LIKE '%.png' 
-            AND url NOT LIKE '%.txt' 
+            WHERE begin_date > date(?, '-1 day', 'localtime') 
             AND url NOT LIKE '%resource%'
         ''', (self.refdate,))
         self.nbvisits_day = self.cursor.fetchone()[0]
@@ -159,17 +125,17 @@ class dashboard_queries(queries):
         return (a * 100) / b
 
     def _get_rest_data(self):
-        r = rest_request(30, -1)
+        r = rest_request(30, -1, self.refdate)
         r.run()
         self.conv_month = r.count
         self.moy_month = (r.count != 0) and (r.chargedValue / r.count) or 0
         self.tot_month = r.paidValue - r.chargedValue
-        r = rest_request(1, -1)
+        r = rest_request(1, -1, self.refdate)
         r.run()
         self.conv_day = self._percent(r.count, self.nbvisits_day)
         self.moy_day = (r.count != 0) and (r.chargedValue / r.count) or 0
         self.tot_day = r.paidValue - r.chargedValue
-        r = rest_request(60, 30)
+        r = rest_request(60, 30, self.refdate)
         r.run()
         self.conv_last_month = self._percent(r.count, self.nbvisits_last_month)
         self.moy_last_month = (r.count != 0) and (r.chargedValue / r.count) or 0
@@ -178,24 +144,24 @@ class dashboard_queries(queries):
         
     def _write_results(self):
         f = open(self.output + "/dashboard.js", "w")
-        f.write("var visits = [%i, %i, %i, %i];" 
+        f.write("var visits = [%i, %i, %f, %i];" 
         % (self.nbvisits_month, self.nbvisits_day, self.nbvisits_month / 30, self.nbvisits_last_month))
-        f.write("var visitors = [%i, %i, %i, %i];" 
+        f.write("var visitors = [%i, %i, %f, %i];" 
         % (self.nbvisitors_month, self.nbvisitors_day, self.nbvisitors_month / 30, self.nbvisitors_last_month))
-        f.write("var members = [%i, %i, %i, %i];" 
+        f.write("var members = [%i, %i, %f, %i];" 
         % (self.nbmembers_month, self.nbmembers_day, self.nbmembers_month / 30, self.nbmembers_last_month))
 
-        f.write("var insc = [%i, %i, %i, %i];" % 
+        f.write("var insc = [%i, %f, %f, %f];" % 
             (self.nbinscription_month, 
             self._percent(self.nbinscription_day, self.nbvisits_day), 
             self._percent(self.nbinscription_day, self.nbvisits_day) / 30 , 
             self._percent(self.nbinscription_last_month, self.nbvisits_last_month)))
 
-        f.write("var conv = [%i, %i, %i, %i];" 
+        f.write("var conv = [%i, %i, %f, %i];" 
         % (self.conv_month, self.conv_day, self.conv_month / 30, self.conv_last_month))
-        f.write("var moy = [%i, %i, %i, %i];" 
+        f.write("var moy = [%i, %i, %f, %i];" 
         % (self.moy_month, self.moy_day, self.moy_month / 30, self.moy_last_month))
-        f.write("var tot = [%i, %i, %i, %i];" 
+        f.write("var tot = [%i, %i, %f, %i];" 
         % (self.tot_month, self.tot_day, self.tot_month / 30, self.tot_last_month))
 
     def _generate_members_array(self):
