@@ -35,8 +35,8 @@ HIDDEN_POPULARITY+1 à HIDDEN_POPULARITY+5 => +1 à +5 de karma
 -(HIDDEN_POPULARITY+1) à -(HIDDEN_POPULARITY+5) => -1 à -5 de karma
 
 Pour un commentaire:
-+6 à +10 => +1 à +5 de karma
--6 à -10 => -1 à -5 de karma
++5 à +10 => +1 à +5 de karma
+-5 et -10 => -1 er -2 de karma
 
 La réputation d'un élément agit ainsi:
 - Un élement qui passe en dessous de HIDDEN_POPULARITY de réputation l'élement est masqué par défaut. Le bouton - est noté "spam". Il y a toujours un risque que des gens votes avec une ancienne valeur de karma.
@@ -47,8 +47,8 @@ La réputation d'un élément agit ainsi:
 Variations
 ----------
 
-Les membres ayant un karma supérieurs à MAX_STABLE_KARMA perdent 5 de karma par semaine (min MAX_STABLE_KARMA).
-Les membres activés ayant un karma inférieurs à MIN_STABLE_KARMA perdent 5 de karma par semaine (max MIN_STABLE_KARMA).
+Les membres ayant un karma supérieurs à MAX_STABLE_KARMA perdent 1 de karma par semaine (min MAX_STABLE_KARMA).
+Les membres activés ayant un karma inférieurs à MIN_STABLE_KARMA gagnent 1 de karma par semaine (max MIN_STABLE_KARMA).
 
 Constantes
 ----------
@@ -56,7 +56,7 @@ Constantes
 DEFAULT_KARMA = -50
 ACTIVATION_KARMA = 50
 
-MAX_STABLE_KARMA = 10
+MAX_STABLE_KARMA = 49
 MIN_STABLE_KARMA = 0
 
                         Comment  |  Feature  |  Offer |  Translation
