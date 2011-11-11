@@ -60,7 +60,7 @@ MAX_STABLE_KARMA = 49
 MIN_STABLE_KARMA = 0
 
                         Comment  |  Feature  |  Offer |  Translation
-MIN_KARMA            =    -40    |     -45   |  -45   |       0
+MIN_KARMA            =    -10    |     -10   |  -10   |       -10
 VALIDATED_POPULARITY =     5     |      5    |   5    |       5
 PENDING_POPULARITY   =     0     |      0    |   0    |       0
 HIDDEN_POPULARITY    =    -5     |     -5    |  -5    |      -5

@@ -53,6 +53,7 @@ import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
+import com.bloatit.model.ModelConfiguration;
 
 /**
  * Ok if you need a comment to understand what is a member, then I cannot do
@@ -410,7 +411,7 @@ public class DaoMember extends DaoActor {
         this.state = ActivationState.VALIDATING;
         this.password = password;
         this.salt = salt;
-        this.karma = -10;
+        this.karma = ModelConfiguration.getKudosableInitialKarma();
         this.fullname = "";
         this.description = "";
     }
