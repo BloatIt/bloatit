@@ -132,47 +132,55 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         final int influence = member.calculateInfluence();
 
         if (influence > 0) {
-            getMember().addToKarma(sign * influence);
-            calculateNewState(getDao().addKudos(member.getDao(), DaoGetter.get(AuthToken.getAsTeam()), sign * influence));
+            //getMember().addToKarma(sign * influence);
+            calculateNewState(getPopularity(), getDao().addKudos(member.getDao(), DaoGetter.get(AuthToken.getAsTeam()), sign * influence));
         }
 
         return influence * sign;
     }
 
-    private void calculateNewState(final int newPop) {
+    private void calculateNewState(final int oldPop, final int newPop) {
         switch (getState()) {
             case PENDING:
                 if (newPop >= turnValid()) {
                     setStateUnprotected(PopularityState.VALIDATED);
+                    getMember().addToKarma(1);
                     notifyValid();
                 } else if (newPop <= turnHidden() && newPop > turnRejected()) {
                     setStateUnprotected(PopularityState.HIDDEN);
+                    getMember().addToKarma(-1);
                     notifyHidden();
                 } else if (newPop <= turnRejected()) {
                     setStateUnprotected(PopularityState.REJECTED);
+                    getMember().addToKarma(-2);
                     notifyRejected();
                 }
                 // NO BREAK IT IS OK !!
             case VALIDATED:
                 if (newPop <= turnPending()) {
                     setStateUnprotected(PopularityState.PENDING);
+                    getMember().addToKarma(-1);
                     notifyPending();
+                } else {
+                    int oldKarma = (oldPop - turnValid())/ModelConfiguration.getKudosableStepToGainKarma();
+                    int newKarma = (oldPop - turnValid())/ModelConfiguration.getKudosableStepToGainKarma();
+                    getMember().addToKarma(newKarma - oldKarma);
                 }
                 break;
             case HIDDEN:
             case REJECTED:
                 if (newPop >= turnPending() && newPop < turnValid()) {
                     setStateUnprotected(PopularityState.PENDING);
+                    getMember().addToKarma(2);
                     notifyPending();
                 } else if (newPop >= turnValid()) {
                     setStateUnprotected(PopularityState.VALIDATED);
+                    getMember().addToKarma(3);
                     notifyValid();
-                } else if (newPop <= turnHidden() && newPop > turnRejected()) {
-                    setStateUnprotected(PopularityState.VALIDATED);
+                } else if (newPop <= turnPending() && newPop > turnHidden()) {
+                    setStateUnprotected(PopularityState.HIDDEN);
+                    getMember().addToKarma(1);
                     notifyValid();
-                } else if (newPop <= turnRejected()) {
-                    setStateUnprotected(PopularityState.REJECTED);
-                    notifyRejected();
                 }
                 break;
             default:

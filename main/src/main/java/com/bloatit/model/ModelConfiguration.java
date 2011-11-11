@@ -49,6 +49,8 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableTranslationTurnPending;
     private int kudosableMinInfluenceToUnkudos;
     private int kudosableMinInfluenceToKudos;
+    private int kudosableStepToGainKarma;
+    
     private int recentActivityDays;
     private String[] administratorMails;
     private BigDecimal linkeosTaxesRate;
@@ -169,6 +171,23 @@ public class ModelConfiguration extends ReloadableConfiguration {
     protected static int getKudosableMinInfluenceToKudos() {
         return configuration.kudosableMinInfluenceToKudos;
     }
+    
+    protected static int getKudosableMinInfluenceToComment() {
+        return configuration.kudosableMinInfluenceToKudos;
+    }
+    
+    protected static int getKudosableMinInfluenceToMakeOffer() {
+        return configuration.kudosableMinInfluenceToKudos;
+    }
+    
+    protected static int getKudosableMinInfluenceToMakeCreateDemand() {
+        return configuration.kudosableMinInfluenceToKudos;
+    }
+
+    protected static int getKudosableStepToGainKarma() {
+        return configuration.kudosableStepToGainKarma;
+    }
+
 
     // Others
 
@@ -194,6 +213,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
         kudosableDefaultTurnRejected = properties.getInt("kudosable.default.turn_rejected", -100);
         kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -10);
         kudosableDefaultTurnPending = properties.getInt("kudosable.default.turn_pending", 10);
+        kudosableStepToGainKarma = properties.getInt("kudosable.karma.stepToGain", 5);
 
         // Comment feature offer translation
         kudosableCommentTurnValid = properties.getInt("kudosable.comment.turn_valid", kudosableDefaultTurnValid);
@@ -280,5 +300,6 @@ public class ModelConfiguration extends ReloadableConfiguration {
     public static String getLinkeosLegalIdentification() {
         return configuration.linkeosLegalIdentification;
     }
+
 
 }
