@@ -44,6 +44,10 @@ public class Reporting {
         report("Server start", new Date().toString());
     }
     
+    public void reportServerStop() {
+        report("Server stop", new Date().toString());
+    }
+    
     public void reportMemberCreation(String login) {
         report("Member creation", login);
     }

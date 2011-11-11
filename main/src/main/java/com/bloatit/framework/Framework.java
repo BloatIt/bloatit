@@ -95,6 +95,7 @@ public class Framework {
     }
 
     private void shutdown() {
+        Reporting.reporter.reportServerStop();
         Reporting.reporter.report();
         SessionManager.saveSessions();
         scgiServer.stop();
