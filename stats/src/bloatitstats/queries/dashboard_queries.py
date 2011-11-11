@@ -60,7 +60,7 @@ class dashboard_queries(queries):
         self.cursor.execute('''
         SELECT count(distinct(visit.id))
             FROM visit 
-            WHERE begin_date > date(?, '-30 days', 'localtime') 
+            WHERE begin_date > datetime(?, '-30 days', 'localtime') 
             AND real=1 
         ''', (self.refdate,))
         self.nbvisits_month = self.cursor.fetchone()[0]
@@ -68,54 +68,37 @@ class dashboard_queries(queries):
         self.cursor.execute('''
         SELECT count(distinct(visit.id))
             FROM visit 
-            WHERE begin_date > date(?, '-1 day', 'localtime') 
-            AND url NOT LIKE '%resource%'
+            WHERE begin_date > datetime(?, '-1 day', 'localtime') 
+            AND real=1
         ''', (self.refdate,))
         self.nbvisits_day = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
         SELECT count(distinct(visit.id))
             FROM visit 
-              JOIN useragent ON id_useragent=useragent.id 
-              JOIN request ON visit.id=request.id_visit
-              JOIN visitor ON id_visitor=visitor.id
-              JOIN externalurl ON externalurl.id=id_externalurl
-            WHERE (useragent.typ = 'Browser' )
-            AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date < date(?, '-30 days', 'localtime') 
-            AND begin_date > date(?, '-60 days', 'localtime') 
-            AND netloc NOT LIKE '%%elveos.org' 
-            AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
-            AND netloc NOT LIKE '%%.local'
-            AND url NOT LIKE '%featurefeed%' 
-            AND url NOT LIKE '%%softwarefeed%%' 
-            AND url NOT LIKE '/__/%login' 
-            AND url NOT LIKE '/__/resource%' 
-            AND url NOT LIKE '/rest/%' 
-            AND url NOT LIKE '/favicon.ico%' 
-            AND url NOT LIKE '%.png' 
-            AND url NOT LIKE '%.txt' 
-            AND url NOT LIKE '%resource%'
+            WHERE begin_date < datetime(?, '-30 days', 'localtime') 
+            AND begin_date > datetime(?, '-60 days', 'localtime') 
+            AND real=1
         ''', (self.refdate,self.refdate))
         self.nbvisits_last_month = self.cursor.fetchone()[0]
 
     def _generate_inscription_array(self):
         self.cursor.execute('''
         SELECT count(distinct(url)) from request where url like '%member/doactivate%' 
-            AND date > date(?, '-1 day', 'localtime') 
+            AND date > datetime(?, '-1 day', 'localtime') 
         ''', (self.refdate,))
         self.nbinscription_day = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
         SELECT count(distinct(url)) from request where url like '%member/doactivate%' 
-            AND date > date(?, '-30 days', 'localtime') 
+            AND date > datetime(?, '-30 days', 'localtime') 
         ''', (self.refdate,))
         self.nbinscription_month = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
         SELECT count(distinct(url)) from request where url like '%member/doactivate%' 
-            AND date < date(?, '-30 days', 'localtime') 
-            AND date > date(?, '-60 days', 'localtime') 
+            AND date < datetime(?, '-30 days', 'localtime') 
+            AND date > datetime(?, '-60 days', 'localtime') 
         ''', (self.refdate,self.refdate))
         self.nbinscription_last_month = self.cursor.fetchone()[0]
 
@@ -169,7 +152,7 @@ class dashboard_queries(queries):
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
             WHERE visitor.userid > 16 AND visitor.userid != 43 
-            AND begin_date > date(?, '-30 days', 'localtime') 
+            AND begin_date > datetime(?, '-30 days', 'localtime') 
         ''', (self.refdate,))
         self.nbmembers_month = self.cursor.fetchone()[0]
 
@@ -177,7 +160,7 @@ class dashboard_queries(queries):
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
             WHERE visitor.userid > 16 AND visitor.userid != 43 
-            AND begin_date > date(?, '-1 day', 'localtime') 
+            AND begin_date > datetime(?, '-1 day', 'localtime') 
         ''', (self.refdate,))
         self.nbmembers_day = self.cursor.fetchone()[0]
 
@@ -185,8 +168,8 @@ class dashboard_queries(queries):
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
             WHERE visitor.userid > 16 AND visitor.userid != 43 
-            AND begin_date < date(?, '-30 days', 'localtime') 
-            AND begin_date > date(?, '-60 days', 'localtime') 
+            AND begin_date < datetime(?, '-30 days', 'localtime') 
+            AND begin_date > datetime(?, '-60 days', 'localtime') 
         ''', (self.refdate,self.refdate))
         self.nbmembers_last_month = self.cursor.fetchone()[0]
 
@@ -194,76 +177,28 @@ class dashboard_queries(queries):
         self.cursor.execute('''
         SELECT count(distinct(visitor.id))
             FROM visit 
-              JOIN useragent ON id_useragent=useragent.id 
-              JOIN request ON visit.id=request.id_visit
-              JOIN visitor ON id_visitor=visitor.id
-              JOIN externalurl ON externalurl.id=id_externalurl
-            WHERE (useragent.typ = 'Browser' )
-            AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date(?, '-30 days', 'localtime') 
-            AND netloc NOT LIKE '%%elveos.org' 
-            AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
-            AND netloc NOT LIKE '%%.local'
-            AND url NOT LIKE '%featurefeed%' 
-            AND url NOT LIKE '%%softwarefeed%%' 
-            AND url NOT LIKE '/__/%login' 
-            AND url NOT LIKE '/__/resource%' 
-            AND url NOT LIKE '/rest/%' 
-            AND url NOT LIKE '/favicon.ico%' 
-            AND url NOT LIKE '%.png' 
-            AND url NOT LIKE '%.txt' 
-            AND url NOT LIKE '%resource%'
+            JOIN visitor on visitor.id=id_visitor
+            WHERE real=1
+            AND begin_date > datetime(?, '-30 days', 'localtime') 
         ''', (self.refdate,))
         self.nbvisitors_month = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
         SELECT count(distinct(visitor.id))
             FROM visit 
-              JOIN useragent ON id_useragent=useragent.id 
-              JOIN request ON visit.id=request.id_visit
-              JOIN visitor ON id_visitor=visitor.id
-              JOIN externalurl ON externalurl.id=id_externalurl
-            WHERE (useragent.typ = 'Browser' )
-            AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date > date(?, '-1 day', 'localtime') 
-            AND netloc NOT LIKE '%%elveos.org' 
-            AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
-            AND netloc NOT LIKE '%%.local'
-            AND url NOT LIKE '%featurefeed%' 
-            AND url NOT LIKE '%%softwarefeed%%' 
-            AND url NOT LIKE '/__/%login' 
-            AND url NOT LIKE '/__/resource%' 
-            AND url NOT LIKE '/rest/%' 
-            AND url NOT LIKE '/favicon.ico%' 
-            AND url NOT LIKE '%.png' 
-            AND url NOT LIKE '%.txt' 
-            AND url NOT LIKE '%resource%'
+            JOIN visitor on visitor.id=id_visitor
+            WHERE real=1
+            AND begin_date > datetime(?, '-1 day', 'localtime') 
         ''', (self.refdate,))
         self.nbvisitors_day = self.cursor.fetchone()[0]
 
         self.cursor.execute('''
         SELECT count(distinct(visitor.id))
             FROM visit 
-              JOIN useragent ON id_useragent=useragent.id 
-              JOIN request ON visit.id=request.id_visit
-              JOIN visitor ON id_visitor=visitor.id
-              JOIN externalurl ON externalurl.id=id_externalurl
-            WHERE (useragent.typ = 'Browser' )
-            AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-            AND begin_date < date(?, '-30 days', 'localtime') 
-            AND begin_date > date(?, '-60 days', 'localtime') 
-            AND netloc NOT LIKE '%%elveos.org' 
-            AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
-            AND netloc NOT LIKE '%%.local'
-            AND url NOT LIKE '%featurefeed%' 
-            AND url NOT LIKE '%%softwarefeed%%' 
-            AND url NOT LIKE '/__/%login' 
-            AND url NOT LIKE '/__/resource%' 
-            AND url NOT LIKE '/rest/%' 
-            AND url NOT LIKE '/favicon.ico%' 
-            AND url NOT LIKE '%.png' 
-            AND url NOT LIKE '%.txt' 
-            AND url NOT LIKE '%resource%'
+            JOIN visitor on visitor.id=id_visitor
+            WHERE real=1
+            AND begin_date < datetime(?, '-30 days', 'localtime') 
+            AND begin_date > datetime(?, '-60 days', 'localtime') 
         ''', (self.refdate,self.refdate))
         self.nbvisitors_last_month = self.cursor.fetchone()[0]
 

@@ -112,6 +112,7 @@ class database:
             AND url NOT LIKE '/favicon.ico%' 
             AND url NOT LIKE '%.png' 
             AND url NOT LIKE '%.txt' 
+            AND url NOT LIKE '%/doactivate%' 
             AND url NOT LIKE '%resource%')
         ''')
         self.cursor.execute('SELECT max(date) FROM request')

@@ -26,25 +26,15 @@ class referer_queries(queries):
         for row in result:
             self.cursor.execute('''
             SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
-            SELECT strftime('%%Y-%%m-%%d 00:00:00', begin_date) as date , count(netloc) as nb
-                FROM request
-                  JOIN visit ON visit.id=request.id_visit
-                  JOIN useragent ON id_useragent=useragent.id 
-                  JOIN visitor ON id_visitor=visitor.id
-                  JOIN externalurl ON externalurl.id=id_externalurl
-                WHERE (useragent.typ = 'Browser' )
-                AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                AND begin_date > date(?, '-30 days', 'localtime') 
-                AND url NOT LIKE '/__/resource%%' 
-                AND url NOT LIKE '/rest/%%' 
-                AND url NOT LIKE '/favicon.ico%%' 
-                AND url NOT LIKE '%%.png' 
-                AND url NOT LIKE '%%.txt' 
-                AND url NOT LIKE '%%resource%%' 
+            SELECT strftime('%%Y-%%m-%%d 00:00:00', begin_date) as date , count(visit.id) as nb
+                FROM visit
+                JOIN externalurl on externalurl.id=id_externalurl
+                WHERE real=1
+                AND begin_date > datetime(?, '-30 days', 'localtime') 
                 AND netloc = %s 
                 GROUP BY strftime('%%Y%%m%%d', begin_date), netloc)
             ON time = date
-            WHERE time > date(?, '-30 days', 'localtime') ''' % row[0], (self.refdate, self.refdate))
+            WHERE time > datetime(?, '-30 days', 'localtime') ''' % row[0], (self.refdate, self.refdate))
             self._double_array_serialize(f, self.cursor, "netloc_%i" % i)
             i += 1
 
@@ -67,25 +57,15 @@ class referer_queries(queries):
         for row in result:
             self.cursor.execute('''
             SELECT quote(time), coalesce(nb, 0) FROM mydates LEFT JOIN (
-            SELECT strftime('%%Y-%%m-%%d %%H:00:00', begin_date) as date , count(netloc) as nb
-                FROM request
-                  JOIN visit ON visit.id=request.id_visit
-                  JOIN useragent ON id_useragent=useragent.id 
-                  JOIN visitor ON id_visitor=visitor.id
+            SELECT strftime('%%Y-%%m-%%d %%H:00:00', begin_date) as date , count(visit.id) as nb
+                FROM visit
                   JOIN externalurl ON externalurl.id=id_externalurl
-                WHERE (useragent.typ = 'Browser' )
-                AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
-                AND begin_date > date(?, '-2 days', 'localtime') 
-                AND url NOT LIKE '/__/resource%%' 
-                AND url NOT LIKE '/rest/%%' 
-                AND url NOT LIKE '/favicon.ico%%' 
-                AND url NOT LIKE '%%.png' 
-                AND url NOT LIKE '%%.txt' 
-                AND url NOT LIKE '%%resource%%' 
+                WHERE real=1
+                AND begin_date > datetime(?, '-2 days', 'localtime') 
                 AND netloc = %s 
                 GROUP BY strftime('%%Y%%m%%d', begin_date), netloc)
             ON time = date
-            WHERE time > date(?, '-2 days', 'localtime') ''' % row[0], (self.refdate, self.refdate))
+            WHERE time > datetime(?, '-2 days', 'localtime') ''' % row[0], (self.refdate, self.refdate))
             self._double_array_serialize(f, self.cursor, "netloc_%i" % i)
             i += 1
 
@@ -100,10 +80,11 @@ class referer_queries(queries):
             SELECT quote(netloc), count(netloc)
             FROM externalurl 
             JOIN visit ON externalurl.id=id_externalurl
-            WHERE netloc NOT LIKE '%%elveos.org' 
+            WHERE real=1
+            AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net', '') 
             AND netloc NOT LIKE '%%.local' 
-            AND begin_date > date(?, '-%i days', 'localtime')
+            AND begin_date > datetime(?, '-%i days', 'localtime')
             GROUP BY netloc 
             ORDER BY count(netloc) DESC 
             LIMIT 5 ''' % nbdays, (self.refdate,))
