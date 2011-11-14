@@ -151,7 +151,8 @@ class dashboard_queries(queries):
         self.cursor.execute('''
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
-            WHERE visitor.userid > 16 AND visitor.userid != 43 
+            WHERE visitor.userid != -1
+            AND real=1
             AND begin_date > datetime(?, '-30 days', 'localtime') 
         ''', (self.refdate,))
         self.nbmembers_month = self.cursor.fetchone()[0]
@@ -159,7 +160,8 @@ class dashboard_queries(queries):
         self.cursor.execute('''
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
-            WHERE visitor.userid > 16 AND visitor.userid != 43 
+            WHERE visitor.userid != -1
+            AND real=1
             AND begin_date > datetime(?, '-1 day', 'localtime') 
         ''', (self.refdate,))
         self.nbmembers_day = self.cursor.fetchone()[0]
@@ -167,7 +169,8 @@ class dashboard_queries(queries):
         self.cursor.execute('''
             SELECT COUNT(DISTINCT(visitor.id)) 
             FROM visitor LEFT JOIN visit on visitor.id = id_visitor 
-            WHERE visitor.userid > 16 AND visitor.userid != 43 
+            WHERE visitor.userid != -1
+            AND real=1
             AND begin_date < datetime(?, '-30 days', 'localtime') 
             AND begin_date > datetime(?, '-60 days', 'localtime') 
         ''', (self.refdate,self.refdate))

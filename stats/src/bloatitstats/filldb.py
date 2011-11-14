@@ -1,4 +1,4 @@
-#!python
+#!/usr/bin/python
 import getopt, sys
 from bloatitstats.parser.logparser import  logparser
 from bloatitstats.commun.database import database
@@ -17,8 +17,8 @@ def parse_file(dbname, logfile):
         if parser.is_request:
             if parser.thread in logentries:
                 logentries[parser.thread].add_request(parser.request)
-                logentries[parser.thread].process(base.cursor)
-                del logentries[parser.thread]
+                #logentries[parser.thread].process(base.cursor)
+                #del logentries[parser.thread]
             else:
                 logentries[parser.thread] = entry_processor(parser.date, parser.thread, parser.level)
                 logentries[parser.thread].add_request(parser.request)
