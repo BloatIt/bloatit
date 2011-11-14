@@ -290,6 +290,9 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     // Activation
+    public boolean isActive() {
+        return getDao().getActivationState() == ActivationState.ACTIVE;
+    }
 
     public boolean activate(final String activationKey) {
         if (getDao().getActivationState() != ActivationState.VALIDATING) {
@@ -297,12 +300,12 @@ public final class Member extends Actor<DaoMember> implements User {
         }
         if (getActivationKey().equals(activationKey)) {
             getDao().setActivationState(ActivationState.ACTIVE);
-            addToKarma(ModelConfiguration.getKudosableActivationKarma());
+            addToKarma(ModelConfiguration.getKarmaActivationAmount());
             return true;
         }
         if (getResetKey().equals(activationKey)) {
             getDao().setActivationState(ActivationState.ACTIVE);
-            addToKarma(ModelConfiguration.getKudosableActivationKarma());
+            addToKarma(ModelConfiguration.getKarmaActivationAmount());
             return true;
         }
 

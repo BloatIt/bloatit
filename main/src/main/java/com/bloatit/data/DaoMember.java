@@ -200,12 +200,14 @@ import com.bloatit.model.ModelConfiguration;
                                     name = "members.exceptRole",
                                     query = "FROM com.bloatit.data.DaoMember " +
                                             "WHERE role != :role " +
+                                            "AND karma > :threshold " +
                                             "ORDER BY CONCAT(coalesce(fullname, ''), login) ASC"),
                         @NamedQuery(
                                     name = "members.exceptRole.size",
                                     query = "SELECT count(*) " +
                                     		"FROM com.bloatit.data.DaoMember " +
-                                            "WHERE role != :role "),
+                                            "WHERE role != :role " +
+                                            "AND karma > :threshold"),
                    }
 
              )
@@ -347,7 +349,7 @@ public class DaoMember extends DaoActor {
     }
 
     public static PageIterable<DaoMember> getAllMembersButAdmins() {
-        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN);
+        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN).setInteger("threshold", ModelConfiguration.getKarmaHideThreshold());
     }
 
     // ======================================================================
@@ -411,7 +413,7 @@ public class DaoMember extends DaoActor {
         this.state = ActivationState.VALIDATING;
         this.password = password;
         this.salt = salt;
-        this.karma = ModelConfiguration.getKudosableInitialKarma();
+        this.karma = ModelConfiguration.getKarmaInitialInitial();
         this.fullname = "";
         this.description = "";
     }

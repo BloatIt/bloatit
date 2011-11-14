@@ -62,10 +62,13 @@ public class SessionBar extends HtmlDiv {
         final HtmlLink memberLink = new MemberPageUrl(me).getHtmlLink(displayName);
 
         // Display user karma
+
         final HtmlBranch karma = new HtmlSpan();
-        karma.setCssClass("karma");
-        karma.addAttribute("title", Context.tr("My karma"));
-        karma.addText(HtmlTools.compressKarma(me.getKarma()));
+        if (me.isActive()) {
+            karma.setCssClass("karma");
+            karma.addAttribute("title", Context.tr("My karma"));
+            karma.addText(HtmlTools.compressKarma(me.getKarma()));
+        }
         final HtmlLink changeLanguageLink = new ChangeLanguagePageUrl().getHtmlLink(Context.getLocalizator().getLanguageCode());
         add(new HtmlSpan().setCssClass("small_session_bar_component").add(changeLanguageLink));
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(memberLink).add(karma));

@@ -50,8 +50,9 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableMinInfluenceToUnkudos;
     private int kudosableMinInfluenceToKudos;
     private int kudosableStepToGainKarma;
-    private int kudosableInitialKarma;
-    private int kudosableActivationKarma;
+    private int karmaInitialAmount;
+    private int karmaActivationAmount;
+    private int karmaHideThreshold;
 
     private int recentActivityDays;
     private String[] administratorMails;
@@ -190,12 +191,16 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.kudosableStepToGainKarma;
     }
 
-    public static int getKudosableInitialKarma() {
-        return configuration.kudosableInitialKarma;
+    public static int getKarmaInitialInitial() {
+        return configuration.karmaInitialAmount;
     }
 
-    public static int getKudosableActivationKarma() {
-        return configuration.kudosableActivationKarma;
+    public static int getKarmaActivationAmount() {
+        return configuration.karmaActivationAmount;
+    }
+
+    public static int getKarmaHideThreshold() {
+        return configuration.karmaHideThreshold;
     }
 
     // Others
@@ -223,8 +228,9 @@ public class ModelConfiguration extends ReloadableConfiguration {
         kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -5);
         kudosableDefaultTurnPending = properties.getInt("kudosable.default.turn_pending", 0);
         kudosableStepToGainKarma = properties.getInt("kudosable.karma.stepToGain", 5);
-        kudosableInitialKarma = properties.getInt("kudosable.karma.initial", -10);
-        kudosableActivationKarma = properties.getInt("kudosable.karma.activation", 10);
+        karmaInitialAmount = properties.getInt("karma.InitialAmount", -10);
+        karmaActivationAmount = properties.getInt("karma.activationAmount", 10);
+        karmaHideThreshold = properties.getInt("karma.hideThreshold", -10);
 
         // Comment feature offer translation
         kudosableCommentTurnValid = properties.getInt("kudosable.comment.turn_valid", kudosableDefaultTurnValid);
