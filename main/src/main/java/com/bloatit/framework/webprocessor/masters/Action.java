@@ -18,6 +18,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.webprocessor.annotations.DefaultTranslator;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
@@ -65,8 +66,8 @@ public abstract class Action implements Linkable {
     private final Url process() {
         if (actionUrl.hasError()) {
             for (final Message message : actionUrl.getMessages()) {
-                Context.getSession().notifyError(Context.tr(message.getMessage()));
-                Log.framework().trace("Error messages from Url system: " + message.getMessage());
+                Context.getSession().notifyError(message.getMessage(Context.getLocalizator()));
+                Log.framework().trace("Error messages from Url system: " + message.getMessage(new DefaultTranslator()));
             }
             transmitParameters();
             return doProcessErrors();

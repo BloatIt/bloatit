@@ -34,6 +34,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.LocalesConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.webprocessor.annotations.Translator;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
 
@@ -51,7 +52,7 @@ import com.bloatit.framework.webprocessor.context.Context;
  * </p>
  * </p>
  */
-public final class Localizator {
+public final class Localizator implements Translator {
     /** For parsing of available languages file */
     private static final String LANGUAGE_CODE = "code";
     /** Default user locale */
