@@ -82,12 +82,12 @@ public class RgtFeature extends RightManager {
          */
         @Override
         protected final boolean can(final Rights role, final Action action) {
-            return canRead(action) || authentifiedCanWrite(role, action);
+            return canRead(action) || (authentifiedCanWrite(role, action) && activedCanWrite(role, action) && withKarmaToCommentCanWrite(role, action)) ;
         }
-
+        
         @Override
         protected boolean authorizeWeakAccess(EnumSet<RightLevel> rights, final Action action) {
-            return canRead(action) || rights.contains(RightLevel.CONTRIBUTE);
+            return canRead(action) || rights.contains(RightLevel.COMMENT);
         }
     }
 }

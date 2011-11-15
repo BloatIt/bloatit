@@ -47,8 +47,11 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableTranslationTurnRejected;
     private int kudosableTranslationTurnHidden;
     private int kudosableTranslationTurnPending;
-    private int kudosableMinInfluenceToUnkudos;
-    private int kudosableMinInfluenceToKudos;
+    private int kudosableMinKarmaToUnkudos;
+    private int kudosableMinKarmaToKudos;
+    private int kudosableMinKarmaToComment;
+    private int kudosableMinKarmaToMakeOffer;
+    private int kudosableMinKarmaToCreateFeature;
     private int kudosableStepToGainKarma;
     private int karmaInitialAmount;
     private int karmaActivationAmount;
@@ -167,24 +170,24 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.kudosableTranslationTurnPending;
     }
 
-    public static int getKudosableMinInfluenceToUnkudos() {
-        return configuration.kudosableMinInfluenceToUnkudos;
+    public static int getKudosableMinKarmaToUnkudos() {
+        return configuration.kudosableMinKarmaToUnkudos;
     }
 
-    public static int getKudosableMinInfluenceToKudos() {
-        return configuration.kudosableMinInfluenceToKudos;
+    public static int getKudosableMinKarmaToKudos() {
+        return configuration.kudosableMinKarmaToKudos;
     }
 
-    public static int getKudosableMinInfluenceToComment() {
-        return configuration.kudosableMinInfluenceToKudos;
+    public static int getKudosableMinKarmaToComment() {
+        return configuration.kudosableMinKarmaToComment;
     }
 
-    public static int getKudosableMinInfluenceToMakeOffer() {
-        return configuration.kudosableMinInfluenceToKudos;
+    public static int getKudosableMinKarmaToMakeOffer() {
+        return configuration.kudosableMinKarmaToMakeOffer;
     }
 
-    public static int getKudosableMinInfluenceToMakeCreateDemand() {
-        return configuration.kudosableMinInfluenceToKudos;
+    public static int getKudosableMinKarmaToCreateFeature() {
+        return configuration.kudosableMinKarmaToCreateFeature;
     }
 
     public static int getKudosableStepToGainKarma() {
@@ -253,8 +256,11 @@ public class ModelConfiguration extends ReloadableConfiguration {
         kudosableTranslationTurnHidden = properties.getInt("kudosable.tranlation.turn_hidden", kudosableDefaultTurnHidden);
         kudosableTranslationTurnPending = properties.getInt("kudosable.tranlation.turn_pending", kudosableDefaultTurnPending);
 
-        kudosableMinInfluenceToUnkudos = properties.getInt("kudosable.min_influence_unkudos", 1);
-        kudosableMinInfluenceToKudos = properties.getInt("kudosable.min_influence_kudos", 0);
+        kudosableMinKarmaToUnkudos = properties.getInt("kudosable.min_karma.unkudos", -9);
+        kudosableMinKarmaToKudos = properties.getInt("kudosable.min_karma.kudos", -9);
+        kudosableMinKarmaToComment = properties.getInt("kudosable.min_karma/comment", -9);
+        kudosableMinKarmaToMakeOffer = properties.getInt("kudosable.min_karma.make_offer", -9);
+        kudosableMinKarmaToCreateFeature = properties.getInt("kudosable.min_karma.create_feature", -9);
 
         administratorMails = properties.getStringArray("administrator.emails");
 

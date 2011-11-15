@@ -205,9 +205,9 @@ import com.bloatit.model.ModelConfiguration;
                         @NamedQuery(
                                     name = "members.exceptRole.size",
                                     query = "SELECT count(*) " +
-                                    		"FROM com.bloatit.data.DaoMember " +
+                                            "FROM com.bloatit.data.DaoMember " +
                                             "WHERE role != :role " +
-                                            "AND karma > :threshold"),
+                                            "AND karma > :threshold "),
                    }
 
              )
