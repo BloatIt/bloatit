@@ -64,7 +64,8 @@ class database:
                                id_externalurl INTEGER REFERENCES externalurl(id),
                                begin_date DATE,
                                end_date DATE,
-                               duration LONG);
+                               duration LONG,
+                               real BOOLEAN);
         ''')
         
         self.cursor.execute('''
@@ -89,6 +90,31 @@ class database:
         
     def close_connection(self):
         
+        self.cursor.execute('''
+        UPDATE visit SET real='1' 
+        WHERE visit.id IN 
+        (SELECT distinct visit.id
+            FROM visit 
+              JOIN useragent ON id_useragent=useragent.id 
+              JOIN request ON visit.id=request.id_visit
+              JOIN visitor ON id_visitor=visitor.id
+              JOIN externalurl ON externalurl.id=id_externalurl
+            WHERE (useragent.typ = 'Browser' )
+            AND (visitor.userid > 16 OR visitor.userid = -1) AND visitor.userid != 43
+            AND netloc NOT LIKE '%%elveos.org' 
+            AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
+            AND netloc NOT LIKE '%%.local'
+            AND url NOT LIKE '%featurefeed%' 
+            AND url NOT LIKE '%%softwarefeed%%' 
+            AND url NOT LIKE '/__/%login' 
+            AND url NOT LIKE '/__/resource%' 
+            AND url NOT LIKE '/rest/%' 
+            AND url NOT LIKE '/favicon.ico%' 
+            AND url NOT LIKE '%.png' 
+            AND url NOT LIKE '%.txt' 
+            AND url NOT LIKE '%/doactivate%' 
+            AND url NOT LIKE '%resource%')
+        ''')
         self.cursor.execute('SELECT max(date) FROM request')
         date = self.cursor.fetchone()
         if date:

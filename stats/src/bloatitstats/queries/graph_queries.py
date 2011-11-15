@@ -84,7 +84,7 @@ class graph_queries(queries):
                             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
                             AND netloc NOT LIKE '%%.local'
                             AND url NOT LIKE '%%featurefeed%%' 
-              AND url NOT LIKE '%%softwarefeed%%' 
+                            AND url NOT LIKE '%%softwarefeed%%' 
                             AND url NOT LIKE '/__/resource%%' 
                             AND url NOT LIKE '/rest/%%' 
                             AND url NOT LIKE '/favicon.ico%%' 
