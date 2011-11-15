@@ -94,7 +94,7 @@ public class RecoverPasswordAction extends ElveosAction {
             session.notifyWarning(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
             return new PageNotFoundUrl();
         }
-        return new RecoverPasswordPageUrl(resetKey, login);
+        return new RecoverPasswordPageUrl(login, resetKey);
     }
 
     @Override
