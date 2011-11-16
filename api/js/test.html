@@ -13,18 +13,26 @@ Feature list test
         .elveos-feature {
             border: 1px solid rgb(127,127,127);
             border-radius: 10px;
-            padding: 10px;
+            padding: 0px;
             margin: 10px;
             background: rgb(242,242,242);
             vertical-align: top;
             font-family: Arial,Sans;
+            color: rgb(51,51,51);
+            max-width: 900px;
+        }
+        
+        .elveos-feature-title {
+            margin: 0px;
+            margin-top: 5px;
+            margin-bottom: 15px;
         }
         
         .progress_bar_block {
             display: inline-block;
-            margin-left: 10%;
-            margin-right: 10%;
-            width: 80%;
+            margin-left: 0px;
+            margin-right: 0px;
+            width: 100%;
         }
     
         .progress_bar_background, .progress_bar_state, .progress_bar_label {
@@ -57,15 +65,17 @@ Feature list test
             font-size: 20px;
             color: rgb(51,51,51)
         }
+        
         .elveos-progress-text {
             color: black;
             display: inline-block;
-            font-size: 12px;
-            text-align: center
+            font-size: 13px;
+            text-align: center;
+            width: 100%;
         }
         
         .important {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: bold;
             margin-left: 1em;
             margin-right: 1em;
@@ -97,8 +107,34 @@ Feature list test
             display: table-cell;
             vertical-align: middle;
         }
+        
+        .elveos-info {
+            font-weight: bold;
+            font-size: 13px;
+            width: 200px;        
+        }
+        
+        .elveos-info a{
+            color: rgb(51,51,51);        
+            text-decoration: none;
+        }
+        
+        
+        .elveos-info .elveos-label {
+            font-size: 12px;
+            font-weight: normal;
+        }
+        
+        .elveos-more-info a {
+            font-size: 13px;
+            color: rgb(0,0,168);
+            text-decoration: none;
+        }
+        
         .elveos-feature-leftcolumn {
             width: 100%;
+            padding-left: 25px;
+            padding-right: 35px;
         }
         
     </style>
@@ -115,8 +151,8 @@ Feature list test
             </div>
             
             <div class="elveos-feature-middlecolumn">
-                <p class="elveos-info"><span class="elveos-label">Developped by:</span><a href="https://127.0.0.1/teams/845">B2CK</a></p>
-                <p class="elveos-info"><span class="elveos-label">Delivery date:</span>Apr 1, 2012</p>
+                <p class="elveos-info"><span class="elveos-label">Developped by:&nbsp;</span><a href="https://127.0.0.1/teams/845">B2CK</a></p>
+                <p class="elveos-info"><span class="elveos-label">Delivery date:&nbsp;</span>Apr 1, 2012</p>
                 <p class="elveos-more-info"><a href="https://127.0.0.1/features/845">More info ...</a></p>
             </div>
             <div class="elveos-feature-rightcolumn">
