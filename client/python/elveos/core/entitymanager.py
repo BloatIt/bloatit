@@ -22,6 +22,8 @@ class EntityManager():
     def __iter__(self):        
         return ItEntity(self.all())
     
+    def __len__(self):
+        return len(self.all())
             
 class ItEntity:
     

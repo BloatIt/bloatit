@@ -36,7 +36,7 @@ public class ChangePrepaidAmountAction extends LoggedElveosAction {
     @Optional
     @RequestParam(message = @tr("The amount to load on your account must be a positive integer."))
     @MaxConstraint(max = 100000, message = @tr("We cannot accept such a generous offer."))
-    @MinConstraint(min = 1, message = @tr("You must specify a positive value."))
+    @MinConstraint(min = 0, message = @tr("You must specify a positive value."))
     @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
     private BigDecimal preload;
     

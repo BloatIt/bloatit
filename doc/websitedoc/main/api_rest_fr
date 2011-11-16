@@ -51,6 +51,7 @@ Il y a un grand nombre d'entité différente :
  * milestones (lots)
  * banktransactions (transaction banquaires)
  * bugs
+ * comments (commentaires)
  * contributions
  * descriptions
  * externalaccounts (compte externes)

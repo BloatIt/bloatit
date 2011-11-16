@@ -399,6 +399,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         if (getSelectedOffer().isFinished()) {
             throw new BadProgrammerException("Cannot be in development state and have no milestone left.");
         }
+        
+        if(!getValidationDate().before(new Date())) {
+        	//Force to a valide date
+        	getDao().setValidationDate(new Date());
+        }
+        
         getDao().setFeatureState(FeatureState.DEVELOPPING);
         getSelectedOffer().getCurrentMilestone().setDevelopingUnprotected();
         new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentMilestone().getExpirationDate());

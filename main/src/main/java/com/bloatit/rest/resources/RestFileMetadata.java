@@ -83,7 +83,7 @@ import com.bloatit.rest.list.RestFileMetadataList;
 public class RestFileMetadata extends RestElement<FileMetadata> {
     private FileMetadata model;
     private static String LANG = "en";
-    private static String URI = "elveos.org/" + LANG + "/resource/id-";
+    private static String URI = "/" + LANG + "/resource?id=";
 
     // ---------------------------------------------------------------------------------------
     // -- Constructors

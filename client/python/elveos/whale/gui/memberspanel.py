@@ -20,7 +20,6 @@ class MembersPanel(EntityPanel):
         self.initUI()
         
     def initUI(self):
-        
         # Set layout
         layout = QtGui.QVBoxLayout()
         layout.setSpacing(0)
@@ -31,9 +30,21 @@ class MembersPanel(EntityPanel):
         title = QtGui.QLabel('Members')
         layout.addWidget(title)
 
+        count = len(Member.objects)
+        
+        scrollArea = QtGui.QScrollArea()
+        
+        scrollPane = QtGui.QWidget()
+        layout2 = QtGui.QVBoxLayout()
+        layout2.setSpacing(0)
+        scrollPane.setLayout(layout2)
         # List
         for i, member in enumerate(Member.objects):
-            layout.addWidget(MemberRenderer(member, self))
+            layout2.addWidget(MemberRenderer(member, self))
+            print ""+str(i+1)+"/"+str(count)
+    
+        scrollArea.setWidget(scrollPane)
+        layout.addWidget(scrollArea)
     
         layout.addStretch()
         
@@ -45,7 +56,6 @@ class MemberRenderer(EntityRenderer):
         self.initUI()
         
     def initUI(self):  
-        
         # Set layout
         grid = QtGui.QGridLayout()
         grid.setSpacing(0)
