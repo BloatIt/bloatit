@@ -42,14 +42,15 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
-import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.url.CheckContributeActionUrl;
 import com.bloatit.web.url.ContributePageUrl;
 
@@ -57,7 +58,7 @@ import com.bloatit.web.url.ContributePageUrl;
  * A page that hosts the form used to contribute on a Feature
  */
 @ParamContainer("contribute/process/%process%")
-public final class ContributePage extends CreateUserContentPage {
+public final class ContributePage extends ElveosPage {
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."), role = Role.PAGENAME)
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
@@ -71,16 +72,16 @@ public final class ContributePage extends CreateUserContentPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addLeft(generateContributeForm(loggedUser));
+        layout.addLeft(generateContributeForm());
         layout.addRight(new SideBarFeatureBlock(process.getFeature()));
         layout.addRight(new SidebarMarkdownHelp());
 
         return layout;
     }
 
-    private HtmlElement generateContributeForm(final Member me) {
+    private HtmlElement generateContributeForm() {
         final CheckContributeActionUrl formActionUrl = new CheckContributeActionUrl(getSession().getShortKey(), process);
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
         contribForm.setCssClass("contribution_page");
@@ -100,15 +101,17 @@ public final class ContributePage extends CreateUserContentPage {
         contribInput.addErrorMessages(amountData.getErrorMessages());
         contribInput.setComment(Context.tr("The minimum is 1€. Don't use cents. Elveos takes 10&nbsp;% + 0,30&nbsp;€ for fees."));
 
-        // Input field : As team
-        final AsTeamField teamField = new AsTeamField(formActionUrl,
-                                                      me,
-                                                      UserTeamRight.BANK,
-                                                      tr("In the name of"),
-                                                      tr("Talk in the name of this team and use its money to make a contribution."));
-        contribForm.add(teamField);
-        if (process.getTeam() != null) {
-            teamField.getTeamInput().setDefaultValue(process.getTeam().getId().toString());
+        if (AuthToken.isAuthenticated()) {
+            // Input field : As team
+            final AsTeamField teamField = new AsTeamField(formActionUrl,
+                                                          AuthToken.getMember(),
+                                                          UserTeamRight.BANK,
+                                                          tr("In the name of"),
+                                                          tr("Talk in the name of this team and use its money to make a contribution."));
+            contribForm.add(teamField);
+            if (process.getTeam() != null) {
+                teamField.getTeamInput().setDefaultValue(process.getTeam().getId().toString());
+            }
         }
 
         // Input field : comment
@@ -131,7 +134,7 @@ public final class ContributePage extends CreateUserContentPage {
         // Js quick uotation
         try {
             if (process.getAccountChargingAmount().compareTo(BigDecimal.ZERO) == 0
-                    && me.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) == 0) {
+                    && (!AuthToken.isAuthenticated() || AuthToken.getMember().getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) == 0)) {
 
                 HtmlDiv quickQuotationBlock = new HtmlDiv("quick_quotation_block");
 
@@ -187,12 +190,7 @@ public final class ContributePage extends CreateUserContentPage {
     }
 
     @Override
-    public String getRefusalReason() {
-        return tr("You must be logged to contribute");
-    }
-
-    @Override
-    protected Breadcrumb createBreadcrumb(final Member member) {
+    protected Breadcrumb createBreadcrumb() {
         return ContributePage.generateBreadcrumb(process.getFeature(), process);
     }
 
@@ -201,4 +199,5 @@ public final class ContributePage extends CreateUserContentPage {
         breadcrumb.pushLink(new ContributePageUrl(process).getHtmlLink(tr("Contribute")));
         return breadcrumb;
     }
+
 }

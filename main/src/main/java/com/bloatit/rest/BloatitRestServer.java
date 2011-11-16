@@ -31,6 +31,7 @@ import com.bloatit.rest.list.RestContributionList;
 import com.bloatit.rest.list.RestDescriptionList;
 import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestFeatureList;
+import com.bloatit.rest.list.RestFeatureListExpanded;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestHighlightFeatureList;
 import com.bloatit.rest.list.RestInternalAccountList;
@@ -45,6 +46,7 @@ import com.bloatit.rest.list.RestTeamList;
 import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.rest.list.RestTranslationList;
 import com.bloatit.rest.resources.RestBankTransaction;
+import com.bloatit.rest.resources.RestBankTransactionSum;
 import com.bloatit.rest.resources.RestBug;
 import com.bloatit.rest.resources.RestComment;
 import com.bloatit.rest.resources.RestContribution;
@@ -104,6 +106,7 @@ public class BloatitRestServer extends RestServer {
                                                        // ENTITIES
                                                        RestMember.class,
                                                        RestBankTransaction.class,
+                                                       RestBankTransactionSum.class,
                                                        RestMilestone.class,
                                                        RestBug.class,
                                                        RestComment.class,
@@ -144,7 +147,10 @@ public class BloatitRestServer extends RestServer {
                                                        RestSoftwareList.class,
                                                        RestReleaseList.class,
                                                        RestTransactionList.class,
-                                                       RestTranslationList.class, };
+                                                       RestTranslationList.class,
+
+                                                       // EXPANDED LISTS
+                                                       RestFeatureListExpanded.class, };
 
     @Override
     protected Set<String> getResourcesDirectories() {

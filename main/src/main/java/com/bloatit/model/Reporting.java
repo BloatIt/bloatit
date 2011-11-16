@@ -15,7 +15,7 @@ public class Reporting {
 
     private static final int ID_REPORTING_TASK = 12;
 
-    private final class PlannedTaskReport extends PlannedTask {
+    private final static class PlannedTaskReport extends PlannedTask {
         private static final long serialVersionUID = -605135073621984416L;
 
         private PlannedTaskReport(Date time, int id) {
@@ -24,7 +24,7 @@ public class Reporting {
 
         @Override
         public void doRun() {
-            report();
+            reporter.report();
             new PlannedTaskReport(DateUtils.tomorrow(), ID_REPORTING_TASK);
         }
     }
@@ -40,6 +40,14 @@ public class Reporting {
         new PlannedTaskReport(DateUtils.tomorrow(), ID_REPORTING_TASK);
     }
 
+    public void reportServerStart() {
+        report("Server start", new Date().toString());
+    }
+    
+    public void reportServerStop() {
+        report("Server stop", new Date().toString());
+    }
+    
     public void reportMemberCreation(String login) {
         report("Member creation", login);
     }
@@ -51,16 +59,25 @@ public class Reporting {
     public void reportAccountCharging(String amountFrom) {
         report("Account charging", amountFrom);
     }
+    
+    public void reportNewFeature(String featureName) {
+        report("New Feature", featureName);
+    }
+    
+    public void reportOffer(String offerName) {
+        report("New Offer", offerName);
+    }
 
     public void report(String key, String value) {
         List<String> values = lineToReport.get(key);
         if (values == null) {
             values = new LinkedList<String>();
+            lineToReport.put(key, values);
         }
         values.add(value);
     }
 
-    private void report() {
+    public void report() {
         Date now = new Date();
         StringBuilder message = new StringBuilder();
 

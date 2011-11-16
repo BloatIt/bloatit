@@ -97,6 +97,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String imgFavicon;
     private String anonymousUserTokenClass;
     private MicroBlogManager microBlogs;
+    private String googleAnalyticId;
 
     private String mercanetApiPath;
     private String mercanetRequestBin;
@@ -348,6 +349,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return configuration.microBlogs;
     }
 
+    public static String getGoogleAnalyticId() {
+        return configuration.googleAnalyticId;
+    }
+
     public static String getMercanetApiPath() {
         return configuration.mercanetApiPath;
     }
@@ -363,11 +368,11 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static String getMercanetPathfile() {
         return configuration.mercanetPatfilePath;
     }
-    
+
     public static String getMercanetMerchantId() {
         return configuration.mercanetMerchantId;
     }
-    
+
     public static Boolean isMercanetEnabled() {
         return configuration.mercanetEnabled;
     }
@@ -395,14 +400,6 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
         // Bugs
         metaBugsDirStorage = SHARE_DIR + properties.getString("meta.bugs.dir.storage", "bug_storage");
-
-        // Mercanet
-        mercanetApiPath = properties.getString("mercanet.api.path");
-        mercanetRequestBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.request.bin");
-        mercanetResponseBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.response.bin");
-        mercanetPatfilePath = ConfigurationManager.getConfigDir() + properties.getString("mercanet.pathfile.path");
-        mercanetMerchantId = properties.getString("mercanet.merchant.id");
-        mercanetEnabled  = properties.getBoolean("mercanet.enabled");
 
         // Mail configuration
         mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");
@@ -444,6 +441,15 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         imgFavicon = properties.getString("bloatit.img.favicon");
         anonymousUserTokenClass = properties.getString("bloatit.anonymousUserToken.class");
         microBlogs = new MicroBlogManager(properties.getStringArray("micro.blogs"), properties.getString("micro.blogs.password"));
+        googleAnalyticId = properties.getString("bloatit.stats.googleAnalyticId", null);
+
+        // Mercanet
+        mercanetApiPath = properties.getString("mercanet.api.path");
+        mercanetRequestBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.request.bin");
+        mercanetResponseBin = properties.getString("mercanet.api.path") + properties.getString("mercanet.response.bin");
+        mercanetPatfilePath = ConfigurationManager.getConfigDir() + properties.getString("mercanet.pathfile.path");
+        mercanetMerchantId = properties.getString("mercanet.merchant.id");
+        mercanetEnabled = properties.getBoolean("mercanet.enabled");
 
         finder = new ResourceFinder(wwwDir);
     }

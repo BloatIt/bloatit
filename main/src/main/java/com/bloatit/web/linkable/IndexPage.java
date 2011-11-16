@@ -137,7 +137,7 @@ public final class IndexPage extends ElveosPage {
 
     @Override
     protected String createPageTitle() {
-        return Context.tr("Finance free softwares");
+        return Context.tr("Finance free software");
     }
 
     @Override

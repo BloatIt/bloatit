@@ -1,0 +1,63 @@
+tbody tr:nth-child(even){background-color:#fafafa;}
+tbody tr:nth-child(odd){background-color:white;}
+
+#bilan {
+    font-size: 20px;
+    font-family: "ubunutu";
+}
+
+#bilan th{
+    font-size:14px;
+    font-weight:bold;
+    color:#039;
+    border-bottom:2px solid #6678b1;
+    padding:12px 10px;
+}
+#bilan td{
+    border-bottom:1px solid #ccc;
+    color: #444761;
+    padding:8px 20px;
+    font-weight:bold;
+}
+
+#bilan td.month {
+    text-align: left;
+}
+
+#bilan td.header {
+    font-weight: normal;
+    text-align: right;
+    font-size:14px;
+}
+#bilan td.day {
+    font-weight: normal;
+    font-size:18px;
+}
+#bilan td.old {
+    font-weight: normal;
+    font-size:15px;
+    color: #8C8C8C;
+}
+#separator {
+    padding-top: 100px;
+}
+
+#bilan tbody {
+    text-align: center;
+}
+#bilan .month {
+    background-color: #DEE1F9;
+}
+
+.detail {
+    font-size:12px;
+    font-weight: normal;
+    color: #85879A;
+}
+
+.up {
+    color: #7CAC7E;
+}
+.down {
+    color: #AC7F7C;
+}

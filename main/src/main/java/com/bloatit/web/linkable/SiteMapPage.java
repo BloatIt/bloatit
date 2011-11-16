@@ -73,7 +73,7 @@ public final class SiteMapPage extends ElveosPage {
         contentLinkList.add(new FeatureListPageUrl().getHtmlLink(Context.tr("Feature request list")));
         contentLinkList.add(new TeamsPageUrl().getHtmlLink(Context.tr("Team list")));
         contentLinkList.add(new MembersListPageUrl().getHtmlLink(Context.tr("Member list")));
-        contentLinkList.add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Softwares list")));
+        contentLinkList.add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Software list")));
         contentLinkList.add(new CreateFeatureProcessUrl().getHtmlLink(Context.tr("Request a new feature")));
         contentLinkList.add(new CreateTeamPageUrl().getHtmlLink(Context.tr("Create a team")));
         contentLinkList.add(new CreateSoftwarePageUrl().getHtmlLink(Context.tr("Add a software")));

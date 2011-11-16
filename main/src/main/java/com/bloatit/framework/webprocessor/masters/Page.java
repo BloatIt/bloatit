@@ -29,6 +29,7 @@ import com.bloatit.framework.utils.datetime.TimeRenderer;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.webprocessor.annotations.DefaultTranslator;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
@@ -170,8 +171,8 @@ public abstract class Page implements Linkable {
         HtmlGenericElement bodyContent;
         if (thisUrl.hasError()) {
             for (final Message message : thisUrl.getMessages()) {
-                Context.getSession().notifyError(Context.tr(message.getMessage()));
-                Log.framework().trace("Error messages from Url system: " + message.getMessage());
+                Context.getSession().notifyError(Context.tr(message.getMessage(Context.getLocalizator())));
+                Log.framework().trace("Error messages from Url system: " + message.getMessage(new DefaultTranslator()));
             }
             // Abstract method cf: template method pattern
             bodyContent = createBodyOnParameterError();

@@ -18,13 +18,10 @@ import java.util.Locale;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.utils.i18n.DateLocale;
-import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
-import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.WebConfiguration;
 
@@ -80,9 +77,6 @@ class DateInputBlock extends InputBlock {
     private final PlaceHolderElement container;
     private final HtmlSimpleInput input;
     private final HtmlScript script;
-    private PlaceHolderElement options;
-    private boolean firstOption = true;
-
     public DateInputBlock(final String languageCode, final String id) {
         container = new PlaceHolderElement();
         input = new HtmlSimpleInput("text");

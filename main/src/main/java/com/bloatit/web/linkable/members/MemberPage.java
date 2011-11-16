@@ -170,13 +170,12 @@ public final class MemberPage extends ElveosPage {
         master.add(main);
 
         // Member ID card
-        
-     // Avatar
+
+        // Avatar
         final HtmlDiv avatarDiv = new HtmlDiv("member_avatar");
         avatarDiv.add(MembersTools.getMemberAvatar(member));
         main.add(avatarDiv);
-        
-        
+
         final HtmlDiv memberId = new HtmlDiv("member_id");
         main.add(memberId);
         try {
@@ -185,8 +184,6 @@ public final class MemberPage extends ElveosPage {
                 HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlMarkdownRenderer(member.getDescription())));
                 memberId.add(memberDescription);
             }
-
-            
 
             final HtmlList memberIdList = new HtmlList();
             memberId.add(memberIdList);
@@ -229,9 +226,11 @@ public final class MemberPage extends ElveosPage {
             memberIdList.add(new PlaceHolderElement().add(language).addText(member.getLocale().getDisplayLanguage(userLocale)));
 
             // Karma
-            final HtmlSpan karma = new HtmlSpan("id_category");
-            karma.addText(Context.tr("Karma: "));
-            memberIdList.add(new PlaceHolderElement().add(karma).addText("" + member.getKarma()));
+            if (member.isActive()) {
+                final HtmlSpan karma = new HtmlSpan("id_category");
+                karma.addText(Context.tr("Karma: "));
+                memberIdList.add(new PlaceHolderElement().add(karma).addText("" + member.getKarma()));
+            }
 
         } catch (final UnauthorizedOperationException e) {
             getSession().notifyError("An error prevented us from displaying user information. Please notify us.");
@@ -263,7 +262,7 @@ public final class MemberPage extends ElveosPage {
         // Activity tab
         activity = new ActivityTab(member, tr("Activity"), ACTIVITY_TAB, url);
         tabPane.addTab(activity);
-        
+
         // Account tab
         tabPane.addTab(new AccountTab(member, tr("Account"), ACCOUNT_TAB));
         long nb;

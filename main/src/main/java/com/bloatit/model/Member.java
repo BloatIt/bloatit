@@ -290,6 +290,9 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     // Activation
+    public boolean isActive() {
+        return getDao().getActivationState() == ActivationState.ACTIVE;
+    }
 
     public boolean activate(final String activationKey) {
         if (getDao().getActivationState() != ActivationState.VALIDATING) {
@@ -297,8 +300,15 @@ public final class Member extends Actor<DaoMember> implements User {
         }
         if (getActivationKey().equals(activationKey)) {
             getDao().setActivationState(ActivationState.ACTIVE);
+            addToKarma(ModelConfiguration.getKarmaActivationAmount());
             return true;
         }
+        if (getResetKey().equals(activationKey)) {
+            getDao().setActivationState(ActivationState.ACTIVE);
+            addToKarma(ModelConfiguration.getKarmaActivationAmount());
+            return true;
+        }
+
         return false;
     }
 
@@ -413,15 +423,14 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     private static final float INFLUENCE_MULTIPLICATOR = 2;
-    private static final float INFLUENCE_DIVISER = 100;
+    private static final float INFLUENCE_GELIFICATOR = 20;
+    // Minimum karma
     private static final float INFLUENCE_BASE = 1;
 
     protected int calculateInfluence() {
         final int karma = getDao().getKarma();
-        if (karma > 0) {
-            return (int) (Math.log10((INFLUENCE_DIVISER + karma) / INFLUENCE_DIVISER) * INFLUENCE_MULTIPLICATOR + INFLUENCE_BASE);
-        } else if (karma == 0) {
-            return 1;
+        if (karma >= 0) {
+            return (int) (Math.log10((INFLUENCE_GELIFICATOR + karma) / INFLUENCE_GELIFICATOR) * INFLUENCE_MULTIPLICATOR + INFLUENCE_BASE);
         }
         return 0;
     }
@@ -529,7 +538,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return new TranslationList(getDao().getTranslations(asMemberOnly));
     }
 
-    protected void addToKarma(final int value) {
+    public void addToKarma(final int value) {
         getDao().addToKarma(value);
     }
 

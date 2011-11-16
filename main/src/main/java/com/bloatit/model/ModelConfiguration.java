@@ -47,8 +47,16 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableTranslationTurnRejected;
     private int kudosableTranslationTurnHidden;
     private int kudosableTranslationTurnPending;
-    private int kudosableMinInfluenceToUnkudos;
-    private int kudosableMinInfluenceToKudos;
+    private int kudosableMinKarmaToUnkudos;
+    private int kudosableMinKarmaToKudos;
+    private int kudosableMinKarmaToComment;
+    private int kudosableMinKarmaToMakeOffer;
+    private int kudosableMinKarmaToCreateFeature;
+    private int kudosableStepToGainKarma;
+    private int karmaInitialAmount;
+    private int karmaActivationAmount;
+    private int karmaHideThreshold;
+
     private int recentActivityDays;
     private String[] administratorMails;
     private BigDecimal linkeosTaxesRate;
@@ -82,35 +90,35 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.properties;
     }
 
-    protected static int getKudosableDefaultTurnValid() {
+    public static int getKudosableDefaultTurnValid() {
         return configuration.kudosableDefaultTurnValid;
     }
 
-    protected static int getKudosableDefaultTurnRejected() {
+    public static int getKudosableDefaultTurnRejected() {
         return configuration.kudosableDefaultTurnRejected;
     }
 
-    protected static int getKudosableDefaultTurnHidden() {
+    public static int getKudosableDefaultTurnHidden() {
         return configuration.kudosableDefaultTurnHidden;
     }
 
-    protected static int getKudosableDefaultTurnPending() {
+    public static int getKudosableDefaultTurnPending() {
         return configuration.kudosableDefaultTurnPending;
     }
 
-    protected static int getKudosableCommentTurnValid() {
+    public static int getKudosableCommentTurnValid() {
         return configuration.kudosableCommentTurnValid;
     }
 
-    protected static int getKudosableCommentTurnRejected() {
+    public static int getKudosableCommentTurnRejected() {
         return configuration.kudosableCommentTurnRejected;
     }
 
-    protected static int getKudosableCommentTurnHidden() {
+    public static int getKudosableCommentTurnHidden() {
         return configuration.kudosableCommentTurnHidden;
     }
 
-    protected static int getKudosableCommentTurnPending() {
+    public static int getKudosableCommentTurnPending() {
         return configuration.kudosableCommentTurnPending;
     }
 
@@ -130,44 +138,72 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.kudosableFeatureTurnPending;
     }
 
-    protected static int getKudosableOfferTurnValid() {
+    public static int getKudosableOfferTurnValid() {
         return configuration.kudosableOfferTurnValid;
     }
 
-    protected static int getKudosableOfferTurnRejected() {
+    public static int getKudosableOfferTurnRejected() {
         return configuration.kudosableOfferTurnRejected;
     }
 
-    protected static int getKudosableOfferTurnHidden() {
+    public static int getKudosableOfferTurnHidden() {
         return configuration.kudosableOfferTurnHidden;
     }
 
-    protected static int getKudosableOfferTurnPending() {
+    public static int getKudosableOfferTurnPending() {
         return configuration.kudosableOfferTurnPending;
     }
 
-    protected static int getKudosableTranslationTurnValid() {
+    public static int getKudosableTranslationTurnValid() {
         return configuration.kudosableTranslationTurnValid;
     }
 
-    protected static int getKudosableTranslationTurnRejected() {
+    public static int getKudosableTranslationTurnRejected() {
         return configuration.kudosableTranslationTurnRejected;
     }
 
-    protected static int getKudosableTranslationTurnHidden() {
+    public static int getKudosableTranslationTurnHidden() {
         return configuration.kudosableTranslationTurnHidden;
     }
 
-    protected static int getKudosableTranslationTurnPending() {
+    public static int getKudosableTranslationTurnPending() {
         return configuration.kudosableTranslationTurnPending;
     }
 
-    protected static int getKudosableMinInfluenceToUnkudos() {
-        return configuration.kudosableMinInfluenceToUnkudos;
+    public static int getKudosableMinKarmaToUnkudos() {
+        return configuration.kudosableMinKarmaToUnkudos;
     }
 
-    protected static int getKudosableMinInfluenceToKudos() {
-        return configuration.kudosableMinInfluenceToKudos;
+    public static int getKudosableMinKarmaToKudos() {
+        return configuration.kudosableMinKarmaToKudos;
+    }
+
+    public static int getKudosableMinKarmaToComment() {
+        return configuration.kudosableMinKarmaToComment;
+    }
+
+    public static int getKudosableMinKarmaToMakeOffer() {
+        return configuration.kudosableMinKarmaToMakeOffer;
+    }
+
+    public static int getKudosableMinKarmaToCreateFeature() {
+        return configuration.kudosableMinKarmaToCreateFeature;
+    }
+
+    public static int getKudosableStepToGainKarma() {
+        return configuration.kudosableStepToGainKarma;
+    }
+
+    public static int getKarmaInitialInitial() {
+        return configuration.karmaInitialAmount;
+    }
+
+    public static int getKarmaActivationAmount() {
+        return configuration.karmaActivationAmount;
+    }
+
+    public static int getKarmaHideThreshold() {
+        return configuration.karmaHideThreshold;
     }
 
     // Others
@@ -190,10 +226,14 @@ public class ModelConfiguration extends ReloadableConfiguration {
         recentActivityDays = properties.getInt("recent.activity.days");
 
         // Kudosable configuration
-        kudosableDefaultTurnValid = properties.getInt("kudosable.default.turn_valid", 100);
-        kudosableDefaultTurnRejected = properties.getInt("kudosable.default.turn_rejected", -100);
-        kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -10);
-        kudosableDefaultTurnPending = properties.getInt("kudosable.default.turn_pending", 10);
+        kudosableDefaultTurnValid = properties.getInt("kudosable.default.turn_valid", 5);
+        kudosableDefaultTurnRejected = properties.getInt("kudosable.default.turn_rejected", -10);
+        kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -5);
+        kudosableDefaultTurnPending = properties.getInt("kudosable.default.turn_pending", 0);
+        kudosableStepToGainKarma = properties.getInt("kudosable.karma.stepToGain", 5);
+        karmaInitialAmount = properties.getInt("karma.InitialAmount", -10);
+        karmaActivationAmount = properties.getInt("karma.activationAmount", 10);
+        karmaHideThreshold = properties.getInt("karma.hideThreshold", -10);
 
         // Comment feature offer translation
         kudosableCommentTurnValid = properties.getInt("kudosable.comment.turn_valid", kudosableDefaultTurnValid);
@@ -216,8 +256,11 @@ public class ModelConfiguration extends ReloadableConfiguration {
         kudosableTranslationTurnHidden = properties.getInt("kudosable.tranlation.turn_hidden", kudosableDefaultTurnHidden);
         kudosableTranslationTurnPending = properties.getInt("kudosable.tranlation.turn_pending", kudosableDefaultTurnPending);
 
-        kudosableMinInfluenceToUnkudos = properties.getInt("kudosable.min_influence_unkudos", 1);
-        kudosableMinInfluenceToKudos = properties.getInt("kudosable.min_influence_kudos", 0);
+        kudosableMinKarmaToUnkudos = properties.getInt("kudosable.min_karma.unkudos", -9);
+        kudosableMinKarmaToKudos = properties.getInt("kudosable.min_karma.kudos", -9);
+        kudosableMinKarmaToComment = properties.getInt("kudosable.min_karma/comment", -9);
+        kudosableMinKarmaToMakeOffer = properties.getInt("kudosable.min_karma.make_offer", -9);
+        kudosableMinKarmaToCreateFeature = properties.getInt("kudosable.min_karma.create_feature", -9);
 
         administratorMails = properties.getStringArray("administrator.emails");
 

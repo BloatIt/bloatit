@@ -71,7 +71,13 @@ public abstract class LoggedElveosAction extends ElveosAction {
         }
         session.setTargetPage(meUrl);
         transmitParameters();
-        return new LoginPageUrl();
+        LoginPageUrl loginPageUrl = new LoginPageUrl();
+        loginPageUrl.setInvoice(isNeedInvoice());
+        return loginPageUrl;
+    }
+
+    protected boolean isNeedInvoice() {
+        return false;
     }
 
     @Override

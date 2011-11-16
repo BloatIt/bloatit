@@ -28,7 +28,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Image;
-import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;

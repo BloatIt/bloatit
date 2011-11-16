@@ -201,7 +201,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgIdenticaIcon() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgIdenticaIcon);
     }
-    
+
     public static String getImgMercanetVISA() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMercanetVISA);
     }
@@ -213,7 +213,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgMercanetCB() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgMercanetCB);
     }
-    
+
     public static String getAtomImg() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgAtom);
     }
@@ -264,6 +264,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         // OTHERS
         defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");
         feedItemNumber = properties.getInt("bloatit.feed.item.number", 5);
+
     }
 
     protected static void load() {
@@ -287,4 +288,5 @@ public class WebConfiguration extends ReloadableConfiguration {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
         }
     }
+
 }
