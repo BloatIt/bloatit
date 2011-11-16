@@ -179,7 +179,7 @@ public class UrlParameter<T, U> extends UrlNode {
             if (messages.size() - customMessages.size() > 0) {
                 final StringBuilder sb = new StringBuilder();
                 for (final Message message : messages) {
-                    sb.append(message.getMessage()).append(" [").append(value).append("] && ");
+                    sb.append(message.getMessage(Context.getLocalizator())).append(" [").append(value).append("] && ");
                 }
                 throw new BadProgrammerException(sb.toString());
             }

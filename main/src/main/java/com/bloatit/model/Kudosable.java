@@ -90,10 +90,10 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         // Make sure we are in the right position
         final Member member = AuthToken.getMember();
         final int influence = member.calculateInfluence();
-        if (sign == -1 && influence < ModelConfiguration.getKudosableMinInfluenceToUnkudos()) {
+        if (sign == -1 && influence < ModelConfiguration.getKudosableMinKarmaToUnkudos()) {
             errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN);
         }
-        if (sign == 1 && influence < ModelConfiguration.getKudosableMinInfluenceToKudos()) {
+        if (sign == 1 && influence < ModelConfiguration.getKudosableMinKarmaToKudos()) {
             errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP);
         }
         return errors;

@@ -186,6 +186,10 @@ public class Rights {
         return AuthToken.isAuthenticated() && AuthToken.getMember().getRole() == role;
     }
 
+    public final boolean isActive() {
+        return AuthToken.isAuthenticated() && AuthToken.getMember().isActive();
+    }
+
     // ///////////////////////////////////////
     // Visitors
 
@@ -470,5 +474,33 @@ public class Rights {
             throw new NotImplementedException();
         }
 
+    }
+
+    // Karma
+    public boolean hasKarmaToComment() {
+        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToComment();
+        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+    }
+    
+    public boolean hasKarmaToCreateFeature() {
+        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+    }
+    
+    public boolean hasKarmaToMakeOffer() {
+        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+    }
+    
+
+    public boolean hasKarmaToVoteUp() {
+        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+    }
+    
+    
+    public boolean hasKarmaToVoteDown() {
+        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
     }
 }

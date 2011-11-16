@@ -327,7 +327,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         element.addAttribute("data-layout", "button_count");
         element.addAttribute("data-width", "110");
         element.addAttribute("data-show-faces", "false");
-
+        element.addAttribute("data-action", "recommend");
+        
         return item;
     }
 
