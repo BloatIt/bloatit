@@ -332,7 +332,10 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public void setEmailToActivate(final String email) {
         getDao().setEmailToActivate(email);
-
+    }
+    
+    public void acceptNewsLetter(boolean newsletter) {
+        getDao().acceptNewsLetter(newsletter);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -453,6 +456,10 @@ public final class Member extends Actor<DaoMember> implements User {
     // TODO: Create a send notification / mail
     public String getEmailUnprotected() {
         return getDao().getEmail();
+    }
+    
+    public boolean getNewsletterAccept() {
+        return getDao().getNewsletterAccept();
     }
 
     // no right management: this is public data

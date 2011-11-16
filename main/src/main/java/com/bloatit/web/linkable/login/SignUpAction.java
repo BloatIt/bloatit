@@ -70,6 +70,9 @@ public final class SignUpAction extends ElveosAction {
     @NonOptional(@tr("You have to specify a country."))
     private final String country;
 
+    @RequestParam(name = "bloatit_newsletter", role = Role.POST)
+    private final Boolean newsletter;
+
     @RequestParam(name = "bloatit_lang", role = Role.POST)
     private final String lang;
 
@@ -105,14 +108,14 @@ public final class SignUpAction extends ElveosAction {
         this.email = url.getEmail();
         this.lang = url.getLang();
         this.country = url.getCountry();
-
+        this.newsletter = url.getNewsletter();
+        
         // Invoicing informations
         this.name = url.getName();
         this.city = url.getCity();
         this.street = url.getStreet();
         this.extras = url.getExtras();
         this.postalCode = url.getPostalCode();
-
         this.invoice = url.getInvoice();
     }
 
@@ -121,6 +124,9 @@ public final class SignUpAction extends ElveosAction {
 
         final Locale locale = new Locale(lang, country);
         final Member m = new Member(login, password, email, locale);
+        if (newsletter != null) {
+            m.acceptNewsLetter(newsletter);
+        }
         final String activationKey = m.getActivationKey();
         final MemberActivationActionUrl url = new MemberActivationActionUrl(activationKey, login);
 
@@ -239,12 +245,11 @@ public final class SignUpAction extends ElveosAction {
         session.addParameter(passwordCheckParameter);
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
-        
+        session.addParameter(url.getNewsletterParameter());
         session.addParameter(url.getNameParameter());
         session.addParameter(url.getStreetParameter());
         session.addParameter(url.getExtrasParameter());
         session.addParameter(url.getPostalCodeParameter());
         session.addParameter(url.getCityParameter());
-
     }
 }
