@@ -198,6 +198,7 @@ public final class IndexPage extends ElveosPage {
     protected ArrayList<HtmlHeaderLink> getLinks() {
         ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
         list.add(ElveosAtomFeed.generateHeaderLink(new FeatureAtomFeedUrl(), Context.tr("Feature feed")));
+        list.add(new HtmlHeaderLink("https://plus.google.com/112969426055352289328", "publisher"));
         return list;
     }
 }

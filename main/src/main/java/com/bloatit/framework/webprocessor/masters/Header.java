@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.WebConfiguration;
 
 public final class Header extends HtmlElement {
@@ -136,7 +135,7 @@ public final class Header extends HtmlElement {
         // Place for custom meta from page
         metaPh = new PlaceHolderElement();
         add(metaPh);
-        
+
         // Place for custom links from page
         linkPh = new PlaceHolderElement();
         add(linkPh);
@@ -204,22 +203,28 @@ public final class Header extends HtmlElement {
 
         jsPh.add(jsLink);
     }
-    
+
     public void addMeta(HtmlElement meta) {
         metaPh.add(meta);
     }
 
     protected void addHeaderLink(HtmlHeaderLink link) {
-        final HtmlElement headerLink = new HtmlGenericElement("link"){
+        final HtmlElement headerLink = new HtmlGenericElement("link") {
             @Override
             public boolean selfClosable() {
                 return true;
             }
         };
         headerLink.addAttribute("href", link.getHref());
-        headerLink.addAttribute("type", link.getType());
         headerLink.addAttribute("rel", link.getRel());
-        headerLink.addAttribute("title", link.getTitle());
+        
+        // Type & Title are optionals
+        if (link.getType() != null) {
+            headerLink.addAttribute("type", link.getType());
+        }
+        if (link.getTitle() != null) {
+            headerLink.addAttribute("title", link.getTitle());
+        }
         linkPh.add(headerLink);
     }
 
