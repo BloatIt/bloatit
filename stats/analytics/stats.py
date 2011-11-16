@@ -163,14 +163,15 @@ def main():
         result.append(subresult)
 
     cursor.execute('''
-        SELECT distinct visitor.id FROM visitor
+        SELECT distinct remote_addr FROM visitor
         JOIN visit on visitor.id = id_visitor JOIN externalurl on externalurl.id=id_externalurl
+        JOIN request on visit.id=id_visit
         WHERE begin_date > datetime(?) AND   begin_date < datetime(?, '+{0} hours')
         AND netloc = ?  AND real=1'''.format(during), (date, date, referer) )
 
     ids = ""
     for row in cursor:
-        ids += str(row[0]) + ", "
+        ids += "'" + str(row[0]) + "', "
     ids = ids.rstrip(", ")
 
     result.append(('date',
@@ -210,9 +211,10 @@ def main():
         # Nb visit in the first group
         cursor.execute('''  
                 SELECT count(distinct(visit.id)) FROM visit 
+                JOIN request on visit.id=id_visit
                 WHERE  begin_date > datetime(? , '+{0} days') AND begin_date < datetime(?, '+{1} days') 
                 AND real=1
-                AND id_visitor in ({2})
+                AND remote_addr in ({2})
                 '''.format(i, i + groupby, ids),  (date, date))
         subresult += cursor.fetchone()
 
@@ -236,9 +238,10 @@ def main():
         # Nb visitor from group
         cursor.execute('''  
                 SELECT count(distinct(id_visitor)) FROM visit
+                JOIN request on visit.id=id_visit
                 WHERE  begin_date > datetime(? , '+{0} days') AND begin_date < datetime(?, '+{1} days') 
                 AND real=1 
-                AND id_visitor IN ({2})
+                AND remote_addr IN ({2})
                 '''.format(i, i + groupby, ids),  (date, date))
         subresult += cursor.fetchone()
 
@@ -263,9 +266,10 @@ def main():
         cursor.execute('''  
                 SELECT count(distinct(visitor.id)) FROM externalurl
                 JOIN visit on externalurl.id=id_externalurl JOIN visitor on visitor.id=id_visitor
+                JOIN request on visit.id=id_visit
                 WHERE  begin_date > datetime(? , '+{0} days') AND begin_date < datetime(?, '+{1} days') 
                 AND real=1 AND userid != -1
-                AND id_visitor IN ({2})
+                AND remote_addr IN ({2})
                 '''.format(i, i + groupby, ids),  (date, date))
         subresult += cursor.fetchone()
 
@@ -300,7 +304,7 @@ def main():
                 WHERE  begin_date > datetime(? , '+{0} days') AND begin_date < datetime(?, '+{1} days') 
                 AND request.url like '%doactivate%'
                 AND real=1
-                AND id_visitor IN ({2})
+                AND remote_addr IN ({2})
                 '''.format(i, i + groupby, ids),  (date, date))
         subresult += cursor.fetchone()
 
