@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="693.82416"
+   height="785.11389"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="archi_doc_en.svg">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3814" />
+    <filter
+       inkscape:collect="always"
+       id="filter3800"
+       x="-0.1498004"
+       width="1.2996008"
+       y="-0.28340393"
+       height="1.5668079"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="29.560321"
+         id="feGaussianBlur3802" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="379.05961"
+     inkscape:cy="450.84253"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1176"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-80.533143,16.966091)">
+    <rect
+       ry="31.31473"
+       y="265.21933"
+       x="87.14286"
+       height="501.42847"
+       width="685.71442"
+       id="rect3926"
+       style="fill:#fffef8;fill-opacity:1;stroke:#b3b3b3;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 9;stroke-dashoffset:0" />
+    <rect
+       style="fill:#fffce9;fill-opacity:1;stroke:#747474;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:24, 24;stroke-dashoffset:0"
+       id="rect3914"
+       width="635.71436"
+       height="431.4285"
+       x="121.42857"
+       y="275.21933"
+       ry="31.31473" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3904"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#808080;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       transform="translate(63.639611,185.36555)"><flowRegion
+         id="flowRegion3906"><rect
+           id="rect3908"
+           width="315.1676"
+           height="135.36044"
+           x="196.97975"
+           y="36.148724"
+           style="text-align:center;text-anchor:middle;fill:#808080" /></flowRegion><flowPara
+         id="flowPara3910"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#808080;font-family:Monospace;-inkscape-font-specification:Monospace">Http - Https </flowPara></flowRoot>    <path
+       style="fill:#666666;stroke:#747474;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 407.26479,564.30116 107.14796,0"
+       id="path3860"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3900"
+       d="m 285.83622,456.44402 0.005,-131.42858"
+       style="fill:#666666;stroke:#747474;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <rect
+       style="fill:#00526c;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985"
+       width="240.60732"
+       height="209.67125"
+       x="169.06854"
+       y="452.23206"
+       ry="31.31473" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3761"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       transform="translate(95.7172,280.68817)"><flowRegion
+         id="flowRegion3763"><rect
+           id="rect3765"
+           width="249.50772"
+           height="196.97977"
+           x="67.680229"
+           y="226.05739"
+           style="text-align:center;text-anchor:middle;fill:#ffffff" /></flowRegion><flowPara
+         id="flowPara3767"
+         style="font-size:40px;font-weight:bold;-inkscape-font-specification:Ubuntu Bold">Bloatit framework</flowPara></flowRoot>    <path
+       style="fill:#666666;stroke:#747474;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 285.83622,342.45412 0.005,-259.717953"
+       id="path3902"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#8c8c8c;fill-opacity:1;stroke:none;filter:url(#filter3800)"
+       d="m 235.36555,29.077654 c 4.9034,-45.618129 61.64111,-70.088942 101.03035,-51.253944 18.96466,5.534398 23.21733,33.518648 45.94695,26.4413412 29.52929,-2.756668 57.55522,-27.0595192 87.74413,-15.0340712 18.16695,10.19030918 30.11395,30.514973 52.86307,32.741411 26.83993,6.252909 60.8191,8.32576 75.17084,35.96708 14.74115,18.219262 8.15489,43.913039 -7.17444,59.470719 -12.48338,17.20509 -36.05903,33.86588 -30.78888,57.5979 0.65606,32.3683 -36.81963,52.0921 -65.64927,45.47957 -15.18109,-2.85251 -27.73172,-15.34665 -30.57209,-30.54921 -15.24447,-21.99192 -41.62237,-3.14761 -57.33406,7.88975 -19.65863,16.46227 -44.84611,16.71861 -68.30968,21.50825 -29.60527,-0.13877 -46.53553,-28.1933 -64.63497,-47.38702 -35.66108,14.29599 -83.07096,14.94999 -110.97577,-15.11842 -11.18571,-28.93114 -0.74289,-65.795616 -25.10153,-89.278945 -15.78085,-16.172466 10.83136,-42.599949 30.30406,-41.056869 22.53168,-2.71576 44.9692,2.393078 67.48129,2.582458 z"
+       id="path3779"
+       inkscape:connector-curvature="0"
+       transform="matrix(0.70639628,0,0,0.70639628,36.84764,53.33046)" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3804"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#a8e3e4;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       transform="translate(-57.263816,75.493752)"><flowRegion
+         id="flowRegion3806"><rect
+           id="rect3808"
+           width="315.1676"
+           height="135.36044"
+           x="196.97975"
+           y="36.148724"
+           style="text-align:center;text-anchor:middle;fill:#a8e3e4;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara3810"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#a8e3e4;fill-opacity:1;font-family:Purisa;-inkscape-font-specification:Purisa">Internet</flowPara></flowRoot>    <path
+       sodipodi:type="arc"
+       style="fill:#bff1ff;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path3830"
+       sodipodi:cx="554.57373"
+       sodipodi:cy="498.79858"
+       sodipodi:rx="93.944183"
+       sodipodi:ry="93.944183"
+       d="m 648.51791,498.79858 c 0,51.88394 -42.06024,93.94419 -93.94418,93.94419 -51.88394,0 -93.94418,-42.06025 -93.94418,-93.94419 0,-51.88394 42.06024,-93.94418 93.94418,-93.94418 51.88394,0 93.94418,42.06024 93.94418,93.94418 z"
+       transform="translate(51.51778,59.44166)" />
+    <flowRoot
+       transform="translate(445.00957,311.08184)"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       id="flowRoot3771"
+       xml:space="preserve"><flowRegion
+         id="flowRegion3773"><rect
+           style="text-align:center;text-anchor:middle;fill:#000000"
+           y="226.05739"
+           x="67.680229"
+           height="97.98481"
+           width="184.85796"
+           id="rect3775" /></flowRegion><flowPara
+         id="flowPara3777">PostgreSQL</flowPara></flowRoot>    <rect
+       ry="30.589417"
+       y="298.24216"
+       x="182.20053"
+       height="83.402191"
+       width="194.14027"
+       id="rect3834"
+       style="fill:#bff1ff;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3844"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       transform="translate(119.08911,93.72285)"><flowRegion
+         id="flowRegion3846"><rect
+           id="rect3848"
+           width="184.85796"
+           height="97.98481"
+           x="67.680229"
+           y="226.05739"
+           style="text-align:center;text-anchor:middle;fill:#000000" /></flowRegion><flowPara
+         id="flowPara3850">Lighttpd</flowPara></flowRoot>    <flowRoot
+       transform="translate(-19.192898,358.3656)"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#808080;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       id="flowRoot3852"
+       xml:space="preserve"><flowRegion
+         id="flowRegion3854"><rect
+           style="text-align:center;text-anchor:middle;fill:#808080"
+           y="36.148724"
+           x="196.97975"
+           height="135.36044"
+           width="315.1676"
+           id="rect3856" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#808080;font-family:Monospace;-inkscape-font-specification:Monospace"
+         id="flowPara3858">FCGI</flowPara></flowRoot>    <flowRoot
+       transform="translate(390.51768,99.437135)"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       id="flowRoot3918"
+       xml:space="preserve"><flowRegion
+         id="flowRegion3920"><rect
+           style="text-align:center;text-anchor:middle;fill:#000000"
+           y="226.05739"
+           x="67.680229"
+           height="69.413391"
+           width="257.71509"
+           id="rect3922" /></flowRegion><flowPara
+         id="flowPara3924">Debian Squeeze</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3928"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#808080;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       transform="translate(37.711569,493.72285)"><flowRegion
+         id="flowRegion3930"><rect
+           id="rect3932"
+           width="649.14368"
+           height="39.413376"
+           x="67.680229"
+           y="226.05739"
+           style="text-align:center;text-anchor:middle;fill:#808080" /></flowRegion><flowPara
+         id="flowPara3934">Virtual server OVH VPS</flowPara></flowRoot>  </g>
+</svg>

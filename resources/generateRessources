@@ -12,7 +12,7 @@ generateRessources() {
         OUTPUT_FILE=$OUTPUT_DIR_PREFIX$LANG$OUTPUT_DIR_SUFFIX$1.png
 
         mkdir -p $(dirname $OUTPUT_FILE)
-        inkscape -e $OUTPUT_FILE -C -w $2 $1"_"$LANG.svg
+        inkscape -e $OUTPUT_FILE -C -w $2 sources/$1"_"$LANG.svg
         optipng $OUTPUT_FILE
     done
 }
@@ -24,23 +24,23 @@ done
 generateRessources process_doc 800
 generateRessources archi_doc 400
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/idea.png" -C -w 40 idea.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/idea.png" -C -w 40 sources/idea.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/idea.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/team.png" -C -w 40 team.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/team.png" -C -w 40 sources/team.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/team.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/message.png" -C -w 40 message.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/message.png" -C -w 40 sources/message.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/message.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/withdraw_money.png" -C -w 40 withdraw_money.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/withdraw_money.png" -C -w 40 sources/withdraw_money.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/withdraw_money.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/charge_account.png" -C -w 40 charge_account.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/charge_account.png" -C -w 40 sources/charge_account.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/charge_account.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/logo_elveos.png" -C -w 150 logo_elveos.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/logo_elveos.png" -C -w 150 sources/logo_elveos_beta.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/logo_elveos.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/favicon.png" -C -w 32 favicon.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/favicon.png" -C -w 32 sources/favicon.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/favicon.png"
