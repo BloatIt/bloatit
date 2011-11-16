@@ -91,4 +91,8 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
             addAttribute("checked", "checked");
         }
     }
+    
+    public void setDefaultBooleanValue(boolean value){
+        setDefaultValue(Boolean.toString(value));
+    }
 }

@@ -72,7 +72,7 @@ public class ModifyMemberAction extends LoggedElveosAction {
     @RequestParam(name = "avatar/contenttype", role = Role.POST)
     @Optional
     private final String avatarContentType;
-
+    
     private final ModifyMemberActionUrl url;
 
     public ModifyMemberAction(final ModifyMemberActionUrl url) {

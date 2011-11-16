@@ -47,6 +47,7 @@ import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyDetailActionUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
+import com.bloatit.web.url.ModifyNewsletterActionUrl;
 import com.bloatit.web.url.ModifyPasswordActionUrl;
 
 @ParamContainer(value = "member/modify", protocol = Protocol.HTTPS)
@@ -182,6 +183,27 @@ public class ModifyMemberPage extends LoggedElveosPage {
             langInput.setDefaultValue(detailUrl.getLangParameter().getStringValue(), loggedUser.getLocale().getLanguage());
             detailBlock.add(langInput);
             detailBlock.add(new HtmlSubmit(Context.tr("Submit")));
+            
+            // Newsletter
+            ModifyNewsletterActionUrl nlUrl = new ModifyNewsletterActionUrl(getSession().getShortKey());
+            
+            final HtmlForm nlForm = new HtmlForm(nlUrl.urlString());
+            layout.addLeft(nlForm);
+            final HtmlFormBlock nlBlock = new HtmlFormBlock(Context.tr("Newsletter"));
+            nlForm.add(nlBlock);
+            
+            final FieldData newsletterFieldData = nlUrl.getNewsletterParameter().pickFieldData();
+            final HtmlCheckbox newsletterinput = new HtmlCheckbox(newsletterFieldData.getName(), LabelPosition.BEFORE);
+            newsletterinput.setLabel(Context.tr("Register to newsletter"));
+            newsletterinput.setComment(Context.tr("Allows Elveos to send you a newsletter. Note we don't like spam, we won't send a lot of newsletter. Maybe one every 2 or 3 months."));
+            String nlSuggestedValue = newsletterFieldData.getSuggestedValue();
+            if(nlSuggestedValue == null){
+                newsletterinput.setDefaultBooleanValue(loggedUser.getNewsletterAccept());
+            }else {
+                newsletterinput.setDefaultValue(nlSuggestedValue);    
+            }
+            nlBlock.add(newsletterinput);
+            nlBlock.add(new HtmlSubmit(Context.tr("Submit")));
 
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Couldn't access logged member information", e);
