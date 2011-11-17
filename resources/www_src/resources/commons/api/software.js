@@ -1,7 +1,7 @@
 //button.js
 
-//var elveos_hostname="https://elveos.org"
-var elveos_hostname="http://127.0.0.1"
+var elveos_hostname="https://elveos.org"
+//var elveos_hostname="http://127.0.0.1"
 
 function elveos_ajax(url, callback) {
     //var xhr;
@@ -288,7 +288,9 @@ function elveos_generateFeature(feature) {
 
 function elveos_startGenerateFeatureList(featureListElement) {
     var softwareId = featureListElement.getAttribute('data-software-id');
-    
+    newFeatureListElement = document.createElement("div");
+    featureListElement.parentNode.replaceChild(newFeatureListElement, featureListElement);
+
     elveos_ajax(elveos_hostname + '/rest/features?software='+softwareId, function(xml) {
 
         //Add css
@@ -303,7 +305,7 @@ function elveos_startGenerateFeatureList(featureListElement) {
             }
         }
 
-        featureListElement.innerHTML = html;
+        newFeatureListElement.innerHTML = html;
     /*
     var contribution = parseFloat(xml.getElementsByTagName('contribution')[0].firstChild.data);
     var progression = parseFloat(xml.getElementsByTagName('feature')[0].getAttribute("progression"));
