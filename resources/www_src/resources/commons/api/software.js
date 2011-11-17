@@ -21,7 +21,6 @@ function elveos_ajax(url, callback) {
         } else {
         }
     };
-    console.log(url);
     xhr.open('GET', url, true);                  
     xhr.send(null);
 }
@@ -176,7 +175,6 @@ function elveos_getCss() {
 }
 
 function elveos_generateFeature(feature) {
-    console.log(feature)
     var contribution = parseFloat(feature.getElementsByTagName('contribution')[0].firstChild.data);
     var progression = parseFloat(feature.getAttribute("progression"));
     var title = feature.getElementsByTagName('title')[0].firstChild.data;
@@ -193,16 +191,10 @@ function elveos_generateFeature(feature) {
         
         var date = new Date(Date.parse(selectedOffer.getAttribute("expirationDate")));
         
-        console.log(date.toLocaleDateString());
-        console.log("plop");
-        
-        
-        
         if(selectedOffer.getElementsByTagName('asteam').length > 0) {
             actorId = selectedOffer.getElementsByTagName('asteam')[0].firstChild.data;
             isTeam = true;
         }
-        
     }    
     
     var id = feature.getAttribute("id");
@@ -297,8 +289,6 @@ function elveos_startGenerateFeatureList(featureListElement) {
         var html = elveos_getCss();
 
         var features = xml.getElementsByTagName('features')[0].childNodes;
-        console.log(features)
-        console.log(features.length)
         for(var i = 0; i < features.length; i++) {
             if(features[i].nodeType ==1) {
                 html += elveos_generateFeature(features[i]);
@@ -306,73 +296,9 @@ function elveos_startGenerateFeatureList(featureListElement) {
         }
 
         newFeatureListElement.innerHTML = html;
-    /*
-    var contribution = parseFloat(xml.getElementsByTagName('contribution')[0].firstChild.data);
-    var progression = parseFloat(xml.getElementsByTagName('feature')[0].getAttribute("progression"));
-    var featureState = xml.getElementsByTagName('feature')[0].getAttribute("featureState");
-    var offerCount = xml.getElementsByTagName('offers').length;
-    button.innerHTML = elveos_formatMoney(contribution);
-    button.style.display = "inline-block";
-    button.style.textAlign = "center";
-    button.style.font= "bold 12px/20px Arial,Sans";
-    button.style.color= "black";
-    
-    
-    if(buttonStyle == "short_small") {
-        button.style.lineHeight= "20px";
-        button.style.height = "20px";
-        button.style.width = "50px";
-        button.style.paddingLeft = "27px";
-        button.style.fontSize = "11px";
-    } else if (buttonStyle == "short_medium") {
-        button.style.lineHeight= "26px";
-        button.style.height = "26px";
-        button.style.width = "64px";
-        button.style.paddingLeft = "37px";
-        button.style.fontSize = "16px";
-    } else if (buttonStyle == "short_big") {
-        button.style.lineHeight= "34px";
-        button.style.height = "34px";
-        button.style.width = "83px";
-        button.style.paddingLeft = "48px";
-        button.style.fontSize = "18px";
-    } else if (buttonStyle == "long_small") {
-        button.style.lineHeight= "20px";
-        button.style.height = "20px";
-        button.style.width = "50px";
-        button.style.paddingLeft = "74px";
-        button.style.fontSize = "11px";
-    } else if (buttonStyle == "long_medium") {
-        button.style.lineHeight= "26px";
-        button.style.height = "26px";
-        button.style.width = "65px";
-        button.style.paddingLeft = "95px";
-        button.style.fontSize = "16px";
-    } else if (buttonStyle == "long_big") {
-        button.style.lineHeight= "34px";
-        button.style.height = "34px";
-        button.style.width = "83px";
-        button.style.paddingLeft = "127px";
-        button.style.fontSize = "18px";
-    }
-    
-    var progress = parseInt(progression);
-    progress = progress - progress%10;
-   
-    if(contribution == 0 || featureState == "PENDING") {
-        progress = "empty";
-    } else if (featureState == "FINISHED") {
-        progress = "success";
-    } else if (progress > 100) {
-        progress = 100;
-    } 
-    button.style.background = "url(\""+host+"/resources/commons/api/button_"+buttonStyle+"_"+progress+".png\") no-repeat scroll 0 0 transparent";
-    }
-    );*/
     }
     );
 }
-
 
 (function () {
     var featureLists = document.getElementsByClassName('elveos-feature-list');
