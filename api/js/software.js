@@ -1,0 +1,1 @@
+../../resources/www_src/resources/commons/api/software.js

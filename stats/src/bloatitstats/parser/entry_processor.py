@@ -1,3 +1,4 @@
+import re
 from uasparser import UASparser
 from urlparse import urlparse
 
@@ -57,9 +58,6 @@ class entry_processor:
         self.server_addr = request.server_addr
         
     def process(self, cursor):
-        if entry_processor.nb_new_request % 50000 == 0:
-            cursor.execute('VACUUM')
-
         # verify that this entry has not been parsed yet
         cursor.execute('SELECT id FROM meta WHERE last_parsed_entry_date >= datetime(?)', (self.date,))
         is_already_parse = cursor.fetchone()
@@ -95,7 +93,7 @@ class entry_processor:
             entry_processor.nb_new_visitor += 1
         else:
             visitor_id = visitor_id[0]
-            if self.user_id == -1:
+            if self.user_id != -1:
                 cursor.execute('''UPDATE visitor SET userid=? WHERE id=?''', (self.user_id, visitor_id))
             
         # create user agent
@@ -129,7 +127,7 @@ class entry_processor:
         
         
         referer_id = self._get_or_create_referer(cursor)
-        if self.http_referer.startswith(('http://elveos.org', 'https://elveos.org')):
+        if self.http_referer.startswith(('http://elveos.org', 'https://elveos.org', 'http://www.elveos.org', 'https://www.elveos.org', 'https://mercanet.bnpparibas.net')):
             cursor.execute('''SELECT max(id) FROM visit WHERE id_visitor=?''', (visitor_id,))
             visit_id = cursor.fetchone()
             if visit_id:
@@ -187,8 +185,8 @@ class entry_processor:
     def _create_visit(self, cursor, visitor_id, useragent_id, referer_id):
         #create the new visit
         cursor.execute('''INSERT INTO visit 
-            (id_visitor, id_useragent, id_externalurl, begin_date, end_date, duration)
-            VALUES (?, ?, ?, datetime(?), datetime(?), '0')''', (visitor_id, useragent_id, referer_id, self.date, self.date))
+            (id_visitor, id_useragent, id_externalurl, begin_date, end_date, duration, real)
+            VALUES (?, ?, ?, datetime(?), datetime(?), '0', '0')''', (visitor_id, useragent_id, referer_id, self.date, self.date))
         entry_processor.nb_new_visit += 1
         return cursor.lastrowid
         

@@ -36,13 +36,19 @@ import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
+import com.bloatit.framework.restprocessor.exception.RestException;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestContributionList;
 import com.bloatit.rest.list.RestFeatureList;
+import com.bloatit.rest.list.RestFeatureListExpanded;
 import com.bloatit.rest.list.RestOfferList;
+import com.bloatit.rest.list.master.RestListBinder;
 
 /**
  * <p>
@@ -135,6 +141,27 @@ public class RestFeature extends RestElement<Feature> {
         return new RestFeatureList(FeatureManager.getFeatures());
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestFeature of a software
+     * </p>
+     * 
+     * @throws RestException
+     */
+    @REST(name = "features", method = RequestMethod.GET, params = {"software"})
+    public static RestListBinder<RestFeature, Feature> getAllBySofware(String sofwareId) throws RestException {
+        try {
+            Software software = SoftwareManager.getById(Integer.parseInt(sofwareId));
+            if (software == null) {
+                throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "The software doesn't exist");
+            }
+            
+            return new RestFeatureListExpanded(software.getFeatures());
+        } catch (NumberFormatException e) {
+            throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "The software id has a bad format");
+        }
+    }
+
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
@@ -217,7 +244,6 @@ public class RestFeature extends RestElement<Feature> {
     }
 
     @XmlElement
-    @XmlIDREF
     public RestOffer getSelectedOffer() {
         if (model.getSelectedOffer() != null) {
             return new RestOffer(model.getSelectedOffer());

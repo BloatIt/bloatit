@@ -178,7 +178,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     public void addErrorMessages(final Messages messages) {
         final HtmlDiv notifyBlock = new HtmlDiv("notification_error");
         for (final Message message : messages) {
-            notifyBlock.add(new HtmlParagraph(Context.tr(message.getMessage())));
+            notifyBlock.add(new HtmlParagraph(Context.tr(message.getMessage(Context.getLocalizator()))));
         }
         this.notificationPh.add(notifyBlock);
         if (!messages.isEmpty()) {

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="866.28632"
+   height="196.21208"
+   id="svg5886"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="logo_elveos.svg">
+  <defs
+     id="defs5888">
+    <linearGradient
+       id="linearGradient6575">
+      <stop
+         id="stop6577"
+         offset="0"
+         style="stop-color:#00516c;stop-opacity:1;" />
+      <stop
+         style="stop-color:#00526c;stop-opacity:1;"
+         offset="0.68264776"
+         id="stop6579" />
+      <stop
+         id="stop6581"
+         offset="1"
+         style="stop-color:#007095;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient6054">
+      <stop
+         style="stop-color:#00526c;stop-opacity:1;"
+         offset="0"
+         id="stop6056" />
+      <stop
+         id="stop6058"
+         offset="0.48449841"
+         style="stop-color:#00526c;stop-opacity:1;" />
+      <stop
+         style="stop-color:#00526c;stop-opacity:1;"
+         offset="1"
+         id="stop6060" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3763-3"
+       id="linearGradient5795"
+       gradientUnits="userSpaceOnUse"
+       x1="99.828247"
+       y1="299.13171"
+       x2="580.30225"
+       y2="299.13171" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3763-3">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3765-2" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop3767-5" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5558"
+       id="radialGradient5793"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(4.6953406,-2.6886792,2.5692566,4.4867885,-6640.5919,-6434.1778)"
+       cx="1.9679559"
+       cy="52.280682"
+       fx="1.9679559"
+       fy="52.280682"
+       r="32.604012" />
+    <linearGradient
+       id="linearGradient5558">
+      <stop
+         id="stop5560"
+         offset="0"
+         style="stop-color:#00516c;stop-opacity:1;" />
+      <stop
+         style="stop-color:#00526c;stop-opacity:1;"
+         offset="0.46575627"
+         id="stop5562" />
+      <stop
+         id="stop5564"
+         offset="1"
+         style="stop-color:#005976;stop-opacity:1;" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="353.15938"
+     inkscape:cy="81.223106"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="958"
+     inkscape:window-height="1155"
+     inkscape:window-x="0"
+     inkscape:window-y="19"
+     inkscape:window-maximized="0"
+     inkscape:snap-global="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid6052"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5891">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-7.2240405,-308.73865)">
+    <g
+       id="g3072">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5777"
+         transform="translate(7.2388062,308.74841)"
+         d="M 96.78125,0 C 95.939672,0.01178363 95.095873,0.02921407 94.25,0.0625 40.114136,2.1927992 -2.0677996,47.83288 0.0625,101.96875 2.1927996,156.10462 47.832886,198.2553 101.96875,196.125 l 0.0312,0 C 156.12026,193.97438 198.25472,148.37109 196.125,94.25 194.02799,40.960003 149.80065,-0.74236854 96.78125,0 z m 2.25,12.09375 c 40.10079,0.450696 73.22036,32.244554 74.8125,72.71875 1.6435,41.77981 -30.94874,76.97827 -72.78125,78.625 -41.832507,1.64673 -77.075251,-30.87644 -78.71875,-72.65625 -1.643051,-41.768408 30.929551,-76.962594 72.75,-78.625 l 0.03125,0 c 1.307266,-0.05146 2.612676,-0.07704 3.90625,-0.0625 z"
+         style="fill:#00526c;fill-opacity:1;stroke:none" />
+      <path
+         style="fill:#00526c;fill-opacity:1;stroke:none"
+         d="M 72.818638,466.91335 C 29.670193,444.7102 13.43429,432.9862 27.800986,400.76794 c 14.366697,-32.21832 72.200334,4.4287 89.266434,-57.92954 4.14331,46.92592 -25.633366,50.71175 -39.251123,67.91603 -11.083949,16.94766 -3.531682,36.84633 10.152221,49.17213 10.328655,9.3035 50.893132,19.05557 78.513082,-18.62518 3.09762,5.62936 -44.46956,45.71744 -50.59103,46.19136 -10.72065,0.83 -32.884263,-14.07081 -43.071932,-20.57939 z"
+         id="path5781"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="czccscsc" />
+    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5783"
+       style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#00526c;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       transform="matrix(1.5475496,0,0,1.5475496,90.369405,-59.842482)"
+       inkscape:export-filename="/home/fred/projets/bloatit/www/resources/img/logo_elveos.png"
+       inkscape:export-xdpi="21.309999"
+       inkscape:export-ydpi="21.309999"><flowRegion
+         id="flowRegion5785"
+         style="fill:url(#linearGradient5795);fill-opacity:1"><rect
+           id="rect5787"
+           width="625.71429"
+           height="214.28572"
+           x="87.14286"
+           y="208.07646"
+           style="fill:#00526c;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara5789"
+         style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:0px;fill:#00526c;fill-opacity:1;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">Elveos</flowPara></flowRoot>  </g>
+</svg>

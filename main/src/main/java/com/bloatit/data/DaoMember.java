@@ -53,6 +53,7 @@ import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
+import com.bloatit.model.ModelConfiguration;
 
 /**
  * Ok if you need a comment to understand what is a member, then I cannot do
@@ -199,14 +200,14 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                     name = "members.exceptRole",
                                     query = "FROM com.bloatit.data.DaoMember " +
                                             "WHERE role != :role " +
-                                            "AND state = 1 " +
+                                            "AND karma > :threshold " +
                                             "ORDER BY CONCAT(coalesce(fullname, ''), login) ASC"),
                         @NamedQuery(
                                     name = "members.exceptRole.size",
                                     query = "SELECT count(*) " +
-                                    		"FROM com.bloatit.data.DaoMember " +
+                                            "FROM com.bloatit.data.DaoMember " +
                                             "WHERE role != :role " +
-                                            "AND state = 1"),
+                                            "AND karma > :threshold "),
                    }
 
              )
@@ -257,10 +258,13 @@ public class DaoMember extends DaoActor {
 
     @Basic(optional = false)
     private Locale locale;
+    
+    @Basic(optional = false)
+    private boolean newsletter;
 
     @Column(length = 1024)
     private String description;
-
+    
     @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoFileMetadata avatar;
@@ -348,7 +352,7 @@ public class DaoMember extends DaoActor {
     }
 
     public static PageIterable<DaoMember> getAllMembersButAdmins() {
-        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN);
+        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN).setInteger("threshold", ModelConfiguration.getKarmaHideThreshold());
     }
 
     // ======================================================================
@@ -412,9 +416,10 @@ public class DaoMember extends DaoActor {
         this.state = ActivationState.VALIDATING;
         this.password = password;
         this.salt = salt;
-        this.karma = 0;
+        this.karma = ModelConfiguration.getKarmaInitialInitial();
         this.fullname = "";
         this.description = "";
+        this.newsletter = false;
     }
 
     /**
@@ -588,6 +593,10 @@ public class DaoMember extends DaoActor {
         } else {
             existingService.reset(accessToken, level);
         }
+    }
+    
+    public void acceptNewsLetter(boolean newsletter) {
+        this.newsletter = newsletter;
     }
 
     // ======================================================================
@@ -790,6 +799,10 @@ public class DaoMember extends DaoActor {
         q.setEntity("member", this);
         q.setParameter("state", State.PENDING);
         return (Long) q.uniqueResult();
+    }
+    
+    public boolean getNewsletterAccept() {
+        return newsletter;
     }
 
     /**

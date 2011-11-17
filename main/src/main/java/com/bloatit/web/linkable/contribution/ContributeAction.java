@@ -90,5 +90,4 @@ public final class ContributeAction extends UserContentAction {
     protected void doTransmitParameters() {
         // No parameters to transmit.
     }
-
 }

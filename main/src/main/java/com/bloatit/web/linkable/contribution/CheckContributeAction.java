@@ -122,4 +122,8 @@ public final class CheckContributeAction extends UserContentAction {
         session.addParameter(url.getAmountParameter());
     }
 
+    @Override
+    protected boolean isNeedInvoice() {
+        return true;
+    }
 }

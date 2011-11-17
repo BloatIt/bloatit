@@ -98,6 +98,14 @@ public abstract class RightManager {
     protected static boolean authentifiedCanWrite(final Rights role, final Action action) {
         return role.isAuthenticated() && Action.WRITE == action;
     }
+    
+    /**
+     * Helper function, use it in the overloading of the
+     * {@link GenericAccessor#can(EnumSet, Action)} method
+     */
+    protected static boolean activedCanWrite(final Rights role, final Action action) {
+        return role.isAuthenticated() && Action.WRITE == action;
+    }
 
     /**
      * Helper function, use it in the overloading of the
@@ -106,6 +114,11 @@ public abstract class RightManager {
     protected static boolean authentifiedCanDelete(final Rights role, final Action action) {
         return role.isAuthenticated() && Action.DELETE == action;
     }
+    
+    protected static boolean withKarmaToCommentCanWrite(Rights role, final Action action) {
+        return role.hasKarmaToComment() && Action.WRITE == action;
+    }
+
 
     /**
      * Helper function, use it in the overloading of the

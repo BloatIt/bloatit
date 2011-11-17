@@ -31,6 +31,7 @@ import com.bloatit.rest.list.RestContributionList;
 import com.bloatit.rest.list.RestDescriptionList;
 import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestFeatureList;
+import com.bloatit.rest.list.RestFeatureListExpanded;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestHighlightFeatureList;
 import com.bloatit.rest.list.RestInternalAccountList;
@@ -146,7 +147,10 @@ public class BloatitRestServer extends RestServer {
                                                        RestSoftwareList.class,
                                                        RestReleaseList.class,
                                                        RestTransactionList.class,
-                                                       RestTranslationList.class, };
+                                                       RestTranslationList.class,
+
+                                                       // EXPANDED LISTS
+                                                       RestFeatureListExpanded.class, };
 
     @Override
     protected Set<String> getResourcesDirectories() {

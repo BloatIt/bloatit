@@ -61,7 +61,7 @@ public class RecoverPasswordAction extends ElveosAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Password cannot be blank."))
     @MinConstraint(min = 7, message = @tr("Minimal length for new password is %constraint%."))
-    @MaxConstraint(max = 15, message = @tr("Number of characters for password has to be inferior to %constraint%."))
+    @MaxConstraint(max = 255, message = @tr("Number of characters for password has to be inferior to %constraint%."))
     private final String newPassword;
 
     @RequestParam(role = Role.POST)
@@ -100,7 +100,7 @@ public class RecoverPasswordAction extends ElveosAction {
             session.notifyWarning(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
             return new PageNotFoundUrl();
         }
-        return new RecoverPasswordPageUrl(resetKey, login);
+        return new RecoverPasswordPageUrl(login, resetKey);
     }
 
     @Override

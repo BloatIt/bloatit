@@ -49,6 +49,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.WebProcess;
 import com.bloatit.web.linkable.process.AccountProcess;
@@ -98,16 +99,16 @@ public class PaymentProcess extends WebProcess {
     @Override
     protected synchronized Url doProcess() {
 
-        if(!FrameworkConfiguration.isMercanetEnabled()) {
+        if (!FrameworkConfiguration.isMercanetEnabled()) {
             session.notifyError(Context.tr("The payment system is temporarily disabled. Please retry later."));
             return session.getLastStablePage();
         }
-        
-        if(parentProcess.getAmountToPayBeforeComission().compareTo(BigDecimal.ZERO) == 0) {
+
+        if (parentProcess.getAmountToPayBeforeComission().compareTo(BigDecimal.ZERO) == 0) {
             session.notifyWarning(Context.tr("You must pay at least 1 €."));
             return session.getLastStablePage();
         }
-        
+
         url.getParentProcess().addChildProcess(this);
 
         if (tos == null || !tos.booleanValue()) {
