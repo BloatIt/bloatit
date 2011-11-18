@@ -279,8 +279,6 @@ function elveos_generateFeature(feature) {
 
 function elveos_startGenerateFeatureList(featureListElement) {
     var softwareId = featureListElement.getAttribute('data-software-id');
-    newFeatureListElement = document.createElement("div");
-    featureListElement.parentNode.replaceChild(newFeatureListElement, featureListElement);
 
     elveos_ajax(elveos_hostname + '/rest/features?software='+softwareId, function(xml) {
 
@@ -294,7 +292,7 @@ function elveos_startGenerateFeatureList(featureListElement) {
             }
         }
 
-        newFeatureListElement.innerHTML = html;
+        featureListElement.innerHTML = html;
     }
     );
 }
