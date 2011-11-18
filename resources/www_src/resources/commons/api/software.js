@@ -279,8 +279,8 @@ function elveos_generateFeature(feature) {
 
 function elveos_startGenerateFeatureList(featureListElement) {
     var link = featureListElement.getElementsByTagName('a')[0].getAttribute('href');
-    var softwareId = parseInt(".*/software/([0-9]+)".exec(link))[1])
-featureListElement.innerHTML = softwareId;
+    var softwareId = parseInt(/.*\/softwares\/([0-9]+)/.exec(link)[1]);
+    featureListElement.innerHTML = softwareId;
     return
 
     elveos_ajax(elveos_hostname + '/rest/features?software='+softwareId, function(xml) {
