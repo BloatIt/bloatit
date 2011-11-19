@@ -83,12 +83,16 @@ function elveos_getCss() {
 }\
 \
 .elveos-progress-bar-background {\
+    background: rgb(196,196,196);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(230,230,230)), to(rgb(196,196,196)), color-stop(0.2, rgb(230,230,230)));\
     background: -moz-linear-gradient(90deg, rgb(196,196,196), rgb(230,230,230)) repeat scroll 0 0 transparent;\
     margin-bottom: 0;\
     width: 100%;\
 }\
 \
 .elveos-progress-bar-state {\
+    background: rgb(0,0,0);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(73,73,73)), to(rgb(0,0,0)), color-stop(0.2, rgb(73,73,73)));\
     background: -moz-linear-gradient(90deg, rgb(0,0,0), rgb(73,73,73)) repeat scroll 0 0 transparent;\
     margin-top: -16px;\
 }\
@@ -123,6 +127,8 @@ function elveos_getCss() {
 \
 .elveos-button {\
     display: block;\
+    background: rgb(0,0,0);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(73,73,73)), to(rgb(0,0,0)), color-stop(0.2, rgb(73,73,73)));\
     background: -moz-linear-gradient(90deg, rgb(0,0,0), rgb(73,73,73)) repeat scroll 0 0 transparent;\
     border: 1px solid rgb(78,78,78);\
     border-radius: 10px;\
@@ -213,11 +219,15 @@ function elveos_getCompactCss() {
     padding: 0;\
 }\
 .elveos-progress-bar-background {\
+    background: rgb(196,196,196);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(230,230,230)), to(rgb(196,196,196)), color-stop(0.2, rgb(230,230,230)));\
     background: -moz-linear-gradient(90deg, rgb(196,196,196), rgb(230,230,230)) repeat\ scroll 0 0 transparent;\
     margin-bottom: 0;\
     width: 100%;\
 }\
 .elveos-progress-bar-state {\
+    background: rgb(0,0,0);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(73,73,73)), to(rgb(0,0,0)), color-stop(0.2, rgb(73,73,73)));\
     background: -moz-linear-gradient(90deg, rgb(0,0,0), rgb(73,73,73)) repeat scroll 0 0 transparent;\
     margin-top: -16px;\
 }\
@@ -247,6 +257,8 @@ function elveos_getCompactCss() {
 }\
 .elveos-compact-button {\
     display: block;\
+    background: rgb(0,0,0);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(73,73,73)), to(rgb(0,0,0)), color-stop(0.2, rgb(73,73,73)));\
     background: -moz-linear-gradient(90deg, rgb(0,0,0), rgb(73,73,73)) repeat scroll 0 0 transparent;\
     border: 1px solid rgb(78,78,78);\
     border-radius: 7px;\
