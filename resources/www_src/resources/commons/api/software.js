@@ -183,7 +183,7 @@ function elveos_getCompactCss() {
     padding-top: 0px;\
     padding-bottom: 0px;\
     background: rgb(248,248,248);\
-    max-width: 350px;\
+    max-width: 280px;\
 }\
 .elveos-compact-feature {\
     margin: 10px;\
@@ -229,18 +229,18 @@ function elveos_getCompactCss() {
     width: 100%;\
 }\
 .elveos-feature-title {\
-    font-size: 20px;\
+    font-size: 16px;\
     color: rgb(51,51,51)\
 }\
 .elveos-progress-text {\
     color: black;\
     display: inline-block;\
-    font-size: 13px;\
+    font-size: 11px;\
     text-align: center;\
     width: 100%;\
 }\
 .elveos-important {\
-    font-size: 14px;\
+    font-size: 12px;\
     font-weight: bold;\
     margin-left: 1em;\
     margin-right: 1em;\
