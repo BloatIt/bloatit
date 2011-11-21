@@ -199,7 +199,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     protected void setRefused() {
         getDao().setRefused();
-        Reporting.reporter.reportAccountCharging(getValue() + "(" + getValuePaid() + ") from " + getAuthor().getLogin() + " (" + getAuthor().getId() + ") - REFUSED !" + getMessage());
+        Reporting.reporter.reportAccountCharging(getValueUnprotected() + "(" + getValuePaidUnprotected() + ") from " + getAuthorUnprotected().getLogin() + " (" + getAuthorUnprotected().getId() + ") - REFUSED !" + getMessageUnprotected());
     }
 
     /**
@@ -221,7 +221,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
             } catch (final UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("Fail to create invoice", e);
             }
-            Reporting.reporter.reportAccountCharging(getValue() + "(" + getValuePaid() + ") from " + getAuthor().getLogin() + " (" + getAuthor().getId() + ")");
+            Reporting.reporter.reportAccountCharging(getValueUnprotected() + "(" + getValuePaidUnprotected() + ") from " + getAuthorUnprotected().getLogin() + " (" + getAuthorUnprotected().getId() + ")");
             return true;
         }
         return false;
@@ -253,6 +253,17 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         return Actor.getActorFromDao(getDao().getAuthor());
     }
 
+    /**
+     * Gets the message. The message is the error (or not) message sent by the
+     * bank during a transaction.
+     * 
+     * @return the message
+     * @throws UnauthorizedReadOnlyBankDataAccessException
+     */
+    private String getMessageUnprotected() {
+        return getDao().getMessage();
+    }
+    
     /**
      * Gets the paid value.
      * 
