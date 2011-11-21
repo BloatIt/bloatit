@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.components;
+package com.bloatit.web.linkable.members.tabs;
 
 import java.math.BigDecimal;
 
@@ -123,6 +123,12 @@ public class InvoicingContactTab extends HtmlTab {
         country = Context.tr("Country: ");
         memberIdList.add(new HtmlDefineParagraph(country, emptyIfNull(contact.getCountry())));
 
+        // Tax identification
+        final String taxIdentification;
+        taxIdentification = Context.tr("Tax identification: ");
+        memberIdList.add(new HtmlDefineParagraph(taxIdentification, emptyIfNull(contact.getTaxIdentification())));
+
+        
         if (all) {
 
             memberIdList.add(new HtmlTitle(Context.tr("Invoice emission informations"), 2));
@@ -146,11 +152,7 @@ public class InvoicingContactTab extends HtmlTab {
             legalId = Context.tr("Legal identification: ");
             memberIdList.add(new HtmlDefineParagraph(legalId, emptyIfNull(contact.getLegalId())));
 
-            // Tax identification
-            final String taxIdentification;
-            taxIdentification = Context.tr("Tax identification: ");
-            memberIdList.add(new HtmlDefineParagraph(taxIdentification, emptyIfNull(contact.getTaxIdentification())));
-
+            
             // Tax rate
             final String taxRate;
             taxRate = Context.tr("Tax rate: ");

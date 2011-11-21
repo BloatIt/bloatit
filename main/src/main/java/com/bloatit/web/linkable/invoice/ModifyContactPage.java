@@ -39,6 +39,7 @@ import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -78,6 +79,12 @@ public final class ModifyContactPage extends LoggedElveosPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateInvoicingContactForm(loggedUser));
+        
+        
+        if (process.getNeedAllInfos()) {
+            layout.addRight(new SideBarDocumentationBlock("invoice_id_template"));
+        }
+        
         return layout;
     }
 
@@ -154,14 +161,16 @@ public final class ModifyContactPage extends LoggedElveosPage {
             newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getCountryParameter(),//
                                                  Context.tr("Country"),//
                                                  contact.getCountry()));
+            
+            // Tax identification
+            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
+                                               Context.tr("VAT identification number"),//
+                                               contact.getTaxIdentification(), Context.tr("Optional. For company only.") ));
+
+
 
             if (process.getNeedAllInfos()) {
                 final HtmlTitleBlock specificForm = new HtmlTitleBlock(Context.tr("Invoice emission"), 1);
-
-                // Invoice ID template
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
-                                                   Context.tr("Invoice ID template"),//
-                                                   contact.getInvoiceIdTemplate()));
 
                 // Invoice ID Number
                 BigDecimal invoiceIdNumber = contact.getInvoiceIdNumber();
@@ -172,26 +181,30 @@ public final class ModifyContactPage extends LoggedElveosPage {
                 }
 
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdNumberParameter(),//
-                                                   Context.tr("Invoice ID number"),//
-                                                   invoiceIdNumberText));
+                                                   Context.tr("Next Invoice ID number"),//
+                                                   invoiceIdNumberText, Context.tr("ID that will be used for the next generated invoice.")));
 
+                
+                // Invoice ID template
+                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
+                                                   Context.tr("Invoice ID template"),//
+                                                   contact.getInvoiceIdTemplate(), Context.tr("Format of the generated invoices. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'")));
+                
+                
+                
                 // Legal identification
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getLegalIdParameter(),//
                                                    Context.tr("Legal identification"),//
                                                    contact.getLegalId()));
 
-                // Tax identification
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
-                                                   Context.tr("Tax identification"),//
-                                                   contact.getTaxIdentification()));
-
                 // Tax Rate
-                BigDecimal taxRate = contact.getTaxRate().multiply(new BigDecimal("100"));
-
                 final FieldData fieldDataTaxRate = modifyInvoicingContextActionUrl.getTaxRateParameter().pickFieldData();
                 final HtmlPercentField inputTaxRate = new HtmlPercentField(fieldDataTaxRate.getName(), Context.tr("Tax Rate"));
                 if (fieldDataTaxRate.getSuggestedValue() == null) {
-                    inputTaxRate.setDefaultStringValue(taxRate);
+                    BigDecimal taxRate = contact.getTaxRate();
+                    if(taxRate != null) {
+                        inputTaxRate.setDefaultStringValue(taxRate.multiply(new BigDecimal("100")));
+                    }
                 } else {
                     inputTaxRate.setDefaultValue(fieldDataTaxRate.getSuggestedValue());
                 }

@@ -93,7 +93,10 @@ public class BloatitExampleDB { // NO_UCD
         fred.getContact().setStreet("Le superbe appartement à gauche");
         AuthToken.authenticate(thomas);
         thomas.getContact().setName("Thomas Guyard");
-        thomas.getContact().setStreet("Le superbe appartement à gauche");
+        thomas.getContact().setStreet("Rue Michel Ange");
+        thomas.getContact().setCity("Antony");
+        thomas.getContact().setPostalCode("92160");
+        thomas.getContact().setCountry("France");
         AuthToken.authenticate(yoann);
         yoann.getContact().setName("Yoann Plénet");
         yoann.getContact().setStreet("Le superbe appartement à gauche");
@@ -467,7 +470,14 @@ public class BloatitExampleDB { // NO_UCD
 
     private void setFeatureInFinishedState(final Feature feature) {
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
-        featureImpl.getDao().setFeatureState(FeatureState.FINISHED);
+        AuthToken.authenticate(admin);
+        try {
+            feature.setFeatureState(FeatureState.DEVELOPPING);
+            feature.getSelectedOffer().getCurrentMilestone().forceValidate();
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void withdrawMoney(final Member m, final int amount, final State completion) {
@@ -512,7 +522,7 @@ public class BloatitExampleDB { // NO_UCD
         final Member member = new Member(login, "plop", login + "@elveos.org", locale);
         AuthToken.authenticate(member);
         member.setFullname(name);
-        member.getDao().setActivationState(ActivationState.ACTIVE);
+        member.activate(member.getActivationKey());
         return member;
     }
 

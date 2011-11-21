@@ -61,6 +61,7 @@ import com.bloatit.model.Milestone;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.UnauthorizedReadOnlyBankDataAccessException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane;
@@ -193,7 +194,7 @@ public class AccountComponent extends HtmlPageComponent {
             addCell(new MoneyCell(contribution.getAmount().negate()));
         }
 
-        private HtmlDiv generateContributionDescription() {
+        private HtmlDiv generateContributionDescription() throws UnauthorizedPrivateAccessException {
             final HtmlDiv description = new HtmlDiv("description");
             final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
             final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", contribution.getFeature().getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle() ), softwareLink);
@@ -222,7 +223,7 @@ public class AccountComponent extends HtmlPageComponent {
             description.add(new HtmlDefineParagraph(tr("Status: "), status));
 
             PageIterable<ContributionInvoice> invoices = contribution.getInvoices();
-            if (invoices.size() > 0) {
+            if (invoices.size() > 1) {
                 HtmlSpan invoiceList = new HtmlSpan();
                 for (ContributionInvoice invoice : invoices) {
                     invoiceList.addText(" ");
@@ -230,6 +231,13 @@ public class AccountComponent extends HtmlPageComponent {
                                                                                                                                .getPosition())));
                 }
                 description.add(new HtmlDefineParagraph(tr("Invoices: "), invoiceList));
+            } else if(invoices.size() == 1) {
+                HtmlSpan invoiceList = new HtmlSpan();
+                for (ContributionInvoice invoice : invoices) {
+                    invoiceList.addText(" ");
+                    invoiceList.add(new ContributionInvoiceResourceUrl(invoice).getHtmlLink(invoice.getInvoiceNumber()));
+                }
+                description.add(new HtmlDefineParagraph(tr("Invoice: "), invoiceList));
             }
             return description;
         }

@@ -1,0 +1,24 @@
+Motif de numéro de facture
+==========================
+
+Elveos is a custom template to generate individual IDs for each contributor.
+
+Champs
+------
+
+For each invoice, the following fields of the invoice ID template  will be replaced by the right values and the next id number will be incremented:
+* {ID|x} : id number on x characters
+* {YEAR|2} : year on 2 characters
+* {YEAR|4} : year on 4 characters
+* {MONTH} : month on 2 characters
+* {DAY} : day of the month on 2 characters
+* {YDAY} : day of the year on 2 characters
+* {WEEK} : week of the year on 2 characters
+
+Exemple:
+--------
+<code>ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}</code>
+
+Le 08/09/2001 avec 42 comme numéro facture suivant, ce motif génére <code>ELVEOS-20110809-F0042</code>
+                
+

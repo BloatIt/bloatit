@@ -247,7 +247,11 @@ public class DaoOffer extends DaoKudosable {
      *         left.
      */
     public DaoMilestone getCurrentMilestone() {
-        return this.milestones.get(this.currentMilestone);
+        if (this.milestones.size() > this.currentMilestone) {
+            return this.milestones.get(this.currentMilestone);
+        } else {
+            return getLastMilestone();
+        }
     }
 
     /**
