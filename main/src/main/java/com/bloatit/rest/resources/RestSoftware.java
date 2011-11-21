@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.rest.list.RestFeatureList;
@@ -163,7 +164,11 @@ public class RestSoftware extends RestElement<Software> {
      */
     @XmlElement
     public RestFileMetadata getImage() {
-        return new RestFileMetadata(model.getImage());
+        FileMetadata image = model.getImage();
+        if (image != null) {
+            return new RestFileMetadata(image);
+        }
+        return null;
     }
 
     // ---------------------------------------------------------------------------------------
