@@ -298,7 +298,7 @@ public final class Member extends Actor<DaoMember> implements User {
         if (getDao().getActivationState() != ActivationState.VALIDATING) {
             return false;
         }
-        if (getActivationKey().equals(activationKey)) {
+        if (getActivationKey().equals(activationKey) || getResetKey().equals(activationKey)) {
             getDao().setActivationState(ActivationState.ACTIVE);
             addToKarma(ModelConfiguration.getKarmaActivationAmount());
             return true;
@@ -311,6 +311,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
         return false;
     }
+
 
     public boolean hasEmailToActivate() {
         return getDao().getEmailToActivate() != null;
@@ -332,7 +333,10 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public void setEmailToActivate(final String email) {
         getDao().setEmailToActivate(email);
-
+    }
+    
+    public void acceptNewsLetter(boolean newsletter) {
+        getDao().acceptNewsLetter(newsletter);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -453,6 +457,10 @@ public final class Member extends Actor<DaoMember> implements User {
     // TODO: Create a send notification / mail
     public String getEmailUnprotected() {
         return getDao().getEmail();
+    }
+    
+    public boolean getNewsletterAccept() {
+        return getDao().getNewsletterAccept();
     }
 
     // no right management: this is public data

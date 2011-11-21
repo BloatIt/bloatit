@@ -23,8 +23,10 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
@@ -124,7 +126,13 @@ public final class SignUpPage extends ElveosPage {
         langInput.setDefaultValue(targetUrl.getLangParameter().getStringValue(), Context.getLocalizator().getLanguageCode());
         form.add(langInput);
 
-        
+        // Newsletter
+        final FieldData newsletterFieldData = targetUrl.getNewsletterParameter().pickFieldData();
+        final HtmlCheckbox newsletterinput = new HtmlCheckbox(newsletterFieldData.getName(), LabelPosition.BEFORE);
+        newsletterinput.setLabel(Context.tr("Register to newsletter"));
+        newsletterinput.setComment(Context.tr("Allows Elveos to send you a newsletter. Note we don't like spam, we won't send a lot of newsletter. Maybe one every 2 or 3 months."));
+        newsletterinput.setDefaultValue(newsletterFieldData.getSuggestedValue());
+        form.add(newsletterinput);
 
         if (invoice != null && invoice) {
             

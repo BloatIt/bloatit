@@ -258,10 +258,13 @@ public class DaoMember extends DaoActor {
 
     @Basic(optional = false)
     private Locale locale;
+    
+    @Basic(optional = false)
+    private boolean newsletter;
 
     @Column(length = 1024)
     private String description;
-
+    
     @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoFileMetadata avatar;
@@ -416,6 +419,7 @@ public class DaoMember extends DaoActor {
         this.karma = ModelConfiguration.getKarmaInitialInitial();
         this.fullname = "";
         this.description = "";
+        this.newsletter = false;
     }
 
     /**
@@ -589,6 +593,10 @@ public class DaoMember extends DaoActor {
         } else {
             existingService.reset(accessToken, level);
         }
+    }
+    
+    public void acceptNewsLetter(boolean newsletter) {
+        this.newsletter = newsletter;
     }
 
     // ======================================================================
@@ -791,6 +799,10 @@ public class DaoMember extends DaoActor {
         q.setEntity("member", this);
         q.setParameter("state", State.PENDING);
         return (Long) q.uniqueResult();
+    }
+    
+    public boolean getNewsletterAccept() {
+        return newsletter;
     }
 
     /**

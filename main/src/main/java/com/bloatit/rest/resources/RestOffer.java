@@ -35,6 +35,7 @@ import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.Offer;
+import com.bloatit.model.Team;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestFileMetadataList;
@@ -171,6 +172,7 @@ public class RestOffer extends RestElement<Offer> {
      * @see com.bloatit.model.Offer#getFeature()
      */
     @XmlElement
+    @XmlIDREF
     public RestFeature getFeature() {
         return new RestFeature(model.getFeature());
     }
@@ -229,6 +231,7 @@ public class RestOffer extends RestElement<Offer> {
      * @see com.bloatit.model.UserContent#getAsTeam()
      */
     @XmlElement(name = "asteam")
+    @XmlIDREF
     public RestTeam getAsTeam() {
         final RestTeam restTeam = new RestTeam(model.getAsTeam());
         if (restTeam.isNull()) {
@@ -236,6 +239,20 @@ public class RestOffer extends RestElement<Offer> {
         }
         return restTeam;
     }
+    
+    /**
+     * The name of the actor
+     */
+    @XmlAttribute
+    public String getActorName() {
+        Team team = model.getAsTeam();
+        if(team != null) {
+            return team.getDisplayName();
+        }
+        return model.getMember().getDisplayName();
+    }
+    
+    
 
     /**
      * @see com.bloatit.model.UserContent#getFiles()

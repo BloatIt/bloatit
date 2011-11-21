@@ -230,9 +230,15 @@ public final class Header extends HtmlElement {
             }
         };
         headerLink.addAttribute("href", link.getHref());
-        headerLink.addAttribute("type", link.getType());
         headerLink.addAttribute("rel", link.getRel());
-        headerLink.addAttribute("title", link.getTitle());
+        
+        // Type & Title are optionals
+        if (link.getType() != null) {
+            headerLink.addAttribute("type", link.getType());
+        }
+        if (link.getTitle() != null) {
+            headerLink.addAttribute("title", link.getTitle());
+        }
         linkPh.add(headerLink);
     }
 
