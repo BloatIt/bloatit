@@ -96,12 +96,13 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         this.city = url.getCity();
         this.country = url.getCountry();
         this.extras = url.getExtras();
-
+        this.taxIdentification = url.getTaxIdentification();
+        
         // Specific informations
         this.invoiceIdTemplate = url.getInvoiceIdTemplate();
         this.invoiceIdNumber = url.getInvoiceIdNumber();
         this.legalId = url.getLegalId();
-        this.taxIdentification = url.getTaxIdentification();
+        
         this.taxRate = url.getTaxRate();
     }
 
@@ -114,12 +115,12 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
             process.getActor().getContact().setPostalCode(postalCode);
             process.getActor().getContact().setCity(city);
             process.getActor().getContact().setCountry(country);
+            process.getActor().getContact().setTaxIdentification(taxIdentification);
 
             if (process.getNeedAllInfos()) {
                 process.getActor().getContact().setInvoiceIdTemplate(invoiceIdTemplate);
                 process.getActor().getContact().setInvoiceIdNumber(invoiceIdNumber.setScale(0, BigDecimal.ROUND_HALF_EVEN));
                 process.getActor().getContact().setLegalId(legalId);
-                process.getActor().getContact().setTaxIdentification(taxIdentification);
                 process.getActor().getContact().setTaxRate(taxRate.divide(new BigDecimal("100"), 4, BigDecimal.ROUND_HALF_EVEN));
             }
 
@@ -176,7 +177,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         session.addParameter(url.getCityParameter());
         session.addParameter(url.getCountryParameter());
 
-        if (process.getNeedAllInfos()) {
+        if (process != null && process.getNeedAllInfos()) {
             session.addParameter(url.getInvoiceIdTemplateParameter());
             session.addParameter(url.getInvoiceIdNumberParameter());
             session.addParameter(url.getLegalIdParameter());

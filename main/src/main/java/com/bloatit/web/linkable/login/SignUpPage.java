@@ -170,6 +170,12 @@ public final class SignUpPage extends ElveosPage {
             form.add(generateTextField(targetUrl.getPostalCodeParameter(),//
                                        Context.tr("Postcode")//
             ));
+            
+            // Tax identification
+            form.add(generateTextField(targetUrl.getTaxIdentificationParameter(),//
+                                               Context.tr("VAT identification number"),//
+                                               Context.tr("Optional. For company only.") ));
+
 
         }
         // Submit

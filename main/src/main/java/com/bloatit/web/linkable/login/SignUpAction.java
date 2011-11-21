@@ -97,6 +97,10 @@ public final class SignUpAction extends ElveosAction {
     @Optional
     private final String extras;
 
+    @RequestParam(role = Role.POST)
+    @Optional()
+    private final String taxIdentification;
+    
     private final SignUpActionUrl url;
 
     public SignUpAction(final SignUpActionUrl url) {
@@ -117,6 +121,7 @@ public final class SignUpAction extends ElveosAction {
         this.extras = url.getExtras();
         this.postalCode = url.getPostalCode();
         this.invoice = url.getInvoice();
+        this.taxIdentification = url.getTaxIdentification();
     }
 
     @Override
@@ -150,6 +155,7 @@ public final class SignUpAction extends ElveosAction {
                 m.getContact().setPostalCode(postalCode);
                 m.getContact().setCity(city);
                 m.getContact().setCountry(country);
+                m.getContact().setTaxIdentification(taxIdentification);
             } catch (UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
             }
