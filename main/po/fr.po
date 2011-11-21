@@ -754,7 +754,7 @@ msgstr "La <0::dernière version> a été livrée le {0}."
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:462
 msgid " Test it and report bugs."
-msgstr "Testez le et signalez les bugs."
+msgstr "Testez la et signalez les bugs."
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:463
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:100
