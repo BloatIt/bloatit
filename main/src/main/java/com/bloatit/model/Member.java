@@ -298,7 +298,7 @@ public final class Member extends Actor<DaoMember> implements User {
         if (getDao().getActivationState() != ActivationState.VALIDATING) {
             return false;
         }
-        if (getActivationKey().equals(activationKey)) {
+        if (getActivationKey().equals(activationKey) || getResetKey().equals(activationKey)) {
             getDao().setActivationState(ActivationState.ACTIVE);
             addToKarma(ModelConfiguration.getKarmaActivationAmount());
             return true;
@@ -311,6 +311,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
         return false;
     }
+
 
     public boolean hasEmailToActivate() {
         return getDao().getEmailToActivate() != null;
