@@ -465,7 +465,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             element.add(link);
         }
 
-        if (selectedOffer.getAuthor().equals(AuthToken.getMember())) {
+        if (selectedOffer.getCurrentMilestone().canAddRelease()) {
             final HtmlLink link = new CreateReleasePageUrl(currentMilestone).getHtmlLink(Context.tr("Add a release"));
             link.setCssClass("button");
             element.add(link);
