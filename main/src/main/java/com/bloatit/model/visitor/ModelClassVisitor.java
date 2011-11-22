@@ -24,6 +24,7 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
+import com.bloatit.model.Event;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
@@ -104,4 +105,6 @@ public interface ModelClassVisitor<ReturnType> {
     ReturnType visit(ExternalServiceMembership externalService);
 
     ReturnType visit(Follow model);
+
+    ReturnType visit(Event event);
 }

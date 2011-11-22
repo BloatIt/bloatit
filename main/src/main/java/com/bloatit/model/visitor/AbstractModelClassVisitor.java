@@ -24,6 +24,7 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
+import com.bloatit.model.Event;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
@@ -186,6 +187,11 @@ public class AbstractModelClassVisitor<T> implements ModelClassVisitor<T> {
 
     @Override
     public T visit(Follow model) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public T visit(Event event) {
         throw new NotImplementedException();
     }
 }

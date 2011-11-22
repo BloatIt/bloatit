@@ -317,8 +317,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     @Override
     public Identifiable<?> visit(DaoEvent daoEvent) {
-        // TODO !!
-        return null;
+        return Event.create(daoEvent);
     }
 
 }

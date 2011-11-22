@@ -283,6 +283,11 @@ public class Rights {
             throw new NotImplementedException();
         }
 
+        @Override
+        public Team visit(Event event) {
+            throw new NotImplementedException();
+        }
+
     }
 
     private static class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -377,6 +382,11 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(Follow model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(Event event) {
             throw new NotImplementedException();
         }
     }
@@ -474,33 +484,36 @@ public class Rights {
             throw new NotImplementedException();
         }
 
+        @Override
+        public Boolean visit(Event event) {
+            throw new NotImplementedException();
+        }
+
     }
 
     // Karma
     public boolean hasKarmaToComment() {
         int karmaNeed = ModelConfiguration.getKudosableMinKarmaToComment();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
-    
+
     public boolean hasKarmaToCreateFeature() {
         int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
-    
+
     public boolean hasKarmaToMakeOffer() {
         int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
-    
 
     public boolean hasKarmaToVoteUp() {
         int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
-    
-    
+
     public boolean hasKarmaToVoteDown() {
         int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
 }

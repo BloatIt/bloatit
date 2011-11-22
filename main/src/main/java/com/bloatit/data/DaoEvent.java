@@ -29,12 +29,56 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+import com.bloatit.framework.utils.PageIterable;
 
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                      name = "event.byMemberDate",
+                      query = "FROM DaoEvent e, DaoFollowFeature f, DaoFollowSoftware s, DaoFollowActor a " +
+                              "WHERE (( " +
+                              "  f.follower = :member " +
+                              "  AND f.featureComment = e.isFeatureComment " +
+                              "  AND f.bugComment = e.isBugComment " +
+                              "  AND f.releaseComment = e.isReleaseComment " +
+                              "  AND f.followed = e.feature " +
+                              ") OR ( " +
+                              "  s.follower = :member " +
+                              "  AND s.followed = e.feature.software " +
+                              ") OR (" +
+                              "  a.follower = :member " +
+                              "  AND (a.followed = e.feature.member OR a.followed = e.feature.asTeam) " +
+                              ")) " +
+                              "AND e.creationDate >= :date " ),
+          @NamedQuery(
+                      name =  "event.byMemberDate.withMail",
+                      query = "FROM DaoEvent e, DaoFollowFeature f, DaoFollowSoftware s, DaoFollowActor a " +
+                              "WHERE (( " +
+                              "  f.follower = :member " +
+                              "  AND f.featureComment = e.isFeatureComment " +
+                              "  AND f.bugComment = e.isBugComment " +
+                              "  AND f.releaseComment = e.isReleaseComment " +
+                              "  AND f.followed = e.feature " +
+                              ") OR ( " +
+                              "  s.follower = :member " +
+                              "  AND s.followed = e.feature.software " +
+                              ") OR (" +
+                              "  a.follower = :member " +
+                              "  AND (a.followed = e.feature.member OR a.followed = e.feature.asTeam) " +
+                              ")) " +
+                              "AND e.creationDate >= :date " +
+                              "AND f.mail = true " +
+                              "AND s.mail = true " +
+                              "AND a.mail = true " ),
+})
+//@formatter:on
 public class DaoEvent extends DaoIdentifiable {
 
     public enum EventType {
@@ -44,27 +88,27 @@ public class DaoEvent extends DaoIdentifiable {
         IN_DEVELOPPING_STATE, //
         DISCARDED, // TODO: remove every event from this feature.
         FINICHED, //
-
+        
         // Contributions
         ADD_CONTRIBUTION, //
         REMOVE_CONTRIBUTION, //
-
+        
         // Offer
         ADD_OFFER, //
         REMOVE_OFFER, //
         ADD_SELECTED_OFFER, //
         CHANGE_SELECTED_OFFER, //
         REMOVE_SELECTED_OFFER, //
-
+        
         // Release
         ADD_RELEASE, //
-
+        
         // Bugs
         ADD_BUG, //
         BUG_CHANGE_LEVEL, //
         BUG_SET_RESOLVED, //
         BUG_SET_DEVELOPING, //
-
+        
         // Comment
         FEATURE_ADD_COMMENT, //
         RELEASE_ADD_COMMENT, //
@@ -84,8 +128,9 @@ public class DaoEvent extends DaoIdentifiable {
     @Basic(optional = false)
     private Date creationDate;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private DaoFeature feature;
+
     @ManyToOne
     private DaoContribution contribution;
     @ManyToOne
@@ -98,6 +143,14 @@ public class DaoEvent extends DaoIdentifiable {
     private DaoRelease release;
     @ManyToOne
     private DaoMilestone milestone;
+
+    public static PageIterable<DaoEvent> getEvent(DaoMember member, Date fromDate) {
+        return new QueryCollection<DaoEvent>("event.byMemberDate");
+    }
+
+    public static PageIterable<DaoEvent> getMailEvent(DaoMember member, Date fromDate) {
+        return new QueryCollection<DaoEvent>("event.byMemberDate.withMail");
+    }
 
     private static DaoEvent createAndPersist(EventType type,
                                              DaoFeature feature,
@@ -119,155 +172,46 @@ public class DaoEvent extends DaoIdentifiable {
         return event;
     }
 
-    public static class FeatureEvent {
-        protected final DaoEvent event;
-
-        public FeatureEvent(DaoEvent event) {
-            this.event = event;
-        }
-
-        public EventType getType() {
-            return event.type;
-        }
-
-        public DaoFeature getFeature() {
-            return event.feature;
-        }
-
-        public Date getCreationDate() {
-            return event.creationDate;
-        }
+    public static DaoEvent createFeatureEvent(DaoFeature feature, EventType type) {
+        return (createAndPersist(type, feature, null, null, null, null, null, null));
     }
 
-    public static class ContributionEvent extends FeatureEvent {
-        public ContributionEvent(DaoEvent event) {
-            super(event);
-        }
-
-        public DaoContribution getContribution() {
-            return event.contribution;
-        }
+    public static DaoEvent createContributionEvent(DaoFeature feature, EventType type, DaoContribution contribution) {
+        return (createAndPersist(type, feature, contribution, null, null, null, null, null));
     }
 
-    public static class OfferEvent extends FeatureEvent {
-        public OfferEvent(DaoEvent event) {
-            super(event);
-        }
-
-        public DaoOffer getOffer() {
-            return event.offer;
-        }
+    public static DaoEvent createOfferEvent(DaoFeature feature, EventType type, DaoOffer offer) {
+        return (createAndPersist(type, feature, null, offer, null, null, null, null));
     }
 
-    public static class FeatureCommentEvent extends FeatureEvent {
-        public FeatureCommentEvent(DaoEvent event) {
-            super(event);
-        }
-
-        public DaoComment getComment() {
-            return event.comment;
-        }
+    public static DaoEvent createCommentEvent(DaoFeature feature, EventType type, DaoComment comment) {
+        return (createAndPersist(type, feature, null, null, comment, null, null, null));
     }
 
-    public static class ReleaseEvent extends FeatureEvent {
-        public ReleaseEvent(DaoEvent event) {
-            super(event);
-        }
-
-        public DaoRelease getRelease() {
-            return event.release;
-        }
-
-        public DaoOffer getOffer() {
-            return event.offer;
-        }
-
-        public DaoMilestone getMilestone() {
-            return event.milestone;
-        }
+    public static DaoEvent createCommentEvent(DaoFeature feature,
+                                              EventType type,
+                                              DaoBug bug,
+                                              DaoComment comment,
+                                              DaoOffer offer,
+                                              DaoMilestone milestone) {
+        return (createAndPersist(type, feature, null, offer, comment, bug, null, milestone));
     }
 
-    public static class ReleaseCommentEvent extends ReleaseEvent {
-
-        public ReleaseCommentEvent(DaoEvent event) {
-            super(event);
-        }
-
-        public DaoComment getComment() {
-            return event.comment;
-        }
+    public static DaoEvent createBugEvent(DaoFeature feature, EventType type, DaoBug bug, DaoOffer offer, DaoMilestone milestone) {
+        return (createAndPersist(type, feature, null, offer, null, bug, null, milestone));
     }
 
-    public static class BugEvent extends FeatureEvent {
-
-        public BugEvent(DaoEvent event) {
-            super(event);
-        }
-
-        public DaoBug getBug() {
-            return event.bug;
-        }
-
-        public DaoOffer getOffer() {
-            return event.offer;
-        }
-
-        public DaoMilestone getMilestone() {
-            return event.milestone;
-        }
+    public static DaoEvent createReleaseEvent(DaoFeature feature, EventType type, DaoRelease release, DaoOffer offer, DaoMilestone milestone) {
+        return (createAndPersist(type, feature, null, offer, null, null, release, milestone));
     }
 
-    public static class BugCommentEvent extends BugEvent {
-
-        public BugCommentEvent(DaoEvent event) {
-            super(event);
-        }
-
-        public DaoComment getComment() {
-            return event.comment;
-        }
-    }
-
-    public static FeatureEvent createFeatureEvent(DaoFeature feature, EventType type) {
-        return new FeatureEvent(createAndPersist(type, feature, null, null, null, null, null, null));
-    }
-
-    public static ContributionEvent createContributionEvent(DaoFeature feature, EventType type, DaoContribution contribution) {
-        return new ContributionEvent(createAndPersist(type, feature, contribution, null, null, null, null, null));
-    }
-
-    public static OfferEvent createOfferEvent(DaoFeature feature, EventType type, DaoOffer offer) {
-        return new OfferEvent(createAndPersist(type, feature, null, offer, null, null, null, null));
-    }
-
-    public static FeatureCommentEvent createCommentEvent(DaoFeature feature, EventType type, DaoComment comment) {
-        return new FeatureCommentEvent(createAndPersist(type, feature, null, null, comment, null, null, null));
-    }
-
-    public static BugCommentEvent createCommentEvent(DaoFeature feature,
+    public static DaoEvent createReleaseCommentEvent(DaoFeature feature,
                                                      EventType type,
-                                                     DaoBug bug,
                                                      DaoComment comment,
+                                                     DaoRelease release,
                                                      DaoOffer offer,
                                                      DaoMilestone milestone) {
-        return new BugCommentEvent(createAndPersist(type, feature, null, offer, comment, bug, null, milestone));
-    }
-
-    public static BugEvent createBugEvent(DaoFeature feature, EventType type, DaoBug bug, DaoOffer offer, DaoMilestone milestone) {
-        return new BugEvent(createAndPersist(type, feature, null, offer, null, bug, null, milestone));
-    }
-
-    public static ReleaseEvent createReleaseEvent(DaoFeature feature, EventType type, DaoRelease release, DaoOffer offer, DaoMilestone milestone) {
-        return new ReleaseEvent(createAndPersist(type, feature, null, offer, null, null, release, milestone));
-    }
-
-    public static ReleaseCommentEvent createReleaseCommentEvent(DaoFeature feature,
-                                                                EventType type,
-                                                                DaoComment comment,
-                                                                DaoRelease release,
-                                                                DaoOffer offer,
-                                                                DaoMilestone milestone) {
-        return new ReleaseCommentEvent(createAndPersist(type, feature, null, offer, comment, null, release, milestone));
+        return (createAndPersist(type, feature, null, offer, comment, null, release, milestone));
     }
 
     private DaoEvent(EventType type,
@@ -294,6 +238,54 @@ public class DaoEvent extends DaoIdentifiable {
         this.bug = bug;
         this.release = release;
         this.milestone = milestone;
+    }
+
+    public final EventType getType() {
+        return type;
+    }
+
+    public final boolean isBugComment() {
+        return isBugComment;
+    }
+
+    public final boolean isFeatureComment() {
+        return isFeatureComment;
+    }
+
+    public final boolean isReleaseComment() {
+        return isReleaseComment;
+    }
+
+    public final Date getCreationDate() {
+        return creationDate;
+    }
+
+    public final DaoFeature getFeature() {
+        return feature;
+    }
+
+    public final DaoContribution getContribution() {
+        return contribution;
+    }
+
+    public final DaoOffer getOffer() {
+        return offer;
+    }
+
+    public final DaoComment getComment() {
+        return comment;
+    }
+
+    public final DaoBug getBug() {
+        return bug;
+    }
+
+    public final DaoRelease getRelease() {
+        return release;
+    }
+
+    public final DaoMilestone getMilestone() {
+        return milestone;
     }
 
     // ======================================================================

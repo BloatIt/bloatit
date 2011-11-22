@@ -22,6 +22,7 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
+import com.bloatit.data.DaoEvent;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalService;
 import com.bloatit.data.DaoExternalServiceMembership;
@@ -49,6 +50,7 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
+import com.bloatit.model.Event;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
@@ -215,5 +217,10 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     @Override
     public Class<?> visit(Follow model) {
         return DaoFollow.class;
+    }
+
+    @Override
+    public Class<?> visit(Event event) {
+        return DaoEvent.class;
     }
 }
