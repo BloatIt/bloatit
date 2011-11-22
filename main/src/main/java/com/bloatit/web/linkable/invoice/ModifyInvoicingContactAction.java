@@ -60,8 +60,18 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
     private final String country;
 
     @RequestParam(role = Role.POST)
+    @Optional()
+    private final Boolean isCompany;
+    
+    @RequestParam(role = Role.POST)
     @Optional
     private final String extras;
+    
+    @RequestParam(role = Role.POST)
+    @Optional()
+    private final String taxIdentification;
+
+
 
     // Specific informations
     @RequestParam(role = Role.POST)
@@ -76,11 +86,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
     @Optional()
     private final String legalId;
 
-    @RequestParam(role = Role.POST)
-    @Optional()
-    private final String taxIdentification;
-
-    @RequestParam(role = Role.POST)
+        @RequestParam(role = Role.POST)
     @Optional()
     private final BigDecimal taxRate;
 
@@ -97,6 +103,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         this.country = url.getCountry();
         this.extras = url.getExtras();
         this.taxIdentification = url.getTaxIdentification();
+        this.isCompany = (url.getIsCompany() == null ? false: url.getIsCompany());
         
         // Specific informations
         this.invoiceIdTemplate = url.getInvoiceIdTemplate();
@@ -116,6 +123,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
             process.getActor().getContact().setCity(city);
             process.getActor().getContact().setCountry(country);
             process.getActor().getContact().setTaxIdentification(taxIdentification);
+            process.getActor().getContact().setIsCompany(isCompany);
 
             if (process.getNeedAllInfos()) {
                 process.getActor().getContact().setInvoiceIdTemplate(invoiceIdTemplate);

@@ -22,13 +22,19 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlPercentField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
@@ -45,6 +51,7 @@ import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
+import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.ModifyContactPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 
@@ -110,6 +117,18 @@ public final class ModifyContactPage extends LoggedElveosPage {
 
         try {
 
+            //Is company
+            FieldData isCompanyData = modifyInvoicingContextActionUrl.getIsCompanyParameter().pickFieldData();
+            HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(isCompanyData.getName(), LabelPosition.BEFORE);
+            isCompanyCheckbox.setLabel(Context.tr("I represent a company"));
+            isCompanyCheckbox.addErrorMessages(isCompanyData.getErrorMessages());
+            newContactForm.add(isCompanyCheckbox);
+            if (isCompanyData.getSuggestedValue() == null) {
+                isCompanyCheckbox.setDefaultValue((process.getActor().getContact().isCompany()? "true": "false"));
+            } else {
+                isCompanyCheckbox.setDefaultValue(isCompanyData.getSuggestedValue());
+            }
+            
             // Name
             final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
 
@@ -163,11 +182,18 @@ public final class ModifyContactPage extends LoggedElveosPage {
                                                  contact.getCountry()));
             
             // Tax identification
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
-                                               Context.tr("VAT identification number"),//
-                                               contact.getTaxIdentification(), Context.tr("Optional. For company only.") ));
+            HtmlTextField taxField = generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
+                              Context.tr("VAT identification number"),//
+                              contact.getTaxIdentification(), Context.tr("Optional.") );
+            HtmlDiv hidableDiv = new HtmlDiv();
+            hidableDiv.add(taxField);
+            newContactForm.add(hidableDiv);
 
 
+            JsShowHide jsShowHide = new JsShowHide(newContactForm, contact.isCompany());
+            jsShowHide.addActuator(isCompanyCheckbox);
+            jsShowHide.addListener(hidableDiv);
+            jsShowHide.apply();
 
             if (process.getNeedAllInfos()) {
                 final HtmlTitleBlock specificForm = new HtmlTitleBlock(Context.tr("Invoice emission"), 1);

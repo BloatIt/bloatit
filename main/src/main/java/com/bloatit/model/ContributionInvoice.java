@@ -119,9 +119,16 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
         final String receiverExtras = recipientContact.getExtras();
         final String receiverCity = recipientContact.getPostalCode() + " " + recipientContact.getCity();
         final String receiverCountry = recipientContact.getCountry();
+        final String receiverTaxIdentification = recipientContact.getTaxIdentification();
         final Date invoiceDate = DateUtils.now();
 
-        final BigDecimal taxRate = emitterActor.getContact().getTaxRate();
+        BigDecimal taxRate = emitterActor.getContact().getTaxRate();
+        
+        //If VAT number is define for both emitter and receiver, no tax are applied.
+        if(receiverTaxIdentification != null && sellerTaxIdentification != null) {
+            taxRate = BigDecimal.ZERO;
+        }
+        
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
@@ -137,6 +144,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                                          receiverExtras,
                                                                          receiverCity,
                                                                          receiverCountry,
+                                                                         receiverTaxIdentification,
                                                                          invoiceDate,
                                                                          deliveryName,
                                                                          priceExcludingTax,
@@ -161,6 +169,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                        receiverExtras,
                                                        receiverCity,
                                                        receiverCountry,
+                                                       receiverTaxIdentification,
                                                        invoiceDate,
                                                        deliveryName,
                                                        priceExcludingTax,

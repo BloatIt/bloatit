@@ -23,4 +23,5 @@
     <include file="liquibase/add-foreign-key-on-usercontent.xml" />
     <include file="liquibase/add-foreign-key-on-member.xml" />
     <include file="liquibase/add-newsletter.xml" />
+    <include file="liquibase/add-contact-iscompany.xml" />
 </databaseChangeLog>

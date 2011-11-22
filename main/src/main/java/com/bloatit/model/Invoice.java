@@ -130,18 +130,27 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
         final String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
 
-        final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
-        final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
-        final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
-
+        
         Contact recipientContact = recipientActor.getContactUnprotected();
         final String receiverName = recipientContact.getName();
         final String receiverStreet = recipientContact.getStreet();
         final String receiverExtras = recipientContact.getExtras();
         final String receiverCity = recipientContact.getPostalCode() + " " + recipientContact.getCity();
         final String receiverCountry = recipientContact.getCountry();
+        final String receiverTaxIdentification = recipientContact.getTaxIdentification();
         final Date invoiceDate = DateUtils.now();
 
+        
+        BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
+        
+        if(receiverTaxIdentification != null) {
+            taxRate = BigDecimal.ZERO;
+        }
+        
+        final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
+        final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
+
+        
         final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
                                                                          invoiceId,
                                                                          sellerName,
@@ -154,6 +163,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                                                          receiverExtras,
                                                                          receiverCity,
                                                                          receiverCountry,
+                                                                         receiverTaxIdentification,
                                                                          invoiceDate,
                                                                          deliveryName,
                                                                          priceExcludingTax,
@@ -177,6 +187,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                            receiverExtras,
                                            receiverCity,
                                            receiverCountry,
+                                           receiverTaxIdentification,
                                            invoiceDate,
                                            deliveryName,
                                            priceExcludingTax,

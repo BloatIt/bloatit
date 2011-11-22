@@ -17,8 +17,8 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPos
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
@@ -135,15 +136,25 @@ public final class SignUpPage extends ElveosPage {
         form.add(newsletterinput);
 
         if (invoice != null && invoice) {
-            
-         // Invoice
+
+            // Invoice
 
             final HtmlTitle invoicingTitle = new HtmlTitle(Context.tr("Invoicing informations"), 1);
             form.add(invoicingTitle);
 
+            // Is company
+            FieldData isCompanyData = targetUrl.getIsCompanyParameter().pickFieldData();
+            HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(isCompanyData.getName(), LabelPosition.BEFORE);
+            isCompanyCheckbox.setLabel(Context.tr("I represent a company"));
+            isCompanyCheckbox.addErrorMessages(isCompanyData.getErrorMessages());
+            form.add(isCompanyCheckbox);
+            if (isCompanyData.getSuggestedValue() != null) {
+                isCompanyCheckbox.setDefaultValue(isCompanyData.getSuggestedValue());
+            }
+
             // Name
             final FieldData nameData = targetUrl.getNameParameter().pickFieldData();
-            
+
             final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Name"));
             nameInput.setDefaultValue(nameData.getSuggestedValue());
             nameInput.addErrorMessages(nameData.getErrorMessages());
@@ -170,12 +181,19 @@ public final class SignUpPage extends ElveosPage {
             form.add(generateTextField(targetUrl.getPostalCodeParameter(),//
                                        Context.tr("Postcode")//
             ));
-            
-            // Tax identification
-            form.add(generateTextField(targetUrl.getTaxIdentificationParameter(),//
-                                               Context.tr("VAT identification number"),//
-                                               Context.tr("Optional. For company only.") ));
 
+            // Tax identification
+            HtmlTextField taxField = generateTextField(targetUrl.getTaxIdentificationParameter(),//
+                                                       Context.tr("VAT identification number"),//
+                                                       Context.tr("Optional."));
+            HtmlDiv hidableDiv = new HtmlDiv();
+            hidableDiv.add(taxField);
+            form.add(hidableDiv);
+
+            JsShowHide jsShowHide = new JsShowHide(form, false);
+            jsShowHide.addActuator(isCompanyCheckbox);
+            jsShowHide.addListener(hidableDiv);
+            jsShowHide.apply();
 
         }
         // Submit
