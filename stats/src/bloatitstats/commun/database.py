@@ -104,6 +104,8 @@ class database:
             AND netloc NOT LIKE '%%elveos.org' 
             AND netloc NOT IN ('127.0.0.1', 'localhost', 'mercanet.bnpparibas.net') 
             AND netloc NOT LIKE '%%.local'
+            AND remote_addr NOT IN ('96.44.143.234','96.44.142.250','178.238.232.13','193.34.144.193',
+            '178.238.232.234','68.169.86.222','178.238.232.158','68.169.86.220','46.17.96.220','109.73.67.120')
             AND url NOT LIKE '%featurefeed%' 
             AND url NOT LIKE '%%softwarefeed%%' 
             AND url NOT LIKE '/__/%login' 

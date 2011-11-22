@@ -66,23 +66,6 @@ public class DaoFeatureTest extends DataTestUnit {
     }
 
     @Test
-    public void testDeleteFeature() {
-        final DaoFeature feature = DaoFeature.createAndPersist(yo,
-                                                               null,
-                                                               DaoDescription.createAndPersist(yo,
-                                                                                               null,
-                                                                                               Language.FR,
-                                                                                               "Ma super demande !",
-                                                                                               "Ceci est la descption de ma demande :) "),
-                                                               project);
-        SessionManager.flush();
-
-        feature.delete();
-
-        assertFalse(DBRequests.getAll(DaoFeature.class).iterator().hasNext());
-    }
-
-    @Test
     public void testAddContribution() throws Throwable {
         DaoFeature feature = DaoFeature.createAndPersist(yo,
                                                          null,
