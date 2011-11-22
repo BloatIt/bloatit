@@ -29,6 +29,7 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
@@ -62,7 +63,7 @@ public class CommentTools {
             commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getAuthor())));
 
             final HtmlParagraph commentText = new HtmlParagraph();
-            commentText.add(new HtmlRawTextRenderer(formatComment(comment.getText(), formatMap)));
+            commentText.add(new HtmlMarkdownRenderer(formatComment(comment.getText(), formatMap)));
             commentBlock.add(commentText);
 
             // Attachements
