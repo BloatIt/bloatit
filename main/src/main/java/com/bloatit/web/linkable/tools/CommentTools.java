@@ -49,6 +49,12 @@ public class CommentTools {
         return ph;
     }
 
+    public static HtmlElement generateCommentList(Comment comment) {
+        final PlaceHolderElement ph = new PlaceHolderElement();
+        ph.add(generateComment(comment, false, null));
+        return ph;
+    }
+
     public static HtmlElement generateCommentList(final PageIterable<Comment> comments, final Map<String, String> formatMap) {
         final PlaceHolderElement ph = new PlaceHolderElement();
         for (final Comment comment : comments) {

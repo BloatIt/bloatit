@@ -12,8 +12,12 @@ package com.bloatit.web.linkable;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -21,6 +25,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -35,6 +40,7 @@ import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.release.ReleasePage;
+import com.bloatit.web.linkable.tools.CommentTools;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CommentForm;
@@ -103,6 +109,9 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
         box.add(title);
         box.add(form);
+
+        layout.addLeft(new HtmlTitle(Context.tr("Previous comments"), 1));
+        layout.addLeft(CommentTools.generateCommentList(comment));
 
         return layout;
     }
