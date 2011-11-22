@@ -282,9 +282,6 @@ public class DaoEvent extends DaoIdentifiable {
         if (type == null || feature == null) {
             throw new NonOptionalParameterException();
         }
-        if (contribution == null && offer == null && milestone == null && bug == null && release == null) {
-            throw new NonOptionalParameterException();
-        }
         this.creationDate = new Date();
         this.isFeatureComment = release == null && bug == null && comment != null;
         this.isReleaseComment = release != null && comment != null;

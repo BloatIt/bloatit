@@ -98,8 +98,8 @@ public abstract class DaoActor extends DaoIdentifiable {
     @Embedded
     private DaoContact contact;
 
-    @OneToMany(mappedBy = "follow")
-    private final List<DaoFollowActor> followedBy = new ArrayList<DaoFollowActor>();
+    @OneToMany(mappedBy = "followed")
+    private final List<DaoFollowActor> followers = new ArrayList<DaoFollowActor>();
 
     // ======================================================================
     // HQL static requests.
@@ -234,8 +234,8 @@ public abstract class DaoActor extends DaoIdentifiable {
         return contact;
     }
 
-    public List<DaoFollowActor> getFollowedBy() {
-        return followedBy;
+    public List<DaoFollowActor> getFollowers() {
+        return followers;
     }
 
     // ======================================================================

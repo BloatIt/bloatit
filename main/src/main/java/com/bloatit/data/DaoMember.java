@@ -210,17 +210,17 @@ import com.bloatit.model.ModelConfiguration;
                                             "AND karma > :threshold "),
                         @NamedQuery(
                                     name =  "member.getFollowedActor.byActor",
-                                    query = "FROM com.bloatit.data.DaoFollowedActor " +
+                                    query = "FROM com.bloatit.data.DaoFollowActor " +
                                             "WHERE follower = :member " +
                                             "AND followed = :actor "),
                         @NamedQuery(
                                     name =  "member.getFollowedActor.bySoftware",
-                                    query = "FROM com.bloatit.data.DaoFollowedsoftware " +
+                                    query = "FROM com.bloatit.data.DaoFollowSoftware " +
                                             "WHERE follower = :member " +
                                             "AND followed = :software "),
                         @NamedQuery(
                                     name =  "member.getFollowedActor.byFeature",
-                                    query = "FROM com.bloatit.data.DaoFollowedFeature " +
+                                    query = "FROM com.bloatit.data.DaoFollowFeature " +
                                             "WHERE follower = :member " +
                                             "AND followed = :feature"),
                    }

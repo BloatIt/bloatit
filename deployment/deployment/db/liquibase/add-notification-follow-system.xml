@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet author="Thomas Guyard" id="20111122-EventTableCreation">
+
+		<createTable tableName="daoevent">
+			<column name="id" type="int4">
+				<constraints primaryKey="true" primaryKeyName="daoeventPK" />
+			</column>
+			<column name="type" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="isbugcomment" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="isfeaturecomment" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="isreleasecomment" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="creationdate" type="datetime">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="feature_id" type="int4"></column>
+			<column name="contribution_id" type="int4"></column>
+			<column name="offer_id" type="int4"></column>
+			<column name="comment_id" type="int4"></column>
+			<column name="bug_id" type="int4"></column>
+			<column name="release_id" type="int4"></column>
+			<column name="milestone_id" type="int4"></column>
+		</createTable>
+
+		<createTable tableName="daofollowactor">
+			<column name="id" type="int4">
+				<constraints primaryKey="true" primaryKeyName="daofollowactorPK" />
+			</column>
+			<column name="follower_id" type="int4"></column>
+			<column name="followed_id" type="int4"></column>
+			<column name="mail" type="boolean"></column>
+		</createTable>
+		<createTable tableName="daofollowsoftware">
+			<column name="id" type="int4">
+				<constraints primaryKey="true" primaryKeyName="daosoftwareactorPK" />
+			</column>
+			<column name="follower_id" type="int4"></column>
+			<column name="followed_id" type="int4"></column>
+			<column name="mail" type="boolean"></column>
+		</createTable>
+		<createTable tableName="daofollowfeature">
+			<column name="id" type="int4">
+				<constraints primaryKey="true" primaryKeyName="daofollowfeaturePK" />
+			</column>
+			<column name="follower_id" type="int4"></column>
+			<column name="followed_id" type="int4"></column>
+			<column name="featurecomment" type="boolean"></column>
+			<column name="bugcomment" type="boolean"></column>
+			<column name="releasecomment" type="boolean"></column>
+			<column name="mail" type="boolean"></column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="Thomas Guyard" id="20111122-FKEventFollow">
+
+		<addForeignKeyConstraint baseColumnNames="follower_id"
+			baseTableName="daofollowactor" referencedTableName="daoactor"
+			constraintName="22FKerdaofollowactordaoactor" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="followed_id"
+			baseTableName="daofollowactor" referencedTableName="daoactor"
+			constraintName="22FKeddaofollowactordaoactor" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+
+		<addForeignKeyConstraint baseColumnNames="follower_id"
+			baseTableName="daofollowfeature" referencedTableName="daofeature"
+			constraintName="22FKdaofollowefeature" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="followed_id"
+			baseTableName="daofollowfeature" referencedTableName="daofeature"
+			constraintName="22FKdaofollowedfeaturefeature" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+
+		<addForeignKeyConstraint baseColumnNames="follower_id"
+			baseTableName="daofollowsoftware" referencedTableName="daosoftware"
+			constraintName="22FKdaofollowersoftwaresoftware" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="followed_id"
+			baseTableName="daofollowsoftware" referencedTableName="daosoftware"
+			constraintName="22FKdaofollowedsoftwaresoftware" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+
+		<addForeignKeyConstraint baseColumnNames="feature_id"
+			baseTableName="daoevent" referencedTableName="daofeature"
+			constraintName="22FKfeature_iddaoevent" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="contribution_id"
+			baseTableName="daoevent" referencedTableName="daocontribution"
+			constraintName="22FKdaocontributiondaoevent" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="offer_id"
+			baseTableName="daoevent" referencedTableName="daooffer"
+			constraintName="22FKdaoofferdaoevent" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="comment_id"
+			baseTableName="daoevent" referencedTableName="daocomment"
+			constraintName="22FKdaocommentdaoevent" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="bug_id"
+			baseTableName="daoevent" referencedTableName="daobug" constraintName="22FKdaobugdaoevent"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="release_id"
+			baseTableName="daoevent" referencedTableName="daorelease"
+			constraintName="22FKdaoreleasedaoevent" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="milestone_id"
+			baseTableName="daoevent" referencedTableName="daomilestone"
+			constraintName="22FKdaomilestonedaoevent" deferrable="false"
+			initiallyDeferred="false" referencedColumnNames="id"
+			referencesUniqueColumn="false" />
+	</changeSet>
+</databaseChangeLog>

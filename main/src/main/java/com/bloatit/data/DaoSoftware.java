@@ -94,8 +94,8 @@ public class DaoSoftware extends DaoIdentifiable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private final List<DaoFeature> features = new ArrayList<DaoFeature>();
 
-    @OneToMany(mappedBy = "follow")
-    private final List<DaoFollowSoftware> followedBy = new ArrayList<DaoFollowSoftware>();
+    @OneToMany(mappedBy = "followed")
+    private final List<DaoFollowSoftware> followers = new ArrayList<DaoFollowSoftware>();
 
     // ======================================================================
     // Static HQL requests
@@ -221,8 +221,8 @@ public class DaoSoftware extends DaoIdentifiable {
         return this.name;
     }
 
-    public List<DaoFollowSoftware> getFollowedBy() {
-        return followedBy;
+    public List<DaoFollowSoftware> getFollowers() {
+        return followers;
     }
 
     // ======================================================================

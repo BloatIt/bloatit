@@ -194,6 +194,9 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        if (father == null) {
+            return comment;
+        }
         final DaoUserContent commented = father.getCommented();
         if (commented instanceof DaoFeature) {
             DaoEvent.createCommentEvent((DaoFeature) commented, EventType.FEATURE_ADD_COMMENT, comment);

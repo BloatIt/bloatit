@@ -97,5 +97,8 @@
 		<mapping class="com.bloatit.data.DaoFollow" />
 		<mapping class="com.bloatit.data.DaoConfiguration" />
 		<mapping class="com.bloatit.data.DaoEvent" />
+		<mapping class="com.bloatit.data.DaoFollowSoftware" />
+		<mapping class="com.bloatit.data.DaoFollowFeature" />
+		<mapping class="com.bloatit.data.DaoFollowActor" />
 	</session-factory>
 </hibernate-configuration>

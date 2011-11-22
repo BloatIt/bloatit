@@ -274,10 +274,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     @Basic(optional = true)
     private Date validationDate;
-    
-    @OneToMany(mappedBy = "follow")
-    private final List<DaoFollowFeature> followedBy = new ArrayList<DaoFollowFeature>();
 
+    @OneToMany(mappedBy = "followed")
+    private final List<DaoFollowFeature> followers = new ArrayList<DaoFollowFeature>();
 
     // ======================================================================
     // Construct.
@@ -337,15 +336,6 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         }
         this.software = soft;
         software.addFeature(this);
-    }
-
-    /**
-     * Delete this DaoFeature from the database. "this" will remain, but
-     * unmapped. (You shoudn't use it then)
-     */
-    protected void delete() {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        session.delete(this);
     }
 
     /*
@@ -520,10 +510,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         }
         return Float.POSITIVE_INFINITY;
     }
-    
 
-    public List<DaoFollowFeature> getFollowedBy() {
-        return followedBy;
+    public List<DaoFollowFeature> getFollowers() {
+        return followers;
     }
 
     /**
