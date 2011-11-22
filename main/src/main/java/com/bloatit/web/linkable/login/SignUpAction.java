@@ -100,7 +100,11 @@ public final class SignUpAction extends ElveosAction {
     @RequestParam(role = Role.POST)
     @Optional()
     private final String taxIdentification;
-    
+
+    @RequestParam(role = Role.POST)
+    @Optional()
+    private final Boolean isCompany;
+
     private final SignUpActionUrl url;
 
     public SignUpAction(final SignUpActionUrl url) {
@@ -113,7 +117,7 @@ public final class SignUpAction extends ElveosAction {
         this.lang = url.getLang();
         this.country = url.getCountry();
         this.newsletter = url.getNewsletter();
-        
+
         // Invoicing informations
         this.name = url.getName();
         this.city = url.getCity();
@@ -122,6 +126,7 @@ public final class SignUpAction extends ElveosAction {
         this.postalCode = url.getPostalCode();
         this.invoice = url.getInvoice();
         this.taxIdentification = url.getTaxIdentification();
+        this.isCompany = (url.getIsCompany() == null ? false : url.getIsCompany());
     }
 
     @Override
@@ -147,7 +152,7 @@ public final class SignUpAction extends ElveosAction {
         Context.getLocalizator().forceMemberChoice();
 
         // Try to set Invoicing informations
-        if (invoice!=null && invoice) {
+        if (invoice != null && invoice) {
             try {
                 m.getContact().setName(name);
                 m.getContact().setStreet(street);
@@ -156,6 +161,7 @@ public final class SignUpAction extends ElveosAction {
                 m.getContact().setCity(city);
                 m.getContact().setCountry(country);
                 m.getContact().setTaxIdentification(taxIdentification);
+                m.getContact().setIsCompany(isCompany);
             } catch (UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
             }
@@ -175,7 +181,7 @@ public final class SignUpAction extends ElveosAction {
     @Override
     protected Url checkRightsAndEverything() {
         boolean isOk = true;
-        
+
         if (MemberManager.loginExists(login)) {
             session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
             url.getLoginParameter().addErrorMessage(Context.tr("Login already used."));
@@ -207,20 +213,21 @@ public final class SignUpAction extends ElveosAction {
             isOk = false;
         }
 
-        if (invoice!= null && invoice) {
+        if (invoice != null && invoice) {
             isOk &= checkOptional(this.name, Context.tr("You must add a name."), url.getNameParameter());
             isOk &= checkOptional(this.street, Context.tr("You must add a street."), url.getStreetParameter());
             isOk &= checkOptional(this.postalCode, Context.tr("You must add a Postcode."), url.getPostalCodeParameter());
             isOk &= checkOptional(this.city, Context.tr("You must add a city."), url.getCityParameter());
+            isOk &= checkOptional(this.isCompany, Context.tr("You must indicate if you are a company."), url.getIsCompanyParameter());
         }
-        
-        if(isOk) {
+
+        if (isOk) {
             return NO_ERROR;
         } else {
             return doProcessErrors();
         }
     }
-    
+
     private boolean checkOptional(Object object, String errorText, UrlParameter<?, ?> parameter) {
         if (object == null) {
             parameter.addErrorMessage(errorText);

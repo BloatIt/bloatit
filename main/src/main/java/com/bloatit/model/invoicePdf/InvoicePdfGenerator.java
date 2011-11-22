@@ -129,6 +129,7 @@ public class InvoicePdfGenerator {
                                final String receiverExtras,
                                final String receiverCity,
                                final String receiverCountry,
+                               final String receiverTaxIdentification,
                                final Date invoiceDate,
                                final String deliveryName,
                                final BigDecimal priceExcludingTax,
@@ -156,7 +157,7 @@ public class InvoicePdfGenerator {
         int retry = 1;
         
         while (new File(filename).exists()) {
-            filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + "-"+retry+".pdf";
+            filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + "-"+(retry++)+".pdf";
         }
 
         this.filename = filename;
@@ -169,11 +170,15 @@ public class InvoicePdfGenerator {
             addMetaData(invoiceType, invoiceId, sellerName);
             addLinkeosImg();
             addEmitter(sellerName, sellerStreet, sellerExtras, sellerCity, sellerCountry);
-            addReceiver(receiverName, receiverStreet, receiverExtras, receiverCity, receiverCountry);
+            addReceiver(receiverName, receiverStreet, receiverExtras, receiverCity, receiverCountry, receiverTaxIdentification);
             addDate(invoiceDate);
             addFactureNumber(invoiceId);
             addDetailTable(deliveryName, priceExcludingTax);
-            addTaxesTable(priceExcludingTax, taxRate, taxAmount, totalPrice);
+            if(taxAmount.compareTo(BigDecimal.ZERO) == 0) {
+                addNoTaxesTable(totalPrice);
+            } else {
+                addTaxesTable(priceExcludingTax, taxRate, taxAmount, totalPrice);
+            }
             addFooter(sellerName, sellerLegalId, sellerTaxId);
         } catch (final DocumentException e) {
             throw new ExternalErrorException("Failed to generate pdf.", e);
@@ -198,7 +203,7 @@ public class InvoicePdfGenerator {
             addMetaData("Elveos invoice", "123", "elveos.org");
             addLinkeosImg();
             addEmitter("Elveos", "27 Avenue Louis Georgeon", null, "94230 Cachan", "FRANCE");
-            addReceiver("IBM", "New Orchard road,", "914-499-1900", "Armonk, New York 10504", "USA");
+            addReceiver("IBM", "New Orchard road,", "914-499-1900", "Armonk, New York 10504", "USA", null);
             addDate(new Date());
             addFactureNumber("123");
             addDetailTable("Payment on elveos.org", new BigDecimal("5.35"));
@@ -298,6 +303,7 @@ public class InvoicePdfGenerator {
     /**
      * Adds the receiver information to the invoice
      * 
+     * @param receiverTaxIdentification
      * @param sellerName Name of the receiver
      * @param sellerStreet Street of the receiver
      * @param sellerExtras Extra informations on receiver's address. <b>Can be
@@ -313,7 +319,8 @@ public class InvoicePdfGenerator {
                              final String receiverStreet,
                              final String receiverExtras,
                              final String receiverZIP,
-                             final String receiverCountry) throws DocumentException, InvalidPositionException {
+                             final String receiverCountry,
+                             final String receiverTaxIdentification ) throws DocumentException, InvalidPositionException {
         final StringBuilder sb = new StringBuilder();
         sb.append(receiverName).append('\n');
         sb.append(receiverStreet).append('\n');
@@ -322,6 +329,9 @@ public class InvoicePdfGenerator {
         }
         sb.append(receiverZIP).append('\n');
         sb.append(receiverCountry).append('\n');
+        if(receiverTaxIdentification != null) {
+            sb.append("Tax id: ").append(receiverTaxIdentification).append('\n');
+        }
         final Paragraph p = new Paragraph(sb.toString());
 
         setAt(RIGHT_COLUMN, 670, p);
@@ -366,6 +376,19 @@ public class InvoicePdfGenerator {
         setLeft(430, table);
     }
 
+    private void addNoTaxesTable(final BigDecimal totalPrice
+                               ) throws DocumentException, InvalidPositionException {
+        final PdfPTable table = new PdfPTable(2);
+        table.addCell(createTableBodyCell("Total (no taxes included)"));
+        table.addCell(createTableBodyCell(totalPrice));
+
+        table.setWidthPercentage(100);
+        final float[] widths = { 186f, 85f };
+        table.setWidths(widths);
+
+        setAt(TAXES_TABLE_LEFT, 375, table);
+    }
+    
     private void addTaxesTable(final BigDecimal amountNoTaxes,
                                final BigDecimal taxRate,
                                final BigDecimal taxAmount,
@@ -373,7 +396,8 @@ public class InvoicePdfGenerator {
         final PdfPTable table = new PdfPTable(2);
         table.addCell(createTableBodyCell("Sub Total"));
         table.addCell(createTableBodyCell(amountNoTaxes));
-        table.addCell(createTableBodyCell("Taxes (" + taxRate.multiply(new BigDecimal("100")).setScale(TAX_RATE_SCALE, BigDecimal.ROUND_HALF_EVEN).toPlainString() + " %)"));
+        table.addCell(createTableBodyCell("Taxes ("
+                + taxRate.multiply(new BigDecimal("100")).setScale(TAX_RATE_SCALE, BigDecimal.ROUND_HALF_EVEN).toPlainString() + " %)"));
         table.addCell(createTableBodyCell(taxAmount));
         table.addCell(createTableBodyCell("Total (taxes included)"));
         table.addCell(createTableBodyCell(amountTaxesIncluded));

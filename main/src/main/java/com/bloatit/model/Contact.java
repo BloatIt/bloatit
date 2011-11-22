@@ -115,6 +115,14 @@ public final class Contact {
         dao.setExtras(extras);
     }
 
+    public void setIsCompany(boolean isCompany) {
+        dao.setIsCompany(isCompany);
+    }
+
+    public boolean isCompany() {
+        return dao.isCompany();
+    }
+
     /**
      * @return
      * @see com.bloatit.data.DaoContact#getPostalCode()
@@ -265,60 +273,59 @@ public final class Contact {
             this.template = template;
 
         }
+
         /*
-        * {ID|x} : id number on x characters
-        * {YEAR} : year on 4 characters
-        * {MONTH} : month on 4 characters
-        * {DAY} : day of the month on 2 characters
-        * {YDAY} : day of the year on 2 characters
-        * {WEEK} : week of the year on 2 characters
-        */
+         * {ID|x} : id number on x characters {YEAR} : year on 4 characters
+         * {MONTH} : month on 4 characters {DAY} : day of the month on 2
+         * characters {YDAY} : day of the year on 2 characters {WEEK} : week of
+         * the year on 2 characters
+         */
         public String format(BigDecimal invoiceIdNumber) {
-            
+
             this.output = this.template;
-            
+
             GregorianCalendar gregorianCalendar = new GregorianCalendar();
-            
+
             replaceNumber("YEAR", 4, gregorianCalendar.get(Calendar.YEAR));
             replaceNumber("MONTH", 2, gregorianCalendar.get(Calendar.MONTH));
             replaceNumber("DAY", 2, gregorianCalendar.get(Calendar.DAY_OF_MONTH));
             replaceNumber("YDAY", 2, gregorianCalendar.get(Calendar.DAY_OF_YEAR));
             replaceNumber("WEEK", 2, gregorianCalendar.get(Calendar.WEEK_OF_YEAR));
             replaceNumber("ID", 4, invoiceIdNumber.intValue());
-            
+
             return this.output;
         }
 
         private void replaceNumber(String token, int defaultLength, int value) {
-            
-            Pattern pattern = Pattern.compile("^(.*)(\\{"+token+"(\\|([0-9]+))?\\})(.*)");
+
+            Pattern pattern = Pattern.compile("^(.*)(\\{" + token + "(\\|([0-9]+))?\\})(.*)");
 
             Matcher matcher = pattern.matcher(this.output);
-            
+
             while (matcher.find()) {
-                
+
                 int length = defaultLength;
-                if(matcher.group(4) != null) {
+                if (matcher.group(4) != null) {
                     length = Integer.parseInt(matcher.group(4));
                 }
-                
+
                 DecimalFormat df = new DecimalFormat(multiply("0", length));
-                
-                this.output = matcher.group(1)+df.format(value) +matcher.group(5);
+
+                this.output = matcher.group(1) + df.format(value) + matcher.group(5);
             }
-            
+
         }
-        
+
         private String multiply(String string, int count) {
             StringBuffer out = new StringBuffer();
-            for(int i=0; i<count; i++) {
+            for (int i = 0; i < count; i++) {
                 out.append(string);
             }
             return out.toString();
         }
 
     }
-    
+
     // ///////////////////////////
     // Unprotected methods
 
@@ -337,5 +344,4 @@ public final class Contact {
     private DaoContact getDao() {
         return dao;
     }
-
 }

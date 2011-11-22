@@ -82,8 +82,8 @@ public class InvoicingContactTab extends HtmlTab {
         HtmlTitle title = new HtmlTitle(Context.tr("Invoicing informations"), 1);
         master.add(title);
 
-        HtmlParagraph guide = new HtmlParagraph(Context.tr("Your invoicing contact will be used to generate invoices whenever the team " +
-        		"pays or receives money (when you make a contribution or complete an offer)."));
+        HtmlParagraph guide = new HtmlParagraph(Context.tr("Your invoicing contact will be used to generate invoices whenever the team "
+                + "pays or receives money (when you make a contribution or complete an offer)."));
         master.add(guide);
 
         final HtmlList memberIdList = new HtmlList();
@@ -123,12 +123,21 @@ public class InvoicingContactTab extends HtmlTab {
         country = Context.tr("Country: ");
         memberIdList.add(new HtmlDefineParagraph(country, emptyIfNull(contact.getCountry())));
 
-        // Tax identification
-        final String taxIdentification;
-        taxIdentification = Context.tr("Tax identification: ");
-        memberIdList.add(new HtmlDefineParagraph(taxIdentification, emptyIfNull(contact.getTaxIdentification())));
+        // Is company
 
-        
+        final String isCompany;
+        isCompany = Context.tr("Company: ");
+        memberIdList.add(new HtmlDefineParagraph(isCompany, (contact.isCompany() ? Context.tr("Yes") : Context.tr("No"))));
+
+        if (contact.isCompany()) {
+
+            // Tax identification
+            final String taxIdentification;
+            taxIdentification = Context.tr("Tax identification: ");
+            memberIdList.add(new HtmlDefineParagraph(taxIdentification, emptyIfNull(contact.getTaxIdentification())));
+
+        }
+
         if (all) {
 
             memberIdList.add(new HtmlTitle(Context.tr("Invoice emission informations"), 2));
@@ -152,7 +161,6 @@ public class InvoicingContactTab extends HtmlTab {
             legalId = Context.tr("Legal identification: ");
             memberIdList.add(new HtmlDefineParagraph(legalId, emptyIfNull(contact.getLegalId())));
 
-            
             // Tax rate
             final String taxRate;
             taxRate = Context.tr("Tax rate: ");
