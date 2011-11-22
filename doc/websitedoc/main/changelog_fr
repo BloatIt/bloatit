@@ -1,6 +1,19 @@
 Changelog
 =========
 
+Version 1.1.26
+--------------
+
+### Features
+ - Add software filter in REST api
+ - Restore Beta logo
+ - Use *Recommend* verb instead of *Like* for Facebook button
+
+### Bug fixes
+ - Fix bug in passsword recovery process
+ - Set max password length to 255 characters in passsword recovery process
+
+
 Version 1.1.25
 --------------
 
