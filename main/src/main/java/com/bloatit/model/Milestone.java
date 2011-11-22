@@ -34,7 +34,6 @@ import com.bloatit.model.lists.MilestoneContributionAmountList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMilestone;
-import com.bloatit.model.right.RgtUserContent;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;

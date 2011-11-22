@@ -5,8 +5,6 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 public class XmlNonEscapedText extends XmlNode {
 
     private final String content;

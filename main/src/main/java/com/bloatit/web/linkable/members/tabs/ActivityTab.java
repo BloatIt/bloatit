@@ -219,7 +219,6 @@ public class ActivityTab extends HtmlTab {
                         case FEATURE:
                             return generateFeatureFeedStructure(mixedText, model.getParentFeature(), model);
                         case COMMENT:
-                        case RELEASE:
                             // Nothing to do here
                             break;
                     }

@@ -34,7 +34,6 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.linkable.release.ReleasePage;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CommentForm;
@@ -137,9 +136,6 @@ public final class CommentReplyPage extends CreateUserContentPage {
                 break;
             case FEATURE:
                 breadcrumb = FeaturePage.generateBreadcrumb(comment.getRootComment().getParentFeature());
-                break;
-            case RELEASE:
-                breadcrumb = ReleasePage.generateBreadcrumb(comment.getRootComment().getParentRelease());
                 break;
             default:
                 breadcrumb = new Breadcrumb();

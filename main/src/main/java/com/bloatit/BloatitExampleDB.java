@@ -34,7 +34,6 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.Language;
-import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;

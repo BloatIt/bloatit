@@ -49,7 +49,6 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.WebProcess;
 import com.bloatit.web.linkable.process.AccountProcess;

@@ -28,7 +28,6 @@ import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.SessionManager;
-import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.xcgiserver.RequestKey;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;

@@ -111,7 +111,6 @@ public class DaoEvent extends DaoIdentifiable {
         
         // Comment
         FEATURE_ADD_COMMENT, //
-        RELEASE_ADD_COMMENT, //
         BUG_ADD_COMMENT, //
     }
 

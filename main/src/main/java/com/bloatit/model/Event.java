@@ -84,9 +84,6 @@ public final class Event extends Identifiable<DaoEvent> {
             case FEATURE_ADD_COMMENT:
                 return new FeatureCommentEvent(getDao());
 
-            case RELEASE_ADD_COMMENT:
-                return new ReleaseCommentEvent(getDao());
-
             case BUG_ADD_COMMENT:
                 return new BugCommentEvent(getDao());
 
@@ -110,8 +107,6 @@ public final class Event extends Identifiable<DaoEvent> {
         ReturnType visit(OfferEvent event);
 
         ReturnType visit(ReleaseEvent event);
-
-        ReturnType visit(ReleaseCommentEvent event);
     }
 
     public static class FeatureEvent {
@@ -195,21 +190,6 @@ public final class Event extends Identifiable<DaoEvent> {
 
         public DaoMilestone getMilestone() {
             return event.getMilestone();
-        }
-
-        public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
-            return visitor.visit(this);
-        }
-    }
-
-    public static class ReleaseCommentEvent extends ReleaseEvent {
-
-        public ReleaseCommentEvent(DaoEvent event) {
-            super(event);
-        }
-
-        public DaoComment getComment() {
-            return event.getComment();
         }
 
         public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {

@@ -139,7 +139,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public enum ParentType {
-        COMMENT, FEATURE, BUG, RELEASE
+        COMMENT, FEATURE, BUG
     }
 
     public ParentType getParentType() {
@@ -149,10 +149,6 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         if (getDao().getFatherBug() != null) {
             return ParentType.BUG;
         }
-        if (getDao().getFatherRelease() != null) {
-            return ParentType.RELEASE;
-        }
-
         return ParentType.COMMENT;
     }
 
@@ -181,10 +177,6 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     public Feature getParentFeature() {
         return FeatureImplementation.create(getDao().getFatherFeature());
-    }
-
-    public Release getParentRelease() {
-        return Release.create(getDao().getFatherRelease());
     }
 
     public Bug getParentBug() {

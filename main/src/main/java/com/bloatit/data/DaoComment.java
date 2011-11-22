@@ -67,8 +67,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     private DaoBug bug;
     @ManyToOne(fetch = FetchType.LAZY)
     private DaoFeature feature;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private DaoRelease release;
 
     /**
      * Any comment can have some child comments.
@@ -153,37 +151,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      * @return the newly created comment
      * @throws NonOptionalParameterException if the text is null
      */
-    public static DaoComment createAndPersist(final DaoRelease father, final DaoTeam team, final DaoMember member, final String text) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment comment = new DaoComment(father, team, member, text);
-        try {
-            session.save(comment);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-            throw e;
-        }
-        DaoEvent.createReleaseCommentEvent(father.getMilestone().getOffer().getFeature(),
-                                           EventType.RELEASE_ADD_COMMENT,
-                                           comment,
-                                           father,
-                                           father.getMilestone().getOffer(),
-                                           father.getMilestone());
-        return comment;
-    }
-
-    /**
-     * Create a comment. This constructor is protected because you should use
-     * the createAndPersist method (to make sure your comment really goes into
-     * the db.
-     * 
-     * @param father the content on which this comment is added.
-     * @param team the As Team property. can be null.
-     * @param member is the author.
-     * @param text is the content.
-     * @return the newly created comment
-     * @throws NonOptionalParameterException if the text is null
-     */
     public static DaoComment createAndPersist(final DaoComment father, final DaoTeam team, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoComment comment = new DaoComment(father, team, member, text);
@@ -207,14 +174,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
                                         comment,
                                         ((DaoBug) commented).getMilestone().getOffer(),
                                         ((DaoBug) commented).getMilestone());
-
-        } else if (commented instanceof DaoRelease) {
-            DaoEvent.createReleaseCommentEvent(((DaoRelease) commented).getMilestone().getOffer().getFeature(),
-                                               EventType.RELEASE_ADD_COMMENT,
-                                               comment,
-                                               (DaoRelease) commented,
-                                               ((DaoRelease) commented).getMilestone().getOffer(),
-                                               ((DaoRelease) commented).getMilestone());
 
         }
         return comment;
@@ -246,11 +205,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     private DaoComment(final DaoFeature father, final DaoTeam team, final DaoMember member, final String text) {
         this(member, team, text);
         this.feature = father;
-    }
-
-    private DaoComment(final DaoRelease father, final DaoTeam team, final DaoMember member, final String text) {
-        this(member, team, text);
-        this.release = father;
     }
 
     private DaoComment(final DaoComment father, final DaoTeam team, final DaoMember member, final String text) {
@@ -323,9 +277,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         if (feature != null) {
             return feature;
         }
-        if (release != null) {
-            return release;
-        }
         return null;
     }
 
@@ -341,13 +292,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      */
     public DaoBug getFatherBug() {
         return this.bug;
-    }
-
-    /**
-     * @return the father if it is a release
-     */
-    public DaoRelease getFatherRelease() {
-        return this.release;
     }
 
     /**
