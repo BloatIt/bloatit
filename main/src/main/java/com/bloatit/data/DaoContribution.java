@@ -37,6 +37,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoEvent.EventType;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
@@ -259,6 +260,7 @@ public class DaoContribution extends DaoUserContent {
             throw new BadProgrammerException("Not enough money exception on cancel !!", e);
         }
         this.state = ContributionState.CANCELED;
+        DaoEvent.createContributionEvent(feature, EventType.REMOVE_CONTRIBUTION, this);
     }
 
     /**

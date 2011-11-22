@@ -208,6 +208,21 @@ import com.bloatit.model.ModelConfiguration;
                                             "FROM com.bloatit.data.DaoMember " +
                                             "WHERE role != :role " +
                                             "AND karma > :threshold "),
+                        @NamedQuery(
+                                    name =  "member.getFollowedActor.byActor",
+                                    query = "FROM com.bloatit.data.DaoFollowedActor " +
+                                            "WHERE follower = :member " +
+                                            "AND followed = :actor "),
+                        @NamedQuery(
+                                    name =  "member.getFollowedActor.bySoftware",
+                                    query = "FROM com.bloatit.data.DaoFollowedsoftware " +
+                                            "WHERE follower = :member " +
+                                            "AND followed = :software "),
+                        @NamedQuery(
+                                    name =  "member.getFollowedActor.byFeature",
+                                    query = "FROM com.bloatit.data.DaoFollowedFeature " +
+                                            "WHERE follower = :member " +
+                                            "AND followed = :feature"),
                    }
 
              )
@@ -258,13 +273,13 @@ public class DaoMember extends DaoActor {
 
     @Basic(optional = false)
     private Locale locale;
-    
+
     @Basic(optional = false)
     private boolean newsletter;
 
     @Column(length = 1024)
     private String description;
-    
+
     @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoFileMetadata avatar;
@@ -276,6 +291,17 @@ public class DaoMember extends DaoActor {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private final List<DaoExternalServiceMembership> authorizedExternalServices = new ArrayList<DaoExternalServiceMembership>();
+
+    // Follow System
+
+    @OneToMany(mappedBy = "follower")
+    private final List<DaoFollowSoftware> followedSoftware = new ArrayList<DaoFollowSoftware>();
+
+    @OneToMany(mappedBy = "follower")
+    private final List<DaoFollowActor> followedActors = new ArrayList<DaoFollowActor>();
+
+    @OneToMany(mappedBy = "follower")
+    private final List<DaoFollowFeature> followedFeatures = new ArrayList<DaoFollowFeature>();
 
     // ======================================================================
     // Static HQL requests
@@ -352,7 +378,8 @@ public class DaoMember extends DaoActor {
     }
 
     public static PageIterable<DaoMember> getAllMembersButAdmins() {
-        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN).setInteger("threshold", ModelConfiguration.getKarmaHideThreshold());
+        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN)
+                                                                   .setInteger("threshold", ModelConfiguration.getKarmaHideThreshold());
     }
 
     // ======================================================================
@@ -594,9 +621,60 @@ public class DaoMember extends DaoActor {
             existingService.reset(accessToken, level);
         }
     }
-    
+
     public void acceptNewsLetter(boolean newsletter) {
         this.newsletter = newsletter;
+    }
+
+    public DaoFollowActor getOrCreateFollowedActor(DaoActor actor) {
+        final Object followed = SessionManager.getNamedQuery("member.getFollowedActor.byActor")
+                                              .setEntity("member", this)
+                                              .setEntity("actor", actor)
+                                              .uniqueResult();
+        if (followed == null) {
+            return follow(actor);
+        }
+        return (DaoFollowActor) followed;
+    }
+
+    public DaoFollowFeature getOrCreateFollowedFeature(DaoFeature feature) {
+        final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
+                                                                           .setEntity("member", this)
+                                                                           .setEntity("feature", feature)
+                                                                           .uniqueResult();
+        if (followed == null) {
+            return follow(feature);
+        }
+        return followed;
+    }
+
+    public DaoFollowSoftware getOrCreateFollowedSoftware(DaoSoftware software) {
+        final DaoFollowSoftware followed = (DaoFollowSoftware) SessionManager.getNamedQuery("member.getFollowedSoftware.bySoftware")
+                                                                             .setEntity("member", this)
+                                                                             .setEntity("software", software)
+                                                                             .uniqueResult();
+        if (followed == null) {
+            return follow(software);
+        }
+        return followed;
+    }
+
+    private DaoFollowFeature follow(DaoFeature feature) {
+        final DaoFollowFeature followed = DaoFollowFeature.createAndPersist(this, feature, false, false, false, false);
+        followedFeatures.add(followed);
+        return followed;
+    }
+
+    private DaoFollowSoftware follow(DaoSoftware soft) {
+        final DaoFollowSoftware followed = DaoFollowSoftware.createAndPersist(this, soft, false);
+        followedSoftware.add(followed);
+        return followed;
+    }
+
+    private DaoFollowActor follow(DaoActor soft) {
+        final DaoFollowActor followed = DaoFollowActor.createAndPersist(this, soft, false);
+        followedActors.add(followed);
+        return followed;
     }
 
     // ======================================================================
@@ -800,7 +878,7 @@ public class DaoMember extends DaoActor {
         q.setParameter("state", State.PENDING);
         return (Long) q.uniqueResult();
     }
-    
+
     public boolean getNewsletterAccept() {
         return newsletter;
     }

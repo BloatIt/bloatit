@@ -37,6 +37,7 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
+import com.bloatit.data.DaoEvent.EventType;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -78,9 +79,8 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded(depth = 1)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoComment> children = new ArrayList<DaoComment>(0);
-    
-    
-    public static DaoCommentable getCommentable(int id){
+
+    public static DaoCommentable getCommentable(int id) {
         return (DaoCommentable) SessionManager.getNamedQuery("commentable.byId").setInteger("id", id).uniqueResult();
     }
 
@@ -106,6 +106,12 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        DaoEvent.createCommentEvent(father.getMilestone().getOffer().getFeature(),
+                                    EventType.BUG_ADD_COMMENT,
+                                    father,
+                                    comment,
+                                    father.getMilestone().getOffer(),
+                                    father.getMilestone());
         return comment;
     }
 
@@ -131,7 +137,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        
+        DaoEvent.createCommentEvent(father, EventType.FEATURE_ADD_COMMENT, comment);
         return comment;
     }
 
@@ -157,6 +163,12 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        DaoEvent.createReleaseCommentEvent(father.getMilestone().getOffer().getFeature(),
+                                           EventType.RELEASE_ADD_COMMENT,
+                                           comment,
+                                           father,
+                                           father.getMilestone().getOffer(),
+                                           father.getMilestone());
         return comment;
     }
 
@@ -181,6 +193,26 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
+        }
+        final DaoUserContent commented = father.getCommented();
+        if (commented instanceof DaoFeature) {
+            DaoEvent.createCommentEvent((DaoFeature) commented, EventType.FEATURE_ADD_COMMENT, comment);
+        } else if (commented instanceof DaoBug) {
+            DaoEvent.createCommentEvent(((DaoBug) commented).getMilestone().getOffer().getFeature(),
+                                        EventType.BUG_ADD_COMMENT,
+                                        (DaoBug) commented,
+                                        comment,
+                                        ((DaoBug) commented).getMilestone().getOffer(),
+                                        ((DaoBug) commented).getMilestone());
+
+        } else if (commented instanceof DaoRelease) {
+            DaoEvent.createReleaseCommentEvent(((DaoRelease) commented).getMilestone().getOffer().getFeature(),
+                                               EventType.RELEASE_ADD_COMMENT,
+                                               comment,
+                                               (DaoRelease) commented,
+                                               ((DaoRelease) commented).getMilestone().getOffer(),
+                                               ((DaoRelease) commented).getMilestone());
+
         }
         return comment;
     }

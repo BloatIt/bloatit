@@ -35,6 +35,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
 
+import com.bloatit.data.DaoEvent.EventType;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -109,6 +110,7 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        DaoEvent.createReleaseEvent(release.getMilestone().getOffer().getFeature(), EventType.ADD_RELEASE, release, milestone.getOffer(), milestone);
         return release;
     }
 

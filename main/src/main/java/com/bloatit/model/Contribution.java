@@ -148,7 +148,7 @@ public final class Contribution extends UserContent<DaoContribution> {
     public boolean isCancelable() {
         return (getState() == ContributionState.PENDING && (getFeature().getFeatureState() == DaoFeature.FeatureState.PENDING || getFeature().getFeatureState() == DaoFeature.FeatureState.PREPARING));
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////

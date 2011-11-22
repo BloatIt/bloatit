@@ -22,6 +22,7 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
+import com.bloatit.data.DaoEvent;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalService;
 import com.bloatit.data.DaoExternalServiceMembership;
@@ -312,6 +313,12 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     @Override
     public Identifiable<?> visit(final DaoFollow daoFollow) {
         return Follow.create(daoFollow);
+    }
+
+    @Override
+    public Identifiable<?> visit(DaoEvent daoEvent) {
+        // TODO !!
+        return null;
     }
 
 }

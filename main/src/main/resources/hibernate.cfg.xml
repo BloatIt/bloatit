@@ -96,5 +96,6 @@
 		<mapping class="com.bloatit.data.DaoExternalServiceMembership" />
 		<mapping class="com.bloatit.data.DaoFollow" />
 		<mapping class="com.bloatit.data.DaoConfiguration" />
+		<mapping class="com.bloatit.data.DaoEvent" />
 	</session-factory>
 </hibernate-configuration>

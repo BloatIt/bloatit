@@ -36,6 +36,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
 
+import com.bloatit.data.DaoEvent.EventType;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.Language;
@@ -153,6 +154,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        DaoEvent.createBugEvent(bug.getMilestone().getOffer().getFeature(), EventType.ADD_BUG, bug, bug.getMilestone().getOffer(), milestone);
         return bug;
     }
 
@@ -172,7 +174,10 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * @param level the new error level
      */
     public void setErrorLevel(final Level level) {
-        this.level = level;
+        if (this.level != level){
+            this.level = level;
+            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(), EventType.BUG_CHANGE_LEVEL, this, this.getMilestone().getOffer(), milestone);
+        }
     }
 
     /**
@@ -248,6 +253,9 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * Sets the resolved.
      */
     public void setResolved() {
+        if (state != BugState.RESOLVED){
+            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(), EventType.BUG_SET_RESOLVED, this, this.getMilestone().getOffer(), milestone);
+        }
         this.state = BugState.RESOLVED;
     }
 
@@ -255,6 +263,9 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * Sets the developing.
      */
     public void setDeveloping() {
+        if (state != BugState.DEVELOPING){
+            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(), EventType.BUG_SET_DEVELOPING, this, this.getMilestone().getOffer(), milestone);
+        }
         this.state = BugState.DEVELOPING;
     }
 

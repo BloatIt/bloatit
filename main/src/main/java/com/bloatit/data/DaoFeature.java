@@ -49,6 +49,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoEvent.EventType;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.EmptyPageIterable;
@@ -273,6 +274,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     @Basic(optional = true)
     private Date validationDate;
+    
+    @OneToMany(mappedBy = "follow")
+    private final List<DaoFollowFeature> followedBy = new ArrayList<DaoFollowFeature>();
+
 
     // ======================================================================
     // Construct.
@@ -299,6 +304,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        DaoEvent.createFeatureEvent(feature, EventType.CREATE_FEATURE);
         return feature;
     }
 
@@ -381,6 +387,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         final DaoContribution newContribution = new DaoContribution(member, team, this, amount, comment);
         this.contributions.add(newContribution);
         this.contribution = this.contribution.add(amount);
+        DaoEvent.createContributionEvent(this, EventType.ADD_CONTRIBUTION, newContribution);
         return newContribution;
     }
 
@@ -392,6 +399,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      */
     public void addOffer(final DaoOffer offer) {
         this.offers.add(offer);
+        DaoEvent.createOfferEvent(this, EventType.ADD_OFFER, offer);
     }
 
     /**
@@ -405,6 +413,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             this.selectedOffer = null;
         }
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
+        DaoEvent.createOfferEvent(this, EventType.REMOVE_OFFER, offer);
     }
 
     /**
@@ -432,6 +441,12 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @param selectedOffer the offer to set selected
      */
     public void setSelectedOffer(final DaoOffer selectedOffer) {
+        if (selectedOffer != null && selectedOffer.equals(getSelectedOffer())) {
+            DaoEvent.createOfferEvent(this, EventType.CHANGE_SELECTED_OFFER, selectedOffer);
+        }
+        if (selectedOffer == null && this.selectedOffer != null) {
+            DaoEvent.createOfferEvent(this, EventType.REMOVE_SELECTED_OFFER, selectedOffer);
+        }
         this.selectedOffer = selectedOffer;
     }
 
@@ -460,6 +475,23 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      */
     public void setFeatureState(final FeatureState featureState) {
         this.featureState = featureState;
+        switch (featureState) {
+            case DEVELOPPING:
+                DaoEvent.createFeatureEvent(this, EventType.IN_DEVELOPPING_STATE);
+                break;
+            case DISCARDED:
+                DaoEvent.createFeatureEvent(this, EventType.DISCARDED);
+                break;
+            case FINISHED:
+                DaoEvent.createFeatureEvent(this, EventType.FINICHED);
+                break;
+            case PENDING:
+                // Do nothing
+                break;
+            case PREPARING:
+                // Do nothing
+                break;
+        }
     }
 
     public void setDescription(String newDescription, Language language) {
@@ -469,15 +501,6 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public void setTitle(String title, Language language) {
         getDescription().getTranslation(language).setTitle(title);
     }
-
-    // @Override
-    // public void setIsDeleted(final Boolean isDeleted) {
-    // if (isDeleted) {
-    // for (DaoOffer offer : offers) {
-    // offer.setIsDeleted(true);
-    // }
-    // }
-    // }
 
     // ======================================================================
     // Getters.
@@ -496,6 +519,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             return (getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();
         }
         return Float.POSITIVE_INFINITY;
+    }
+    
+
+    public List<DaoFollowFeature> getFollowedBy() {
+        return followedBy;
     }
 
     /**
@@ -537,10 +565,12 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public PageIterable<DaoContribution> getContributions(boolean isCanceled) {
         if (isCanceled) {
             return new QueryCollection<DaoContribution>("feature.getContribution.canceled").setParameter("this", this)
-                                                                                           .setParameter("state", DaoContribution.ContributionState.CANCELED);
+                                                                                           .setParameter("state",
+                                                                                                         DaoContribution.ContributionState.CANCELED);
         }
         return new QueryCollection<DaoContribution>("feature.getContribution.notcanceled").setParameter("this", this)
-                                                                                          .setParameter("state", DaoContribution.ContributionState.CANCELED);
+                                                                                          .setParameter("state",
+                                                                                                        DaoContribution.ContributionState.CANCELED);
 
     }
 
@@ -771,4 +801,5 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         }
         return true;
     }
+
 }
