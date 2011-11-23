@@ -157,7 +157,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
     @Override
     protected String createPageTitle() {
-        return tr("Contribution invoice generation");
+        return tr("Contribution invoices generation");
     }
 
     @Override
@@ -181,7 +181,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
         final Url url = new ContributionInvoicingInformationsPageUrl(process);
 
-        breadcrumb.pushLink(url.getHtmlLink(tr("Contribution Invoicing contact")));
+        breadcrumb.pushLink(url.getHtmlLink(tr("Contribution invoices generation")));
         return breadcrumb;
     }
 
