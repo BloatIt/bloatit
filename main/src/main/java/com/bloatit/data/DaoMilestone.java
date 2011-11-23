@@ -215,6 +215,10 @@ public class DaoMilestone extends DaoIdentifiable {
      */
     @Basic(optional = true)
     private Date lastPaymentDate;
+    
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "milestone", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
 
     // ======================================================================
     // Construction.

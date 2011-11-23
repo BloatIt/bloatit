@@ -403,7 +403,6 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             this.selectedOffer = null;
         }
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
-        DaoEvent.createOfferEvent(this, EventType.REMOVE_OFFER, offer);
     }
 
     /**

@@ -20,6 +20,7 @@ import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -47,7 +48,6 @@ import com.bloatit.framework.utils.PageIterable;
                               "  f.follower = :member " +
                               "  AND f.featureComment = e.isFeatureComment " +
                               "  AND f.bugComment = e.isBugComment " +
-                              "  AND f.releaseComment = e.isReleaseComment " +
                               "  AND f.followed = e.feature " +
                               ") OR ( " +
                               "  s.follower = :member " +
@@ -64,7 +64,6 @@ import com.bloatit.framework.utils.PageIterable;
                               "  f.follower = :member " +
                               "  AND f.featureComment = e.isFeatureComment " +
                               "  AND f.bugComment = e.isBugComment " +
-                              "  AND f.releaseComment = e.isReleaseComment " +
                               "  AND f.followed = e.feature " +
                               ") OR ( " +
                               "  s.follower = :member " +
@@ -121,8 +120,6 @@ public class DaoEvent extends DaoIdentifiable {
     private boolean isBugComment;
     @Basic(optional = false)
     private boolean isFeatureComment;
-    @Basic(optional = false)
-    private boolean isReleaseComment;
 
     @Basic(optional = false)
     private Date creationDate;
@@ -132,7 +129,7 @@ public class DaoEvent extends DaoIdentifiable {
 
     @ManyToOne
     private DaoContribution contribution;
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.ALL})
     private DaoOffer offer;
     @ManyToOne
     private DaoComment comment;
@@ -227,7 +224,6 @@ public class DaoEvent extends DaoIdentifiable {
         }
         this.creationDate = new Date();
         this.isFeatureComment = release == null && bug == null && comment != null;
-        this.isReleaseComment = release != null && comment != null;
         this.isBugComment = bug != null && comment != null;
         this.type = type;
         this.feature = feature;
@@ -249,10 +245,6 @@ public class DaoEvent extends DaoIdentifiable {
 
     public final boolean isFeatureComment() {
         return isFeatureComment;
-    }
-
-    public final boolean isReleaseComment() {
-        return isReleaseComment;
     }
 
     public final Date getCreationDate() {
@@ -327,7 +319,6 @@ public class DaoEvent extends DaoIdentifiable {
         result = prime * result + ((feature == null) ? 0 : feature.hashCode());
         result = prime * result + (isBugComment ? 1231 : 1237);
         result = prime * result + (isFeatureComment ? 1231 : 1237);
-        result = prime * result + (isReleaseComment ? 1231 : 1237);
         result = prime * result + ((milestone == null) ? 0 : milestone.hashCode());
         result = prime * result + ((offer == null) ? 0 : offer.hashCode());
         result = prime * result + ((release == null) ? 0 : release.hashCode());
@@ -367,8 +358,6 @@ public class DaoEvent extends DaoIdentifiable {
         if (isBugComment != other.isBugComment)
             return false;
         if (isFeatureComment != other.isFeatureComment)
-            return false;
-        if (isReleaseComment != other.isReleaseComment)
             return false;
         if (milestone == null) {
             if (other.milestone != null)

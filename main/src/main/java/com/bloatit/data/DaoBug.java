@@ -107,6 +107,10 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     @Enumerated
     private BugState state;
 
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "bug", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
+
     private DaoBug(final DaoMember member,
                    final DaoTeam team,
                    final DaoMilestone milestone,
@@ -174,9 +178,13 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * @param level the new error level
      */
     public void setErrorLevel(final Level level) {
-        if (this.level != level){
+        if (this.level != level) {
             this.level = level;
-            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(), EventType.BUG_CHANGE_LEVEL, this, this.getMilestone().getOffer(), milestone);
+            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(),
+                                    EventType.BUG_CHANGE_LEVEL,
+                                    this,
+                                    this.getMilestone().getOffer(),
+                                    milestone);
         }
     }
 
@@ -253,8 +261,12 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * Sets the resolved.
      */
     public void setResolved() {
-        if (state != BugState.RESOLVED){
-            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(), EventType.BUG_SET_RESOLVED, this, this.getMilestone().getOffer(), milestone);
+        if (state != BugState.RESOLVED) {
+            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(),
+                                    EventType.BUG_SET_RESOLVED,
+                                    this,
+                                    this.getMilestone().getOffer(),
+                                    milestone);
         }
         this.state = BugState.RESOLVED;
     }
@@ -263,8 +275,12 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * Sets the developing.
      */
     public void setDeveloping() {
-        if (state != BugState.DEVELOPING){
-            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(), EventType.BUG_SET_DEVELOPING, this, this.getMilestone().getOffer(), milestone);
+        if (state != BugState.DEVELOPING) {
+            DaoEvent.createBugEvent(this.getMilestone().getOffer().getFeature(),
+                                    EventType.BUG_SET_DEVELOPING,
+                                    this,
+                                    this.getMilestone().getOffer(),
+                                    milestone);
         }
         this.state = BugState.DEVELOPING;
     }

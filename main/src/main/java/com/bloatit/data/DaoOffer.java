@@ -108,6 +108,10 @@ public class DaoOffer extends DaoKudosable {
 
     @Basic(optional = false)
     private String license;
+    
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "offer", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
 
     // ======================================================================
     // Construction

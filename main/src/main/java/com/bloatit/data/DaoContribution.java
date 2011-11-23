@@ -133,6 +133,10 @@ public class DaoContribution extends DaoUserContent {
     @Basic(optional = false)
     private BigDecimal alreadyGivenMoney;
 
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "contribution", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
+
     public static PageIterable<DaoContribution> getByFeatureMember(DaoFeature f, DaoMember m) {
         return new QueryCollection<DaoContribution>("contribution.getByFeatureMember").setEntity("member", m).setEntity("feature", f);
     }
@@ -143,9 +147,7 @@ public class DaoContribution extends DaoUserContent {
      * @return the money raised
      */
     public static BigDecimal getMoneyRaised() {
-        final Query q = SessionManager
-                .getNamedQuery("contribution.getMoneyRaised")
-                .setParameter("state", ContributionState.CANCELED);
+        final Query q = SessionManager.getNamedQuery("contribution.getMoneyRaised").setParameter("state", ContributionState.CANCELED);
 
         return (BigDecimal) q.uniqueResult();
     }

@@ -264,8 +264,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         if (getDao().getSelectedOffer().getId() != null && getDao().getSelectedOffer().getId().equals(offer.getId())) {
             setSelectedOffer(Offer.create(getDao().computeSelectedOffer()));
         }
-        getDao().removeOffer(offer.getDao());
         setStateObject(getStateObject().eventRemoveOffer(offer));
+        getDao().removeOffer(offer.getDao());
     }
 
     @Override

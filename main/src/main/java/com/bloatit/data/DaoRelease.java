@@ -16,6 +16,7 @@
 //
 package com.bloatit.data;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.Basic;
@@ -23,6 +24,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -54,6 +56,10 @@ public class DaoRelease extends DaoUserContent {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMilestone milestone;
+    
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "release", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
 
     private String version;
 

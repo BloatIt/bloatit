@@ -25,4 +25,5 @@
     <include file="liquibase/add-newsletter.xml" />
     <include file="liquibase/add-contact-iscompany.xml" />
     <include file="liquibase/add-notification-follow-system.xml" />
+    <include file="liquibase/remove-release-comment.xml" />
 </databaseChangeLog>

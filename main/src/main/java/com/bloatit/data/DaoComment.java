@@ -78,6 +78,10 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoComment> children = new ArrayList<DaoComment>(0);
 
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "comment", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
+    
     public static DaoCommentable getCommentable(int id) {
         return (DaoCommentable) SessionManager.getNamedQuery("commentable.byId").setInteger("id", id).uniqueResult();
     }
