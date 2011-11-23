@@ -123,9 +123,13 @@ public class ContributionInvoicingProcess extends WebProcess {
         super.close();
 
         if (actor.isTeam()) {
-            return new TeamPageUrl((Team) actor);
+            TeamPageUrl teamPageUrl = new TeamPageUrl((Team) actor);
+            teamPageUrl.setActiveTabKey("invoicing");
+            return teamPageUrl;
         } else {
-            return new MemberPageUrl((Member) actor);
+            MemberPageUrl memberPageUrl = new MemberPageUrl((Member) actor);
+            memberPageUrl.setActiveTabKey("invoicing");
+            return memberPageUrl;
         }
 
     }

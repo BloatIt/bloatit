@@ -183,6 +183,24 @@ import com.bloatit.model.ModelConfiguration;
                                     "AND bs.milestoneState = :state " +
                                     "AND bs.invoices IS EMPTY"),
                         @NamedQuery(
+                                    name = "member.getMilestoneInvoiced",
+                                    query = "SELECT bs " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND offer_.asTeam = null " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS NOT EMPTY"),
+                        @NamedQuery(
+                                    name = "member.getMilestoneInvoiced.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND offer_.asTeam = null " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS NOT EMPTY"),
+                        @NamedQuery(
                                     name = "member.getMilestones",
                                     query = "SELECT bs " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
@@ -895,6 +913,11 @@ public class DaoMember extends DaoActor {
 
     public PageIterable<DaoMilestone> getMilestoneToInvoice() {
         return new QueryCollection<DaoMilestone>("member.getMilestoneToInvoice").setEntity("this", this)
+                                                                                .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
+    }
+    
+    public PageIterable<DaoMilestone> getMilestoneInvoiced() {
+        return new QueryCollection<DaoMilestone>("member.getMilestoneInvoiced").setEntity("this", this)
                                                                                 .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
     }
 

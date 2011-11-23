@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Member;
@@ -97,9 +98,10 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
                 throw new BadProgrammerException("Fail create a ContributionInvoice", e);
             }
 
-            // TODO taxes
         }
 
+        Context.getSession().notifyGood(Context.tr("{0} invoices succefully generated."));
+        
         return process.close();
     }
 

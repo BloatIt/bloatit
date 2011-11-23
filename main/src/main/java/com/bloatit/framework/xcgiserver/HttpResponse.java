@@ -216,7 +216,10 @@ public final class HttpResponse {
             addField(HttpReponseField.contentType("image/png"));
         } else if (fileName.endsWith(".pdf")) {
             addField(HttpReponseField.contentType("application/pdf"));
+        } else if (fileName.endsWith(".zip")) {
+            addField(HttpReponseField.contentType("multipart/x-zip"));
         } else {
+            
             // FIXME manage other content types !!
             Log.framework().warn("FIXME: Unknown content type for file '" + fileName + "' in HttpResponse.writeResource");
         }
