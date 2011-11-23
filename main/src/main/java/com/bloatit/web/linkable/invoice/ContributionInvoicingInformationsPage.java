@@ -22,24 +22,25 @@ import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
-import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Contact;
 import com.bloatit.model.Contribution;
@@ -53,9 +54,6 @@ import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
-import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.linkable.members.MembersTools;
-import com.bloatit.web.linkable.team.TeamTools;
 import com.bloatit.web.url.ContributionInvoicePreviewDataUrl;
 import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
 import com.bloatit.web.url.ContributionInvoicingInformationsPageUrl;
@@ -192,7 +190,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
         public InvoiceLine(final MilestoneContributionAmount milestoneContributionAmount, final BigDecimal invoiceIdNumber) throws UnauthorizedPrivateAccessException {
             final Contribution contribution = milestoneContributionAmount.getContribution();
             Actor<?> author = contribution.getAuthor();
-            Contact contact = author.getContactUnprotected();
+            final Contact contact = author.getContactUnprotected();
 
             addCell(new HtmlTableCell("") {
                 @Override
@@ -214,9 +212,28 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
             addTextCell(contact.getCountry());
             addTextCell((contact.isCompany() ? Context.tr("Yes") : Context.tr("No")));
-
+            
+                
+                
             addTextCell(emptyIfNull(contact.getTaxIdentification()));
 
+            addCell(new HtmlTableCell("") {
+                @Override
+                public HtmlNode getBody() {
+                        HtmlDiv div = new HtmlDiv();
+                        String taxIdentification = contact.getTaxIdentification();
+                        if(taxIdentification != null) {
+                            div.add(new HtmlText(taxIdentification));
+                            UrlString urlString = new UrlString("http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms="+ taxIdentification.substring(0,2)+"&vat="+ taxIdentification.substring(2));
+                            HtmlLink link = urlString.getHtmlLink(Context.tr("Check VAT number"));
+                            link.setOpenInNewPage();
+                            
+                            div.add(new HtmlDiv("vat_check").add(link));
+                        }
+                        return div;
+                }
+            });
+            
             addCell(new HtmlTableCell("") {
                 @Override
                 public HtmlNode getBody() {
