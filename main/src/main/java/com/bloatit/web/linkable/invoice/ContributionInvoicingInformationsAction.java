@@ -100,7 +100,7 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
 
         }
 
-        Context.getSession().notifyGood(Context.tr("{0} invoices succefully generated."));
+        Context.getSession().notifyGood(Context.trn("{0} invoice succefully generated.", "{0} invoices succefully generated.", contributionAmounts.size(), contributionAmounts.size()));
         
         return process.close();
     }
