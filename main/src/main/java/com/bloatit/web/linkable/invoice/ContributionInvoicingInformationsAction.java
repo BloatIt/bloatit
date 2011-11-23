@@ -11,12 +11,16 @@
  */
 package com.bloatit.web.linkable.invoice;
 
+import java.util.List;
+
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ContributionInvoice;
@@ -25,6 +29,7 @@ import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
+import com.bloatit.web.url.ContributionInvoicingInformationsPageUrl;
 
 /**
  * Class that will create a new offer based on data received from a form.
@@ -36,6 +41,19 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionInvoicingProcess process;
 
+    @RequestParam(name = "applyVAT", role = Role.POST)
+    @Optional
+    private final List<String> applyVAT;
+    
+    
+    @RequestParam(name = "generate", role = Role.POST)
+    @Optional
+    private final String generate;
+    
+    @RequestParam(name = "preview", role = Role.POST)
+    @Optional
+    private final String preview;
+    
     @SuppressWarnings("unused")
     private final ContributionInvoicingInformationsActionUrl url;
 
@@ -43,11 +61,23 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
         super(url);
         this.url = url;
         this.process = url.getProcess();
+        this.applyVAT = url.getApplyVAT();
+        this.preview = url.getPreview();
+        this.generate = url.getGenerate();
     }
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        // TODO: do the job
+        
+        if(preview != null) {
+            // Return to previous page with the right values
+            ContributionInvoicingInformationsPageUrl contributionInvoicingInformationsPageUrl = new ContributionInvoicingInformationsPageUrl(process);
+            contributionInvoicingInformationsPageUrl.setApplyVAT(applyVAT);
+            return contributionInvoicingInformationsPageUrl;
+        }
+        
+        
+        // Generate the invoices
         final PageIterable<MilestoneContributionAmount> contributionAmounts = process.getMilestone().getContributionAmounts();
 
         for (final MilestoneContributionAmount contributionAmount : contributionAmounts) {
@@ -59,7 +89,8 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
                                         "Contribution",
                                         contributionAmount.getAmount(),
                                         contributionAmount.getMilestone(),
-                                        contributionAmount.getContribution());
+                                        contributionAmount.getContribution(),
+                                        applyVAT.contains(contributionAmount.getId().toString()));
                 
                 
             } catch (final UnauthorizedOperationException e) {

@@ -47,13 +47,14 @@ public class XmlNonEscapedElement extends XmlNode {
     }
 
     /**
-     * Add a son to this HtmlElement
+     * Add a son to this XmlElement
      * 
-     * @param html the htmlNode son to add
+     * @param xml the xmlNode son to add
      * @return itself
      */
-    public XmlNonEscapedElement add(final XmlNode html) {
-        children.add(html);
+    public XmlNonEscapedElement add(final XmlNode xml) {
+        assert(xml != null);
+        children.add(xml);
         return this;
     }
 

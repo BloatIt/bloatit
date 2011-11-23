@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,42 +51,33 @@ public class InvoicePdfGenerator {
     private final String filename;
     private final Rectangle pageSize;
     private final Document document;
-    private final PdfWriter writer;
+    private PdfWriter writer;
 
     private static final float LEFT_MARGIN = 60;
     private static final float RIGHT_MARGIN = LEFT_MARGIN;
     private static final float TOP_MARGIN = 60;
     private static final float BOTTOM_MARGIN = 30;
-
-    public InvoicePdfGenerator(final String sellerName,
-                               final String sellerAddress,
-                               final String sellerTaxIdentification,
-                               final Actor<?> recipientActor,
-                               final String contributorName,
-                               final String contributorAdress,
-                               final String deliveryName,
-                               final BigDecimal priceExcludingTax,
-                               final BigDecimal totalPrice,
-                               final String invoiceId) {
-        this.pageSize = PageSize.A4;
-        this.document = new Document();
-        this.filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + UUID.randomUUID().toString();
-        createDirectory();
-
-        try {
-            try {
-                writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
-            } catch (final FileNotFoundException e) {
-                throw new ExternalErrorException("Failed to write a pdf in '" + filename + "'.", e);
-            }
-
-            document.open();
-            document.add(new Paragraph("Ugly almost empty invoice !"));
-        } catch (final DocumentException e) {
-            throw new ExternalErrorException("Failed to generate pdf.", e);
-        }
-        document.close();
-    }
+    private final String invoiceType;
+    private final String invoiceId;
+    private final String sellerName;
+    private final String sellerStreet;
+    private final String sellerExtras;
+    private final String sellerCity;
+    private final String sellerCountry;
+    private final String receiverName;
+    private final String receiverStreet;
+    private final String receiverExtras;
+    private final String receiverCity;
+    private final String receiverCountry;
+    private final String receiverTaxIdentification;
+    private final Date invoiceDate;
+    private final String deliveryName;
+    private final BigDecimal priceExcludingTax;
+    private final BigDecimal taxRate;
+    private final BigDecimal taxAmount;
+    private final BigDecimal totalPrice;
+    private final String sellerLegalId;
+    private final String sellerTaxId;
 
     /**
      * Generates a pdf for an invoice
@@ -138,6 +130,8 @@ public class InvoicePdfGenerator {
                                final BigDecimal totalPrice,
                                final String sellerLegalId,
                                final String sellerTaxId) {
+        
+        
         // We check that we didn't receive null or empty parameters
         if (invoiceType == null || invoiceId == null || sellerName == null || sellerStreet == null || sellerCity == null || sellerCountry == null
                 || receiverName == null || receiverStreet == null || receiverCountry == null || invoiceDate == null || deliveryName == null
@@ -153,6 +147,8 @@ public class InvoicePdfGenerator {
 
         this.pageSize = PageSize.A4;
         this.document = new Document();
+        this.invoiceType = invoiceType;
+        
         String filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + ".pdf";
         int retry = 1;
         
@@ -161,11 +157,48 @@ public class InvoicePdfGenerator {
         }
 
         this.filename = filename;
+        this.invoiceId = invoiceId;
+        this.sellerName = sellerName;
+        this.sellerStreet = sellerStreet;
+        this.sellerExtras = sellerExtras;
+        this.sellerCity = sellerCity;
+        this.sellerCountry = sellerCountry;
+        this.receiverName = receiverName;
+        this.receiverStreet = receiverStreet;
+        this.receiverExtras = receiverExtras;
+        this.receiverCity = receiverCity;
+        this.receiverCountry = receiverCountry;
+        this.receiverTaxIdentification = receiverTaxIdentification;
+        this.invoiceDate = invoiceDate;
+        this.deliveryName = deliveryName;
+        this.priceExcludingTax = priceExcludingTax;
+        this.taxRate = taxRate;
+        this.taxAmount = taxAmount;
+        this.totalPrice = totalPrice;
+        this.sellerLegalId = sellerLegalId;
+        this.sellerTaxId = sellerTaxId;
+    }
+
+
+
+    public String getPdfUrl() {
         
         createDirectory();
+        
+        try {
+            write(new FileOutputStream(filename));
+        } catch (final IOException e) {
+            throw new ExternalErrorException("Failed load logo to generate invoice.", e);
+        }
+        
+        return filename;
+    }
+
+    public void write(OutputStream output) {
+        
 
         try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
+            writer = PdfWriter.getInstance(document, output);
             document.open();
             addMetaData(invoiceType, invoiceId, sellerName);
             addLinkeosImg();
@@ -188,43 +221,6 @@ public class InvoicePdfGenerator {
             throw new BadProgrammerException("Added content out of the invoice bounds", e);
         }
         document.close();
-    }
-
-    /**
-     * Exists for testing purpose TODO: Delete when done with this.
-     */
-    private InvoicePdfGenerator() {
-        this.pageSize = PageSize.A4;
-        this.filename = "/home/yoann/plop.pdf";
-        this.document = new Document();
-        try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
-            document.open();
-            addMetaData("Elveos invoice", "123", "elveos.org");
-            addLinkeosImg();
-            addEmitter("Elveos", "27 Avenue Louis Georgeon", null, "94230 Cachan", "FRANCE");
-            addReceiver("IBM", "New Orchard road,", "914-499-1900", "Armonk, New York 10504", "USA", null);
-            addDate(new Date());
-            addFactureNumber("123");
-            addDetailTable("Payment on elveos.org", new BigDecimal("5.35"));
-            addTaxesTable(new BigDecimal("5.35"), new BigDecimal("19.6"), new BigDecimal("1.35"), new BigDecimal("6.40"));
-            addFooter("Elveos", "SAS au capital de 10 500€. RCS Paris 321 654 987", "FR 000 444 333 22");
-        } catch (final DocumentException e) {
-            throw new ExternalErrorException("Failed to generate pdf.", e);
-        } catch (final IOException e) {
-            throw new ExternalErrorException("Failed load logo to generate invoice.", e);
-        } catch (final InvalidPositionException e) {
-            throw new BadProgrammerException("Added content out of the invoice bounds", e);
-        }
-        document.close();
-    }
-
-    public String getPdfUrl() {
-        return filename;
-    }
-
-    public static void main(final String... args) {
-        new InvoicePdfGenerator();
     }
 
     /**
@@ -528,4 +524,5 @@ public class InvoicePdfGenerator {
             Log.model().info("Created directory " + dir);
         }
     }
+
 }

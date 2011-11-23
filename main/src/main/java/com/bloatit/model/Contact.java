@@ -257,12 +257,19 @@ public final class Contact {
      */
     public String pickNextInvoiceId() {
 
-        InvoiceIdFormatter formatter = new InvoiceIdFormatter(getInvoiceIdTemplate());
-        String invoiceId = formatter.format(getInvoiceIdNumber());
+        String invoiceId = getInvoiceId(getInvoiceIdNumber());
 
         setInvoiceIdNumber(getInvoiceIdNumber().add(BigDecimal.ONE));
         return invoiceId;
 
+    }
+    
+    public String getInvoiceId(BigDecimal invoiceIdNumber) {
+
+        InvoiceIdFormatter formatter = new InvoiceIdFormatter(getInvoiceIdTemplate());
+        String invoiceId = formatter.format(invoiceIdNumber);
+
+        return invoiceId;
     }
 
     private static class InvoiceIdFormatter {
