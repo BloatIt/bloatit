@@ -139,6 +139,7 @@ public abstract class HtmlElement extends HtmlNode {
      * @return itself
      */
     protected HtmlElement add(final HtmlNode html) {
+        assert(html != null);
         children.add(html);
         return this;
     }

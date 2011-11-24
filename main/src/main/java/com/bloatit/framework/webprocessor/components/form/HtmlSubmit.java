@@ -16,8 +16,11 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 
-public final class HtmlSubmit extends HtmlBranch {
+public final class HtmlSubmit extends HtmlLeaf {
+
+    private HtmlElement button;
 
     /**
      * Creates a HtmlButton
@@ -26,8 +29,15 @@ public final class HtmlSubmit extends HtmlBranch {
      */
     public HtmlSubmit(final String value) {
         super();
-        final HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.SUBMIT_INPUT));
+        button = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.SUBMIT_INPUT));
         add(new HtmlDiv().add(button).setCssClass("field"));
         button.addAttribute("value", value);
     }
+
+    @Override
+    public HtmlElement addAttribute(String name, String value) {
+        button.addAttribute(name, value);
+        return this;
+    }
+
 }

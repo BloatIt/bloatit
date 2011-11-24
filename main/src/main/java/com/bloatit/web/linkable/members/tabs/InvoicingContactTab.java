@@ -19,23 +19,31 @@ package com.bloatit.web.linkable.members.tabs;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
+import com.bloatit.framework.webprocessor.components.HtmlListItem;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Contact;
 import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.process.RedirectWebProcess;
 import com.bloatit.web.linkable.team.TeamPage;
+import com.bloatit.web.url.ContributionInvoicesZipDataUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -170,6 +178,43 @@ public class InvoicingContactTab extends HtmlTab {
                 memberIdList.add(new HtmlDefineParagraph(taxRate, ""));
             }
 
+        }
+
+        if (actor.isTeam()) {
+            /*
+             * final TeamPageUrl teampPageUrl = new TeamPageUrl((Team) actor);
+             * teampPageUrl.setActiveTabKey(TeamPage.INVOICING_TAB); redirectUrl
+             * = teampPageUrl;
+             */
+        } else {
+            Member member = ((Member) actor);
+            PageIterable<Milestone> milestoneInvoiced = member.getMilestoneInvoiced();
+
+            if (milestoneInvoiced.size() > 0) {
+                HtmlTitle titleInvoices = new HtmlTitle(Context.tr("Generated Invoices"), 1);
+                master.add(titleInvoices);
+
+                HtmlList list = new HtmlList();
+
+                for (Milestone milestone : milestoneInvoiced) {
+                    HtmlParagraph p = new HtmlParagraph();
+                    try {
+                        if (milestone.getOffer().getMilestones().size() == 1) {
+                            p.add(new HtmlMixedText(Context.tr("<0::>: <1::download invoices>"),
+                                                    FeaturesTools.generateFeatureTitle(milestone.getOffer().getFeature()),
+                                                    new ContributionInvoicesZipDataUrl(milestone).getHtmlLink()));
+                        } else {
+                            p.add(new HtmlMixedText(Context.tr("<0::> – Milestone {0}: <1::download invoices>", milestone.getPosition()),
+                                                    FeaturesTools.generateFeatureTitle(milestone.getOffer().getFeature()),
+                                                    new ContributionInvoicesZipDataUrl(milestone).getHtmlLink()));
+                        }
+                    } catch (UnauthorizedOperationException e) {
+                        throw new ShallNotPassException(e);
+                    }
+                    list.add(new HtmlListItem(p));
+                }
+                master.add(list);
+            }
         }
 
         return master;

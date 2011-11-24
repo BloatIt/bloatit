@@ -49,7 +49,6 @@ public class HtmlPercentField extends HtmlFormField<BigDecimal> {
         public InputField() {
             content = new HtmlDiv("percent_input");
             input = new HtmlSimpleInput("text");
-            input.addAttribute("autocomplete", "off");
             content.add(input);
             content.add(new HtmlText("%"));
         }

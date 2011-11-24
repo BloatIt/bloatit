@@ -93,7 +93,11 @@ public class UrlParameter<T, U> extends UrlNode {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
                 final URLCodec urlCodec = new URLCodec();
                 try {
-                    sb.append(urlCodec.encode(getName())).append('=').append(urlCodec.encode(stringValue));
+                    if (value instanceof List) {
+                        sb.append(stringValue);
+                    } else {
+                        sb.append(urlCodec.encode(getName())).append('=').append(urlCodec.encode(stringValue));
+                    }
                 } catch (final EncoderException e) {
                     throw new BadProgrammerException(e);
                 }
@@ -171,10 +175,10 @@ public class UrlParameter<T, U> extends UrlNode {
     public final void setValue(final T value) {
         setValue(value, false);
     }
-    
+
     public final void setValue(final T value, boolean force) {
         setValueUnprotected(value);
-        if(!force) {
+        if (!force) {
             final Messages messages = getMessages();
             if (messages.size() - customMessages.size() > 0) {
                 final StringBuilder sb = new StringBuilder();
@@ -276,7 +280,11 @@ public class UrlParameter<T, U> extends UrlNode {
             for (final U elem : ((List<U>) value)) {
                 sb.append('&').append(getName()).append('=').append(Loaders.toStr(elem));
             }
-            return sb.toString();
+            if (sb.length() > 0) {
+                return sb.toString().substring(1);
+            } else {
+                return "";
+            }
         }
         return Loaders.toStr(value);
     }

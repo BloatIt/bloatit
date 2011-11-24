@@ -47,13 +47,14 @@ public class XmlElement extends XmlNode {
     }
 
     /**
-     * Add a son to this HtmlElement
+     * Add a son to this XmlElement
      * 
-     * @param html the htmlNode son to add
+     * @param xml the xmlNode son to add
      * @return itself
      */
-    public XmlElement add(final XmlNode html) {
-        children.add(html);
+    public XmlElement add(final XmlNode xml) {
+        assert(xml != null);
+        children.add(xml);
         return this;
     }
 
