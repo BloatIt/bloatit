@@ -212,10 +212,6 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
             addTextCell(contact.getCountry());
             addTextCell((contact.isCompany() ? Context.tr("Yes") : Context.tr("No")));
-            
-                
-                
-            addTextCell(emptyIfNull(contact.getTaxIdentification()));
 
             addCell(new HtmlTableCell("") {
                 @Override
