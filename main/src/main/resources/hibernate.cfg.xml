@@ -18,7 +18,7 @@
 		<property name="hibernate.c3p0.initial_size">5</property><!-- default: 3 -->
 		<property name="hibernate.c3p0.min_size">1</property><!-- default: 1 -->
 		<property name="hibernate.c3p0.max_size">50</property><!-- default: 100 -->
-		
+
 		<!-- If this is a number greater than 0, c3p0 will test all idle, pooled 
 			but unchecked-out connections, every this number of seconds. default: 0 -->
 		<property name="hibernate.c3p0.idle_test_period">613</property>
@@ -31,7 +31,7 @@
 		<!-- Determines how many connections at a time c3p0 will try to acquire 
 			when the pool is exhausted. default: 1 -->
 		<property name="hibernate.c3p0.acquire_increment">1</property>
-		
+
 		<!-- <property name="connection.pool_size">1</property> -->
 		<!-- Enable Hibernate's automatic session context management -->
 		<property name="hibernate.current_session_context_class">thread</property>
@@ -39,13 +39,13 @@
 		<property name="hibernate.jdbc.batch_size">25</property>
 		<property name="hibernate.jdbc.fetch_size">25</property>
 		<property name="hibernate.max_fetch_depth">1</property>
-		
+
 		<property name="hibernate.jdbc.batch_versioned_data">true</property>
-		
+
 
 		<!-- Echo all executed SQL to stdout -->
 		<property name="hibernate.show_sql">false</property>
-		<property name="hibernate.format_sql ">false</property>
+		<property name="hibernate.format_sql">false</property>
 
 		<!-- second level cache -->
 		<property name="hibernate.cache.use_second_level_cache">true</property>

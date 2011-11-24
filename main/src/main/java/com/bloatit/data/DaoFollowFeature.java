@@ -35,8 +35,6 @@ public class DaoFollowFeature extends DaoIdentifiable {
     private boolean featureComment;
     @Basic(optional = false)
     private boolean bugComment;
-    @Basic(optional = false)
-    private boolean releaseComment;
 
     @Basic(optional = false)
     private boolean mail;
@@ -49,10 +47,9 @@ public class DaoFollowFeature extends DaoIdentifiable {
                                                     DaoFeature followed,
                                                     boolean featureComment,
                                                     boolean bugComment,
-                                                    boolean releaseComment,
                                                     boolean mail) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoFollowFeature feature = new DaoFollowFeature(follower, followed, featureComment, bugComment, releaseComment, mail);
+        final DaoFollowFeature feature = new DaoFollowFeature(follower, followed, featureComment, bugComment, mail);
         try {
             session.save(feature);
         } catch (final HibernateException e) {
@@ -63,13 +60,12 @@ public class DaoFollowFeature extends DaoIdentifiable {
         return feature;
     }
 
-    public DaoFollowFeature(DaoMember follower, DaoFeature followed, boolean featureComment, boolean bugComment, boolean releaseComment, boolean mail) {
+    public DaoFollowFeature(DaoMember follower, DaoFeature followed, boolean featureComment, boolean bugComment, boolean mail) {
         super();
         this.follower = follower;
         this.followed = followed;
         this.featureComment = featureComment;
         this.bugComment = bugComment;
-        this.releaseComment = releaseComment;
         this.mail = mail;
     }
 
@@ -79,10 +75,6 @@ public class DaoFollowFeature extends DaoIdentifiable {
 
     public final void setBugComment(boolean bugComment) {
         this.bugComment = bugComment;
-    }
-
-    public final void setReleaseComment(boolean releaseComment) {
-        this.releaseComment = releaseComment;
     }
 
     public final void setMail(boolean mail) {
@@ -107,10 +99,6 @@ public class DaoFollowFeature extends DaoIdentifiable {
 
     public final boolean isBugComment() {
         return bugComment;
-    }
-
-    public final boolean isReleaseComment() {
-        return releaseComment;
     }
 
     public final boolean isMail() {
@@ -156,7 +144,6 @@ public class DaoFollowFeature extends DaoIdentifiable {
         result = prime * result + ((followed == null) ? 0 : followed.hashCode());
         result = prime * result + ((follower == null) ? 0 : follower.hashCode());
         result = prime * result + (mail ? 1231 : 1237);
-        result = prime * result + (releaseComment ? 1231 : 1237);
         return result;
     }
 
@@ -184,8 +171,6 @@ public class DaoFollowFeature extends DaoIdentifiable {
         } else if (!follower.equals(other.follower))
             return false;
         if (mail != other.mail)
-            return false;
-        if (releaseComment != other.releaseComment)
             return false;
         return true;
     }

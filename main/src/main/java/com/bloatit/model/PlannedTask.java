@@ -51,10 +51,10 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     /**
      * An id = 1 planed task.
      * 
-     * @param time
-     * @param id
+     * @param time when the task will be launched
+     * @param id a unique identifier of your subclass task.
      */
-    public PlannedTask(final Date time, final int id) {
+    protected PlannedTask(final Date time, final int id) {
         super();
         schedule(time);
         myId = new Id(id, getClass());

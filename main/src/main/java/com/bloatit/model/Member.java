@@ -23,6 +23,7 @@ import java.util.Set;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
+import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
@@ -312,7 +313,6 @@ public final class Member extends Actor<DaoMember> implements User {
         return false;
     }
 
-
     public boolean hasEmailToActivate() {
         return getDao().getEmailToActivate() != null;
     }
@@ -334,9 +334,21 @@ public final class Member extends Actor<DaoMember> implements User {
     public void setEmailToActivate(final String email) {
         getDao().setEmailToActivate(email);
     }
-    
+
     public void acceptNewsLetter(boolean newsletter) {
         getDao().acceptNewsLetter(newsletter);
+    }
+
+    public FollowFeature followOrGetFeature(Feature f) {
+        return FollowFeature.create(getDao().followOrGetFeature(((FeatureImplementation) f).getDao()));
+    }
+
+    public FollowSoftware followOrGetSoftware(Software f) {
+        return FollowSoftware.create(getDao().followOrGetSoftware(f.getDao()));
+    }
+
+    public FollowActor followOrGetActor(Actor<DaoActor> f) {
+        return FollowActor.create(getDao().followOrGetActor(f.getDao()));
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -458,7 +470,7 @@ public final class Member extends Actor<DaoMember> implements User {
     public String getEmailUnprotected() {
         return getDao().getEmail();
     }
-    
+
     public boolean getNewsletterAccept() {
         return getDao().getNewsletterAccept();
     }

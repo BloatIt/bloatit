@@ -27,6 +27,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -214,12 +215,12 @@ import com.bloatit.model.ModelConfiguration;
                                             "WHERE follower = :member " +
                                             "AND followed = :actor "),
                         @NamedQuery(
-                                    name =  "member.getFollowedActor.bySoftware",
+                                    name =  "member.getFollowedSoftware.bySoftware",
                                     query = "FROM com.bloatit.data.DaoFollowSoftware " +
                                             "WHERE follower = :member " +
                                             "AND followed = :software "),
                         @NamedQuery(
-                                    name =  "member.getFollowedActor.byFeature",
+                                    name =  "member.getFollowedFeature.byFeature",
                                     query = "FROM com.bloatit.data.DaoFollowFeature " +
                                             "WHERE follower = :member " +
                                             "AND followed = :feature"),
@@ -244,6 +245,17 @@ public class DaoMember extends DaoActor {
         MODERATOR,
         /** The ADMIN user can do everything. */
         ADMIN
+    }
+
+    public enum EmailStrategy {
+        /** ~ Every 10 min */
+        VERY_FREQUENTLY,
+        /** ~ Every 1 hour, 3/2 hours */
+        HOURLY,
+        /** ~ Every day */
+        DAILY,
+        /** ~ Every week */
+        WEEKLY,
     }
 
     private String fullname;
@@ -293,15 +305,14 @@ public class DaoMember extends DaoActor {
     private final List<DaoExternalServiceMembership> authorizedExternalServices = new ArrayList<DaoExternalServiceMembership>();
 
     // Follow System
-
     @OneToMany(mappedBy = "follower")
     private final List<DaoFollowSoftware> followedSoftware = new ArrayList<DaoFollowSoftware>();
-
     @OneToMany(mappedBy = "follower")
     private final List<DaoFollowActor> followedActors = new ArrayList<DaoFollowActor>();
-
     @OneToMany(mappedBy = "follower")
     private final List<DaoFollowFeature> followedFeatures = new ArrayList<DaoFollowFeature>();
+    @Enumerated(EnumType.STRING)
+    private EmailStrategy emailStrategy;
 
     // ======================================================================
     // Static HQL requests
@@ -447,6 +458,7 @@ public class DaoMember extends DaoActor {
         this.fullname = "";
         this.description = "";
         this.newsletter = false;
+        this.emailStrategy = EmailStrategy.VERY_FREQUENTLY;
     }
 
     /**
@@ -626,7 +638,7 @@ public class DaoMember extends DaoActor {
         this.newsletter = newsletter;
     }
 
-    public DaoFollowActor getOrCreateFollowedActor(DaoActor actor) {
+    public DaoFollowActor followOrGetActor(DaoActor actor) {
         final Object followed = SessionManager.getNamedQuery("member.getFollowedActor.byActor")
                                               .setEntity("member", this)
                                               .setEntity("actor", actor)
@@ -637,7 +649,7 @@ public class DaoMember extends DaoActor {
         return (DaoFollowActor) followed;
     }
 
-    public DaoFollowFeature getOrCreateFollowedFeature(DaoFeature feature) {
+    public DaoFollowFeature followOrGetFeature(DaoFeature feature) {
         final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
                                                                            .setEntity("member", this)
                                                                            .setEntity("feature", feature)
@@ -648,7 +660,7 @@ public class DaoMember extends DaoActor {
         return followed;
     }
 
-    public DaoFollowSoftware getOrCreateFollowedSoftware(DaoSoftware software) {
+    public DaoFollowSoftware followOrGetSoftware(DaoSoftware software) {
         final DaoFollowSoftware followed = (DaoFollowSoftware) SessionManager.getNamedQuery("member.getFollowedSoftware.bySoftware")
                                                                              .setEntity("member", this)
                                                                              .setEntity("software", software)
@@ -660,7 +672,7 @@ public class DaoMember extends DaoActor {
     }
 
     private DaoFollowFeature follow(DaoFeature feature) {
-        final DaoFollowFeature followed = DaoFollowFeature.createAndPersist(this, feature, false, false, false, false);
+        final DaoFollowFeature followed = DaoFollowFeature.createAndPersist(this, feature, false, false, false);
         followedFeatures.add(followed);
         return followed;
     }
@@ -675,6 +687,10 @@ public class DaoMember extends DaoActor {
         final DaoFollowActor followed = DaoFollowActor.createAndPersist(this, soft, false);
         followedActors.add(followed);
         return followed;
+    }
+
+    public void setEmailStrategy(EmailStrategy emailStrategy) {
+        this.emailStrategy = emailStrategy;
     }
 
     // ======================================================================
@@ -692,6 +708,10 @@ public class DaoMember extends DaoActor {
         final Query filter = session.createFilter(getTeamMembership(), "select this.bloatitTeam order by login");
         final Query count = session.createFilter(getTeamMembership(), "select count(*)");
         return new QueryCollection<DaoTeam>(filter, count);
+    }
+
+    public EmailStrategy getEmailStrategy() {
+        return emailStrategy;
     }
 
     /**

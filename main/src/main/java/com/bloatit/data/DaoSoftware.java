@@ -59,13 +59,13 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "software.byName.size",
                             query = "SELECT count(*) FROM DaoSoftware WHERE name = :name"),
                        @NamedQuery(
-                             name="software.getFeatures.orderByCreationDate", 
+                             name="software.getFeatures.orderByCreationDate",
                              query="FROM com.bloatit.data.DaoFeature " +
                                    "WHERE featureState != :featureState " +
                                    "AND software = :software " +
                                    "ORDER BY creationDate DESC "),
                        @NamedQuery(
-                             name="software.getFeatures.orderByCreationDate.size", 
+                             name="software.getFeatures.orderByCreationDate.size",
                              query="SELECT COUNT(*)" +
                                    "FROM com.bloatit.data.DaoFeature " +
                                    "WHERE featureState != :featureState " +
@@ -96,6 +96,8 @@ public class DaoSoftware extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "followed")
     private final List<DaoFollowSoftware> followers = new ArrayList<DaoFollowSoftware>();
+    @OneToMany(mappedBy = "software")
+    private final List<DaoEvent> events = new ArrayList<DaoEvent>();
 
     // ======================================================================
     // Static HQL requests
@@ -170,7 +172,7 @@ public class DaoSoftware extends DaoIdentifiable {
 
     /**
      * Change the logo of this soft.
-     * 
+     *
      * @param image the image to add.
      */
     public void setImage(final DaoFileMetadata image) {

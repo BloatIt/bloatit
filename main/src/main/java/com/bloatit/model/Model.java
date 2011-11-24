@@ -63,6 +63,8 @@ public class Model implements com.bloatit.framework.model.Model {
             new TaskUpdateDevelopingState(feature.getId(), feature.getValidationDate());
         }
         close();
+        
+        EventMailer.start();
     }
 
     /*

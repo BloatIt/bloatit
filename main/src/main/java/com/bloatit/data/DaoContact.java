@@ -40,10 +40,10 @@ public class DaoContact {
     @Column(columnDefinition = "TEXT")
     @Basic(optional = true)
     public String name;
-    
+
     @Basic(optional = true)
-    public  boolean isCompany;
-    
+    public boolean isCompany;
+
     /**
      * Tax identification, VAT ...
      */
@@ -116,11 +116,11 @@ public class DaoContact {
     public void setName(final String name) {
         this.name = name;
     }
-    
+
     public boolean isCompany() {
         return isCompany;
     }
-    
+
     public void setIsCompany(boolean isCompany) {
         this.isCompany = isCompany;
     }

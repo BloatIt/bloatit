@@ -41,41 +41,50 @@ import com.bloatit.framework.utils.PageIterable;
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
-@NamedQueries(value = { @NamedQuery(
-                      name = "event.byMemberDate",
-                      query = "FROM DaoEvent e, DaoFollowFeature f, DaoFollowSoftware s, DaoFollowActor a " +
-                              "WHERE (( " +
-                              "  f.follower = :member " +
-                              "  AND f.featureComment = e.isFeatureComment " +
-                              "  AND f.bugComment = e.isBugComment " +
-                              "  AND f.followed = e.feature " +
-                              ") OR ( " +
-                              "  s.follower = :member " +
-                              "  AND s.followed = e.feature.software " +
-                              ") OR (" +
-                              "  a.follower = :member " +
-                              "  AND (a.followed = e.feature.member OR a.followed = e.feature.asTeam) " +
-                              ")) " +
-                              "AND e.creationDate >= :date " ),
+@NamedQueries(value = {
           @NamedQuery(
-                      name =  "event.byMemberDate.withMail",
-                      query = "FROM DaoEvent e, DaoFollowFeature f, DaoFollowSoftware s, DaoFollowActor a " +
-                              "WHERE (( " +
-                              "  f.follower = :member " +
-                              "  AND f.featureComment = e.isFeatureComment " +
-                              "  AND f.bugComment = e.isBugComment " +
-                              "  AND f.followed = e.feature " +
-                              ") OR ( " +
-                              "  s.follower = :member " +
-                              "  AND s.followed = e.feature.software " +
-                              ") OR (" +
-                              "  a.follower = :member " +
-                              "  AND (a.followed = e.feature.member OR a.followed = e.feature.asTeam) " +
-                              ")) " +
-                              "AND e.creationDate >= :date " +
-                              "AND f.mail = true " +
-                              "AND s.mail = true " +
-                              "AND a.mail = true " ),
+                      name =  "memberid.event.byDate.withMail",
+                      query = "SELECT coalesce(mff.id,maf.id,msf.id), e " +
+                              "FROM DaoEvent e " +
+                              "JOIN e.feature f " +
+                              "LEFT JOIN f.followers mf " +
+                              "JOIN e.software s " +
+                              "LEFT JOIN s.followers ms " +
+                              "JOIN e.actor a " +
+                              "LEFT JOIN a.followers ma " +
+                              "LEFT JOIN mf.follower mff " +
+                              "LEFT JOIN ms.follower msf " +
+                              "LEFT JOIN ma.follower maf " +
+                              "WHERE e.creationDate > :date " +
+                              "AND (mff.emailStrategy = :strategy OR mff is null) " +
+                              "AND (msf.emailStrategy = :strategy OR msf is null) " +
+                              "AND (maf.emailStrategy = :strategy OR maf is null) " +
+                              "AND (mf.mail = true OR mf is null) " +
+                              "AND (ms.mail = true OR ms is null) " +
+                              "AND (ma.mail = true OR ma is null) " +
+                              "ORDER BY mff.id, maf.id, msf.id, e.creationDate "
+                              ),
+          @NamedQuery(
+                      name =  "memberid.event.byDate.withMail.size",
+                      query = "SELECT count(*) " +
+                              "FROM DaoEvent e " +
+                              "JOIN e.feature f " +
+                              "LEFT JOIN f.followers mf " +
+                              "JOIN e.software s " +
+                              "LEFT JOIN s.followers ms " +
+                              "JOIN e.actor a " +
+                              "LEFT JOIN a.followers ma " +
+                              "LEFT JOIN mf.follower mff " +
+                              "LEFT JOIN ms.follower msf " +
+                              "LEFT JOIN ma.follower maf " +
+                              "WHERE e.creationDate > :date " +
+                              "AND (mff.emailStrategy = :strategy OR mff is null) " +
+                              "AND (msf.emailStrategy = :strategy OR msf is null) " +
+                              "AND (maf.emailStrategy = :strategy OR maf is null) " +
+                              "AND (mf.mail = true OR mf is null) " +
+                              "AND (ms.mail = true OR ms is null) " +
+                              "AND (ma.mail = true OR ma is null) "
+                              ),
 })
 //@formatter:on
 public class DaoEvent extends DaoIdentifiable {
@@ -84,30 +93,30 @@ public class DaoEvent extends DaoIdentifiable {
 
         // Feature
         CREATE_FEATURE, //
-        IN_DEVELOPPING_STATE, //
+        IN_DEVELOPING_STATE, //
         DISCARDED, // TODO: remove every event from this feature.
         FINICHED, //
-        
+
         // Contributions
         ADD_CONTRIBUTION, //
         REMOVE_CONTRIBUTION, //
-        
+
         // Offer
         ADD_OFFER, //
         REMOVE_OFFER, //
         ADD_SELECTED_OFFER, //
         CHANGE_SELECTED_OFFER, //
         REMOVE_SELECTED_OFFER, //
-        
+
         // Release
         ADD_RELEASE, //
-        
+
         // Bugs
         ADD_BUG, //
         BUG_CHANGE_LEVEL, //
         BUG_SET_RESOLVED, //
         BUG_SET_DEVELOPING, //
-        
+
         // Comment
         FEATURE_ADD_COMMENT, //
         BUG_ADD_COMMENT, //
@@ -126,10 +135,14 @@ public class DaoEvent extends DaoIdentifiable {
 
     @ManyToOne(optional = false)
     private DaoFeature feature;
+    @ManyToOne(optional = false)
+    private DaoActor actor;
+    @ManyToOne(optional = false)
+    private DaoSoftware software;
 
     @ManyToOne
     private DaoContribution contribution;
-    @ManyToOne(cascade={CascadeType.ALL})
+    @ManyToOne(cascade = { CascadeType.ALL })
     private DaoOffer offer;
     @ManyToOne
     private DaoComment comment;
@@ -222,11 +235,13 @@ public class DaoEvent extends DaoIdentifiable {
         if (type == null || feature == null) {
             throw new NonOptionalParameterException();
         }
+        this.feature = feature;
+        this.actor = feature.getAuthor();
+        this.software = feature.getSoftware();
         this.creationDate = new Date();
         this.isFeatureComment = release == null && bug == null && comment != null;
         this.isBugComment = bug != null && comment != null;
         this.type = type;
-        this.feature = feature;
         this.contribution = contribution;
         this.offer = offer;
         this.comment = comment;
@@ -277,6 +292,14 @@ public class DaoEvent extends DaoIdentifiable {
 
     public final DaoMilestone getMilestone() {
         return milestone;
+    }
+
+    public DaoActor getActor() {
+        return actor;
+    }
+
+    public DaoSoftware getSoftware() {
+        return software;
     }
 
     // ======================================================================

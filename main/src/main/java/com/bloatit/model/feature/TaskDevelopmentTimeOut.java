@@ -33,7 +33,7 @@ import com.bloatit.model.PlannedTask;
  * (the expiration date is reached).
  * </p>
  */
-public class TaskDevelopmentTimeOut extends PlannedTask {
+public final class TaskDevelopmentTimeOut extends PlannedTask {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5639581628713974313L;

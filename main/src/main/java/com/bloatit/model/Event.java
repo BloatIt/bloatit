@@ -18,15 +18,8 @@ package com.bloatit.model;
 
 import java.util.Date;
 
-import com.bloatit.data.DaoBug;
-import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoEvent;
 import com.bloatit.data.DaoEvent.EventType;
-import com.bloatit.data.DaoFeature;
-import com.bloatit.data.DaoMilestone;
-import com.bloatit.data.DaoOffer;
-import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.model.visitor.ModelClassVisitor;
 
@@ -56,7 +49,7 @@ public final class Event extends Identifiable<DaoEvent> {
     public FeatureEvent getEvent() {
         switch (getDao().getType()) {
             case CREATE_FEATURE:
-            case IN_DEVELOPPING_STATE:
+            case IN_DEVELOPING_STATE:
             case DISCARDED:
             case FINICHED:
                 return new FeatureEvent(getDao());
@@ -124,8 +117,8 @@ public final class Event extends Identifiable<DaoEvent> {
             return event.getType();
         }
 
-        public DaoFeature getFeature() {
-            return event.getFeature();
+        public Feature getFeature() {
+            return FeatureImplementation.create(event.getFeature());
         }
 
         public Date getCreationDate() {
@@ -138,8 +131,8 @@ public final class Event extends Identifiable<DaoEvent> {
             super(event);
         }
 
-        public DaoContribution getContribution() {
-            return event.getContribution();
+        public Contribution getContribution() {
+            return Contribution.create(event.getContribution());
         }
 
         public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
@@ -152,8 +145,8 @@ public final class Event extends Identifiable<DaoEvent> {
             super(event);
         }
 
-        public DaoOffer getOffer() {
-            return event.getOffer();
+        public Offer getOffer() {
+            return Offer.create(event.getOffer());
         }
 
         public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
@@ -166,8 +159,8 @@ public final class Event extends Identifiable<DaoEvent> {
             super(event);
         }
 
-        public DaoComment getComment() {
-            return event.getComment();
+        public Comment getComment() {
+            return Comment.create(event.getComment());
         }
 
         public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
@@ -180,16 +173,16 @@ public final class Event extends Identifiable<DaoEvent> {
             super(event);
         }
 
-        public DaoRelease getRelease() {
-            return event.getRelease();
+        public Release getRelease() {
+            return Release.create(event.getRelease());
         }
 
-        public DaoOffer getOffer() {
-            return event.getOffer();
+        public Offer getOffer() {
+            return Offer.create(event.getOffer());
         }
 
-        public DaoMilestone getMilestone() {
-            return event.getMilestone();
+        public Milestone getMilestone() {
+            return Milestone.create(event.getMilestone());
         }
 
         public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
@@ -203,16 +196,16 @@ public final class Event extends Identifiable<DaoEvent> {
             super(event);
         }
 
-        public DaoBug getBug() {
-            return event.getBug();
+        public Bug getBug() {
+            return Bug.create(event.getBug());
         }
 
-        public DaoOffer getOffer() {
-            return event.getOffer();
+        public Offer getOffer() {
+            return Offer.create(event.getOffer());
         }
 
-        public DaoMilestone getMilestone() {
-            return event.getMilestone();
+        public Milestone getMilestone() {
+            return Milestone.create(event.getMilestone());
         }
 
         public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
@@ -226,8 +219,8 @@ public final class Event extends Identifiable<DaoEvent> {
             super(event);
         }
 
-        public DaoComment getComment() {
-            return event.getComment();
+        public Comment getComment() {
+            return Comment.create(event.getComment());
         }
 
         public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {

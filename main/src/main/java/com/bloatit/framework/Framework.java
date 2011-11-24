@@ -21,6 +21,8 @@ import java.net.BindException;
 import com.bloatit.common.CommonConfiguration;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
+import com.bloatit.framework.feedbackworker.FeedBackWorker;
+import com.bloatit.framework.feedbackworker.FeedbackServer;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.model.Model;
 import com.bloatit.framework.model.ModelAccessor;
@@ -38,15 +40,21 @@ public class Framework {
     private final Model model;
     private final XcgiServer scgiServer;
     private final MailServer mailServer;
+    private final FeedbackServer feedbackServer;
 
     public Framework(final Model model) {
         this.model = model;
         this.scgiServer = new XcgiServer();
         this.mailServer = MailServer.getInstance();
+        this.feedbackServer = FeedbackServer.getInstance();
     }
 
     public void addProcessor(final XcgiProcessor processor) {
         scgiServer.addProcessor(processor);
+    }
+
+    public void addWorker(final FeedBackWorker<?> worker) {
+        feedbackServer.addWorker(worker);
     }
 
     public boolean initialize() {
@@ -54,8 +62,11 @@ public class Framework {
             CommonConfiguration.load();
             FrameworkConfiguration.load();
             LocalesConfiguration.load();
+
             mailServer.initialize();
             scgiServer.initialize();
+            feedbackServer.initialize();
+
             ModelAccessor.initialize(model);
             new SessionCleanerTask();
             Reporting.reporter.reportServerStart();
@@ -84,7 +95,9 @@ public class Framework {
     public void run() {
         try {
             mailServer.start();
+            feedbackServer.start();
             scgiServer.start();
+
         } catch (final RuntimeException e) {
             Log.framework().fatal("Unknown RuntimeException", e);
         } catch (final Exception e) {

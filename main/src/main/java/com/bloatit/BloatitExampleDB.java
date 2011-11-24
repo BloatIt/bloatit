@@ -192,6 +192,8 @@ public class BloatitExampleDB { // NO_UCD
         final String mageiaDescription = "http://mageia.org/fr/";
         mageia = new Software("Mageia", thomas, Locale.FRANCE, mageiaTitle + mageiaDescription);
         mageia.setImage(getImage(yoann, "mageia.png"));
+        
+        thomas.followOrGetSoftware(mageia).setMail(true);
     }
 
     public void generateLibreOfficeSoftware() throws UniqueNameExpectedException {
@@ -202,6 +204,8 @@ public class BloatitExampleDB { // NO_UCD
                 + "\n" + "http://www.libreoffice.org/";
         libreOffice = new Software("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle + libreOfficeDescription);
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
+        
+        yoann.followOrGetSoftware(libreOffice).setMail(true);
     }
 
     public void generatePerroquetSoftware() throws UniqueNameExpectedException {
@@ -212,6 +216,8 @@ public class BloatitExampleDB { // NO_UCD
                 + "http://perroquet.b219.org/";
         perroquet = new Software("Perroquet", thomas, Locale.FRANCE, perroquetTitle + perroquetDescription);
         perroquet.setImage(getImage(fred, "perroquet.png"));
+        
+        fred.followOrGetSoftware(perroquet).setMail(true);
     }
 
     public void generateVlcSoftware() throws UniqueNameExpectedException {
@@ -250,6 +256,8 @@ public class BloatitExampleDB { // NO_UCD
                                                                               vlc);
 
         AuthToken.authenticate(cerbere);
+        thomas.followOrGetFeature(twoSubtitlesInVlcFeature).setMail(true);
+        
         final Comment comment1 = twoSubtitlesInVlcFeature.addComment("Super idée !\n"
                 + "J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
 
