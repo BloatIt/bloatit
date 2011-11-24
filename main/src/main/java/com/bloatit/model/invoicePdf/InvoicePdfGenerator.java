@@ -78,6 +78,7 @@ public class InvoicePdfGenerator {
     private final BigDecimal totalPrice;
     private final String sellerLegalId;
     private final String sellerTaxId;
+    private final String logo;
 
     /**
      * Generates a pdf for an invoice
@@ -129,7 +130,9 @@ public class InvoicePdfGenerator {
                                final BigDecimal taxAmount,
                                final BigDecimal totalPrice,
                                final String sellerLegalId,
-                               final String sellerTaxId) {
+                               final String sellerTaxId,
+                               final String logo) {
+        
         
         
         // We check that we didn't receive null or empty parameters
@@ -177,6 +180,7 @@ public class InvoicePdfGenerator {
         this.totalPrice = totalPrice;
         this.sellerLegalId = sellerLegalId;
         this.sellerTaxId = sellerTaxId;
+        this.logo = logo;
     }
 
 
@@ -201,7 +205,7 @@ public class InvoicePdfGenerator {
             writer = PdfWriter.getInstance(document, output);
             document.open();
             addMetaData(invoiceType, invoiceId, sellerName);
-            addLinkeosImg();
+            addLogoImg();
             addEmitter(sellerName, sellerStreet, sellerExtras, sellerCity, sellerCountry);
             addReceiver(receiverName, receiverStreet, receiverExtras, receiverCity, receiverCountry, receiverTaxIdentification);
             addDate(invoiceDate);
@@ -257,8 +261,11 @@ public class InvoicePdfGenerator {
      *             position
      * @throws IOException if the image file cannot be read
      */
-    private void addLinkeosImg() throws DocumentException, InvalidPositionException, IOException {
-        final Image img = Image.getInstance(ModelConfiguration.getInvoiceLinkeosLogo());
+    private void addLogoImg() throws DocumentException, InvalidPositionException, IOException {
+        if(logo == null) {
+            return;
+        }
+        final Image img = Image.getInstance(logo);
         img.setAbsolutePosition(LEFT_MARGIN, pageSize.getHeight() - TOP_MARGIN - BOTTOM_MARGIN + 15);
         img.scalePercent(20);
         img.setCompressionLevel(8);

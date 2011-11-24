@@ -177,7 +177,8 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                                          taxAmount,
                                                                          totalPrice,
                                                                          sellerLegalId,
-                                                                         sellerTaxIdentification);
+                                                                         sellerTaxIdentification,
+                                                                         null);
 
         if (preview == null) {
             return DaoContributionInvoice.createAndPersist(emitterActor.getDao(),

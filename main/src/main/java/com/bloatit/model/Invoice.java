@@ -130,7 +130,6 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
         final String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
 
-        
         Contact recipientContact = recipientActor.getContactUnprotected();
         final String receiverName = recipientContact.getName();
         final String receiverStreet = recipientContact.getStreet();
@@ -140,17 +139,15 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final String receiverTaxIdentification = recipientContact.getTaxIdentification();
         final Date invoiceDate = DateUtils.now();
 
-        
         BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
-        
-        if(receiverTaxIdentification != null) {
+
+        if (receiverTaxIdentification != null) {
             taxRate = BigDecimal.ZERO;
         }
-        
+
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
-        
         final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
                                                                          invoiceId,
                                                                          sellerName,
@@ -171,7 +168,8 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                                                          taxAmount,
                                                                          totalPrice,
                                                                          sellerLegalId,
-                                                                         sellerTaxId);
+                                                                         sellerTaxId,
+                                                                         ModelConfiguration.getInvoiceLinkeosLogo());
 
         return DaoInvoice.createAndPersist(recipientActor.getDao(),
                                            pdfGenerator.getPdfUrl(),
