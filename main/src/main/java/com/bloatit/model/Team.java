@@ -230,6 +230,10 @@ public final class Team extends Actor<DaoTeam> {
         // TODO set rights
         return getDao().getRecentActivityCount(ModelConfiguration.getRecentActivityDays());
     }
+    
+    public PageIterable<Milestone> getMilestoneInvoiced() {
+        return new MilestoneList(getDao().getMilestoneInvoiced());
+    }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Can ...

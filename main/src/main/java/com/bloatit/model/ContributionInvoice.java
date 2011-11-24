@@ -260,5 +260,4 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
     final Actor<?> getEmitterActorUnprotected() {
         return (Actor<?>) getDao().getEmitterActor().accept(new DataVisitorConstructor());
     }
-
 }
