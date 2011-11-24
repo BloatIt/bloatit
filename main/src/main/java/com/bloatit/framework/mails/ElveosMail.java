@@ -26,7 +26,9 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
+import com.bloatit.web.url.RecoverPasswordPageUrl;
 
 /**
  * A class used to ease the sending of emails
@@ -100,7 +102,7 @@ public abstract class ElveosMail {
         return str;
     }
 
-    protected final void addAttachment(final String uri, final String filename) {
+    public final void addAttachment(final String uri, final String filename) {
         this.attachment = uri;
         this.filename = filename;
     }
@@ -114,6 +116,13 @@ public abstract class ElveosMail {
             addNamedParameter("reference", reference);
             addNamedParameter("total_amount", totalAmount);
             addNamedParameter("credited", credited);
+        }
+    }
+    
+    public static class InvoiceGenerated extends ElveosMail {
+        public InvoiceGenerated(final String featureName) {
+            super(new TemplateFile("invoice-generated.mail"), tr("elveos.org: Invoice generated"));
+            addNamedParameter("feature_name", featureName);
         }
     }
 

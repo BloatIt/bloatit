@@ -99,7 +99,23 @@ public class BloatitExampleDB { // NO_UCD
         AuthToken.authenticate(yoann);
         yoann.getContact().setName("Yoann Plénet");
         yoann.getContact().setStreet("Le superbe appartement à gauche");
-
+        yoann.getContact().setCity("Antony");
+        yoann.getContact().setPostalCode("92160");
+        yoann.getContact().setCountry("Allemagne");
+        yoann.getContact().setIsCompany(true);
+        AuthToken.authenticate(cerbere);
+        cerbere.getContact().setName("Cerbère Le Chien");
+        cerbere.getContact().setStreet("666, quai du Styx");
+        cerbere.getContact().setCity("Tartare");
+        cerbere.getContact().setPostalCode("42666");
+        cerbere.getContact().setCountry("L'Enfer");
+        cerbere.getContact().setIsCompany(true);
+        cerbere.getContact().setLegalId("Hades & Fils");
+        cerbere.getContact().setInvoiceIdNumber(new BigDecimal(5));
+        cerbere.getContact().setInvoiceIdTemplate("HADES-{YEAR|2}{MONTH}-{ID|6}");
+        cerbere.getContact().setTaxIdentification("RSC123456");
+        cerbere.getContact().setTaxRate(new BigDecimal("0.196"));
+        
         // Add avatar
         AuthToken.authenticate(chogall);
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
@@ -459,6 +475,9 @@ public class BloatitExampleDB { // NO_UCD
         // Contributions
         AuthToken.authenticate(thomas);
         feature.addContribution(new BigDecimal("400"), "");
+        
+        AuthToken.authenticate(yoann);
+        feature.addContribution(new BigDecimal("300"), "");
 
         setFeatureInFinishedState(feature);
 

@@ -78,4 +78,8 @@ public class HtmlLink extends HtmlBranch {
     public void setNoFollow() {
         addAttribute("rel", "nofollow");
     }
+
+    public void setOpenInNewPage() {
+        addAttribute("target", "_blank");
+    }
 }
