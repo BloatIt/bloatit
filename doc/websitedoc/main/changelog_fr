@@ -1,6 +1,24 @@
 Changelog
 =========
 
+Version 1.1.27
+--------------
+
+### Features
+ - New signup process
+ - Add markdown for comments
+ - Display previous comments when replying
+ - Add invoicing system for contributions
+ - Improve js API
+ - Add a text to explains that its possible to add attachement to a release later
+ - Various small css improvements
+
+### Bug fixes
+ - Fix various translation problems
+ - Fix realease button presence when the offer author is a team
+ - Add missing contraints on forms
+ - Fix Konqueror freeze
+ 
 Version 1.1.26
 --------------
 
