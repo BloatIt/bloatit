@@ -64,6 +64,7 @@ public final class OfferAction extends UserContentAction {
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a description to your offer."))
+    @MaxConstraint(max = 800000, message = @tr("The length of the description must be smaller than %constraint% characters."))
     private final String description;
 
     @RequestParam(role = Role.POST)
