@@ -625,19 +625,21 @@ dd:last-child {
 
 .side_bar_button{
     width:100%;
-    .display-box;
-    .box-align(center);
-    
+    display: table;
     
     .side_bar_button_img{
+        display: table-cell;
         width: 40px;
         margin-left:20px;
+        vertical-align: middle;
     }
     
     .side_bar_button_text_box{
-        .box-flex;
+        display: table-cell;
+        width:100%;
         margin-right:15px;
         margin-left:10px;
+        vertical-align: middle;
     }
     
     .side_bar_button_text {
@@ -646,7 +648,7 @@ dd:last-child {
         padding-bottom: 8px;
         font-size: 1.4em;
         text-align: center;
-        margin-bottom: 9px;
+        margin-bottom: 0px;
     }
 }
 
@@ -656,21 +658,23 @@ dd:last-child {
 
 .side_bar_button_undecorated{
     width:100%;
-    .display-box;
-    .box-align(center);
-    margin-top:-13px;
-    margin-bottom:-16px;
+    margin-top:-5px;
+    margin-bottom:-5px;
+    display: table;
     
     .side_bar_button_img{
+        display: table-cell;
         width: 35px;
         margin-left:23px;
+        vertical-align: middle;
     }
     
     .side_bar_button_text_box{
-        .box-flex;
-        padding-top:7px;
+        display: table-cell;
+        width:100%;
         margin-right:20px;
         margin-left:10px;
+        vertical-align: middle;
     }
     
     .side_bar_button_text {
@@ -679,7 +683,7 @@ dd:last-child {
         padding-bottom: 8px;
         font-size: 1.4em;
         text-align: center;
-        margin-bottom: 9px;
+        margin-bottom: 0px;
     }
 }
 

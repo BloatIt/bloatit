@@ -133,6 +133,22 @@ import com.bloatit.framework.utils.datetime.DateUtils;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.asTeam = :this "),
+                        @NamedQuery(
+                                    name = "team.getMilestoneInvoiced",
+                                    query = "SELECT bs " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.asTeam = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS NOT EMPTY"),
+                        @NamedQuery(
+                                    name = "team.getMilestoneInvoiced.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.asTeam = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS NOT EMPTY"),
                        }
              )
 // @formatter:on
@@ -287,6 +303,12 @@ public class DaoTeam extends DaoActor {
     public PageIterable<DaoMilestone> getMilestones() {
         return new QueryCollection<DaoMilestone>("team.getMilestones").setEntity("this", this);
     }
+
+    public PageIterable<DaoMilestone> getMilestoneInvoiced() {
+        return new QueryCollection<DaoMilestone>("team.getMilestoneInvoiced").setEntity("this", this)
+                                                                                .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
+    }
+
 
     /**
      * @return the avatar

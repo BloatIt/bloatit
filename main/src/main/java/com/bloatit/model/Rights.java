@@ -8,6 +8,7 @@ import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RestrictedObject;
 import com.bloatit.model.visitor.HighLevelModelVisitor;
@@ -260,6 +261,12 @@ public class Rights {
 
         @Override
         public Team visit(final ContributionInvoice model) {
+            if(model.getEmitterActorUnprotected().isTeam()) {
+                Team team = (Team) model.getEmitterActorUnprotected();
+                if(AuthToken.getMember().isInTeam(team)) {
+                    return team;
+                }
+            }
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
@@ -362,7 +369,7 @@ public class Rights {
 
         @Override
         public Boolean visit(final ContributionInvoice model) {
-            return visitAbstract(model.getRecipientActorUnprotected());
+            return visitAbstract(model.getRecipientActorUnprotected()) || visitAbstract(model.getEmitterActorUnprotected());
         }
 
         @Override

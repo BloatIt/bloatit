@@ -17,6 +17,7 @@
 package com.bloatit.web.linkable.members.tabs;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.PageIterable;
@@ -36,6 +37,7 @@ import com.bloatit.model.Contact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -129,7 +131,13 @@ public class InvoicingContactTab extends HtmlTab {
         // Country
         final String country;
         country = Context.tr("Country: ");
-        memberIdList.add(new HtmlDefineParagraph(country, emptyIfNull(contact.getCountry())));
+        
+        
+        if(contact.getCountry() == null) {
+            memberIdList.add(new HtmlDefineParagraph(country, ""));
+        } else {
+            memberIdList.add(new HtmlDefineParagraph(country, new Locale("en", contact.getCountry()).getDisplayCountry(Context.getLocalizator().getLocale())));    
+        }
 
         // Is company
 
@@ -180,41 +188,40 @@ public class InvoicingContactTab extends HtmlTab {
 
         }
 
+        PageIterable<Milestone> milestoneInvoiced = null;
+
         if (actor.isTeam()) {
-            /*
-             * final TeamPageUrl teampPageUrl = new TeamPageUrl((Team) actor);
-             * teampPageUrl.setActiveTabKey(TeamPage.INVOICING_TAB); redirectUrl
-             * = teampPageUrl;
-             */
+            Team team = ((Team) actor);
+            milestoneInvoiced = team.getMilestoneInvoiced();
         } else {
             Member member = ((Member) actor);
-            PageIterable<Milestone> milestoneInvoiced = member.getMilestoneInvoiced();
+            milestoneInvoiced = member.getMilestoneInvoiced();
+        }
 
-            if (milestoneInvoiced.size() > 0) {
-                HtmlTitle titleInvoices = new HtmlTitle(Context.tr("Generated Invoices"), 1);
-                master.add(titleInvoices);
+        if (milestoneInvoiced != null && milestoneInvoiced.size() > 0) {
+            HtmlTitle titleInvoices = new HtmlTitle(Context.tr("Generated Invoices"), 1);
+            master.add(titleInvoices);
 
-                HtmlList list = new HtmlList();
+            HtmlList list = new HtmlList();
 
-                for (Milestone milestone : milestoneInvoiced) {
-                    HtmlParagraph p = new HtmlParagraph();
-                    try {
-                        if (milestone.getOffer().getMilestones().size() == 1) {
-                            p.add(new HtmlMixedText(Context.tr("<0::>: <1::download invoices>"),
-                                                    FeaturesTools.generateFeatureTitle(milestone.getOffer().getFeature()),
-                                                    new ContributionInvoicesZipDataUrl(milestone).getHtmlLink()));
-                        } else {
-                            p.add(new HtmlMixedText(Context.tr("<0::> – Milestone {0}: <1::download invoices>", milestone.getPosition()),
-                                                    FeaturesTools.generateFeatureTitle(milestone.getOffer().getFeature()),
-                                                    new ContributionInvoicesZipDataUrl(milestone).getHtmlLink()));
-                        }
-                    } catch (UnauthorizedOperationException e) {
-                        throw new ShallNotPassException(e);
+            for (Milestone milestone : milestoneInvoiced) {
+                HtmlParagraph p = new HtmlParagraph();
+                try {
+                    if (milestone.getOffer().getMilestones().size() == 1) {
+                        p.add(new HtmlMixedText(Context.tr("<0::>: <1::download invoices>"),
+                                                FeaturesTools.generateFeatureTitle(milestone.getOffer().getFeature()),
+                                                new ContributionInvoicesZipDataUrl(milestone).getHtmlLink()));
+                    } else {
+                        p.add(new HtmlMixedText(Context.tr("<0::> – Milestone {0}: <1::download invoices>", milestone.getPosition()),
+                                                FeaturesTools.generateFeatureTitle(milestone.getOffer().getFeature()),
+                                                new ContributionInvoicesZipDataUrl(milestone).getHtmlLink()));
                     }
-                    list.add(new HtmlListItem(p));
+                } catch (UnauthorizedOperationException e) {
+                    throw new ShallNotPassException(e);
                 }
-                master.add(list);
+                list.add(new HtmlListItem(p));
             }
+            master.add(list);
         }
 
         return master;

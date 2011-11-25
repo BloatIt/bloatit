@@ -171,7 +171,6 @@ import com.bloatit.model.ModelConfiguration;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
-                                    "AND offer_.asTeam = null " +
                                     "AND bs.milestoneState = :state " +
                                     "AND bs.invoices IS EMPTY"),
                         @NamedQuery(
@@ -180,7 +179,6 @@ import com.bloatit.model.ModelConfiguration;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
-                                    "AND offer_.asTeam = null " +
                                     "AND bs.milestoneState = :state " +
                                     "AND bs.invoices IS EMPTY"),
                         @NamedQuery(
@@ -189,7 +187,6 @@ import com.bloatit.model.ModelConfiguration;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
-                                    "AND offer_.asTeam = null " +
                                     "AND bs.milestoneState = :state " +
                                     "AND bs.invoices IS NOT EMPTY"),
                         @NamedQuery(
@@ -198,7 +195,6 @@ import com.bloatit.model.ModelConfiguration;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
-                                    "AND offer_.asTeam = null " +
                                     "AND bs.milestoneState = :state " +
                                     "AND bs.invoices IS NOT EMPTY"),
                         @NamedQuery(

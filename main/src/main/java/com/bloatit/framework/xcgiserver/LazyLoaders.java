@@ -65,7 +65,7 @@ class LazyLoaders {
             final String[] namedValues = stringValue.split(";");
             for (final String namedValue : namedValues) {
                 final String[] aValue = namedValue.split("=");
-                if (aValue.length == 2) {
+                if (aValue.length >= 2) {
                     map.put(aValue[0].trim(), aValue[1].trim());
                 } else {
                     Log.framework().warn("Malformed cookie value: " + namedValue);

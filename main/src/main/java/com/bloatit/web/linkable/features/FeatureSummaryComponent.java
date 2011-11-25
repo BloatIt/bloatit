@@ -129,7 +129,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                             if (vote == 0) {
                                 final HtmlDiv featurePopularityJudge = new HtmlDiv("feature_popularity_judge");
                                 {
-                                    if (feature.canVoteUp().isEmpty()) {
+                                    if (!AuthToken.isAuthenticated() || feature.canVoteUp().isEmpty()) {
                                         final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
                                                                                                               feature,
                                                                                                               true);
@@ -138,7 +138,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                                         featurePopularityJudge.add(usefulLink);
                                     }
 
-                                    if (feature.canVoteDown().isEmpty()) {
+                                    if (!AuthToken.isAuthenticated() || feature.canVoteDown().isEmpty()) {
 
                                         final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
                                                                                                                feature,

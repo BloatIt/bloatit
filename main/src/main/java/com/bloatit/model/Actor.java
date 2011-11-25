@@ -276,9 +276,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
             if (contact.getLegalId() == null) {
                 return false;
             }
-            if (contact.getTaxIdentification() == null) {
-                return false;
-            }
             if (contact.getTaxRate() == null) {
                 return false;
             }

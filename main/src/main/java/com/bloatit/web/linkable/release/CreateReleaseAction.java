@@ -15,6 +15,7 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -39,12 +40,14 @@ public final class CreateReleaseAction extends UserContentAction {
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a description"))
-    @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
+    @MinConstraint(min = 1, message = @tr("The description must have at least %constraint% chars."))
+    @MaxConstraint(max = 100000, message = @tr("The description cannot have more than %constraint% characters."))
     private final String description;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a version."))
     @MinConstraint(min = 1, message = @tr("The version should be something like ''1.2.3''."))
+    @MaxConstraint(max = 15, message = @tr("The version cannot have more than %constraint% characters."))
     private final String version;
 
     @RequestParam

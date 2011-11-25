@@ -19,15 +19,20 @@ package com.bloatit.model;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Locale;
+
+import javax.ejb.Local;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.invoicePdf.InvoicePdfGenerator;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtInvoice;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.visitor.ModelClassVisitor;
+import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 
 /**
  * This is a invoice.
@@ -136,7 +141,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
         final String sellerStreet = emitterActor.getContact().getStreet();
         final String sellerExtras = emitterActor.getContact().getExtras();
         final String sellerCity = emitterActor.getContact().getPostalCode() + " " + emitterActor.getContact().getCity();
-        final String sellerCountry = emitterActor.getContact().getCountry();
+        final String sellerCountry = new Locale("en", emitterActor.getContact().getCountry()).getDisplayCountry(Locale.ENGLISH);
         final String sellerLegalId = emitterActor.getContact().getLegalId();
         final String sellerTaxIdentification = emitterActor.getContact().getTaxIdentification();
         Contact recipientContact = recipientActor.getContactUnprotected();
@@ -144,7 +149,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
         final String receiverStreet = recipientContact.getStreet();
         final String receiverExtras = recipientContact.getExtras();
         final String receiverCity = recipientContact.getPostalCode() + " " + recipientContact.getCity();
-        final String receiverCountry = recipientContact.getCountry();
+        final String receiverCountry = new Locale("en", recipientContact.getCountry()).getDisplayCountry(Locale.ENGLISH);
         final String receiverTaxIdentification = recipientContact.getTaxIdentification();
         final Date invoiceDate = DateUtils.now();
 
@@ -260,5 +265,4 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
     final Actor<?> getEmitterActorUnprotected() {
         return (Actor<?>) getDao().getEmitterActor().accept(new DataVisitorConstructor());
     }
-
 }

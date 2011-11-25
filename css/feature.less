@@ -158,7 +158,7 @@ display:table-cell;
     width:100%;
     vertical-align: middle;
     text-align: center;
-    font-size: 1.1em;
+    font-size: 1.2em;
     color: @title_color;
 }
 
@@ -167,7 +167,7 @@ display:table-cell;
     display:table-cell;
     vertical-align: middle;
     text-align: center;
-    font-size: 0.7em;
+    font-size: 0.9em;
     a {
         .no_insets;
         display:block;
@@ -178,10 +178,19 @@ display:table-cell;
     
     .useful {
         color: @useful_color;
+        padding-bottom:4px;
     }
     
     .useless {
         color: @useless_color;
+    }
+    
+    .useful:hover {
+        font-weight: bold;        
+    }
+    
+    .useless:hover {
+        font-weight: bold;
     }
 }
 
@@ -190,7 +199,7 @@ display:table-cell;
     display:table-cell;
     vertical-align: top;
     text-align: center;
-    font-size: 0.6em;
+    font-size: 0.8em;
     
     
     p {

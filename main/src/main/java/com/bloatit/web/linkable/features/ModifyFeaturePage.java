@@ -75,7 +75,7 @@ public class ModifyFeaturePage extends LoggedElveosPage {
 
         // Linked software
         final FieldData softwareFieldData = modifyUrl.getSoftwareParameter().pickFieldData();
-        final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
+        final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.trc("Software (singular)","Software"));
 
         softwareInput.addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
         softwareInput.addDropDownElement("", Context.tr("New software"));

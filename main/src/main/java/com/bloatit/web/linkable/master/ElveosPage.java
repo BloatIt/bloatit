@@ -113,8 +113,8 @@ public abstract class ElveosPage extends Page {
         final HtmlGenericElement body = new HtmlGenericElement("body");
         body.addCustomJs(FrameworkConfiguration.getJsJquery());
         body.addCustomJs(FrameworkConfiguration.getJsJqueryUi());
-        body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
-        body.addCustomJs(FrameworkConfiguration.getJsFlexie());
+        //body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
+        //body.addCustomJs(FrameworkConfiguration.getJsFlexie());
 
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);

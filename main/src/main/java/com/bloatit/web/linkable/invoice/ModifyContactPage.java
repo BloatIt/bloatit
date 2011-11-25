@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -26,6 +27,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlPercentField;
@@ -174,9 +176,22 @@ public final class ModifyContactPage extends LoggedElveosPage {
                                                  contact.getPostalCode()));
 
             // Country
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getCountryParameter(),//
-                                                 Context.tr("Country"),//
-                                                 contact.getCountry()));
+            FieldData countryData = modifyInvoicingContextActionUrl.getCountryParameter().pickFieldData();
+            final HtmlDropDown countryInput = new HtmlDropDown(countryData.getName(), tr("Country"));
+            for (final Country entry : Country.getAvailableCountries()) {
+                countryInput.addDropDownElement(entry.getCode(), entry.getName());
+            }
+            if (countryData.getSuggestedValue() == null) {
+                if(contact.getCountry() != null ) {
+                    countryInput.setDefaultValue(contact.getCountry());
+                } else {
+                    countryInput.setDefaultValue(Context.getLocalizator().getCountryCode());
+                }
+            } else {
+                countryInput.setDefaultValue(countryData.getSuggestedValue());
+            }
+            
+            newContactForm.add(countryInput);
             
             // Tax identification
             HtmlTextField taxField = generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
@@ -211,7 +226,7 @@ public final class ModifyContactPage extends LoggedElveosPage {
                 // Invoice ID template
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
                                                    Context.tr("Invoice ID template"),//
-                                                   contact.getInvoiceIdTemplate(), Context.tr("Format of the generated invoices. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'")));
+                                                   contact.getInvoiceIdTemplate(), Context.tr("Format of the generated invoice numbers. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'")));
                 
                 
                 

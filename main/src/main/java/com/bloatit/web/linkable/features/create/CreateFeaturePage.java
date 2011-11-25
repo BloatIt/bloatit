@@ -109,7 +109,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
         final FieldData newSoftwareNameFieldData = doCreateUrl.getNewSoftwareNameParameter().pickFieldData();
         final FieldData newSoftwareFieldData = doCreateUrl.getNewSoftwareParameter().pickFieldData();
-        final SoftwaresTools.SoftwareChooserElement softwareInput =  new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),newSoftwareNameFieldData.getName(), newSoftwareFieldData.getName() , Context.tr("Software"));
+        final SoftwaresTools.SoftwareChooserElement softwareInput =  new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),newSoftwareNameFieldData.getName(), newSoftwareFieldData.getName() , Context.trc("Software (singular)","Software"));
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }

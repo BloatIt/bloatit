@@ -121,7 +121,7 @@ public abstract class ElveosMail {
     
     public static class InvoiceGenerated extends ElveosMail {
         public InvoiceGenerated(final String featureName) {
-            super(new TemplateFile("invoice-generated.mail"), tr("elveos.org: Invoice generated"));
+            super(new TemplateFile("invoice-generated.mail"), tr("elveos.org: Invoice available"));
             addNamedParameter("feature_name", featureName);
         }
     }
