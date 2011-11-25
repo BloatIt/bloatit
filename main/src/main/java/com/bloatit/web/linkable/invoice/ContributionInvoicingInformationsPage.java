@@ -15,6 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
@@ -53,6 +54,7 @@ import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
+import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.url.ContributionInvoicePreviewDataUrl;
 import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
@@ -209,8 +211,8 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
                     }
                 }
             });
-
-            addTextCell(contact.getCountry());
+            addTextCell(new Locale("en", contact.getCountry()).getDisplayCountry(Context.getLocalizator().getLocale()));
+            
             addTextCell((contact.isCompany() ? Context.tr("Yes") : Context.tr("No")));
 
             addCell(new HtmlTableCell("") {

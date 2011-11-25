@@ -111,20 +111,22 @@ public final class SignUpPage extends ElveosPage {
         form.add(emailInput);
 
         // Country
-        final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName(), tr("Country"));
+        FieldData countryData = targetUrl.getCountryParameter().pickFieldData();
+        final HtmlDropDown countryInput = new HtmlDropDown(countryData.getName(), tr("Country"));
         for (final Country entry : Country.getAvailableCountries()) {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
-        if (targetUrl.getCountryParameter().getStringValue() != null && !targetUrl.getCountryParameter().getStringValue().isEmpty()) {
-            countryInput.setDefaultValue(targetUrl.getCountryParameter().getStringValue());
-        } else {
+        if (countryData.getSuggestedValue() == null) {
             countryInput.setDefaultValue(Context.getLocalizator().getCountryCode());
+        } else {
+            countryInput.setDefaultValue(countryData.getSuggestedValue());
         }
         form.add(countryInput);
 
         // Language
-        final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName(), tr("Language"));
-        langInput.setDefaultValue(targetUrl.getLangParameter().getStringValue(), Context.getLocalizator().getLanguageCode());
+        FieldData langData = targetUrl.getLangParameter().pickFieldData();
+        final LanguageSelector langInput = new LanguageSelector(langData.getName(), tr("Language"));
+        langInput.setDefaultValue(langData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
         form.add(langInput);
 
         // Newsletter

@@ -17,6 +17,7 @@
 package com.bloatit.web.linkable.members.tabs;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.PageIterable;
@@ -130,7 +131,13 @@ public class InvoicingContactTab extends HtmlTab {
         // Country
         final String country;
         country = Context.tr("Country: ");
-        memberIdList.add(new HtmlDefineParagraph(country, emptyIfNull(contact.getCountry())));
+        
+        
+        if(contact.getCountry() == null) {
+            memberIdList.add(new HtmlDefineParagraph(country, ""));
+        } else {
+            memberIdList.add(new HtmlDefineParagraph(country, new Locale("en", contact.getCountry()).getDisplayCountry(Context.getLocalizator().getLocale())));    
+        }
 
         // Is company
 

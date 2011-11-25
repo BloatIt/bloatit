@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.invoice;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.webprocessor.annotations.LengthConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -57,6 +58,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a country."))
+    @LengthConstraint(length = 2, message = @tr("The country code must be %constraint% length."))
     private final String country;
 
     @RequestParam(role = Role.POST)
