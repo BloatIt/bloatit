@@ -6,18 +6,20 @@ import java.util.Map;
 import com.bloatit.framework.bank.MercanetAPI.PaymentMethod;
 
 /**
- * 
+ *
  */
 public class MercanetTransaction {
 
     private final String url;
     private final String data;
-    private final int transactionId;
+
+    // FIXME why the transactionId is not used ?
+    // private final int transactionId;
 
     protected MercanetTransaction(String data, String url, int transactionId) {
         this.data = data;
         this.url = url;
-        this.transactionId = transactionId;
+        // this.transactionId = transactionId;
     }
 
     public String getData() {

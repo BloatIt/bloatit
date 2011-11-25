@@ -100,6 +100,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "followed")
     private final List<DaoFollowActor> followers = new ArrayList<DaoFollowActor>();
+    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "actor")
     private final List<DaoEvent> events = new ArrayList<DaoEvent>();
 

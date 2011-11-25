@@ -277,6 +277,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     @OneToMany(mappedBy = "followed")
     private final List<DaoFollowFeature> followers = new ArrayList<DaoFollowFeature>();
+    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "feature")
     private final List<DaoEvent> events = new ArrayList<DaoEvent>();
 
