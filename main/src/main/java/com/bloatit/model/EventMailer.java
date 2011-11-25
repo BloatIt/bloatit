@@ -18,7 +18,7 @@ public final class EventMailer {
     }
 
     public static void start() {
-        new RecursiveMailer(1, EmailStrategy.VERY_FREQUENTLY);
+        new RecursiveMailer(11 * 60, EmailStrategy.VERY_FREQUENTLY);
         new RecursiveMailer(61 * 60, EmailStrategy.HOURLY);
         new RecursiveMailer(24 * 3601, EmailStrategy.DAILY);
         new RecursiveMailer(7 * 24 * 3599, EmailStrategy.WEEKLY);
@@ -64,7 +64,6 @@ public final class EventMailer {
         @Override
         public void doRun() {
             new RecursiveMailer(periode, strategy);
-            System.err.println(DateUtils.nowMinusSomeSeconds(periode - 25000));
             EventList eventList = EventManager.getAllEventAfter(DateUtils.nowMinusSomeSeconds(periode), strategy);
 
             Member currentMember = null;
