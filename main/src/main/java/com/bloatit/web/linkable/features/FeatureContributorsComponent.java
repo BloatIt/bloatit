@@ -99,24 +99,19 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             return BigDecimal.ZERO;
         }
 
-        try {
-            final Iterator<Contribution> it = contributions.iterator();
-            final List<BigDecimal> list = new ArrayList<BigDecimal>();
+        final Iterator<Contribution> it = contributions.iterator();
+        final List<BigDecimal> list = new ArrayList<BigDecimal>();
 
-            while (it.hasNext()) {
-                list.add(it.next().getAmount());
-            }
-            Collections.sort(list);
-
-            final int middle = list.size() / 2;
-            if (list.size() % 2 == 1) {
-                return list.get(middle);
-            }
-            return list.get(middle - 1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
-
-        } catch (final UnauthorizedOperationException e) {
-            return new BigDecimal(-1);
+        while (it.hasNext()) {
+            list.add(it.next().getAmount());
         }
+        Collections.sort(list);
+
+        final int middle = list.size() / 2;
+        if (list.size() % 2 == 1) {
+            return list.get(middle);
+        }
+        return list.get(middle - 1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
     }
 
     public static class ContributionTableModel extends HtmlTableModel {

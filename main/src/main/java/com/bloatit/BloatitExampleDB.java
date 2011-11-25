@@ -115,7 +115,7 @@ public class BloatitExampleDB { // NO_UCD
         cerbere.getContact().setInvoiceIdTemplate("HADES-{YEAR|2}{MONTH}-{ID|6}");
         cerbere.getContact().setTaxIdentification("RSC123456");
         cerbere.getContact().setTaxRate(new BigDecimal("0.196"));
-        
+
         // Add avatar
         AuthToken.authenticate(chogall);
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
@@ -208,7 +208,7 @@ public class BloatitExampleDB { // NO_UCD
         final String mageiaDescription = "http://mageia.org/fr/";
         mageia = new Software("Mageia", thomas, Locale.FRANCE, mageiaTitle + mageiaDescription);
         mageia.setImage(getImage(yoann, "mageia.png"));
-        
+
         thomas.followOrGetSoftware(mageia).setMail(true);
     }
 
@@ -220,7 +220,7 @@ public class BloatitExampleDB { // NO_UCD
                 + "\n" + "http://www.libreoffice.org/";
         libreOffice = new Software("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle + libreOfficeDescription);
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
-        
+
         yoann.followOrGetSoftware(libreOffice).setMail(true);
     }
 
@@ -232,7 +232,7 @@ public class BloatitExampleDB { // NO_UCD
                 + "http://perroquet.b219.org/";
         perroquet = new Software("Perroquet", thomas, Locale.FRANCE, perroquetTitle + perroquetDescription);
         perroquet.setImage(getImage(fred, "perroquet.png"));
-        
+
         fred.followOrGetSoftware(perroquet).setMail(true);
     }
 
@@ -273,7 +273,7 @@ public class BloatitExampleDB { // NO_UCD
 
         AuthToken.authenticate(cerbere);
         thomas.followOrGetFeature(twoSubtitlesInVlcFeature).setMail(true);
-        
+
         final Comment comment1 = twoSubtitlesInVlcFeature.addComment("Super idée !\n"
                 + "J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
 
@@ -475,9 +475,9 @@ public class BloatitExampleDB { // NO_UCD
         // Contributions
         AuthToken.authenticate(thomas);
         feature.addContribution(new BigDecimal("400"), "");
-        
+
         AuthToken.authenticate(yoann);
-        feature.addContribution(new BigDecimal("300"), "");
+        // feature.addContribution(new BigDecimal("300"), "");
 
         setFeatureInFinishedState(feature);
 
@@ -486,7 +486,7 @@ public class BloatitExampleDB { // NO_UCD
 
     /**
      * Work only if the money is available
-     * 
+     *
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {

@@ -121,7 +121,7 @@ public final class Event extends Identifiable<DaoEvent> {
             return FeatureImplementation.create(event.getFeature());
         }
 
-        public Date getCreationDate() {
+        public Date getDate() {
             return event.getCreationDate();
         }
     }

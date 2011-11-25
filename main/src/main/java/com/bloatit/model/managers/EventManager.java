@@ -32,9 +32,9 @@ public final class EventManager {
         // Desactivate default ctor
     }
 
-    public static EventList getAllEventBefore(Date date, EmailStrategy strategy) {
+    public static EventList getAllEventAfter(Date date, EmailStrategy strategy) {
         QueryCollection<Object[]> q = new QueryCollection<Object[]>("memberid.event.byDate.withMail");
-        q.setDate("date", date);
+        q.setTimestamp("date", date);
         q.setParameter("strategy", strategy);
         return new EventList(q);
     }

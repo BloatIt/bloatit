@@ -1,7 +1,6 @@
 package com.bloatit.web.linkable.contribution;
 
 import com.bloatit.data.DaoContribution;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -13,7 +12,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.CancelContributionActionUrl;
@@ -37,14 +35,13 @@ public class CancelContributionAction extends LoggedElveosAction {
         contribution.cancel();
 
         HtmlMixedText mixed;
-        try {
-            mixed = new HtmlMixedText(Context.tr("Your {0} contribution on the feature <0::> has been canceled.",
-                                                 Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString()),
-                                      new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.description).getHtmlLink(Context.tr(contribution.getFeature()
-                                                                                                                                      .getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle())));
-        } catch (UnauthorizedOperationException e) {
-            throw new ShallNotPassException("User get info on his contribution");
-        }
+        mixed = new HtmlMixedText(Context.tr("Your {0} contribution on the feature <0::> has been canceled.",
+                                             Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString()),
+                                  new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.description).getHtmlLink(Context.tr(contribution.getFeature()
+                                                                                                                                              .getDescription()
+                                                                                                                                              .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator()
+                                                                                                                                                                                                  .getLocale()))
+                                                                                                                                              .getTitle())));
 
         session.notifyGood(mixed);
         return new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.contributions);

@@ -167,7 +167,7 @@ public final class TeamPage extends ElveosPage {
 
     /**
      * Generates the team block displaying it's ID
-     * 
+     *
      * @param me the connected member
      * @return the ID card
      */
@@ -239,7 +239,11 @@ public final class TeamPage extends ElveosPage {
                     bankInformations.add(bankInformationsList);
 
                     // Account balance
-                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(team.getInternalAccount().getAmount(), true, team, member);
+                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(team.getInternalAccount().getAmount(),
+                                                                                   true,
+                                                                                   team,
+                                                                                   member,
+                                                                                   Context.getLocalizator());
                     final HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
                                                                                                      new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
                                                                                                                        amount,

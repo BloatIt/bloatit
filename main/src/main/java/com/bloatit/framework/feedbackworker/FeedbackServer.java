@@ -6,6 +6,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
+import com.bloatit.framework.model.ModelAccessor;
 
 public class FeedbackServer extends Thread {
 
@@ -46,6 +47,8 @@ public class FeedbackServer extends Thread {
             Object element;
             try {
                 element = messages.take();
+                ModelAccessor.open();
+                ModelAccessor.setReadOnly();
                 if (element instanceof StopMessage) {
                     return;
                 }
@@ -54,6 +57,7 @@ public class FeedbackServer extends Thread {
                         break;
                     }
                 }
+                ModelAccessor.close();
             } catch (InterruptedException e) {
                 throw new ExternalErrorException(e);
             }

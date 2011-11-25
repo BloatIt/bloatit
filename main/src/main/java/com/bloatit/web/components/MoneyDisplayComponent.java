@@ -19,10 +19,10 @@ package com.bloatit.web.components;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
+import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.members.MemberPage;
@@ -33,57 +33,58 @@ import com.bloatit.web.linkable.team.TeamPage;
  * currency
  */
 public class MoneyDisplayComponent extends HtmlSpan {
-    
-    
+
+
     /**
      * Creates a money display component
-     * 
+     *
      * @param amount the amount of money to display (in euro)
      */
-    public MoneyDisplayComponent(final BigDecimal amount) {
-        this(amount, false, null);
+    public MoneyDisplayComponent(final BigDecimal amount, Localizator l) {
+        this(amount, false, null, l);
     }
-    
+
     /**
      * Creates a money display component with a link to user account page
-     * 
+     *
      * @param amount the amount of money to display (in euro)
      * @param me
      */
-    public MoneyDisplayComponent(final BigDecimal amount, final Member me) {
-        this(amount, true, me);
+    public MoneyDisplayComponent(final BigDecimal amount, final Member me, Localizator l) {
+        this(amount, true, me, l);
     }
 
     /**
      * Creates a money display component with or without a link to user account
      * page
-     * 
+     *
      * @param amount the amount of money to display (in euro)
      * @param link <i>true</i> if the component should link to the user account
      * @param me
      */
-    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Member me) {
-        this(amount, link, null, me);
+    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Member me, Localizator l) {
+        this(amount, link, null, me, l);
     }
 
     /**
      * Creates a money display component with or without a link to user or team
      * account page
-     * 
+     *
      * @param amount the amount of money to display (in euro)
      * @param link <i>true</i> if the component should link to the user account
      * @param teamAccount if not null, the link will point to the account page
      *            of the team page, <i>false</i> otherwise.
      * @param me
+     * @param l TODO
      */
-    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Team teamAccount, final Member me) {
+    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Team teamAccount, final Member me, Localizator l) {
         super();
 
         // Display user money in euro
         final HtmlBranch euroMoney = new HtmlSpan();
         euroMoney.setCssClass("euro_money");
 
-        final CurrencyLocale cl = Context.getLocalizator().getCurrency(amount);
+        final CurrencyLocale cl = l.getCurrency(amount);
         euroMoney.add(new HtmlText(cl.getSimpleEuroString()));
 
         HtmlBranch money;

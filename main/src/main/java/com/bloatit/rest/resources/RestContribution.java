@@ -112,7 +112,7 @@ public class RestContribution extends RestElement<Contribution> {
      * <p>
      * Finds the RestContribution matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestContribution
      */
     @REST(name = "contributions", method = RequestMethod.GET)
@@ -161,18 +161,14 @@ public class RestContribution extends RestElement<Contribution> {
      */
     @XmlAttribute
     public BigDecimal getAmount() throws RestException {
-        try {
-            return model.getAmount();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_CLI_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on Contribution", e);
-        }
+        return model.getAmount();
     }
-    
+
     @XmlAttribute
     public ContributionState getState() {
         return model.getState();
     }
-    
+
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
@@ -190,7 +186,7 @@ public class RestContribution extends RestElement<Contribution> {
     public RestMember getAuthor() {
         return new RestMember(model.getMember());
     }
-    
+
     /**
      * @see com.bloatit.model.UserContent#getAsTeam()
      */

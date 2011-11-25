@@ -72,7 +72,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
     @RequestParam(name = "applyVAT", role = Role.GET)
     @Optional
     private final List<String> applyVAT;
-    
+
     private final ContributionInvoicingInformationsPageUrl url;
 
     private ContributionInvoicingInformationsActionUrl generateInvoiceActionUrl;
@@ -94,10 +94,10 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
-        
+
         //TODO: mutualise css
         final HtmlDiv layout = new HtmlDiv("translate_page");
-        
+
         layout.add(generateInvoicingInformationsForm(loggedUser));
 
         return layout;
@@ -109,11 +109,11 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
         generateInvoiceActionUrl = new ContributionInvoicingInformationsActionUrl(getSession().getShortKey(),
                                                                                                                                                     process);
         final HtmlForm form = new HtmlForm(generateInvoiceActionUrl.urlString());
-        
+
         Milestone milestone = process.getMilestone();
 
         HtmlTable.HtmlLineTableModel model = new HtmlTable.HtmlLineTableModel();
-        
+
         model.setHeaderLine(new HtmlTableLine() {
 
             {
@@ -143,11 +143,11 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
         }
 
         form.add(new HtmlTable(model));
-        
+
         final HtmlSubmit previewButton = new HtmlSubmit(Context.tr("Update previews"));
         previewButton.addAttribute("name", "preview");
         form.add(previewButton);
-        
+
         final HtmlSubmit generateButton = new HtmlSubmit(Context.tr("Generate invoices"));
         generateButton.addAttribute("name", "generate");
         form.add(generateButton);
@@ -203,7 +203,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
                 @Override
                 public HtmlNode getBody() {
                     try {
-                        return new MoneyDisplayComponent(milestoneContributionAmount.getAmount());
+                        return new MoneyDisplayComponent(milestoneContributionAmount.getAmount(), Context.getLocalizator());
                     } catch (UnauthorizedPublicReadOnlyAccessException e) {
                         throw new BadProgrammerException("fail to read the amount of a contribution milestone");
                     }
@@ -223,13 +223,13 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
                             UrlString urlString = new UrlString("http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms="+ taxIdentification.substring(0,2)+"&vat="+ taxIdentification.substring(2));
                             HtmlLink link = urlString.getHtmlLink(Context.tr("Check VAT number"));
                             link.setOpenInNewPage();
-                            
+
                             div.add(new HtmlDiv("vat_check").add(link));
                         }
                         return div;
                 }
             });
-            
+
             addCell(new HtmlTableCell("") {
                 @Override
                 public HtmlNode getBody() {
@@ -239,11 +239,11 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
                         if(applyVAT.contains(id)) {
                             box.addAttribute("checked", "checked");
                         }
-                        
+
                         return box;
                 }
             });
-            
+
             addCell(new HtmlTableCell("") {
                 @Override
                 public HtmlNode getBody() {
@@ -263,7 +263,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
             });
 
         }
-        
+
         private String emptyIfNull(final String input) {
             if (input == null) {
                 return "";

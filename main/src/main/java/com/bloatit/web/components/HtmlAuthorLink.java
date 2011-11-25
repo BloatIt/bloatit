@@ -25,11 +25,11 @@ public class HtmlAuthorLink extends HtmlLink {
     public HtmlAuthorLink(final UserContentInterface content) {
         // @formatter:off
         super(
-              content.getAsTeam() != null ? 
+              content.getAsTeam() != null ?
                       new TeamPageUrl(content.getAsTeam()).urlString() :
                       new MemberPageUrl(content.getMember()).urlString()
                       ,
-              content.getAuthor().getDisplayName());
+              "@" + content.getAuthor().getDisplayName());
     }
     // @formatter:on
 }

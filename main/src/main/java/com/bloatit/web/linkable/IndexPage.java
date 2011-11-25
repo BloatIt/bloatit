@@ -175,7 +175,7 @@ public final class IndexPage extends ElveosPage {
             moneyRaised = BigDecimal.ZERO;
         }
 
-        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised);
+        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, Context.getLocalizator());
         final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;Funded, "), mdc);
         final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
         summaryBox.add(contributionRaised);

@@ -60,12 +60,8 @@ public class CancelContributionPage extends LoggedElveosPage {
         TwoColumnLayout master = new TwoColumnLayout(true, url);
 
         SideBarFeatureBlock sbfb;
-        try {
-            // TODO doesn't work now
-            sbfb = new SideBarFeatureBlock(contribution.getFeature(), new BigDecimal(-(contribution.getAmount().doubleValue())));
-        } catch (UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Woopsie");
-        }
+        // TODO doesn't work now
+        sbfb = new SideBarFeatureBlock(contribution.getFeature(), new BigDecimal(-(contribution.getAmount().doubleValue())));
         master.addRight(sbfb);
 
         HtmlTitle title = new HtmlTitle(Context.tr("Cancel contribution"), 1);
@@ -89,7 +85,7 @@ public class CancelContributionPage extends LoggedElveosPage {
     /**
      * Display a block summarizing the effect of the cancelation of a
      * contribution on both the user account and the feature
-     * 
+     *
      * @param feature the feature on which the contribution happened
      * @param actor the author of the contribution
      * @return the element containing the suymmary
@@ -136,7 +132,7 @@ public class CancelContributionPage extends LoggedElveosPage {
     /**
      * Display a small block with the summary of the feature to be displayed in
      * the contribution cancelation summary block
-     * 
+     *
      * @param feature
      * @return
      * @throws UnauthorizedOperationException
@@ -159,7 +155,7 @@ public class CancelContributionPage extends LoggedElveosPage {
 
     /**
      * Checks if everything is valid in the information provided to the page.
-     * 
+     *
      * @return <i>true</i> if the user can access this page, <i>false</i>
      *         otherwise
      */
