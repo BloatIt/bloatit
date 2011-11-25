@@ -136,7 +136,7 @@ public class InvoicePdfGenerator {
         // We check that we didn't receive null or empty parameters
         if (invoiceType == null || invoiceId == null || sellerName == null || sellerStreet == null || sellerCity == null || sellerCountry == null
                 || receiverName == null || receiverStreet == null || receiverCountry == null || invoiceDate == null || deliveryName == null
-                || priceExcludingTax == null || taxRate == null || taxAmount == null || totalPrice == null || sellerLegalId == null) {
+                || priceExcludingTax == null || taxAmount == null || totalPrice == null || sellerLegalId == null) {
             throw new NonOptionalParameterException("No parameter except sellerExtras or receiverExtras can be null.");
         }
         if (invoiceType.isEmpty() || invoiceId.isEmpty() || sellerName.isEmpty() || sellerStreet.isEmpty() || sellerCity.isEmpty()
@@ -205,7 +205,7 @@ public class InvoicePdfGenerator {
             addDate(invoiceDate);
             addFactureNumber(invoiceId);
             addDetailTable(deliveryName, priceExcludingTax);
-            if (taxAmount.compareTo(BigDecimal.ZERO) == 0) {
+            if (taxRate == null) {
                 addNoTaxesTable(totalPrice);
             } else {
                 addTaxesTable(priceExcludingTax, taxRate, taxAmount, totalPrice);

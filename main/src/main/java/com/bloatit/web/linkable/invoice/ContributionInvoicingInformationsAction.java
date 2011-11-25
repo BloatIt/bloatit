@@ -76,7 +76,7 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
         
         if(preview != null) {
             // Return to previous page with the right values
-            ContributionInvoicingInformationsPageUrl contributionInvoicingInformationsPageUrl = new ContributionInvoicingInformationsPageUrl(process);
+            ContributionInvoicingInformationsPageUrl contributionInvoicingInformationsPageUrl = new ContributionInvoicingInformationsPageUrl(true, process);
             contributionInvoicingInformationsPageUrl.setApplyVAT(applyVAT);
             return contributionInvoicingInformationsPageUrl;
         }

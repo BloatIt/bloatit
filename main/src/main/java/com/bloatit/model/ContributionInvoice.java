@@ -155,13 +155,15 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
 
         BigDecimal taxRate = emitterActor.getContact().getTaxRate();
 
-        if (!applyVAT) {
-            taxRate = BigDecimal.ZERO;
-        }
+        
 
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
+        if (!applyVAT) {
+            taxRate = null;
+        }
+        
         final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
                                                                          invoiceId,
                                                                          sellerName,

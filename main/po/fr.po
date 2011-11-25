@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-25 14:21+0100\n"
+"POT-Creation-Date: 2011-11-25 18:34+0100\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -834,10 +834,10 @@ msgstr "Vous devez être connecté pour créditer votre compte."
 #: com/bloatit/web/linkable/contribution/ContributeAction.java:37
 #: com/bloatit/web/linkable/contribution/CheckContributeAction.java:46
 #: com/bloatit/web/linkable/invoice/ContributionInvoicingProcess.java:48
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:39
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:40
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:70
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:71
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:41
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:42
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:74
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:75
 #: com/bloatit/web/linkable/invoice/ModifyInvoicingContactProcess.java:44
 #: com/bloatit/web/linkable/invoice/ModifyInvoicingContactProcess.java:45
 #: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsAction.java:45
@@ -2356,118 +2356,200 @@ msgstr "L'identifiant de la facture est incorrect ou manquant"
 msgid "The milestone to invoice is ."
 msgstr "Le lot pour lequel vous devez créer une facture est ."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:44
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:46
 #: com/bloatit/web/linkable/login/SignUpAction.java:217
 msgid "You must add a name."
 msgstr "Vous devez ajouter un nom."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:48
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:50
 #: com/bloatit/web/linkable/login/SignUpAction.java:218
 msgid "You must add a street."
 msgstr "Vous devez ajouter une rue."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:52
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:54
 #: com/bloatit/web/linkable/login/SignUpAction.java:219
 msgid "You must add a Postcode."
 msgstr "Vous devez ajouter un code postal."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:56
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:58
 #: com/bloatit/web/linkable/login/SignUpAction.java:220
 msgid "You must add a city."
 msgstr "Vous devez ajouter une ville."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:60
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:62
 msgid "You must add a country."
 msgstr "Vous devez ajouter un pays."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:61
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:63
 #: com/bloatit/web/linkable/login/SignUpAction.java:69
 msgid "The country code must be %constraint% length."
 msgstr "Le code pays doit avoir une taille de %constraint% caractères."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:149
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:151
 msgid "You must add an invoice number template."
 msgstr "Vous devez ajouter un template de numéro de facture."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:150
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:152
 msgid "You must add an invoice No initial value."
 msgstr "Vous devez ajouter une valeur initiale de numéro de facture."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:151
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:153
 msgid "You must add a legal ID."
 msgstr "Vous devez ajouter un indentifiant légal."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:152
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:154
 msgid "You must add a tax rate."
 msgstr "Vous devez ajouter un taux de taxes."
 
-#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:177
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:160
+msgid "You must indicate a ID field in the template."
+msgstr "Vous devez indiquer un champ ID dans le template."
+
+#: com/bloatit/web/linkable/invoice/ModifyInvoicingContactAction.java:190
 #: com/bloatit/web/linkable/offer/OfferAction.java:193
 msgid "You must be logged to make an offer."
 msgstr "Vous devez être connecté pour faire une offre."
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:123
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:83
+msgid "You must indicate the preview mode"
+msgstr "Vous devez indiquer le mode d'aperçu"
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:120
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:90
+msgid "Change invoicing informations"
+msgstr "Modifier les informations de facturation"
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:147
 msgid "Contributor"
 msgstr "Contributeur"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:124
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:148
 #: com/bloatit/web/linkable/features/FeatureContributorsComponent.java:146
 msgid "Amount"
 msgstr "Quantité"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:125
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:149
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:183
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:170
 #: com/bloatit/web/linkable/login/SignUpPage.java:115
 msgid "Country"
 msgstr "Pays"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:126
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:150
 msgid "Company?"
 msgstr "Entreprise&nbsp;?"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:127
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:151
 msgid "VAT Number"
 msgstr "Numéro de TVA"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:128
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:152
 msgid "Apply VAT ?"
 msgstr "Appliquer la TVA&nbsp;?"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:129
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:153
 msgid "Preview"
 msgstr "Aperçu"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:149
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:173
 msgid "Update previews"
 msgstr "Mise à jour des aperçus"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:153
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:177
 msgid "Generate invoices"
 msgstr "Génération de factures"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:162
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:186
-msgid "Contribution invoices generation"
-msgstr "Génération des factures de contribution"
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:198
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:105
+msgid "Organisation name: "
+msgstr "Nom de l'organisation&nbsp;: "
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:172
-#: com/bloatit/web/linkable/invoice/ModifyContactPage.java:299
-msgid "You must be logged to add invoicing informations"
-msgstr "Vous devez être connecté pour ajouter des coordonnées de facturation"
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:200
+#: com/bloatit/web/linkable/members/MemberPage.java:213
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:107
+msgid "Name: "
+msgstr "Nom : "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:206
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:113
+msgid "Street: "
+msgstr "Rue&nbsp;: "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:211
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:118
+msgid "Extras adress: "
+msgstr "Complément d'adresse&nbsp;: "
 
 #: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:216
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:123
+msgid "City: "
+msgstr "Ville&nbsp;: "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:221
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:128
+msgid "Postcode: "
+msgstr "Code postal&nbsp;: "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:226
+#: com/bloatit/web/linkable/members/MemberPage.java:220
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:133
+msgid "Country: "
+msgstr "Pays : "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:238
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:145
+msgid "Company: "
+msgstr "Entreprise&nbsp;:"
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:239
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:338
 #: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:146
 msgid "Yes"
 msgstr "Oui"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:216
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:239
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:338
 #: com/bloatit/web/linkable/oauth2/OAuthAuthorizationPage.java:139
 #: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:146
 msgid "No"
 msgstr "Non"
 
-#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:226
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:245
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:152
+msgid "Tax identification: "
+msgstr "Identification TVA&nbsp;: "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:253
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:163
+msgid "Invoicing id template: "
+msgstr "Modèle de numéro de facture&nbsp; : "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:258
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:168
+msgid "Invoicing id next number: "
+msgstr "Numéro de la prochaine facture&nbsp; : "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:267
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:177
+msgid "Legal identification: "
+msgstr "Identifiant légale&nbsp;: "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:272
+#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:182
+msgid "Tax rate: "
+msgstr "Taux de TVA&nbsp;: "
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:284
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:308
+msgid "Contribution invoices generation"
+msgstr "Génération des factures de contribution"
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:294
+#: com/bloatit/web/linkable/invoice/ModifyContactPage.java:299
+msgid "You must be logged to add invoicing informations"
+msgstr "Vous devez être connecté pour ajouter des coordonnées de facturation"
+
+#: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsPage.java:349
 msgid "Check VAT number"
 msgstr "Vérifer le numéro de TVA"
 
@@ -2479,10 +2561,10 @@ msgid_plural ""
 "{0} invoices succefully generated. You can download them in the invoicing tab"
 msgstr[0] ""
 "{0} facture générée avec succés. Vous pouvez la télécharger dans l'onglet "
-"Facturation"
+"facturation"
 msgstr[1] ""
 "{0} factures générées avec succés. Vous pouvez les télécharger dans l'onglet "
-"Facturation"
+"facturation"
 
 #: com/bloatit/web/linkable/invoice/ContributionInvoicingInformationsAction.java:136
 msgid "You must be logged to generate invoices."
@@ -2562,7 +2644,7 @@ msgstr "Index du numéro de facture suivant"
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:226
 msgid "ID that will be used for the next generated invoice."
-msgstr "Index qui sera utilisser pour générer le prochain numéro de facture."
+msgstr "Index qui sera utilisé pour générer le prochain numéro de facture."
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:231
 msgid "Invoice ID template"
@@ -2579,7 +2661,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:238
 msgid "Legal identification"
-msgstr "Identifiant légale"
+msgstr "Identifiant légal"
 
 #: com/bloatit/web/linkable/invoice/ModifyContactPage.java:243
 msgid "Tax Rate"
@@ -4277,16 +4359,6 @@ msgstr "Nom complet : "
 msgid "Email: "
 msgstr "Email : "
 
-#: com/bloatit/web/linkable/members/MemberPage.java:213
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:107
-msgid "Name: "
-msgstr "Nom : "
-
-#: com/bloatit/web/linkable/members/MemberPage.java:220
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:133
-msgid "Country: "
-msgstr "Pays : "
-
 #: com/bloatit/web/linkable/members/MemberPage.java:225
 msgid "Language: "
 msgstr "Langue : "
@@ -4495,10 +4567,6 @@ msgstr "Demande : "
 msgid "Date: {0}"
 msgstr "Date : {0}"
 
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:90
-msgid "Change invoicing informations"
-msgstr "Modifier les informations de facturation"
-
 #: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:95
 msgid ""
 "Your invoicing contact will be used to generate invoices whenever the team "
@@ -4508,53 +4576,9 @@ msgstr ""
 "le cas où l'équipe paye ou se fait payer (lors d'une contribution ou à la "
 "fin d'un développement)."
 
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:105
-msgid "Organisation name: "
-msgstr "Nom de l'organisation&nbsp;: "
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:113
-msgid "Street: "
-msgstr "Rue&nbsp;: "
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:118
-msgid "Extras adress: "
-msgstr "Complément d'adresse&nbsp;: "
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:123
-msgid "City: "
-msgstr "Ville&nbsp;: "
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:128
-msgid "Postcode: "
-msgstr "Code postal&nbsp;: "
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:145
-msgid "Company: "
-msgstr "Entreprise&nbsp;:"
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:152
-msgid "Tax identification: "
-msgstr "Identification TVA&nbsp;: "
-
 #: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:159
 msgid "Invoice emission informations"
 msgstr "Informations pour l'émission de factures"
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:163
-msgid "Invoicing id template: "
-msgstr "Modèle de numéro de facture&nbsp; : "
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:168
-msgid "Invoicing id next number: "
-msgstr "Numéro de la prochaine facture&nbsp; : "
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:177
-msgid "Legal identification: "
-msgstr "Identifiant légale&nbsp;: "
-
-#: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:182
-msgid "Tax rate: "
-msgstr "Taux de TVA&nbsp;: "
 
 #: com/bloatit/web/linkable/members/tabs/InvoicingContactTab.java:202
 msgid "Generated Invoices"

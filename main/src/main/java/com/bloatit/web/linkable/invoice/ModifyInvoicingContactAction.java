@@ -12,6 +12,8 @@
 package com.bloatit.web.linkable.invoice;
 
 import java.math.BigDecimal;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.LengthConstraint;
@@ -150,6 +152,17 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
             isOk &= checkOptional(this.invoiceIdNumber, Context.tr("You must add an invoice No initial value."), url.getInvoiceIdNumberParameter());
             isOk &= checkOptional(this.legalId, Context.tr("You must add a legal ID."), url.getLegalIdParameter());
             isOk &= checkOptional(this.taxRate, Context.tr("You must add a tax rate."), url.getTaxRateParameter());
+            
+            if(this.invoiceIdTemplate != null) {
+                Pattern pattern = Pattern.compile("^(.*)(\\{ID(\\|([0-9]+))?\\})(.*)");
+                Matcher matcher = pattern.matcher(this.invoiceIdTemplate);
+                if(!matcher.matches()) {
+                    String errorText = Context.tr("You must indicate a ID field in the template.");
+                    url.getInvoiceIdTemplateParameter().addErrorMessage(errorText);
+                    session.notifyError(errorText);
+                    isOk = false; 
+                }
+            }
         }
 
         if (!isOk) {
