@@ -124,7 +124,7 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         final SoftwaresTools.SoftwareChooserElement softwareInput = new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),
                                                                                                               newSoftwareNameFieldData.getName(),
                                                                                                               newSoftwareFieldData.getName(),
-                                                                                                              Context.tr("Software"));
+                                                                                                              Context.trc("Software (singular)","Software"));
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }

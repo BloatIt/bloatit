@@ -118,7 +118,7 @@ public final class SoftwareListPage extends ElveosPage {
     protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
-        breadcrumb.pushLink(new SoftwareListPageUrl().getHtmlLink(tr("Software")));
+        breadcrumb.pushLink(new SoftwareListPageUrl().getHtmlLink(Context.trc("Software (list)","Software")));
 
         return breadcrumb;
     }

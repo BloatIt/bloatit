@@ -48,7 +48,7 @@ public class Menu extends HtmlDiv {
 //        final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl("brainstorm");
 //        final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(tr("Brainstorms"));
         
-        final HtmlLink softwareList = new SoftwareListPageUrl().getHtmlLink(tr("Software"));
+        final HtmlLink softwareList = new SoftwareListPageUrl().getHtmlLink(Context.trc("Software (list)","Software"));
         
         final HtmlLink teamList = new TeamsPageUrl().getHtmlLink(tr("Teams"));
         final HtmlLink memberList = new MembersListPageUrl().getHtmlLink(tr("Members"));

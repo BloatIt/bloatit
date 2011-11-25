@@ -39,7 +39,7 @@ public class Footer extends HtmlDiv {
         {
 
             linkBlock.add(new HtmlDiv("footer_link").add(new SiteMapPageUrl().getHtmlLink(Context.tr("Site map"))));
-            linkBlock.add(new HtmlDiv("footer_link").add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Software"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new SoftwareListPageUrl().getHtmlLink(Context.trc("Software (list)", "Software"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Change language"))));
             addDocumentationFooterLink(linkBlock, "contribute", Context.tr("Contribute"));
             linkBlock.add(new HtmlDiv("footer_link").add(new MetaFeedbackListPageUrl().getHtmlLink(Context.tr("Report a bug"))));

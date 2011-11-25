@@ -229,7 +229,7 @@ public final class ModifyContactPage extends LoggedElveosPage {
                 // Invoice ID template
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
                                                    Context.tr("Invoice ID template"),//
-                                                   contact.getInvoiceIdTemplate(), Context.tr("Format of the generated invoices. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'")));
+                                                   contact.getInvoiceIdTemplate(), Context.tr("Format of the generated invoice numbers. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'")));
                 
                 
                 
