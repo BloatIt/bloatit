@@ -28,21 +28,33 @@ import com.bloatit.web.url.UserContentActionUrl;
 
 public class AttachmentField extends PlaceHolderElement {
 
-    public AttachmentField(final UserContentActionUrl targetUrl, final String size, final boolean jsAutoHide) {
+    public AttachmentField(final UserContentActionUrl targetUrl, final String size, boolean multiple, final boolean jsAutoHide) {
         this(targetUrl,
              Context.tr("Join a file"),
              Context.tr("Max size {0}. When you join a file, you have to add a description.", size),
              Context.tr("File description"),
              Context.tr("Input a short description of the file you want to upload."),
+             multiple,
              jsAutoHide);
     }
 
+    public AttachmentField(final UserContentActionUrl targetUrl, final String size, boolean multiple) {
+        this(targetUrl,
+             Context.tr("Join a file"),
+             Context.tr("Max size {0}. When you join a file, you have to add a description.", size),
+             Context.tr("File description"),
+             Context.tr("Input a short description of the file you want to upload."),
+             multiple,
+             true);
+    }
+    
     public AttachmentField(final UserContentActionUrl targetUrl, final String size) {
         this(targetUrl,
              Context.tr("Join a file"),
              Context.tr("Max size {0}. When you join a file, you have to add a description.", size),
              Context.tr("File description"),
              Context.tr("Input a short description of the file you want to upload."),
+             false,
              true);
     }
 
@@ -60,6 +72,7 @@ public class AttachmentField extends PlaceHolderElement {
                             final String attachmentComment,
                             final String descriptionLabel,
                             final String descriptionComment,
+                            final boolean multiple,
                             final boolean jsAutoHide) {
         super();
 
@@ -73,6 +86,11 @@ public class AttachmentField extends PlaceHolderElement {
 
         final HtmlDiv attachmentDiv = new HtmlDiv();
         add(attachmentDiv);
+        
+        if(multiple) {
+            HtmlParagraph multiplePara = new HtmlParagraph(Context.tr("You will be able to add more attachement later."));
+            attachmentDiv.add(multiplePara);
+        }
 
         final FieldData attachedFileData = targetUrl.getAttachmentParameter().pickFieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), attachmentLabel);

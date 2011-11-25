@@ -193,7 +193,7 @@ public final class BugPage extends ElveosPage {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(getSession().getShortKey(), bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
         addAttachementForm.enableFileUpload();
-        addAttachementForm.add(new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio", false));
+        addAttachementForm.add(new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio", false, false));
         addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachment")));
         return addAttachementForm;
     }

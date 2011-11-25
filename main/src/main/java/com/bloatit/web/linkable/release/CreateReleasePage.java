@@ -109,7 +109,7 @@ public final class CreateReleasePage extends CreateUserContentPage {
         form.add(new LanguageField(doCreateUrl, tr("Language"), tr("Language of the descriptions.")));
 
         // attachment
-        form.add(new AttachmentField(doCreateUrl, "1 Gio"));
+        form.add(new AttachmentField(doCreateUrl, "1 Gio", true));
 
         form.add(new HtmlSubmit(tr("submit")));
 
