@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.invoice;
 import java.util.List;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.mails.ElveosMail;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
@@ -24,13 +25,16 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Actor;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Member;
 import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
 import com.bloatit.web.url.ContributionInvoicingInformationsPageUrl;
+import com.bloatit.web.url.MemberPageUrl;
 
 /**
  * Class that will create a new offer based on data received from a form.
@@ -84,8 +88,9 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
         for (final MilestoneContributionAmount contributionAmount : contributionAmounts) {
             try {
 
-                new ContributionInvoice(process.getActor(),
-                                        contributionAmount.getContribution().getAuthor(),
+                Actor<?> author = contributionAmount.getContribution().getAuthor();
+                ContributionInvoice invoice = new ContributionInvoice(process.getActor(),
+                                        author,
                                         "Contribution",
                                         "Contribution",
                                         contributionAmount.getAmount(),
@@ -93,6 +98,17 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
                                         contributionAmount.getContribution(),
                                         applyVAT.contains(contributionAmount.getId().toString()));
                 
+                if(!author.isTeam()) {
+                    Member member = (Member) author;
+                    MemberPageUrl memberPageUrl = new MemberPageUrl(member);
+                    memberPageUrl.setActiveTabKey(MemberPage.ACCOUNT_TAB);
+                    ElveosMail mail = new ElveosMail.InvoiceGenerated(contributionAmount.getMilestone().getOffer().getFeature().getTitle());
+                    mail.addAttachment(invoice.getFile(), invoice.getInvoiceNumber()+".pdf");
+                    mail.sendMail(member, "invoice-generated");
+                    
+                }
+                
+                //TODO: send mail to team
                 
             } catch (final UnauthorizedOperationException e) {
                 throw new BadProgrammerException("Fail create a ContributionInvoice", e);

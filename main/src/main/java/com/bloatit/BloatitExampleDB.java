@@ -68,6 +68,8 @@ public class BloatitExampleDB { // NO_UCD
     private Software vlc;
     private Software perroquet;
     private Software mageia;
+    private Team b219;
+    private Team other;
 
     public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException, UniqueNameExpectedException {
         System.setProperty("log4J.path", ConfigurationManager.SHARE_DIR + "/log");
@@ -85,6 +87,12 @@ public class BloatitExampleDB { // NO_UCD
         cerbere = createMember("cerbere", "Cerbère", Locale.FRANCE);
         hydre = createMember("hydre", "Hydre", Locale.US);
         elephantman = createMember("elephantman", "ElephantMan", Locale.CANADA);
+        yoann.getContact().setName("Babar");
+        yoann.getContact().setStreet("Palais royal");
+        yoann.getContact().setCity("Celesteville");
+        yoann.getContact().setPostalCode("NA");
+        yoann.getContact().setCountry("Canada");
+        yoann.getContact().setIsCompany(false);
         celeste = createMember("celeste", "Céleste", Locale.UK);
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
@@ -139,6 +147,7 @@ public class BloatitExampleDB { // NO_UCD
         giveMoney(cerbere, 1000);
         giveMoney(hydre, 500);
         giveMoney(elephantman, 100000000);
+        
 
         // Add withdrawal
         AuthToken.authenticate(fred);
@@ -163,11 +172,12 @@ public class BloatitExampleDB { // NO_UCD
         withdrawMoney(thomas, 5000, State.COMPLETE);
 
         // Add teams
-        final Team other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
+        other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
         AuthToken.authenticate(yoann);
         other.setAvatar(getImage(yoann, "teams/other.png"));
-
-        final Team b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
+        giveMoney(other, 2000);
+        
+        b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
         AuthToken.authenticate(fred);
         b219.setAvatarUnprotected(getImage(fred, "teams/b219.png"));
 
@@ -189,6 +199,7 @@ public class BloatitExampleDB { // NO_UCD
         final Feature libreOfficeFeatureDefaultTemplate = generateLibreOfficeFeatureDefaultTemplate();
         final Feature perroquetFeatureArabicSupport = generatePerroquetFeatureArabicSupport();
         final Feature mageiaFeatureRemoveEmacs = generateMageiaFeatureRemoveEmacs();
+        final Feature mageiaFeatureRemoveEmacs2 = generateMageiaFeatureRemoveEmacs2();
 
         // Highlight features
         new HighlightFeature(twoSubtitlesInVlcFeature, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
@@ -476,6 +487,41 @@ public class BloatitExampleDB { // NO_UCD
 
         return feature;
     }
+    
+    public Feature generateMageiaFeatureRemoveEmacs2() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // LibreOffice feature
+
+        // Feature with offer not validated and not funded
+        final String featureDescription = "Il faut absolument supprimer emacs des paquets disponible dans Mageia. En effet, le successeur d'emacs vim est maintenant mature et le logiciel emacs qui a bien servi est maintenant dépassé et encombre les paquets. Des sources indiquent aussi qu'emacs est dangereux pour la santé et qu'il peut engendrer un Syndrome du Canal Carpien. D'autre part emacs est peu accessible car il est difficilement utilisable par les personnes ne disposant que d'un seul doigt. ";
+
+        final String featureTitle = "Suppression du paquet emacs déprécié";
+
+        final Feature feature = FeatureFactory.createFeature(thomas, null, Language.FR, featureTitle, featureDescription, mageia);
+
+        final String offerDescription = "Oui, vive vim !";
+        AuthToken.authenticate(fred);
+        AuthToken.setAsTeam(b219);
+        feature.addOffer(new BigDecimal(500), offerDescription, "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
+
+        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        featureImpl.getDao().setValidationDate(DateUtils.now());
+
+        // Contributions
+        AuthToken.authenticate(thomas);
+        AuthToken.setAsTeam(null);
+        feature.addContribution(new BigDecimal("400"), "");
+        
+        AuthToken.authenticate(elephantman);
+        feature.addContribution(new BigDecimal("1"), "C'est symbolique !");
+        
+        AuthToken.authenticate(yoann);
+        AuthToken.setAsTeam(other);
+        feature.addContribution(new BigDecimal("300"), "");
+
+        setFeatureInFinishedState(feature);
+
+        return feature;
+    }
 
     /**
      * Work only if the money is available
@@ -530,6 +576,18 @@ public class BloatitExampleDB { // NO_UCD
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
                                                                     UUID.randomUUID().toString(),
                                                                     member,
+                                                                    new BigDecimal(amount),
+                                                                    new BigDecimal(amount),
+                                                                    UUID.randomUUID().toString());
+        bankTransaction.getDao().setAuthorized();
+        bankTransaction.getDao().setValidated();
+    }
+    
+    public void giveMoney(final Team team, final int amount) throws UnauthorizedOperationException {
+
+        final BankTransaction bankTransaction = new BankTransaction("money !!!",
+                                                                    UUID.randomUUID().toString(),
+                                                                    team,
                                                                     new BigDecimal(amount),
                                                                     new BigDecimal(amount),
                                                                     UUID.randomUUID().toString());
