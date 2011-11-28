@@ -250,47 +250,47 @@ public class DaoEvent extends DaoIdentifiable {
         this.milestone = milestone;
     }
 
-    public final EventType getType() {
+    public EventType getType() {
         return type;
     }
 
-    public final boolean isBugComment() {
+    public boolean isBugComment() {
         return isBugComment;
     }
 
-    public final boolean isFeatureComment() {
+    public boolean isFeatureComment() {
         return isFeatureComment;
     }
 
-    public final Date getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public final DaoFeature getFeature() {
+    public DaoFeature getFeature() {
         return feature;
     }
 
-    public final DaoContribution getContribution() {
+    public DaoContribution getContribution() {
         return contribution;
     }
 
-    public final DaoOffer getOffer() {
+    public DaoOffer getOffer() {
         return offer;
     }
 
-    public final DaoComment getComment() {
+    public DaoComment getComment() {
         return comment;
     }
 
-    public final DaoBug getBug() {
+    public DaoBug getBug() {
         return bug;
     }
 
-    public final DaoRelease getRelease() {
+    public DaoRelease getRelease() {
         return release;
     }
 
-    public final DaoMilestone getMilestone() {
+    public DaoMilestone getMilestone() {
         return milestone;
     }
 

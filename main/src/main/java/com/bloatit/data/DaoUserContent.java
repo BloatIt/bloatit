@@ -115,7 +115,10 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * 
      * @return the member that created this {@link UserContent}.
      */
-    public final DaoMember getMember() {
+    public DaoMember getMember() {
+        int i = this.getId();
+        Class<? extends DaoUserContent> class1 = this.getClass();
+        //this.getMember();
         return this.member;
     }
 
@@ -125,35 +128,35 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * 
      * @return the author (member or team).
      */
-    public final DaoActor getAuthor() {
+    public DaoActor getAuthor() {
         return asTeam == null ? member : asTeam;
     }
 
     /**
      * @return The creation date of this content.
      */
-    public final Date getCreationDate() {
+    public Date getCreationDate() {
         return (Date) this.creationDate.clone();
     }
 
     /**
      * @return the team in which name this content has been created or null.
      */
-    public final DaoTeam getAsTeam() {
+    public DaoTeam getAsTeam() {
         return this.asTeam;
     }
 
     /**
      * @return all the files associated with this DaoUserContent.
      */
-    public final PageIterable<DaoFileMetadata> getFiles() {
+    public PageIterable<DaoFileMetadata> getFiles() {
         return new MappedList<DaoFileMetadata>(this.files);
     }
 
     /**
      * @return true if the content should be considered as delete.
      */
-    public final boolean isDeleted() {
+    public boolean isDeleted() {
         return this.isDeleted;
     }
 
@@ -170,7 +173,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * 
      * @param daoFileMetadata the file to attach on this content
      */
-    public final void addFile(final DaoFileMetadata daoFileMetadata) {
+    public void addFile(final DaoFileMetadata daoFileMetadata) {
         this.files.add(daoFileMetadata);
         daoFileMetadata.setRelatedContent(this);
     }

@@ -54,15 +54,15 @@ public class DaoStringVersion extends DaoIdentifiable {
         this.isCompacted = false;
     }
 
-    public final String getContent() {
+    public String getContent() {
         return content;
     }
 
-    public final Date getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public final DaoVersionedString getVersionedString() {
+    public DaoVersionedString getVersionedString() {
         return versionedString;
     }
 
@@ -108,7 +108,7 @@ public class DaoStringVersion extends DaoIdentifiable {
         }
     }
 
-    public final boolean isCompacted() {
+    public boolean isCompacted() {
         return isCompacted;
     }
 

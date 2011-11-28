@@ -69,15 +69,15 @@ public class DaoFollowFeature extends DaoIdentifiable {
         this.mail = mail;
     }
 
-    public final void setFeatureComment(boolean featureComment) {
+    public void setFeatureComment(boolean featureComment) {
         this.featureComment = featureComment;
     }
 
-    public final void setBugComment(boolean bugComment) {
+    public void setBugComment(boolean bugComment) {
         this.bugComment = bugComment;
     }
 
-    public final void setMail(boolean mail) {
+    public void setMail(boolean mail) {
         this.mail = mail;
     }
 
@@ -85,23 +85,23 @@ public class DaoFollowFeature extends DaoIdentifiable {
     // Getters.
     // ======================================================================
 
-    public final DaoMember getFollower() {
+    public DaoMember getFollower() {
         return follower;
     }
 
-    public final DaoFeature getFollowed() {
+    public DaoFeature getFollowed() {
         return followed;
     }
 
-    public final boolean isFeatureComment() {
+    public boolean isFeatureComment() {
         return featureComment;
     }
 
-    public final boolean isBugComment() {
+    public boolean isBugComment() {
         return bugComment;
     }
 
-    public final boolean isMail() {
+    public boolean isMail() {
         return mail;
     }
 

@@ -1,0 +1,93 @@
+.timeline_page {
+    .padding_box;
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box;
+    
+    .menu_bar {
+
+        
+        .menu_bar_item {
+            float: left;
+            border-right: 1px solid @border_color;
+            padding: 10px;
+            
+            .menu_bar_item_image {
+                display: table-cell;
+            }
+            
+            .menu_bar_item_link {
+                display: table-cell;
+            }
+        }
+
+        .menu_bar_item:last-child {
+            float: left;
+            border-right: none;
+        }
+    }
+    
+    .timeline_block {
+        clear: both;
+        width: 100%;
+        margin-top: 90px;
+        margin-bottom: 90px;
+    
+        .left_column {
+            width: 50%;
+            display: table-cell;    
+        }
+        
+        .time_column {
+
+            display: table-cell;
+            
+            
+            .time_column_header {
+                border-right: 1px solid @border_color;
+                border-left: 1px solid @border_color;
+                height: 15px;
+                width: 50px;
+            }
+            
+            .time_column_footer {
+                border-right: 1px solid @border_color;
+                border-left: 1px solid @border_color;
+                border-top: 1px solid @border_color;
+                height: 15px;
+                width: 50px;
+            }
+            
+            .day {
+                padding-top: 4px;
+                border-top: 1px solid @border_color;
+                border-right: 1px solid @border_color;
+                border-left: 1px solid @border_color;
+                color: @light_text_color;
+                text-align: center;
+                font-size: 11px; 
+            }
+            
+            .day:nth-child(odd) {
+                background: @default_background_color;
+            }
+        }
+    
+        .right_column {
+            width: 50%;
+            display: table-cell;
+        }
+        
+        .spacer {
+        
+        
+        }
+        
+        
+        
+
+    
+    
+    }
+}
+
