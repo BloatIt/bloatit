@@ -117,7 +117,7 @@ public class Context {
         updateTime();
         setHeader(header);
         setSession(session);
-        setLocalizator(new Localizator(header.getLanguage(), header.getHttpAcceptLanguage()));
+        setLocalizator(new Localizator(header));
     }
 
     private static void updateTime() {

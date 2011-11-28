@@ -83,7 +83,7 @@ public abstract class Page implements Linkable {
 
     /**
      * Indicates the status of the page
-     * 
+     *
      * @return a status code matching the real status of the response
      */
     protected abstract StatusCode getResponseStatus();
@@ -92,7 +92,7 @@ public abstract class Page implements Linkable {
      * Get the content type of this page. We are looking for "text/html", but it
      * can also be "application/json" or "text/xml". Overload me if you want to
      * change this content type.
-     * 
+     *
      * @return "text/html".
      */
     protected String getContentType() {
@@ -102,7 +102,7 @@ public abstract class Page implements Linkable {
     /**
      * This method is called only if {@link #createBody()} and
      * {@link #createBodyOnParameterError()} does not throw exception.
-     * 
+     *
      * @return the title of the page.
      */
     protected abstract String getTitle();
@@ -110,7 +110,7 @@ public abstract class Page implements Linkable {
     /**
      * Create the body tag of the HTML page. This method is called when there
      * <b>is no error</b> in the parameters from the {@link Url}.
-     * 
+     *
      * @return the body tag of the HTML page.
      * @throws RedirectException if there is a problem during the page
      *             construction and we want to redirect on an other page.
@@ -120,7 +120,7 @@ public abstract class Page implements Linkable {
     /**
      * Create the body tag of the HTML page. This method is called when there
      * <b>is at least one error</b> in the parameters from the {@link Url}.
-     * 
+     *
      * @return the body tag of the HTML page.
      * @throws RedirectException if there is a problem during the page
      *             construction and we want to redirect on an other page.
@@ -135,15 +135,15 @@ public abstract class Page implements Linkable {
     /**
      * A method that returns the description of the page as inserted inside the
      * {@code <meta name="description">} tag in page header.
-     * 
+     *
      * @return the string describing the page
      */
     protected abstract String getPageDescription();
-    
+
     /**
      * A method that returns the list of the keywords inserted inside the
      * {@code <meta name="keywords">} tag in page header.
-     * 
+     *
      * @return the string describing the site
      */
     protected abstract String getPageKeyWords();
@@ -151,13 +151,13 @@ public abstract class Page implements Linkable {
     /**
      * A method that returns the list of page specific robots information
      * inserted inside the {@code <meta name="robots">} tag in page header.
-     * 
+     *
      * @return the list of keywords
      */
     protected abstract Set<Robot> getRobots();
 
     protected abstract ArrayList<HtmlHeaderLink> getLinks();
-    
+
     protected abstract ArrayList<HtmlElement> getMetas();
 
     // -----------------------------------------------------------------------
@@ -185,7 +185,7 @@ public abstract class Page implements Linkable {
 
         final HtmlBranch html = new HtmlGenericElement("html");
         page.add(html);
-        html.addAttribute("lang", Context.getLocalizator().getCode());
+        html.addAttribute("lang", Context.getLocalizator().getLanguageCode());
         pageHeader = new Header(getTitle(), getPageDescription(), getPageKeyWords(),  getRobots());
         html.add(pageHeader);
 
@@ -206,12 +206,12 @@ public abstract class Page implements Linkable {
         for(final HtmlElement meta : getMetas()){
             pageHeader.addMeta(meta);
         }
-        
+
         // Do not forget to add the css/js files.
         for (final String css : page.getAllCss()) {
             pageHeader.addCss(css);
         }
-        
+
         for (final String js : page.getAllJs()) {
             pageHeader.addJs(js);
         }
@@ -219,11 +219,11 @@ public abstract class Page implements Linkable {
         for (final HtmlHeaderLink link : getLinks()) {
             pageHeader.addHeaderLink(link);
         }
-        
+
         for (final HtmlNode node : page.getAllPostNode()) {
             bodyContent.add(node);
         }
-        
+
         return page;
     }
 

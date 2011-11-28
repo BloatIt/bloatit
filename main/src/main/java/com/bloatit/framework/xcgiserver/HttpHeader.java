@@ -20,25 +20,25 @@ package com.bloatit.framework.xcgiserver;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedMap;
+
+import org.apache.commons.collections.FastTreeMap;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.utils.parameters.Parameters;
-import com.bloatit.framework.xcgiserver.LazyLoaders.LazyInt;
-import com.bloatit.framework.xcgiserver.LazyLoaders.LazyMap;
-import com.bloatit.framework.xcgiserver.LazyLoaders.LazyString;
-import com.bloatit.framework.xcgiserver.LazyLoaders.LazyStringList;
 
 public class HttpHeader {
 
     public static final String AUTHORIZATION_UNKNOWN = "unknown";
-
-    private static final String DEFAULT_LANG = "default";
-
+    public static final String DEFAULT_LANG = "default";
     private static final String UTF_8 = "UTF-8";
 
     private final Parameters getParameters = new Parameters();
@@ -46,32 +46,75 @@ public class HttpHeader {
     private String pageName = "";
     private final Map<String, String> env;
 
+    @SuppressWarnings("unchecked")
+    private final SortedMap<Integer, List<String>> priorityLangs = new FastTreeMap();
+    private final Locale preferedLocale;
+
     protected HttpHeader(final Map<String, String> env) {
         super();
         this.env = env;
 
-        parseLanguageAndPageName();
+        this.serverProtocol = notNull(env.get("SERVER_PROTOCOL"));
+        this.serverSoftware = notNull(env.get("SERVER_SOFTWARE"));
+        this.serverPort = toInt(env.get("SERVER_PORT"));
+        this.serverName = notNull(env.get("SERVER_NAME"));
+        this.serverAddr = notNull(env.get("SERVER_ADDR"));
+        this.scriptName = notNull(env.get("SCRIPT_NAME"));
+        this.scriptFilename = notNull(env.get("SCRIPT_FILENAME"));
+        this.scgi = notNull(env.get("SCGIUtils"));
+        this.requestUri = notNull(env.get("REQUEST_URI"));
+        this.requestMethod = notNull(env.get("REQUEST_METHOD"));
+        this.remotePort = toInt(env.get("REMOTE_PORT"));
+        this.remoteAddr = notNull(env.get("REMOTE_ADDR"));
+        this.redirectUri = notNull(env.get("REDIRECT_URI"));
+        this.redirectStatus = toInt(env.get("REDIRECT_STATUS"));
+        this.queryString = notNull(env.get("QUERY_STRING"));
+        this.pathTranslated = notNull(env.get("PATH_TRANSLATED"));
+        this.pathInfo = notNull(env.get("PATH_INFO"));
+        this.httpXDoNotTrack = toInt(env.get("HTTP_X_DO_NOT_TRACK"));
+        this.httpXBehavioralAdOptOut = toInt(env.get("HTTP_X_BEHAVIORAL_AD_OPT_OUT"));
+        this.httpUserAgent = notNull(env.get("HTTP_USER_AGENT"));
+        this.httpReferer = notNull(env.get("HTTP_REFERER"));
+        this.httpKeepAlive = toInt(env.get("HTTP_KEEP_ALIVE"));
+        this.httpHost = notNull(env.get("HTTP_HOST"));
+        this.httpCookie = toMap(env.get("HTTP_COOKIE"));
+        this.httpConnection = notNull(env.get("HTTP_CONNECTION"));
+        this.httpCacheControl = notNull(env.get("HTTP_CACHE_CONTROL"));
+        this.httpAuthorization = notNull(env.get("HTTP_AUTHORIZATION"));
+        this.httpAcceptLanguage = notNull(env.get("HTTP_ACCEPT_LANGUAGE"));
+        this.httpAcceptEncoding = toList(env.get("HTTP_ACCEPT_ENCODING"), ",");
+        this.httpAcceptCharset = toList(env.get("HTTP_ACCEPT_CHARSET"), ",|;");
+        this.httpAccept = toList(env.get("HTTP_ACCEPT"), ",");
+        this.gatewayInterface = notNull(env.get("GATEWAY_INTERFACE"));
+        this.documentRoot = notNull(env.get("DOCUMENT_ROOT"));
+        this.contentType = notNull(env.get("CONTENT_TYPE"));
+        this.contentLength = toInt(env.get("CONTENT_LENGTH"));
+
+        parseLanguageAndPageName(pathInfo);
 
         try {
-            parseGetParameters();
+            parseGetParameters(queryString);
         } catch (final UnsupportedEncodingException e) {
             Log.framework().warn("Cannot parse Get Parameters", e);
         }
-    }
 
-    private void parseGetParameters() throws UnsupportedEncodingException {
-        final String[] params = getQueryString().split("&");
-        for (final String param : params) {
-            final String[] pair = param.split("=", 2);
-            if (pair.length == 2) {
-                getParameters.add(URLDecoder.decode(pair[0], UTF_8), URLDecoder.decode(pair[1], UTF_8));
+        if (httpAcceptLanguage != null && httpAcceptLanguage.length() >= 2) {
+            String acceptedLanguages = httpAcceptLanguage.replaceAll("\\[|\\]", "").toLowerCase();
+            if (acceptedLanguages.length() >= 2) {
+                fillUpPriorityLands(acceptedLanguages);
             }
         }
+        if (getPriorityLangs().isEmpty()) {
+            addALang("en", 0);
+        }
+
+        // Warning This uses the priorityLangs property.
+        this.preferedLocale = parseAcceptedLanguage(httpAcceptLanguage);
     }
 
-    private void parseLanguageAndPageName() {
+    private void parseLanguageAndPageName(String pathInfo) {
         // the script name is the first word
-        final String[] splitedUri = removeFirstSlashes(getPathInfo()).split("/", 2);
+        final String[] splitedUri = removeFirstSlashes(pathInfo).split("/", 2);
         final String firstWord = splitedUri[0];
 
         if (firstWord.isEmpty()) {
@@ -86,7 +129,97 @@ public class HttpHeader {
             }
         } else {
             language = DEFAULT_LANG;
-            pageName = removeFirstSlashes(getPathInfo());
+            pageName = removeFirstSlashes(pathInfo);
+        }
+    }
+
+    private Locale parseAcceptedLanguage(String accepted) {
+        // read the list of local and find the best one
+        String localLang = null;
+        String localCountry = null;
+        for (Entry<Integer, List<String>> langOfPriority : priorityLangs.entrySet()) {
+            for (String string : langOfPriority.getValue()) {
+                if (string.length() == 2) {
+                    // LANG
+                    if (localLang == null && AvailableLocales.getAvailableLangs().containsKey(string)) {
+                        localLang = string;
+                    }
+                } else if (string.length() == 5) {
+                    // LANG - COUNTRY
+                    String langKey = string.substring(0, 2);
+                    if (localLang == null && AvailableLocales.getAvailableLangs().containsKey(langKey)) {
+                        localLang = langKey;
+                    }
+                    String countryKey = string.substring(3, 5).toUpperCase();
+                    if (localCountry == null && AvailableLocales.getAvailableLangs().containsKey(countryKey)) {
+                        localCountry = countryKey;
+                    }
+                }
+                if (localLang != null && localCountry != null) {
+                    return new Locale(localLang, localCountry);
+                }
+            }
+
+        }
+        if (localLang == null) {
+            localLang = DEFAULT_LANG;
+        }
+
+        if (localCountry != null) {
+            return new Locale(localLang, localCountry);
+        }
+        return new Locale(localLang, AvailableLocales.getDefaultCountry(localLang));
+    }
+
+    private void fillUpPriorityLands(String accepted) {
+        // Split the accepted language in a list of locales order by
+        // priority
+        String[] langs = accepted.split(",");
+        for (String lang : langs) {
+            lang = lang.trim();
+            if (lang.length() >= 2) {
+                String[] splited = lang.split(";");
+                if (splited.length == 1) {
+                    addALang(splited[0].trim(), 1.F);
+                } else if (splited.length == 2) {
+                    try {
+                        String wstr = splited[1].trim();
+                        if (wstr.length() > 3) {
+                            float w = Float.valueOf(wstr.substring(2));
+                            addALang(splited[0].trim(), w);
+                        }
+                    } catch (NumberFormatException e) {
+                        Log.framework().info("Malformed accepedLanguage", e);
+                    }
+                }
+            }
+        }
+        if (priorityLangs.isEmpty()) {
+            addALang("en", 0.f);
+        }
+    }
+
+    private void addALang(String lang, float weight) {
+        if (weight <= 1) {
+            Integer priority = 100 - Math.round(weight * 100.F);
+            List<String> langList = getPriorityLangs().get(priority);
+            if (langList != null) {
+                langList.add(lang);
+            } else {
+                List<String> list = new ArrayList<String>();
+                list.add(lang);
+                getPriorityLangs().put(priority, list);
+            }
+        }
+    }
+
+    private void parseGetParameters(String queryString) throws UnsupportedEncodingException {
+        final String[] params = queryString.split("&");
+        for (final String param : params) {
+            final String[] pair = param.split("=", 2);
+            if (pair.length == 2) {
+                getParameters.add(URLDecoder.decode(pair[0], UTF_8), URLDecoder.decode(pair[1], UTF_8));
+            }
         }
     }
 
@@ -101,21 +234,81 @@ public class HttpHeader {
         if (DEFAULT_LANG.equals(langCode)) {
             return true;
         }
-        Localizator.getAvailableLanguages();
-        for (final Entry<String, LanguageDescriptor> lang : Localizator.getAvailableLanguages().entrySet()) {
-            if (lang.getValue().getCode().equals(langCode)) {
-                return true;
-            }
-        }
-        return false;
+        return AvailableLocales.getAvailableLangs().containsKey(langCode);
     }
 
-    public final String getLanguage() {
+    private int toInt(String v) {
+        try {
+            return Integer.parseInt(v);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private String notNull(String v) {
+        if (v == null) {
+            return "";
+        }
+        return v;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> toList(String stringValue, String separator) {
+        if (stringValue == null) {
+            return Collections.EMPTY_LIST;
+        }
+        return Arrays.asList(stringValue.split(separator));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, String> toMap(String stringValue) {
+        if (stringValue == null) {
+            return Collections.EMPTY_MAP;
+        }
+        final HashMap<String, String> map = new HashMap<String, String>();
+        final String[] namedValues = stringValue.split(";");
+        for (final String namedValue : namedValues) {
+            final String[] aValue = namedValue.split("=");
+            if (aValue.length >= 2) {
+                map.put(aValue[0].trim(), aValue[1].trim());
+            } else {
+                Log.framework().warn("Malformed cookie value: " + namedValue);
+            }
+        }
+        return map;
+    }
+
+    public final String getHttpAuthorizationType() {
+        final String[] splited = httpAuthorization.split(" ", 2);
+        if (splited.length <= 1) {
+            return AUTHORIZATION_UNKNOWN;
+        }
+        return splited[0];
+    }
+
+    public final String getHttpAuthorizationData() {
+        final String[] splited = httpAuthorization.split(" ", 2);
+        if (splited.length != 2) {
+            return "";
+        }
+        return splited[1];
+    }
+
+    /**
+     * @return the language code found in the page ('default', 'en' or 'fr')
+     */
+    public final String getPageLanguage() {
         return language;
     }
 
     public final String getPageName() {
         return pageName;
+    }
+
+    /** example : true */
+    public final boolean isHttps() {
+        String ishttps = env.get("HTTPS");
+        return ishttps != null && ishttps.equals("on");
     }
 
     /**
@@ -125,342 +318,222 @@ public class HttpHeader {
         return getParameters;
     }
 
-    private final LazyInt contentLength = new LazyInt("CONTENT_LENGTH");
-
-    /**
-     * example : 0
-     */
-    public final int getContentLength() {
-        return contentLength.getValue(env);
-    }
-
-    private final LazyString contentType = new LazyString("CONTENT_TYPE");
-
+    /** example : 0 */
+    private final int contentLength;
     /**
      * example : multipart/form-data;
      * boundary=---------------------------1317007049440113364772076208
      */
+    private final String contentType;
+    /** example : /home/tom/bloatit/www */
+    private final String documentRoot;
+    /** example : CGI/1.1 */
+    private final String gatewayInterface;
+    /** example : Basic dGhvbWFzOnBsb3A= */
+    private final String httpAuthorization;
+    /** text/html,application/xhtml+xml,application/xml;q=0.9,* /*;q=0.8 */
+    private final List<String> httpAccept;
+    /** example : ISO-8859-1,utf-8;q=0.7,*;q=0.7 */
+    private final List<String> httpAcceptCharset;
+    /** example : gzip,deflate */
+    private final List<String> httpAcceptEncoding;
+    /** example : fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3 */
+    private final String httpAcceptLanguage;
+    /** example : max-age=0 */
+    private final String httpCacheControl;
+    /** example : keep-alive */
+    private final String httpConnection;
+    /** return value key map */
+    private final Map<String, String> httpCookie;
+    /** example : f2.b219.org:8081 */
+    private final String httpHost;
+    /** example : 115 */
+    private final int httpKeepAlive;
+    private final String httpReferer;
+    private final String httpUserAgent;
+    /** example : 1 */
+    private final int httpXBehavioralAdOptOut;
+    /** example : 1 */
+    private final int httpXDoNotTrack;
+    private final String pathInfo;
+    private final String pathTranslated;
+    /** example : lang=fr&page=payline&param=result-cancel/token-Eu */
+    private final String queryString;
+    /** example : 200 */
+    private final int redirectStatus;
+    /** example : bloatit?lang=fr&page=payline&param=result-cancel/token-Eu */
+    private final String redirectUri;
+    /** example : 192.168.0.254 */
+    private final String remoteAddr;
+    /** example : 52610 */
+    private final int remotePort;
+    /** example : GET */
+    private final String requestMethod;
+    /** example :/fr/payline/result-cancel?token=Eu */
+    private final String requestUri;
+    /** example : 1 */
+    private final String scgi;
+    /** example : /home/tom/bloatit/www/bloatit */
+    private final String scriptFilename;
+    /** example : /bloatit */
+    private final String scriptName;
+    /** example : 192.168.0.15 */
+    private final String serverAddr;
+    /** example : f2.b219.org */
+    private final String serverName;
+    /** example : 80 */
+    private final int serverPort;
+    /** example : HTTP/1.1 */
+    private final String serverProtocol;
+    /** example : lighttpd/1.4.26 */
+    private final String serverSoftware;
+
+    public final int getContentLength() {
+        return contentLength;
+    }
+
     public final String getContentType() {
-        return contentType.getValue(env);
+        return contentType;
     }
 
-    private final LazyString documentRoot = new LazyString("DOCUMENT_ROOT");
-
-    /**
-     * example : /home/tom/bloatit/www
-     */
     public final String getDocumentRoot() {
-        return documentRoot.getValue(env);
+        return documentRoot;
     }
 
-    private final LazyString gatewayInterface = new LazyString("GATEWAY_INTERFACE");
-
-    /**
-     * example : CGI/1.1
-     */
     public final String getGatewayInterface() {
-        return gatewayInterface.getValue(env);
+        return gatewayInterface;
     }
 
-    private final LazyString httpAuthorization = new LazyString("HTTP_AUTHORIZATION");
-
-    /**
-     * example : Basic dGhvbWFzOnBsb3A=
-     */
     public final String getHttpAuthorization() {
-        return httpAuthorization.getValue(env);
+        return httpAuthorization;
     }
 
-    public final String getHttpAuthorizationType() {
-        final String[] splited = httpAuthorization.getValue(env).split(" ", 2);
-        if (splited.length <= 1) {
-            return AUTHORIZATION_UNKNOWN;
-        }
-        return splited[0];
-    }
-
-    public final String getHttpAuthorizationData() {
-        final String[] splited = httpAuthorization.getValue(env).split(" ", 2);
-        if (splited.length != 2) {
-            return "";
-        }
-        return splited[1];
-    }
-
-    private final LazyStringList httpAccept = new LazyStringList("HTTP_ACCEPT", ",");
-
-    /**
-     * example : text/html,application/xhtml+xml,application/xml;q=0.9,*
-     * /*;q=0.8
-     */
     public final List<String> getHttpAccept() {
-        return httpAccept.getValue(env);
+        return httpAccept;
     }
 
-    private final LazyStringList httpAcceptCharset = new LazyStringList("HTTP_ACCEPT_CHARSET", ",|;");
-
-    /**
-     * example : ISO-8859-1,utf-8;q=0.7,*;q=0.7
-     */
     public final List<String> getHttpAcceptCharset() {
-        return httpAcceptCharset.getValue(env);
+        return httpAcceptCharset;
     }
 
-    private final LazyStringList httpAcceptEncoding = new LazyStringList("HTTP_ACCEPT_ENCODING", ",");
-
-    /**
-     * example : gzip,deflate
-     */
     public final List<String> getHttpAcceptEncoding() {
-        return httpAcceptEncoding.getValue(env);
+        return httpAcceptEncoding;
     }
 
-    private final LazyStringList httpAcceptLanguage = new LazyStringList("HTTP_ACCEPT_LANGUAGE", ",");
-
-    /**
-     * example : fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3
-     */
-    public final List<String> getHttpAcceptLanguage() {
-        return httpAcceptLanguage.getValue(env);
+    public final String getHttpAcceptLanguage() {
+        return httpAcceptLanguage;
     }
 
-    private final LazyString httpCacheControl = new LazyString("HTTP_CACHE_CONTROL");
-
-    /**
-     * example : max-age=0
-     */
     public final String getHttpCacheControl() {
-        return httpCacheControl.getValue(env);
+        return httpCacheControl;
     }
 
-    private final LazyString httpConnection = new LazyString("HTTP_CONNECTION");
-
-    /**
-     * example : keep-alive
-     */
     public final String getHttpConnection() {
-        return httpConnection.getValue(env);
+        return httpConnection;
     }
 
-    /**
-     * example : true
-     */
-    public final boolean isHttps() {
-        String ishttps = env.get("HTTPS");
-        return ishttps != null && ishttps.equals("on");
-    }
-
-    private final LazyMap httpCookie = new LazyMap("HTTP_COOKIE");
-
-    /**
-     * example :
-     * SESS87038d7e49409b9d700737bd60ea56e8=b78427f651202b9466f2e01545458902;
-     * session_key
-     * =b30e0cca4d46fe4194f891358ff5d8d48343de0013cd228e4daedae21415030d
-     */
     public final Map<String, String> getHttpCookie() {
-        return httpCookie.getValue(env);
+        return httpCookie;
     }
 
-    private final LazyString httpHost = new LazyString("HTTP_HOST");
-
-    /**
-     * example : f2.b219.org:8081
-     */
     public final String getHttpHost() {
-        return httpHost.getValue(env);
+        return httpHost;
     }
 
-    private final LazyInt httpKeepAlive = new LazyInt("HTTP_KEEP_ALIVE");
-
-    /**
-     * example : 115
-     */
     public final int getHttpKeepAlive() {
-        return httpKeepAlive.getValue(env);
+        return httpKeepAlive;
     }
 
-    private final LazyString httpReferer = new LazyString("HTTP_REFERER");
-
-    public String getHttpReferer() {
-        return httpReferer.getValue(env);
+    public final String getHttpReferer() {
+        return httpReferer;
     }
 
-    private final LazyString httpUserAgent = new LazyString("HTTP_USER_AGENT");
-
-    /**
-     * example : Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.14pre)
-     * Gecko/20110107 Ubuntu/10.04 (lucid) Namoroka/3.6.14pre
-     */
     public final String getHttpUserAgent() {
-        return httpUserAgent.getValue(env);
+        return httpUserAgent;
     }
 
-    private final LazyInt httpXBehavioralAdOptOut = new LazyInt("HTTP_X_BEHAVIORAL_AD_OPT_OUT");
-
-    /**
-     * example : 1
-     */
     public final int getHttpXBehavioralAdOptOut() {
-        return httpXBehavioralAdOptOut.getValue(env);
+        return httpXBehavioralAdOptOut;
     }
 
-    private final LazyInt httpXDoNotTrack = new LazyInt("HTTP_X_DO_NOT_TRACK");
-
-    /**
-     * example : 1
-     */
     public final int getHttpXDoNotTrack() {
-        return httpXDoNotTrack.getValue(env);
+        return httpXDoNotTrack;
     }
-
-    private final LazyString pathInfo = new LazyString("PATH_INFO");
 
     public final String getPathInfo() {
-        return pathInfo.getValue(env);
+        return pathInfo;
     }
 
-    private final LazyString pathTranslated = new LazyString("PATH_TRANSLATED");
-
-    public String getPathTranslated() {
-        return pathTranslated.getValue(env);
+    public final String getPathTranslated() {
+        return pathTranslated;
     }
 
-    private final LazyString queryString = new LazyString("QUERY_STRING");
-
-    /**
-     * example : lang=fr&page=payline&param=result-cancel/token-
-     * EuuqQRn7AiPNrfqT7D0w1294355479323
-     */
     public final String getQueryString() {
-        return queryString.getValue(env);
+        return queryString;
     }
 
-    private final LazyInt redirectStatus = new LazyInt("REDIRECT_STATUS");
-
-    /**
-     * example : 200
-     */
     public final int getRedirectStatus() {
-        return redirectStatus.getValue(env);
+        return redirectStatus;
     }
 
-    private final LazyString redirectUri = new LazyString("REDIRECT_URI");
-
-    /**
-     * example : bloatit?lang=fr&page=payline&param=result-cancel/token-
-     * EuuqQRn7AiPNrfqT7D0w1294355479323
-     */
     public final String getRedirectUri() {
-        return redirectUri.getValue(env);
+        return redirectUri;
     }
 
-    private final LazyString remoteAddr = new LazyString("REMOTE_ADDR");
-
-    /**
-     * example : 192.168.0.254
-     */
     public final String getRemoteAddr() {
-        return remoteAddr.getValue(env);
+        return remoteAddr;
     }
 
-    private final LazyInt remotePort = new LazyInt("REMOTE_PORT");
-
-    /**
-     * example : 52610
-     */
     public final int getRemotePort() {
-        return remotePort.getValue(env);
+        return remotePort;
     }
 
-    private final LazyString requestMethod = new LazyString("REQUEST_METHOD");
-
-    /**
-     * example : GET
-     */
     public final String getRequestMethod() {
-        return requestMethod.getValue(env);
+        return requestMethod;
     }
 
-    private final LazyString requestUri = new LazyString("REQUEST_URI");
-
-    /**
-     * example :
-     * /fr/payline/result-cancel?token=EuuqQRn7AiPNrfqT7D0w1294355479323
-     */
     public final String getRequestUri() {
-        return requestUri.getValue(env);
+        return requestUri;
     }
 
-    private final LazyString scgi = new LazyString("SCGIUtils");
-
-    /**
-     * example : 1
-     */
     public final String getScgi() {
-        return scgi.getValue(env);
+        return scgi;
     }
 
-    private final LazyString scriptFilename = new LazyString("SCRIPT_FILENAME");
-
-    /**
-     * example : /home/tom/bloatit/www/bloatit
-     */
     public final String getScriptFilename() {
-        return scriptFilename.getValue(env);
+        return scriptFilename;
     }
 
-    private final LazyString scriptName = new LazyString("SCRIPT_NAME");
-
-    /**
-     * example : /bloatit
-     */
     public final String getScriptName() {
-        return scriptName.getValue(env);
+        return scriptName;
     }
 
-    private final LazyString serverAddr = new LazyString("SERVER_ADDR");
-
-    /**
-     * example : 192.168.0.15
-     */
     public final String getServerAddr() {
-        return serverAddr.getValue(env);
+        return serverAddr;
     }
 
-    private final LazyString serverName = new LazyString("SERVER_NAME");
-
-    /**
-     * example : f2.b219.org
-     */
     public final String getServerName() {
-        return serverName.getValue(env);
+        return serverName;
     }
 
-    private final LazyInt serverPort = new LazyInt("SERVER_PORT");
-
-    /**
-     * example : 80
-     */
     public final int getServerPort() {
-        return serverPort.getValue(env);
+        return serverPort;
     }
 
-    private final LazyString serverProtocol = new LazyString("SERVER_PROTOCOL");
-
-    /**
-     * example : HTTP/1.1
-     */
     public final String getServerProtocol() {
-        return serverProtocol.getValue(env);
+        return serverProtocol;
     }
 
-    private final LazyString serverSoftware = new LazyString("SERVER_SOFTWARE");
-
-    /**
-     * example : lighttpd/1.4.26
-     */
     public final String getServerSoftware() {
-        return serverSoftware.getValue(env);
+        return serverSoftware;
     }
+
+    public Locale getPreferedLocale() {
+        return preferedLocale;
+    }
+
+    public SortedMap<Integer, List<String>> getPriorityLangs() {
+        return priorityLangs;
+    }
+
 }
