@@ -289,4 +289,24 @@ public class WebConfiguration extends ReloadableConfiguration {
         }
     }
 
+    public static String getImgIdeaSmall() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static String getImgManageSmall() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static String getImgManageNotifSmall() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static String getImgRssSmall() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

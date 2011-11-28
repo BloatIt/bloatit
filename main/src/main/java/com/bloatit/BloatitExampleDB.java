@@ -86,6 +86,7 @@ public class BloatitExampleDB { // NO_UCD
         cerbere = createMember("cerbere", "Cerbère", Locale.FRANCE);
         hydre = createMember("hydre", "Hydre", Locale.US);
         elephantman = createMember("elephantman", "ElephantMan", Locale.CANADA);
+        AuthToken.authenticate(yoann);
         yoann.getContact().setName("Babar");
         yoann.getContact().setStreet("Palais royal");
         yoann.getContact().setCity("Celesteville");
@@ -221,6 +222,7 @@ public class BloatitExampleDB { // NO_UCD
         mageia.setImage(getImage(yoann, "mageia.png"));
 
         thomas.followOrGetSoftware(mageia).setMail(true);
+        fred.followOrGetSoftware(mageia).setMail(true);
     }
 
     public void generateLibreOfficeSoftware() throws UniqueNameExpectedException {
@@ -233,6 +235,7 @@ public class BloatitExampleDB { // NO_UCD
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
 
         yoann.followOrGetSoftware(libreOffice).setMail(true);
+        fred.followOrGetSoftware(libreOffice).setMail(true);
     }
 
     public void generatePerroquetSoftware() throws UniqueNameExpectedException {
