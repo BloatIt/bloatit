@@ -58,7 +58,7 @@ public class DaoFollowSoftware extends DaoIdentifiable {
         this.mail = mail;
     }
 
-    public final void setMail(boolean mail) {
+    public void setMail(boolean mail) {
         this.mail = mail;
     }
 
@@ -66,15 +66,15 @@ public class DaoFollowSoftware extends DaoIdentifiable {
     // Getters.
     // ======================================================================
 
-    public final DaoMember getFollower() {
+    public DaoMember getFollower() {
         return follower;
     }
 
-    public final DaoSoftware getFollowed() {
+    public DaoSoftware getFollowed() {
         return followed;
     }
 
-    public final boolean isMail() {
+    public boolean isMail() {
         return mail;
     }
 

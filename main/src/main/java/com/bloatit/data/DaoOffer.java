@@ -235,7 +235,7 @@ public class DaoOffer extends DaoKudosable {
         return this.isDraft;
     }
 
-    public final String getLicense() {
+    public String getLicense() {
         return license;
     }
 
