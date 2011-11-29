@@ -27,9 +27,6 @@ import java.util.Properties;
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ConfigurationManager.PropertiesType;
-import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.webprocessor.context.Context;
 
 /**
  * Class to handle localization of money amounts.
@@ -57,7 +54,7 @@ public final class CurrencyLocale {
      * <code>target</code> currency. Conversion rate is obtained from an
      * external source.
      * </p>
-     * 
+     *
      * @param euroAmount the amount of money in the default application currency
      *            (euro)
      * @param targetLocale the <code>Locale</code> that represents the currency
@@ -75,13 +72,7 @@ public final class CurrencyLocale {
                 throw new CurrencyNotAvailableException();
             }
         } catch (final IllegalArgumentException e) {
-            try {
-                Context.getSession().notifyWarning(Context.tr("We can't handle properly the country you selected, considering you're from the US."));
-                Log.framework().error("Country " + targetLocale.getCountry() + " selected by user is not valid", e);
-                this.currency = Currency.getInstance(Locale.US);
-            } catch (final IllegalArgumentException iae) {
-                throw new BadProgrammerException("US is not a valid country on this system ... please change system");
-            }
+            throw new CurrencyNotAvailableException();
         }
     }
 
@@ -95,7 +86,7 @@ public final class CurrencyLocale {
      * equidistant in which case it will round to the closest even number) which
      * is the IEEE 754R default
      * </p>
-     * 
+     *
      * @return the locale amount
      */
     public BigDecimal getConvertedAmount() {
@@ -104,7 +95,7 @@ public final class CurrencyLocale {
 
     /**
      * Finds the symbol used for this money in the given locale
-     * 
+     *
      * @return the currency symbol
      */
     public String getLocaleSymbol() {
@@ -114,7 +105,7 @@ public final class CurrencyLocale {
     /**
      * Returns the localized version of the amount, i.e. : converted to the
      * locale money, and with the locale symbol
-     * 
+     *
      * @return the localized string
      */
     public String getLocaleString() {
@@ -124,7 +115,7 @@ public final class CurrencyLocale {
     /**
      * Returns the displayed amount within the default currency of the
      * application (currently euro)
-     * 
+     *
      * @return a String representing the <code>amount</code> of money in the
      *         application default currency
      */
@@ -136,7 +127,7 @@ public final class CurrencyLocale {
     /**
      * Returns the localized version of the amount with 2 decimal digits, i.e. :
      * converted to the locale money, and with the locale symbol.
-     * 
+     *
      * @return the localized string
      */
     public String getDecimalLocaleString() {
@@ -151,7 +142,7 @@ public final class CurrencyLocale {
     /**
      * Returns the displayed amount with 2 decimal digits within the default
      * currency of the application (currently euro)
-     * 
+     *
      * @return a String representing the <code>amount</code> of money in the
      *         application default currency
      */
@@ -166,7 +157,7 @@ public final class CurrencyLocale {
     /**
      * Returns the localized version of the amount, i.e. : converted to the
      * locale money, and with the locale symbol
-     * 
+     *
      * @return the localized string
      */
     @Override
@@ -176,7 +167,7 @@ public final class CurrencyLocale {
 
     /**
      * Checks wether the target currency is handled
-     * 
+     *
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
     public boolean availableTargetCurrency() {
@@ -196,7 +187,7 @@ public final class CurrencyLocale {
 
     /**
      * Checks if a currency is handled
-     * 
+     *
      * @param locale the currency to check
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
@@ -206,7 +197,7 @@ public final class CurrencyLocale {
 
     /**
      * Checks if a currency is handled
-     * 
+     *
      * @param currency the currency to check
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */

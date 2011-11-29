@@ -16,7 +16,6 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.utils.Pair;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 
 /**
@@ -25,7 +24,7 @@ import com.bloatit.framework.webprocessor.url.Url;
  * To use this class, use the method
  * {@link MercanetAPI#createTransaction(BigDecimal, String, Url, Url, Url)}.
  * </p>
- * 
+ *
  * @see MercanetTransaction
  */
 public class MercanetAPI {
@@ -52,7 +51,7 @@ public class MercanetAPI {
      * <b>NOTE: </b> This method requires a valid context to be used, including
      * a valid user language.
      * </p>
-     * 
+     *
      * @param amount the amount of the transaction. Must be a eurovalue
      * @param userData a string that will be returned as is at the end of the
      *            transaction. Must not contain the following characters : '|',
@@ -64,6 +63,8 @@ public class MercanetAPI {
      * @param cancelReturnUrl the url where the user will be redirected when he
      *            decides to cancel the transaction
      * @param automaticResponseUrl the url that will be called by the server
+     * @param languageCode the 2 chars language code for the page ( 'en' or 'fr'
+     *            or ...)
      * @throws BadProgrammerException if userData contains any of the forbidden
      *             characters
      * @throws ExternalErrorException if errors occurs when using the API binary
@@ -76,7 +77,8 @@ public class MercanetAPI {
                                                         String customerContact,
                                                         Url normalReturnUrl,
                                                         Url cancelReturnUrl,
-                                                        Url automaticResponseUrl) {
+                                                        Url automaticResponseUrl,
+                                                        String languageCode) {
         Map<String, String> params = new HashMap<String, String>();
 
         // Static informations
@@ -86,7 +88,6 @@ public class MercanetAPI {
         params.put("pathfile", FrameworkConfiguration.getMercanetPathfile());
         params.put("data", "NO_WINDOWS_MSG;NO_SSL_SYMBOLS");
         params.put("advert", "logo_elveos.png");
-        
 
         // Dynamics informations
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
@@ -96,7 +97,7 @@ public class MercanetAPI {
         params.put("normal_return_url", normalReturnUrl.externalUrlString());
         params.put("cancel_return_url", cancelReturnUrl.externalUrlString());
         params.put("automatic_response_url", automaticResponseUrl.externalUrlString());
-        params.put("language", filterLanguage(Context.getLocalizator().getLanguageCode()));
+        params.put("language", filterLanguage(languageCode));
         params.put("return_context", checkReturnContext(userData));
 
         Pair<String, String> executionResultPairOfString = executeRequest(params);
@@ -108,7 +109,7 @@ public class MercanetAPI {
     /**
      * Checks if the string <code>returnContext</code> is a valid value for the
      * <i>return_context</i> field
-     * 
+     *
      * @param returnContext the string to validate
      * @return the string if it is valid
      * @throws BadProgrammerException if the string is not valid
@@ -127,7 +128,7 @@ public class MercanetAPI {
     /**
      * Checks if the string <code>lanuageCode</code> is a valid language code
      * (i.e: it is handled by the payment API)
-     * 
+     *
      * @param languageCode the code to validate
      * @return <code>languageCode</code> if it is valid, <i>en</i> otherwise
      */
@@ -143,15 +144,15 @@ public class MercanetAPI {
      * return of the API.
      * <p>
      * Example of use :
-     * 
+     *
      * <pre>
      * Pair&lt;String, String&gt; executionResultPairOfString = executeRequest(params);
      * String data = executionResultPairOfString.first;
      * String baseUrl = executionResultPairOfString.second;
      * </pre>
-     * 
+     *
      * </p>
-     * 
+     *
      * @returns a pair containing first the data, second the url to go for the
      *          payment
      */
