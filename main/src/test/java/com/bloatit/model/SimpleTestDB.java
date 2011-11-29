@@ -58,27 +58,33 @@ public class SimpleTestDB {
 
         SessionManager.beginWorkUnit();
 
-        loser = new Member("loser", "loser", "loser@gmail.com", Locale.FRANCE).getDao();
+        Member loserNotDao = new Member("loser", "loser", "loser@gmail.com", Locale.FRANCE);
+        loserNotDao.activate(loserNotDao.getActivationKey());
+        loser = loserNotDao.getDao();
         loser.setFullname("loser loser");
-        loser.setActivationState(ActivationState.ACTIVE);
+        
 
-        tom = new Member("Thomas", "password", "tom@gmail.com", Locale.FRANCE).getDao();
+        Member tomNotDao = new Member("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
+        tomNotDao.activate(tomNotDao.getActivationKey());
+        tom = tomNotDao.getDao();
         tom.setFullname("Thomas Guyard");
-        tom.setActivationState(ActivationState.ACTIVE);
 
-        fred = new Member("Fred", "other", "fred@gmail.com", Locale.FRANCE).getDao();
+        Member fredNotDao = new Member("Fred", "other", "fred@gmail.com", Locale.FRANCE);
+        fredNotDao.activate(fredNotDao.getActivationKey());
+        fred = fredNotDao.getDao();
         fred.setFullname("Frédéric Bertolus");
-        fred.setActivationState(ActivationState.ACTIVE);
 
-        yo = new Member("Yoann", "plop", "yo@gmail.com", Locale.FRANCE).getDao();
+        Member yoNotDao = new Member("Yoann", "plop", "yo@gmail.com", Locale.FRANCE);
+        yoNotDao.activate(yoNotDao.getActivationKey());
+        yo = yoNotDao.getDao();
         yo.setFullname("Yoann Plénet");
-        yo.setActivationState(ActivationState.ACTIVE);
         yo.getContact().setName("Yoann Plénet");
         yo.getContact().setCountry("Earth");
 
-        final DaoMember admin = new Member("admin", "admin", "admin@gmail.com", Locale.FRANCE).getDao();
+        Member adminNotDao = new Member("admin", "admin", "admin@gmail.com", Locale.FRANCE);
+        adminNotDao.activate(adminNotDao.getActivationKey());
+        final DaoMember admin = adminNotDao.getDao();
         admin.setFullname("Administrator");
-        admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
 
         publicGroup = DaoTeam.createAndPersiste("publicGroup", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);

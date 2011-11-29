@@ -140,11 +140,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final Date invoiceDate = DateUtils.now();
 
         BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
-
-        if (receiverTaxIdentification != null) {
-            taxRate = BigDecimal.ZERO;
-        }
-
+        
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
