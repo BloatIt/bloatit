@@ -15,28 +15,24 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.Map.Entry;
 
-import org.apache.commons.httpclient.util.DateUtil;
-
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
-import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
-import com.bloatit.mail.EventDataworker;
 import com.bloatit.mail.EventFeatureComponent;
-import com.bloatit.mail.EventDataworker.MailEventVisitor;
-import com.bloatit.model.Event;
+import com.bloatit.mail.HtmlEntry;
+import com.bloatit.mail.MailEventVisitor;
+import com.bloatit.mail.TimelineEventVisitor;
+import com.bloatit.mail.TimelineEventVisitor.DayAgreggator;
+import com.bloatit.mail.TimelineEventVisitor.Entries;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
-import com.bloatit.model.EventMailer.EventMailData;
-import com.bloatit.model.lists.FollowList;
 import com.bloatit.model.managers.EventManager;
 import com.bloatit.model.managers.EventManager.EventList;
 import com.bloatit.web.WebConfiguration;
@@ -145,9 +141,9 @@ public final class TimelinePage extends LoggedElveosPage {
             timelineBlock.add(rightColumn);
 
 
-            EventList events = EventManager.getAllEventAfter(DateUtils.yesterday(), EmailStrategy.VERY_FREQUENTLY);
+            EventList events = EventManager.getAllEventAfter(DateUtils.dawnoftime(), EmailStrategy.VERY_FREQUENTLY);
             
-            final EventDataworker.MailEventVisitor visitor = new MailEventVisitor(getLocalizator());
+            final TimelineEventVisitor visitor = new TimelineEventVisitor(getLocalizator());
 
             while (events.hasNext()) {
                 events.next();
@@ -158,12 +154,16 @@ public final class TimelinePage extends LoggedElveosPage {
                 
             }
 
-            for (Entry<Feature, MailEventVisitor.Entries> e : visitor.getFeatures().entrySet()) {
-                EventFeatureComponent featureComponent = new EventFeatureComponent(e.getKey(), getLocalizator(), true);
-                for (MailEventVisitor.HtmlEntry entry : e.getValue()) {
-                    featureComponent.add(entry);
+            for(DayAgreggator day: visitor.getDays()) {
+            
+                for (Entry<Feature, Entries> e : day.getFeatures().entrySet()) {
+                    EventFeatureComponent featureComponent = new EventFeatureComponent(e.getKey(), getLocalizator(), true);
+                    for (HtmlEntry entry : e.getValue()) {
+                        featureComponent.add(entry);
+                    }
+                    rightColumn.add(featureComponent);
                 }
-                rightColumn.add(featureComponent);
+            
             }
             
             

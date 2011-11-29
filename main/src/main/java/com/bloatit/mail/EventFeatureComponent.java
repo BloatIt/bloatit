@@ -2,6 +2,8 @@ package com.bloatit.mail;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.text.NumberFormat;
+
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -12,6 +14,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Image;
 import com.bloatit.web.WebConfiguration;
@@ -42,13 +45,14 @@ public class EventFeatureComponent extends HtmlDiv {
             progression = 100;
         }
         
-        if (progression < 10) {
-            progression = 10;
+        if (progression < 5 &&  progression > 0) {
+            progression = 5;
         }
         HtmlDiv progressBar = new HtmlDiv("event-progress-bar");
         progress.add(progressBar);
         
-        progressBar.add(new HtmlDiv("event-progress-filled").addAttribute("style", "width: "+String.valueOf(progression)+";"));
+        progressBar.add(new HtmlDiv("event-progress-background"));
+        progressBar.add(new HtmlDiv("event-progress-filled").addAttribute("style", "width: "+String.valueOf(progression)+"%;"));
         HtmlDiv progressBarText = new HtmlDiv("event-progress-text");
         progressBar.add(progressBarText);
         if (f.getFeatureState() == FeatureState.PENDING) {
@@ -56,7 +60,9 @@ public class EventFeatureComponent extends HtmlDiv {
             progressBarText.add(new HtmlDiv("event-progress-no-offer").addText(l.tr("no offer")));
         } else if (f.getFeatureState() == FeatureState.PREPARING) {
             progressBarText.add(new HtmlDiv("event-progress-money").add(new MoneyDisplayComponent(f.getContribution(), l)).addText(l.tr("financed")));
-            progressBarText.add(new HtmlDiv("event-progress-percent").addText(String.valueOf(f.getProgression()) + " %"));
+            final NumberFormat format = Context.getLocalizator().getNumberFormat();
+            format.setMinimumFractionDigits(0);
+            progressBarText.add(new HtmlDiv("event-progress-percent").addText( format.format(f.getProgression()) + " %"));
             progressBarText.add(new HtmlDiv("event-progress-pledged").add(new MoneyDisplayComponent(f.getSelectedOffer().getAmount(), l))
                                                                      .addText(l.tr("pledged")));
         } else if (f.getFeatureState() == FeatureState.DEVELOPPING) {
@@ -65,6 +71,7 @@ public class EventFeatureComponent extends HtmlDiv {
         } else if (f.getFeatureState() == FeatureState.FINISHED) {
             progressBarText.add(new HtmlDiv("event-progress-money").add(new MoneyDisplayComponent(f.getContribution(), l)).addText(l.tr("financed")));
             progressBarText.add(new HtmlDiv("event-progress-success").addText(l.tr("success")));
+            progressBar.add(new HtmlDiv("event-progress-filled-success"));
         } else if (f.getFeatureState() == FeatureState.DISCARDED) {
             throw new NotImplementedException();
         }
