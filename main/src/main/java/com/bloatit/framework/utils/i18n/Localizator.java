@@ -18,17 +18,12 @@ package com.bloatit.framework.utils.i18n;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedMap;
 
-import org.apache.commons.collections.FastTreeMap;
 import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
@@ -66,23 +61,18 @@ public final class Localizator implements Translator {
     private Locale locale;
     private I18n i18n;
 
-    private final SortedMap<Integer, List<String>> priorityLangs;
-
-    @SuppressWarnings("unchecked")
     public Localizator(final Locale loc) {
         this.locale = loc;
         this.i18n = getI18n(locale);
-        this.priorityLangs = new FastTreeMap();
     }
 
     public Localizator(HttpHeader header) {
         if (header.getPageLanguage().equals(HttpHeader.DEFAULT_LANG)) {
-            this.locale = header.getPreferedLocale();
+            this.locale = header.getHttpAcceptLanguage().getPreferedLocal();
         } else {
-            this.locale = new Locale(header.getPageLanguage(), header.getPreferedLocale().getCountry());
+            this.locale = new Locale(header.getPageLanguage(), header.getHttpAcceptLanguage().getPreferedLocal().getCountry());
         }
         this.i18n = getI18n(locale);
-        this.priorityLangs = header.getPriorityLangs();
     }
 
     /**
@@ -125,56 +115,6 @@ public final class Localizator implements Translator {
      */
     public String getLanguageCode() {
         return locale.getLanguage();
-    }
-
-    /**
-     * @param possibleLanguages must be a collection of language only local
-     *            ("en" or "fr" or "de"). If There is in the collection a
-     *            country info this will not work ("en_US" won't work!)
-     * @return the preferred language in the collection, according to the
-     *         http_accept_language property, OR "en" if not found.
-     */
-    public Locale getPreferedLanguageOrEn(Collection<Locale> possibleLanguages) {
-        return getPreferedLanguage(possibleLanguages, new Locale("en"));
-    }
-
-    /**
-     * @param possibleLanguages must be a collection of language only local
-     *            ("en" or "fr" or "de"). If There is in the collection a
-     *            country info this will not work ("en_US" won't work!)
-     * @return the preferred language in the collection, according to the
-     *         http_accept_language property, OR <i>defaultLocal</i> if not
-     *         found.
-     */
-    public Locale getPreferedLanguage(Collection<Locale> possibleLanguages, Locale defaultLocal) {
-
-        Locale preferedLanguage = getPreferedLanguage(possibleLanguages);
-        if (preferedLanguage != null) {
-            return preferedLanguage;
-        }
-        return defaultLocal;
-    }
-
-    /**
-     * @param possibleLanguages must be a collection of language only local
-     *            ("en" or "fr" or "de"). If There is in the collection a
-     *            country info this will not work ("en_US" won't work!)
-     * @return the preferred language in the collection, according to the
-     *         http_accept_language property, OR <i>NULL</i> if not found.
-     */
-    public Locale getPreferedLanguage(Collection<Locale> possibleLanguages) {
-        if (possibleLanguages.contains(new Locale(getLanguageCode()))) {
-            return locale;
-        }
-        for (Entry<Integer, List<String>> langs : priorityLangs.entrySet()) {
-            for (String lang : langs.getValue()) {
-                Locale locale = new Locale(lang);
-                if (possibleLanguages.contains(locale)) {
-                    return locale;
-                }
-            }
-        }
-        return null;
     }
 
     // ////////////////////////

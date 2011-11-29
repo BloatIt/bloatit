@@ -20,17 +20,11 @@ package com.bloatit.framework.xcgiserver;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedMap;
-
-import org.apache.commons.collections.FastTreeMap;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.parameters.Parameters;
@@ -45,10 +39,6 @@ public class HttpHeader {
     private String language = "en";
     private String pageName = "";
     private final Map<String, String> env;
-
-    @SuppressWarnings("unchecked")
-    private final SortedMap<Integer, List<String>> priorityLangs = new FastTreeMap();
-    private final Locale preferedLocale;
 
     protected HttpHeader(final Map<String, String> env) {
         super();
@@ -81,7 +71,6 @@ public class HttpHeader {
         this.httpConnection = notNull(env.get("HTTP_CONNECTION"));
         this.httpCacheControl = notNull(env.get("HTTP_CACHE_CONTROL"));
         this.httpAuthorization = notNull(env.get("HTTP_AUTHORIZATION"));
-        this.httpAcceptLanguage = notNull(env.get("HTTP_ACCEPT_LANGUAGE"));
         this.httpAcceptEncoding = toList(env.get("HTTP_ACCEPT_ENCODING"), ",");
         this.httpAcceptCharset = toList(env.get("HTTP_ACCEPT_CHARSET"), ",|;");
         this.httpAccept = toList(env.get("HTTP_ACCEPT"), ",");
@@ -98,18 +87,7 @@ public class HttpHeader {
             Log.framework().warn("Cannot parse Get Parameters", e);
         }
 
-        if (httpAcceptLanguage != null && httpAcceptLanguage.length() >= 2) {
-            String acceptedLanguages = httpAcceptLanguage.replaceAll("\\[|\\]", "").toLowerCase();
-            if (acceptedLanguages.length() >= 2) {
-                fillUpPriorityLands(acceptedLanguages);
-            }
-        }
-        if (getPriorityLangs().isEmpty()) {
-            addALang("en", 0);
-        }
-
-        // Warning This uses the priorityLangs property.
-        this.preferedLocale = parseAcceptedLanguage(httpAcceptLanguage);
+        this.httpAcceptLanguage = new AcceptedLanguages(notNull(env.get("HTTP_ACCEPT_LANGUAGE")));
     }
 
     private void parseLanguageAndPageName(String pathInfo) {
@@ -130,86 +108,6 @@ public class HttpHeader {
         } else {
             language = DEFAULT_LANG;
             pageName = removeFirstSlashes(pathInfo);
-        }
-    }
-
-    private Locale parseAcceptedLanguage(String accepted) {
-        // read the list of local and find the best one
-        String localLang = null;
-        String localCountry = null;
-        for (Entry<Integer, List<String>> langOfPriority : priorityLangs.entrySet()) {
-            for (String string : langOfPriority.getValue()) {
-                if (string.length() == 2) {
-                    // LANG
-                    if (localLang == null && AvailableLocales.getAvailableLangs().containsKey(string)) {
-                        localLang = string;
-                    }
-                } else if (string.length() == 5) {
-                    // LANG - COUNTRY
-                    String langKey = string.substring(0, 2);
-                    if (localLang == null && AvailableLocales.getAvailableLangs().containsKey(langKey)) {
-                        localLang = langKey;
-                    }
-                    String countryKey = string.substring(3, 5).toUpperCase();
-                    if (localCountry == null && AvailableLocales.getAvailableLangs().containsKey(countryKey)) {
-                        localCountry = countryKey;
-                    }
-                }
-                if (localLang != null && localCountry != null) {
-                    return new Locale(localLang, localCountry);
-                }
-            }
-
-        }
-        if (localLang == null) {
-            localLang = DEFAULT_LANG;
-        }
-
-        if (localCountry != null) {
-            return new Locale(localLang, localCountry);
-        }
-        return new Locale(localLang, AvailableLocales.getDefaultCountry(localLang));
-    }
-
-    private void fillUpPriorityLands(String accepted) {
-        // Split the accepted language in a list of locales order by
-        // priority
-        String[] langs = accepted.split(",");
-        for (String lang : langs) {
-            lang = lang.trim();
-            if (lang.length() >= 2) {
-                String[] splited = lang.split(";");
-                if (splited.length == 1) {
-                    addALang(splited[0].trim(), 1.F);
-                } else if (splited.length == 2) {
-                    try {
-                        String wstr = splited[1].trim();
-                        if (wstr.length() > 3) {
-                            float w = Float.valueOf(wstr.substring(2));
-                            addALang(splited[0].trim(), w);
-                        }
-                    } catch (NumberFormatException e) {
-                        Log.framework().info("Malformed accepedLanguage", e);
-                    }
-                }
-            }
-        }
-        if (priorityLangs.isEmpty()) {
-            addALang("en", 0.f);
-        }
-    }
-
-    private void addALang(String lang, float weight) {
-        if (weight <= 1) {
-            Integer priority = 100 - Math.round(weight * 100.F);
-            List<String> langList = getPriorityLangs().get(priority);
-            if (langList != null) {
-                langList.add(lang);
-            } else {
-                List<String> list = new ArrayList<String>();
-                list.add(lang);
-                getPriorityLangs().put(priority, list);
-            }
         }
     }
 
@@ -338,7 +236,7 @@ public class HttpHeader {
     /** example : gzip,deflate */
     private final List<String> httpAcceptEncoding;
     /** example : fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3 */
-    private final String httpAcceptLanguage;
+    private final AcceptedLanguages httpAcceptLanguage;
     /** example : max-age=0 */
     private final String httpCacheControl;
     /** example : keep-alive */
@@ -420,7 +318,7 @@ public class HttpHeader {
         return httpAcceptEncoding;
     }
 
-    public final String getHttpAcceptLanguage() {
+    public final AcceptedLanguages getHttpAcceptLanguage() {
         return httpAcceptLanguage;
     }
 
@@ -527,13 +425,4 @@ public class HttpHeader {
     public final String getServerSoftware() {
         return serverSoftware;
     }
-
-    public Locale getPreferedLocale() {
-        return preferedLocale;
-    }
-
-    public SortedMap<Integer, List<String>> getPriorityLangs() {
-        return priorityLangs;
-    }
-
 }
