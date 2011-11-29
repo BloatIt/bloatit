@@ -20,9 +20,8 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
+import com.bloatit.framework.xcgiserver.AvailableLocales;
 
 /**
  * A simple component that proposes the users a drop down menu allowing him to
@@ -34,9 +33,9 @@ public class LanguageSelector extends HtmlDropDown {
 
     public LanguageSelector(final String name, final String label) {
         super(name, label);
-        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
-            codes.add(langEntry.getValue().getCode());
-            addDropDownElement(langEntry.getValue().getCode(), langEntry.getValue().getName());
+        for (final Entry<String, String> langEntry : AvailableLocales.getAvailableLangs().entrySet()) {
+            codes.add(langEntry.getKey());
+            addDropDownElement(langEntry.getKey(), langEntry.getValue());
         }
     }
 

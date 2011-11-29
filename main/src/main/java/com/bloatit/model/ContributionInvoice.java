@@ -21,18 +21,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.ejb.Local;
-
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.invoicePdf.InvoicePdfGenerator;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtInvoice;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.visitor.ModelClassVisitor;
-import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 
 /**
  * This is a invoice.

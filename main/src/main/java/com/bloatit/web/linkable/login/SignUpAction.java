@@ -149,7 +149,7 @@ public final class SignUpAction extends ElveosAction {
         MailServer.getInstance().send(activationMail);
         AuthToken.authenticate(m);
         session.notifyGood(Context.tr("Account created, you are now logged. You will receive a mail to activate it."));
-        Context.getLocalizator().forceMemberChoice();
+        Context.getLocalizator().forceLanguage(Context.getSession().getMemberLocale());
 
         // Try to set Invoicing informations
         if (invoice != null && invoice) {

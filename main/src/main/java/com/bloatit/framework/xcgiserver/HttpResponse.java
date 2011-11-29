@@ -136,7 +136,7 @@ public final class HttpResponse {
         addField(HttpReponseField.vary("Accept-Encoding"));
         addField(HttpReponseField.contentType(contentType));
         addField(HttpReponseField.acceptRanges("bytes"));
-        String languageCode = Context.getLocalizator().getCode();
+        String languageCode = Context.getLocalizator().getLanguageCode();
         if (!languageCode.isEmpty()) {
             addField(HttpReponseField.contentLanguage(languageCode));
         }
@@ -219,7 +219,7 @@ public final class HttpResponse {
         } else if (fileName.endsWith(".zip")) {
             addField(HttpReponseField.contentType("multipart/x-zip"));
         } else {
-            
+
             // FIXME manage other content types !!
             Log.framework().warn("FIXME: Unknown content type for file '" + fileName + "' in HttpResponse.writeResource");
         }
@@ -243,7 +243,7 @@ public final class HttpResponse {
      * goes haywire, think to set a correct status using the method
      * {@link #setStatus(StatusCode)}
      * </p>
-     * 
+     *
      * @param resource the resource to write
      * @throws IOException whenever an IO error occurs on the underlying stream
      * @see #setStatus(StatusCode)
@@ -272,7 +272,7 @@ public final class HttpResponse {
 
     /**
      * Writes a rest error based on the <code>exception</code>
-     * 
+     *
      * @param exception the exception describing the error
      * @throws IOException when an IO error occurs
      */
@@ -284,7 +284,7 @@ public final class HttpResponse {
      * <p>
      * Writes a rest error
      * </p>
-     * 
+     *
      * @see {@link #writeRestError(RestException)}
      */
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {

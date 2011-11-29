@@ -96,6 +96,7 @@ public class DaoSoftware extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "followed")
     private final List<DaoFollowSoftware> followers = new ArrayList<DaoFollowSoftware>();
+    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "software")
     private final List<DaoEvent> events = new ArrayList<DaoEvent>();
 

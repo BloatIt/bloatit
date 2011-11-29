@@ -21,8 +21,6 @@ package com.bloatit.web.linkable.language;
 import java.util.Map.Entry;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -32,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
+import com.bloatit.framework.xcgiserver.AvailableLocales;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
@@ -82,10 +81,10 @@ public final class ChangeLanguagePage extends ElveosPage {
 
         // Link map
         final HtmlDiv linkMap = new HtmlDiv("language_link_map");
-        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
+        for (final Entry<String, String> langEntry : AvailableLocales.getAvailableLangs().entrySet()) {
             final ChangeLanguageActionUrl langagueChangeAction = new ChangeLanguageActionUrl();
-            langagueChangeAction.setLanguage(langEntry.getValue().getCode());
-            linkMap.add(langagueChangeAction.getHtmlLink(langEntry.getValue().getName()));
+            langagueChangeAction.setLanguage(langEntry.getKey());
+            linkMap.add(langagueChangeAction.getHtmlLink(langEntry.getKey()));
         }
 
         master.add(linkMap);

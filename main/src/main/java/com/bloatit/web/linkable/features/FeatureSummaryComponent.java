@@ -288,7 +288,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 final HtmlScript script = new HtmlScript();
                 nodes.add(script);
                 script.addAttribute("src", "https://apis.google.com/js/plusone.js");
-                script.append("{lang: '" + Context.getLocalizator().getCode() + "'}");
+                script.append("{lang: '" + Context.getLocalizator().getLanguageCode() + "'}");
 
                 return nodes;
             }
@@ -328,7 +328,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         element.addAttribute("data-width", "110");
         element.addAttribute("data-show-faces", "false");
         element.addAttribute("data-action", "recommend");
-        
+
         return item;
     }
 

@@ -60,7 +60,7 @@ public final class LoginAction extends ElveosAction {
         try {
             AuthToken.authenticate(login, password);
             session.notifyGood(Context.tr("Login success."));
-            Context.getLocalizator().forceMemberChoice();
+            Context.getLocalizator().forceLanguage(Context.getSession().getMemberLocale());
             return session.pickPreferredPage();
         } catch (final ElementNotFoundException e) {
 

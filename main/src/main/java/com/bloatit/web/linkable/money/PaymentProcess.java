@@ -173,7 +173,8 @@ public class PaymentProcess extends WebProcess {
                                                                 contact,
                                                                 normalReturnActionUrl,
                                                                 cancelReturnActionUrl,
-                                                                autoResponseActionUrl);
+                                                                autoResponseActionUrl,
+                                                                Context.getLocalizator().getLanguageCode());
 
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Not authorized", e);
