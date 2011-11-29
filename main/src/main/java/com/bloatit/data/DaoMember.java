@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
@@ -87,13 +88,13 @@ import com.bloatit.model.ModelConfiguration;
                                       "WHERE receiver = :receiver " +
                                       "AND state = :state  " +
                                       "AND team = :team"),
-                          @NamedQuery(
-                              name = "member.getReceivedInvitations.byStateTeam.size",
-                              query =  "SELECT count(*)" +
-                                          "FROM DaoJoinTeamInvitation " +
-                                       "WHERE receiver = :receiver " +
-                                       "AND state = :state  " +
-                                       "AND team = :team"),
+                      @NamedQuery(
+                          name = "member.getReceivedInvitations.byStateTeam.size",
+                          query =  "SELECT count(*)" +
+                                      "FROM DaoJoinTeamInvitation " +
+                                   "WHERE receiver = :receiver " +
+                                   "AND state = :state  " +
+                                   "AND team = :team"),
 
                        @NamedQuery(
                            name = "member.getReceivedInvitations.byState",
@@ -327,6 +328,7 @@ public class DaoMember extends DaoActor {
     private final List<DaoFollowFeature> followedFeatures = new ArrayList<DaoFollowFeature>();
     @Enumerated(EnumType.STRING)
     private EmailStrategy emailStrategy;
+    private Date lastWatchedEvents;
 
     // ======================================================================
     // Static HQL requests
@@ -334,7 +336,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     * 
+     *
      * @param login the member login.
      * @return null if not found. (or if login == null)
      */
@@ -349,7 +351,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * This method use a HQL request.
-     * 
+     *
      * @param email the email we are looking for.
      * @return true if found
      */
@@ -365,7 +367,7 @@ public class DaoMember extends DaoActor {
     /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     * 
+     *
      * @param login the member login.
      * @param password the password of the member "login". It is a string
      *            corresponding to the string in the database. This method does
@@ -386,7 +388,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Finds a DaoMember using its email.
-     * 
+     *
      * @param email the email of the member
      * @return the member matching <code>email</code> or <i>null</i> if not
      *         found
@@ -414,7 +416,7 @@ public class DaoMember extends DaoActor {
     /**
      * Create a member. The member login must be unique, and you cannot change
      * it.
-     * 
+     *
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @param salt the salt
@@ -437,7 +439,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     * 
+     *
      * @param locale is the locale in which this user is. (The country and
      *            language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
@@ -477,7 +479,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Adds this member to a team.
-     * 
+     *
      * @param aTeam the team in which this member is added.
      */
     public void addToTeam(final DaoTeam aTeam) {
@@ -491,7 +493,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Removes this member from team.
-     * 
+     *
      * @param aTeam the team from which this member is removed.
      */
     public void removeFromTeam(final DaoTeam aTeam) {
@@ -513,7 +515,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Adds team rights on this member.
-     * 
+     *
      * @param aTeam the team on which we want this user to have this new rights.
      * @param newRight the new right
      */
@@ -528,7 +530,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the team rights.
-     * 
+     *
      * @param aTeam a team on which this member is.
      * @return the team rights of this member into the team <code>team</code>
      */
@@ -538,7 +540,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Removes the team right.
-     * 
+     *
      * @param aTeam a team on which this member is.
      * @param removeRight the right to remve
      */
@@ -557,7 +559,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Sets the role.
-     * 
+     *
      * @param role the new role
      */
     public void setRole(final Role role) {
@@ -566,7 +568,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Sets the activation state.
-     * 
+     *
      * @param state the new activation state
      */
     public void setActivationState(final ActivationState state) {
@@ -575,7 +577,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Sets the password.
-     * 
+     *
      * @param password the new password
      */
     public void setPassword(final String password) {
@@ -584,7 +586,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Sets the fullname.
-     * 
+     *
      * @param firstname the new fullname
      */
     public void setFullname(final String firstname) {
@@ -593,7 +595,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Sets the email.
-     * 
+     *
      * @param email the new email
      */
     public void setEmail(final String email) {
@@ -602,7 +604,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Adds to the karma.
-     * 
+     *
      * @param value the value
      */
     public void addToKarma(final int value) {
@@ -611,7 +613,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Sets the locale.
-     * 
+     *
      * @param locale the new locale
      */
     public void setLocale(final Locale locale) {
@@ -621,7 +623,7 @@ public class DaoMember extends DaoActor {
     /**
      * Must be only used in update script. Salt should be a non updatable value
      * after that.
-     * 
+     *
      * @param salt the new salt.
      */
     void setSalt(final String salt) {
@@ -707,14 +709,22 @@ public class DaoMember extends DaoActor {
         this.emailStrategy = emailStrategy;
     }
 
+    public void setLastWatchedEvents(Date lastWatchedEvents) {
+        this.lastWatchedEvents = lastWatchedEvents;
+    }
+
     // ======================================================================
     // Getters
     // ======================================================================
 
+    public Date getLastWatchedEvents() {
+        return lastWatchedEvents;
+    }
+
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
      * PROTECTED teams. ]
-     * 
+     *
      * @return All the teams this member is in. (Use a HQL query)
      */
     public PageIterable<DaoTeam> getTeams() {
@@ -730,7 +740,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the role.
-     * 
+     *
      * @return the role
      */
     public Role getRole() {
@@ -739,7 +749,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the activation state.
-     * 
+     *
      * @return the activation state
      */
     public ActivationState getActivationState() {
@@ -748,7 +758,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the fullname.
-     * 
+     *
      * @return the fullname
      */
     public String getFullname() {
@@ -757,7 +767,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the salt.
-     * 
+     *
      * @return the salt
      */
     public String getSalt() {
@@ -766,7 +776,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the password.
-     * 
+     *
      * @return the password
      */
     public String getPassword() {
@@ -775,7 +785,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Password equals.
-     * 
+     *
      * @param otherPassword the other password
      * @return true, if the otherPassword equals the current password.
      */
@@ -785,7 +795,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the email.
-     * 
+     *
      * @return the email
      */
     public String getEmail() {
@@ -794,7 +804,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the locale.
-     * 
+     *
      * @return the locale
      */
     public Locale getLocale() {
@@ -803,7 +813,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the features.
-     * 
+     *
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      * @return All the features created by this member.
@@ -814,7 +824,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the kudos.
-     * 
+     *
      * @return All the kudos created by this member.
      */
     public PageIterable<DaoKudos> getKudos() {
@@ -823,7 +833,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the contributions.
-     * 
+     *
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      * @return All the contributions created by this member.
@@ -834,7 +844,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the moneywithdrawals.
-     * 
+     *
      * @return All the contributions created by this member.
      */
     public PageIterable<DaoMoneyWithdrawal> getMoneyWithdrawals() {
@@ -849,7 +859,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the comments.
-     * 
+     *
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      * @return All the Comments created by this member.
@@ -860,7 +870,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the offers.
-     * 
+     *
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      * @return All the Offers created by this member.
@@ -871,7 +881,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the translations.
-     * 
+     *
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      * @return All the Translations created by this member.
@@ -882,7 +892,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the received invitation.
-     * 
+     *
      * @param state the state
      * @return All the received invitation to join a team which are in a
      *         specified state
@@ -894,7 +904,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the received invitation.
-     * 
+     *
      * @param state the state of the invitation (ACCEPTED, PENDING, REFUSED)
      * @param team the team for which the invitations have been sent
      * @return All the received invitation to join a specific team, which are in
@@ -919,7 +929,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the sent invitation.
-     * 
+     *
      * @param state the state
      * @param team the team
      * @return the sent invitation
@@ -932,7 +942,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the sent invitation.
-     * 
+     *
      * @param state the state
      * @return All the sent invitation to join a team which are in a specified
      *         state
@@ -943,7 +953,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Checks if is in team.
-     * 
+     *
      * @param team the team
      * @return if the current member is in the "team".
      */
@@ -956,7 +966,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the karma.
-     * 
+     *
      * @return the karma
      */
     public Integer getKarma() {
@@ -965,7 +975,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Finds the user recent activity.
-     * 
+     *
      * @return the user recent activity
      */
     public PageIterable<DaoUserContent> getActivity() {
@@ -979,7 +989,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Base method to all the get something created by the user.
-     * 
+     *
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      */
@@ -998,7 +1008,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * used by DaoTeam.
-     * 
+     *
      * @return the team membership
      */
     protected List<DaoTeamMembership> getTeamMembership() {
@@ -1009,10 +1019,10 @@ public class DaoMember extends DaoActor {
         return new QueryCollection<DaoMilestone>("member.getMilestoneToInvoice").setEntity("this", this)
                                                                                 .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
     }
-    
+
     public PageIterable<DaoMilestone> getMilestoneInvoiced() {
         return new QueryCollection<DaoMilestone>("member.getMilestoneInvoiced").setEntity("this", this)
-                                                                                .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
+                                                                               .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
     }
 
     public PageIterable<DaoMilestone> getMilestones() {
@@ -1021,7 +1031,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Gets the avatar.
-     * 
+     *
      * @return the avatar
      */
     public DaoFileMetadata getAvatar() {
@@ -1030,7 +1040,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Sets the avatar.
-     * 
+     *
      * @param avatar the new avatar
      */
     public void setAvatar(final DaoFileMetadata avatar) {
@@ -1091,4 +1101,5 @@ public class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
+
 }
