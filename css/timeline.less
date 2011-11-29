@@ -1,4 +1,6 @@
 .timeline_page {
+    @timeline_border_color: rgb(184,184,184);
+
     .padding_box;
     width: 100%;
     box-sizing: border-box;
@@ -27,6 +29,171 @@
         }
     }
     
+    .event-feature {
+        color: @medium_text_color;
+        position: relative;
+        
+        .horizontal-gradient-45-degree(white, @light_background_color);
+        .rounded_corners_top_left(25px);
+        margin-bottom: 30px;
+        
+        .event-top-border {
+            margin-left: 30px;
+            height: 1px;
+            .vertical-gradient-1-stop(@timeline_border_color, @timeline_border_color,  @light_background_color);
+            margin-top: -1px;
+        }
+    
+        .event-progress {
+            
+            height: 25px;
+            width: 100%;
+            border-left: 1px solid @timeline_border_color;
+            border-top: 1px solid @timeline_border_color;
+            .rounded_corners_top_left(25px);
+
+            
+            .event-progress-bar {
+                width: 75%;
+                position: relative;
+        
+                .event-progress-filled {
+                    height: 20px;
+                    background: rgb(188,199,254);
+                    .rounded_corners_top_left(25px);
+
+                }
+                
+                .event-progress-text {
+                    .event-progress-money {
+                        position: absolute;
+                        left: 20px;
+                        top: 3px;
+                        font-size: 11px;
+                        
+                        .money {
+                            padding-right: 10px;
+                        }
+                    }
+                    
+                    .event-progress-developing, .event-progress-success, .event-progress-no-offer, .event-progress-pledged {
+                        position: absolute;
+                        right: 5px;
+                        top: 3px;
+                        font-size: 11px;
+                    }
+                    
+                    .event-progress-percent {
+                        position: absolute;
+                        left: 40%;
+                        top: 3px;
+                        font-size: 11px;
+                    }
+                }
+                
+            }
+        }
+        
+        
+        .event-feature-logo {
+            display: table-cell;
+            width: 48px;
+            padding-top: 5px;
+            vertical-align: top;
+            
+            .software_logo_block {
+                width: 48px;
+                height: 48px;
+                
+                .software_logo {
+                    max-width: 48px;
+                    max-height: 48px;
+                }
+                
+            }
+            
+        }
+        
+        .event-feature-description {
+            display: table-cell;
+            width: 100%;
+            vertical-align: top;
+            
+            h2 {
+                color: @medium_text_color;
+                font-size: 13px;
+                border: none;
+                margin-top : 5px;
+                margin-left : 5px;
+                margin-bottom : 5px;
+                margin-right : 5px;
+            }
+            
+            .event-entry {
+                @cell-height: 22px;
+                padding-left: 20px;
+                font-size: 13px;
+                
+                .event-entry-logo {
+                    vertical-align: middle;
+                    display: table-cell;
+                    height: @cell-height;
+                    
+                    img {
+                        max-height: @cell-height;
+                    }
+                }
+                
+                .event-entry-content {
+                    vertical-align: middle;
+                    display: table-cell;
+                    height: @cell-height;
+                    padding-left: 10px;
+                    
+                    .date {
+                        color: @very_light_text_color;
+                        font-size:10px;
+                    }
+                }
+                
+            }
+        }
+        
+        @curve_size : 10px;
+        @dot_size : 6px;
+        
+        .event-feature-hook-point {
+            position: absolute;
+            height: @dot_size;
+            width: @dot_size;
+            top: 25px + @curve_size - @dot_size /2;
+            left: -25px  - 15px - @dot_size /2;
+            .rounded_corners(@dot_size/2);
+            background: @timeline_border_color;
+        }
+        
+        .event-feature-hook-line {
+            position: absolute;
+            height: 1px;
+            width: 40px - @curve_size;
+            top: 25px + @curve_size;
+            left: -40px ;
+            background: @timeline_border_color;
+        }
+        
+        .event-feature-hook-curve {
+            position: absolute;
+            height: @curve_size;
+            width: @curve_size;
+            border-right: 1px solid @timeline_border_color;
+            border-bottom: 1px solid @timeline_border_color;
+            .rounded_corners_bottom_right(@curve_size);
+            top: 25px;
+            left: @curve_size * -1;
+        }
+    }
+    
+    
     .timeline_block {
         clear: both;
         width: 100%;
@@ -36,33 +203,45 @@
         .left_column {
             width: 50%;
             display: table-cell;    
+            padding-left: 40px;
+            padding-right: 40px;
+            vertical-align: top;
         }
+        
+        .right_column {
+            width: 50%;
+            display: table-cell;
+            padding-left: 40px;
+            padding-right: 40px;
+            vertical-align: top;
+        }
+        
         
         .time_column {
 
             display: table-cell;
-            
+            vertical-align: top;
             
             .time_column_header {
-                border-right: 1px solid @border_color;
-                border-left: 1px solid @border_color;
+                border-right: 1px solid @timeline_border_color;
+                border-left: 1px solid @timeline_border_color;
                 height: 15px;
                 width: 50px;
             }
             
             .time_column_footer {
-                border-right: 1px solid @border_color;
-                border-left: 1px solid @border_color;
-                border-top: 1px solid @border_color;
+                border-right: 1px solid @timeline_border_color;
+                border-left: 1px solid @timeline_border_color;
+                border-top: 1px solid @timeline_border_color;
                 height: 15px;
                 width: 50px;
             }
             
             .day {
                 padding-top: 4px;
-                border-top: 1px solid @border_color;
-                border-right: 1px solid @border_color;
-                border-left: 1px solid @border_color;
+                border-top: 1px solid @timeline_border_color;
+                border-right: 1px solid @timeline_border_color;
+                border-left: 1px solid @timeline_border_color;
                 color: @light_text_color;
                 text-align: center;
                 font-size: 11px; 
@@ -73,10 +252,6 @@
             }
         }
     
-        .right_column {
-            width: 50%;
-            display: table-cell;
-        }
         
         .spacer {
         

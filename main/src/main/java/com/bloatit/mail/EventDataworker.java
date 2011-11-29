@@ -81,7 +81,7 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
         return true;
     }
 
-    private static class MailEventVisitor implements EventVisitor<String> {
+    public static class MailEventVisitor implements EventVisitor<String> {
 
         private static final HtmlImage LOGO = new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "plop");
 
@@ -103,20 +103,19 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
             return bugs;
         }
 
-        private class Entries extends ArrayList<HtmlEntry> {
+        public class Entries extends ArrayList<HtmlEntry> {
             private static final long serialVersionUID = 4240985577107981629L;
         }
 
-        private class HtmlEntry extends HtmlDiv {
+        public class HtmlEntry extends HtmlDiv {
             public HtmlEntry(Date when, HtmlImage logo, String content) {
                 this(when, logo, new HtmlText(content));
             }
 
             public HtmlEntry(Date when, HtmlImage logo, HtmlNode content) {
                 super("event-entry");
-                add(logo);
-                add(content);
-                add(new HtmlSpan("date").addText(" - " + new SimpleDateFormat("HH-mm").format(when).toString()));
+                add(new HtmlDiv("event-entry-logo").add(logo));
+                add(new HtmlDiv("event-entry-content").add(content).add(new HtmlSpan("date").addText(" - " + new SimpleDateFormat("HH:mm").format(when).toString())));
             }
         }
 

@@ -116,9 +116,6 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * @return the member that created this {@link UserContent}.
      */
     public DaoMember getMember() {
-        int i = this.getId();
-        Class<? extends DaoUserContent> class1 = this.getClass();
-        //this.getMember();
         return this.member;
     }
 

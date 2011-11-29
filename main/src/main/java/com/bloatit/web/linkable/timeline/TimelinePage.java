@@ -13,39 +13,37 @@ package com.bloatit.web.linkable.timeline;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import java.util.Locale;
+import java.util.Map.Entry;
 
-import com.bloatit.framework.utils.i18n.Language;
-import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import org.apache.commons.httpclient.util.DateUtil;
+
+import com.bloatit.data.DaoMember.EmailStrategy;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
-import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlHidden;
-import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
-import com.bloatit.model.Description;
+import com.bloatit.mail.EventDataworker;
+import com.bloatit.mail.EventFeatureComponent;
+import com.bloatit.mail.EventDataworker.MailEventVisitor;
+import com.bloatit.model.Event;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
-import com.bloatit.model.Translation;
+import com.bloatit.model.EventMailer.EventMailData;
+import com.bloatit.model.lists.FollowList;
+import com.bloatit.model.managers.EventManager;
+import com.bloatit.model.managers.EventManager.EventList;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.url.TimelinePageUrl;
-import com.bloatit.web.url.TranslateActionUrl;
-import com.bloatit.web.url.TranslatePageUrl;
 
 /**
  * Page that hosts the form to create a new feature
@@ -145,6 +143,29 @@ public final class TimelinePage extends LoggedElveosPage {
             
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
             timelineBlock.add(rightColumn);
+
+
+            EventList events = EventManager.getAllEventAfter(DateUtils.yesterday(), EmailStrategy.VERY_FREQUENTLY);
+            
+            final EventDataworker.MailEventVisitor visitor = new MailEventVisitor(getLocalizator());
+
+            while (events.hasNext()) {
+                events.next();
+                if(events.member().equals(loggedUser)) {
+                    events.event().getEvent().accept(visitor);
+                    
+                }
+                
+            }
+
+            for (Entry<Feature, MailEventVisitor.Entries> e : visitor.getFeatures().entrySet()) {
+                EventFeatureComponent featureComponent = new EventFeatureComponent(e.getKey(), getLocalizator(), true);
+                for (MailEventVisitor.HtmlEntry entry : e.getValue()) {
+                    featureComponent.add(entry);
+                }
+                rightColumn.add(featureComponent);
+            }
+            
             
         }
         return layout;
