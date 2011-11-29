@@ -158,9 +158,7 @@ public abstract class ElveosPage extends Page {
      */
     @Override
     protected String getPageDescription() {
-        return Context.tr("Elveos is a platform where people gather to finance the development of open source software. "
-                + "Elveos offers a streamlined process for the user, from the description of his needs, to the validation of the project ; "
-                + "Elveos also guarantees that when you decide to fund a project, you will either get what you asked, or be reimbursed.");
+        return Context.tr("Elveos is a crowdfunding website dedicated to the financing of anything under a free license.");
     }
 
     /**
@@ -168,7 +166,7 @@ public abstract class ElveosPage extends Page {
      */
     @Override
     protected final String getPageKeyWords() {
-        return Context.tr("free software funding, open-source, crowdfunding, bulk purchases");
+        return Context.tr("free software, open-source, crowdfunding, crowdsourcing, funding, pledge");
     }
 
     @Override
