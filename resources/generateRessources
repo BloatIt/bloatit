@@ -51,13 +51,13 @@ optipng $OUTPUT_DIR_PREFIX"commons/img/idea_tiny.png"
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/bug_tiny.png" -C -h 20 sources/bug_tiny.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/bug_tiny.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/comment_tiny.png" -C -h 14 sources/comment_tiny.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/comment_tiny.png" -C -h 20 sources/comment_tiny.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/comment_tiny.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/coins_tiny.png" -C -h 10 sources/coins_tiny.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/coins_tiny.png" -C -h 20 sources/coins_tiny.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/coins_tiny.png"
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/offer_tiny.png" -C -h 12 sources/offer_tiny.svg
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/offer_tiny.png" -C -h 20 sources/offer_tiny.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/offer_tiny.png"
 
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/release_tiny.png" -C -h 20 sources/release_tiny.svg

@@ -46,14 +46,10 @@
     .event-feature {
         color: @medium_text_color;
         position: relative;
-        
-        .rounded_corners_top_left(20px);
         margin-bottom: 30px;
         
         .event-top-border {
-            margin-left: 30px;
             height: 1px;
-            .vertical-gradient-1-stop(@timeline_border_color, @timeline_border_color,  @light_background_color);
             margin-top: -1px;
         }
     
@@ -146,10 +142,10 @@
                 font-size: 13px;
                 clear: both;
                 
+                height: @cell-height;
+                max-height: @cell-height;
+                
                 .event-entry-logo {
-                    vertical-align: middle;
-                    display: table-cell;
-                    height: @cell-height;
                     width: 20px;
                     text-align: center;
                     
@@ -159,15 +155,14 @@
                 }
                 
                 .event-entry-content {
-                    vertical-align: middle;
-                    display: table-cell;
-                    height: @cell-height;
-                    padding-left: 10px;
+                    padding-top: 2px;
+                    max-width: 300px;
                 }
                 
                 .date {
                         color: @very_light_text_color;
                         font-size:10px;
+                        padding-top: 4px;
                 }
             }
         }
@@ -209,218 +204,235 @@
         // Begin column
         ////////////////////////
 
-.left_column {
-        width: 50%;
-        display: table-cell;    
-        padding-top: 15px;
-        padding-left: 40px;
-        padding-right: 40px;
-        vertical-align: top;
-        
-        .event-feature {
-        
-            .rounded_corners_top_right(20px);
+        .left_column {
+            width: 50%;
+            display: table-cell;    
+            padding-top: 15px;
+            padding-left: 40px;
+            padding-right: 40px;
+            vertical-align: top;
             
-            .event-top-border {
-                margin-right: 30px;
-                .vertical-gradient-1-stop( @light_background_color, @timeline_border_color, @timeline_border_color);
-            }
-        
-            .event-progress {
-                
-                border-right: 1px solid @timeline_border_color;
-                border-top: 1px solid @timeline_border_color;
+            .event-feature {
+            
                 .rounded_corners_top_right(20px);
-
                 
-                .event-progress-bar {
-            
-                    .event-progress-background {
-                        .vertical-gradient(rgb(237,237,237), rgb(204,204,204));
-                        .rounded_corners_top_right(20px);
-                    }
-            
-                    .event-progress-filled {
-                        .rounded_corners_top_right(20px);
-                    }
-                    
-                    .event-progress-filled-success {
-                        .rounded_corners_top_right(20px);
-                    }
-                    
-                    .event-progress-text {
-                        .event-progress-money {
-                            right: 20px;
-                        }
-                        
-                        .event-progress-developing, .event-progress-success, .event-progress-no-offer, .event-progress-pledged {
-                            left: 5px;
-                        }
-                        
-                        .event-progress-percent {
-                            right: 40%;
-                        }
-                    }
-                    
+                .event-top-border {
+                    margin-right: 30px;
+                    .vertical-gradient-1-stop( @light_background_color, @timeline_border_color, @timeline_border_color);
                 }
-            }
             
-            .event-feature-logo {
-                float: right;
-            }
-            
-            .event-feature-description {
-                margin-right: 48px;
+                .event-progress {
+                    
+                    border-right: 1px solid @timeline_border_color;
+                    .rounded_corners_top_right(20px);
+
+                    
+                    .event-progress-bar {
                 
-                .event-entry {
-                    padding-right: 20px;
-                    
-                    .event-entry-logo {
                         float: right;
-                    }
-                    
-                    .event-entry-content {
-                        padding-right: 10px;
-                        float: right;
+                
+                        .event-progress-background {
+                            .vertical-gradient(rgb(237,237,237), rgb(204,204,204));
+                            .rounded_corners_top_right(19px);
+
+                        }
+                
+                        .event-progress-filled {
+                            .rounded_corners_top_right(19px);
+                            float: right;
+                        }
+                        
+                        .event-progress-filled-success {
+                            .rounded_corners_top_right(19px);
+                        }
+                        
+                        .event-progress-text {
+                            .event-progress-money {
+                                right: 20px;
+                            }
+                            
+                            .event-progress-developing, .event-progress-success, .event-progress-no-offer, .event-progress-pledged {
+                                left: 5px;
+                            }
+                            
+                            .event-progress-percent {
+                                right: 40%;
+                            }
+                        }
                         
                     }
+                }
+                
+                .event-feature-logo {
+                    float: right;
+                }
+                
+                .event-feature-description {
+                    margin-right: 48px;
                     
-                    .date {
+                    h2 {
                         float: right;
-                    }
-                    
-                    .date:after {
-                        content: "-";
+                        text-align: right;
                     }
 
                     
+                    .event-entry {
+                        padding-right: 20px;
+                        
+                        .event-entry-logo {
+                            float: right;
+                        }
+                        
+                        .event-entry-content {
+                            padding-right: 10px;
+                            float: right;
+                        }
+                        
+                        .date {
+                            float: right;
+                            padding-right: 10px;
+                        }
+                        
+                        .date:after {
+                            content: "–";
+                            padding-left: 10px;
+                        }
+
+                        
+                    }
                 }
-            }
-            
-                       
-            .event-feature-hook-point {
-                right: -25px  - 15px - @dot_size /2;
-            }
-            
-            .event-feature-hook-line {
-                right: -40px ;
-            }
-            
-            .event-feature-hook-curve {
-                border-left: 1px solid @timeline_border_color;
-                .rounded_corners_bottom_left(@curve_size);
-                right: @curve_size * -1;
+                
+                           
+                .event-feature-hook-point {
+                    right: -25px  - 15px - (@dot_size /2) - 1;
+                }
+                
+                .event-feature-hook-line {
+                    right: -40px - 1 ;
+                }
+                
+                .event-feature-hook-curve {
+                    border-left: 1px solid @timeline_border_color;
+                    .rounded_corners_bottom_left(@curve_size);
+                    right: @curve_size * -1 - 1;
+                }
+                
             }
             
         }
-        
-    }
     
     
-.right_column {
-        width: 50%;
-        display: table-cell;
-        padding-top: 15px;
-        padding-left: 40px;
-        padding-right: 40px;
-        vertical-align: top;
-        
-        .event-feature {
+        .right_column {
+            width: 50%;
+            display: table-cell;
+            padding-top: 15px;
+            padding-left: 40px;
+            padding-right: 40px;
+            vertical-align: top;
             
-            .rounded_corners_top_left(20px);
-            
-            .event-top-border {
-                margin-left: 30px;
-                .vertical-gradient-1-stop(@timeline_border_color, @timeline_border_color,  @light_background_color);
-            }
-        
-            .event-progress {
+            .event-feature {
                 
-                border-left: 1px solid @timeline_border_color;
-                border-top: 1px solid @timeline_border_color;
                 .rounded_corners_top_left(20px);
-
                 
-                .event-progress-bar {
+                .event-top-border {
+                    margin-left: 30px;
+                    .vertical-gradient-1-stop(@timeline_border_color, @timeline_border_color,  @light_background_color);
+                }
             
-                    .event-progress-background {
-                        .vertical-gradient(rgb(204,204,204), rgb(237,237,237));
-                        .rounded_corners_top_left(20px);
-                    }
-            
-                    .event-progress-filled {
-                        .rounded_corners_top_left(20px);
-                    }
+                .event-progress {
                     
-                    .event-progress-filled-success {
-                        .rounded_corners_top_left(20px);
-                    }
+                    border-left: 1px solid @timeline_border_color;
+                    .rounded_corners_top_left(20px);
+
                     
-                    .event-progress-text {
-                        .event-progress-money {
-                            left: 20px;
+                    .event-progress-bar {
+                
+                        .event-progress-background {
+                            .vertical-gradient(rgb(204,204,204), rgb(237,237,237));
+                            .rounded_corners_top_left(19px);
+                        }
+                
+                        .event-progress-filled {
+                            .rounded_corners_top_left(19px);
+                            float: left;
                         }
                         
-                        .event-progress-developing, .event-progress-success, .event-progress-no-offer, .event-progress-pledged {
-                            right: 5px;
+                        .event-progress-filled-success {
+                            .rounded_corners_top_left(19px);
                         }
                         
-                        .event-progress-percent {
-                            left: 40%;
+                        .event-progress-text {
+                            .event-progress-money {
+                                left: 20px;
+                            }
+                            
+                            .event-progress-developing, .event-progress-success, .event-progress-no-offer, .event-progress-pledged {
+                                right: 5px;
+                            }
+                            
+                            .event-progress-percent {
+                                left: 40%;
+                            }
                         }
+                        
                     }
-                    
                 }
-            }
-            
-            .event-feature-logo {
-                float: left;
-            }
-            
-            .event-feature-description {
-                margin-left: 48px;
                 
-                .event-entry {
-                    padding-left: 20px;
-                    
-                    .event-entry-logo {
-                        float: left;
-                    }
-                    
-                    .event-entry-content {
-                        padding-left: 10px;
-                        float: left;                        
-
-                    }
- 
-                    .date {
-                        float: left;
-                    }
-                    
-                    .date:before {
-                        content: "-";
-                    }
-
-                    
+                .event-feature-logo {
+                    float: left;
                 }
-            }
-            
-          
-            .event-feature-hook-point {
-                left: -25px  - 15px - @dot_size /2;
-            }
-            
-            .event-feature-hook-line {
-                left: -40px ;
-            }
-            
-            .event-feature-hook-curve {
-                border-right: 1px solid @timeline_border_color;
-                .rounded_corners_bottom_right(@curve_size);
-                left: @curve_size * -1;
+                
+                .event-feature-description {
+                    margin-left: 48px;
+                    
+                    h2 {
+                        float: left;
+                        text-align: left;
+                    }
+                    
+                    .event-entry {
+                        padding-left: 20px;
+                        
+                        .event-entry-logo {
+                            float: left;
+                        }
+                        
+                        .event-entry-content {
+                            padding-left: 10px;
+                            float: left;                        
+
+                        }
+     
+                        .date {
+                            padding-left: 10px;
+                            float: left;
+                        }
+                        
+                        .date:before {
+                            content: "–";
+                            padding-right: 10px;
+                        }
+
+                        
+                    }
+                }
+                
+              
+                .event-feature-hook-point {
+                    left: -25px  - 15px - @dot_size /2;
+                }
+                
+                .event-feature-hook-line {
+                    left: -40px ;
+                }
+                
+                .event-feature-hook-curve {
+                    border-right: 1px solid @timeline_border_color;
+                    .rounded_corners_bottom_right(@curve_size);
+                    left: @curve_size * -1;
+                }
             }
         }
-    }
 
         ////////////////////////
         // End column

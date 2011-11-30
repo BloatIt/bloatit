@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="12.962227"
-   height="15.915559"
+   width="15.92"
+   height="15.92"
    id="svg8362"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="Nouveau document 8">
+   sodipodi:docname="idea_tiny.svg">
   <defs
      id="defs8364">
     <filter
@@ -161,9 +161,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-81.376034"
-     inkscape:cy="25.101141"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="4.5494932"
+     inkscape:cy="9.2747604"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -173,8 +173,8 @@
      fit-margin-bottom="0"
      inkscape:window-width="634"
      inkscape:window-height="420"
-     inkscape:window-x="1"
-     inkscape:window-y="82"
+     inkscape:window-x="50"
+     inkscape:window-y="584"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata8367">
@@ -184,7 +184,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -192,11 +192,11 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-456.37603,-541.54776)">
+     transform="translate(-456.37603,-541.54332)">
     <g
        style="display:inline;filter:url(#filter59863)"
        id="g47293"
-       transform="translate(-263.33334,-169.66978)">
+       transform="translate(-261.94438,-169.66978)">
       <path
          transform="matrix(0.04089984,0,0,0.04089984,723.47448,698.23687)"
          d="m 107.58076,607.15356 c 47.72653,12.93143 -115.2584469,11.48133 -96.016962,17.62883 23.72975,7.5815 133.387882,14.6724 100.355992,23.2533 -31.765002,8.2517 -82.660172,4.14 -100.898522,14.2033 -16.3568149,9.0251 178.085382,8.1111 79.18916,28.1713"
