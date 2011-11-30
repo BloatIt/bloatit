@@ -39,6 +39,7 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
     private static final HtmlImage LOGO_OFFER = new HtmlImage(new Image(WebConfiguration.getImgOfferTiny()), "offer");
     private static final HtmlImage LOGO_COMMENT = new HtmlImage(new Image(WebConfiguration.getImgCommentTiny()), "comment");
     private static final HtmlImage LOGO_RELEASE = new HtmlImage(new Image(WebConfiguration.getImgReleaseTiny()), "release");
+    private static final HtmlImage LOGO_BUG = new HtmlImage(new Image(WebConfiguration.getImgBugTiny()), "bug");
     
     
 
@@ -108,23 +109,23 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
                         criticity = Context.tr("strange");
                         break;
                 }
-                entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new PlaceHolderElement().add(new HtmlMixedText(Context.tr("new <0::+bug> ({0})", criticity) , bugLink)));
+                entry = new HtmlEntry(event.getDate(), LOGO_BUG, new PlaceHolderElement().add(new HtmlMixedText(Context.tr("new <0::+bug> ({0})", criticity) , bugLink)));
                 addFeatureEntry(event.getFeature(), entry, event.getDate());
                 break;
             case BUG_CHANGE_LEVEL:
                 HtmlBranch bugLn = new HtmlLink(bugUrl.externalUrlString(locale));
                 switch (event.getBug().getErrorLevel()) {
                     case FATAL:
-                        entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("the <0::+bug> level is now to 'critical'"), bugLn));
+                        entry = new HtmlEntry(event.getDate(), LOGO_BUG, new HtmlMixedText(l.tr("the <0::+bug> level is now to 'critical'"), bugLn));
                         break;
                     case MAJOR:
-                        entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("the <0::+bug> level is now to 'major'"), bugLn));
+                        entry = new HtmlEntry(event.getDate(), LOGO_BUG, new HtmlMixedText(l.tr("the <0::+bug> level is now to 'major'"), bugLn));
                         break;
                     case MINOR:
-                        entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("the <0::+bug> level is now 'minor'"), bugLn));
+                        entry = new HtmlEntry(event.getDate(), LOGO_BUG, new HtmlMixedText(l.tr("the <0::+bug> level is now 'minor'"), bugLn));
                         break;
                     default:
-                        entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("the <0::+bug> is now in a new state"), bugLn));
+                        entry = new HtmlEntry(event.getDate(), LOGO_BUG, new HtmlMixedText(l.tr("the <0::+bug> is now in a new state"), bugLn));
                         break;
                 }
                 addBugEntry(event.getBug(), entry, event.getDate());

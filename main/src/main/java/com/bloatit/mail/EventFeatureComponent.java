@@ -66,7 +66,7 @@ public class EventFeatureComponent extends HtmlDiv {
             format.setMinimumFractionDigits(0);
             progressBarText.add(new HtmlDiv("event-progress-percent").addText( format.format(f.getProgression()) + " %"));
             progressBarText.add(new HtmlDiv("event-progress-pledged").add(new MoneyDisplayComponent(f.getSelectedOffer().getAmount(), l))
-                                                                     .addText(l.tr("pledged")));
+                                                                     .addText(l.tr("requested")));
         } else if (f.getFeatureState() == FeatureState.DEVELOPPING) {
             progressBarText.add(new HtmlDiv("event-progress-money").add(new MoneyDisplayComponent(f.getContribution(), l)).addText(l.tr("financed")));
             progressBarText.add(new HtmlDiv("event-progress-developing").addText(l.tr("In development")));

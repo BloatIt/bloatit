@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="13.338202"
-   height="13.152435"
+   width="15.92"
+   height="15.92"
    id="svg8619"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="Nouveau document 15">
+   sodipodi:docname="bug_tiny.svg">
   <defs
      id="defs8621">
     <radialGradient
@@ -158,9 +158,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-406.88603"
-     inkscape:cy="123.73317"
+     inkscape:zoom="11.2"
+     inkscape:cx="-1.146227"
+     inkscape:cy="4.7202806"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -181,7 +181,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -189,11 +189,11 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-781.88603,-642.94292)">
+     transform="translate(-781.88603,-640.17536)">
     <g
        style="display:inline;filter:url(#filter59863)"
        id="g30116"
-       transform="translate(50.911734,-1.1195788)">
+       transform="translate(52.25102,-2.8160074)">
       <path
          inkscape:connector-curvature="0"
          style="opacity:0.9;color:#000000;fill:url(#radialGradient30127);fill-opacity:1;fill-rule:nonzero;stroke:#5e5e5e;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
