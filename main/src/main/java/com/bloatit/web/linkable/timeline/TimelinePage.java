@@ -13,13 +13,16 @@ package com.bloatit.web.linkable.timeline;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.text.SimpleDateFormat;
 import java.util.Map.Entry;
 
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -123,15 +126,16 @@ public final class TimelinePage extends LoggedElveosPage {
             final HtmlDiv leftColumn = new HtmlDiv("left_column");
             timelineBlock.add(leftColumn);
             final HtmlDiv timeColumn = new HtmlDiv("time_column");
+            
+            PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
+            
             timelineBlock.add(timeColumn);
             {
                 final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
                 timeColumn.add(timeColumnHeader);
                 
-                timeColumn.add(generateDay("Dec 17", 200));
-                timeColumn.add(generateDay("Dec 15", 100));
-                timeColumn.add(generateDay("Dec 12", 150));
-                timeColumn.add(generateDay("Dec 11", 200));
+                timeColumn.add(daysPlaceHolder);
+                
                 
                 final HtmlDiv timeColumnFooter = new HtmlDiv("time_column_footer");
                 timeColumn.add(timeColumnFooter);
@@ -154,15 +158,26 @@ public final class TimelinePage extends LoggedElveosPage {
                 
             }
 
+            SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
+            
             for(DayAgreggator day: visitor.getDays()) {
             
+                int height = 0;
+                
                 for (Entry<Feature, Entries> e : day.getFeatures().entrySet()) {
                     EventFeatureComponent featureComponent = new EventFeatureComponent(e.getKey(), getLocalizator(), true);
                     for (HtmlEntry entry : e.getValue()) {
                         featureComponent.add(entry);
                     }
                     rightColumn.add(featureComponent);
+                    
+                    height += 100;
+                    
                 }
+                
+                
+                
+                daysPlaceHolder.add(generateDay(dayFormat.format(day.getDate().getTime()), height));
             
             }
             
