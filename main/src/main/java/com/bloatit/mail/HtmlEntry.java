@@ -17,6 +17,7 @@ public class HtmlEntry extends HtmlDiv {
     public HtmlEntry(Date when, HtmlImage logo, HtmlNode content) {
         super("event-entry");
         add(new HtmlDiv("event-entry-logo").add(logo));
-        add(new HtmlDiv("event-entry-content").add(content).add(new HtmlSpan("date").addText(" - " + new SimpleDateFormat("HH:mm").format(when).toString())));
+        add(new HtmlDiv("event-entry-content").add(content));
+        add(new HtmlDiv("date").addText(new SimpleDateFormat("HH:mm").format(when).toString()));
     }
 }

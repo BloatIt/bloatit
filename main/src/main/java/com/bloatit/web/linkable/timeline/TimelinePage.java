@@ -159,6 +159,8 @@ public final class TimelinePage extends LoggedElveosPage {
             }
 
             SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
+            boolean insertToLeft = false;
+            
             
             for(DayAgreggator day: visitor.getDays()) {
             
@@ -169,7 +171,13 @@ public final class TimelinePage extends LoggedElveosPage {
                     for (HtmlEntry entry : e.getValue()) {
                         featureComponent.add(entry);
                     }
-                    rightColumn.add(featureComponent);
+                    if(insertToLeft) {
+                        leftColumn.add(featureComponent);
+                    } else {
+                        rightColumn.add(featureComponent);
+                    }
+                    
+                    insertToLeft = !insertToLeft;
                     
                     height += 100;
                     
