@@ -12,6 +12,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Event.BugCommentEvent;
 import com.bloatit.model.Event.BugEvent;
@@ -90,21 +91,25 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
         BugPageUrl bugUrl = new BugPageUrl(event.getBug());
         switch (event.getType()) {
             case ADD_BUG:
-                HtmlBranch bugLink = new HtmlLink(bugUrl.externalUrlString(locale)).addText("+" + event.getBug().getTitle());
+                HtmlLink bugLink = new HtmlLink(bugUrl.externalUrlString(locale));
+                bugLink.setCssClass("bug_link");
+                String criticity = "";
                 switch (event.getBug().getErrorLevel()) {
                     case FATAL:
-                        entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new PlaceHolderElement().addText(l.tr("new critical bug: ")).add(bugLink));
+                        criticity = Context.tr("critical");
                         break;
                     case MAJOR:
-                        entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new PlaceHolderElement().addText(l.tr("new major bug: ")).add(bugLink));
+                        criticity = Context.tr("major");
                         break;
                     case MINOR:
-                        entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new PlaceHolderElement().addText(l.tr("new minor bug: ")).add(bugLink));
+                        criticity = Context.tr("minor");
                         break;
                     default:
-                        entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new PlaceHolderElement().addText(l.tr("new bug: ")).add(bugLink));
+                        criticity = Context.tr("strange");
                         break;
                 }
+                entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new PlaceHolderElement().add(new HtmlMixedText(Context.tr("new <0::+bug> ({0})", criticity) , bugLink)));
+                addFeatureEntry(event.getFeature(), entry, event.getDate());
                 break;
             case BUG_CHANGE_LEVEL:
                 HtmlBranch bugLn = new HtmlLink(bugUrl.externalUrlString(locale));
@@ -122,19 +127,22 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
                         entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("the <0::+bug> is now in a new state"), bugLn));
                         break;
                 }
+                addBugEntry(event.getBug(), entry, event.getDate());
                 break;
             case BUG_SET_RESOLVED:
                 bugLn = new HtmlLink(bugUrl.externalUrlString(locale));
                 entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("the <0::+bug> is now resolved"), bugLn));
+                addBugEntry(event.getBug(), entry, event.getDate());
                 break;
             case BUG_SET_DEVELOPING:
                 bugLn = new HtmlLink(bugUrl.externalUrlString(locale));
                 entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("the <0::+bug> is being developed"), bugLn));
+                addBugEntry(event.getBug(), entry, event.getDate());
                 break;
             default:
                 throw new BadProgrammerException("You should have managed all the cases.");
         }
-        addFeatureEntry(event.getFeature(), entry, event.getDate());
+        
         return null;
     }
 

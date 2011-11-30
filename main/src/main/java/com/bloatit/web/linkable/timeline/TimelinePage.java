@@ -50,7 +50,7 @@ import com.bloatit.web.url.TimelinePageUrl;
 @ParamContainer("timeline")
 public final class TimelinePage extends LoggedElveosPage {
 
-    private static final int MIN_LEFT_RIGHT_DIFF = 30;
+    private static final int MIN_LEFT_RIGHT_DIFF = 50;
     private static final int MIN_DAY_HEIGHT = 70;
     private final TimelinePageUrl url;
 
@@ -185,7 +185,8 @@ public final class TimelinePage extends LoggedElveosPage {
                         }
                         element = featureComponent;
                     } else if (e instanceof BugEntries) {
-                        throw new NotImplementedException();
+                        continue;
+                        //throw new NotImplementedException();
                     }
                     
 
