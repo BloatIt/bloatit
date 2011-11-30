@@ -14,11 +14,11 @@ package com.bloatit.web.linkable.timeline;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.text.SimpleDateFormat;
-import java.util.Map.Entry;
+
+import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -29,11 +29,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.mail.EventFeatureComponent;
 import com.bloatit.mail.HtmlEntry;
-import com.bloatit.mail.MailEventVisitor;
 import com.bloatit.mail.TimelineEventVisitor;
+import com.bloatit.mail.TimelineEventVisitor.BugEntries;
 import com.bloatit.mail.TimelineEventVisitor.DayAgreggator;
 import com.bloatit.mail.TimelineEventVisitor.Entries;
-import com.bloatit.model.Feature;
+import com.bloatit.mail.TimelineEventVisitor.FeatureEntries;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.EventManager;
@@ -50,6 +50,8 @@ import com.bloatit.web.url.TimelinePageUrl;
 @ParamContainer("timeline")
 public final class TimelinePage extends LoggedElveosPage {
 
+    private static final int MIN_LEFT_RIGHT_DIFF = 30;
+    private static final int MIN_DAY_HEIGHT = 70;
     private final TimelinePageUrl url;
 
     public TimelinePage(final TimelinePageUrl url) {
@@ -96,7 +98,7 @@ public final class TimelinePage extends LoggedElveosPage {
                 menuBarItemManageFollow.add(menuBarItemLink);
                 menuBarItemLink.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Manage follows")));
             }
-            
+
             final HtmlDiv menuBarItemManageNotif = new HtmlDiv("menu_bar_item");
             menuBar.add(menuBarItemManageNotif);
             {
@@ -107,7 +109,7 @@ public final class TimelinePage extends LoggedElveosPage {
                 menuBarItemManageNotif.add(menuBarItemLink);
                 menuBarItemLink.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Manage notifications")));
             }
-            
+
             final HtmlDiv menuBarItemRSS = new HtmlDiv("menu_bar_item");
             menuBar.add(menuBarItemRSS);
             {
@@ -126,70 +128,129 @@ public final class TimelinePage extends LoggedElveosPage {
             final HtmlDiv leftColumn = new HtmlDiv("left_column");
             timelineBlock.add(leftColumn);
             final HtmlDiv timeColumn = new HtmlDiv("time_column");
-            
+
             PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
-            
+
             timelineBlock.add(timeColumn);
             {
                 final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
                 timeColumn.add(timeColumnHeader);
-                
+
                 timeColumn.add(daysPlaceHolder);
-                
-                
+
                 final HtmlDiv timeColumnFooter = new HtmlDiv("time_column_footer");
                 timeColumn.add(timeColumnFooter);
             }
-            
+
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
             timelineBlock.add(rightColumn);
 
-
             EventList events = EventManager.getAllEventAfter(DateUtils.dawnoftime(), EmailStrategy.VERY_FREQUENTLY);
-            
+
             final TimelineEventVisitor visitor = new TimelineEventVisitor(getLocalizator());
 
             while (events.hasNext()) {
                 events.next();
-                if(events.member().equals(loggedUser)) {
+                if (events.member().equals(loggedUser)) {
                     events.event().getEvent().accept(visitor);
-                    
+
                 }
-                
+
             }
 
             SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
-            boolean insertToLeft = false;
+            //boolean insertToLeft = false;
+            int leftOffset = 50;
+            int rightOffset = 0;
+            int leftStartOffset = -MIN_LEFT_RIGHT_DIFF;
+            int rightStartOffset = 0;
             
-            
-            for(DayAgreggator day: visitor.getDays()) {
-            
-                int height = 0;
+            int dayOffset = 0;
+
+            leftColumn.add(generateSpacer(leftOffset));
+
+            for (DayAgreggator day : visitor.getDays()) {
+
+                int lastOffset = 0;
+
+                HtmlNode element = null;
                 
-                for (Entry<Feature, Entries> e : day.getFeatures().entrySet()) {
-                    EventFeatureComponent featureComponent = new EventFeatureComponent(e.getKey(), getLocalizator(), true);
-                    for (HtmlEntry entry : e.getValue()) {
-                        featureComponent.add(entry);
+                //for (Entry<Feature, Entries> e : day.getFeatures().entrySet()) {
+                for (Entries<?> e : day.getEntries()) {
+                    if(e instanceof FeatureEntries) {
+                        FeatureEntries f = (FeatureEntries) e;
+                        EventFeatureComponent featureComponent = new EventFeatureComponent(f.getKey(), getLocalizator(), true);
+                        for (HtmlEntry entry : e) {
+                            featureComponent.add(entry);
+                        }
+                        element = featureComponent;
+                    } else if (e instanceof BugEntries) {
+                        throw new NotImplementedException();
                     }
-                    if(insertToLeft) {
-                        leftColumn.add(featureComponent);
+                    
+
+                    int blockHeight = 69 + 24 * e.size() + 30;
+                    int offset;
+
+                    if (leftOffset < rightOffset) {
+
+                        if (leftOffset < dayOffset) {
+                            leftColumn.add(generateSpacer(dayOffset - leftOffset));
+                            leftOffset = dayOffset;
+                        }
+                        
+                        if (leftOffset - rightStartOffset  < MIN_LEFT_RIGHT_DIFF) {
+                            int space = MIN_LEFT_RIGHT_DIFF - (leftOffset - rightStartOffset);
+                            leftColumn.add(generateSpacer(space));
+                            leftOffset += space;
+                        }
+
+                        leftColumn.add(element);
+
+                        offset = leftOffset;
+                        leftStartOffset = offset;
+                        leftOffset += blockHeight;
                     } else {
-                        rightColumn.add(featureComponent);
+                        if (rightOffset < dayOffset) {
+                            rightColumn.add(generateSpacer(dayOffset - rightOffset));
+                            rightOffset = dayOffset;
+                        }
+
+                        if (rightOffset - leftStartOffset  < MIN_LEFT_RIGHT_DIFF) {
+                            int space = MIN_LEFT_RIGHT_DIFF - ( rightOffset - leftStartOffset);
+                            leftColumn.add(generateSpacer(space));
+                            rightOffset += space;
+                        }
+                        
+                        rightColumn.add(element);
+
+                        offset = rightOffset;
+                        rightStartOffset = offset;
+                        rightOffset += blockHeight;
                     }
-                    
-                    insertToLeft = !insertToLeft;
-                    
-                    height += 100;
-                    
+
+                    if (offset > lastOffset) {
+                        lastOffset = offset;
+                    }
+
+                    //insertToLeft = !insertToLeft;
+
                 }
-                
-                
-                
+
+                int height;
+
+                height = lastOffset - dayOffset + 70;
+
+                if (height < MIN_DAY_HEIGHT) {
+                    height = MIN_DAY_HEIGHT;
+                }
+
+                dayOffset += height;
+
                 daysPlaceHolder.add(generateDay(dayFormat.format(day.getDate().getTime()), height));
-            
+
             }
-            
-            
+
         }
         return layout;
     }
@@ -197,7 +258,13 @@ public final class TimelinePage extends LoggedElveosPage {
     private HtmlNode generateDay(String text, int height) {
         final HtmlDiv dayBlock = new HtmlDiv("day");
         dayBlock.addText(text);
-        dayBlock.addAttribute("style", "height: "+height+"px;");
+        dayBlock.addAttribute("style", "height: " + height + "px;");
+        return dayBlock;
+    }
+
+    private HtmlNode generateSpacer(int height) {
+        final HtmlDiv dayBlock = new HtmlDiv("spacer");
+        dayBlock.addAttribute("style", "height: " + height + "px;");
         return dayBlock;
     }
 

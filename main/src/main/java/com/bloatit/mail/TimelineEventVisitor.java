@@ -29,9 +29,10 @@ public class TimelineEventVisitor extends GenericEventVisitor {
     }
 
     @Override
-    protected void addFeatureEntry(Feature f, HtmlEntry b, Date date) {
+    protected void addFeatureEntry(Feature feature, HtmlEntry entry, Date date) {
         DayAgreggator day = getDay(date);
-        addEntry(day.getFeatures(), f, b);
+        //addEntry(day.getFeatures(), f, b);
+        day.addEntry(feature, entry, date);
     }
 
     private DayAgreggator getDay(Date date) {
@@ -49,12 +50,13 @@ public class TimelineEventVisitor extends GenericEventVisitor {
     }
 
     @Override
-    protected void addBugEntry(Bug f, HtmlEntry b, Date date) {
+    protected void addBugEntry(Bug bug, HtmlEntry entry, Date date) {
         DayAgreggator day = getDay(date);
-        addEntry(day.getBugs(), f, b);
+        //addEntry(day.getBugs(), f, b);
+        day.addEntry(bug, entry, date);
     }
 
-    private <T> void addEntry(Map<T, Entries> m, T f, HtmlEntry b) {
+    /*private <T> void addEntry(Map<T, Entries> m, T f, HtmlEntry b) {
         if (m.containsKey(f)) {
             m.get(f).addFirst(b);
         } else {
@@ -62,17 +64,62 @@ public class TimelineEventVisitor extends GenericEventVisitor {
             entries.addFirst(b);
             m.put(f, entries);
         }
+    }*/
+
+    public class Entries<T> extends LinkedList<HtmlEntry> implements Comparable<Entries<?>> {
+        private static final long serialVersionUID = 4240985577107981629L;
+
+        private final T t;
+        private Date lastDate;
+
+        public Entries(T t) {
+            this.t = t;
+        }
+
+        public T getKey() {
+            return t;
+        }
+        
+        public void addEntry(HtmlEntry entry, Date date) {
+            lastDate = date;
+            addFirst(entry);
+        }
+        
+        public Date getLastDate() {
+            return lastDate;
+        }
+
+        @Override
+        public int compareTo(Entries<?> o) {
+            lastDate.compareTo(o.getLastDate());
+            return 0;
+        }
+
     }
 
-    public class Entries extends LinkedList<HtmlEntry> {
-        private static final long serialVersionUID = 4240985577107981629L;
+    public class FeatureEntries extends Entries<Feature> {
+        private static final long serialVersionUID = -390396466956297807L;
+
+        public FeatureEntries(Feature t) {
+            super(t);
+        }
+    }
+
+    public class BugEntries extends Entries<Bug> {
+        private static final long serialVersionUID = -4591815606300887081L;
+
+        public BugEntries(Bug t) {
+            super(t);
+        }
     }
 
     public class DayAgreggator {
         private final Calendar date;
-        private final Map<Feature, Entries> features = new HashMap<Feature, Entries>();
-        private final Map<Bug, Entries> bugs = new HashMap<Bug, Entries>();
 
+        //private final Map<Feature, Entries<Feature>> features = new HashMap<Feature, Entries<Feature>>();
+        //private final Map<Bug, Entries<Bug>> bugs = new HashMap<Bug, Entries<Bug>>();
+        ArrayList<Entries<?>> entries = new ArrayList<Entries<?>>();
+        
         public DayAgreggator(Date date) {
             this.date = GregorianCalendar.getInstance();
             this.date.setTime(date);
@@ -81,12 +128,43 @@ public class TimelineEventVisitor extends GenericEventVisitor {
             this.date.set(Calendar.SECOND, 0);
         }
 
-        public final Map<Feature, Entries> getFeatures() {
+        public void addEntry(Bug bug, HtmlEntry entry, Date date) {
+            for(Entries<?> existingEntry: entries) {
+                if(existingEntry.getKey().equals(bug)) {
+                    existingEntry.addEntry(entry, date);
+                    return;
+                }
+            }
+            BugEntries bugEntries = new BugEntries(bug);
+            bugEntries.addEntry(entry, date);
+            entries.add(bugEntries);
+        }
+
+        
+        public void addEntry(Feature feature, HtmlEntry entry, Date date) {
+            for(Entries<?> existingEntry: entries) {
+                if(existingEntry.getKey().equals(feature)) {
+                    existingEntry.addEntry(entry, date);
+                    return;
+                }
+            }
+            FeatureEntries featureEntries = new FeatureEntries(feature);
+            featureEntries.addEntry(entry, date);
+            entries.add(featureEntries);
+        }
+        
+        /*public final Map<Feature, Entries<Feature>> getFeatures() {
             return features;
         }
 
-        public final Map<Bug, Entries> getBugs() {
+        public final Map<Bug, Entries<Bug>> getBugs() {
             return bugs;
+        }*/
+
+        public final ArrayList<Entries<?>> getEntries() {
+            Collections.sort(entries);
+            Collections.reverse(entries);
+            return entries;
         }
 
         public Calendar getDate() {

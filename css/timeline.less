@@ -244,6 +244,7 @@
                         
                         .event-progress-filled-success {
                             .rounded_corners_top_right(19px);
+                            float: right;
                         }
                         
                         .event-progress-text {
@@ -359,6 +360,7 @@
                         
                         .event-progress-filled-success {
                             .rounded_corners_top_left(19px);
+                            float: left;
                         }
                         
                         .event-progress-text {
@@ -412,11 +414,8 @@
                             content: "–";
                             padding-right: 10px;
                         }
-
-                        
                     }
                 }
-                
               
                 .event-feature-hook-point {
                     left: -25px  - 15px - @dot_size /2;
@@ -466,7 +465,11 @@
                 border-left: 1px solid @timeline_border_color;
                 color: @light_text_color;
                 text-align: center;
-                font-size: 11px; 
+                font-size: 11px;
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+
             }
             
             .day:nth-child(odd) {
@@ -476,8 +479,6 @@
     
         
         .spacer {
-        
-        
         }
         
         
