@@ -290,23 +290,43 @@ public class WebConfiguration extends ReloadableConfiguration {
     }
 
     public static String getImgIdeaSmall() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/idea_small.png");
     }
 
     public static String getImgManageSmall() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/settings_small.png");
     }
 
     public static String getImgManageNotifSmall() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/mail_settings_small.png");
     }
 
     public static String getImgRssSmall() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/rss_small.png");
+    }
+
+    public static String getImgIdeaTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/idea_tiny.png");
+    }
+    
+    public static String getImgContributionTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/coins_tiny.png");
+    }
+    
+    public static String getImgOfferTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/offer_tiny.png");
+    }
+    
+    public static String getImgCommentTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/comment_tiny.png");
+    }
+    
+    public static String getImgReleaseTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/release_tiny.png");
+    }
+    
+    public static String getImgBugTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/bug_tiny.png");
     }
 
 }

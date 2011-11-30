@@ -2,6 +2,8 @@ package com.bloatit.mail;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.text.NumberFormat;
+
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -12,6 +14,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Image;
 import com.bloatit.web.WebConfiguration;
@@ -22,11 +25,18 @@ import com.bloatit.web.url.SoftwarePageUrl;
 public class EventFeatureComponent extends HtmlDiv {
 
     private HtmlDiv entriesDiv;
-
+    
     public EventFeatureComponent(Feature f, Localizator l) {
+        this(f, l, false);
+    }
+    
+    public EventFeatureComponent(Feature f, Localizator l, boolean hook) {
         super("event-feature");
-        HtmlDiv progressBar = new HtmlDiv("event-progress");
-        super.add(progressBar);
+        
+        HtmlDiv progress = new HtmlDiv("event-progress");
+        super.add(progress);
+        HtmlDiv topBorder = new HtmlDiv("event-top-border");
+        progress.add(topBorder);
         float progression = f.getProgression();
         if (progression == Float.POSITIVE_INFINITY) {
             progression = 0;
@@ -34,7 +44,15 @@ public class EventFeatureComponent extends HtmlDiv {
         if (progression > 100) {
             progression = 100;
         }
-        progressBar.add(new HtmlDiv("event-progress-filled").addAttribute("percent", String.valueOf(progression)));
+        
+        if (progression < 5 &&  progression > 0) {
+            progression = 5;
+        }
+        HtmlDiv progressBar = new HtmlDiv("event-progress-bar");
+        progress.add(progressBar);
+        
+        progressBar.add(new HtmlDiv("event-progress-background"));
+        progressBar.add(new HtmlDiv("event-progress-filled").addAttribute("style", "width: "+String.valueOf(progression)+"%;"));
         HtmlDiv progressBarText = new HtmlDiv("event-progress-text");
         progressBar.add(progressBarText);
         if (f.getFeatureState() == FeatureState.PENDING) {
@@ -42,18 +60,23 @@ public class EventFeatureComponent extends HtmlDiv {
             progressBarText.add(new HtmlDiv("event-progress-no-offer").addText(l.tr("no offer")));
         } else if (f.getFeatureState() == FeatureState.PREPARING) {
             progressBarText.add(new HtmlDiv("event-progress-money").add(new MoneyDisplayComponent(f.getContribution(), l)).addText(l.tr("financed")));
-            progressBarText.add(new HtmlDiv("event-progress-percent").addText(String.valueOf(f.getProgression()) + " %"));
+            final NumberFormat format = Context.getLocalizator().getNumberFormat();
+            format.setMinimumFractionDigits(0);
+            progressBarText.add(new HtmlDiv("event-progress-percent").addText( format.format(f.getProgression()) + " %"));
             progressBarText.add(new HtmlDiv("event-progress-pledged").add(new MoneyDisplayComponent(f.getSelectedOffer().getAmount(), l))
                                                                      .addText(l.tr("pledged")));
         } else if (f.getFeatureState() == FeatureState.DEVELOPPING) {
             progressBarText.add(new HtmlDiv("event-progress-money").add(new MoneyDisplayComponent(f.getContribution(), l)).addText(l.tr("financed")));
-            progressBarText.add(new HtmlDiv("event-progress-developing").addText(l.tr("in development")));
+            progressBarText.add(new HtmlDiv("event-progress-developing").addText(l.tr("In development")));
         } else if (f.getFeatureState() == FeatureState.FINISHED) {
             progressBarText.add(new HtmlDiv("event-progress-money").add(new MoneyDisplayComponent(f.getContribution(), l)).addText(l.tr("financed")));
             progressBarText.add(new HtmlDiv("event-progress-success").addText(l.tr("success")));
+            progressBar.add(new HtmlDiv("event-progress-filled-success"));
         } else if (f.getFeatureState() == FeatureState.DISCARDED) {
             throw new NotImplementedException();
         }
+        
+        
 
         HtmlDiv logodiv = new HtmlDiv("software_logo_block");
         if (f.getSoftware() == null || f.getSoftware().getImage() == null) {
@@ -66,9 +89,22 @@ public class EventFeatureComponent extends HtmlDiv {
         }
 
         super.add(new HtmlDiv("event-feature-logo").add(logodiv));
-        super.add(new HtmlTitle(2).addText(f.getTitle(l.getLocale())));
+        
+        
+        HtmlDiv description = new HtmlDiv("event-feature-description");
+        super.add(description);
+        
+        description.add(new HtmlTitle(2).addText(f.getTitle(l.getLocale())));
         entriesDiv = new HtmlDiv("event-feature-entries");
-        super.add(entriesDiv);
+        description.add(entriesDiv);
+     
+        if(hook) {
+            super.add(new HtmlDiv("event-feature-hook-point"));
+            super.add(new HtmlDiv("event-feature-hook-line"));
+            super.add(new HtmlDiv("event-feature-hook-curve"));
+        }
+
+        
     }
 
     @Override

@@ -30,6 +30,7 @@ public class HtmlAuthorLink extends HtmlLink {
                       new MemberPageUrl(content.getMember()).urlString()
                       ,
               "@" + content.getAuthor().getDisplayName());
+        setCssClass(content.getAsTeam() != null ? "team-link": "member-link");
     }
     // @formatter:on
 }
