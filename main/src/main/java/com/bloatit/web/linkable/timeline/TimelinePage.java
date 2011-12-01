@@ -173,7 +173,7 @@ public final class TimelinePage extends LoggedElveosPage {
 
                 int lastOffset = 0;
 
-                HtmlNode element = null;
+                HtmlElement element = null;
                 
                 //for (Entry<Feature, Entries> e : day.getFeatures().entrySet()) {
                 for (Entries<?> e : day.getEntries()) {
@@ -191,6 +191,7 @@ public final class TimelinePage extends LoggedElveosPage {
                     
 
                     int blockHeight = 69 + 24 * e.size() + 30;
+                    element.addAttribute("style", "height: "+(blockHeight-30)+"px;");
                     int offset;
 
                     if (leftOffset < rightOffset) {
@@ -284,6 +285,6 @@ public final class TimelinePage extends LoggedElveosPage {
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to add a translation.");
+        return tr("You must be logged to add see your timeline.");
     }
 }
