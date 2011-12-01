@@ -430,7 +430,7 @@ public class DaoMember extends DaoActor {
         this.state = ActivationState.VALIDATING;
         this.password = password;
         this.salt = salt;
-        this.karma = ModelConfiguration.getKarmaInitialInitial();
+        this.karma = ModelConfiguration.getKarmaInitialAmount();
         this.fullname = "";
         this.description = "";
         this.newsletter = false;
