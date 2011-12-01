@@ -11,8 +11,6 @@
  */
 package com.bloatit.web.linkable.softwares;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -28,6 +26,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.HtmlFollowButton.HtmlFollowSoftwareButton;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.IndexPage;
@@ -105,6 +104,7 @@ public final class SoftwareListPage extends ElveosPage {
             textBox.add(htmlLink);
             box.add(textBox);
             box.add(new HtmlClearer());
+            box.add(new HtmlFollowSoftwareButton(software));
 
             return box;
         }

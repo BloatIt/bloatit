@@ -344,13 +344,40 @@ public final class Member extends Actor<DaoMember> implements User {
     public FollowFeature followOrGetFeature(Feature f) {
         return FollowFeature.create(getDao().followOrGetFeature(((FeatureImplementation) f).getDao()));
     }
+    
+    public boolean isFollowing(Feature feature) {
+        return getDao().isFollowing(((FeatureImplementation) feature).getDao());
+    }
+    
+    public boolean isFollowing(Software software) {
+        return getDao().isFollowing(software.getDao());
+    }
+    
+    public boolean isFollowing(Actor<DaoActor> actor) {
+        return getDao().isFollowing(actor.getDao());
+    }
+    
+    public void unfollowFeature(Feature f) {
+        FollowFeature followFeature = followOrGetFeature(f);
+        followFeature.getDao().unfollow();
+    }
 
     public FollowSoftware followOrGetSoftware(Software f) {
         return FollowSoftware.create(getDao().followOrGetSoftware(f.getDao()));
     }
 
+    public void unfollowSoftware(Software s) {
+        FollowSoftware followSoftware = followOrGetSoftware(s);
+        followSoftware.getDao().unfollow();
+    }
+    
     public FollowActor followOrGetActor(Actor<DaoActor> f) {
         return FollowActor.create(getDao().followOrGetActor(f.getDao()));
+    }
+    
+    public void unfollowActor(Actor<DaoActor> a) {
+        FollowActor followActor = followOrGetActor(a);
+        followActor.getDao().unfollow();
     }
 
     public void setLastWatchedEvents(Date lastWatchedEvents) {
@@ -698,4 +725,6 @@ public final class Member extends Actor<DaoMember> implements User {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
+    
 }

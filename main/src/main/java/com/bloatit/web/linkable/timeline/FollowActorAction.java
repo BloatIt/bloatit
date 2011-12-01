@@ -11,28 +11,53 @@
  */
 package com.bloatit.web.linkable.timeline;
 
-import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Actor;
+import com.bloatit.model.FollowActor;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.ReadTimelineActionUrl;
+import com.bloatit.web.url.FollowActorActionUrl;
 
 /**
  * A response to a form used to assess any <code>kudosable</code> on the bloatit
  * website
  */
-@ParamContainer("timeline/read")
-public final class ReadTimelineAction extends LoggedElveosAction {
+@ParamContainer("timeline/follow/actor")
+public final class FollowActorAction extends LoggedElveosAction {
 
-
-    public ReadTimelineAction(final ReadTimelineActionUrl url) {
+    @RequestParam()
+    @NonOptional(@tr("You must indicate a actor to follow"))
+    private final Actor actor;
+    
+    @RequestParam()
+    @NonOptional(@tr("You must indicate a follow state"))
+    private final Boolean follow;
+    
+    @RequestParam()
+    @NonOptional(@tr("You must indicate a follow mail state"))
+    private final Boolean followMail;
+    
+    public FollowActorAction(final FollowActorActionUrl url) {
         super(url);
+        actor = url.getActor();
+        follow = url.getFollow();
+        followMail = url.getFollowMail();
     }
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        me.setLastWatchedEvents(DateUtils.now());
+        
+        if(follow) {
+            FollowActor followActor = me.followOrGetActor(actor);
+            followActor.setMail(followMail);
+        } else {
+            me.unfollowActor(actor);
+        }
+
         return session.pickPreferredPage();
     }
 

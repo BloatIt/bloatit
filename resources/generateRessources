@@ -73,6 +73,13 @@ inkscape -e $OUTPUT_DIR_PREFIX"commons/img/mail_settings_small.png" -C -h 24 sou
 optipng $OUTPUT_DIR_PREFIX"commons/img/mail_settings_small.png"
 
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/rss_small.png" -C -h 24 sources/rss_small.svg
-optipng $OUTPUT_DIR_PREFIX"commons/img/rss_small.png"
+optipng $OUTPUT_DIR_PREFIX"commons/img/rss_small.png"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/mail_light.png" -C -h 12 sources/mail_light.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/mail_light.png"
 
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/mail_dark.png" -C -h 12 sources/mail_dark.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/mail_dark.png"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/unfollow.png" -C -h 10 sources/unfollow.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/unfollow.png"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             

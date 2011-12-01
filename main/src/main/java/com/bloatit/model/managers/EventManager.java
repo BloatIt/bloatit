@@ -38,6 +38,13 @@ public final class EventManager {
         q.setParameter("strategy", strategy);
         return new EventList(q);
     }
+    
+    public static EventList getAllEventByMemberAfter(Date date, Member member) {
+        QueryCollection<Object[]> q = new QueryCollection<Object[]>("event.byDate.byMember");
+        q.setTimestamp("date", date);
+        q.setEntity("member", member.getDao());
+        return new EventList(q);
+    }
 
     public static class EventList {
         private Iterator<Object[]> it;

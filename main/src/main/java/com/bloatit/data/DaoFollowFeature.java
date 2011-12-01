@@ -81,6 +81,10 @@ public class DaoFollowFeature extends DaoIdentifiable {
         this.mail = mail;
     }
 
+    public void unfollow() {
+        SessionManager.getSessionFactory().getCurrentSession().delete(this);
+    }
+    
     // ======================================================================
     // Getters.
     // ======================================================================
@@ -104,6 +108,8 @@ public class DaoFollowFeature extends DaoIdentifiable {
     public boolean isMail() {
         return mail;
     }
+    
+    
 
     // ======================================================================
     // Visitor.
@@ -174,4 +180,6 @@ public class DaoFollowFeature extends DaoIdentifiable {
             return false;
         return true;
     }
+
+    
 }

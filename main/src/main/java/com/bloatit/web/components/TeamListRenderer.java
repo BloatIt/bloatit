@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.model.Team;
+import com.bloatit.web.components.HtmlFollowButton.HtmlFollowActorButton;
 import com.bloatit.web.linkable.team.TeamTools;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -44,7 +45,8 @@ public class TeamListRenderer implements HtmlRenderer<Team> {
         textBox.add(htmlLink);
         box.add(textBox);
         box.add(new HtmlClearer());
-
+        box.add(new HtmlFollowActorButton(team));
+        
         return box;
     }
 }

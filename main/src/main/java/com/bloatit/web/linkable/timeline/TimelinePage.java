@@ -16,8 +16,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -27,7 +25,6 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.mail.EventFeatureComponent;
 import com.bloatit.mail.HtmlEntry;
@@ -46,7 +43,6 @@ import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.url.ReadTimelineActionUrl;
 import com.bloatit.web.url.TimelinePageUrl;
-import com.itextpdf.text.pdf.events.IndexEvents.Entry;
 
 /**
  * Page that hosts the form to create a new feature
@@ -158,16 +154,16 @@ public final class TimelinePage extends LoggedElveosPage {
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
             timelineBlock.add(rightColumn);
 
-            EventList events = EventManager.getAllEventAfter(DateUtils.dawnOfTime(), EmailStrategy.VERY_FREQUENTLY);
+            EventList events = EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), loggedUser);
 
             final TimelineEventVisitor visitor = new TimelineEventVisitor(getLocalizator());
 
             while (events.hasNext()) {
                 events.next();
-                if (events.member().equals(loggedUser)) {
+                //if (events.member() != null && events.member().equals(loggedUser)) {
                     events.event().getEvent().accept(visitor);
 
-                }
+                //}
 
             }
 
@@ -197,16 +193,16 @@ public final class TimelinePage extends LoggedElveosPage {
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
             timelineBlockOnColumn.add(rightColumn);
 
-            EventList events = EventManager.getAllEventAfter(DateUtils.dawnOfTime(), EmailStrategy.VERY_FREQUENTLY);
+            EventList events = EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), loggedUser);
 
             final TimelineEventVisitor visitor = new TimelineEventVisitor(getLocalizator());
 
             while (events.hasNext()) {
                 events.next();
-                if (events.member().equals(loggedUser)) {
+                //if (events.member() != null && events.member().equals(loggedUser)) {
                     events.event().getEvent().accept(visitor);
 
-                }
+                //}
 
             }
 
