@@ -35,7 +35,6 @@ public class ConfigurationAdminAction extends AdminAction {
     @RequestParam(name = "toreload", role = Role.POST)
     private final List<String> toReload;
 
-    @SuppressWarnings("unchecked")
     public ConfigurationAdminAction(final ConfigurationAdminActionUrl url) {
         super(url);
         this.toReload = url.getToReload();

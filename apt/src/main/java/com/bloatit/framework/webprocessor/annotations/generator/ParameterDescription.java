@@ -11,7 +11,7 @@ import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
-class ParameterDescription extends Description implements Comparable<ParameterDescription> {
+public class ParameterDescription extends Description implements Comparable<ParameterDescription> {
 
     // Name of the parameter.
     private final String attributeName;
@@ -33,6 +33,8 @@ class ParameterDescription extends Description implements Comparable<ParameterDe
     private final MinConstraint minConstraint;
     private final PrecisionConstraint precisionConstraint;
 
+    private final boolean isRawType;
+
     public ParameterDescription(final Element element,
                                 final RequestParam container,
                                 final Optional optional,
@@ -51,6 +53,7 @@ class ParameterDescription extends Description implements Comparable<ParameterDe
         name = computeName(container.name(), element.getSimpleName().toString(), container.role(), Utils.getDeclaredName(element));
         typeOrTemplateType = getTypeOrTemplate(element);
         typeWithoutTemplate = getTypeWithoutTemplate(element);
+        isRawType = !element.asType().toString().startsWith("java.util.List") && element.asType().toString().contains("<");
         typeWithoutTemplateSimple = getTypeWithoutTemplateSimple(element);
         role = container.role();
         suggestedValue = container.suggestedValue().equals(RequestParam.DEFAULT_SUGGESTED_VALUE) ? null : container.suggestedValue();
@@ -69,7 +72,7 @@ class ParameterDescription extends Description implements Comparable<ParameterDe
         }
     }
 
-    private String computeName(final String annotationName, final String javaName, final Role role, final String className) {
+    public static String computeName(final String annotationName, final String javaName, final Role role, final String className) {
         if (annotationName == null || annotationName.isEmpty()) {
             if (role == Role.POST || role == Role.SESSION) {
                 return className.toLowerCase() + "_" + javaName;
@@ -80,6 +83,9 @@ class ParameterDescription extends Description implements Comparable<ParameterDe
     }
 
     private String getTypeWithoutTemplate(final Element attribute) {
+        if (attribute.asType().toString().startsWith("java.util.List")) {
+            return attribute.asType().toString();
+        }
         return attribute.asType().toString().replaceAll("\\<.*\\>", "");
     }
 
@@ -96,6 +102,10 @@ class ParameterDescription extends Description implements Comparable<ParameterDe
 
     private String getTypeWithoutTemplateSimple(final Element attribute) {
         return attribute.asType().toString().replaceAll("\\<.*\\>", "").replaceAll(".*\\.", "").replace(">", "");
+    }
+
+    public boolean isRawType() {
+        return isRawType;
     }
 
     public String getTypeWithoutTemplate() {
@@ -119,7 +129,7 @@ class ParameterDescription extends Description implements Comparable<ParameterDe
     }
 
     public final String getRole() {
-        return "Role." + role.name();
+        return "com.bloatit.framework.webprocessor.annotations.RequestParam.Role." + role.name();
     }
 
     public final Role getRealRole() {
@@ -136,7 +146,7 @@ class ParameterDescription extends Description implements Comparable<ParameterDe
 
     public final String getConversionErrorMsgStr() {
         if (conversionErrorMsg.equals(RequestParam.DEFAULT_ERROR_MSG)) {
-            return "RequestParam.DEFAULT_ERROR_MSG";
+            return "com.bloatit.framework.webprocessor.annotations.RequestParam.DEFAULT_ERROR_MSG";
         }
         return Utils.getStr(conversionErrorMsg);
     }
