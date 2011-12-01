@@ -28,7 +28,9 @@ import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.IpLocator;
 import com.bloatit.framework.webprocessor.annotations.Translator;
+import com.bloatit.framework.xcgiserver.AvailableLocales;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
@@ -67,11 +69,20 @@ public final class Localizator implements Translator {
     }
 
     public Localizator(HttpHeader header) {
-        if (header.getPageLanguage().equals(HttpHeader.DEFAULT_LANG)) {
-            this.locale = header.getHttpAcceptLanguage().getPreferedLocal();
+        String language;
+        String country;
+        String ccode = IpLocator.localize(header.getRemoteAddr()).code;
+        if (AvailableLocales.getAvailableCountries().containsKey(ccode)) {
+            country = ccode;
         } else {
-            this.locale = new Locale(header.getPageLanguage(), header.getHttpAcceptLanguage().getPreferedLocal().getCountry());
+            country = header.getHttpAcceptLanguage().getPreferedLocal().getCountry();
         }
+        if (header.getPageLanguage().equals(HttpHeader.DEFAULT_LANG)) {
+            language = header.getHttpAcceptLanguage().getPreferedLocal().getLanguage();
+        } else {
+            language = header.getPageLanguage();
+        }
+        this.locale = new Locale(language, country);
         this.i18n = getI18n(locale);
     }
 
