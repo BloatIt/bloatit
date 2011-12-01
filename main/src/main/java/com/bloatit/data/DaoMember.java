@@ -328,6 +328,8 @@ public class DaoMember extends DaoActor {
     private final List<DaoFollowFeature> followedFeatures = new ArrayList<DaoFollowFeature>();
     @Enumerated(EnumType.STRING)
     private EmailStrategy emailStrategy;
+    
+    @Basic(optional = true)
     private Date lastWatchedEvents;
 
     // ======================================================================

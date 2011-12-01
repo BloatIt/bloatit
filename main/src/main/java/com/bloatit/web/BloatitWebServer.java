@@ -165,6 +165,7 @@ import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
+import com.bloatit.web.linkable.timeline.ReadTimelineAction;
 import com.bloatit.web.linkable.timeline.TimelinePage;
 import com.bloatit.web.linkable.translation.TranslateAction;
 import com.bloatit.web.linkable.translation.TranslatePage;
@@ -550,6 +551,11 @@ public class BloatitWebServer extends WebProcessor {
         if (ModifyNewsletterActionUrl.matches(pageCode)) {
             return new ModifyNewsletterAction(new ModifyNewsletterActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (ReadTimelineActionUrl.matches(pageCode)) {
+            return new ReadTimelineAction(new ReadTimelineActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        
+        
 
         // ////////
         // Sitemap

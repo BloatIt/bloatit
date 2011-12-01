@@ -224,7 +224,7 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
     public String visit(ReleaseEvent event) {
         ReleasePageUrl url = new ReleasePageUrl(event.getRelease());
         String urlString = url.externalUrlString(locale);
-        HtmlEntry entry = new HtmlEntry(event.getDate(), LOGO_RELEASE, new HtmlMixedText(l.tr("new <0::+release>"), new HtmlLink(urlString)));
+        HtmlEntry entry = new HtmlEntry(event.getDate(), LOGO_RELEASE, new HtmlMixedText(l.tr("new <0::+release> ({0})", event.getRelease().getVersion()), new HtmlLink(urlString)));
         addFeatureEntry(event.getFeature(), entry, event.getDate());
         return null;
     }

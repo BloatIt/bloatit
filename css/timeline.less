@@ -36,10 +36,16 @@
                 padding-right: 5px;
             }
         }
-
+        
         .menu_bar_item:last-child {
             float: left;
             border-right: none;
+        }
+        
+        .menu_bar_right_item {
+            float: right;
+            padding: 5px;
+            font-size: 11px;
         }
     }
     
@@ -172,6 +178,14 @@
                         color: @very_light_text_color;
                         font-size:8px;
                         padding-top: 7px;
+                }
+            }
+            
+            .unseen-entry {
+                color:@default_text_color;
+                
+                .date {
+                        color: @light_text_color;
                 }
             }
         }

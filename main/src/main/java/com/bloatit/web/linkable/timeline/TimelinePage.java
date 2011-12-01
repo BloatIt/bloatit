@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.timeline;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -26,6 +27,7 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.mail.EventFeatureComponent;
 import com.bloatit.mail.HtmlEntry;
@@ -42,7 +44,9 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
+import com.bloatit.web.url.ReadTimelineActionUrl;
 import com.bloatit.web.url.TimelinePageUrl;
+import com.itextpdf.text.pdf.events.IndexEvents.Entry;
 
 /**
  * Page that hosts the form to create a new feature
@@ -53,6 +57,7 @@ public final class TimelinePage extends LoggedElveosPage {
     private static final int MIN_LEFT_RIGHT_DIFF = 50;
     private static final int MIN_DAY_HEIGHT = 70;
     private final TimelinePageUrl url;
+    private Date lastWatchedEvents;
 
     public TimelinePage(final TimelinePageUrl url) {
         super(url);
@@ -74,6 +79,8 @@ public final class TimelinePage extends LoggedElveosPage {
 
         final HtmlDiv layout = new HtmlDiv("timeline_page");
 
+        lastWatchedEvents = loggedUser.getLastWatchedEvents();
+        
         final HtmlDiv menuBar = new HtmlDiv("menu_bar");
         layout.add(menuBar);
         {
@@ -120,6 +127,12 @@ public final class TimelinePage extends LoggedElveosPage {
                 menuBarItemRSS.add(menuBarItemLink);
                 menuBarItemLink.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Rss feed")));
             }
+            
+            final HtmlDiv menuBarItemSetAsRead = new HtmlDiv("menu_bar_right_item");
+            menuBar.add(menuBarItemSetAsRead);
+            {
+                menuBarItemSetAsRead.add(new ReadTimelineActionUrl(Context.getSession().getShortKey()).getHtmlLink(Context.tr("set as read")));
+            }
         }
 
         final HtmlDiv timelineBlock = new HtmlDiv("timeline_block");
@@ -145,7 +158,7 @@ public final class TimelinePage extends LoggedElveosPage {
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
             timelineBlock.add(rightColumn);
 
-            EventList events = EventManager.getAllEventAfter(DateUtils.dawnoftime(), EmailStrategy.VERY_FREQUENTLY);
+            EventList events = EventManager.getAllEventAfter(DateUtils.dawnOfTime(), EmailStrategy.VERY_FREQUENTLY);
 
             final TimelineEventVisitor visitor = new TimelineEventVisitor(getLocalizator());
 
@@ -184,7 +197,7 @@ public final class TimelinePage extends LoggedElveosPage {
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
             timelineBlockOnColumn.add(rightColumn);
 
-            EventList events = EventManager.getAllEventAfter(DateUtils.dawnoftime(), EmailStrategy.VERY_FREQUENTLY);
+            EventList events = EventManager.getAllEventAfter(DateUtils.dawnOfTime(), EmailStrategy.VERY_FREQUENTLY);
 
             final TimelineEventVisitor visitor = new TimelineEventVisitor(getLocalizator());
 
@@ -237,6 +250,11 @@ public final class TimelinePage extends LoggedElveosPage {
                     EventFeatureComponent featureComponent = new EventFeatureComponent(f.getKey(), getLocalizator(), true);
                     for (HtmlEntry entry : e) {
                         featureComponent.add(entry);
+                        
+                        if(entry.getDate().after(lastWatchedEvents)) {
+                            entry.setCssClass("unseen-entry");
+                        }
+                        
                     }
                     element = featureComponent;
                 } else if (e instanceof BugEntries) {

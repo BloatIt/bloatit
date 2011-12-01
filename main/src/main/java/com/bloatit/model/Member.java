@@ -40,6 +40,7 @@ import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.lists.CommentList;
@@ -361,7 +362,12 @@ public final class Member extends Actor<DaoMember> implements User {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public Date getLastWatchedEvents() {
-        return getDao().getLastWatchedEvents();
+        Date lastWatchedEvents = getDao().getLastWatchedEvents();
+        if(lastWatchedEvents == null) {
+            return DateUtils.dawnOfTime();
+        } else {
+            return lastWatchedEvents;
+        }
     }
 
     /*
