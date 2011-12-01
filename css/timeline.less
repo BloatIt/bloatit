@@ -203,7 +203,7 @@
     }
     
     
-    .timeline_block {
+    .timeline_block, .timeline_block_one_column {
         clear: both;
         width: 100%;
         margin-top: 90px;
@@ -482,16 +482,34 @@
                 background: @default_background_color;
             }
         }
-    
         
         .spacer {
         }
-        
-        
-        
+    }
+    
+    .timeline_block_one_column {
+        display: none;
+        padding-left: 20px;
+        .right_column {
+            width: 100%;
+        }
+    }
+    
+}
 
+//Responsive design !
+@media screen and (max-width: 1150px) {
+
+.timeline_page {
+
+    .timeline_block {
+        display: none;
+    }
     
-    
+    .timeline_block_one_column {
+        display: block;
     }
 }
+}
+
 

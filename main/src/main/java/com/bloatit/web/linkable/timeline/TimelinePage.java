@@ -158,103 +158,155 @@ public final class TimelinePage extends LoggedElveosPage {
 
             }
 
-            SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
-            //boolean insertToLeft = false;
-            int leftOffset = 50;
-            int rightOffset = 0;
-            int leftStartOffset = -MIN_LEFT_RIGHT_DIFF;
-            int rightStartOffset = 0;
+            fillTimeLine(leftColumn, daysPlaceHolder, rightColumn, visitor, false);
             
-            int dayOffset = 0;
+           
+        }
+        
+        final HtmlDiv timelineBlockOnColumn = new HtmlDiv("timeline_block_one_column");
+        layout.add(timelineBlockOnColumn);
+        {
+            final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
-            leftColumn.add(generateSpacer(leftOffset));
+            PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
 
-            for (DayAgreggator day : visitor.getDays()) {
+            timelineBlockOnColumn.add(timeColumn);
+            {
+                final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
+                timeColumn.add(timeColumnHeader);
 
-                int lastOffset = 0;
+                timeColumn.add(daysPlaceHolder);
 
-                HtmlElement element = null;
-                
-                //for (Entry<Feature, Entries> e : day.getFeatures().entrySet()) {
-                for (Entries<?> e : day.getEntries()) {
-                    if(e instanceof FeatureEntries) {
-                        FeatureEntries f = (FeatureEntries) e;
-                        EventFeatureComponent featureComponent = new EventFeatureComponent(f.getKey(), getLocalizator(), true);
-                        for (HtmlEntry entry : e) {
-                            featureComponent.add(entry);
-                        }
-                        element = featureComponent;
-                    } else if (e instanceof BugEntries) {
-                        continue;
-                        //throw new NotImplementedException();
-                    }
-                    
+                final HtmlDiv timeColumnFooter = new HtmlDiv("time_column_footer");
+                timeColumn.add(timeColumnFooter);
+            }
 
-                    int blockHeight = 69 + 24 * e.size() + 30;
-                    element.addAttribute("style", "height: "+(blockHeight-30)+"px;");
-                    int offset;
+            final HtmlDiv rightColumn = new HtmlDiv("right_column");
+            timelineBlockOnColumn.add(rightColumn);
 
-                    if (leftOffset < rightOffset) {
+            EventList events = EventManager.getAllEventAfter(DateUtils.dawnoftime(), EmailStrategy.VERY_FREQUENTLY);
 
-                        if (leftOffset < dayOffset) {
-                            leftColumn.add(generateSpacer(dayOffset - leftOffset));
-                            leftOffset = dayOffset;
-                        }
-                        
-                        if (leftOffset - rightStartOffset  < MIN_LEFT_RIGHT_DIFF) {
-                            int space = MIN_LEFT_RIGHT_DIFF - (leftOffset - rightStartOffset);
-                            leftColumn.add(generateSpacer(space));
-                            leftOffset += space;
-                        }
+            final TimelineEventVisitor visitor = new TimelineEventVisitor(getLocalizator());
 
-                        leftColumn.add(element);
-
-                        offset = leftOffset;
-                        leftStartOffset = offset;
-                        leftOffset += blockHeight;
-                    } else {
-                        if (rightOffset < dayOffset) {
-                            rightColumn.add(generateSpacer(dayOffset - rightOffset));
-                            rightOffset = dayOffset;
-                        }
-
-                        if (rightOffset - leftStartOffset  < MIN_LEFT_RIGHT_DIFF) {
-                            int space = MIN_LEFT_RIGHT_DIFF - ( rightOffset - leftStartOffset);
-                            leftColumn.add(generateSpacer(space));
-                            rightOffset += space;
-                        }
-                        
-                        rightColumn.add(element);
-
-                        offset = rightOffset;
-                        rightStartOffset = offset;
-                        rightOffset += blockHeight;
-                    }
-
-                    if (offset > lastOffset) {
-                        lastOffset = offset;
-                    }
-
-                    //insertToLeft = !insertToLeft;
+            while (events.hasNext()) {
+                events.next();
+                if (events.member().equals(loggedUser)) {
+                    events.event().getEvent().accept(visitor);
 
                 }
-
-                int height;
-
-                height = lastOffset - dayOffset + 70;
-
-                if (height < MIN_DAY_HEIGHT) {
-                    height = MIN_DAY_HEIGHT;
-                }
-
-                dayOffset += height;
-
-                daysPlaceHolder.add(generateDay(dayFormat.format(day.getDate().getTime()), height));
 
             }
 
+            fillTimeLine(null, daysPlaceHolder, rightColumn, visitor, true);
+            
+            
+            
+            
         }
+        
         return layout;
+    }
+
+    private void fillTimeLine(final HtmlDiv leftColumn,
+                              PlaceHolderElement daysPlaceHolder,
+                              final HtmlDiv rightColumn,
+                              final TimelineEventVisitor visitor, final boolean rightOnly) {
+        SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
+        //boolean insertToLeft = false;
+        int leftOffset = 50;
+        int rightOffset = 0;
+        int leftStartOffset = -MIN_LEFT_RIGHT_DIFF;
+        int rightStartOffset = 0;
+        
+        int dayOffset = 0;
+
+        if(!rightOnly) {
+            leftColumn.add(generateSpacer(leftOffset));
+        }
+
+        for (DayAgreggator day : visitor.getDays()) {
+
+            int lastOffset = 0;
+
+            HtmlElement element = null;
+            
+            //for (Entry<Feature, Entries> e : day.getFeatures().entrySet()) {
+            for (Entries<?> e : day.getEntries()) {
+                if(e instanceof FeatureEntries) {
+                    FeatureEntries f = (FeatureEntries) e;
+                    EventFeatureComponent featureComponent = new EventFeatureComponent(f.getKey(), getLocalizator(), true);
+                    for (HtmlEntry entry : e) {
+                        featureComponent.add(entry);
+                    }
+                    element = featureComponent;
+                } else if (e instanceof BugEntries) {
+                    continue;
+                    //throw new NotImplementedException();
+                }
+                
+
+                int blockHeight = 69 + 24 * e.size() + 30;
+                element.addAttribute("style", "height: "+(blockHeight-30)+"px;");
+                int offset;
+
+                if (!rightOnly && leftOffset < rightOffset) {
+
+                    if (leftOffset < dayOffset) {
+                        leftColumn.add(generateSpacer(dayOffset - leftOffset));
+                        leftOffset = dayOffset;
+                    }
+                    
+                    if (leftOffset - rightStartOffset  < MIN_LEFT_RIGHT_DIFF) {
+                        int space = MIN_LEFT_RIGHT_DIFF - (leftOffset - rightStartOffset);
+                        leftColumn.add(generateSpacer(space));
+                        leftOffset += space;
+                    }
+
+                    leftColumn.add(element);
+
+                    offset = leftOffset;
+                    leftStartOffset = offset;
+                    leftOffset += blockHeight;
+                } else {
+                    if (rightOffset < dayOffset) {
+                        rightColumn.add(generateSpacer(dayOffset - rightOffset));
+                        rightOffset = dayOffset;
+                    }
+
+                    if (rightOffset - leftStartOffset  < MIN_LEFT_RIGHT_DIFF) {
+                        int space = MIN_LEFT_RIGHT_DIFF - ( rightOffset - leftStartOffset);
+                        leftColumn.add(generateSpacer(space));
+                        rightOffset += space;
+                    }
+                    
+                    rightColumn.add(element);
+
+                    offset = rightOffset;
+                    rightStartOffset = offset;
+                    rightOffset += blockHeight;
+                }
+
+                if (offset > lastOffset) {
+                    lastOffset = offset;
+                }
+
+                //insertToLeft = !insertToLeft;
+
+            }
+
+            int height;
+
+            height = lastOffset - dayOffset + 70;
+
+            if (height < MIN_DAY_HEIGHT) {
+                height = MIN_DAY_HEIGHT;
+            }
+
+            dayOffset += height;
+
+            daysPlaceHolder.add(generateDay(dayFormat.format(day.getDate().getTime()), height));
+
+        }
     }
 
     private HtmlNode generateDay(String text, int height) {
