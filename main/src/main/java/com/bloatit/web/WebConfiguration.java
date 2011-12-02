@@ -138,6 +138,13 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgNoAvatar() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgNoAvatar);
     }
+    
+    /**
+     * @return the imgNoAvatar
+     */
+    public static String getImgNoTeamAvatar() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/avatar_team.png");
+    }
 
     /**
      * @return the imgValidIcon

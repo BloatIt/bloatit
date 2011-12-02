@@ -46,6 +46,7 @@ import com.bloatit.model.Image;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.TimelinePageUrl;
 
 public abstract class ElveosPage extends Page {
 
@@ -211,7 +212,11 @@ public abstract class ElveosPage extends Page {
         final HtmlDiv logoDiv = new HtmlDiv("logo", "logo");
         final HtmlImage logoImage = new HtmlImage(new Image(WebConfiguration.getImgLogo()), tr("elveos.org logo"));
         logoImage.setCssClass("logo_elveos");
-        logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
+        if (AuthToken.isAuthenticated()) {
+            logoDiv.add(new TimelinePageUrl().getHtmlLink(logoImage));
+        } else {
+            logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
+        }
 
         final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
         logoTextDiv.addText(tr("the collaborative platform for free software funding"));
