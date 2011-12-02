@@ -194,7 +194,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.kudosableStepToGainKarma;
     }
 
-    public static int getKarmaInitialInitial() {
+    public static int getKarmaInitialAmount() {
         return configuration.karmaInitialAmount;
     }
 
