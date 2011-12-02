@@ -190,13 +190,14 @@ public final class HtmlFeatureSummary extends HtmlDiv {
         if (feature.getSoftware() != null) {
             final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
             HtmlLink softwareLink = new SoftwarePageUrl(feature.getSoftware()).getHtmlLink(feature.getSoftware().getName());
+            softwareLink.setCssClass("software-link");
 //            softwareSpan.addText(feature.getSoftware().getName());
             softwareSpan.add(softwareLink);
             title.add(softwareSpan);
             title.addText(" – ");
         }
 
-        title.add(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(translatedDescription.getTitle()));
+        title.add(new HtmlSpan("feature-software-title-name").add(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(translatedDescription.getTitle())));
 
         return title;
     }

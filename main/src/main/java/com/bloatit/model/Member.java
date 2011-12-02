@@ -568,7 +568,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     @Override
-    public PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException {
+    public PageIterable<Contribution> doGetContributions() {
         return getContributions(true);
     }
 
