@@ -16,7 +16,7 @@
 //
 package com.bloatit.framework.webprocessor.components.form;
 
-public abstract class HtmlStringFormField extends HtmlFormField<String> {
+public abstract class HtmlStringFormField extends HtmlFormField {
 
     protected HtmlStringFormField(final InputBlock inputBlock, final String name) {
         super(inputBlock, name);
@@ -32,10 +32,5 @@ public abstract class HtmlStringFormField extends HtmlFormField<String> {
 
     protected HtmlStringFormField(final InputBlock inputBlock, final String name, final String label) {
         super(inputBlock, name, label);
-    }
-
-    @Override
-    protected final void doSetDefaultStringValue(final String value) {
-        doSetDefaultValue(value);
     }
 }

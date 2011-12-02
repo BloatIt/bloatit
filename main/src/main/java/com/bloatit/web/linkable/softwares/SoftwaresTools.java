@@ -106,21 +106,21 @@ public class SoftwaresTools {
          * {@link #addDropDownElement(String, String)} method (the code which is
          * not visible from the user).
          * </p>
-         * 
+         *
          * @param value the code of the default element
          */
         @Override
-        protected void doSetDefaultValue(final String value) {
+        protected void doSetDefaultStringValue(final String value) {
             SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setDefaultValue(value);
 
         }
-        
+
         public void setNewSoftwareDefaultValue(String suggestedValue) {
             SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setNewSoftwareDefaultValue(suggestedValue);
         }
-        
+
         public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
             SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setNewSoftwareCheckboxDefaultValue(suggestedValue);
@@ -142,7 +142,7 @@ public class SoftwaresTools {
                 // New software checkbox
                 HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
                 newSoftwareCheckBoxBlock.addAttribute("style", "display:none;");
-                
+
                 softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
                 checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
@@ -161,12 +161,12 @@ public class SoftwaresTools {
                 searchSoftwareInput.addAttribute("placeholder", Context.tr("Choose a software"));
                 searchSoftwareInput.addAttribute("autocomplete", "off");
                 softwareChooserBlock.add(searchSoftwareInput);
-                
+
                 createInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.HIDDEN_INPUT));
                 createInput.addAttribute("name", name);
                 createInput.setId("software_chooser_create");
                 softwareChooserBlock.add(createInput);
-                
+
 
                 fallbackSelectElement = new HtmlGenericElement("select");
                 fallbackSelectElement.setId("software_chooser_fallback");
@@ -219,21 +219,21 @@ public class SoftwaresTools {
                 if (checkedElement != null) {
                     checkedElement.addAttribute("selected", "selected");
                 }
-                
+
 
             }
-            
+
             public void setNewSoftwareDefaultValue(String suggestedValue) {
                 createInput.addAttribute("value", suggestedValue);
             }
-            
+
             public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
                 if(suggestedValue.equals("true")) {
-                    checkboxInput.addAttribute("checked", "checked");    
+                    checkboxInput.addAttribute("checked", "checked");
                 }
-                
+
             }
-            
+
 
             @Override
             public HtmlElement getContentElement() {
@@ -251,9 +251,9 @@ public class SoftwaresTools {
 
         }
 
-        
 
-        
+
+
 
     }
 

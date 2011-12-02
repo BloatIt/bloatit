@@ -19,12 +19,12 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
  * Class used to created html textarea blocks
  * </p>
  * <p>
- * 
+ *
  * <pre>
  * <div>
  *      <div>
  * <label for="...">labeltext</label>
- * 
+ *
  * </p>
  * <div> <textarea name="..." class="cssClass" ...>defaultValue</textarea>
  * </div> </div> </pre> </p>
@@ -47,7 +47,7 @@ public final class HtmlTextArea extends HtmlStringFormField {
     }
 
     @Override
-    protected void doSetDefaultValue(final String value) {
+    protected void doSetDefaultStringValue(final String value) {
         ((HtmlSimpleTextArea) this.inputBlock.getInputElement()).setDefaultValue(value);
     }
 }

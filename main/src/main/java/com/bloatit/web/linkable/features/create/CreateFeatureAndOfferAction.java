@@ -30,6 +30,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
@@ -59,42 +61,62 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @NonOptional(@tr("You forgot to write a title"))
     @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
+    @FormField(label = @tr("Title"))
+    @FormComment(@tr("The feature title should clearly show the feature specificities"))
     private final String description;
 
+    @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a specification"))
     @MinConstraint(min = 10, message = @tr("The specification must have at least %constraint% chars."))
     @MaxConstraint(max = 800000, message = @tr("The specification must be %constraint% chars length max."))
-    @RequestParam(role = Role.POST)
+    @FormField(label = @tr("Description"))
+    @FormComment(@tr("Describe the feature and your offer. This description must be accurate because it will be used to validate the conformity at the end of the development."))
     private final String specification;
 
     @RequestParam(role = Role.POST, message = @tr("Invalid value for price field."))
     @NonOptional(@tr("You must set a price to your offer."))
     @MinConstraint(min = 1, message = @tr("The price must be greater to %constraint%."))
+    @FormField(label = @tr("Offer price"))
+    @FormComment(@tr("The price is in euros (€) and can't contains cents."))
     private final BigDecimal price;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must set an expiration date."))
+    @FormField(label = @tr("Release date"))
+    @FormComment(@tr("You will have to release this feature before the release date."))
     private final DateLocale expiryDate;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a license to your offer."))
+    @FormField(label = @tr("License"))
     private final String license;
 
     @RequestParam(role = Role.POST, suggestedValue = "7")
     @NonOptional(@tr("You must set a days count for validation."))
     @MinConstraint(min = 1, message = @tr("The validation time must be greater to %constraint%."))
+    @FormField(label = @tr("Days before validation"))
+    @FormComment(@tr("The number of days to wait before this offer is can be validated. During this time users can add bugs un the bug tracker. Fatal bugs have to be closed before the validation."))
     private final Integer daysBeforeValidation;
 
     @Optional
     @RequestParam(role = Role.POST, suggestedValue = "100")
     @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to %constraint%."))
     @MaxConstraint(max = 100, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to %constraint%."))
+    @FormField(label = @tr("Percent gained when no FATAL bugs"))
+    @FormComment(@tr("If you want to add some warranty to the contributor you can say that you want to gain less than 100% "
+            + "of the amount on this feature request when all the FATAL bugs are closed. "
+            + "The money left will be transfered when all the MAJOR bugs are closed. If you specify this field, you have to specify the next one on MAJOR bug percent. "
+            + "By default, all the money on this feature request is transfered when all the FATAL bugs are closed."))
     private final Integer percentFatal;
 
     @RequestParam(role = Role.POST, suggestedValue = "0")
     @Optional
     @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to %constraint%."))
     @MaxConstraint(max = 100, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to %constraint%."))
+    @FormField(label = @tr("Percent gained when no MAJOR bugs"))
+    @FormComment(@tr("If you specified a value for the 'FATAL bugs percent', you have to also specify one for the MAJOR bugs. "
+            + "You can say that you want to gain less than 100% of the amount on this offer when all the MAJOR bugs are closed. "
+            + "The money left will be transfered when all the MINOR bugs are closed. Make sure that (FATAL percent + MAJOR percent) <= 100."))
     private final Integer percentMajor;
 
     @RequestParam(role = Role.POST, suggestedValue = "true")
@@ -102,6 +124,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
 
     @Optional
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("Software"))
     private final Software software;
 
     @Optional

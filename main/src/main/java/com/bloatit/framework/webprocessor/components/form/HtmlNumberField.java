@@ -16,18 +16,15 @@
 //
 package com.bloatit.framework.webprocessor.components.form;
 
-import java.math.BigDecimal;
-
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 
 /**
  * <p>
  * A field used to ask the user to input an amount of money
  * </p>
  */
-public class HtmlMoneyField extends HtmlFormField {
+public class HtmlNumberField extends HtmlFormField {
 
     /**
      * <p>
@@ -36,7 +33,7 @@ public class HtmlMoneyField extends HtmlFormField {
      *
      * @param name the value of the html attribute <code>name</code>
      */
-    public HtmlMoneyField(final String name) {
+    public HtmlNumberField(final String name) {
         super(new InputField(), name);
     }
 
@@ -51,7 +48,6 @@ public class HtmlMoneyField extends HtmlFormField {
             input.addAttribute("autocomplete", "off");
             input.addAttribute("pattern", "[0-9., \\-]*");
             content.add(input);
-            content.add(new HtmlText("€"));
         }
 
         @Override
@@ -75,12 +71,8 @@ public class HtmlMoneyField extends HtmlFormField {
      * @param name the value of the html attribute <code>name</code>
      * @param label some text displayed to explain how to use the field
      */
-    public HtmlMoneyField(final String name, final String label) {
+    public HtmlNumberField(final String name, final String label) {
         super(new InputField(), name, label);
-    }
-
-    public void setDefaultValue(final BigDecimal value) {
-        setDefaultValue(value.toPlainString());
     }
 
     @Override

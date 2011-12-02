@@ -83,7 +83,7 @@ public class WithdrawMoneyPage extends LoggedElveosPage {
         // IBAN
         final FieldData IBANData = targetUrl.getIBANParameter().pickFieldData();
         final HtmlTextField ibanInput = new HtmlTextField(IBANData.getName(), tr("IBAN: "));
-        ibanInput.setDefaultStringValue(IBANData.getSuggestedValue());
+        ibanInput.setDefaultValue(IBANData.getSuggestedValue());
         ibanInput.turnOffAutoComplete();
         form.add(ibanInput);
 

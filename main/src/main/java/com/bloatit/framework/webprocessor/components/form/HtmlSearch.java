@@ -12,7 +12,7 @@ public class HtmlSearch extends HtmlStringFormField {
     }
 
     @Override
-    protected void doSetDefaultValue(final String value) {
+    protected void doSetDefaultStringValue(final String value) {
         addAttribute("value", value);
     }
 }

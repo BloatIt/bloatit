@@ -85,12 +85,12 @@ public final class ModifyContactPage extends LoggedElveosPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateInvoicingContactForm(loggedUser));
-        
-        
+
+
         if (process.getNeedAllInfos()) {
             layout.addRight(new SideBarDocumentationBlock("invoice_id_template"));
         }
-        
+
         return layout;
     }
 
@@ -127,7 +127,7 @@ public final class ModifyContactPage extends LoggedElveosPage {
             } else {
                 isCompanyCheckbox.setDefaultValue(isCompanyData.getSuggestedValue());
             }
-            
+
             // Name
             final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
 
@@ -190,9 +190,9 @@ public final class ModifyContactPage extends LoggedElveosPage {
             } else {
                 countryInput.setDefaultValue(countryData.getSuggestedValue());
             }
-            
+
             newContactForm.add(countryInput);
-            
+
             // Tax identification
             HtmlTextField taxField = generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
                               Context.tr("VAT identification number"),//
@@ -222,14 +222,14 @@ public final class ModifyContactPage extends LoggedElveosPage {
                                                    Context.tr("Next Invoice ID number"),//
                                                    invoiceIdNumberText, Context.tr("ID that will be used for the next generated invoice.")));
 
-                
+
                 // Invoice ID template
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
                                                    Context.tr("Invoice ID template"),//
                                                    contact.getInvoiceIdTemplate(), Context.tr("Format of the generated invoice numbers. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'")));
-                
-                
-                
+
+
+
                 // Legal identification
                 specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getLegalIdParameter(),//
                                                    Context.tr("Legal identification"),//
@@ -241,7 +241,7 @@ public final class ModifyContactPage extends LoggedElveosPage {
                 if (fieldDataTaxRate.getSuggestedValue() == null) {
                     BigDecimal taxRate = contact.getTaxRate();
                     if(taxRate != null) {
-                        inputTaxRate.setDefaultStringValue(taxRate.multiply(new BigDecimal("100")));
+                        inputTaxRate.setDefaultValue(taxRate.multiply(new BigDecimal("100")));
                     }
                 } else {
                     inputTaxRate.setDefaultValue(fieldDataTaxRate.getSuggestedValue());

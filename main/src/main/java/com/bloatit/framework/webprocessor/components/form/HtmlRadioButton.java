@@ -15,7 +15,7 @@ package com.bloatit.framework.webprocessor.components.form;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 
-final class HtmlRadioButton extends HtmlFormField<Boolean> {
+final class HtmlRadioButton extends HtmlFormField {
 
     public HtmlRadioButton(final String name, final String value, final LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, position);
@@ -32,11 +32,8 @@ final class HtmlRadioButton extends HtmlFormField<Boolean> {
         addAttribute("value", value);
     }
 
-    @Override
-    protected void doSetDefaultValue(final Boolean value) {
-        if (value.booleanValue()) {
-            addAttribute("checked", "checked");
-        }
+    protected void setDefaultValue(final Boolean value) {
+        setDefaultValue(value.toString());
     }
 
     @Override

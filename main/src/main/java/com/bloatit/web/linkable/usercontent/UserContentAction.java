@@ -26,6 +26,9 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
@@ -47,6 +50,8 @@ public abstract class UserContentAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Description language"))
+    @FormComment(@tr("The language of the title and description. These texts can be translated in other language later."))
     private final Locale locale;
 
     @RequestParam(name = "attachment", role = Role.POST)

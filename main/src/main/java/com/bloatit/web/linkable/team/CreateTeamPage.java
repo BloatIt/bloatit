@@ -125,7 +125,7 @@ public final class CreateTeamPage extends LoggedElveosPage {
         rightInput.setDefaultValue(rightData.getSuggestedValue());
         rightInput.setComment(Context.tr("\"Open to all\" teams can be joined by anybody without an invitation."));
         if (rightData.getSuggestedValue() != null) {
-            rightInput.setDefaultStringValue(rightData.getSuggestedValue());
+            rightInput.setDefaultValue(rightData.getSuggestedValue());
         }
         form.add(rightInput);
 

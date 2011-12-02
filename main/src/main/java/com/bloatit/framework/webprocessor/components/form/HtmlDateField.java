@@ -30,9 +30,14 @@ import com.bloatit.web.WebConfiguration;
  * Class used to create input fields used to input date
  * </p>
  */
-public final class HtmlDateField extends HtmlFormField<DateLocale> {
+public final class HtmlDateField extends HtmlFormField {
     private static final String DEFAULT_LOCALE = "en";
     private final String locale;
+
+    public HtmlDateField(final String name) {
+        super(new DateInputBlock("en", "datepicker_" + new RandomString(10).nextString()), name);
+        locale = "en";
+    }
 
     public HtmlDateField(final String name, final Locale userLocale) {
         super(new DateInputBlock(userLocale.getLanguage(), "datepicker_" + new RandomString(10).nextString()), name);
@@ -44,9 +49,8 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
         locale = userLocale.getLanguage();
     }
 
-    @Override
-    protected void doSetDefaultValue(final DateLocale value) {
-        addAttribute("value", value.toString(DateLocale.FormatStyle.SHORT));
+    protected void setDefaultValue(final DateLocale value) {
+        setDefaultValue(value.toString(DateLocale.FormatStyle.SHORT));
     }
 
     @Override
@@ -79,7 +83,7 @@ class DateInputBlock extends InputBlock {
     private final HtmlScript script;
     public DateInputBlock(final String languageCode, final String id) {
         container = new PlaceHolderElement();
-        input = new HtmlSimpleInput("text");
+        input = new HtmlSimpleInput("date");
         input.addAttribute("autocomplete", "off");
         input.addAttribute("placeholder", Context.tr("yyyy-mm-dd"));
         input.setId(id);
@@ -91,7 +95,7 @@ class DateInputBlock extends InputBlock {
         container.add(script);
         container.add(input);
 
-        
+
     }
 
     @Override

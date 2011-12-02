@@ -113,11 +113,11 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }
-        
+
         if (newSoftwareNameFieldData.getSuggestedValue() != null) {
             softwareInput.setNewSoftwareDefaultValue(newSoftwareNameFieldData.getSuggestedValue());
         }
-        
+
         if (newSoftwareFieldData.getSuggestedValue() != null) {
             softwareInput.setNewSoftwareCheckboxDefaultValue(newSoftwareFieldData.getSuggestedValue());
         }
@@ -139,14 +139,14 @@ public final class CreateFeaturePage extends CreateUserContentPage {
                                                                      SPECIF_INPUT_NB_COLUMNS);
         //@formatter:off
         final String suggestedValue = tr(
-                "Be precise, don't forget to specify :\n" + 
-        		" - The expected result\n" + 
+                "Be precise, don't forget to specify :\n" +
+        		" - The expected result\n" +
         		" - On which system it has to work (Windows/Mac/Linux ...)\n" +
-        		" - When do you want to have the result\n" + 
+        		" - When do you want to have the result\n" +
         		" - In which free license the result must be.\n" +
-        		"\n" + 
+        		"\n" +
         		"You can also join a diagram, or a design/mockup of the expected user interface.\n" +
-        		"\n" + 
+        		"\n" +
         		"Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
         		);
         //@formatter:on

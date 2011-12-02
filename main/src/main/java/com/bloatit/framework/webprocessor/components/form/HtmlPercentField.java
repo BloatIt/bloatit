@@ -27,13 +27,13 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlText;
  * A field used to ask the user to input an amount of money
  * </p>
  */
-public class HtmlPercentField extends HtmlFormField<BigDecimal> {
+public class HtmlPercentField extends HtmlFormField {
 
     /**
      * <p>
      * Creates a money field with a given <code>name</code>
      * </p>
-     * 
+     *
      * @param name the value of the html attribute <code>name</code>
      */
     public HtmlPercentField(final String name) {
@@ -70,7 +70,7 @@ public class HtmlPercentField extends HtmlFormField<BigDecimal> {
      * Creates a money field with a given <code>name</code> and some text used
      * to explain the usage of the field
      * </p>
-     * 
+     *
      * @param name the value of the html attribute <code>name</code>
      * @param label some text displayed to explain how to use the field
      */
@@ -79,12 +79,11 @@ public class HtmlPercentField extends HtmlFormField<BigDecimal> {
     }
 
     @Override
-    protected void doSetDefaultValue(final BigDecimal value) {
-        addAttribute("value", ""+value.floatValue());
-    }
-
-    @Override
     protected void doSetDefaultStringValue(final String defaultValueAsString) {
         addAttribute("value", defaultValueAsString);
+    }
+
+    public void setDefaultValue(final BigDecimal value) {
+        setDefaultValue(value.toPlainString());
     }
 }

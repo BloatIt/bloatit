@@ -31,6 +31,14 @@ public class LanguageSelector extends HtmlDropDown {
     private static final String DEFAULT_LANG = "en";
     private final Set<String> codes = new HashSet<String>();
 
+    public LanguageSelector(final String name) {
+        super(name);
+        for (final Entry<String, String> langEntry : AvailableLocales.getAvailableLangs().entrySet()) {
+            codes.add(langEntry.getKey());
+            addDropDownElement(langEntry.getKey(), langEntry.getValue());
+        }
+    }
+
     public LanguageSelector(final String name, final String label) {
         super(name, label);
         for (final Entry<String, String> langEntry : AvailableLocales.getAvailableLangs().entrySet()) {
@@ -40,11 +48,11 @@ public class LanguageSelector extends HtmlDropDown {
     }
 
     @Override
-    protected void doSetDefaultValue(final String value) {
+    protected void doSetDefaultStringValue(final String value) {
         if (codes.contains(value)) {
-            super.doSetDefaultValue(value);
+            super.setDefaultValue(value);
         } else {
-            super.doSetDefaultValue(DEFAULT_LANG);
+            super.setDefaultValue(DEFAULT_LANG);
         }
     }
 
@@ -58,10 +66,10 @@ public class LanguageSelector extends HtmlDropDown {
         }
         for (final String lang : langs) {
             if (lang != null && !lang.isEmpty()) {
-                setDefaultStringValue(lang);
+                setDefaultValue(lang);
                 return;
             }
         }
-        setDefaultStringValue("en");
+        setDefaultValue("en");
     }
 }

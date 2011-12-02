@@ -73,11 +73,6 @@ public class MarkdownEditor extends HtmlStringFormField {
     }
 
     @Override
-    protected void doSetDefaultValue(final String value) {
-        ((HtmlTextArea) inputBlock.getInputElement()).setDefaultValue(value);
-    }
-
-    @Override
     public void setComment(final HtmlNode comment) {
         ((HtmlTextArea) inputBlock.getInputElement()).setComment(comment);
     }
@@ -112,4 +107,10 @@ public class MarkdownEditor extends HtmlStringFormField {
             return container;
         }
     }
+
+    @Override
+    protected void doSetDefaultStringValue(String value) {
+        ((HtmlTextArea) getInputBlock().getInputElement()).setDefaultValue(value);
+    }
+
 }

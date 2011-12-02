@@ -57,7 +57,6 @@ public class JsShowHide {
     }
 
     public void apply() {
-
         if (!state && hasFallback) {
             for (final HtmlElement listener : listeners) {
                 listener.addAttribute("style", "display: none;");
@@ -90,7 +89,6 @@ public class JsShowHide {
 
             scriptableElement.add(script);
         }
-
     }
 
     private void prepareIds() {
