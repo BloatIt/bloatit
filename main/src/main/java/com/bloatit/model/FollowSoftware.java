@@ -52,8 +52,8 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
         return getDao().getFollower();
     }
 
-    public final DaoSoftware getFollowed() {
-        return getDao().getFollowed();
+    public final Software getFollowed() {
+        return Software.create(getDao().getFollowed());
     }
 
     public final boolean isMail() {

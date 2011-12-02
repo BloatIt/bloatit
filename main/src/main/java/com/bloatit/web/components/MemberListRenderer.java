@@ -39,10 +39,9 @@ public class MemberListRenderer implements HtmlRenderer<Member> {
         final HtmlDiv box = new HtmlDiv("actor-box");
 
         box.add(new HtmlDiv("actor-box-avatar").add(MembersTools.getMemberAvatar(member)));
-        
+
         HtmlDiv content = new HtmlDiv("actor-box-content");
         box.add(content);
-        
 
         // Name
         final HtmlDiv nameBox = new HtmlDiv("actor-box-actor-name");
@@ -55,20 +54,33 @@ public class MemberListRenderer implements HtmlRenderer<Member> {
         nameBox.add(htmlLink);
         nameBox.add(karma);
         content.add(nameBox);
-        
+
         // Subtitle
         HtmlDiv subtitle = new HtmlDiv("actor-box-subtitle");
         content.add(subtitle);
-        
-        if(member.getOffers(false).size() > 0) {
-            subtitle.addText(Context.tr("Developer"));
-        } else if(member.getContributions().size() > 0) {
+
+        boolean isContributor = false;
+        boolean isDeveloper = false;
+
+        if (member.getOffers(false).size() > 0) {
+            isDeveloper = true;
+
+        }
+        if (member.getContributions().size() > 0) {
+            isContributor = true;
+        }
+
+        if (isContributor && isDeveloper) {
+            subtitle.addText(Context.tr("Developer and contributor"));
+        } else if (isContributor) {
             subtitle.addText(Context.tr("Contributor"));
+        } else if (isDeveloper) {
+            subtitle.addText(Context.tr("Developer"));
         }
 
         // Follow
         content.add(new HtmlFollowActorButton(member));
-        
+
         return box;
     }
 }

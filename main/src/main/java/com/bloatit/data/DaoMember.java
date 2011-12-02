@@ -1088,6 +1088,18 @@ public class DaoMember extends DaoActor {
     public PageIterable<DaoExternalServiceMembership> getAuthorizedExternalServices() {
         return new MappedList<DaoExternalServiceMembership>(authorizedExternalServices);
     }
+    
+    public PageIterable<DaoFollowFeature> getFollowedFeatures() {
+        return new MappedList<DaoFollowFeature>(followedFeatures);
+    }
+    
+    public PageIterable<DaoFollowActor> getFollowedActors() {
+        return new MappedList<DaoFollowActor>(followedActors);
+    }
+    
+    public PageIterable<DaoFollowSoftware> getFollowedSoftware() {
+        return new MappedList<DaoFollowSoftware>(followedSoftware);
+    }
 
     public EnumSet<RightLevel> getExternalServiceRights(final String token) {
         final DaoExternalServiceMembership externalService = (DaoExternalServiceMembership) SessionManager.getNamedQuery("externalServiceMembership.getByToken")

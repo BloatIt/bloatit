@@ -74,7 +74,7 @@ public final class FollowSoftwareAction extends LoggedElveosAction {
 
     @Override
     protected String getRefusalReason() {
-        return "You must be logged to set your timeline as read";
+        return "You must be logged to follow something";
     }
 
     @Override

@@ -94,7 +94,7 @@ public class DaoFollowSoftware extends DaoIdentifiable {
      */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
-        return null;
+        return visitor.visit(this);
     }
 
     // ======================================================================

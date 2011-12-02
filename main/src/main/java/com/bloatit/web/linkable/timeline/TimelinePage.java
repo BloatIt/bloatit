@@ -41,6 +41,8 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
+import com.bloatit.web.url.CreateFeatureProcessUrl;
+import com.bloatit.web.url.ManageFollowPageUrl;
 import com.bloatit.web.url.ReadTimelineActionUrl;
 import com.bloatit.web.url.TimelinePageUrl;
 
@@ -88,7 +90,7 @@ public final class TimelinePage extends LoggedElveosPage {
                 menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgIdeaSmall()), Context.tr("Request a feature")));
                 final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
                 menuBarItemNewFeature.add(menuBarItemLink);
-                menuBarItemLink.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Request a feature")));
+                menuBarItemLink.add(new CreateFeatureProcessUrl().getHtmlLink(Context.tr("Request a feature")));
             }
 
             final HtmlDiv menuBarItemManageFollow = new HtmlDiv("menu_bar_item");
@@ -99,7 +101,7 @@ public final class TimelinePage extends LoggedElveosPage {
                 menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgManageSmall()), Context.tr("Manage follows")));
                 final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
                 menuBarItemManageFollow.add(menuBarItemLink);
-                menuBarItemLink.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Manage follows")));
+                menuBarItemLink.add(new ManageFollowPageUrl().getHtmlLink(Context.tr("Manage follows")));
             }
 
             final HtmlDiv menuBarItemManageNotif = new HtmlDiv("menu_bar_item");
@@ -341,7 +343,7 @@ public final class TimelinePage extends LoggedElveosPage {
         return TimelinePage.generateBreadcrumb();
     }
 
-    private static Breadcrumb generateBreadcrumb() {
+    static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new TimelinePageUrl().getHtmlLink(tr("Timeline")));

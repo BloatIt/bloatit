@@ -29,6 +29,9 @@ import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFollow;
+import com.bloatit.data.DaoFollowActor;
+import com.bloatit.data.DaoFollowFeature;
+import com.bloatit.data.DaoFollowSoftware;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoImage;
 import com.bloatit.data.DaoInternalAccount;
@@ -319,5 +322,21 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     public Identifiable<?> visit(DaoEvent daoEvent) {
         return Event.create(daoEvent);
     }
+    
+    @Override
+    public Identifiable<?> visit(DaoFollowActor daoFollow) {
+        return FollowActor.create(daoFollow);
+    }
+    
+    @Override
+    public Identifiable<?> visit(DaoFollowFeature daoFollow) {
+        return FollowFeature.create(daoFollow);
+    }
+    
+    @Override
+    public Identifiable<?> visit(DaoFollowSoftware daoFollow) {
+        return FollowSoftware.create(daoFollow);
+    }
+    
 
 }

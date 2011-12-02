@@ -168,6 +168,7 @@ import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.linkable.timeline.FollowActorAction;
 import com.bloatit.web.linkable.timeline.FollowFeatureAction;
 import com.bloatit.web.linkable.timeline.FollowSoftwareAction;
+import com.bloatit.web.linkable.timeline.ManageFollowPage;
 import com.bloatit.web.linkable.timeline.ReadTimelineAction;
 import com.bloatit.web.linkable.timeline.TimelinePage;
 import com.bloatit.web.linkable.translation.TranslateAction;
@@ -368,6 +369,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (TimelinePageUrl.matches(pageCode)) {
             return new TimelinePage(new TimelinePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ManageFollowPageUrl.matches(pageCode)) {
+            return new ManageFollowPage(new ManageFollowPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////

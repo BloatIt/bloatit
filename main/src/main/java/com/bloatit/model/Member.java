@@ -27,6 +27,9 @@ import org.apache.commons.lang.RandomStringUtils;
 import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalServiceMembership;
+import com.bloatit.data.DaoFollowActor;
+import com.bloatit.data.DaoFollowFeature;
+import com.bloatit.data.DaoFollowSoftware;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoInternalAccount;
@@ -379,6 +382,8 @@ public final class Member extends Actor<DaoMember> implements User {
         FollowActor followActor = followOrGetActor(a);
         followActor.getDao().unfollow();
     }
+    
+    
 
     public void setLastWatchedEvents(Date lastWatchedEvents) {
         getDao().setLastWatchedEvents(lastWatchedEvents);
@@ -617,6 +622,18 @@ public final class Member extends Actor<DaoMember> implements User {
         return new ListBinder<ExternalServiceMembership, DaoExternalServiceMembership>(getDao().getAuthorizedExternalServices());
     }
 
+    public PageIterable<FollowFeature> getFollowedFeatures() {
+        return new ListBinder<FollowFeature, DaoFollowFeature>(getDao().getFollowedFeatures());
+    }
+    
+    public PageIterable<FollowActor> getFollowedActors() {
+        return new ListBinder<FollowActor, DaoFollowActor>(getDao().getFollowedActors());
+    }
+    
+    public PageIterable<FollowSoftware> getFollowedSoftware() {
+        return new ListBinder<FollowSoftware, DaoFollowSoftware>(getDao().getFollowedSoftware());
+    }
+    
     public void addAuthorizedExternalService(String clientId, String token, EnumSet<RightLevel> rights) {
         getDao().addAuthorizedExternalService(clientId, token, rights);
     }

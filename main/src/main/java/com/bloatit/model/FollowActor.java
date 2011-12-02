@@ -52,8 +52,8 @@ public final class FollowActor extends Identifiable<DaoFollowActor> {
         return getDao().getFollower();
     }
 
-    public final DaoActor getFollowed() {
-        return getDao().getFollowed();
+    public final Actor<?> getFollowed() {
+        return Actor.getActorFromDao(getDao().getFollowed());
     }
 
     public final boolean isMail() {
