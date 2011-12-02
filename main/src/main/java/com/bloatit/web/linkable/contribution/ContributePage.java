@@ -98,7 +98,7 @@ public final class ContributePage extends ElveosPage {
             contributionValue = process.getAmount();
         }
         contribInput.addErrorMessages(amountData.getErrorMessages());
-        contribInput.setComment(Context.tr("The minimum is 1€. Don't use cents. Elveos takes 10&nbsp;% + 0,30&nbsp;€ for fees."));
+        contribInput.setComment(Context.tr("The minimum is 1&nbsp;€. Don't use cents. Elveos takes a 10&nbsp;% + 0,30&nbsp;€ fee."));
 
         if (AuthToken.isAuthenticated()) {
             // Input field : As team

@@ -31,6 +31,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.components.HtmlFollowButton.HtmlFollowActorButton;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
@@ -108,6 +109,7 @@ public final class MembersListPage extends ElveosPage {
             box.add(new HtmlDiv("member_avatar").add(MembersTools.getMemberAvatar(member)));
             
             box.add(new HtmlClearer());
+            box.add(new HtmlFollowActorButton(member));
 
             return box;
         }

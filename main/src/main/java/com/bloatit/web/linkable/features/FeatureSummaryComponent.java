@@ -51,6 +51,8 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlAuthorLink;
+import com.bloatit.web.components.HtmlFollowButton;
+import com.bloatit.web.components.HtmlFollowButton.HtmlFollowFeatureButton;
 import com.bloatit.web.linkable.master.HtmlPageComponent;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
@@ -181,6 +183,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_share
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
+                        HtmlFollowButton followFeature = new HtmlFollowFeatureButton(feature);
+                        featureSummaryShare.add(followFeature);
                         // final HtmlLink showHideShareBlock = new HtmlLink("#",
                         // Context.tr("+ Share"));
                         // shareBlockShowHide.addActuator(showHideShareBlock);

@@ -19,6 +19,8 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Image;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
+import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
@@ -64,7 +66,7 @@ public class EventFeatureComponent extends HtmlDiv {
             format.setMinimumFractionDigits(0);
             progressBarText.add(new HtmlDiv("event-progress-percent").addText( format.format(f.getProgression()) + " %"));
             progressBarText.add(new HtmlDiv("event-progress-pledged").add(new MoneyDisplayComponent(f.getSelectedOffer().getAmount(), l))
-                                                                     .addText(l.tr("pledged")));
+                                                                     .addText(l.tr("requested")));
         } else if (f.getFeatureState() == FeatureState.DEVELOPPING) {
             progressBarText.add(new HtmlDiv("event-progress-money").add(new MoneyDisplayComponent(f.getContribution(), l)).addText(l.tr("financed")));
             progressBarText.add(new HtmlDiv("event-progress-developing").addText(l.tr("In development")));
@@ -94,7 +96,7 @@ public class EventFeatureComponent extends HtmlDiv {
         HtmlDiv description = new HtmlDiv("event-feature-description");
         super.add(description);
         
-        description.add(new HtmlTitle(2).addText(f.getTitle(l.getLocale())));
+        description.add(new HtmlTitle(2).add(new FeaturePageUrl(f, FeatureTabKey.description).getHtmlLink(f.getTitle(l.getLocale()))));
         entriesDiv = new HtmlDiv("event-feature-entries");
         description.add(entriesDiv);
      

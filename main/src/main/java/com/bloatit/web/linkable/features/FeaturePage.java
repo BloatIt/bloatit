@@ -52,7 +52,8 @@ public final class FeaturePage extends ElveosPage {
     private FeatureTabPane featureTabPane;
 
     @SuppressWarnings("unused")
-    //@RequestParam(role = Role.PRETTY, generatedFrom = "feature.getDescription().getTranslationOrDefault(feature.getDescription().getDefaultlanguage())")
+    // @RequestParam(role = Role.PRETTY, generatedFrom =
+    // "feature.getDescription().getTranslationOrDefault(feature.getDescription().getDefaultlanguage())")
     @RequestParam(role = Role.PRETTY, generatedFrom = "feature")
     @Optional("Title")
     private final String title;
@@ -176,8 +177,10 @@ public final class FeaturePage extends ElveosPage {
     @Override
     protected String createPageTitle() {
         if (feature != null) {
-            String featureTitle = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle();
-            
+            String featureTitle = feature.getDescription()
+                                         .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()))
+                                         .getTitle();
+
             if (feature.getSoftware() == null) {
                 return featureTitle;
             } else {
@@ -195,11 +198,9 @@ public final class FeaturePage extends ElveosPage {
         }
         String str = null;
         if (feature.getSoftware() != null) {
-            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {1} - {0}",
-                             title,
-                             feature.getSoftware().getName());
+            str = Context.tr("Elveos offers you to help finance: {0} in {1}", title, feature.getSoftware().getName());
         } else {
-            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0}", title);
+            str = Context.tr("Elveos offers you to help finance: {0}", title);
         }
         return HtmlUtils.htmlEscape(str);
     }

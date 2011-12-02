@@ -41,6 +41,7 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlFeatureSummary;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
+import com.bloatit.web.components.HtmlFollowButton.HtmlFollowSoftwareButton;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -116,6 +117,7 @@ public final class SoftwarePage extends ElveosPage {
             final HtmlDiv modify = new HtmlDiv("float_right");
             softwarePage.add(modify);
             modify.add(new ModifySoftwarePageUrl(software).getHtmlLink(Context.tr("Modify software description")));
+            modify.add(new HtmlFollowSoftwareButton(software));
         }
 
         PageIterable<Feature> features = software.getFeatures();

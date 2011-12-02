@@ -89,7 +89,7 @@ public class DateUtils {
         return nowPlusSomeYears(1000);
     }
     
-    public static Date dawnoftime() {
+    public static Date dawnOfTime() {
         return nowMinusSomeYears(1000);
     }
 
