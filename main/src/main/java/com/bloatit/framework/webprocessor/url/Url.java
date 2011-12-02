@@ -81,6 +81,8 @@ public abstract class Url implements Cloneable {
 
     public abstract Protocol getProtocol();
 
+    public abstract UrlParameter<?, ?> getParameter(String name);
+
     @Override
     public abstract Url clone();
 
@@ -186,5 +188,4 @@ public abstract class Url implements Cloneable {
     public final HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(urlString(), new HtmlText(text));
     }
-
 }
