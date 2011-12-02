@@ -1,7 +1,9 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Generator {
     public static enum Modifier {
@@ -34,8 +36,8 @@ public class Generator {
         private final String type;
         private Modifier modifier = Modifier.PUBLIC;
         private final List<Parameter> parameters = new ArrayList<Generator.Method.Parameter>();
+        private final Set<String> annotations = new HashSet<String>();
         private StringBuilder content = new StringBuilder();
-        private boolean override = false;
         private String staticFinal = "";
 
         public Method(final String type, final String name) {
@@ -52,7 +54,7 @@ public class Generator {
         }
 
         public void setOverride() {
-            this.override = true;
+            this.annotations.add("@Override");
         }
 
         public void setStaticFinal(final String stf) {
@@ -62,8 +64,8 @@ public class Generator {
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
-            if (override) {
-                sb.append("    @Override\n");
+            for (String ann : annotations) {
+                sb.append("    " + ann + "\n");
             }
             sb.append("    ").append(modifier.getName()).append(" ");
             if (!staticFinal.isEmpty()) {
@@ -88,6 +90,10 @@ public class Generator {
 
         public void setModifier(final Modifier modifier) {
             this.modifier = modifier;
+        }
+
+        public void addAnnotation(String string) {
+            annotations.add(string);
         }
     }
 
@@ -127,6 +133,7 @@ public class Generator {
         private boolean generateGetter;
         private boolean generateSetter;
         private boolean isStatic;
+        private Set<String> annotations = new HashSet<String>();
 
         public Attribute(final String type, final String name) {
             this.type = type;
@@ -156,6 +163,9 @@ public class Generator {
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
+            for (String anno : annotations) {
+                sb.append(anno + "\n");
+            }
             sb.append("private ");
             if (isStatic) {
                 sb.append("static ");
@@ -184,6 +194,10 @@ public class Generator {
                 sb.append(setter);
             }
             return sb.toString();
+        }
+
+        public void addAnnotation(String string) {
+            annotations.add(string);
         }
     }
 

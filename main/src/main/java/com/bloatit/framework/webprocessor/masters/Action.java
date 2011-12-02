@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.annotations.DefaultTranslator;
@@ -49,6 +50,9 @@ public abstract class Action implements Linkable {
         if (url != null) {
             if (url.isAction()) {
                 Log.framework().info("Execute chained action: " + url.urlString());
+                
+                ModelAccessor.flush();
+                
                 final Parameters parameters = url.getStringParameters();
 
                 final Linkable linkable = server.constructLinkable(url.getCode().toLowerCase(), parameters, session);

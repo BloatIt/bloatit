@@ -64,7 +64,7 @@ public class ContributionInvoicingProcess extends WebProcess {
     protected synchronized Url doProcess() {
         try {
             if(actor.hasInvoicingContact(true)) {
-                return new ContributionInvoicingInformationsPageUrl(this);
+                return new ContributionInvoicingInformationsPageUrl(false, this);
             } else {
                 ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor, this);
                 modifyInvoicingContactProcessUrl.setNeedAllInfos(true);
@@ -113,7 +113,7 @@ public class ContributionInvoicingProcess extends WebProcess {
     @Override
     protected synchronized Url notifyChildClosed(final WebProcess subProcess) {
         if (subProcess instanceof ModifyInvoicingContactProcess) {
-            return new ContributionInvoicingInformationsPageUrl(this);
+            return new ContributionInvoicingInformationsPageUrl(false, this);
         }
         return super.notifyChildClosed(subProcess);
     }

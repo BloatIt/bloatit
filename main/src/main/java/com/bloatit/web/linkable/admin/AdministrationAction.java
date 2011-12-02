@@ -60,7 +60,6 @@ public class AdministrationAction extends AdminAction {
     @SuppressWarnings("unused")
     private final AdministrationActionUrl url;
 
-    @SuppressWarnings("unchecked")
     public AdministrationAction(final AdministrationActionUrl url) {
         super(url);
         this.url = url;

@@ -28,4 +28,5 @@
     <include file="liquibase/remove-release-comment.xml" />
     <include file="liquibase/fix-release-description.xml" />
     <include file="liquibase/add-date-event-member.xml" />
+    <include file="liquibase/remove-not-null-constraint-on-software-event.xml" />
 </databaseChangeLog>

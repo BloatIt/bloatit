@@ -318,7 +318,10 @@ public final class Contact {
 
                 DecimalFormat df = new DecimalFormat(multiply("0", length));
 
-                this.output = matcher.group(1) + df.format(value) + matcher.group(5);
+                String formated = df.format(value);
+                
+                
+                this.output = matcher.group(1) + df.format(value).substring(formated.length()-length,formated.length()) + matcher.group(5);
             }
 
         }

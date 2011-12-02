@@ -91,7 +91,7 @@ public class BloatitExampleDB { // NO_UCD
         yoann.getContact().setStreet("Palais royal");
         yoann.getContact().setCity("Celesteville");
         yoann.getContact().setPostalCode("NA");
-        yoann.getContact().setCountry("Canada");
+        yoann.getContact().setCountry("CA");
         yoann.getContact().setIsCompany(false);
         celeste = createMember("celeste", "Céleste", Locale.UK);
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
@@ -104,20 +104,20 @@ public class BloatitExampleDB { // NO_UCD
         thomas.getContact().setStreet("Rue Michel Ange");
         thomas.getContact().setCity("Antony");
         thomas.getContact().setPostalCode("92160");
-        thomas.getContact().setCountry("France");
+        thomas.getContact().setCountry("FR");
         AuthToken.authenticate(yoann);
         yoann.getContact().setName("Yoann Plénet");
         yoann.getContact().setStreet("Le superbe appartement à gauche");
         yoann.getContact().setCity("Antony");
         yoann.getContact().setPostalCode("92160");
-        yoann.getContact().setCountry("Allemagne");
+        yoann.getContact().setCountry("DE");
         yoann.getContact().setIsCompany(true);
         AuthToken.authenticate(cerbere);
         cerbere.getContact().setName("Cerbère Le Chien");
         cerbere.getContact().setStreet("666, quai du Styx");
         cerbere.getContact().setCity("Tartare");
         cerbere.getContact().setPostalCode("42666");
-        cerbere.getContact().setCountry("L'Enfer");
+        cerbere.getContact().setCountry("ES");
         cerbere.getContact().setIsCompany(true);
         cerbere.getContact().setLegalId("Hades & Fils");
         cerbere.getContact().setInvoiceIdNumber(new BigDecimal(5));
@@ -147,7 +147,7 @@ public class BloatitExampleDB { // NO_UCD
         giveMoney(cerbere, 1000);
         giveMoney(hydre, 500);
         giveMoney(elephantman, 100000000);
-        
+
 
         // Add withdrawal
         AuthToken.authenticate(fred);
@@ -176,7 +176,7 @@ public class BloatitExampleDB { // NO_UCD
         AuthToken.authenticate(yoann);
         other.setAvatar(getImage(yoann, "teams/other.png"));
         giveMoney(other, 2000);
-        
+
         b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
         AuthToken.authenticate(fred);
         b219.setAvatarUnprotected(getImage(fred, "teams/b219.png"));
@@ -199,7 +199,7 @@ public class BloatitExampleDB { // NO_UCD
         final Feature libreOfficeFeatureDefaultTemplate = generateLibreOfficeFeatureDefaultTemplate();
         final Feature perroquetFeatureArabicSupport = generatePerroquetFeatureArabicSupport();
         final Feature mageiaFeatureRemoveEmacs = generateMageiaFeatureRemoveEmacs();
-        final Feature mageiaFeatureRemoveEmacs2 = generateMageiaFeatureRemoveEmacs2();
+        generateMageiaFeatureRemoveEmacs2();
 
         // Highlight features
         new HighlightFeature(twoSubtitlesInVlcFeature, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
@@ -497,7 +497,7 @@ public class BloatitExampleDB { // NO_UCD
 
         return feature;
     }
-    
+
     public Feature generateMageiaFeatureRemoveEmacs2() throws UnauthorizedOperationException, NotEnoughMoneyException {
         // LibreOffice feature
 
@@ -520,10 +520,10 @@ public class BloatitExampleDB { // NO_UCD
         AuthToken.authenticate(thomas);
         AuthToken.setAsTeam(null);
         feature.addContribution(new BigDecimal("400"), "");
-        
+
         AuthToken.authenticate(elephantman);
         feature.addContribution(new BigDecimal("1"), "C'est symbolique !");
-        
+
         AuthToken.authenticate(yoann);
         AuthToken.setAsTeam(other);
         feature.addContribution(new BigDecimal("300"), "");
@@ -544,7 +544,6 @@ public class BloatitExampleDB { // NO_UCD
     }
 
     private void setFeatureInFinishedState(final Feature feature) {
-        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         AuthToken.authenticate(admin);
         try {
             feature.setFeatureState(FeatureState.DEVELOPPING);
@@ -592,7 +591,7 @@ public class BloatitExampleDB { // NO_UCD
         bankTransaction.getDao().setAuthorized();
         bankTransaction.getDao().setValidated();
     }
-    
+
     public void giveMoney(final Team team, final int amount) throws UnauthorizedOperationException {
 
         final BankTransaction bankTransaction = new BankTransaction("money !!!",

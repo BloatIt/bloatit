@@ -171,7 +171,7 @@ public class DaoEvent extends DaoIdentifiable {
     private DaoFeature feature;
     @ManyToOne(optional = false)
     private DaoActor actor;
-    @ManyToOne(optional = false)
+    @ManyToOne
     private DaoSoftware software;
 
     @ManyToOne
