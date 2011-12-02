@@ -26,6 +26,7 @@ import com.bloatit.framework.feedbackworker.FeedbackServer;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.model.Model;
 import com.bloatit.framework.model.ModelAccessor;
+import com.bloatit.framework.utils.IpLocator;
 import com.bloatit.framework.webprocessor.context.SessionCleanerTask;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
@@ -62,6 +63,7 @@ public class Framework {
             CommonConfiguration.load();
             FrameworkConfiguration.load();
             LocalesConfiguration.load();
+            IpLocator.initialize();
 
             mailServer.initialize();
             scgiServer.initialize();

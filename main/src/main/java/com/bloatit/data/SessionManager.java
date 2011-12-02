@@ -46,7 +46,7 @@ public class SessionManager {
 
     /**
      * Builds the session factory; Update the lucene index.
-     * 
+     *
      * @return the session factory
      */
     private static SessionFactory buildSessionFactory() {
@@ -69,7 +69,7 @@ public class SessionManager {
     /**
      * Create the configuration for hibernate sessionFactory. Handle the
      * encryptor to encrypt the db password in the hibernate.cfg.xml conf file.
-     * 
+     *
      * @return
      */
     private static Configuration createConfiguration() {
@@ -81,7 +81,7 @@ public class SessionManager {
 
     /**
      * Shortener to create a HQL query.
-     * 
+     *
      * @param str the Hql query string.
      * @return the query
      * @see org.hibernate.Session#createQuery(String)
@@ -92,7 +92,7 @@ public class SessionManager {
 
     /**
      * Shortener to create a Hql filter
-     * 
+     *
      * @param collection a mapped collection
      * @param str the filter
      * @return the query corresponding to that filter
@@ -104,7 +104,7 @@ public class SessionManager {
 
     /**
      * Shortener to get a HQL query by name.
-     * 
+     *
      * @param name the query name
      * @return the HQL query having this name.
      * @see org.hibernate.Session#getNamedQuery(String)
@@ -115,7 +115,7 @@ public class SessionManager {
 
     /**
      * singleton pattern implementation.
-     * 
+     *
      * @return the current hibernate session.
      */
     public static SessionFactory getSessionFactory() {
@@ -124,7 +124,7 @@ public class SessionManager {
 
     /**
      * Singleton pattern implementation.
-     * 
+     *
      * @return the current hibernate search session.
      */
     public static FullTextSession getCurrentFullTextSession() {
@@ -134,7 +134,7 @@ public class SessionManager {
     /**
      * Begin a work unit. You have to make sure this method is called before
      * using any hibernate related features. It begins a new transaction.
-     * 
+     *
      * @see org.hibernate.Session#beginTransaction()
      */
     public static void beginWorkUnit() {
@@ -145,7 +145,7 @@ public class SessionManager {
     /**
      * Close the current workunit. Try to commit the data to the db. If there is
      * an error everything is rollback.
-     * 
+     *
      * @see org.hibernate.Transaction#commit()
      * @see org.hibernate.Transaction#rollback()
      */
