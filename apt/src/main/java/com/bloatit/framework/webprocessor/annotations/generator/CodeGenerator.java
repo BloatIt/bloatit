@@ -191,6 +191,21 @@ public class CodeGenerator {
         }
         addParameter.addLine("component.addParameter(key, value);");
 
+        // @Override
+        // public UrlParameter<?, ?> getParameter(String name) {
+        // return null;
+        // }
+        Method getParameterMethod = clazz.addMethod("UrlParameter<?, ?>", "getParameter");
+        getParameterMethod.addParameter("String", "name");
+        getParameterMethod.setOverride();
+        addNamedParameter(getParameterMethod, desc.getComponent(), "");
+        addNameParameterComponents(desc.getComponent(), getParameterMethod, "");
+        if (desc.getFather() != null) {
+            getParameterMethod.addLine("return super.getParameter(name);");
+        } else {
+            getParameterMethod.addLine("return null;");
+        }
+
         final Method getMessages = clazz.addMethod("Messages", "getMessages");
         getMessages.setOverride();
         if (desc.getFather() != null) {
@@ -237,6 +252,22 @@ public class CodeGenerator {
         }
 
         return clazz;
+    }
+
+    private void addNameParameterComponents(final ComponentDescription componentDescription, Method getParameterMethod, String cmpName) {
+        for (ComponentDescription scomponents : componentDescription.getSubComponents()) {
+            cmpName += "get" + Utils.firstCharUpper(scomponents.getAttributeName()) + "Url().";
+            addNamedParameter(getParameterMethod, scomponents, cmpName);
+            addNameParameterComponents(scomponents, getParameterMethod, cmpName);
+        }
+    }
+
+    private void addNamedParameter(Method getParameterMethod, ComponentDescription scomponents, String cmpName) {
+        for (ParameterDescription param : scomponents.getParameters()) {
+            getParameterMethod.addLine("if (" + param.getNameStr() + ".equals(name)){");
+            getParameterMethod.addLine("    return " + cmpName + "get" + Utils.firstCharUpper(param.getAttributeName()) + "Parameter();");
+            getParameterMethod.addLine("}");
+        }
     }
 
     public Clazz generateComponentClass(final ComponentDescription desc) {
