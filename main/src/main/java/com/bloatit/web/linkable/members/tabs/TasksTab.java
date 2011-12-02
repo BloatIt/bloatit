@@ -75,7 +75,7 @@ public class TasksTab extends HtmlTab {
 
         if (member.getMilestoneToInvoice().size() > 0) {
 
-            final HtmlTitleBlock incoiving = new HtmlTitleBlock(Context.tr("Milestones to invoice"), 2);
+            final HtmlTitleBlock incoiving = new HtmlTitleBlock(Context.tr("Invoice to create"), 2);
             master.add(incoiving);
 
             final PageIterable<Milestone> milestoneToInvoice = member.getMilestoneToInvoice();

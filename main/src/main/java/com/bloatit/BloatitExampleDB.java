@@ -504,7 +504,7 @@ public class BloatitExampleDB { // NO_UCD
         // Feature with offer not validated and not funded
         final String featureDescription = "Il faut absolument supprimer emacs des paquets disponible dans Mageia. En effet, le successeur d'emacs vim est maintenant mature et le logiciel emacs qui a bien servi est maintenant dépassé et encombre les paquets. Des sources indiquent aussi qu'emacs est dangereux pour la santé et qu'il peut engendrer un Syndrome du Canal Carpien. D'autre part emacs est peu accessible car il est difficilement utilisable par les personnes ne disposant que d'un seul doigt. ";
 
-        final String featureTitle = "Suppression du paquet emacs déprécié";
+        final String featureTitle = "Suppression du paquet emacs déprécié 2";
 
         final Feature feature = FeatureFactory.createFeature(thomas, null, Language.FR, featureTitle, featureDescription, mageia);
 

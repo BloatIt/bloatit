@@ -15,7 +15,7 @@
    id="svg9238"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="Nouveau document 34">
+   sodipodi:docname="mail_settings_small.svg">
   <defs
      id="defs9240">
     <filter
@@ -62,6 +62,68 @@
          stdDeviation="1.4527786"
          id="feGaussianBlur57328-5" />
     </filter>
+    <linearGradient
+       y2="2.6697774"
+       x2="379.81735"
+       y1="63.375175"
+       x1="380.32245"
+       gradientTransform="matrix(1.250074,0,0,3.8872998,1.1462283,350.02416)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient4270"
+       xlink:href="#linearGradient3954-9"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3954-9">
+      <stop
+         style="stop-color:#f0f0f0;stop-opacity:1;"
+         offset="0"
+         id="stop3956-5" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="1"
+         id="stop3958-6" />
+    </linearGradient>
+    <linearGradient
+       y2="2.6697774"
+       x2="379.81735"
+       y1="63.375175"
+       x1="380.32245"
+       gradientTransform="matrix(0.36413404,0,0,1.1323315,-50.968766,644.6421)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient7835"
+       xlink:href="#linearGradient3954-9"
+       inkscape:collect="always" />
+    <linearGradient
+       y2="2.6697774"
+       x2="379.81735"
+       y1="63.375175"
+       x1="380.32245"
+       gradientTransform="matrix(1.250074,0,0,3.8872998,1.1462283,350.02416)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient4270-3"
+       xlink:href="#linearGradient3954-9-8"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3954-9-8">
+      <stop
+         style="stop-color:#f0f0f0;stop-opacity:1;"
+         offset="0"
+         id="stop3956-5-9" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="1"
+         id="stop3958-6-5" />
+    </linearGradient>
+    <linearGradient
+       y2="2.6697774"
+       x2="379.81735"
+       y1="63.375175"
+       x1="380.32245"
+       gradientTransform="matrix(1.250074,0,0,3.8872998,-57.591861,-289.74136)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient7853"
+       xlink:href="#linearGradient3954-9-8"
+       inkscape:collect="always" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -70,9 +132,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-190.64703"
-     inkscape:cy="-151.95534"
+     inkscape:zoom="11.2"
+     inkscape:cx="11.324905"
+     inkscape:cy="-3.666972"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -80,11 +142,11 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="634"
-     inkscape:window-height="420"
+     inkscape:window-width="1920"
+     inkscape:window-height="1026"
      inkscape:window-x="0"
-     inkscape:window-y="54"
-     inkscape:window-maximized="0" />
+     inkscape:window-y="26"
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata9243">
     <rdf:RDF>
@@ -93,7 +155,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -128,6 +190,16 @@
          d="m 490.79546,-37.272728 c 0,0 13.86363,10.568181 19.31818,11.704545 5.34091,-1.363636 18.52272,-11.790609 18.52272,-11.790609"
          style="fill:#f4f4f4;fill-opacity:1;stroke:#666666;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter59863);enable-background:accumulate"
+       id="path57376"
+       sodipodi:cx="572.99756"
+       sodipodi:cy="185.7807"
+       sodipodi:rx="3.2542982"
+       sodipodi:ry="3.2542982"
+       d="m 576.25186,185.7807 a 3.2542982,3.2542982 0 1 1 -6.5086,0 3.2542982,3.2542982 0 1 1 6.5086,0 z"
+       transform="translate(13.363757,186.50115)" />
     <g
        style="display:inline;filter:url(#filter59863)"
        id="g57382"

@@ -10,13 +10,21 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 
 public class HtmlEntry extends HtmlDiv {
+    private final Date when;
+
     public HtmlEntry(Date when, HtmlImage logo, String content) {
         this(when, logo, new HtmlText(content));
     }
 
     public HtmlEntry(Date when, HtmlImage logo, HtmlNode content) {
         super("event-entry");
+        this.when = when;
         add(new HtmlDiv("event-entry-logo").add(logo));
-        add(new HtmlDiv("event-entry-content").add(content).add(new HtmlSpan("date").addText(" - " + new SimpleDateFormat("HH:mm").format(when).toString())));
+        add(new HtmlDiv("event-entry-content").add(content));
+        add(new HtmlDiv("date").addText(new SimpleDateFormat("HH:mm").format(when).toString()));
+    }
+
+    public Date getDate() {
+        return when;
     }
 }

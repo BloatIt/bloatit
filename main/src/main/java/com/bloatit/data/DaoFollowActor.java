@@ -61,6 +61,10 @@ public class DaoFollowActor extends DaoIdentifiable {
     public void setMail(boolean mail) {
         this.mail = mail;
     }
+    
+    public void unfollow() {
+        SessionManager.getSessionFactory().getCurrentSession().delete(this);
+    }
 
     // ======================================================================
     // Getters.

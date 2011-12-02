@@ -165,6 +165,10 @@ import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
+import com.bloatit.web.linkable.timeline.FollowActorAction;
+import com.bloatit.web.linkable.timeline.FollowFeatureAction;
+import com.bloatit.web.linkable.timeline.FollowSoftwareAction;
+import com.bloatit.web.linkable.timeline.ReadTimelineAction;
 import com.bloatit.web.linkable.timeline.TimelinePage;
 import com.bloatit.web.linkable.translation.TranslateAction;
 import com.bloatit.web.linkable.translation.TranslatePage;
@@ -549,6 +553,18 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (ModifyNewsletterActionUrl.matches(pageCode)) {
             return new ModifyNewsletterAction(new ModifyNewsletterActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ReadTimelineActionUrl.matches(pageCode)) {
+            return new ReadTimelineAction(new ReadTimelineActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (FollowFeatureActionUrl.matches(pageCode)) {
+            return new FollowFeatureAction(new FollowFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (FollowSoftwareActionUrl.matches(pageCode)) {
+            return new FollowSoftwareAction(new FollowSoftwareActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (FollowActorActionUrl.matches(pageCode)) {
+            return new FollowActorAction(new FollowActorActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////

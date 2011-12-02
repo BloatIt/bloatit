@@ -15,7 +15,7 @@
    id="svg9329"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="Nouveau document 37">
+   sodipodi:docname="rss_small.svg">
   <defs
      id="defs9331">
     <filter
@@ -82,6 +82,26 @@
          id="stop4922-2"
          style="stop-color:#8d8d8d;stop-opacity:1;" />
     </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#RSSg-6"
+       id="linearGradient8332"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.08510438,0,0,0.08510438,666.16541,937.48777)"
+       x1="30.059999"
+       y1="30.059999"
+       x2="225.94"
+       y2="225.94" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#RSSg-6"
+       id="linearGradient8848"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.08510438,0,0,0.08510438,666.16541,937.48777)"
+       x1="30.059999"
+       y1="30.059999"
+       x2="225.94"
+       y2="225.94" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -90,9 +110,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="10.185709"
-     inkscape:cy="10.185716"
+     inkscape:zoom="31.678384"
+     inkscape:cx="5.4374945"
+     inkscape:cy="9.8679663"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -102,11 +122,11 @@
      fit-margin-bottom="0"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="634"
-     inkscape:window-height="420"
-     inkscape:window-x="1"
-     inkscape:window-y="82"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="1920"
+     inkscape:window-height="1026"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata9334">
     <rdf:RDF>
@@ -115,7 +135,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -124,63 +144,49 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-364.81429,-522.17648)">
-    <g
-       style="display:inline;filter:url(#filter59863)"
-       id="g34714"
-       transform="matrix(0.80532787,0,0,0.80532787,-157.83897,-422.65867)">
-      <g
-         id="g34903"
-         transform="translate(-15.416481,237.49716)">
-        <rect
-           style="fill:#484848;fill-opacity:1"
-           width="21.786722"
-           height="21.786722"
-           rx="4.6807408"
-           ry="4.6807408"
-           x="666.16541"
-           y="937.48779"
-           id="rect4924" />
-        <rect
-           style="fill:#858585;fill-opacity:1"
-           width="20.935677"
-           height="20.935677"
-           rx="4.2552195"
-           ry="4.2552195"
-           x="666.59094"
-           y="937.91327"
-           id="rect4926" />
-        <rect
-           style="fill:url(#linearGradient34911)"
-           width="20.084635"
-           height="20.084635"
-           rx="3.9999058"
-           ry="3.9999058"
-           x="667.01648"
-           y="938.33881"
-           id="rect4928" />
-        <circle
-           d="m 92,189 c 0,13.25483 -10.745166,24 -24,24 -13.254834,0 -24,-10.74517 -24,-24 0,-13.25483 10.745166,-24 24,-24 13.254834,0 24,10.74517 24,24 z"
-           style="fill:#ffffff"
-           sodipodi:ry="24"
-           sodipodi:rx="24"
-           sodipodi:cy="189"
-           sodipodi:cx="68"
-           transform="matrix(0.08510438,0,0,0.08510438,666.16541,937.48777)"
-           cx="68"
-           cy="189"
-           r="24"
-           id="circle4930" />
-        <path
-           style="fill:#ffffff"
-           inkscape:connector-curvature="0"
-           d="m 679.78211,955.61501 h -2.89355 A 6.9785592,6.9785592 0 0 0 669.91,948.63645 v -2.89356 a 9.8721085,9.8721085 0 0 1 9.87211,9.87212 z"
-           id="path4932" />
-        <path
-           style="fill:#ffffff"
-           inkscape:connector-curvature="0"
-           d="M 681.82462,955.61501 A 11.914614,11.914614 0 0 0 669.91,943.70039 v -2.97865 a 14.893267,14.893267 0 0 1 14.89327,14.89327 z"
-           id="path4934" />
-      </g>
-    </g>
+    <rect
+       style="fill:#6d6d6d;fill-opacity:1;filter:url(#filter59863)"
+       width="21.786722"
+       height="21.786722"
+       rx="4.6807408"
+       ry="4.6807408"
+       x="666.16541"
+       y="937.48779"
+       id="rect4924"
+       transform="matrix(0.80532787,0,0,0.80532787,-170.25429,-231.39559)" />
+    <rect
+       style="fill:url(#linearGradient8848);filter:url(#filter59863)"
+       width="20.084635"
+       height="20.084635"
+       rx="3.9999058"
+       ry="3.9999058"
+       x="667.01648"
+       y="938.33881"
+       id="rect4928"
+       transform="matrix(0.80532787,0,0,0.80532787,-170.25429,-231.39559)" />
+    <circle
+       d="m 92,189 c 0,13.25483 -10.745166,24 -24,24 -13.254834,0 -24,-10.74517 -24,-24 0,-13.25483 10.745166,-24 24,-24 13.254834,0 24,10.74517 24,24 z"
+       style="fill:#ffffff;filter:url(#filter59863)"
+       sodipodi:ry="24"
+       sodipodi:rx="24"
+       sodipodi:cy="189"
+       sodipodi:cx="68"
+       transform="matrix(0.06853693,0,0,0.06853693,366.22728,523.58944)"
+       cx="68"
+       cy="189"
+       r="24"
+       id="circle4930" />
+    <path
+       style="fill:#ffffff;filter:url(#filter59863)"
+       inkscape:connector-curvature="0"
+       d="m 679.78211,955.61501 h -2.89355 A 6.9785592,6.9785592 0 0 0 669.91,948.63645 v -2.89356 a 9.8721085,9.8721085 0 0 1 9.87211,9.87212 z"
+       id="path4932"
+       transform="matrix(0.80532787,0,0,0.80532787,-170.25429,-231.39559)" />
+    <path
+       style="fill:#ffffff;filter:url(#filter59863)"
+       inkscape:connector-curvature="0"
+       d="M 681.82462,955.61501 A 11.914614,11.914614 0 0 0 669.91,943.70039 v -2.97865 a 14.893267,14.893267 0 0 1 14.89327,14.89327 z"
+       id="path4934"
+       transform="matrix(0.80532787,0,0,0.80532787,-170.25429,-231.39559)" />
   </g>
 </svg>
