@@ -28,7 +28,7 @@ import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
-import com.bloatit.web.url.CreateFeatureProcessUrl;
+import com.bloatit.web.url.ChooseFeatureTypePageUrl;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
@@ -74,7 +74,7 @@ public final class SiteMapPage extends ElveosPage {
         contentLinkList.add(new TeamsPageUrl().getHtmlLink(Context.tr("Team list")));
         contentLinkList.add(new MembersListPageUrl().getHtmlLink(Context.tr("Member list")));
         contentLinkList.add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Software list")));
-        contentLinkList.add(new CreateFeatureProcessUrl().getHtmlLink(Context.tr("Request a new feature")));
+        contentLinkList.add(new ChooseFeatureTypePageUrl().getHtmlLink(Context.tr("Request a new feature")));
         contentLinkList.add(new CreateTeamPageUrl().getHtmlLink(Context.tr("Create a team")));
         contentLinkList.add(new CreateSoftwarePageUrl().getHtmlLink(Context.tr("Add a software")));
 

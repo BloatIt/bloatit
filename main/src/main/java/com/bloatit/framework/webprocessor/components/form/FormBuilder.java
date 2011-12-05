@@ -18,7 +18,7 @@ import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
 
-public class Form {
+public class FormBuilder {
 
     public static class FieldData {
         private FormField formField;
@@ -137,7 +137,7 @@ public class Form {
 
     // TODO translate
     @SuppressWarnings("unchecked")
-    public Form(Class<? extends Action> target, Url actionUrl) {
+    public FormBuilder(Class<? extends Action> target, Url actionUrl) {
 
         while (!Action.class.equals(target) && target != null) {
             for (Field f : target.getDeclaredFields()) {

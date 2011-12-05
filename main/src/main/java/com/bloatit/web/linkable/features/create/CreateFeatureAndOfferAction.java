@@ -49,13 +49,12 @@ import com.bloatit.web.url.CreateFeatureAndOfferActionUrl;
 import com.bloatit.web.url.CreateFeatureAndOfferPageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("feature/%process%/docreatewithoffer")
+@ParamContainer("feature/docreatewithoffer")
 public final class CreateFeatureAndOfferAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a title"))
@@ -136,10 +135,6 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @Optional
     private final Boolean newSoftware;
 
-    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam(role = Role.PAGENAME)
-    private final CreateFeatureProcess process;
-
     private final CreateFeatureAndOfferActionUrl url;
 
     public CreateFeatureAndOfferAction(final CreateFeatureAndOfferActionUrl url) {
@@ -150,7 +145,6 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         this.specification = url.getSpecification();
         this.software = url.getSoftware();
         this.newSoftwareName = url.getNewSoftwareName();
-        this.process = url.getProcess();
         this.license = url.getLicense();
         this.expiryDate = url.getExpiryDate();
         this.price = url.getPrice();
@@ -166,21 +160,13 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyError(Context.tr("You have to specify a valid language."));
-            if (process == null) {
-                return new IndexPageUrl();
-            } else {
-                return new CreateFeaturePageUrl(process);
-            }
+            return new CreateFeaturePageUrl();
 
         }
 
         if (software == null && newSoftwareName != null && newSoftwareName.equals("--invalid--")) {
             session.notifyError(Context.tr("You have to specify a valid software."));
-            if (process == null) {
-                return new IndexPageUrl();
-            } else {
-                return new CreateFeaturePageUrl(process);
-            }
+            return new CreateFeaturePageUrl();
         }
         return NO_ERROR;
     }
@@ -230,24 +216,18 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         }
 
         if (isFinished) {
-            process.close();
             return new FeaturePageUrl(feature, FeatureTabKey.description);
         }
 
         final MakeOfferPageUrl returnUrl = new MakeOfferPageUrl(feature);
         returnUrl.setOffer(constructingOffer);
-        process.close();
         return returnUrl;
 
     }
 
     @Override
     protected Url doProcessErrors() {
-        if (process == null) {
-            return new IndexPageUrl();
-        } else {
-            return new CreateFeatureAndOfferPageUrl(process);
-        }
+        return new CreateFeatureAndOfferPageUrl();
     }
 
     @Override

@@ -83,13 +83,11 @@ import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.ModifyFeatureAction;
 import com.bloatit.web.linkable.features.ModifyFeaturePage;
-import com.bloatit.web.linkable.features.create.ChooseFeatureTypeAction;
 import com.bloatit.web.linkable.features.create.ChooseFeatureTypePage;
 import com.bloatit.web.linkable.features.create.CreateFeatureAction;
 import com.bloatit.web.linkable.features.create.CreateFeatureAndOfferAction;
 import com.bloatit.web.linkable.features.create.CreateFeatureAndOfferPage;
 import com.bloatit.web.linkable.features.create.CreateFeaturePage;
-import com.bloatit.web.linkable.features.create.CreateFeatureProcess;
 import com.bloatit.web.linkable.invoice.ContributionInvoicePreviewData;
 import com.bloatit.web.linkable.invoice.ContributionInvoiceResource;
 import com.bloatit.web.linkable.invoice.ContributionInvoicesZipData;
@@ -614,12 +612,6 @@ public class BloatitWebServer extends WebProcessor {
         }
 
         // Create feature process
-        if (CreateFeatureProcessUrl.matches(pageCode)) {
-            return new CreateFeatureProcess(new CreateFeatureProcessUrl(pageCode, postGetParameters, session.getParameters()));
-        }
-        if (ChooseFeatureTypeActionUrl.matches(pageCode)) {
-            return new ChooseFeatureTypeAction(new ChooseFeatureTypeActionUrl(pageCode, postGetParameters, session.getParameters()));
-        }
         if (ChooseFeatureTypePageUrl.matches(pageCode)) {
             return new ChooseFeatureTypePage(new ChooseFeatureTypePageUrl(pageCode, postGetParameters, session.getParameters()));
         }

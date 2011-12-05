@@ -47,7 +47,7 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.CreateFeatureProcessUrl;
+import com.bloatit.web.url.ChooseFeatureTypePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.FeatureAtomFeedUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
@@ -125,7 +125,7 @@ public final class IndexPage extends ElveosPage {
         twoColumnLayout.addLeft(allFeatures);
 
         // Display of a button to create a feature
-        twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeatureProcessUrl(), WebConfiguration.getImgIdea()));
+        twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), new ChooseFeatureTypePageUrl(), WebConfiguration.getImgIdea()));
         twoColumnLayout.addRight(new SideBarButton(Context.tr("Elveos Atom feed"), new FeatureAtomFeedUrl(), WebConfiguration.getAtomImg(), false));
 
         // Adding doc

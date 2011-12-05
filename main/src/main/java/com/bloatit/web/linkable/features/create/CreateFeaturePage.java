@@ -14,15 +14,12 @@ package com.bloatit.web.linkable.features.create;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.webprocessor.annotations.NonOptional;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
-import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.Form;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
@@ -43,22 +40,21 @@ import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 
+/**
+ * Page that hosts the form to create a new Feature
+ */
+@ParamContainer("feature/create")
 public final class CreateFeaturePage extends CreateUserContentPage {
 
     public static final int SPECIF_INPUT_NB_LINES = 20;
     public static final int SPECIF_INPUT_NB_COLUMNS = 100;
     public static final int FILE_MAX_SIZE_MIO = 2;
 
-    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam(role = Role.PAGENAME)
-    CreateFeatureProcess process;
-
     private final CreateFeaturePageUrl url;
 
     public CreateFeaturePage(final CreateFeaturePageUrl url) {
         super(url);
         this.url = url;
-        this.process = url.getProcess();
     }
 
     @Override
@@ -80,7 +76,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
-        final CreateFeatureActionUrl targetUrl = new CreateFeatureActionUrl(getSession().getShortKey(), process);
+        final CreateFeatureActionUrl targetUrl = new CreateFeatureActionUrl(getSession().getShortKey());
 
         // Create the form stub
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
@@ -94,9 +90,9 @@ public final class CreateFeaturePage extends CreateUserContentPage {
                                             tr("In the name of"),
                                             tr("You can create this feature in the name of a team.")));
 
-        Form formTool = new Form(CreateFeatureAction.class, targetUrl);
+        FormBuilder formBuilder = new FormBuilder(CreateFeatureAction.class, targetUrl);
 
-        formTool.add(form, new HtmlTextField(targetUrl.getDescriptionParameter().getName()));
+        formBuilder.add(form, new HtmlTextField(targetUrl.getDescriptionParameter().getName()));
 
         // Linked software
         final FieldData softwareFieldData = targetUrl.getSoftwareParameter().pickFieldData();
@@ -105,7 +101,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         final SoftwaresTools.SoftwareChooserElement softwareInput = new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),
                                                                                                               newSoftwareNameFieldData.getName(),
                                                                                                               newSoftwareFieldData.getName());
-        formTool.add(form, softwareInput);
+        formBuilder.add(form, softwareInput);
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }
@@ -132,7 +128,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
                 );
         //@formatter:on
         final String svalue = targetUrl.getSpecificationParameter().getSuggestedValue();
-        HtmlFormField specifInput = formTool.add(form, new MarkdownEditor(targetUrl.getSpecificationParameter().getName(), 10, 80));
+        HtmlFormField specifInput = formBuilder.add(form, new MarkdownEditor(targetUrl.getSpecificationParameter().getName(), 10, 80));
         if (svalue == null || svalue.isEmpty()) {
             specifInput.setDefaultValue(suggestedValue);
         }
@@ -143,8 +139,8 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         HtmlHiddenableDiv hiddenable = new HtmlHiddenableDiv(actuator, false);
         form.add(actuator);
         form.add(hiddenable);
-        formTool.add(hiddenable, attachment.getFileInput());
-        formTool.add(hiddenable, attachment.getTextInput());
+        formBuilder.add(hiddenable, attachment.getFileInput());
+        formBuilder.add(hiddenable, attachment.getTextInput());
 
         // Submit button
         form.addSubmit(new HtmlSubmit(tr("submit")));
@@ -166,12 +162,12 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return CreateFeaturePage.generateBreadcrumb(process);
+        return CreateFeaturePage.generateBreadcrumb();
     }
 
-    private static Breadcrumb generateBreadcrumb(CreateFeatureProcess process) {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-        breadcrumb.pushLink(new CreateFeaturePageUrl(process).getHtmlLink(tr("Create a feature")));
+        breadcrumb.pushLink(new CreateFeaturePageUrl().getHtmlLink(tr("Create a feature")));
         return breadcrumb;
     }
 }

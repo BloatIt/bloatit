@@ -41,12 +41,11 @@ import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.IndexPageUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("feature/%process%/docreate")
+@ParamContainer("feature/docreate")
 public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a title"))
@@ -78,10 +77,6 @@ public final class CreateFeatureAction extends UserContentAction {
     @Optional
     private final Boolean newSoftware;
 
-    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam(role = Role.PAGENAME)
-    private final CreateFeatureProcess process;
-
     private final CreateFeatureActionUrl url;
 
     public CreateFeatureAction(final CreateFeatureActionUrl url) {
@@ -92,7 +87,6 @@ public final class CreateFeatureAction extends UserContentAction {
         this.specification = url.getSpecification();
         this.software = url.getSoftware();
         this.newSoftwareName = url.getNewSoftwareName();
-        this.process = url.getProcess();
         this.newSoftware = url.getNewSoftware();
     }
 
@@ -100,20 +94,12 @@ public final class CreateFeatureAction extends UserContentAction {
     protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyError(Context.tr("You have to specify a valid language."));
-            if (process == null) {
-                return new IndexPageUrl();
-            } else {
-                return new CreateFeaturePageUrl(process);
-            }
+            return new CreateFeaturePageUrl();
         }
 
-        if(software == null && newSoftwareName != null &&  newSoftwareName.equals("--invalid--")) {
+        if (software == null && newSoftwareName != null && newSoftwareName.equals("--invalid--")) {
             session.notifyError(Context.tr("You have to specify a valid software."));
-            if (process == null) {
-                return new IndexPageUrl();
-            } else {
-                return new CreateFeaturePageUrl(process);
-            }
+            return new CreateFeaturePageUrl();
         }
         return NO_ERROR;
     }
@@ -133,17 +119,12 @@ public final class CreateFeatureAction extends UserContentAction {
 
         final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, softwareToUse);
         propagateAttachedFileIfPossible(feature);
-        process.close();
         return new FeaturePageUrl(feature, FeatureTabKey.description);
     }
 
     @Override
     protected Url doProcessErrors() {
-        if (process == null) {
-            return new IndexPageUrl();
-        } else {
-            return new CreateFeaturePageUrl(process);
-        }
+        return new CreateFeaturePageUrl();
     }
 
     @Override

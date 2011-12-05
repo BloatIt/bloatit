@@ -14,16 +14,12 @@ package com.bloatit.web.linkable.features.create;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.Form;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
@@ -53,21 +49,16 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 /**
  * Page that hosts the form to create a new Feature
  */
-@ParamContainer("feature/%process%/createwithoffer")
+@ParamContainer("feature/createwithoffer")
 public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
     public static final int FILE_MAX_SIZE_MIO = 2;
-
-    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam(role = Role.PAGENAME)
-    CreateFeatureProcess process;
 
     private final CreateFeatureAndOfferPageUrl url;
 
     public CreateFeatureAndOfferPage(final CreateFeatureAndOfferPageUrl url) {
         super(url);
         this.url = url;
-        this.process = url.getProcess();
     }
 
     @Override
@@ -91,9 +82,9 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Create a feature"), 1);
 
         // Create offer form
-        final CreateFeatureAndOfferActionUrl targetUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey(), process);
+        final CreateFeatureAndOfferActionUrl targetUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey());
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
-        Form ftool = new Form(CreateFeatureAndOfferAction.class, targetUrl);
+        FormBuilder ftool = new FormBuilder(CreateFeatureAndOfferAction.class, targetUrl);
 
         form.addLanguageChooser(targetUrl.getLocaleParameter().getName(), Context.getLocalizator().getLanguageCode());
         form.addAsTeamField(new AsTeamField(targetUrl,
@@ -218,12 +209,12 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return CreateFeatureAndOfferPage.generateBreadcrumb(process);
+        return CreateFeatureAndOfferPage.generateBreadcrumb();
     }
 
-    private static Breadcrumb generateBreadcrumb(CreateFeatureProcess process) {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-        breadcrumb.pushLink(new CreateFeaturePageUrl(process).getHtmlLink(tr("Create a feature")));
+        breadcrumb.pushLink(new CreateFeaturePageUrl().getHtmlLink(tr("Create a feature")));
         return breadcrumb;
     }
 }
