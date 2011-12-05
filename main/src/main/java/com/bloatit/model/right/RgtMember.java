@@ -17,6 +17,7 @@
 package com.bloatit.model.right;
 
 import com.bloatit.model.Member;
+import com.bloatit.model.Rights;
 
 /**
  * The Class MemberRight store the properties accessor for the {@link Member}
@@ -24,6 +25,7 @@ import com.bloatit.model.Member;
  */
 public class RgtMember extends RightManager {
 
+    
     /**
      * The Class <code>Avatar</code> is a {@link RightManager.Public} accessor
      * for the <code>Avatar</code> property.
@@ -101,6 +103,14 @@ public class RgtMember extends RightManager {
      * for the <code>Locale</code> property.
      */
     public static class Locale extends Public {
+        // nothing this is just a rename.
+    }
+    
+    /**
+     * The Class <code>Follow</code> is a {@link RightManager.Public} accessor
+     * for the <code>Follow</code> property.
+     */
+    public static class Follow extends Private {
         // nothing this is just a rename.
     }
 }

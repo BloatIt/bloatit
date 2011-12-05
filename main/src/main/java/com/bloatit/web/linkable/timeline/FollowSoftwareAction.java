@@ -19,6 +19,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.FollowFeatureActionUrl;
 import com.bloatit.web.url.FollowSoftwareActionUrl;
@@ -50,7 +51,7 @@ public final class FollowSoftwareAction extends LoggedElveosAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member me) {
+    public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
         
         if(follow) {
             FollowSoftware followSoftware = me.followOrGetSoftware(software);

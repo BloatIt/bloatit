@@ -23,6 +23,7 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -215,5 +216,12 @@ public final class AuthToken {
 
     private AuthToken() {
         memberId = null;
+    }
+
+    public static boolean isAdmin() {
+        if(!isAuthenticated()) {
+            return false;
+        }
+        return getMember().getRole().equals(Role.ADMIN);
     }
 }

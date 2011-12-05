@@ -31,6 +31,9 @@ import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Follow;
+import com.bloatit.model.FollowActor;
+import com.bloatit.model.FollowFeature;
+import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
@@ -107,4 +110,10 @@ public interface ModelClassVisitor<ReturnType> {
     ReturnType visit(Follow model);
 
     ReturnType visit(Event event);
+    
+    ReturnType visit(FollowFeature model);
+    
+    ReturnType visit(FollowSoftware model);
+    
+    ReturnType visit(FollowActor model);
 }

@@ -101,10 +101,10 @@ public abstract class UserContentAction extends LoggedElveosAction {
 
     protected abstract boolean verifyFile(String filename);
 
-    protected abstract Url doDoProcessRestricted(Member me, Team asTeam);
+    protected abstract Url doDoProcessRestricted(Member me, Team asTeam) throws UnauthorizedOperationException;
 
     @Override
-    protected final Url doProcessRestricted(final Member me) {
+    protected final Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
         if (attachment != null) {
             if (!isEmpty(attachmentFileName) && !isEmpty(attachmentDescription) && verifyFile(attachment)) {
                 file = FileMetadataManager.createFromTempFile(me, team, attachment, attachmentFileName, attachmentDescription);

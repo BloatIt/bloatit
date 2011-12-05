@@ -19,6 +19,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FollowFeature;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.FollowFeatureActionUrl;
 
@@ -59,7 +60,7 @@ public final class FollowFeatureAction extends LoggedElveosAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member me) {
+    public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
 
         if (follow) {
             FollowFeature followFeature = me.followOrGetFeature(feature);

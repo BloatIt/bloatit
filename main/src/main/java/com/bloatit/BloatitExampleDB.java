@@ -213,7 +213,7 @@ public class BloatitExampleDB { // NO_UCD
 
     }
 
-    public void generateMageiaSoftware() throws UniqueNameExpectedException {
+    public void generateMageiaSoftware() throws UniqueNameExpectedException, UnauthorizedOperationException {
         // Mageia software
 
         final String mageiaTitle = "Mageia est un fork de Mandriva Linux, reposant sur une association de type 1901 composée de contributeurs reconnus et élus pour leur travail. ";
@@ -225,7 +225,7 @@ public class BloatitExampleDB { // NO_UCD
         fred.followOrGetSoftware(mageia).setMail(true);
     }
 
-    public void generateLibreOfficeSoftware() throws UniqueNameExpectedException {
+    public void generateLibreOfficeSoftware() throws UniqueNameExpectedException, UnauthorizedOperationException {
         // LibreOffice software
 
         final String libreOfficeTitle = "LibreOffice (souvent abrégé en LibO) est une suite bureautique, dérivée directement de OpenOffice.org, créée par The Document Foundation. Cet embranchement a eu lieu le 28 septembre 2010, dans la continuité du rachat de Sun Microsystems par Oracle. ";
@@ -238,7 +238,7 @@ public class BloatitExampleDB { // NO_UCD
         fred.followOrGetSoftware(libreOffice).setMail(true);
     }
 
-    public void generatePerroquetSoftware() throws UniqueNameExpectedException {
+    public void generatePerroquetSoftware() throws UniqueNameExpectedException, UnauthorizedOperationException {
         // Perroquet software
 
         final String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères ";
@@ -406,7 +406,7 @@ public class BloatitExampleDB { // NO_UCD
         return addPerroquetInMageiaFeature;
     }
 
-    public Feature generateLibreOfficeFeatureColorPicker() {
+    public Feature generateLibreOfficeFeatureColorPicker() throws UnauthorizedOperationException {
         // LibreOffice feature
 
         // Feature without offer

@@ -23,6 +23,7 @@ import com.bloatit.model.FollowFeature;
 import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Software;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.FollowActorActionUrl;
 import com.bloatit.web.url.FollowFeatureActionUrl;
 import com.bloatit.web.url.FollowSoftwareActionUrl;
@@ -176,7 +177,12 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         @Override
         protected boolean isFollowingWithMail() {
-            FollowSoftware followOrGetSoftware = AuthToken.getMember().followOrGetSoftware(software);
+            FollowSoftware followOrGetSoftware;
+            try {
+                followOrGetSoftware = AuthToken.getMember().followOrGetSoftware(software);
+            } catch (UnauthorizedOperationException e) {
+                return false;
+            }
             return followOrGetSoftware.isMail();
         }
 

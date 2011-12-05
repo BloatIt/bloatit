@@ -17,6 +17,7 @@
 package com.bloatit.model;
 
 import com.bloatit.framework.utils.i18n.Language;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class FeatureFactory {
 
@@ -25,7 +26,7 @@ public class FeatureFactory {
                                         final Language language,
                                         final String title,
                                         final String description,
-                                        final Software software) {
+                                        final Software software) throws UnauthorizedOperationException {
         FeatureImplementation featureImplementation = new FeatureImplementation(author, team, language, title, description, software);
 
         if (software != null) {

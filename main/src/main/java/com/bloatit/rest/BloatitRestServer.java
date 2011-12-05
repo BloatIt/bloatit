@@ -33,6 +33,9 @@ import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestFeatureList;
 import com.bloatit.rest.list.RestFeatureListExpanded;
 import com.bloatit.rest.list.RestFileMetadataList;
+import com.bloatit.rest.list.RestFollowActorList;
+import com.bloatit.rest.list.RestFollowFeatureList;
+import com.bloatit.rest.list.RestFollowSoftwareList;
 import com.bloatit.rest.list.RestHighlightFeatureList;
 import com.bloatit.rest.list.RestInternalAccountList;
 import com.bloatit.rest.list.RestJoinTeamInvitationList;
@@ -54,6 +57,9 @@ import com.bloatit.rest.resources.RestDescription;
 import com.bloatit.rest.resources.RestExternalAccount;
 import com.bloatit.rest.resources.RestFeature;
 import com.bloatit.rest.resources.RestFileMetadata;
+import com.bloatit.rest.resources.RestFollowActor;
+import com.bloatit.rest.resources.RestFollowFeature;
+import com.bloatit.rest.resources.RestFollowSoftware;
 import com.bloatit.rest.resources.RestHighlightFeature;
 import com.bloatit.rest.resources.RestInternalAccount;
 import com.bloatit.rest.resources.RestJoinTeamInvitation;
@@ -96,6 +102,7 @@ public class BloatitRestServer extends RestServer {
             put("releases", RestRelease.class);
             put("transactions", RestTransaction.class);
             put("translations", RestTranslation.class);
+            put("followfeatures", RestFollowFeature.class);
         }
     };
 
@@ -125,7 +132,10 @@ public class BloatitRestServer extends RestServer {
                                                        RestRelease.class,
                                                        RestTransaction.class,
                                                        RestTranslation.class,
-
+                                                       RestFollowFeature.class,
+                                                       RestFollowSoftware.class,
+                                                       RestFollowActor.class,
+                                                       
                                                        // LISTS
                                                        RestMemberList.class,
                                                        RestMemberList.class,
@@ -148,6 +158,9 @@ public class BloatitRestServer extends RestServer {
                                                        RestReleaseList.class,
                                                        RestTransactionList.class,
                                                        RestTranslationList.class,
+                                                       RestFollowFeatureList.class,
+                                                       RestFollowSoftwareList.class,
+                                                       RestFollowActorList.class,
 
                                                        // EXPANDED LISTS
                                                        RestFeatureListExpanded.class, };

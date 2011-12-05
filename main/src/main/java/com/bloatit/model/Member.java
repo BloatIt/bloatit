@@ -365,7 +365,8 @@ public final class Member extends Actor<DaoMember> implements User {
         followFeature.getDao().unfollow();
     }
 
-    public FollowSoftware followOrGetSoftware(Software s) {
+    public FollowSoftware followOrGetSoftware(Software s) throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         if(!isFollowing(s)) {
             // Follow all features of the software
             for (Feature feature : s.getFeatures()) {
@@ -377,7 +378,8 @@ public final class Member extends Actor<DaoMember> implements User {
         return FollowSoftware.create(getDao().followOrGetSoftware(s.getDao()));
     }
 
-    public void unfollowSoftware(Software s) {
+    public void unfollowSoftware(Software s) throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         FollowSoftware followSoftware = followOrGetSoftware(s);
         followSoftware.getDao().unfollow();
 
