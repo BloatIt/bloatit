@@ -414,15 +414,18 @@ public class Rights {
 
         @Override
         public Boolean visit(FollowFeature model) {
-            throw new NotImplementedException();        }
+            throw new NotImplementedException();
+        }
 
         @Override
         public Boolean visit(FollowSoftware model) {
-            throw new NotImplementedException();        }
+            throw new NotImplementedException();
+        }
 
         @Override
         public Boolean visit(FollowActor model) {
-            throw new NotImplementedException();        }
+            throw new NotImplementedException();
+        }
     }
 
     private static class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -525,29 +528,17 @@ public class Rights {
 
         @Override
         public Boolean visit(FollowFeature model) {
-            try {
-                return model.getFollower().equals(member);
-            } catch (UnauthorizedOperationException e) {
-                return false;
-            }
+            return model.getFollower().equals(member);
         }
 
         @Override
         public Boolean visit(FollowSoftware model) {
-            try {
-                return model.getFollower().equals(member);
-            } catch (UnauthorizedOperationException e) {
-                return false;
-            }
+            return model.getFollower().equals(member);
         }
 
         @Override
         public Boolean visit(FollowActor model) {
-            try {
-                return model.getFollower().equals(member);
-            } catch (UnauthorizedOperationException e) {
-                return false;
-            }
+            return model.getFollower().equals(member);
         }
 
     }

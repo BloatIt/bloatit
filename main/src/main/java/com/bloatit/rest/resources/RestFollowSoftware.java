@@ -154,11 +154,7 @@ public class RestFollowSoftware extends RestElement<FollowSoftware> {
      */
     @XmlElement
     public RestMember getFollower() {
-        try {
-            return new RestMember(model.getFollower());
-        } catch (final UnauthorizedOperationException e) {
-            return null;
-        }
+        return new RestMember(model.getFollower());
     }
 
     // ---------------------------------------------------------------------------------------

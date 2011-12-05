@@ -12,8 +12,17 @@
 
 package com.bloatit.web.components;
 
+import java.io.IOException;
+
+import com.bloatit.common.Log;
+import com.bloatit.common.TemplateFile;
+import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
@@ -33,6 +42,8 @@ public abstract class HtmlFollowButton extends HtmlDiv {
     public HtmlFollowButton() {
         super("follow-button");
     }
+
+    
 
     void generate() {
 
@@ -61,6 +72,8 @@ public abstract class HtmlFollowButton extends HtmlDiv {
             add(followWithoutMail);
             add(followWithMail);
         }
+        
+        generateScript();
 
     }
 
@@ -73,7 +86,8 @@ public abstract class HtmlFollowButton extends HtmlDiv {
     protected abstract boolean isFollowing();
 
     protected abstract boolean isFollowingWithMail();
-
+    
+    protected abstract void generateScript();
     
     public static class HtmlFollowFeatureButton extends HtmlFollowButton {
 
@@ -113,6 +127,45 @@ public abstract class HtmlFollowButton extends HtmlDiv {
         protected Url getUnfollowUrl() {
             return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, false, false, false, false);
         }
+        
+        @Override
+        protected void generateScript() {
+
+            if (!AuthToken.isAuthenticated()) {
+                return;
+            }
+            
+            final HtmlScript script = new HtmlScript();
+            final RandomString rng = new RandomString(10);
+            if (this.getId() == null) {
+                this.setId(rng.nextString());
+            }
+
+            final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("feature_follow_button.js");
+            quotationUpdateScriptTemplate.addNamedParameter("hostname", Context.getHeader().getHttpHost());
+            quotationUpdateScriptTemplate.addNamedParameter("protocol", (FrameworkConfiguration.isHttpsEnabled() ? "https" : "http"));
+            quotationUpdateScriptTemplate.addNamedParameter("follow_text", Context.tr("Follow"));
+            quotationUpdateScriptTemplate.addNamedParameter("following_text", Context.tr("Following"));
+            quotationUpdateScriptTemplate.addNamedParameter("unfollow_text", Context.tr("Unfollow"));
+            
+            try {
+                script.append(quotationUpdateScriptTemplate.getContent(null));
+            } catch (final IOException e) {
+                Log.web().error("Fail to generate elveos button generation script", e);
+            }
+            
+
+            
+            if(isFollowing()) {
+                FollowFeature followOrGetFeature = AuthToken.getMember().followOrGetFeature(feature);
+                script.append("elveos_bindFollowButton('"+this.getId()+"', '"+AuthToken.getMember().getId()+"', '"+feature.getId()+"', "+followOrGetFeature.isFeatureComment()+", "+followOrGetFeature.isBugComment()+");\n");
+            } else {
+                script.append("elveos_bindFollowButton('"+this.getId()+"', '"+AuthToken.getMember().getId()+"', '"+feature.getId()+"', true, true);\n");
+            }
+            
+            
+            this.add(script);
+        }
 
     }
     
@@ -136,7 +189,12 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         @Override
         protected boolean isFollowingWithMail() {
-            FollowActor followOrGetActor = AuthToken.getMember().followOrGetActor(actor);
+            FollowActor followOrGetActor;
+            try {
+                followOrGetActor = AuthToken.getMember().followOrGetActor(actor);
+            } catch (UnauthorizedOperationException e) {
+                return false;
+            }
             return followOrGetActor.isMail();
         }
 
@@ -153,6 +211,12 @@ public abstract class HtmlFollowButton extends HtmlDiv {
         @Override
         protected Url getUnfollowUrl() {
             return new FollowActorActionUrl(Context.getSession().getShortKey(), actor, false, false);
+        }
+
+        @Override
+        protected void generateScript() {
+            // TODO Auto-generated method stub
+            
         }
 
     }
@@ -200,6 +264,15 @@ public abstract class HtmlFollowButton extends HtmlDiv {
         protected Url getUnfollowUrl() {
             return new FollowSoftwareActionUrl(Context.getSession().getShortKey(), false, false, software);
         }
+
+        @Override
+        protected void generateScript() {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        
+        
 
     }
 

@@ -360,7 +360,8 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().isFollowing(actor.getDao());
     }
 
-    public void unfollowFeature(Feature f) {
+    public void unfollowFeature(Feature f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         FollowFeature followFeature = followOrGetFeature(f);
         followFeature.getDao().unfollow();
     }
@@ -391,11 +392,13 @@ public final class Member extends Actor<DaoMember> implements User {
         }
     }
 
-    public FollowActor followOrGetActor(Actor<DaoActor> f) {
+    public FollowActor followOrGetActor(Actor<DaoActor> f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         return FollowActor.create(getDao().followOrGetActor(f.getDao()));
     }
 
-    public void unfollowActor(Actor<DaoActor> a) {
+    public void unfollowActor(Actor<DaoActor> a) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         FollowActor followActor = followOrGetActor(a);
         followActor.getDao().unfollow();
     }

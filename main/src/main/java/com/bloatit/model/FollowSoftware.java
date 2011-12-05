@@ -51,7 +51,7 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public final Member getFollower() throws UnauthorizedOperationException {
+    public final Member getFollower() {
         return Member.create(getDao().getFollower());
     }
 
