@@ -15,4 +15,5 @@ public @interface FormField {
 
     boolean autocomplete() default true;
 
+    boolean isShort() default true;
 }

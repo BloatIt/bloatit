@@ -143,7 +143,6 @@ public class SoftwaresTools {
                 HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
                 newSoftwareCheckBoxBlock.addAttribute("style", "display:none;");
 
-                softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
                 checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
                 checkboxInput.setId("software_chooser_checkbox_id");
@@ -161,6 +160,7 @@ public class SoftwaresTools {
                 searchSoftwareInput.addAttribute("placeholder", Context.tr("Choose a software"));
                 searchSoftwareInput.addAttribute("autocomplete", "off");
                 softwareChooserBlock.add(searchSoftwareInput);
+
 
                 createInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.HIDDEN_INPUT));
                 createInput.addAttribute("name", name);
@@ -191,6 +191,8 @@ public class SoftwaresTools {
                 jsSoftwareIdList.append("]");
 
                 softwareChooserBlock.add(fallbackSelectElement);
+
+                softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
                 // Add js
                 final HtmlScript softwareChooserScript = new HtmlScript();

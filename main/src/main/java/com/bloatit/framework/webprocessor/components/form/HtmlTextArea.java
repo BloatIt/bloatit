@@ -41,7 +41,7 @@ public final class HtmlTextArea extends HtmlStringFormField {
 
     @Override
     public void setComment(final HtmlNode comment) {
-        final HtmlDiv commentBlock = new HtmlDiv("comment_after");
+        final HtmlDiv commentBlock = new HtmlDiv("comment");
         commentBlock.add(comment);
         this.commentPh.add(commentBlock);
     }

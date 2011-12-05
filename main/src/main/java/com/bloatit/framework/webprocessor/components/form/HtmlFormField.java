@@ -234,6 +234,10 @@ public abstract class HtmlFormField extends HtmlLeaf implements HtmlNamedNode {
         checkIdLabel();
     }
 
+    public final void addContainerCssClass(String cssClass) {
+        this.container.setCssClass(cssClass);
+    }
+
     /**
      * <p>
      * Adds some text that explains the meaning of this

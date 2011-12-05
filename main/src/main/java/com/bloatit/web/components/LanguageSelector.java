@@ -50,9 +50,9 @@ public class LanguageSelector extends HtmlDropDown {
     @Override
     protected void doSetDefaultStringValue(final String value) {
         if (codes.contains(value)) {
-            super.setDefaultValue(value);
+            super.doSetDefaultStringValue(value);
         } else {
-            super.setDefaultValue(DEFAULT_LANG);
+            super.doSetDefaultStringValue(DEFAULT_LANG);
         }
     }
 

@@ -44,16 +44,16 @@ public abstract class HtmlElement extends HtmlNode {
     /**
      * <p>
      * Sets the id of the html element :
-     * 
+     *
      * <pre>
      * <element id="..." />
      * </pre>
-     * 
+     *
      * </p>
      * <p>
      * Shortcut to element.addAttribute("id",value)
      * </p>
-     * 
+     *
      * @param id the value of the id
      * @return the element
      */
@@ -64,11 +64,11 @@ public abstract class HtmlElement extends HtmlNode {
 
     /**
      * Finds the id of the element
-     * 
+     *
      * <pre>
      * <element id="value" />
      * </pre>
-     * 
+     *
      * @return The value contained in the attribute id of the element
      */
     public String getId() {
@@ -83,7 +83,7 @@ public abstract class HtmlElement extends HtmlNode {
      * <p>
      * Shortcut for element.addattribute("class",cssClass)
      * </p>
-     * 
+     *
      * @param cssClass
      */
     public HtmlElement setCssClass(final String cssClass) {
@@ -98,6 +98,7 @@ public abstract class HtmlElement extends HtmlNode {
      * <p>
      * All inheriting classes
      */
+    @Override
     public abstract boolean selfClosable();
 
     /**
@@ -110,16 +111,16 @@ public abstract class HtmlElement extends HtmlNode {
      * </p>
      * <p>
      * Example :
-     * 
+     *
      * <pre>
      * HtmlElement e = new HtmlElement(&quot;img&quot;);
      * e.addAttribute(&quot;src&quot;, &quot;example.com/plop.png&quot;);
-     * 
+     *
      * </pre>
-     * 
+     *
      * will be used to create : {@code <img src="example.com/plop.png />}
      * </p>
-     * 
+     *
      * @param name the name of the attribute to add
      * @param value the value of the attribute to add
      * @return itself
@@ -134,19 +135,19 @@ public abstract class HtmlElement extends HtmlNode {
 
     /**
      * Add a son to this HtmlElement
-     * 
+     *
      * @param html the htmlNode son to add
      * @return itself
      */
     protected HtmlElement add(final HtmlNode html) {
-        assert(html != null);
+        assert (html != null);
         children.add(html);
         return this;
     }
 
     /**
      * Adds some raw text to this HtmlElement
-     * 
+     *
      * @param text the text to add
      * @return itself
      */

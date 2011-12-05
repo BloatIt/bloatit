@@ -142,51 +142,62 @@ legend {
     text-align: justify;
 }
 
+input[type=text],
+input[type=number],
+input[type=date],
+input[type=password]{
+       background: rgba(255, 255, 255, 1);
+       border:1px solid #aaa;
+       .rounded_corners(1px); 
+       vertical-align: middle;
+       horizontal-align: left;
+       width:100%;
+       -moz-box-sizing:padding-box;
+       box-sizing:padding-box;
+}
+input[type=text]:focus,
+input[type=number]:focus,
+input[type=date]:focus,
+input[type=password]:focus{
+       border-color:#093c75;
+       -moz-box-shadow: 0 0 3px #0459b7;
+       -webkit-box-shadow: 0 0 3px #0459b7;
+       box-shadow: 0 0 3px #0459b7;
+       outline:none; // Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome 
+}
+
+
 .field {
     margin:8px;
     margin-bottom:15px;
     
-    vertical-align: middle;
-    overflow: hidden;
-    
+    vertical-align: top;
+    display:inline-block;
     .label {
-        display:table-cell;
-        width:150px;
-        min-width:150px;
-        text-align:right;
-        vertical-align: top;
-        padding-top: 2px;
-        padding-right: 10px;
-        
+        font-size:20px;
+        margin-top:4px;
+        margin-bottom:4px;
+        padding-left:2px;
     }
     
     .input {
-        display:table-cell;
-        //width:100%;
         .comment {
-
-            float: left;
-            max-width:80%;
+            clear:both;
             .comment_format;
-            margin-top: 3px;
+            padding-top: 6px;
             margin-left: 0em;
         }
         
         .input_field {
-            float:left;
-            margin-right: 1em;
+            max-size:18px;
         }
         
         select {
-            float:left;
-            margin-right: 1em;
+           vertical-align: middle;
+           horizontal-align: left;
+           width:100%;
         }
 
-        .comment_after {
-            .comment_format;
-            width: 80%;    
-        }
-        
         .notification_error {
             display:none;
             p {
@@ -202,6 +213,77 @@ legend {
  
 }
 
+.input_field{
+    width:100%;
+}
+
+.form-header{
+    font-size:14px;
+    color:@light_text_color;
+
+    .fheader-first-line{
+        float:left;
+        margin-left:10px;
+        .fheader-label{
+            margin-left:15px;
+        }
+    }
+    .fheader-team{
+        float:left;
+    }
+    .fheader-label{
+        margin-top: 5px;
+        margin-left: 12px;
+        float:left;
+    }
+    .field{
+        margin:0px;
+        padding:0px;
+    }
+    select{
+        margin:2px;
+    }
+}
+
+.form-body{
+    border: 1px solid rgba(196, 196, 196, 1);
+    background: rgba(230, 230, 230, 1);
+    .rounded_corners(8px); 
+    padding:14px;
+    clear:both;
+
+    .field{
+        width:100%;
+    }
+
+    select{
+           font-size:18px;
+           padding: 8px;
+           cursor:pointer;
+           -moz-box-shadow:0 0 3px #aaa;
+           -webkit-box-shadow:0 0 3px #aaa;
+           box-shadow:0 0 3px #aaa;
+    }
+    input{
+           margin:0px;
+           margin-left:0px;
+           font-size:20px;
+           padding: 8px;
+    }
+
+    .long-form{
+         width: 93%;
+        clear:both;
+       -moz-box-sizing:padding-box;
+       box-sizing:padding-box;
+     }
+     .short-form{
+         width: 45%;
+       -moz-box-sizing:padding-box;
+       box-sizing:padding-box;
+     }
+}
+
 label{
     cursor:pointer;
     font-size: 0.9em;
@@ -209,36 +291,24 @@ label{
     //padding-right: 15px;
 }
 
-input[type=text],
-input[type=password]{
-       background: rgba(255, 255, 255, 0.9);
-       background:-moz-linear-gradient(90deg, #fff, #eee); // Firefox 
-       background:-webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff), color-stop(0.2, #fff)); // Webkit 
-       border:1px solid #aaa;
-       .rounded_corners(3px); 
-       -moz-box-shadow:0 0 3px #bbb;
-       -webkit-box-shadow:0 0 3px #bbb;
-       padding:2px;
-       vertical-align: middle;
-}
-input[type=text]:focus,
-input[type=password]:focus{
-       border-color:#093c75;
-       -moz-box-shadow:0 0 3px #0459b7;
-       -webkit-box-shadow:0 0 3px #0459b7;
-       outline:none; // Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome 
-}
 
 .money_input {
-
+    font-size: 20px;
     input {
-        width: 100px;
-        text-align: right;
-        font-size: 1em;
+        margin-right:-35px;
+        text-align:right;
+        padding-right: 35px;
     }
-    font-size: 2em;
 }
 
+.form-submits {
+    display:block;
+    .field{
+        display:block;
+        width:auto;
+        float:right;
+    }
+}
 .percent_input {
 
     input {
@@ -256,25 +326,17 @@ input[type=password]:focus{
     width: 400px;
 }
 
-
-select{
-       cursor:pointer;
-       -moz-box-shadow:0 0 3px #aaa;
-       -webkit-box-shadow:0 0 3px #aaa;
-}
-
 textarea {
-    width: 90%;
+    width: 100%;
 
     background: rgba(255, 255, 255, 0.9);
-       background:-moz-linear-gradient(90deg, #fff, #fafafa); /* Firefox */
-       background:-webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#fff) ); /* Webkit */
        border:1px solid #aaa;
-       .rounded_corners(3px); 
+       .rounded_corners(1px); 
        -moz-box-shadow:0 0 3px #bbb;
        -webkit-box-shadow:0 0 3px #bbb;
-       padding:2px;
+       padding:4px;
        vertical-align: middle;
+       font-size:14px;
 }
 
 textarea:focus {
@@ -361,14 +423,12 @@ a.submit {
        .shadow(1px, white);
        color:white;
        cursor:pointer;
-       font-size:0.9em;
-       font-weight:bold;
-       margin-left:160px;
-       padding: 3px;
-       padding-right: 8px;
-       padding-left: 8px;
+       font-size:20px;
+       //font-weight:bold;
+       padding: 8px;
+       padding-right: 12px;
+       padding-left: 12px;
        text-decoration:none;
-       text-shadow:0 1px 1px rgb(50,50,50);
        vertical-align: middle;
 }
 input[type=submit]:hover,
@@ -738,8 +798,7 @@ dd:last-child {
 }
 
 form .fake_link {
- text-align: right;
- font-size: 0.8em;
+ font-size: 14px;
 }
 
 .bold{

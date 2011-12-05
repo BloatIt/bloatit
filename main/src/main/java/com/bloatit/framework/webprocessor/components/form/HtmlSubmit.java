@@ -23,14 +23,14 @@ public final class HtmlSubmit extends HtmlLeaf {
 
     /**
      * Creates a HtmlButton
-     * 
-     * @param value the text that will be shown on the button
+     *
+     * @param displayedText the text that will be shown on the button
      */
-    public HtmlSubmit(final String value) {
+    public HtmlSubmit(final String displayedText) {
         super();
         button = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.SUBMIT_INPUT));
         add(new HtmlDiv().add(button).setCssClass("field"));
-        button.addAttribute("value", value);
+        button.addAttribute("value", displayedText);
     }
 
     @Override
@@ -38,5 +38,11 @@ public final class HtmlSubmit extends HtmlLeaf {
         button.addAttribute(name, value);
         return this;
     }
+
+    public HtmlSubmit setName(String name) {
+        button.addAttribute("name", name);
+        return this;
+    }
+
 
 }

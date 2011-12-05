@@ -26,6 +26,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
@@ -50,26 +52,32 @@ public final class CreateFeatureAction extends UserContentAction {
     @NonOptional(@tr("You forgot to write a title"))
     @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
+    @FormField(label = @tr("Title"), isShort = false)
+    @FormComment(@tr("The title length must be at least 10 chars long."))
     private final String description;
 
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     @MaxConstraint(max = 800000, message = @tr("The description must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("Description"), isShort = false)
+    @FormComment(@tr("Try to be the most specific possible."))
     private final String specification;
 
     @Optional
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("Software"))
     private final Software software;
 
     @Optional
     @RequestParam(role = Role.POST)
     private final String newSoftwareName;
 
+    @SuppressWarnings("unused")
     @RequestParam(role = Role.POST)
     @Optional
     private final Boolean newSoftware;
-    
+
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam(role = Role.PAGENAME)
     private final CreateFeatureProcess process;
@@ -98,7 +106,7 @@ public final class CreateFeatureAction extends UserContentAction {
                 return new CreateFeaturePageUrl(process);
             }
         }
-        
+
         if(software == null && newSoftwareName != null &&  newSoftwareName.equals("--invalid--")) {
             session.notifyError(Context.tr("You have to specify a valid software."));
             if (process == null) {

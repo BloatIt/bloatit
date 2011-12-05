@@ -56,14 +56,18 @@ public abstract class UserContentAction extends LoggedElveosAction {
 
     @RequestParam(name = "attachment", role = Role.POST)
     @Optional
+    @FormField(label = @tr("Join a file"))
+    @FormComment(@tr("When you join a file, you have to add a description."))
     private final String attachment;
 
     @RequestParam(name = "attachment/filename", role = Role.POST)
     @Optional
     private final String attachmentFileName;
 
-    @RequestParam(name = "attachment_description", role = Role.POST)
+    @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("File description"))
+    @FormComment(@tr("Input a short description of the file you want to upload."))
     private final String attachmentDescription;
 
     @RequestParam(name = "attachment/contenttype", role = Role.POST)

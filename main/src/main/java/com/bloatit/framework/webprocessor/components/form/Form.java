@@ -127,6 +127,10 @@ public class Form {
             this.clazz = clazz;
         }
 
+        public boolean isShort() {
+            return formField.isShort();
+        }
+
     }
 
     private Map<String, FieldData> fields = new HashMap<String, FieldData>();
@@ -178,6 +182,11 @@ public class Form {
 
         if (data == null) {
             throw new BadProgrammerException("The parameter '" + b.getName() + "' is not found.");
+        }
+        if (data.isShort()) {
+            b.addContainerCssClass("short-form");
+        } else {
+            b.addContainerCssClass("long-form");
         }
         form.add(b);
         if (data.getSessionParam() != null) {

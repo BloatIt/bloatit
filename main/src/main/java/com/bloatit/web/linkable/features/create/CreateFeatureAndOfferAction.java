@@ -61,7 +61,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @NonOptional(@tr("You forgot to write a title"))
     @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
-    @FormField(label = @tr("Title"))
+    @FormField(label = @tr("Title"), isShort = false)
     @FormComment(@tr("The feature title should clearly show the feature specificities"))
     private final String description;
 
@@ -69,7 +69,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @NonOptional(@tr("You forgot to write a specification"))
     @MinConstraint(min = 10, message = @tr("The specification must have at least %constraint% chars."))
     @MaxConstraint(max = 800000, message = @tr("The specification must be %constraint% chars length max."))
-    @FormField(label = @tr("Description"))
+    @FormField(label = @tr("Description"), isShort = false)
     @FormComment(@tr("Describe the feature and your offer. This description must be accurate because it will be used to validate the conformity at the end of the development."))
     private final String specification;
 
@@ -92,13 +92,13 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     private final String license;
 
     @RequestParam(role = Role.POST, suggestedValue = "7")
-    @NonOptional(@tr("You must set a days count for validation."))
+    @Optional("7")
     @MinConstraint(min = 1, message = @tr("The validation time must be greater to %constraint%."))
     @FormField(label = @tr("Days before validation"))
     @FormComment(@tr("The number of days to wait before this offer is can be validated. During this time users can add bugs un the bug tracker. Fatal bugs have to be closed before the validation."))
     private final Integer daysBeforeValidation;
 
-    @Optional
+    @Optional("100")
     @RequestParam(role = Role.POST, suggestedValue = "100")
     @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to %constraint%."))
     @MaxConstraint(max = 100, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to %constraint%."))
@@ -110,7 +110,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     private final Integer percentFatal;
 
     @RequestParam(role = Role.POST, suggestedValue = "0")
-    @Optional
+    @Optional("0")
     @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to %constraint%."))
     @MaxConstraint(max = 100, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to %constraint%."))
     @FormField(label = @tr("Percent gained when no MAJOR bugs"))
@@ -131,6 +131,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     private final String newSoftwareName;
 
+    @SuppressWarnings("unused")
     @RequestParam(role = Role.POST)
     @Optional
     private final Boolean newSoftware;
@@ -156,7 +157,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
         this.daysBeforeValidation = url.getDaysBeforeValidation();
         this.percentFatal = url.getPercentFatal();
         this.percentMajor = url.getPercentMajor();
-        this.isFinished = url.getIsFinished();
+        this.isFinished = url.getIsFinished() != null && url.getIsFinished();
         this.newSoftware = url.getNewSoftware();
 
     }

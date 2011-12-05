@@ -12,7 +12,7 @@ public abstract class Node<T extends Node<T>> implements Iterable<T>, Cloneable 
     // -------------------------------------------------------------------------------
     protected static final byte[] newLine = "\n".getBytes();
     // 50 char ' ' ///
-    protected static final byte[] indent = "                                              ".getBytes();
+    protected static final byte[] indent = "                                                  ".getBytes();
     protected static int indentSize = 1;
 
     protected static final void writeIndentation(final OutputStream out) throws IOException {
@@ -51,7 +51,7 @@ public abstract class Node<T extends Node<T>> implements Iterable<T>, Cloneable 
 
     /**
      * Return whether this element has at least one child
-     * 
+     *
      * @return <code>true</code> if this element has at least one child,
      *         <code>false</code> otherwise
      */
@@ -62,7 +62,7 @@ public abstract class Node<T extends Node<T>> implements Iterable<T>, Cloneable 
     /**
      * A method that has to be implemented by all children, and that describes
      * the way it will be represented as an HtmlTag
-     * 
+     *
      * @param txt the <code>Text</code> that will be used to display the Html
      *            tags
      */

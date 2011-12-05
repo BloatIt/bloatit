@@ -32,15 +32,17 @@ public class AsTeamField extends PlaceHolderElement {
 
     private HtmlDropDown teamInput;
 
+    private final boolean showSomething;
+
     public AsTeamField(final UserContentActionUrl targetUrl, final Member me, final UserTeamRight right, final String label, final String comment) {
         super();
         if (me != null) {
             try {
                 final PageIterable<Team> teams = me.getTeams();
                 final FieldData teamData = targetUrl.getTeamParameter().pickFieldData();
-                teamInput = new HtmlDropDown(teamData.getName(), label);
+                teamInput = new HtmlDropDown(teamData.getName());
                 getTeamInput().addErrorMessages(teamData.getErrorMessages());
-                getTeamInput().setComment(comment);
+                // getTeamInput().setComment(comment);
                 getTeamInput().addDropDownElement("", Context.tr("Myself"));
                 int nbTeam = 0;
                 for (final Team team : teams) {
@@ -51,13 +53,22 @@ public class AsTeamField extends PlaceHolderElement {
                 }
                 getTeamInput().setDefaultValue(teamData.getSuggestedValue());
                 if (nbTeam > 0) {
+                    showSomething = true;
                     add(getTeamInput());
+                } else {
+                    showSomething = false;
                 }
             } catch (final UnauthorizedOperationException e) {
                 Context.getSession().notifyError(Context.tr("An error prevented us from displaying you some information. Please notify us."));
                 throw new ShallNotPassException("Can't access current user teams (I checked before tho)", e);
             }
+        } else {
+            showSomething = false;
         }
+    }
+
+    public final boolean showSomething() {
+        return showSomething;
     }
 
     public HtmlDropDown getTeamInput() {

@@ -26,10 +26,8 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.Form;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
-import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
@@ -39,7 +37,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Member;
-import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -94,18 +92,18 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         // Create offer form
         final CreateFeatureAndOfferActionUrl targetUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey(), process);
-        final HtmlForm offerForm = new HtmlForm(targetUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        Form ftool = new Form(CreateFeatureAndOfferAction.class, targetUrl);
 
-        Form f = new Form(CreateFeatureAndOfferAction.class, targetUrl);
-
-        // Locale
-        f.add(offerForm, new LanguageSelector(targetUrl.getLocaleParameter().getName()));
+        form.addLanguageChooser(targetUrl.getLocaleParameter().getName(), Context.getLocalizator().getLanguageCode());
+        form.addAsTeamField(new AsTeamField(targetUrl,
+                                            loggedUser,
+                                            UserTeamRight.TALK,
+                                            Context.tr("In the name of "),
+                                            Context.tr("Write this offer in the name of a team, and offer the contributions to this team.")));
 
         // Title of the feature
-        f.add(offerForm, new HtmlTextField(targetUrl.getDescriptionParameter().getName())).setCssClass("input_long_400px");
-
-        // Price field
-        f.add(offerForm, new HtmlMoneyField(targetUrl.getPriceParameter().getName()));
+        ftool.add(form, new HtmlTextField(targetUrl.getDescriptionParameter().getName()));
 
         // Linked software
         final FieldData softwareFieldData = targetUrl.getSoftwareParameter().pickFieldData();
@@ -114,9 +112,8 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         final SoftwaresTools.SoftwareChooserElement softwareInput = new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),
                                                                                                               newSoftwareNameFieldData.getName(),
-                                                                                                              newSoftwareFieldData.getName(),
-                                                                                                              Context.trc("Software (singular)",
-                                                                                                                          "Software"));
+                                                                                                              newSoftwareFieldData.getName());
+        ftool.add(form, softwareInput);
         if (softwareFieldData.getSuggestedValue() != null) {
             softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
         }
@@ -127,37 +124,6 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         if (newSoftwareFieldData.getSuggestedValue() != null) {
             softwareInput.setNewSoftwareCheckboxDefaultValue(newSoftwareFieldData.getSuggestedValue());
-        }
-
-        offerForm.add(softwareInput);
-
-        // asTeam
-        offerForm.add(new AsTeamField(targetUrl,
-                                      loggedUser,
-                                      UserTeamRight.TALK,
-                                      Context.tr("In the name of "),
-                                      Context.tr("Write this offer in the name of a team, and offer the contributions to this team.")));
-
-        // Date field
-        f.add(offerForm, new HtmlDateField(targetUrl.getExpiryDateParameter().getName(), Context.getLocalizator().getLocale()));
-
-        //@formatter:off
-        final String suggestedValue = tr(
-                "Be precise, don't forget to specify :\n" +
-                " - The expected result\n" +
-                " - On which system it has to work (Windows/Mac/Linux ...)\n" +
-                " - When do you want to have the result\n" +
-                " - In which free license the result must be.\n" +
-                "\n" +
-                "You can also join a diagram, or a design/mockup of the expected user interface.\n" +
-                "\n" +
-                "Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
-                );
-        //@formatter:on
-        final String svalue = targetUrl.getSpecificationParameter().getSuggestedValue();
-        HtmlFormField specifInput = f.add(offerForm, new HtmlTextArea(targetUrl.getSpecificationParameter().getName(), 10, 80));
-        if (svalue == null || svalue.isEmpty()) {
-            specifInput.setDefaultValue(suggestedValue);
         }
 
         // license
@@ -176,49 +142,64 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         licenseInput.addDropDownElement("Eclipse Public License", "Eclipse Public License");
         licenseInput.addDropDownElement("Other Open Source", Context.tr("Other Open Source"));
 
-        f.add(offerForm, licenseInput);
+        ftool.add(form, licenseInput);
         licenseInput.setComment(new HtmlMixedText(Context.tr("Licenses must be <0::OSI-approved>. You should use one of the listed licenses to avoid <1::license proliferation>."),
                                                   new UrlString("http://opensource.org/licenses").getHtmlLink(),
                                                   new UrlString(Context.tr("http://en.wikipedia.org/wiki/License_proliferation")).getHtmlLink()));
+
+        //@formatter:off
+        final String suggestedValue = tr(
+                "Be precise, don't forget to specify :\n" +
+                " - The expected result\n" +
+                " - On which system it has to work (Windows/Mac/Linux ...)\n" +
+                " - When do you want to have the result\n" +
+                " - In which free license the result must be.\n" +
+                "\n" +
+                "You can also join a diagram, or a design/mockup of the expected user interface.\n" +
+                "\n" +
+                "Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
+                );
+        //@formatter:on
+        final String svalue = targetUrl.getSpecificationParameter().getSuggestedValue();
+        HtmlFormField specifInput = ftool.add(form, new HtmlTextArea(targetUrl.getSpecificationParameter().getName(), 10, 80));
+        if (svalue == null || svalue.isEmpty()) {
+            specifInput.setDefaultValue(suggestedValue);
+        }
+
+        // Price field
+        ftool.add(form, new HtmlMoneyField(targetUrl.getPriceParameter().getName()));
+
+        // Date field
+        ftool.add(form, new HtmlDateField(targetUrl.getExpiryDateParameter().getName(), Context.getLocalizator().getLocale()));
 
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
         showHideLink.setCssClass("fake_link");
 
-        final JsShowHide showHideValidationDetails = new JsShowHide(offerForm,
-                                                                    f.suggestedValueChanged(targetUrl.getPercentMajorParameter().getName())
-                                                                            || f.suggestedValueChanged(targetUrl.getPercentFatalParameter().getName())
-                                                                            || f.suggestedValueChanged(targetUrl.getDaysBeforeValidationParameter()
-                                                                                                                .getName()));
+        final JsShowHide showHideValidationDetails = new JsShowHide(form, ftool.suggestedValueChanged(targetUrl.getPercentMajorParameter().getName())
+                || ftool.suggestedValueChanged(targetUrl.getPercentFatalParameter().getName())
+                || ftool.suggestedValueChanged(targetUrl.getDaysBeforeValidationParameter().getName()));
         showHideValidationDetails.setHasFallback(false);
         showHideValidationDetails.addActuator(showHideLink);
         showHideValidationDetails.addListener(validationDetails);
-        offerForm.add(showHideLink);
-        offerForm.add(validationDetails);
+        // form.add(showHideLink);
+        // form.add(validationDetails);
         showHideValidationDetails.apply();
 
         // days before validation
-        f.add(validationDetails, new HtmlTextField(targetUrl.getDaysBeforeValidationParameter().getName()));
+        ftool.add(validationDetails, new HtmlTextField(targetUrl.getDaysBeforeValidationParameter().getName()));
 
         // percent Fatal
-        f.add(validationDetails, new HtmlTextField(targetUrl.getPercentFatalParameter().getName()));
+        ftool.add(validationDetails, new HtmlTextField(targetUrl.getPercentFatalParameter().getName()));
 
         // percent Major
-        f.add(validationDetails, new HtmlTextField(targetUrl.getPercentMajorParameter().getName()));
+        ftool.add(validationDetails, new HtmlTextField(targetUrl.getPercentMajorParameter().getName()));
 
-        // Is finished
-        final FieldData isFinishedData = targetUrl.getIsFinishedParameter().pickFieldData();
-        final HtmlRadioButtonGroup isFinishedInput = new HtmlRadioButtonGroup(isFinishedData.getName());
-        // isFinishedInput.addErrorMessages(isFinishedData.getErrorMessages());
-        isFinishedInput.addRadioButton("true", Context.tr("Finish your Offer"));
-        isFinishedInput.addRadioButton("false", Context.tr("Add another milestone"));
-        offerForm.add(isFinishedInput);
-        isFinishedInput.setDefaultValue(isFinishedData.getSuggestedValue());
+        form.addSubmit(new HtmlSubmit(Context.tr("Finish your Offer")).setName(targetUrl.getIsFinishedParameter().getName()));
+        form.addSubmit(new HtmlSubmit(Context.tr("Add another milestone")));
 
-        final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Validate !"));
-        offerForm.add(offerButton);
 
-        offerPageContainer.add(offerForm);
+        offerPageContainer.add(form);
 
         layout.addLeft(offerPageContainer);
 
