@@ -43,6 +43,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.FollowFeature;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.BankTransactionManager;
+import com.bloatit.model.managers.FollowFeatureManager;
 import com.bloatit.model.managers.GenericManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -138,10 +139,7 @@ public class RestFollowFeature extends RestElement<FollowFeature> {
      */
     @REST(name = "followfeatures", method = RequestMethod.GET)
     public static RestFollowFeatureList getAll() {
-        if (AuthToken.isAuthenticated()) {
-            return new RestFollowFeatureList(AuthToken.getMember().getFollowedFeatures());
-        }
-        return new RestFollowFeatureList(new EmptyPageIterable<FollowFeature>());
+        return new RestFollowFeatureList(FollowFeatureManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -169,11 +167,7 @@ public class RestFollowFeature extends RestElement<FollowFeature> {
     @XmlElement
     @XmlIDREF
     public RestMember getFollower() {
-        try {
-            return new RestMember(model.getFollower());
-        } catch (final UnauthorizedOperationException e) {
-            return null;
-        }
+        return new RestMember(model.getFollower());
     }
     
     @XmlAttribute

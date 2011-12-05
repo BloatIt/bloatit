@@ -51,12 +51,8 @@ public final class FollowFeature extends Identifiable<DaoFollowFeature> {
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public final Member getFollower() throws UnauthorizedOperationException {
-        Member follower = Member.create(getDao().getFollower());
-        if (!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
-            throw new UnauthorizedOperationException(Action.READ);
-        }
-        return follower;
+    public final Member getFollower() {
+        return Member.create(getDao().getFollower());
     }
 
     public final Feature getFollowed() {

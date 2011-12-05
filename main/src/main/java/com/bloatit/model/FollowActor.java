@@ -52,10 +52,6 @@ public final class FollowActor extends Identifiable<DaoFollowActor> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public final Member getFollower() throws UnauthorizedOperationException {
-        Member follower = Member.create(getDao().getFollower());
-        if(!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
-            throw new UnauthorizedOperationException(Action.READ);
-        }
         return Member.create(getDao().getFollower());
     }
 
