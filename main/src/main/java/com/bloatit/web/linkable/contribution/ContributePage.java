@@ -32,7 +32,6 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
@@ -43,6 +42,7 @@ import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Feature;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.features.FeaturePage;
@@ -82,7 +82,7 @@ public final class ContributePage extends ElveosPage {
 
     private HtmlElement generateContributeForm() {
         final CheckContributeActionUrl formActionUrl = new CheckContributeActionUrl(getSession().getShortKey(), process);
-        final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
+        final HtmlElveosForm contribForm = new HtmlElveosForm(formActionUrl.urlString());
         contribForm.setCssClass("contribution_page");
 
         // Input field : choose amount
@@ -167,7 +167,7 @@ public final class ContributePage extends ElveosPage {
         }
 
         contribForm.add(commentInput);
-        contribForm.add(submitButton);
+        contribForm.addSubmit(submitButton);
 
         final HtmlTitleBlock contribTitle = new HtmlTitleBlock(tr("Contribute"), 1);
         contribTitle.add(contribForm);

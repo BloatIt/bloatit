@@ -22,6 +22,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
@@ -41,14 +43,18 @@ public final class ModifyBugAction extends ElveosAction {
     @Optional
     @RequestParam(role = Role.POST)
     @MaxConstraint(max = 120, message = @tr("The reason must be %constraint% chars length max."))
+    @FormField(label = @tr("Reason"), isShort = false)
+    @FormComment(@tr("Optional. Enter why you want to modify this bug."))
     private final String reason;
 
     @NonOptional(@tr("You must indicate a bug level"))
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("New Level"), isShort = true)
     private final BindedLevel level;
 
     @NonOptional(@tr("You must indicate a bug state"))
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("New state"), isShort = true)
     private final BindedState state;
 
     @NonOptional(@tr("A bug change must be linked to a bug"))
@@ -65,7 +71,6 @@ public final class ModifyBugAction extends ElveosAction {
         this.state = url.getState();
         this.bug = url.getBug();
         this.reason = url.getReason();
-
     }
 
     @Override

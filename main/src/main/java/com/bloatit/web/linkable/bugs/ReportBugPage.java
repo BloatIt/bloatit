@@ -20,18 +20,20 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.javascript.HtmlHiddenableDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.features.FeaturePage;
@@ -40,7 +42,6 @@ import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
-import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
@@ -98,55 +99,42 @@ public final class ReportBugPage extends CreateUserContentPage {
 
     private HtmlElement generateReportBugForm(final Member loggedUser) {
         final HtmlTitleBlock formTitle = new HtmlTitleBlock(Context.tr("Report a bug"), 1);
-        final ReportBugActionUrl doReportUrl = new ReportBugActionUrl(getSession().getShortKey(), milestone);
+        final ReportBugActionUrl targetUrl = new ReportBugActionUrl(getSession().getShortKey(), milestone);
 
         // Create the form stub
-        final HtmlForm reportBugForm = new HtmlForm(doReportUrl.urlString());
-        formTitle.add(reportBugForm);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        formTitle.add(form);
+
+        FormBuilder ftool = new FormBuilder(ReportBugAction.class, targetUrl);
+
+        form.addLanguageChooser(targetUrl.getLocaleParameter().getName(), Context.getLocalizator().getLanguageCode());
+        form.addAsTeamField(new AsTeamField(targetUrl,
+                                            loggedUser,
+                                            UserTeamRight.TALK,
+                                            Context.tr("In the name of "),
+                                            Context.tr("Write this bug report in the name of this group.")));
 
         // title of the bug
-        final FieldData bugTitleFieldData = doReportUrl.getTitleParameter().pickFieldData();
-        final HtmlTextField bugTitleInput = new HtmlTextField(bugTitleFieldData.getName(), Context.tr("Bug title"));
-        bugTitleInput.setDefaultValue(bugTitleFieldData.getSuggestedValue());
-        bugTitleInput.setComment(Context.tr("A short title of the bug."));
-        bugTitleInput.addErrorMessages(bugTitleFieldData.getErrorMessages());
-        reportBugForm.add(bugTitleInput);
-
-        // As team
-        reportBugForm.add(new AsTeamField(doReportUrl,
-                                          loggedUser,
-                                          UserTeamRight.TALK,
-                                          Context.tr("In the name of "),
-                                          Context.tr("Write this bug report in the name of this group.")));
-
-        // descriptions of the bug
-        final FieldData descriptionFieldData = doReportUrl.getDescriptionParameter().pickFieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFieldData.getName(),
-                                                               Context.tr("Describe the bug"),
-                                                               BUG_DESCRIPTION_INPUT_NB_LINES,
-                                                               BUG_DESCRIPTION_INPUT_NB_COLUMNS);
-        descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
-        descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the bug."));
-        reportBugForm.add(descriptionInput);
-
-        // Language
-        reportBugForm.add(new LanguageField(doReportUrl, Context.tr("Language"), Context.tr("Language of the description.")));
+        ftool.add(form, new HtmlTextField(targetUrl.getTitleParameter().getName()));
+        ftool.add(form, new HtmlTextArea(targetUrl.getDescriptionParameter().getName(),
+                                         BUG_DESCRIPTION_INPUT_NB_LINES,
+                                         BUG_DESCRIPTION_INPUT_NB_COLUMNS));
 
         // Level
-        final FieldData levelFieldData = doReportUrl.getLevelParameter().pickFieldData();
-        final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("Level"));
-        levelInput.setDefaultValue(levelFieldData.getSuggestedValue());
-        levelInput.addErrorMessages(levelFieldData.getErrorMessages());
+        final HtmlDropDown levelInput = new HtmlDropDown(targetUrl.getLevelParameter().getName());
+        ftool.add(form, levelInput);
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
-        levelInput.setComment(Context.tr("Level of the bug."));
-        reportBugForm.add(levelInput);
 
-        // File
-        reportBugForm.add(new AttachmentField(doReportUrl, FILE_MAX_SIZE_MIO + " Mio"));
-        reportBugForm.enableFileUpload();
+        // Attachment
+        AttachmentField attachment = new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio");
+        HtmlParagraph actuator = new HtmlParagraph(Context.tr("+ add attachement"), "fake_link");
+        HtmlHiddenableDiv hiddenable = new HtmlHiddenableDiv(actuator, false);
+        form.add(actuator);
+        form.add(hiddenable);
+        ftool.add(hiddenable, attachment.getFileInput());
+        ftool.add(hiddenable, attachment.getTextInput());
 
-        reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
+        form.addSubmit(new HtmlSubmit(Context.tr("Report the bug")));
 
         final HtmlDiv group = new HtmlDiv();
         group.add(formTitle);

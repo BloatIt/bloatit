@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -23,7 +22,6 @@ import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
-import com.bloatit.framework.webprocessor.components.javascript.HtmlHiddenableDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
@@ -35,7 +33,6 @@ import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
-import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -132,15 +129,6 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         if (svalue == null || svalue.isEmpty()) {
             specifInput.setDefaultValue(suggestedValue);
         }
-
-        // Attachment
-        AttachmentField attachment = new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio");
-        HtmlParagraph actuator = new HtmlParagraph(Context.tr("+ add attachement"), "fake_link");
-        HtmlHiddenableDiv hiddenable = new HtmlHiddenableDiv(actuator, false);
-        form.add(actuator);
-        form.add(hiddenable);
-        formBuilder.add(hiddenable, attachment.getFileInput());
-        formBuilder.add(hiddenable, attachment.getTextInput());
 
         // Submit button
         form.addSubmit(new HtmlSubmit(tr("submit")));
