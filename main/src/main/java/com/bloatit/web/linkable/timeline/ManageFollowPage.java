@@ -16,50 +16,38 @@
 //
 package com.bloatit.web.linkable.timeline;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
-import com.bloatit.data.DaoActor;
-import com.bloatit.data.DaoTeam;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlList;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
-import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
-import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
+import com.bloatit.model.Feature;
 import com.bloatit.model.FollowActor;
 import com.bloatit.model.FollowFeature;
 import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Member;
-import com.bloatit.model.Software;
 import com.bloatit.model.Team;
-import com.bloatit.model.lists.FollowList;
-import com.bloatit.model.managers.SoftwareManager;
-import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.components.HtmlFollowButton.HtmlFollowFeatureButton;
 import com.bloatit.web.components.MemberListRenderer;
 import com.bloatit.web.components.SoftwareListRenderer;
 import com.bloatit.web.components.TeamListRenderer;
+import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
+import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.features.FeaturesTools.FeatureContext;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.linkable.team.TeamPage;
+import com.bloatit.web.linkable.softwares.SoftwaresTools;
+import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.FollowFeatureActionUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
-import com.bloatit.web.url.ModifyTeamActionUrl;
-import com.bloatit.web.url.ModifyTeamPageUrl;
-import com.bloatit.web.url.SoftwareListPageUrl;
 
 @ParamContainer("timeline/settings")
 public class ManageFollowPage extends LoggedElveosPage {
@@ -102,8 +90,13 @@ public class ManageFollowPage extends LoggedElveosPage {
             }
         }
         
+        HtmlDiv longContentList = new HtmlDiv();
+        layout.addLeft(longContentList );
         
-        
+        for(FollowFeature followedFeature: followedFeatures) {
+            longContentList.add(new FeatureListRenderer(followedFeature).generate(followedFeature.getFollowed()));
+            
+        }
         
         return layout;
     }
@@ -132,5 +125,60 @@ public class ManageFollowPage extends LoggedElveosPage {
         final Breadcrumb breadcrumb = TimelinePage.generateBreadcrumb();
         breadcrumb.pushLink(new ManageFollowPageUrl().getHtmlLink(Context.tr("settings")));
         return breadcrumb;
+    }
+    
+    public static class FeatureListRenderer implements HtmlRenderer<Feature> {
+        
+        private final FollowFeature followFeature;
+
+        FeatureListRenderer(FollowFeature followFeature) {
+            this.followFeature = followFeature;
+            
+        }
+        
+        @Override
+        public HtmlNode generate(final Feature feature) {
+            final FeaturePageUrl featureUrl = new FeaturePageUrl(feature, FeatureTabKey.description);
+            final HtmlDiv box = new HtmlDiv("feature-box");
+
+            box.add(new HtmlDiv("feature-box-avatar").add((new SoftwaresTools.Logo(feature.getSoftware()))));
+            
+            HtmlDiv content = new HtmlDiv("feature-box-content");
+            box.add(content);
+            
+
+            // Name
+            final HtmlDiv nameBox = new HtmlDiv("feature-box-title");
+            HtmlLink htmlLink;
+            htmlLink = featureUrl.getHtmlLink(FeaturesTools.getTitle(feature));
+            htmlLink.setCssClass("feature-link");
+            nameBox.add(htmlLink);
+            content.add(nameBox);
+            
+            // Subtitle
+            HtmlDiv subtitle = new HtmlDiv("feature-box-subtitle");
+            content.add(subtitle);
+            subtitle.add(FeaturesTools.generateDetails(feature, false));
+
+            content.add(FeaturesTools.generateProgress(feature, FeatureContext.FEATURE_LIST_PAGE ));
+
+            // Follow
+            content.add(new HtmlFollowFeatureButton(feature));
+            
+            if(followFeature.isFeatureComment()) {
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isMail(), false, followFeature.isBugComment()).getHtmlLink(Context.tr("stop follow comments")).setCssClass("follow-comments"));
+            } else {
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isMail(), true, followFeature.isBugComment()).getHtmlLink(Context.tr("follow comments")).setCssClass("follow-comments"));
+            }
+            
+            if(followFeature.isBugComment()) {
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isMail(), followFeature.isFeatureComment(), false).getHtmlLink(Context.tr("stop follow bugs")).setCssClass("follow-bugs"));
+            } else {
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isMail(), followFeature.isFeatureComment(), true).getHtmlLink(Context.tr("follow bugs")).setCssClass("follow-bugs"));
+            }
+            
+            
+            return box;
+        }
     }
 }

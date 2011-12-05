@@ -707,7 +707,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public float getMemberProgression(final Member author) throws UnauthorizedOperationException {
+    public float getMemberProgression(final Member author) {
         final BigDecimal memberAmount = getContributionOf(author);
         final float memberAmountFloat = memberAmount.floatValue();
         final float totalAmountFloat = getContribution().floatValue();

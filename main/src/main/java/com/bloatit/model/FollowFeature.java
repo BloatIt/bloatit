@@ -52,8 +52,8 @@ public final class FollowFeature extends Identifiable<DaoFollowFeature> {
         return getDao().getFollower();
     }
 
-    public final DaoFeature getFollowed() {
-        return getDao().getFollowed();
+    public final Feature getFollowed() {
+        return FeatureImplementation.create(getDao().getFollowed());
     }
 
     public final boolean isFeatureComment() {

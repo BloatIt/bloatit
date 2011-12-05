@@ -100,17 +100,17 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         @Override
         protected Url getFollowUrl() {
-            return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, false);
+            return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, false, true, true);
         }
 
         @Override
         protected Url getFollowWithMailUrl() {
-            return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, true);
+            return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, true, true, true);
         }
 
         @Override
         protected Url getUnfollowUrl() {
-            return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, false, false);
+            return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, false, false, false, false);
         }
 
     }

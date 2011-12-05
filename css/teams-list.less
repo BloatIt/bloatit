@@ -16,7 +16,7 @@
     height: 90px;
     
     float: left;
-    margin: 5px;
+    margin: 8px;
     position: relative;
     
     .actor-box-avatar {
@@ -56,8 +56,104 @@
     
 }
 
-.team_text {
-    text-align:center;
-    margin-top: 15px;
+.feature-box {
+    border: 1px solid @border_color;
+    width: 270px * 3 + 18px * 2;
+    
+    @background_color_1: rgb(240,240,240);    
+    @background_color_2: rgb(245,245,245);
+    @background_color_3: rgb(255,255,255);
+    
+    
+    background-image: linear-gradient(top, @background_color_1 0%, @background_color_2 5%, @background_color_3 100%);
+    background-image: -o-linear-gradient(top, @background_color_1 0%, @background_color_2 5%, @background_color_3 100%);
+    background-image: -moz-linear-gradient(top, @background_color_1 0%, @background_color_2 5%, @background_color_3 100%);
+    background-image: -webkit-linear-gradient(top, @background_color_1 0%, @background_color_2 5%, @background_color_3 100%);
+    background-image: -ms-linear-gradient(top, @background_color_1 0%, @background_color_2 5%, @background_color_3 100%);
+    
+    height: 120px;
+    
+    float: left;
+    margin: 8px;
+    position: relative;
+    
+    .feature-box-avatar {
+        display: table-cell; 
+        vertical-align: top;   
+        height: 90px;
+        padding-left: 5px;
+        padding-top: 10px;
+    }
+    
+    .feature-box-content {
+        display: table-cell;
+        vertical-align: top;
+        padding-left: 10px;
+        width: 100%;
+        
+        .feature-box-title {
+            padding-top: 8px;
+            padding-bottom: 3px;
+            font-size: 16px;
+            line-height: 0.9em;
+        }
+        
+        .feature-box-subtitle {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            color: @light_text_color;
+            font-size: 11px;
+            
+            a {
+                color: @light_text_color;
+            }
+        }
+
+        .feature_summary_progress {
+            padding-top: 10px;
+            padding-left: 50px;
+            padding-right: 150px;
+        }
+        
+        
+    }
+    
+    
+    .follow-button {
+        position: absolute;
+        right: 10px;
+        bottom: 40px;
+    }
+    
+    .follow-comments, .follow-bugs {
+        position: absolute;
+        right: 10px;
+        font-size: 11px;
+    }
+    
+    .follow-comments {
+        bottom: 20px;
+    }
+    
+    .follow-bugs {
+        bottom: 10px;
+    }
     
 }
+
+@media screen and (max-width: 1150px) {
+
+.feature-box {
+    width: 270px * 2 + 18px * 1;
+    .feature-box-content {
+        .feature_summary_progress {
+            padding-left: 0px;
+            padding-right: 120px;
+        }
+    }
+}
+
+}
+
+
+

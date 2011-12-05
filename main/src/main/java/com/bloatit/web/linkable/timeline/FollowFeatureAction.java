@@ -32,28 +32,40 @@ public final class FollowFeatureAction extends LoggedElveosAction {
     @RequestParam()
     @NonOptional(@tr("You must indicate a feature to follow"))
     private final Feature feature;
-    
+
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow state"))
     private final Boolean follow;
-    
+
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow mail state"))
     private final Boolean followMail;
-    
+
+    @RequestParam()
+    @NonOptional(@tr("You must indicate a follow comments state"))
+    private final Boolean followComments;
+
+    @RequestParam()
+    @NonOptional(@tr("You must indicate a follow bugs state"))
+    private final Boolean followBugs;
+
     public FollowFeatureAction(final FollowFeatureActionUrl url) {
         super(url);
         feature = url.getFeature();
         follow = url.getFollow();
         followMail = url.getFollowMail();
+        followComments = url.getFollowComments();
+        followBugs = url.getFollowBugs();
     }
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        
-        if(follow) {
+
+        if (follow) {
             FollowFeature followFeature = me.followOrGetFeature(feature);
             followFeature.setMail(followMail);
+            followFeature.setFeatureComment(followComments);
+            followFeature.setBugComment(followBugs);
         } else {
             me.unfollowFeature(feature);
         }
