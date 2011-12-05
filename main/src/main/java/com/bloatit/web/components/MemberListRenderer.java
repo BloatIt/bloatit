@@ -79,7 +79,7 @@ public class MemberListRenderer implements HtmlRenderer<Member> {
         }
 
         // Follow
-        content.add(new HtmlFollowActorButton(member));
+        //content.add(new HtmlFollowActorButton(member));
 
         return box;
     }

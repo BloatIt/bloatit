@@ -100,7 +100,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         @Override
         protected Url getFollowUrl() {
-            return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, false, true, true);
+            return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, true, true, false);
         }
 
         @Override

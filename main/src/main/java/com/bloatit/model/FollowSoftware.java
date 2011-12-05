@@ -48,8 +48,8 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public final DaoMember getFollower() {
-        return getDao().getFollower();
+    public final Member getFollower() {
+        return Member.create(getDao().getFollower());
     }
 
     public final Software getFollowed() {
@@ -66,6 +66,12 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
 
     public final void setMail(boolean mail) {
         getDao().setMail(mail);
+        for(FollowFeature followFeature: getFollower().getFollowedFeatures()) {
+            if (followFeature.getFollowed().getSoftware().equals(getFollowed())) {
+                followFeature.setMail(mail);
+            }
+        }
+        
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

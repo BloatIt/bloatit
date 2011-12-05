@@ -26,6 +26,18 @@ public class FeatureFactory {
                                         final String title,
                                         final String description,
                                         final Software software) {
-        return new FeatureImplementation(author, team, language, title, description, software);
+        FeatureImplementation featureImplementation = new FeatureImplementation(author, team, language, title, description, software);
+
+        if (software != null) {
+            for (FollowSoftware s : software.getFollowers()) {
+                FollowFeature followFeature = s.getFollower().followOrGetFeature(featureImplementation);
+                followFeature.setBugComment(true);
+                followFeature.setFeatureComment(true);
+                followFeature.setMail(followFeature.isMail());
+
+            }
+        }
+
+        return featureImplementation;
     }
 }

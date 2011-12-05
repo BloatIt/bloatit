@@ -57,7 +57,7 @@ public class TeamListRenderer implements HtmlRenderer<Team> {
         subtitle.addText(Context.trn("{0} member", "{0} members", team.getMembers().size(), team.getMembers().size()));
 
         // Follow
-        content.add(new HtmlFollowActorButton(team));
+        //content.add(new HtmlFollowActorButton(team));
         
         return box;
     }

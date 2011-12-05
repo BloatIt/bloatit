@@ -223,9 +223,9 @@ public class DaoSoftware extends DaoIdentifiable {
     public String getName() {
         return this.name;
     }
-
-    public List<DaoFollowSoftware> getFollowers() {
-        return followers;
+    
+    public PageIterable<DaoFollowSoftware> getFollowers() {
+        return new MappedList<DaoFollowSoftware>(followers);
     }
 
     // ======================================================================

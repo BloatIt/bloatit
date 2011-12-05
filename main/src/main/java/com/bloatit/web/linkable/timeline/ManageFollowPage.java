@@ -166,15 +166,15 @@ public class ManageFollowPage extends LoggedElveosPage {
             content.add(new HtmlFollowFeatureButton(feature));
             
             if(followFeature.isFeatureComment()) {
-                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isMail(), false, followFeature.isBugComment()).getHtmlLink(Context.tr("stop follow comments")).setCssClass("follow-comments"));
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isBugComment(), false, followFeature.isMail()).getHtmlLink(Context.tr("stop follow comments")).setCssClass("follow-comments"));
             } else {
-                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isMail(), true, followFeature.isBugComment()).getHtmlLink(Context.tr("follow comments")).setCssClass("follow-comments"));
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isBugComment(), true, followFeature.isMail()).getHtmlLink(Context.tr("follow comments")).setCssClass("follow-comments"));
             }
             
             if(followFeature.isBugComment()) {
-                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isMail(), followFeature.isFeatureComment(), false).getHtmlLink(Context.tr("stop follow bugs")).setCssClass("follow-bugs"));
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, false, followFeature.isFeatureComment(), followFeature.isMail()).getHtmlLink(Context.tr("stop follow bugs comments")).setCssClass("follow-bugs"));
             } else {
-                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isMail(), followFeature.isFeatureComment(), true).getHtmlLink(Context.tr("follow bugs")).setCssClass("follow-bugs"));
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, true, followFeature.isFeatureComment(),  followFeature.isMail()).getHtmlLink(Context.tr("follow bugs comments")).setCssClass("follow-bugs"));
             }
             
             

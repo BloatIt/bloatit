@@ -87,7 +87,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Create a new member using its Dao version.
-     *
+     * 
      * @param dao a DaoMember
      * @return the new member or null if dao is null.
      */
@@ -99,7 +99,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     *
+     * 
      * @param login is the login or name of this actor. It must be non null,
      *            unique, longer than 2 chars and do not contains space chars
      *            ("[^\\p{Space}]+").
@@ -135,7 +135,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * To invite a member into a team you have to have the WRITE right on the
      * "invite" property.
-     *
+     * 
      * @param member The member you want to invite
      * @param team The team in which you invite a member.
      * @throws UnauthorizedOperationException
@@ -151,7 +151,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * To accept an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done,
      * and <i>false</i> is returned.
-     *
+     * 
      * @param invitation the authenticate member must be receiver of the
      *            invitation.
      * @return true if the invitation is accepted, false if there is an error.
@@ -178,7 +178,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * To refuse an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done.
-     *
+     * 
      * @param invitation the authenticate member must be receiver of the
      *            invitation.
      * @throws UnauthorizedOperationException
@@ -194,7 +194,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * To remove this member from a team you have to have the DELETED right on
      * the "team" property. If the member is not in the "team", nothing is done.
      * (Although it should be considered as an error and will be logged)
-     *
+     * 
      * @param aTeam is the team from which the user will be removed.
      * @throws UnauthorizedOperationException
      */
@@ -208,7 +208,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * To add a user into a public team, you have to make sure you can access
      * the teams with the {@link Action#WRITE} action.
-     *
+     * 
      * @param team must be a public team.
      * @throws UnauthorizedOperationException if the authenticated member do not
      *             have the right to use this methods.
@@ -222,7 +222,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Adds a user to a team without checking if the team is Public or not
-     *
+     * 
      * @param team the team to which the user will be added
      */
     void addToTeamUnprotected(final Team team) {
@@ -233,7 +233,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Updates user password with right checking
-     *
+     * 
      * @param password the new password
      * @throws UnauthorizedPrivateAccessException when the logged user cannot
      *             modify the password
@@ -245,7 +245,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Checks if an inputed password matches the user password
-     *
+     * 
      * @param password the password to match
      * @return <i>true</i> if the inputed password matches the password in the
      *         database, <i>false</i> otherwise
@@ -347,43 +347,56 @@ public final class Member extends Actor<DaoMember> implements User {
     public FollowFeature followOrGetFeature(Feature f) {
         return FollowFeature.create(getDao().followOrGetFeature(((FeatureImplementation) f).getDao()));
     }
-    
+
     public boolean isFollowing(Feature feature) {
         return getDao().isFollowing(((FeatureImplementation) feature).getDao());
     }
-    
+
     public boolean isFollowing(Software software) {
         return getDao().isFollowing(software.getDao());
     }
-    
+
     public boolean isFollowing(Actor<DaoActor> actor) {
         return getDao().isFollowing(actor.getDao());
     }
-    
+
     public void unfollowFeature(Feature f) {
         FollowFeature followFeature = followOrGetFeature(f);
         followFeature.getDao().unfollow();
     }
 
-    public FollowSoftware followOrGetSoftware(Software f) {
-        return FollowSoftware.create(getDao().followOrGetSoftware(f.getDao()));
+    public FollowSoftware followOrGetSoftware(Software s) {
+        if(!isFollowing(s)) {
+            // Follow all features of the software
+            for (Feature feature : s.getFeatures()) {
+                FollowFeature followFeature = followOrGetFeature(feature);
+                followFeature.setFeatureComment(true);
+                followFeature.setBugComment(true);
+            }   
+        }
+        return FollowSoftware.create(getDao().followOrGetSoftware(s.getDao()));
     }
 
     public void unfollowSoftware(Software s) {
         FollowSoftware followSoftware = followOrGetSoftware(s);
         followSoftware.getDao().unfollow();
+
+        // Unfollow all features of the software
+        for (FollowFeature followFeature : getFollowedFeatures()) {
+            if (followFeature.getFollowed().getSoftware().equals(s)) {
+                unfollowFeature(followFeature.getFollowed());
+            }
+        }
     }
-    
+
     public FollowActor followOrGetActor(Actor<DaoActor> f) {
         return FollowActor.create(getDao().followOrGetActor(f.getDao()));
     }
-    
+
     public void unfollowActor(Actor<DaoActor> a) {
         FollowActor followActor = followOrGetActor(a);
         followActor.getDao().unfollow();
     }
-    
-    
 
     public void setLastWatchedEvents(Date lastWatchedEvents) {
         getDao().setLastWatchedEvents(lastWatchedEvents);
@@ -395,7 +408,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public Date getLastWatchedEvents() {
         Date lastWatchedEvents = getDao().getLastWatchedEvents();
-        if(lastWatchedEvents == null) {
+        if (lastWatchedEvents == null) {
             return DateUtils.dawnOfTime();
         } else {
             return lastWatchedEvents;
@@ -456,7 +469,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * To get the teams you have the have the READ right on the "team" property.
-     *
+     * 
      * @return all the team in which this member is.
      * @throws UnauthorizedOperationException
      */
@@ -625,15 +638,15 @@ public final class Member extends Actor<DaoMember> implements User {
     public PageIterable<FollowFeature> getFollowedFeatures() {
         return new ListBinder<FollowFeature, DaoFollowFeature>(getDao().getFollowedFeatures());
     }
-    
+
     public PageIterable<FollowActor> getFollowedActors() {
         return new ListBinder<FollowActor, DaoFollowActor>(getDao().getFollowedActors());
     }
-    
+
     public PageIterable<FollowSoftware> getFollowedSoftware() {
         return new ListBinder<FollowSoftware, DaoFollowSoftware>(getDao().getFollowedSoftware());
     }
-    
+
     public void addAuthorizedExternalService(String clientId, String token, EnumSet<RightLevel> rights) {
         getDao().addAuthorizedExternalService(clientId, token, rights);
     }
@@ -644,7 +657,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Tells if the authenticated user can access the <i>Avatar</i> property.
-     *
+     * 
      * @param action the type of access you want to do on the <i>Avatar</i>
      *            property.
      * @return true if you can access the <i>Avatar</i> property.
@@ -668,7 +681,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * Indicates whether the logged member can access <code>ANY</code>of the
      * user's information
-     *
+     * 
      * @param action the type of action
      */
     public boolean canAccessUserInformations(final Action action) {
@@ -743,5 +756,4 @@ public final class Member extends Actor<DaoMember> implements User {
         return visitor.visit(this);
     }
 
-    
 }
