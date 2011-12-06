@@ -59,34 +59,26 @@ function elveos_FollowButton(elementId, memberId, featureId, isFeatureComments, 
             this.followButton.className = "follow-unselected-without-mail";
             this.followMailButton.className = "follow-unselected-with-mail";
         }
-        
-    
-        if(this.followButton.className == "follow-unselected-without-mail") {
-            this.isSelected = false;
-            this.isMailSelected = false;
-        } else {
-            this.isSelected = true;
-            if(this.followMailButton.className == "follow-unselected-with-mail") {
-                this.isMailSelected = false;
-            } else {
-                this.isMailSelected = true;
-            }
-        }
     }
     
     this.instrument = function() {
         var that = this;
         this.followButton.onclick = function() {that.onSelectButtonClick(); return false;}
         this.followMailButton.onclick = function() {that.onSelectMailButtonClick(); return false;}
-        this.followButton.onmouseover = function() {if(that.isSelected) {that.followButton.innerHTML = unfollowText; } return true;}
+        this.followButton.onmouseover = function() {if(that.isSelected) {that.followButton.innerHTML = unfollowText; that.followMailButton.className = "follow-unselect-with-mail"; } return true;}
         this.followButton.onmouseout = function() {
             if(that.isSelected) {
                 that.followButton.innerHTML = followText;
             } else {
                 that.followButton.innerHTML = followingText;
             }
+            that.updateCss();
              return true;
          }
+        this.followMailButton.onmouseover = function() {
+                if(!that.isMailSelected) {that.followButton.className = "follow-selected-without-mail"; } return true;
+            }
+        this.followMailButton.onmouseout = function() {that.updateCss(); return true;}
     }
     
     this.onSelectButtonClick = function() {

@@ -56,7 +56,7 @@
     .follow-selected-without-mail {
         .horizontal-gradient(@follow_selected_color_1, @follow_selected_color_2, @follow_unselected_color_3);
         color: white;
-        font-size: 11px;
+        //font-size: 11px;
 
     }   
     
@@ -76,7 +76,8 @@
     }   
   
     .follow-selected-without-mail:hover{
-        .image-and-horizontal-gradient-1-stop(url(/resources/commons/img/unfollow.png),@follow_selected_hover_color_1, @follow_selected_hover_color_2, @follow_selected_hover_color_3);
+        //.image-and-horizontal-gradient-1-stop(url(/resources/commons/img/unfollow.png),@follow_selected_hover_color_1, @follow_selected_hover_color_2, @follow_selected_hover_color_3);
+        .image-and-horizontal-gradient(url(/resources/commons/img/unfollow.png),@follow_selected_hover_color_1, @follow_selected_hover_color_2);
         color: white;
         background-position: left center;
         background-repeat: no-repeat;
@@ -89,6 +90,18 @@
         color: white;
     }                                                                                                                            
     
+    
+    .follow-unselect-with-mail {
+        display: table-cell;
+        width:30px;
+        height: @follow_height;
+        .rounded_corners_top_right (3px);
+        .rounded_corners_bottom_right (3px);
+        background-position: center center;
+        background-repeat: no-repeat;
+        .image-and-horizontal-gradient(url(/resources/commons/img/mail_light.png),@follow_selected_hover_color_1, @follow_selected_hover_color_2);
+        color: white;
+    }
     
      .follow-unselected-without-mail:active{
         .horizontal-gradient(@follow_unselected_hover_color_1*1.2, @follow_unselected_hover_color_2*1.2);
