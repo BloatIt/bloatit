@@ -24,6 +24,9 @@ done
 generateRessources process_doc 800
 generateRessources archi_doc 400
 
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/elveos_logo_small.png" -C -w 64 sources/logo_elveos_small.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/elveos_logo_small.png"
+
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/idea.png" -C -w 40 sources/idea.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/idea.png"
 

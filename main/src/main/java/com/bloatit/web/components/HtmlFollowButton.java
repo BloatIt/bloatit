@@ -21,8 +21,6 @@ import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
-import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
-import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
@@ -33,7 +31,9 @@ import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Software;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.url.FollowActorActionUrl;
+import com.bloatit.web.url.FollowAllActionUrl;
 import com.bloatit.web.url.FollowFeatureActionUrl;
 import com.bloatit.web.url.FollowSoftwareActionUrl;
 
@@ -288,13 +288,88 @@ public abstract class HtmlFollowButton extends HtmlDiv {
                 Log.web().error("Fail to generate elveos button generation script", e);
             }
 
-            if (isFollowing()) {
-                script.append("elveos_bindFollowSoftwareButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + software.getId()
-                        + "');\n");
-            } else {
-                script.append("elveos_bindFollowSoftwareButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + software.getId()
-                        + "');\n");
+            script.append("elveos_bindFollowSoftwareButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + software.getId()
+                    + "');\n");
+
+            this.add(script);
+        }
+
+    }
+
+    public static class HtmlFollowAllButton extends HtmlFollowButton {
+
+        public HtmlFollowAllButton() {
+            generate();
+        }
+
+        @Override
+        protected boolean isFollowing() {
+            if (!AuthToken.isAuthenticated()) {
+                return false;
             }
+
+            try {
+                return AuthToken.getMember().isGlobalFollow();
+            } catch (UnauthorizedPrivateAccessException e) {
+                return false;
+            }
+        }
+
+        @Override
+        protected boolean isFollowingWithMail() {
+            if (!AuthToken.isAuthenticated()) {
+                return false;
+            }
+
+            try {
+                return AuthToken.getMember().isGlobalFollowWithMail();
+            } catch (UnauthorizedPrivateAccessException e) {
+                return false;
+            }
+        }
+
+        @Override
+        protected Url getFollowUrl() {
+            return new FollowAllActionUrl(Context.getSession().getShortKey(), true, false);
+        }
+
+        @Override
+        protected Url getFollowWithMailUrl() {
+            return new FollowAllActionUrl(Context.getSession().getShortKey(), true, true);
+        }
+
+        @Override
+        protected Url getUnfollowUrl() {
+            return new FollowAllActionUrl(Context.getSession().getShortKey(), false, false);
+        }
+
+        @Override
+        protected void generateScript() {
+
+            if (!AuthToken.isAuthenticated()) {
+                return;
+            }
+
+            final HtmlScript script = new HtmlScript();
+            final RandomString rng = new RandomString(10);
+            if (this.getId() == null) {
+                this.setId(rng.nextString());
+            }
+
+            final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("all_follow_button.js");
+            quotationUpdateScriptTemplate.addNamedParameter("hostname", Context.getHeader().getHttpHost());
+            quotationUpdateScriptTemplate.addNamedParameter("protocol", (FrameworkConfiguration.isHttpsEnabled() ? "https" : "http"));
+            quotationUpdateScriptTemplate.addNamedParameter("follow_text", Context.tr("Follow"));
+            quotationUpdateScriptTemplate.addNamedParameter("following_text", Context.tr("Following"));
+            quotationUpdateScriptTemplate.addNamedParameter("unfollow_text", Context.tr("Unfollow"));
+
+            try {
+                script.append(quotationUpdateScriptTemplate.getContent(null));
+            } catch (final IOException e) {
+                Log.web().error("Fail to generate elveos button generation script", e);
+            }
+
+            script.append("elveos_bindFollowAllButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "');\n");
 
             this.add(script);
         }

@@ -27,15 +27,16 @@ import org.apache.commons.lang.RandomStringUtils;
 import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalServiceMembership;
+import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
+import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFollowActor;
 import com.bloatit.data.DaoFollowFeature;
 import com.bloatit.data.DaoFollowSoftware;
-import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
-import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
@@ -61,6 +62,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.RightManager;
+import com.bloatit.model.right.RightManager.Private;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
@@ -407,6 +409,21 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().setLastWatchedEvents(lastWatchedEvents);
     }
 
+    public void setEmailStrategy(EmailStrategy emailStrategy) throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.WRITE);
+        getDao().setEmailStrategy(emailStrategy);
+    }
+    
+    public void setGlobalFollow(boolean globalFollow) throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.WRITE);
+        getDao().setGlobalFollow(globalFollow);
+    }
+    
+    public void setGlobalFollowWithMail(boolean globalFollow) throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.WRITE);
+        getDao().setGlobalFollowWithMail(globalFollow);
+    }
+    
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -434,6 +451,21 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getDescription();
     }
 
+    public EmailStrategy getEmailStrategy() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().getEmailStrategy();
+    }
+    
+    public boolean isGlobalFollow() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().isGlobalFollow();
+    }
+    
+    public boolean isGlobalFollowWithMail() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().isGlobalFollowWithMail();
+    }
+    
     public String getActivationKey() {
         final DaoMember m = getDao();
         final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + ACTIVATE_SALT;

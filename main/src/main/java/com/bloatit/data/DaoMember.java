@@ -304,6 +304,12 @@ public class DaoMember extends DaoActor {
     @Basic(optional = false)
     private boolean newsletter;
 
+    @Basic(optional = false)
+    private boolean globalFollow;
+    
+    @Basic(optional = false)
+    private boolean globalFollowWithMail;
+    
     @Column(length = 1024)
     private String description;
 
@@ -476,6 +482,7 @@ public class DaoMember extends DaoActor {
         this.fullname = "";
         this.description = "";
         this.newsletter = false;
+        this.globalFollow = false;
         this.emailStrategy = EmailStrategy.VERY_FREQUENTLY;
     }
 
@@ -655,6 +662,14 @@ public class DaoMember extends DaoActor {
     public void acceptNewsLetter(boolean newsletter) {
         this.newsletter = newsletter;
     }
+    
+    public void setGlobalFollow(boolean globalFollow) {
+        this.globalFollow = globalFollow;
+    }
+    
+    public void setGlobalFollowWithMail(boolean globalFollow) {
+        this.globalFollowWithMail = globalFollow;
+    }
 
     public DaoFollowActor followOrGetActor(DaoActor actor) {
         final Object followed = SessionManager.getNamedQuery("member.getFollowedActor.byActor")
@@ -762,6 +777,14 @@ public class DaoMember extends DaoActor {
 
     public EmailStrategy getEmailStrategy() {
         return emailStrategy;
+    }
+    
+    public boolean isGlobalFollow() {
+        return globalFollow;
+    }
+    
+    public boolean isGlobalFollowWithMail() {
+        return globalFollowWithMail;
     }
 
     /**

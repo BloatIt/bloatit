@@ -166,8 +166,10 @@ import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.linkable.timeline.FollowActorAction;
+import com.bloatit.web.linkable.timeline.FollowAllAction;
 import com.bloatit.web.linkable.timeline.FollowFeatureAction;
 import com.bloatit.web.linkable.timeline.FollowSoftwareAction;
+import com.bloatit.web.linkable.timeline.ManageFollowAction;
 import com.bloatit.web.linkable.timeline.ManageFollowPage;
 import com.bloatit.web.linkable.timeline.ReadTimelineAction;
 import com.bloatit.web.linkable.timeline.TimelinePage;
@@ -569,6 +571,12 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (FollowActorActionUrl.matches(pageCode)) {
             return new FollowActorAction(new FollowActorActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (FollowAllActionUrl.matches(pageCode)) {
+            return new FollowAllAction(new FollowAllActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ManageFollowActionUrl.matches(pageCode)) {
+            return new ManageFollowAction(new ManageFollowActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////

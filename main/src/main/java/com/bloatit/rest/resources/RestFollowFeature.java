@@ -182,8 +182,15 @@ public class RestFollowFeature extends RestElement<FollowFeature> {
         }
     }
 
+    /**
+     * 
+     * @param follower
+     * @param followed
+     * @return true is the follower was following the feature, false otherwise
+     * @throws RestException
+     */
     @REST(name = "followfeatures", method = RequestMethod.DELETE, params = {  "follower", "followed" })
-    public static RestFollowFeature deleteFollow(final String follower,
+    public static boolean deleteFollow(final String follower,
                                     final String followed) throws RestException {
 
         try {
@@ -191,15 +198,13 @@ public class RestFollowFeature extends RestElement<FollowFeature> {
             Member member = Loaders.fromStr(Member.class, follower);
 
             Feature feature = Loaders.fromStr(Feature.class, followed);
-            FollowFeature followFeature = member.followOrGetFeature(feature);
-            followFeature.getFollower().unfollowFeature(followFeature.getFollowed());
-            
-
-            final RestFollowFeature restFollowFeature = new RestFollowFeature(followFeature);
-            if (restFollowFeature.isNull()) {
-                return null;
+            if(member.isFollowing(feature)) {
+                FollowFeature followFeature = member.followOrGetFeature(feature);
+                followFeature.getFollower().unfollowFeature(followFeature.getFollowed());
+                return true;
+            } else {
+                return false;
             }
-            return restFollowFeature;
             
         } catch (ConversionErrorException e) {
             throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "Bad format for one of the parameters", e);

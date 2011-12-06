@@ -16,13 +16,24 @@
 //
 package com.bloatit.web.linkable.timeline;
 
+import java.util.EnumSet;
+
+import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -31,9 +42,12 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.FollowActor;
 import com.bloatit.model.FollowFeature;
 import com.bloatit.model.FollowSoftware;
+import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.HtmlFollowButton.HtmlFollowAllButton;
 import com.bloatit.web.components.HtmlFollowButton.HtmlFollowFeatureButton;
 import com.bloatit.web.components.MemberListRenderer;
 import com.bloatit.web.components.SoftwareListRenderer;
@@ -43,10 +57,13 @@ import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.features.FeaturesTools.FeatureContext;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
+import com.bloatit.web.linkable.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FollowFeatureActionUrl;
+import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.ManageFollowActionUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
 
 @ParamContainer("timeline/settings")
@@ -60,7 +77,7 @@ public class ManageFollowPage extends LoggedElveosPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException, UnauthorizedPrivateAccessException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
 
@@ -75,6 +92,8 @@ public class ManageFollowPage extends LoggedElveosPage {
         
         HtmlDiv smallContentList = new HtmlDiv();
         layout.addLeft(smallContentList);
+        
+        smallContentList.add(new FollowAllBox());
         
         for(FollowSoftware followedSoftware: followedSoftwares) {
             smallContentList.add(new SoftwareListRenderer().generate(followedSoftware.getFollowed()));
@@ -97,6 +116,49 @@ public class ManageFollowPage extends LoggedElveosPage {
             longContentList.add(new FeatureListRenderer(followedFeature).generate(followedFeature.getFollowed()));
             
         }
+        
+        // Manage emails
+        SideBarElementLayout manageFollowSideElement = new SideBarElementLayout();
+        layout.addRight(manageFollowSideElement);
+        
+        manageFollowSideElement.add(new HtmlTitle(Context.tr("Global settings"), 1));
+        
+        final ManageFollowActionUrl doModifyUrl = new ManageFollowActionUrl(Context.getSession().getShortKey());
+
+        // Create the form stub
+        final HtmlForm globalSettingsForm = new HtmlForm(doModifyUrl.urlString());
+        manageFollowSideElement.add(globalSettingsForm);
+
+        // Email strategy
+        final FieldData emailStratedyFieldData = doModifyUrl.getEmailStrategyParameter().pickFieldData();
+        final HtmlDropDown emailStategyInput = new HtmlDropDown(emailStratedyFieldData.getName(), Context.tr("Email strategy"));
+        emailStategyInput.addErrorMessages(emailStratedyFieldData.getErrorMessages());
+        emailStategyInput.addDropDownElements(EnumSet.allOf(BindedEmailStrategy.class));
+        final String suggestedEmailStrategy = emailStratedyFieldData.getSuggestedValue();
+        if (suggestedEmailStrategy != null) {
+            emailStategyInput.setDefaultValue(suggestedEmailStrategy);
+        } else {
+            emailStategyInput.setDefaultValue(BindedEmailStrategy.getBindedEmailStrategy(loggedUser.getEmailStrategy()).getEmailStrategy().toString());
+        }
+        emailStategyInput.setComment(Context.tr("New email strategy. Current strategy is ''{0}''.", BindedEmailStrategy.getBindedEmailStrategy(loggedUser.getEmailStrategy()).getDisplayName()));
+        globalSettingsForm.add(emailStategyInput);
+
+        // Global follow
+        FieldData globalFollowData = doModifyUrl.getGlobalFollowParameter().pickFieldData();
+        HtmlCheckbox globalFollowCheckbox = new HtmlCheckbox(globalFollowData.getName(), LabelPosition.BEFORE);
+        globalFollowCheckbox.setLabel(Context.tr("Follow all"));
+        globalFollowCheckbox.addErrorMessages(globalFollowData.getErrorMessages());
+        globalSettingsForm.add(globalFollowCheckbox);
+        if (globalFollowData.getSuggestedValue() == null) {
+            globalFollowCheckbox.setDefaultValue((loggedUser.isGlobalFollow()? "true": "false"));
+        } else {
+            globalFollowCheckbox.setDefaultValue(globalFollowData.getSuggestedValue());
+        }
+        globalFollowCheckbox.setComment(Context.tr("You will receive mail for all event in the website"));
+        
+        
+        //Button
+        globalSettingsForm.add(new HtmlSubmit(Context.tr("Save settings")));
         
         return layout;
     }
@@ -179,6 +241,67 @@ public class ManageFollowPage extends LoggedElveosPage {
             
             
             return box;
+        }
+    }
+    
+    public enum BindedEmailStrategy implements Displayable {
+        VERY_FREQUENTLY(EmailStrategy.VERY_FREQUENTLY, tr("Very frequently")), HOURLY(EmailStrategy.HOURLY, tr("Hourly")), DAILY(EmailStrategy.DAILY, tr("Daily")), WEEKLY(EmailStrategy.WEEKLY, tr("Weekly"));
+
+        private final String label;
+        private final EmailStrategy emailStrategy;
+
+        private BindedEmailStrategy(final EmailStrategy emailStrategy, final String label) {
+            this.emailStrategy = emailStrategy;
+            this.label = label;
+        }
+
+        protected static BindedEmailStrategy getBindedEmailStrategy(final EmailStrategy emailStrategy) {
+            return Enum.valueOf(BindedEmailStrategy.class, emailStrategy.name());
+        }
+
+        @Override
+        public String getDisplayName() {
+            return Context.tr(label);
+        }
+
+        public EmailStrategy getEmailStrategy() {
+            return emailStrategy;
+        }
+
+        // Fake tr
+        private static String tr(final String fake) {
+            return fake;
+        }
+
+    }
+    
+    public class FollowAllBox extends HtmlDiv {
+
+        public FollowAllBox() {
+            super("actor-box");
+
+            add(new HtmlDiv("actor-box-avatar").add(new HtmlImage(new Image(WebConfiguration.getImgLogoSmall()), "")));
+            
+            HtmlDiv content = new HtmlDiv("actor-box-content");
+            add(content);
+            
+
+            // Name
+            final HtmlDiv nameBox = new HtmlDiv("actor-box-actor-name");
+            HtmlLink htmlLink;
+            htmlLink = new IndexPageUrl().getHtmlLink(Context.tr("Whole Elveos"));
+            nameBox.add(htmlLink);
+            content.add(nameBox);
+            
+            // Subtitle
+            HtmlDiv subtitle = new HtmlDiv("actor-box-subtitle");
+            content.add(subtitle);
+            subtitle.addText(Context.tr("Follow all current and future features"));
+
+
+            // Follow
+            content.add(new HtmlFollowAllButton());
+            
         }
     }
 }

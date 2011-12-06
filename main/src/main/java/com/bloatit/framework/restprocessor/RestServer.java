@@ -218,6 +218,7 @@ public abstract class RestServer implements XcgiProcessor {
             throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "Expected " + pathInfo[0] + "/" + "[id]/" + pathInfo[1] + "; received "
                     + restResource);
         }
+        
         result = invokeStatic(requestMethod, pathInfo[0], id);
 
         if (result == null || (RestElement.class.isAssignableFrom((result.getClass())) && ((RestElement<?>) result).isNull())) {
@@ -306,7 +307,8 @@ public abstract class RestServer implements XcgiProcessor {
         for (final Method m : clazz.getMethods()) {
             if (m.isAnnotationPresent(REST.class) && m.getParameterTypes().length == 1 && m.getParameterTypes()[0] == int.class) {
                 final REST annotation = m.getAnnotation(REST.class);
-                if (annotation.name().equalsIgnoreCase(path) && annotation.method().equals(requestMethod)) {
+                //if (annotation.name().equalsIgnoreCase(path) && annotation.method().equals(requestMethod)) {
+                if (annotation.name().equalsIgnoreCase(path) ) {
                     try {
                         Log.rest().trace("Invoking " + m);
                         return m.invoke(null, id);
