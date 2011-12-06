@@ -43,8 +43,6 @@ public abstract class HtmlFollowButton extends HtmlDiv {
         super("follow-button");
     }
 
-    
-
     void generate() {
 
         if (isFollowing()) {
@@ -72,7 +70,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
             add(followWithoutMail);
             add(followWithMail);
         }
-        
+
         generateScript();
 
     }
@@ -86,9 +84,9 @@ public abstract class HtmlFollowButton extends HtmlDiv {
     protected abstract boolean isFollowing();
 
     protected abstract boolean isFollowingWithMail();
-    
+
     protected abstract void generateScript();
-    
+
     public static class HtmlFollowFeatureButton extends HtmlFollowButton {
 
         final Feature feature;
@@ -127,14 +125,14 @@ public abstract class HtmlFollowButton extends HtmlDiv {
         protected Url getUnfollowUrl() {
             return new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, false, false, false, false);
         }
-        
+
         @Override
         protected void generateScript() {
 
             if (!AuthToken.isAuthenticated()) {
                 return;
             }
-            
+
             final HtmlScript script = new HtmlScript();
             final RandomString rng = new RandomString(10);
             if (this.getId() == null) {
@@ -147,28 +145,27 @@ public abstract class HtmlFollowButton extends HtmlDiv {
             quotationUpdateScriptTemplate.addNamedParameter("follow_text", Context.tr("Follow"));
             quotationUpdateScriptTemplate.addNamedParameter("following_text", Context.tr("Following"));
             quotationUpdateScriptTemplate.addNamedParameter("unfollow_text", Context.tr("Unfollow"));
-            
+
             try {
                 script.append(quotationUpdateScriptTemplate.getContent(null));
             } catch (final IOException e) {
                 Log.web().error("Fail to generate elveos button generation script", e);
             }
-            
 
-            
-            if(isFollowing()) {
+            if (isFollowing()) {
                 FollowFeature followOrGetFeature = AuthToken.getMember().followOrGetFeature(feature);
-                script.append("elveos_bindFollowButton('"+this.getId()+"', '"+AuthToken.getMember().getId()+"', '"+feature.getId()+"', "+followOrGetFeature.isFeatureComment()+", "+followOrGetFeature.isBugComment()+");\n");
+                script.append("elveos_bindFollowFeatureButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + feature.getId()
+                        + "', " + followOrGetFeature.isFeatureComment() + ", " + followOrGetFeature.isBugComment() + ");\n");
             } else {
-                script.append("elveos_bindFollowButton('"+this.getId()+"', '"+AuthToken.getMember().getId()+"', '"+feature.getId()+"', true, true);\n");
+                script.append("elveos_bindFollowFeatureButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + feature.getId()
+                        + "', true, true);\n");
             }
-            
-            
+
             this.add(script);
         }
 
     }
-    
+
     public static class HtmlFollowActorButton extends HtmlFollowButton {
 
         final Actor actor;
@@ -216,11 +213,11 @@ public abstract class HtmlFollowButton extends HtmlDiv {
         @Override
         protected void generateScript() {
             // TODO Auto-generated method stub
-            
+
         }
 
     }
-    
+
     public static class HtmlFollowSoftwareButton extends HtmlFollowButton {
 
         final Software software;
@@ -267,12 +264,40 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         @Override
         protected void generateScript() {
-            // TODO Auto-generated method stub
-            
+
+            if (!AuthToken.isAuthenticated()) {
+                return;
+            }
+
+            final HtmlScript script = new HtmlScript();
+            final RandomString rng = new RandomString(10);
+            if (this.getId() == null) {
+                this.setId(rng.nextString());
+            }
+
+            final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("software_follow_button.js");
+            quotationUpdateScriptTemplate.addNamedParameter("hostname", Context.getHeader().getHttpHost());
+            quotationUpdateScriptTemplate.addNamedParameter("protocol", (FrameworkConfiguration.isHttpsEnabled() ? "https" : "http"));
+            quotationUpdateScriptTemplate.addNamedParameter("follow_text", Context.tr("Follow"));
+            quotationUpdateScriptTemplate.addNamedParameter("following_text", Context.tr("Following"));
+            quotationUpdateScriptTemplate.addNamedParameter("unfollow_text", Context.tr("Unfollow"));
+
+            try {
+                script.append(quotationUpdateScriptTemplate.getContent(null));
+            } catch (final IOException e) {
+                Log.web().error("Fail to generate elveos button generation script", e);
+            }
+
+            if (isFollowing()) {
+                script.append("elveos_bindFollowSoftwareButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + software.getId()
+                        + "');\n");
+            } else {
+                script.append("elveos_bindFollowSoftwareButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + software.getId()
+                        + "');\n");
+            }
+
+            this.add(script);
         }
-        
-        
-        
 
     }
 

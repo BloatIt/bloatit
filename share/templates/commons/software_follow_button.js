@@ -5,13 +5,11 @@ var followText = "${follow_text}";
 var followingText = "${following_text}";
 var unfollowText = "${unfollow_text}";
 
-function elveos_FollowFeatureButton(elementId, memberId, featureId, isFeatureComments, isBugComments) {
+function elveos_FollowSoftwareButton(elementId, memberId, softwareId) {
     
 
     this.memberId = memberId;
-    this.featureId = featureId;
-    this.isFeatureComments = isFeatureComments;
-    this.isBugComments = isBugComments;
+    this.softwareId = softwareId;
     
     this.init = function(elementId) {
         this.button = document.getElementById(elementId);
@@ -84,30 +82,28 @@ function elveos_FollowFeatureButton(elementId, memberId, featureId, isFeatureCom
     this.onSelectButtonClick = function() {
         var that = this;
         if(this.isSelected) {
-            this.ajax('DELETE', "/rest/followfeatures?follower="+this.memberId+"&followed="+this.featureId, function(response) {that.onUnfollowResponse(response);});
+            this.ajax('DELETE', "/rest/followsofwtares?follower="+this.memberId+"&followed="+this.softwareId, function(response) {that.onUnfollowResponse(response);});
         } else {
-            this.ajax('PUT', "/rest/followfeatures?follower="+this.memberId+"&followed="+this.featureId+"&mail=false&featureComment=true&bugComment=true", function(response) {that.onFollowResponse(response);});
+            this.ajax('PUT', "/rest/followsofwtares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=false", function(response) {that.onFollowResponse(response);});
         }
     }
     
     this.onSelectMailButtonClick = function() {
         var that = this;
         if(this.isMailSelected) {
-            this.ajax('PUT', "/rest/followfeatures?follower="+this.memberId+"&followed="+this.featureId+"&mail=false&featureComment="+this.isFeatureComments+"&bugComment="+this.isBugComments, function(response) {that.onFollowResponse(response);});
+            this.ajax('PUT', "/rest/followsofwtares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=false", function(response) {that.onFollowResponse(response);});
         } else {
-            this.ajax('PUT', "/rest/followfeatures?follower="+this.memberId+"&followed="+this.featureId+"&mail=true&featureComment="+this.isFeatureComments+"&bugComment="+this.isBugComments, function(response) {that.onFollowResponse(response);});
+            this.ajax('PUT', "/rest/followsofwtares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=true", function(response) {that.onFollowResponse(response);});
         }
     }
     
     this.onFollowResponse = function(response) {
         if(response.getElementsByTagName("rest")[0].getAttribute("result")=="ok") {
             var rest = response.getElementsByTagName("rest")[0];
-            var follow = rest.getElementsByTagName("followfeature")[0];
+            var follow = rest.getElementsByTagName("followsofware")[0];
             
             this.isSelected = true;
             this.isMailSelected = (follow.getAttribute("mail") == 'true');
-            this.isFeatureComments = (follow.getAttribute("featureComment") == 'true');
-            this.isBugComments = (follow.getAttribute("bugComment") == 'true');
             this.updateCss();
             this.instrument();
         }
@@ -148,8 +144,8 @@ function elveos_FollowFeatureButton(elementId, memberId, featureId, isFeatureCom
     this.init(elementId)
 }
 
-function elveos_bindFollowFeatureButton(elementId, memberId, featureId, isFeatureComments, isBugComments) {
-    new elveos_FollowFeatureButton(elementId, memberId, featureId, isFeatureComments, isBugComments);
+function elveos_bindFollowSoftwareButton(elementId, memberId, softwareId) {
+    new elveos_FollowSoftwareButton(elementId, memberId, softwareId);
 }
 
 
