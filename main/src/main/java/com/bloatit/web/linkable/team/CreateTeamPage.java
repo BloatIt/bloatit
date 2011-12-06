@@ -23,15 +23,15 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
@@ -57,7 +57,37 @@ public final class CreateTeamPage extends LoggedElveosPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addLeft(generateMain());
+
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Create a new team"), 1);
+        final CreateTeamActionUrl target = new CreateTeamActionUrl(getSession().getShortKey());
+        final HtmlElveosForm form = new HtmlElveosForm(target.urlString());
+        master.add(form);
+        FormBuilder ftool = new FormBuilder(CreateTeamAction.class, target);
+
+        // name
+        ftool.add(form, new HtmlTextField(target.getLoginParameter().getName()));
+
+        // Contact
+        final String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");
+        MarkdownEditor contact = new MarkdownEditor(target.getContactParameter().getName(), 5, 80);
+        ftool.add(form, contact);
+        ftool.setDefaultValueIfNeeded(contact, suggested);
+
+        // Description
+        ftool.add(form, new MarkdownEditor(target.getDescriptionParameter().getName(), 5, 80));
+
+        // PUBLIC / PRIVATE
+        final HtmlDropDown rightInput = new HtmlDropDown(target.getRightParameter().getName());
+        rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Open to all"));
+        rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("By invitation"));
+        ftool.add(form, rightInput);
+
+        // Avatar
+        ftool.add(form, new HtmlFileInput(target.getAvatarParameter().getName()));
+
+        form.addSubmit(new HtmlSubmit(Context.tr("Submit")));
+
+        layout.addLeft(master);
         layout.addRight(new SideBarDocumentationBlock("create_team"));
         layout.addRight(new SideBarDocumentationBlock("cc_by"));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
@@ -69,69 +99,6 @@ public final class CreateTeamPage extends LoggedElveosPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You cannot create a team without being logged in.");
-    }
-
-    private HtmlElement generateMain() {
-        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Create a new team"), 1);
-
-        final CreateTeamActionUrl target = new CreateTeamActionUrl(getSession().getShortKey());
-
-        final HtmlForm form = new HtmlForm(target.urlString());
-        master.add(form);
-
-        // name
-        final FieldData nameData = target.getLoginParameter().pickFieldData();
-        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Team unique name "));
-        nameInput.setDefaultValue(nameData.getSuggestedValue());
-        nameInput.addErrorMessages(nameData.getErrorMessages());
-        nameInput.setComment(Context.tr("The name of the team. It must be unique. Between 3 and 50 characters."));
-        form.add(nameInput);
-
-        // Contact
-        final String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");
-        final FieldData contactData = target.getContactParameter().pickFieldData();
-        final MarkdownEditor contactInput = new MarkdownEditor(contactData.getName(), Context.tr("Contact of the team: "), 5, 80);
-        if (contactData.getSuggestedValue() == null || contactData.getSuggestedValue().isEmpty()) {
-            contactInput.setDefaultValue(suggested);
-        } else {
-            contactInput.setDefaultValue(contactData.getSuggestedValue());
-        }
-        contactInput.addErrorMessages(contactData.getErrorMessages());
-        contactInput.setComment(Context.tr("The ways to contact the team. Email, IRC channel, mailing list ... Maximum 300 characters. These informations will be publicly available. Markdown syntax available."));
-        form.add(contactInput);
-
-        // Contact preview
-        final MarkdownPreviewer contactPreview = new MarkdownPreviewer(contactInput);
-        form.add(contactPreview);
-
-        // Description
-        final FieldData descriptionData = target.getDescriptionParameter().pickFieldData();
-        final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionData.getName(), Context.tr("Description of the team"), 10, 80);
-        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
-        descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
-        descriptionInput.setComment(Context.tr("Between 5 and 5000 characters."));
-        form.add(descriptionInput);
-
-        // Description preview
-        final MarkdownPreviewer descriptionPreview = new MarkdownPreviewer(descriptionInput);
-        form.add(descriptionPreview);
-
-        // PUBLIC / PRIVATE
-        final FieldData rightData = target.getRightParameter().pickFieldData();
-        final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Team membership : "));
-        rightInput.addErrorMessages(rightData.getErrorMessages());
-        rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Open to all"));
-        rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("By invitation"));
-        rightInput.setDefaultValue(rightData.getSuggestedValue());
-        rightInput.setComment(Context.tr("\"Open to all\" teams can be joined by anybody without an invitation."));
-        if (rightData.getSuggestedValue() != null) {
-            rightInput.setDefaultValue(rightData.getSuggestedValue());
-        }
-        form.add(rightInput);
-
-        form.add(new HtmlSubmit(Context.tr("Submit")));
-
-        return master;
     }
 
     @Override

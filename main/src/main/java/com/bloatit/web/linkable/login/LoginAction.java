@@ -18,6 +18,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
@@ -41,10 +42,12 @@ public final class LoginAction extends ElveosAction {
 
     @NonOptional(@tr("You must enter a login."))
     @RequestParam(name = LOGIN_CODE, role = RequestParam.Role.POST)
+    @FormField(label = @tr("Name"), isShort = true)
     private final String login;
 
     @NonOptional(@tr("You must enter a password."))
     @RequestParam(name = PASSWORD_CODE, role = RequestParam.Role.POST)
+    @FormField(label = @tr("Password"), isShort = true)
     private final String password;
     private final LoginActionUrl url;
 

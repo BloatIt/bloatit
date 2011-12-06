@@ -52,6 +52,7 @@ public final class HtmlCheckbox extends HtmlFormField {
      */
     public HtmlCheckbox(final String name, final LabelPosition labelPosition) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), name, labelPosition);
+        addContainerCssClass("one-line-form");
     }
 
     /**
@@ -76,6 +77,7 @@ public final class HtmlCheckbox extends HtmlFormField {
      */
     public HtmlCheckbox(final String name, final String label, final LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), name, label, position);
+        addContainerCssClass("one-line-form");
     }
 
     @Override

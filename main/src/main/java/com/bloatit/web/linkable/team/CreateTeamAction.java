@@ -16,7 +16,13 @@
 //
 package com.bloatit.web.linkable.team;
 
+import static com.bloatit.framework.utils.StringUtils.isEmpty;
+
+import java.util.List;
+
 import com.bloatit.data.DaoTeam.Right;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -25,11 +31,16 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
@@ -45,28 +56,45 @@ public final class CreateTeamAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a team name"))
-    @MinConstraint(
-        min = 2,
-        message = @tr("The team unique name size has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(
-        max = 50,
-        message = @tr("The team unique name size has to be inferior to %constraint% your text is %valueLength% characters long."))
+    @MinConstraint(min = 2, message = @tr("The team unique name size has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 50, message = @tr("The team unique name size has to be inferior to %constraint% your text is %valueLength% characters long."))
+    @FormField(label = @tr("Team name"), isShort = false)
+    @FormComment(@tr("The name of the team. It must be unique. Between 3 and 50 characters."))
     private final String login;
 
     @RequestParam(role = Role.POST)
     @MinConstraint(min = 4, message = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(max = 300, message = @tr("The contact size has to be inferior to %constraint%."))
     @Optional
+    @FormField(label = @tr("Team contact"))
+    @FormComment(@tr("The ways to contact the team. Email, IRC channel, mailing list ... Maximum 300 characters. These informations will be publicly available. Markdown syntax available."))
     private final String contact;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 4, message = @tr("The description size has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(
-        max = 5000,
-        message = @tr("The description size has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 5000, message = @tr("The description size has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @FormField(label = @tr("Description of the team"))
+    @FormComment(@tr("Minimum 5 characters."))
     private final String description;
 
+    @RequestParam(name = "avatar", role = Role.POST)
+    @Optional
+    @FormField(label = @tr("Avatar of your team"))
+    @FormComment(@tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"))
+    private final String avatar;
+
+    @RequestParam(name = "avatar/filename", role = Role.POST)
+    @Optional
+    private final String avatarFileName;
+
+    @SuppressWarnings("unused")
+    @RequestParam(name = "avatar/contenttype", role = Role.POST)
+    @Optional
+    private final String avatarContentType;
+
+    @FormField(label = @tr("Team membership"))
+    @FormComment(@tr("\"Open to all\" teams can be joined by anybody without an invitation."))
     @RequestParam(role = Role.POST)
     private final Right right;
 
@@ -79,6 +107,9 @@ public final class CreateTeamAction extends LoggedElveosAction {
         this.description = url.getDescription();
         this.login = url.getLogin();
         this.right = url.getRight();
+        this.avatar = url.getAvatar();
+        this.avatarContentType = url.getAvatarContentType();
+        this.avatarFileName = url.getAvatarFileName();
     }
 
     @Override
@@ -95,8 +126,36 @@ public final class CreateTeamAction extends LoggedElveosAction {
     @Override
     public Url doProcessRestricted(final Member me) {
 
-        final Team newTeam = new Team(login.trim(), contact, description, right, me);
-        return new TeamPageUrl(newTeam);
+        final Team team = new Team(login.trim(), contact, description, right, me);
+
+        // AVATAR
+        try {
+            if (avatar != null) {
+                final FileConstraintChecker fcc = new FileConstraintChecker(avatar);
+                final List<String> imageErr = fcc.isImageAvatar();
+                if (!isEmpty(avatarFileName) && imageErr == null) {
+                    final FileMetadata file = FileMetadataManager.createFromTempFile(me, null, avatar, avatarFileName, "");
+                    team.setAvatar(file);
+                    session.notifyGood(Context.tr("Avatar updated."));
+                } else {
+                    if (imageErr != null) {
+                        for (final String message : imageErr) {
+                            session.notifyWarning(message);
+                        }
+                    }
+                    if (isEmpty(avatarFileName)) {
+                        session.notifyError(Context.tr("Filename is empty. Could you report that bug?"));
+                    }
+                    transmitParameters();
+                    return doProcessErrors();
+                }
+            }
+
+        } catch (UnauthorizedPublicAccessException e) {
+            throw new ShallNotPassException(e);
+        }
+
+        return new TeamPageUrl(team);
     }
 
     @Override
@@ -115,5 +174,8 @@ public final class CreateTeamAction extends LoggedElveosAction {
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getLoginParameter());
         session.addParameter(url.getRightParameter());
+        session.addParameter(url.getAvatarContentTypeParameter());
+        session.addParameter(url.getAvatarFileNameParameter());
+        session.addParameter(url.getAvatarParameter());
     }
 }

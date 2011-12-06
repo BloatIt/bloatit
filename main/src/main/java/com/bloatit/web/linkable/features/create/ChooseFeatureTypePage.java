@@ -18,6 +18,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -64,13 +65,13 @@ public final class ChooseFeatureTypePage extends LoggedElveosPage {
         final HtmlTitleBlock chooseTypeTitle = new HtmlTitleBlock(tr("Do you want to implement the feature yourself ?"), 2);
 
         // Create the first form
-        final HtmlForm developForm = new HtmlForm(new CreateFeatureAndOfferPageUrl().urlString());
+        final HtmlForm developForm = new HtmlForm(new CreateFeatureAndOfferPageUrl().urlString(), Method.GET);
         developForm.add(new HtmlSubmit(tr("Yes, I want to implement the feature")));
         developForm.add(new HtmlParagraph(Context.tr("You are a developer. You have an idea for your software and you want to fund it.")));
         chooseTypeTitle.add(developForm);
 
-        // Create the seconde form
-        final HtmlForm dontDevelopForm = new HtmlForm(new CreateFeaturePageUrl().urlString());
+        // Create the second form
+        final HtmlForm dontDevelopForm = new HtmlForm(new CreateFeaturePageUrl().urlString(), Method.GET);
         dontDevelopForm.add(new HtmlSubmit(tr("No, I just want to submit it")));
         dontDevelopForm.add(new HtmlParagraph(Context.tr("You use a free software and you have an enhancement idea to submit.")));
         chooseTypeTitle.add(dontDevelopForm);

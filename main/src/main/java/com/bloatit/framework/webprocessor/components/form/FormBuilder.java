@@ -202,17 +202,28 @@ public class FormBuilder {
         if (!data.isOptional()) {
             b.addAttribute("required", "required");
         }
-        if (data.getMax() != null) {
-            b.addAttribute("max", data.getMax().toString());
-            if (data.getMax() > 0 && data.getClazz().equals(String.class)) {
-                b.addAttribute("maxlength", data.getMax().toString());
+
+        // @formatter:off
+        if (   b instanceof HtmlTextField
+            || b instanceof HtmlEmailField
+            || b instanceof HtmlDateField
+            || b instanceof HtmlMoneyField
+            || b instanceof HtmlNumberField
+            || b instanceof HtmlPercentField
+            || b instanceof HtmlPasswordField) {
+         // @formatter:on
+            if (data.getMax() != null) {
+                b.addAttribute("max", data.getMax().toString());
+                if (data.getMax() > 0 && data.getClazz().equals(String.class)) {
+                    b.addAttribute("maxlength", data.getMax().toString());
+                }
             }
-        }
-        if (data.getMin() != null) {
-            b.addAttribute("min", data.getMin().toString());
-        }
-        if (data.getLength() != null) {
-            b.addAttribute("size", data.getLength().toString());
+            if (data.getMin() != null) {
+                b.addAttribute("min", data.getMin().toString());
+            }
+            if (data.getLength() != null) {
+                b.addAttribute("size", data.getLength().toString());
+            }
         }
 
         return b;
@@ -224,8 +235,19 @@ public class FormBuilder {
 
     public boolean suggestedValueChanged(String name) {
         FieldData data = fields.get(name);
-        return data != null && data.getSessionParam() != null
-                && !data.getSessionParam().getSuggestedValue().equals(data.getTargetParameter().getSuggestedValue());
+        if (data == null) {
+            throw new BadProgrammerException("The parameter '" + name + "' is not found.");
+        }
+        if (data.getSessionParam() == null) {
+            return false;
+        }
+        return !data.getSessionParam().getSuggestedValue().equals(data.getTargetParameter().getSuggestedValue());
+    }
+
+    public void setDefaultValueIfNeeded(HtmlFormField b, String defaultValue) {
+        if (!suggestedValueChanged(b)) {
+            b.setDefaultValue(defaultValue);
+        }
     }
 
 }

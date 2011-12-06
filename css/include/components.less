@@ -144,6 +144,7 @@ legend {
 
 input[type=text],
 input[type=number],
+input[type=email],
 input[type=date],
 input[type=password]{
        background: rgba(255, 255, 255, 1);
@@ -152,10 +153,16 @@ input[type=password]{
        vertical-align: middle;
        horizontal-align: left;
        width:100%;
-       -moz-box-sizing:padding-box;
-       box-sizing:padding-box;
+        .box-sizing;
+}
+input[type=checkbox] {
+   background: rgba(255, 255, 255, 1);
+   border:1px solid #aaa;
+   .rounded_corners(5px); 
+   vertical-align: middle;
 }
 input[type=text]:focus,
+input[type=email]:focus,
 input[type=number]:focus,
 input[type=date]:focus,
 input[type=password]:focus{
@@ -165,7 +172,6 @@ input[type=password]:focus{
        box-shadow: 0 0 3px #0459b7;
        outline:none; // Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome 
 }
-
 
 .field {
     margin:8px;
@@ -249,11 +255,13 @@ input[type=password]:focus{
     border: 1px solid rgba(196, 196, 196, 1);
     background: rgba(230, 230, 230, 1);
     .rounded_corners(8px); 
-    padding:14px;
+    padding-top:14px;
+    padding-bottom:14px;
+    padding-left:20px;
     clear:both;
+    margin-bottom:20px;
 
     .field{
-        width:93%;
     }
 
     select{
@@ -272,18 +280,30 @@ input[type=password]:focus{
     }
 
     .long-form{
-         width: 93%;
-        clear:both;
-       -moz-box-sizing:padding-box;
-       box-sizing:padding-box;
+         width: 100%;
+        .box-sizing;
+        margin-right:-20px;
+        padding-right:40px;
      }
      .short-form{
-         width: 45%;
-       -moz-box-sizing:padding-box;
-       box-sizing:padding-box;
+         width: 50%;
+        .box-sizing;
+        margin-right:-20px;
+        padding-right:40px;
      }
 }
-
+.one-line-form{
+    padding-top:25px;
+    .input{
+        display:inline;
+        .input_field{
+            display:inline;
+        }
+    }
+    .label{
+        display:inline;
+    }
+}
 label{
     cursor:pointer;
     font-size: 0.9em;
@@ -291,6 +311,17 @@ label{
     //padding-right: 15px;
 }
 
+.form-submits {
+    display:block;
+    float:right;
+    .field{
+        .box-sizing;
+        display:inline-block;
+        padding-right:30px;
+        width:auto;
+        vertical-align:middle;
+    }
+}
 
 .money_input {
     font-size: 20px;
@@ -301,16 +332,7 @@ label{
     }
 }
 
-.form-submits {
-    display:block;
-    .field{
-        display:block;
-        width:auto;
-        float:right;
-    }
-}
 .percent_input {
-
     input {
         width: 100px;
         text-align: right;
@@ -328,22 +350,19 @@ label{
 
 textarea {
     width: 100%;
-
     background: rgba(255, 255, 255, 0.9);
-       border:1px solid #aaa;
-       .rounded_corners(1px); 
-       -moz-box-shadow:0 0 3px #bbb;
-       -webkit-box-shadow:0 0 3px #bbb;
-       padding:4px;
-       vertical-align: middle;
-       font-size:14px;
+    border:1px solid #aaa;
+    .rounded_corners(1px); 
+    .shadow(3px, #bbb);
+    //padding:8px;
+    vertical-align: middle;
+    font-size:14px;
 }
 
 textarea:focus {
-       border-color:#093c75;
-       -moz-box-shadow:0 0 3px #0459b7;
-       -webkit-box-shadow:0 0 3px #0459b7;
-       outline:none; /* Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome */
+   border-color:#093c75;
+   .shadow(3px, #0459b7);
+   outline:none; /* Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome */
 }
 
 .button, .button_good, .button_bad  {

@@ -20,14 +20,14 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
@@ -46,7 +46,7 @@ public final class LoginPage extends ElveosPage {
     @RequestParam
     @Optional
     private final Boolean invoice;
-    
+
     public LoginPage(final LoginPageUrl url) {
         super(url);
         this.url = url;
@@ -67,30 +67,22 @@ public final class LoginPage extends ElveosPage {
         final HtmlDiv master = new HtmlDiv();
         {
             final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
-            final LoginActionUrl loginActionUrl = new LoginActionUrl();
-            final HtmlForm loginForm = new HtmlForm(loginActionUrl.urlString());
-            loginTitle.add(loginForm);
+            final LoginActionUrl targetUrl = new LoginActionUrl();
+            final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+            FormBuilder ftool = new FormBuilder(LoginAction.class, targetUrl);
+            loginTitle.add(form);
 
             // Login field
-            final FieldData loginData = loginActionUrl.getLoginParameter().pickFieldData();
-            final HtmlTextField loginInput = new HtmlTextField(loginData.getName(), Context.trc("Login (noun)", "Login"));
-            loginInput.setDefaultValue(loginData.getSuggestedValue());
-            loginInput.addErrorMessages(loginData.getErrorMessages());
-            loginForm.add(loginInput);
+            ftool.add(form, new HtmlTextField(targetUrl.getLoginParameter().getName()));
 
             // passwordField
-            final HtmlPasswordField passwordInput = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
-            passwordInput.addErrorMessages(loginActionUrl.getPasswordParameter().pickFieldData().getErrorMessages());
-            loginForm.add(passwordInput);
+            ftool.add(form, new HtmlPasswordField(LoginAction.PASSWORD_CODE));
 
             // Submit
-            final HtmlDiv loginOrSignUpDiv = new HtmlDiv("login_or_signup");
-            loginForm.add(loginOrSignUpDiv);
-            final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
-            loginOrSignUpDiv.add(submitButton);
             SignUpPageUrl signUpPageUrl = new SignUpPageUrl();
             signUpPageUrl.setInvoice(invoice);
-            loginOrSignUpDiv.add(signUpPageUrl.getHtmlLink(Context.tr("Sign up")));
+            form.addSubmit(signUpPageUrl.getHtmlLink(Context.tr("Sign up")));
+            form.addSubmit(new HtmlSubmit(Context.trc("Login (verb)", "Login")));
 
             master.add(loginTitle);
         }

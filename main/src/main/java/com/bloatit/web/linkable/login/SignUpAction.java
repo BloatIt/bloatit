@@ -19,6 +19,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
@@ -45,64 +47,82 @@ public final class SignUpAction extends ElveosAction {
     @NonOptional(@tr("Login cannot be blank."))
     @MinConstraint(min = 2, message = @tr("The login must have at least %constraint% chars."))
     @MaxConstraint(max = 15, message = @tr("The login must be %constraint% chars length max."))
+    @FormField(label = @tr("Name"))
+    @FormComment(@tr("When you login, case of login field be will be ignored."))
     private final String login;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Password cannot be blank."))
     @MinConstraint(min = 7, message = @tr("The password must have at least %constraint% chars."))
     @MaxConstraint(max = 255, message = @tr("The password must be %constraint% chars length max."))
+    @FormField(label = @tr("Password"), autocomplete = false)
+    @FormComment(@tr("7 characters minimum. Make it strong!"))
     private final String password;
-
-    @RequestParam(role = Role.POST)
-    @NonOptional(@tr("Password check cannot be blank."))
-    @MinConstraint(min = 7, message = @tr("The password check must have at least %constraint% chars."))
-    @MaxConstraint(max = 255, message = @tr("The password check must be %constraint% chars length max."))
-    private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Email cannot be blank."))
     @MinConstraint(min = 4, message = @tr("The email must have at least %constraint% chars."))
     @MaxConstraint(max = 254, message = @tr("The email must be %constraint% chars length max."))
+    @FormField(label = @tr("Email"), isShort = false)
+    @FormComment(@tr("You will receive an account activation email, but you can contribute without it."))
     private final String email;
 
-    @RequestParam(name = "bloatit_country", role = Role.POST)
+    @RequestParam(role = Role.POST)
     @LengthConstraint(length = 2, message = @tr("The country code must be %constraint% length."))
     @NonOptional(@tr("You have to specify a country."))
+    @FormField(label = @tr("Country"))
     private final String country;
 
-    @RequestParam(name = "bloatit_newsletter", role = Role.POST)
+    @RequestParam(role = Role.POST)
+    @Optional
+    @FormField(label = @tr("Register to newsletter"), isShort = false)
+    @FormComment(@tr("Allows Elveos to send you a newsletter. Note we don't like spam, we won't send a lot of newsletter. Maybe one every 2 or 3 months."))
     private final Boolean newsletter;
 
-    @RequestParam(name = "bloatit_lang", role = Role.POST)
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You have to specify a language."))
+    @FormField(label = @tr("Language"))
     private final String lang;
 
     // Invoicing informations
+    // TODO some comment here.
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Name, first name"))
+    @FormComment(@tr("Your full name."))
     private final String name;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Street"))
     private final String street;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("ZIP code"))
     private final String postalCode;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("City"))
     private final String city;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Extras"))
+    @FormComment(@tr("Optional."))
     private final String extras;
 
     @RequestParam(role = Role.POST)
-    @Optional()
+    @Optional
+    @FormField(label = @tr("VAT identification number"))
+    @FormComment(@tr("Optional."))
     private final String taxIdentification;
 
     @RequestParam(role = Role.POST)
     @Optional()
+    @FormField(label = @tr("I represent a company"))
+    @FormComment(@tr("Optional."))
     private final Boolean isCompany;
 
     private final SignUpActionUrl url;
@@ -112,7 +132,6 @@ public final class SignUpAction extends ElveosAction {
         this.url = url;
         this.login = url.getLogin();
         this.password = url.getPassword();
-        this.passwordCheck = url.getPasswordCheck();
         this.email = url.getEmail();
         this.lang = url.getLang();
         this.country = url.getCountry();
@@ -206,13 +225,6 @@ public final class SignUpAction extends ElveosAction {
             isOk = false;
         }
 
-        if (!password.equals(passwordCheck)) {
-            session.notifyError(Context.tr("Password doesn't match confirmation."));
-            url.getPasswordParameter().addErrorMessage(Context.tr("Password doesn't match confirmation."));
-            url.getPasswordCheckParameter().addErrorMessage(Context.tr("Confirmation doesn't match password."));
-            isOk = false;
-        }
-
         if (invoice != null && invoice) {
             isOk &= checkOptional(this.name, Context.tr("You must add a name."), url.getNameParameter());
             isOk &= checkOptional(this.street, Context.tr("You must add a street."), url.getStreetParameter());
@@ -249,13 +261,6 @@ public final class SignUpAction extends ElveosAction {
         }
         session.addParameter(passwordParameter);
 
-        final UrlParameter<String, String> passwordCheckParameter = url.getPasswordCheckParameter();
-        if (passwordCheckParameter.getValue() != null) {
-            if (passwordCheckParameter.getValue().length() > 3) {
-                passwordCheckParameter.setValue("xxxxxxxxxx");
-            }
-        }
-        session.addParameter(passwordCheckParameter);
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
         session.addParameter(url.getNewsletterParameter());

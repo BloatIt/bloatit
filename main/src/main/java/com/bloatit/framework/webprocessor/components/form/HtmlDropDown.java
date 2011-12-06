@@ -15,6 +15,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 
@@ -69,6 +70,8 @@ public class HtmlDropDown extends HtmlStringFormField {
         final HtmlDropDownElement checkedElement = elements.get(value);
         if (checkedElement != null) {
             checkedElement.addAttribute("selected", "selected");
+        } else {
+            throw new BadProgrammerException("Cannot set default value, element not found: " + value);
         }
     }
 }

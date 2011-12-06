@@ -20,6 +20,9 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -32,6 +35,8 @@ import com.bloatit.web.url.ModifyNewsletterActionUrl;
 public class ModifyNewsletterAction extends LoggedElveosAction {
 
     @RequestParam(name = "bloatit_newsletter", role = Role.POST)
+    @FormField(label = @tr("Register to newsletter"))
+    @FormComment(@tr("Allows Elveos to send you a newsletter. Note we don't like spam, we won't send a lot of newsletter. Maybe one every 2 or 3 months."))
     private final Boolean newsletter;
 
     private final ModifyNewsletterActionUrl url;

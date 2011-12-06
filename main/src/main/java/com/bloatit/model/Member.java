@@ -344,19 +344,19 @@ public final class Member extends Actor<DaoMember> implements User {
     public FollowFeature followOrGetFeature(Feature f) {
         return FollowFeature.create(getDao().followOrGetFeature(((FeatureImplementation) f).getDao()));
     }
-    
+
     public boolean isFollowing(Feature feature) {
         return getDao().isFollowing(((FeatureImplementation) feature).getDao());
     }
-    
+
     public boolean isFollowing(Software software) {
         return getDao().isFollowing(software.getDao());
     }
-    
+
     public boolean isFollowing(Actor<DaoActor> actor) {
         return getDao().isFollowing(actor.getDao());
     }
-    
+
     public void unfollowFeature(Feature f) {
         FollowFeature followFeature = followOrGetFeature(f);
         followFeature.getDao().unfollow();
@@ -370,11 +370,11 @@ public final class Member extends Actor<DaoMember> implements User {
         FollowSoftware followSoftware = followOrGetSoftware(s);
         followSoftware.getDao().unfollow();
     }
-    
+
     public FollowActor followOrGetActor(Actor<DaoActor> f) {
         return FollowActor.create(getDao().followOrGetActor(f.getDao()));
     }
-    
+
     public void unfollowActor(Actor<DaoActor> a) {
         FollowActor followActor = followOrGetActor(a);
         followActor.getDao().unfollow();
@@ -406,8 +406,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getActivationState();
     }
 
-    public String getDescription() throws UnauthorizedPublicAccessException {
-        tryAccess(new RgtMember.UserDescription(), Action.READ);
+    public String getDescription() {
         return getDao().getDescription();
     }
 
@@ -726,5 +725,5 @@ public final class Member extends Actor<DaoMember> implements User {
         return visitor.visit(this);
     }
 
-    
+
 }

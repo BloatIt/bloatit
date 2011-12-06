@@ -23,17 +23,18 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlEmailField;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
-import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
+import com.bloatit.framework.webprocessor.components.javascript.HtmlHiddenableDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.UrlParameter;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -77,133 +78,54 @@ public final class SignUpPage extends ElveosPage {
         final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Sign up"), 1);
         final SignUpActionUrl targetUrl = new SignUpActionUrl();
         targetUrl.setInvoice(invoice);
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         container.add(form);
 
-        // Login
-        final FieldData loginFieldData = targetUrl.getLoginParameter().pickFieldData();
-        final HtmlTextField loginInput = new HtmlTextField(loginFieldData.getName(), Context.trc("Login (noun)", "Login"));
-        loginInput.setDefaultValue(loginFieldData.getSuggestedValue());
-        loginInput.setComment(Context.tr("When you login, case of login field be will be ignored."));
-        loginInput.addErrorMessages(loginFieldData.getErrorMessages());
-        form.add(loginInput);
+        FormBuilder fbuilder = new FormBuilder(SignUpAction.class, targetUrl);
 
-        // Password
-        final FieldData passwordFieldData = targetUrl.getPasswordParameter().pickFieldData();
-        final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), tr("Password"));
-        passwordInput.addErrorMessages(passwordFieldData.getErrorMessages());
-        passwordInput.addAttribute("autocomplete", "off");
-        passwordInput.setComment(Context.tr("7 characters minimum."));
-        form.add(passwordInput);
-
-        // Password check
-        final FieldData passwordCheckFieldData = targetUrl.getPasswordCheckParameter().pickFieldData();
-        final HtmlPasswordField passwordCheckInput = new HtmlPasswordField(passwordCheckFieldData.getName(), tr("Reenter your password"));
-        passwordCheckInput.addErrorMessages(passwordCheckFieldData.getErrorMessages());
-        passwordCheckInput.addAttribute("autocomplete", "off");
-        form.add(passwordCheckInput);
-
-        // Email
-        final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
-        final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), tr("Email"));
-        emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
-        emailInput.addErrorMessages(emailFieldData.getErrorMessages());
-        form.add(emailInput);
+        fbuilder.add(form, new HtmlTextField(targetUrl.getLoginParameter().getName()));
+        fbuilder.add(form, new HtmlPasswordField(targetUrl.getPasswordParameter().getName()));
+        fbuilder.add(form, new HtmlEmailField(targetUrl.getEmailParameter().getName()));
 
         // Country
-        FieldData countryData = targetUrl.getCountryParameter().pickFieldData();
-        final HtmlDropDown countryInput = new HtmlDropDown(countryData.getName(), tr("Country"));
+        final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName());
         for (final Country entry : Country.getAvailableCountries()) {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
-        if (countryData.getSuggestedValue() == null) {
+        if (!fbuilder.suggestedValueChanged(countryInput)) {
             countryInput.setDefaultValue(Context.getLocalizator().getCountryCode());
-        } else {
-            countryInput.setDefaultValue(countryData.getSuggestedValue());
         }
-        form.add(countryInput);
+        fbuilder.add(form, countryInput);
 
         // Language
         FieldData langData = targetUrl.getLangParameter().pickFieldData();
-        final LanguageSelector langInput = new LanguageSelector(langData.getName(), tr("Language"));
+        final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName());
         langInput.setDefaultValue(langData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
-        form.add(langInput);
+        fbuilder.add(form, langInput);
 
         // Newsletter
-        final FieldData newsletterFieldData = targetUrl.getNewsletterParameter().pickFieldData();
-        final HtmlCheckbox newsletterinput = new HtmlCheckbox(newsletterFieldData.getName(), LabelPosition.BEFORE);
-        newsletterinput.setLabel(Context.tr("Register to newsletter"));
-        newsletterinput.setComment(Context.tr("Allows Elveos to send you a newsletter. Note we don't like spam, we won't send a lot of newsletter. Maybe one every 2 or 3 months."));
-        newsletterinput.setDefaultValue(newsletterFieldData.getSuggestedValue());
-        form.add(newsletterinput);
+        fbuilder.add(form, new HtmlCheckbox(targetUrl.getNewsletterParameter().getName(), LabelPosition.BEFORE));
 
         if (invoice != null && invoice) {
-
-            // Invoice
-
             final HtmlTitle invoicingTitle = new HtmlTitle(Context.tr("Invoicing informations"), 1);
             form.add(invoicingTitle);
 
-            // Is company
-            FieldData isCompanyData = targetUrl.getIsCompanyParameter().pickFieldData();
-            HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(isCompanyData.getName(), LabelPosition.BEFORE);
-            isCompanyCheckbox.setLabel(Context.tr("I represent a company"));
-            isCompanyCheckbox.addErrorMessages(isCompanyData.getErrorMessages());
-            form.add(isCompanyCheckbox);
-            if (isCompanyData.getSuggestedValue() != null) {
-                isCompanyCheckbox.setDefaultValue(isCompanyData.getSuggestedValue());
-            }
+            fbuilder.add(form, new HtmlTextField(targetUrl.getNameParameter().getName()));
+            HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
+            fbuilder.add(form, isCompanyCheckbox);
+            fbuilder.add(form, new HtmlTextField(targetUrl.getStreetParameter().getName()));
+            fbuilder.add(form, new HtmlTextField(targetUrl.getExtrasParameter().getName()));
+            fbuilder.add(form, new HtmlTextField(targetUrl.getCityParameter().getName()));
+            fbuilder.add(form, new HtmlTextField(targetUrl.getPostalCodeParameter().getName()));
 
-            // Name
-            final FieldData nameData = targetUrl.getNameParameter().pickFieldData();
-
-            final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Name"));
-            nameInput.setDefaultValue(nameData.getSuggestedValue());
-            nameInput.addErrorMessages(nameData.getErrorMessages());
-            nameInput.setComment(Context.tr("Your full name"));
-            form.add(nameInput);
-
-            // Street
-            form.add(generateTextField(targetUrl.getStreetParameter(),//
-                                       Context.tr("Street")//
-            ));
-
-            // Extras
-            form.add(generateTextField(targetUrl.getExtrasParameter(),//
-                                       Context.tr("Extras"),//
-
-                                       Context.tr("Optional.")));
-
-            // City
-            form.add(generateTextField(targetUrl.getCityParameter(),//
-                                       Context.tr("City")//
-            ));
-
-            // Postal code
-            form.add(generateTextField(targetUrl.getPostalCodeParameter(),//
-                                       Context.tr("Postcode")//
-            ));
-
-            // Tax identification
-            HtmlTextField taxField = generateTextField(targetUrl.getTaxIdentificationParameter(),//
-                                                       Context.tr("VAT identification number"),//
-                                                       Context.tr("Optional."));
-            HtmlDiv hidableDiv = new HtmlDiv();
-            hidableDiv.add(taxField);
-            form.add(hidableDiv);
-
-            JsShowHide jsShowHide = new JsShowHide(form, false);
-            jsShowHide.addActuator(isCompanyCheckbox);
-            jsShowHide.addListener(hidableDiv);
-            jsShowHide.apply();
-
+            HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, false);
+            form.add(hiddenableDiv);
+            fbuilder.add(hiddenableDiv, new HtmlTextField(targetUrl.getTaxIdentificationParameter().getName()));
         }
         // Submit
-        final HtmlSubmit button = new HtmlSubmit(tr("Signup"));
-        form.add(button);
+        form.addSubmit(new HtmlSubmit(tr("Signup")));
 
         master.add(container);
-
         return master;
     }
 
@@ -228,20 +150,5 @@ public final class SignUpPage extends ElveosPage {
         breadcrumb.pushLink(new SignUpPageUrl().getHtmlLink(tr("Sign-in")));
 
         return breadcrumb;
-    }
-
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name) {
-        return generateTextField(parameter, name, null);
-    }
-
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name, final String comment) {
-        final FieldData fieldData = parameter.pickFieldData();
-        final HtmlTextField input = new HtmlTextField(fieldData.getName(), name);
-        input.setDefaultValue(fieldData.getSuggestedValue());
-        if (comment != null) {
-            input.setComment(comment);
-        }
-        input.addErrorMessages(fieldData.getErrorMessages());
-        return input;
     }
 }

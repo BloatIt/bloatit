@@ -23,10 +23,9 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.form.HtmlStringFormField;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
+import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 
 /**
  * A text area built to input markdown
@@ -37,7 +36,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
  * preview and a button bar helping the user to format his markdown content.
  * </p>
  */
-public class MarkdownEditor extends HtmlStringFormField {
+public class MarkdownEditor extends HtmlFormField {
     public MarkdownEditor(final String name, final int rows, final int cols) {
         super(new MarkdownEditorInputBlock(name, rows, cols), name);
     }
@@ -72,18 +71,16 @@ public class MarkdownEditor extends HtmlStringFormField {
         return css;
     }
 
-    @Override
-    public void setComment(final HtmlNode comment) {
-        ((HtmlTextArea) inputBlock.getInputElement()).setComment(comment);
-    }
-
     private static class MarkdownEditorInputBlock extends InputBlock {
-        private final HtmlTextArea input;
+        private final HtmlGenericElement input;
         private final HtmlDiv buttonBar = new HtmlDiv("md_button");
         private final HtmlDiv container = new HtmlDiv("md_editor");
 
         private MarkdownEditorInputBlock(final String name, final int rows, final int cols) {
-            input = new HtmlTextArea(name, rows, cols);
+            input = new HtmlGenericElement("textarea");
+            input.addAttribute("cols", String.valueOf(cols));
+            input.addAttribute("rows", String.valueOf(rows));
+            input.addAttribute("name", name);
             generate();
         }
 
@@ -98,7 +95,7 @@ public class MarkdownEditor extends HtmlStringFormField {
         }
 
         @Override
-        public HtmlTextArea getInputElement() {
+        public HtmlGenericElement getInputElement() {
             return input;
         }
 
@@ -110,7 +107,6 @@ public class MarkdownEditor extends HtmlStringFormField {
 
     @Override
     protected void doSetDefaultStringValue(String value) {
-        ((HtmlTextArea) getInputBlock().getInputElement()).setDefaultValue(value);
+        ((HtmlGenericElement) getInputBlock().getInputElement()).addText(value);
     }
-
 }

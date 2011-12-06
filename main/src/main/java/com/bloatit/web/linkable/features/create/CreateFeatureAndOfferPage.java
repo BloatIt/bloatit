@@ -186,8 +186,8 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         // percent Major
         ftool.add(validationDetails, new HtmlTextField(targetUrl.getPercentMajorParameter().getName()));
 
-        form.addSubmit(new HtmlSubmit(Context.tr("Finish your Offer")).setName(targetUrl.getIsFinishedParameter().getName()));
         form.addSubmit(new HtmlSubmit(Context.tr("Add another milestone")));
+        form.addSubmit(new HtmlSubmit(Context.tr("Finish your Offer")).setName(targetUrl.getIsFinishedParameter().getName()));
 
 
         offerPageContainer.add(form);

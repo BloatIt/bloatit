@@ -26,6 +26,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
@@ -56,36 +58,54 @@ public final class OfferAction extends UserContentAction {
     @RequestParam(role = Role.POST, message = @tr("Invalid value for price field."))
     @NonOptional(@tr("You must set a price to your offer."))
     @MinConstraint(min = 1, message = @tr("The price must be greater to %constraint%."))
+    @FormField(label = @tr("Offer price"))
+    @FormComment(@tr("The price is in euros (€) and can't contains cents."))
     private final BigDecimal price;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must set an expiration date."))
+    @FormField(label = @tr("Release date"))
+    @FormComment(@tr("You will have to release this feature before the release date."))
     private final DateLocale expiryDate;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a description to your offer."))
     @MaxConstraint(max = 800000, message = @tr("The length of the description must be smaller than %constraint% characters."))
+    @FormField(label = @tr("Description"), isShort = false)
+    @FormComment(@tr("Describe your offer. This description must be accurate because it will be used to validate the conformity at the end of the development."))
     private final String description;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a license to your offer."))
+    @FormField(label = @tr("License"))
     private final String license;
 
     @RequestParam(role = Role.POST, suggestedValue = "7")
-    @NonOptional(@tr("You must set a days count for validation."))
+    @Optional("7")
     @MinConstraint(min = 1, message = @tr("The validation time must be greater to %constraint%."))
+    @FormField(label = @tr("Days before validation"))
+    @FormComment(@tr("The number of days to wait before this offer is can be validated. During this time users can add bugs un the bug tracker. Fatal bugs have to be closed before the validation."))
     private final Integer daysBeforeValidation;
 
-    @Optional
+    @Optional("100")
     @RequestParam(role = Role.POST, suggestedValue = "100")
     @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to %constraint%."))
     @MaxConstraint(max = 100, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to %constraint%."))
+    @FormField(label = @tr("Percent gained when no FATAL bugs"))
+    @FormComment(@tr("If you want to add some warranty to the contributor you can say that you want to gain less than 100% "
+            + "of the amount on this feature request when all the FATAL bugs are closed. "
+            + "The money left will be transfered when all the MAJOR bugs are closed. If you specify this field, you have to specify the next one on MAJOR bug percent. "
+            + "By default, all the money on this feature request is transfered when all the FATAL bugs are closed."))
     private final Integer percentFatal;
 
     @RequestParam(role = Role.POST, suggestedValue = "0")
-    @Optional
+    @Optional("0")
     @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to %constraint%."))
     @MaxConstraint(max = 100, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to %constraint%."))
+    @FormField(label = @tr("Percent gained when no MAJOR bugs"))
+    @FormComment(@tr("If you specified a value for the 'FATAL bugs percent', you have to also specify one for the MAJOR bugs. "
+            + "You can say that you want to gain less than 100% of the amount on this offer when all the MAJOR bugs are closed. "
+            + "The money left will be transfered when all the MINOR bugs are closed. Make sure that (FATAL percent + MAJOR percent) <= 100."))
     private final Integer percentMajor;
 
     @RequestParam(role = Role.POST, suggestedValue = "true")
@@ -105,7 +125,7 @@ public final class OfferAction extends UserContentAction {
         this.daysBeforeValidation = url.getDaysBeforeValidation();
         this.percentFatal = url.getPercentFatal();
         this.percentMajor = url.getPercentMajor();
-        this.isFinished = url.getIsFinished();
+        this.isFinished = url.getIsFinished() != null && url.getIsFinished();
     }
 
     @Override
@@ -115,20 +135,26 @@ public final class OfferAction extends UserContentAction {
         try {
             Milestone constructingMilestone;
             if (draftOffer == null) {
-                constructingOffer = feature.addOffer(price, description, license, Language.fromLocale(getLocale()), expiryDate.getJavaDate(), daysBeforeValidation
-                        * DateUtils.SECOND_PER_DAY);
+                constructingOffer = feature.addOffer(price,
+                                                     description,
+                                                     license,
+                                                     Language.fromLocale(getLocale()),
+                                                     expiryDate.getJavaDate(),
+                                                     daysBeforeValidation * DateUtils.SECOND_PER_DAY);
                 constructingMilestone = constructingOffer.getMilestones().iterator().next();
             } else {
                 constructingOffer = draftOffer;
-                constructingMilestone = draftOffer.addMilestone(price, description, Language.fromLocale(getLocale()), expiryDate.getJavaDate(), daysBeforeValidation
-                        * DateUtils.SECOND_PER_DAY);
+                constructingMilestone = draftOffer.addMilestone(price,
+                                                                description,
+                                                                Language.fromLocale(getLocale()),
+                                                                expiryDate.getJavaDate(),
+                                                                daysBeforeValidation * DateUtils.SECOND_PER_DAY);
             }
             if (percentFatal != null && percentMajor != null) {
                 constructingMilestone.updateMajorFatalPercent(percentFatal, percentMajor);
             }
             if (isFinished) {
                 constructingOffer.setDraftFinished();
-
                 final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, FeatureTabKey.offers);
                 return featurePageUrl;
             }
