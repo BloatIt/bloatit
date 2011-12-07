@@ -81,46 +81,46 @@ public final class SignUpPage extends ElveosPage {
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         container.add(form);
 
-        FormBuilder fbuilder = new FormBuilder(SignUpAction.class, targetUrl);
+        FormBuilder ftool = new FormBuilder(SignUpAction.class, targetUrl);
 
-        fbuilder.add(form, new HtmlTextField(targetUrl.getLoginParameter().getName()));
-        fbuilder.add(form, new HtmlPasswordField(targetUrl.getPasswordParameter().getName()));
-        fbuilder.add(form, new HtmlEmailField(targetUrl.getEmailParameter().getName()));
+        ftool.add(form, new HtmlTextField(targetUrl.getLoginParameter().getName()));
+        ftool.add(form, new HtmlPasswordField(targetUrl.getPasswordParameter().getName()));
+        ftool.add(form, new HtmlEmailField(targetUrl.getEmailParameter().getName()));
 
         // Country
         final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName());
         for (final Country entry : Country.getAvailableCountries()) {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
-        if (!fbuilder.suggestedValueChanged(countryInput)) {
+        if (!ftool.suggestedValueChanged(countryInput)) {
             countryInput.setDefaultValue(Context.getLocalizator().getCountryCode());
         }
-        fbuilder.add(form, countryInput);
+        ftool.add(form, countryInput);
 
         // Language
         FieldData langData = targetUrl.getLangParameter().pickFieldData();
         final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName());
         langInput.setDefaultValue(langData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
-        fbuilder.add(form, langInput);
+        ftool.add(form, langInput);
 
         // Newsletter
-        fbuilder.add(form, new HtmlCheckbox(targetUrl.getNewsletterParameter().getName(), LabelPosition.BEFORE));
+        ftool.add(form, new HtmlCheckbox(targetUrl.getNewsletterParameter().getName(), LabelPosition.BEFORE));
 
         if (invoice != null && invoice) {
             final HtmlTitle invoicingTitle = new HtmlTitle(Context.tr("Invoicing informations"), 1);
             form.add(invoicingTitle);
 
-            fbuilder.add(form, new HtmlTextField(targetUrl.getNameParameter().getName()));
+            ftool.add(form, new HtmlTextField(targetUrl.getNameParameter().getName()));
             HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
-            fbuilder.add(form, isCompanyCheckbox);
-            fbuilder.add(form, new HtmlTextField(targetUrl.getStreetParameter().getName()));
-            fbuilder.add(form, new HtmlTextField(targetUrl.getExtrasParameter().getName()));
-            fbuilder.add(form, new HtmlTextField(targetUrl.getCityParameter().getName()));
-            fbuilder.add(form, new HtmlTextField(targetUrl.getPostalCodeParameter().getName()));
+            ftool.add(form, isCompanyCheckbox);
+            ftool.add(form, new HtmlTextField(targetUrl.getStreetParameter().getName()));
+            ftool.add(form, new HtmlTextField(targetUrl.getExtrasParameter().getName()));
+            ftool.add(form, new HtmlTextField(targetUrl.getCityParameter().getName()));
+            ftool.add(form, new HtmlTextField(targetUrl.getPostalCodeParameter().getName()));
 
             HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, false);
             form.add(hiddenableDiv);
-            fbuilder.add(hiddenableDiv, new HtmlTextField(targetUrl.getTaxIdentificationParameter().getName()));
+            ftool.add(hiddenableDiv, new HtmlTextField(targetUrl.getTaxIdentificationParameter().getName()));
         }
         // Submit
         form.addSubmit(new HtmlSubmit(tr("Signup")));

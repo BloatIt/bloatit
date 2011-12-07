@@ -23,25 +23,24 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
-import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
+import com.bloatit.framework.webprocessor.components.form.HtmlNumberField;
 import com.bloatit.framework.webprocessor.components.form.HtmlPercentField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
-import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
+import com.bloatit.framework.webprocessor.components.javascript.HtmlHiddenableDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Contact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
@@ -86,7 +85,6 @@ public final class ModifyContactPage extends LoggedElveosPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateInvoicingContactForm(loggedUser));
 
-
         if (process.getNeedAllInfos()) {
             layout.addRight(new SideBarDocumentationBlock("invoice_id_template"));
         }
@@ -110,176 +108,92 @@ public final class ModifyContactPage extends LoggedElveosPage {
     private HtmlElement generateCommonInvoicingContactForm(final Member member) {
 
         // Create contact form
-        final ModifyInvoicingContactActionUrl modifyInvoicingContextActionUrl = new ModifyInvoicingContactActionUrl(getSession().getShortKey(),
-                                                                                                                    process);
-        final HtmlForm newContactForm = new HtmlForm(modifyInvoicingContextActionUrl.urlString());
+        final ModifyInvoicingContactActionUrl targetUrl = new ModifyInvoicingContactActionUrl(getSession().getShortKey(), process);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        FormBuilder ftool = new FormBuilder(ModifyInvoicingContactAction.class, targetUrl);
 
         try {
+            Contact contact = member.getContact();
 
-            //Is company
-            FieldData isCompanyData = modifyInvoicingContextActionUrl.getIsCompanyParameter().pickFieldData();
-            HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(isCompanyData.getName(), LabelPosition.BEFORE);
-            isCompanyCheckbox.setLabel(Context.tr("I represent a company"));
-            isCompanyCheckbox.addErrorMessages(isCompanyData.getErrorMessages());
-            newContactForm.add(isCompanyCheckbox);
-            if (isCompanyData.getSuggestedValue() == null) {
-                isCompanyCheckbox.setDefaultValue((process.getActor().getContact().isCompany()? "true": "false"));
-            } else {
-                isCompanyCheckbox.setDefaultValue(isCompanyData.getSuggestedValue());
-            }
+            HtmlTextField name = new HtmlTextField(targetUrl.getNameParameter().getName());
+            ftool.add(form, name);
+            ftool.setDefaultValueIfNeeded(name, contact.getName());
 
-            // Name
-            final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
+            HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
+            ftool.add(form, isCompanyCheckbox);
+            ftool.setDefaultValueIfNeeded(isCompanyCheckbox, String.valueOf(contact.isCompany()));
 
-            String name = "";
+            HtmlTextField street = new HtmlTextField(targetUrl.getStreetParameter().getName());
+            ftool.add(form, street);
+            ftool.setDefaultValueIfNeeded(street, contact.getStreet());
 
-            if (process.getActor().isTeam()) {
-                name = Context.tr("Organisation name");
-            } else {
-                name = Context.tr("Name");
-            }
-
-            final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
-            if (nameData.getSuggestedValue() == null) {
-                nameInput.setDefaultValue(process.getActor().getContact().getName());
-            } else {
-                nameInput.setDefaultValue(nameData.getSuggestedValue());
-            }
-            nameInput.addErrorMessages(nameData.getErrorMessages());
-            if (process.getActor().isTeam()) {
-                nameInput.setComment(Context.tr("The name of your company or your association."));
-            } else {
-                nameInput.setComment(Context.tr("Your full name"));
-            }
-            newContactForm.add(nameInput);
-
-            // Street
-            final Contact contact = process.getActor().getContact();
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getStreetParameter(),//
-                                                 Context.tr("Street"),//
-                                                 contact.getStreet()));
-
-            // Extras
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getExtrasParameter(),//
-                                                 Context.tr("Extras"),//
-                                                 contact.getExtras(),
-                                                 Context.tr("Optional.")));
-
-            // City
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getCityParameter(),//
-                                                 Context.tr("City"),//
-                                                 contact.getCity()));
-
-            // Postal code
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getPostalCodeParameter(),//
-                                                 Context.tr("Postcode"),//
-                                                 contact.getPostalCode()));
+            HtmlTextField extras = new HtmlTextField(targetUrl.getExtrasParameter().getName());
+            ftool.add(form, extras);
+            ftool.setDefaultValueIfNeeded(extras, contact.getExtras());
 
             // Country
-            FieldData countryData = modifyInvoicingContextActionUrl.getCountryParameter().pickFieldData();
-            final HtmlDropDown countryInput = new HtmlDropDown(countryData.getName(), tr("Country"));
+            final HtmlDropDown country = new HtmlDropDown(targetUrl.getCountryParameter().getName());
             for (final Country entry : Country.getAvailableCountries()) {
-                countryInput.addDropDownElement(entry.getCode(), entry.getName());
+                country.addDropDownElement(entry.getCode(), entry.getName());
             }
-            if (countryData.getSuggestedValue() == null) {
-                if(contact.getCountry() != null ) {
-                    countryInput.setDefaultValue(contact.getCountry());
-                } else {
-                    countryInput.setDefaultValue(Context.getLocalizator().getCountryCode());
-                }
+            if (contact.getCountry() != null) {
+                ftool.setDefaultValueIfNeeded(country, contact.getCountry());
             } else {
-                countryInput.setDefaultValue(countryData.getSuggestedValue());
+                ftool.setDefaultValueIfNeeded(country, Context.getLocalizator().getCountryCode());
             }
+            ftool.add(form, country);
 
-            newContactForm.add(countryInput);
+            HtmlTextField city = new HtmlTextField(targetUrl.getCityParameter().getName());
+            ftool.add(form, city);
+            ftool.setDefaultValueIfNeeded(city, contact.getCity());
 
-            // Tax identification
-            HtmlTextField taxField = generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
-                              Context.tr("VAT identification number"),//
-                              contact.getTaxIdentification(), Context.tr("Optional.") );
-            HtmlDiv hidableDiv = new HtmlDiv();
-            hidableDiv.add(taxField);
-            newContactForm.add(hidableDiv);
+            HtmlTextField zipcode = new HtmlTextField(targetUrl.getPostalCodeParameter().getName());
+            ftool.add(form, zipcode);
+            ftool.setDefaultValueIfNeeded(zipcode, contact.getPostalCode());
 
-
-            JsShowHide jsShowHide = new JsShowHide(newContactForm, contact.isCompany());
-            jsShowHide.addActuator(isCompanyCheckbox);
-            jsShowHide.addListener(hidableDiv);
-            jsShowHide.apply();
+            HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, contact.isCompany());
+            form.add(hiddenableDiv);
+            ftool.add(hiddenableDiv, new HtmlTextField(targetUrl.getTaxIdentificationParameter().getName()));
 
             if (process.getNeedAllInfos()) {
-                final HtmlTitleBlock specificForm = new HtmlTitleBlock(Context.tr("Invoice emission"), 1);
+                final HtmlTitleBlock specificForm = new HtmlTitleBlock(Context.tr("Invoice issuing"), 1);
+                form.add(specificForm);
 
                 // Invoice ID Number
-                BigDecimal invoiceIdNumber = contact.getInvoiceIdNumber();
+                BigDecimal invoiceIdNumberValue = contact.getInvoiceIdNumber();
                 String invoiceIdNumberText = null;
 
-                if (invoiceIdNumber != null) {
-                    invoiceIdNumberText = "" + invoiceIdNumber.intValue();
+                if (invoiceIdNumberValue != null) {
+                    invoiceIdNumberText = String.valueOf(invoiceIdNumberValue.intValue());
                 }
 
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdNumberParameter(),//
-                                                   Context.tr("Next Invoice ID number"),//
-                                                   invoiceIdNumberText, Context.tr("ID that will be used for the next generated invoice.")));
+                HtmlNumberField invoiceIdNumber = new HtmlNumberField(targetUrl.getInvoiceIdNumberParameter().getName());
+                ftool.add(form, invoiceIdNumber);
+                ftool.setDefaultValueIfNeeded(invoiceIdNumber, invoiceIdNumberText);
 
+                HtmlTextField invoiceIdTemplate = new HtmlTextField(targetUrl.getInvoiceIdTemplateParameter().getName());
+                ftool.add(form, invoiceIdTemplate);
+                ftool.setDefaultValueIfNeeded(invoiceIdTemplate, contact.getInvoiceIdTemplate());
 
-                // Invoice ID template
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
-                                                   Context.tr("Invoice ID template"),//
-                                                   contact.getInvoiceIdTemplate(), Context.tr("Format of the generated invoice numbers. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'")));
+                HtmlTextField legalId = new HtmlTextField(targetUrl.getLegalIdParameter().getName());
+                ftool.add(form, legalId);
+                ftool.setDefaultValueIfNeeded(legalId, contact.getLegalId());
 
-
-
-                // Legal identification
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getLegalIdParameter(),//
-                                                   Context.tr("Legal identification"),//
-                                                   contact.getLegalId()));
-
-                // Tax Rate
-                final FieldData fieldDataTaxRate = modifyInvoicingContextActionUrl.getTaxRateParameter().pickFieldData();
-                final HtmlPercentField inputTaxRate = new HtmlPercentField(fieldDataTaxRate.getName(), Context.tr("Tax Rate"));
-                if (fieldDataTaxRate.getSuggestedValue() == null) {
-                    BigDecimal taxRate = contact.getTaxRate();
-                    if(taxRate != null) {
-                        inputTaxRate.setDefaultValue(taxRate.multiply(new BigDecimal("100")));
-                    }
-                } else {
-                    inputTaxRate.setDefaultValue(fieldDataTaxRate.getSuggestedValue());
+                HtmlPercentField taxeRate = new HtmlPercentField(targetUrl.getTaxRateParameter().getName());
+                ftool.add(form, taxeRate);
+                BigDecimal taxRate = contact.getTaxRate();
+                if (taxRate != null) {
+                    ftool.setDefaultValueIfNeeded(taxeRate, taxRate.multiply(new BigDecimal("100")).toPlainString());
                 }
-                inputTaxRate.setComment(Context.tr("Example: 19.6 for TVA in France."));
-                inputTaxRate.addErrorMessages(fieldDataTaxRate.getErrorMessages());
-                specificForm.add(inputTaxRate);
-
-                newContactForm.add(specificForm);
             }
-
-            final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
-            newContactForm.add(newContactButton);
+            form.addSubmit(new HtmlSubmit(Context.tr("Update invoicing contact")));
         } catch (final UnauthorizedPrivateAccessException e) {
             throw new ShallNotPassException("The user is not allowed to access to his contact informations");
         }
 
-        return newContactForm;
+        return form;
     }
 
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name, final String defaultValue) {
-        return generateTextField(parameter, name, defaultValue, null);
-    }
-
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name, final String defaultValue, final String comment) {
-        final FieldData fieldData = parameter.pickFieldData();
-        final HtmlTextField input = new HtmlTextField(fieldData.getName(), name);
-        if (fieldData.getSuggestedValue() == null) {
-            input.setDefaultValue(defaultValue);
-        } else {
-            input.setDefaultValue(fieldData.getSuggestedValue());
-        }
-        if (comment != null) {
-            input.setComment(comment);
-        }
-        input.addErrorMessages(fieldData.getErrorMessages());
-        return input;
-    }
 
     @Override
     protected String createPageTitle() {

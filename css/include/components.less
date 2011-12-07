@@ -141,46 +141,93 @@ legend {
     margin-bottom: 0.5em;
     text-align: justify;
 }
-
-input[type=text],
-input[type=number],
-input[type=email],
+input[type=color],
 input[type=date],
-input[type=password]{
-       background: rgba(255, 255, 255, 1);
-       border:1px solid #aaa;
-       .rounded_corners(1px); 
-       vertical-align: middle;
-       horizontal-align: left;
-       width:100%;
-        .box-sizing;
+input[type=datetime],
+input[type=datetime-local],
+input[type=email],
+input[type=image],
+input[type=month],
+input[type=number],
+input[type=password],
+input[type=range],
+input[type=reset],
+input[type=search],
+input[type=tel],
+input[type=text],
+input[type=time],
+input[type=url],
+input[type=week],
+textarea {
+    border:1px solid #aaa;
+    .horizontal-gradient(#fff, #eee);
+    .rounded_corners(1px); 
+    .shadow(2px, #bbb);
+    padding:2px;
+    vertical-align: middle;
 }
-input[type=checkbox] {
-   background: rgba(255, 255, 255, 1);
-   border:1px solid #aaa;
-   .rounded_corners(5px); 
-   vertical-align: middle;
+textarea {
+    width: 90%;
+    .horizontal-gradient(#fff, #fafafa);
 }
-input[type=text]:focus,
-input[type=email]:focus,
-input[type=number]:focus,
-input[type=date]:focus,
-input[type=password]:focus{
-       border-color:#093c75;
-       -moz-box-shadow: 0 0 3px #0459b7;
-       -webkit-box-shadow: 0 0 3px #0459b7;
-       box-shadow: 0 0 3px #0459b7;
-       outline:none; // Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome 
+select{
+    cursor:pointer;
+    .shadow(2px, #bbb);
+    padding:2px;
+    vertical-align: middle;
+}
+input[type=submit],
+a.submit {
+    background: @default_link_color * 1.2;
+    .horizontal-gradient(@default_link_color * 1.1, @default_link_color * 1.4);
+    border:1px solid @default_link_color;
+    .rounded_corners(3px); 
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:bold;
+    text-shadow:0 0px 1px rgb(0,0,50);
+    padding: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    text-decoration:none;
+    vertical-align: middle;
+    horizontal-align: right;
+    margin-left:160px;
+}
+input[type=submit]:hover,
+a.submit:hover{
+    color:white;
+    background: @default_link_color * 1.5;
+    .horizontal-gradient(@default_link_color * 1.1, @default_link_color * 1.9);
+    text-decoration:none;
+}
+input[type=submit]:active,
+input[type=submit]:focus,
+a.submit:active,
+a.submit:focus{
+    background: @default_link_color * 1.1;
+    .horizontal-gradient(@default_link_color * 1.9, @default_link_color * 1.1);
+    outline:none;
+}
+input:focus,
+textarea:focus {
+    border-color:#093c75;
+    .shadow(2px, #0459b7);
+    outline:none; 
+}
+select:focus{
+    .shadow(2px, #0459b7);
+    outline:none; 
 }
 
 .field {
     margin:8px;
     margin-bottom:15px;
-    
     vertical-align: top;
     display:inline-block;
     .label {
-        font-size:20px;
+        font-size:17px;
         margin-top:4px;
         margin-bottom:4px;
         padding-left:2px;
@@ -198,12 +245,6 @@ input[type=password]:focus{
             max-size:18px;
         }
         
-        select {
-           vertical-align: middle;
-           horizontal-align: left;
-           width:100%;
-        }
-
         .notification_error {
             display:none;
             p {
@@ -248,37 +289,85 @@ input[type=password]:focus{
     }
     select{
         margin:2px;
+        padding:0px;
     }
 }
 
-.form-body{
+.form-show-body {
     border: 1px solid rgba(196, 196, 196, 1);
-    background: rgba(230, 230, 230, 1);
+    background: rgba(237, 237, 245, 1);
+}
+
+.form-body{
+    clear:both;
     .rounded_corners(8px); 
     padding-top:14px;
     padding-bottom:14px;
     padding-left:20px;
-    clear:both;
     margin-bottom:20px;
 
-    .field{
-    }
+    //input[type=button],
+    //input[type=checkbox],
+    //input[type=file],
+    //input[type=hidden],
+    //input[type=radio],
+    //input[type=submit],
 
+    input[type=color],
+    input[type=date],
+    input[type=datetime],
+    input[type=datetime-local],
+    input[type=email],
+    input[type=image],
+    input[type=month],
+    input[type=number],
+    input[type=password],
+    input[type=range],
+    input[type=reset],
+    input[type=search],
+    input[type=tel],
+    input[type=text],
+    input[type=time],
+    input[type=url],
+    input[type=week],
+    textarea {
+        width:100%;
+        .box-sizing;
+        background-image:none;
+        background: rgba(255, 255, 255, 1);
+        border:1px solid #aaa;
+        .rounded_corners(1px); 
+        vertical-align: middle;
+        horizontal-align: left;
+        margin:0px;
+        font-size:20px;
+        padding:8px;
+    }
+    input[type=radio],
+    input[type=checkbox] {
+        vertical-align: middle;
+    }
+    input[type=submit],
+    a.submit {
+        margin:0px;
+        font-size:20px;
+    }
     select{
-           font-size:18px;
-           padding: 8px;
-           cursor:pointer;
-           -moz-box-shadow:0 0 3px #aaa;
-           -webkit-box-shadow:0 0 3px #aaa;
-           box-shadow:0 0 3px #aaa;
+        font-size:18px;
+        padding: 8px;
+        cursor:pointer;
+        width:100%
     }
-    input{
-           margin:0px;
-           margin-left:0px;
-           font-size:20px;
-           padding: 8px;
+    textarea {
+        font-size:14px;
     }
-
+    
+    .field {
+        margin-bottom:30px;
+    }
+    .required .label {
+        font-weight:bold;
+    }
     .long-form{
          width: 100%;
         .box-sizing;
@@ -291,6 +380,7 @@ input[type=password]:focus{
         margin-right:-20px;
         padding-right:40px;
      }
+
 }
 .one-line-form{
     padding-top:25px;
@@ -306,79 +396,57 @@ input[type=password]:focus{
 }
 label{
     cursor:pointer;
-    font-size: 0.9em;
-    font-weight:bold;
-    //padding-right: 15px;
+    //font-weight:bold;
 }
-
+label:before{
+    content:"\2192  ";
+    margin-right:8px;
+}
 .form-submits {
     display:block;
     float:right;
     .field{
-        .box-sizing;
         display:inline-block;
         padding-right:30px;
         width:auto;
         vertical-align:middle;
     }
 }
-
 .money_input {
-    font-size: 20px;
-    input {
+    font-size: 25px;
+    input[type=number] {
         margin-right:-35px;
         text-align:right;
         padding-right: 35px;
     }
 }
-
 .percent_input {
-    input {
+    input[type=number] {
         width: 100px;
         text-align: right;
         font-size: 1em;
     }
 }
 
-.input_long_500px {
-    width: 500px;
-}
-
-.input_long_400px {
-    width: 400px;
-}
-
-textarea {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.9);
-    border:1px solid #aaa;
-    .rounded_corners(1px); 
-    .shadow(3px, #bbb);
-    //padding:8px;
-    vertical-align: middle;
-    font-size:14px;
-}
-
-textarea:focus {
-   border-color:#093c75;
-   .shadow(3px, #0459b7);
-   outline:none; /* Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome */
-}
-
 .button, .button_good, .button_bad  {
-        color:white;
-        background: @default_link_color * 1.2;
-        .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
-        border:1px solid @default_link_color;
-        .rounded_corners(3px); 
-        text-shadow:0 1px 1px rgb(50,50,50);
-        .shadow(1px, white);
+    background: @default_link_color * 1.2;
+    .horizontal-gradient(@default_link_color * 1.1, @default_link_color * 1.4);
+    border:1px solid @default_link_color;
+    .rounded_corners(3px); 
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:bold;
+    padding: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    text-decoration:none;
+    vertical-align: middle;
+    horizontal-align: right;
+    margin-left:160px;
+    color:white;
+        text-shadow:0 0px 1px rgb(0,0,50);
         cursor:pointer;
-        font-size:0.9em;
-        font-weight:bold;
-        padding: 3px;
-        padding-right: 8px;
-        padding-left: 8px;
         margin-left: 0.5em;
         margin-right: 0.5em;
         text-decoration:none;
@@ -433,39 +501,6 @@ textarea:focus {
        .horizontal-gradient(@error_color * 1.9,  @error_color * 1.1);
 }
 
-input[type=submit],
-a.submit {
-       background: @default_link_color * 1.2;
-       .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
-       border:1px solid @default_link_color;
-       .rounded_corners(3px); 
-       .shadow(1px, white);
-       color:white;
-       cursor:pointer;
-       font-size:20px;
-       //font-weight:bold;
-       padding: 8px;
-       padding-right: 12px;
-       padding-left: 12px;
-       text-decoration:none;
-       vertical-align: middle;
-}
-input[type=submit]:hover,
-a.submit:hover{
-    color:white;
-    background: @default_link_color * 1.5;
-       
-    .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.9);
-    text-decoration:none;
-}
-input[type=submit]:active,
-input[type=submit]:focus,
-a.submit:active,
-a.submit:focus{
-    background: @default_link_color * 1.1;
-    .horizontal-gradient(@default_link_color * 1.9,  @default_link_color * 1.1);
-    outline:none;
-}
 
 .idea_conpact_summary {
     width: 100%;

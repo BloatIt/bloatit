@@ -23,7 +23,7 @@ package com.bloatit.framework.webprocessor.components.form;
  *
  * @see HtmlForm#enableFileUpload()
  */
-public final class HtmlFileInput extends HtmlStringFormField {
+public final class HtmlFileInput extends HtmlFormField {
 
     /**
      * Creates a file input with a given name

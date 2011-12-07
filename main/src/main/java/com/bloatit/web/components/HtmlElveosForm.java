@@ -17,16 +17,20 @@ public class HtmlElveosForm extends HtmlForm {
     private final PlaceHolderElement submits;
 
     public HtmlElveosForm(String target) {
-        this(target, Method.POST);
+        this(target, true, Method.POST);
     }
 
-    public HtmlElveosForm(String target, Method method) {
+    public HtmlElveosForm(String target, boolean showBody, Method method) {
         super(target, method);
         header = new HtmlDiv("form-header");
         submits = new PlaceHolderElement();
         body = new PlaceHolderElement();
         HtmlDiv bodyblock = new HtmlDiv("form-body");
         HtmlDiv submitsBlock = new HtmlDiv("form-submits");
+
+        if (showBody) {
+            bodyblock.setCssClass("form-show-body");
+        }
 
         super.add(header);
         super.add(bodyblock);
@@ -35,6 +39,10 @@ public class HtmlElveosForm extends HtmlForm {
         bodyblock.add(submitsBlock);
         submitsBlock.add(submits);
         bodyblock.add(new HtmlClearer());
+    }
+
+    public HtmlElveosForm(String target, boolean b) {
+        this(target, b, Method.POST);
     }
 
     public void addLanguageChooser(String name, String defaultLang) {

@@ -29,12 +29,10 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
-import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -52,6 +50,7 @@ import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 import com.bloatit.web.components.HtmlAuthorLink;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
@@ -76,7 +75,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
     @RequestParam(name = "applyVAT", role = Role.GET)
     @Optional
     private final List<String> applyVAT;
-    
+
     @RequestParam(name = "preview", role = Role.GET)
     @NonOptional(@tr("You must indicate the preview mode"))
     private final Boolean preview;
@@ -109,15 +108,13 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
         final HtmlDiv modify = new HtmlDiv("float_right");
         layout.add(modify);
-        
+
         Actor<?> actor = process.getActor();
-        
-        ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor,
-                                                                                                                 process);
+
+        ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor, process);
         modifyInvoicingContactProcessUrl.setNeedAllInfos(true);
         modify.add(modifyInvoicingContactProcessUrl.getHtmlLink(Context.tr("Change invoicing informations")));
-        
-        
+
         // Contact reminder
         layout.add(generateContactInformations());
 
@@ -127,21 +124,15 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
     }
 
     private HtmlElement generateInvoicingGenerationForm(final Member member) {
-        new HtmlTitleBlock("Additional invoicing informations", 1);
-
-        generateInvoiceActionUrl = new ContributionInvoicingInformationsActionUrl(getSession().getShortKey(),
-
-        process);
-        final HtmlForm form = new HtmlForm(generateInvoiceActionUrl.urlString());
+        // new HtmlTitleBlock("Additional invoicing informations", 1);
+        generateInvoiceActionUrl = new ContributionInvoicingInformationsActionUrl(getSession().getShortKey(), process);
+        final HtmlElveosForm form = new HtmlElveosForm(generateInvoiceActionUrl.urlString());
 
         Milestone milestone = process.getMilestone();
-
         HtmlTable.HtmlLineTableModel model = new HtmlTable.HtmlLineTableModel();
-
         model.setHeaderLine(new HtmlTableLine() {
 
             {
-
                 addTextCell(Context.tr("Contributor"));
                 addTextCell(Context.tr("Amount"));
                 addTextCell(Context.tr("Country"));
@@ -154,7 +145,6 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
         });
 
         try {
-
             BigDecimal invoiceIdNumberCount = process.getActor().getContact().getInvoiceIdNumber();
 
             for (MilestoneContributionAmount milestoneContributionAmount : milestone.getContributionAmounts()) {
@@ -170,11 +160,11 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
         final HtmlSubmit previewButton = new HtmlSubmit(Context.tr("Update previews"));
         previewButton.addAttribute("name", "preview");
-        form.add(previewButton);
+        form.addSubmit(previewButton);
 
         final HtmlSubmit generateButton = new HtmlSubmit(Context.tr("Generate invoices"));
         generateButton.addAttribute("name", "generate");
-        form.add(generateButton);
+        form.addSubmit(generateButton);
 
         return form;
     }
@@ -182,7 +172,6 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
     public HtmlElement generateContactInformations() {
         final HtmlList memberIdList = new HtmlList();
 
-        
         // Name
         final String name;
         Actor<?> actor = process.getActor();
@@ -244,7 +233,6 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
             memberIdList.add(new HtmlDefineParagraph(taxIdentification, emptyIfNull(contact.getTaxIdentification())));
 
         }
-
 
         // Invoicing id template
         final String invoicingIdTemplate;
@@ -390,15 +378,8 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
             });
 
         }
-
-        private String emptyIfNull(final String input) {
-            if (input == null) {
-                return "";
-            }
-            return input;
-        }
-
     }
+
     private String emptyIfNull(final String input) {
         if (input == null) {
             return "";

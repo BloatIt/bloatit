@@ -20,16 +20,19 @@ final class HtmlRadioButton extends HtmlFormField {
     public HtmlRadioButton(final String name, final String value, final LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, position);
         addAttribute("value", value);
+        addContainerCssClass("one-line-form");
     }
 
     public HtmlRadioButton(final String name, final String value, final String label, final LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, label, position);
         addAttribute("value", value);
+        addContainerCssClass("one-line-form");
     }
 
     public HtmlRadioButton(String name, String value, HtmlElement label, LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, label, position);
         addAttribute("value", value);
+        addContainerCssClass("one-line-form");
     }
 
     protected void setDefaultValue(final Boolean value) {

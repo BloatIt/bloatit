@@ -22,12 +22,12 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
+import com.bloatit.framework.webprocessor.components.form.HtmlEmailField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -58,17 +58,12 @@ public class LostPasswordPage extends ElveosPage {
         layout.addLeft(master);
 
         final LostPasswordActionUrl targetUrl = new LostPasswordActionUrl();
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         master.add(form);
 
-        // EMAIL
-        final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
-        final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), Context.tr("Enter your email"));
-        emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
-        emailInput.setComment(Context.tr("We will send you an email explaining how to recover your password."));
-        form.add(emailInput);
-
-        form.add(new HtmlSubmit(Context.tr("Submit")));
+        FormBuilder ftool = new FormBuilder(LostPasswordAction.class, targetUrl);
+        ftool.add(form, new HtmlEmailField(targetUrl.getEmailParameter().getName()));
+        form.addSubmit(new HtmlSubmit(Context.tr("Submit")));
         return layout;
     }
 

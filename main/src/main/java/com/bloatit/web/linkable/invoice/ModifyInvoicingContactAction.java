@@ -23,6 +23,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
@@ -43,55 +45,67 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
     private final ModifyInvoicingContactProcess process;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a name."))
+    @NonOptional(@tr("You have to specify a name."))
+    @FormField(label = @tr("Name"))
+    @FormComment(@tr("Your full name, or the name of your organization."))
     private final String name;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a street."))
+    @NonOptional(@tr("You have to specify a street."))
+    @FormField(label = @tr("Street"), isShort = false)
     private final String street;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a Postcode."))
+    @NonOptional(@tr("You have to specify a ZIP code."))
+    @FormField(label = @tr("ZIP code"))
     private final String postalCode;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a city."))
+    @NonOptional(@tr("You have to specify a city."))
+    @FormField(label = @tr("City"))
     private final String city;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a country."))
-    @LengthConstraint(length = 2, message = @tr("The country code must be %constraint% length."))
-    private final String country;
+    @Optional
+    @FormField(label = @tr("Extras"))
+    private final String extras;
 
-    @RequestParam(role = Role.POST)
-    @Optional()
-    private final Boolean isCompany;
-    
     @RequestParam(role = Role.POST)
     @Optional
-    private final String extras;
-    
-    @RequestParam(role = Role.POST)
-    @Optional()
+    @FormField(label = @tr("VAT identification number"))
     private final String taxIdentification;
 
+    @RequestParam(role = Role.POST)
+    @Optional
+    @FormField(label = @tr("I represent a company"))
+    private final Boolean isCompany;
 
+    @RequestParam(role = Role.POST)
+    @LengthConstraint(length = 2, message = @tr("The country code must be %constraint% length."))
+    @NonOptional(@tr("You have to specify a country."))
+    @FormField(label = @tr("Country"))
+    private final String country;
 
     // Specific informations
     @RequestParam(role = Role.POST)
-    @Optional()
+    @Optional
+    @FormField(label = @tr("Invoice ID template"))
+    @FormComment(@tr("Format of the generated invoice numbers. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'"))
     private final String invoiceIdTemplate;
 
     @RequestParam(role = Role.POST)
-    @Optional()
+    @Optional
+    @FormField(label = @tr("Next Invoice ID number"))
+    @FormComment(@tr("ID that will be used for the next generated invoice."))
     private final BigDecimal invoiceIdNumber;
 
     @RequestParam(role = Role.POST)
-    @Optional()
+    @Optional
+    @FormField(label = @tr("Legal identification"))
     private final String legalId;
 
-        @RequestParam(role = Role.POST)
-    @Optional()
+    @RequestParam(role = Role.POST)
+    @Optional
     private final BigDecimal taxRate;
 
     private final ModifyInvoicingContactActionUrl url;
@@ -107,13 +121,13 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         this.country = url.getCountry();
         this.extras = url.getExtras();
         this.taxIdentification = url.getTaxIdentification();
-        this.isCompany = (url.getIsCompany() == null ? false: url.getIsCompany());
-        
+        this.isCompany = (url.getIsCompany() == null ? false : url.getIsCompany());
+
         // Specific informations
         this.invoiceIdTemplate = url.getInvoiceIdTemplate();
         this.invoiceIdNumber = url.getInvoiceIdNumber();
         this.legalId = url.getLegalId();
-        
+
         this.taxRate = url.getTaxRate();
     }
 
@@ -152,15 +166,15 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
             isOk &= checkOptional(this.invoiceIdNumber, Context.tr("You must add an invoice No initial value."), url.getInvoiceIdNumberParameter());
             isOk &= checkOptional(this.legalId, Context.tr("You must add a legal ID."), url.getLegalIdParameter());
             isOk &= checkOptional(this.taxRate, Context.tr("You must add a tax rate."), url.getTaxRateParameter());
-            
-            if(this.invoiceIdTemplate != null) {
+
+            if (this.invoiceIdTemplate != null) {
                 Pattern pattern = Pattern.compile("^(.*)(\\{ID(\\|([0-9]+))?\\})(.*)");
                 Matcher matcher = pattern.matcher(this.invoiceIdTemplate);
-                if(!matcher.matches()) {
+                if (!matcher.matches()) {
                     String errorText = Context.tr("You must indicate a ID field in the template.");
                     url.getInvoiceIdTemplateParameter().addErrorMessage(errorText);
                     session.notifyError(errorText);
-                    isOk = false; 
+                    isOk = false;
                 }
             }
         }

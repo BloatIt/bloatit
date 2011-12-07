@@ -69,24 +69,24 @@ public final class CreateExternalServicePage extends LoggedElveosPage {
 
     private HtmlElement generateFeatureCreationForm() {
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Add a new service"), 1);
-        final CreateExternalServiceActionUrl doCreateUrl = new CreateExternalServiceActionUrl(getSession().getShortKey());
+        final CreateExternalServiceActionUrl targetUrl = new CreateExternalServiceActionUrl(getSession().getShortKey());
 
         // Create the form stub
-        final HtmlForm addServiceForm = new HtmlForm(doCreateUrl.urlString());
-        addServiceForm.enableFileUpload();
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
+        form.enableFileUpload();
 
-        createFeatureTitle.add(addServiceForm);
+        createFeatureTitle.add(form);
 
         // Create the field for the name of the service
-        final FieldData serviceNameData = doCreateUrl.getServiceNameParameter().pickFieldData();
+        final FieldData serviceNameData = targetUrl.getServiceNameParameter().pickFieldData();
         final HtmlTextField serviceNameInput = new HtmlTextField(serviceNameData.getName(), Context.tr("Service name"));
         serviceNameInput.setDefaultValue(serviceNameData.getSuggestedValue());
         serviceNameInput.addErrorMessages(serviceNameData.getErrorMessages());
         serviceNameInput.setComment(Context.tr("The name of the service or application that will be able to connect to elveos."));
-        addServiceForm.add(serviceNameInput);
+        form.add(serviceNameInput);
 
         // Description
-        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
+        final FieldData descriptionData = targetUrl.getDescriptionParameter().pickFieldData();
         final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionData.getName(),
                                                                    Context.tr("Describe the service"),
                                                                    DESCRIPTION_INPUT_NB_LINES,
@@ -94,21 +94,21 @@ public final class CreateExternalServicePage extends LoggedElveosPage {
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Mininum 10 character. Enter a short description of your service or application."));
-        addServiceForm.add(descriptionInput);
+        form.add(descriptionInput);
 
         // Language
-        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
+        final FieldData languageData = targetUrl.getLangParameter().pickFieldData();
         final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
         languageInput.setDefaultValue(languageData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
         languageInput.addErrorMessages(languageData.getErrorMessages());
         languageInput.setComment(Context.tr("The language of your description."));
-        addServiceForm.add(languageInput);
+        form.add(languageInput);
 
         final HtmlFileInput serviceImageInput = new HtmlFileInput(CreateExternalServiceAction.IMAGE_CODE, Context.tr("Service logo"));
         serviceImageInput.setComment("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px.");
-        addServiceForm.add(serviceImageInput);
+        form.add(serviceImageInput);
 
-        addServiceForm.add(new HtmlSubmit(Context.tr("submit")));
+        form.add(new HtmlSubmit(Context.tr("submit")));
 
         final HtmlDiv group = new HtmlDiv();
         group.add(createFeatureTitle);

@@ -255,9 +255,7 @@ public final class SignUpAction extends ElveosAction {
         session.addParameter(url.getLoginParameter());
         final UrlParameter<String, String> passwordParameter = url.getPasswordParameter();
         if (passwordParameter.getValue() != null) {
-            if (passwordParameter.getValue().length() > 3) {
-                passwordParameter.setValue("xxxxxxxxxx");
-            }
+            passwordParameter.setValue("", true);
         }
         session.addParameter(passwordParameter);
 

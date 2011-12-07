@@ -23,7 +23,6 @@ import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -34,6 +33,7 @@ import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Image;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.PaymentProcessUrl;
 
@@ -41,7 +41,7 @@ public class HtmlPayBlock extends HtmlDiv {
     public HtmlPayBlock(final StandardQuotation quotation, final Team team, final PaymentProcessUrl paymentUrl, final Url returnUrl) {
         super("pay_actions");
 
-        HtmlForm form = new HtmlForm(paymentUrl.urlString());
+        HtmlElveosForm form = new HtmlElveosForm(paymentUrl.urlString(), false);
 
         FieldData pickFieldData = paymentUrl.getPaymentMethodParameter().pickFieldData();
         HtmlRadioButtonGroup paymentMethodRadioButtonGroup = new HtmlRadioButtonGroup(pickFieldData.getName());
@@ -78,8 +78,8 @@ public class HtmlPayBlock extends HtmlDiv {
                                                                                      .getCurrency(quotation.totalTTC.getValue())
                                                                                      .getTwoDecimalEuroString()));
 
-        form.add(payContributionButton);
-        form.add(returnUrl.getHtmlLink(Context.tr("edit")));
+        form.addSubmit(payContributionButton);
+        form.addSubmit(returnUrl.getHtmlLink(Context.tr("edit")));
 
         add(form);
     }

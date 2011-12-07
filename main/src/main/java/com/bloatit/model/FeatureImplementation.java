@@ -635,7 +635,11 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             throw new UnauthorizedOperationException(Action.WRITE);
         }
 
-        getDao().setSoftware(software.getDao());
+        if (software == null) {
+            getDao().setSoftware(null);
+        } else {
+            getDao().setSoftware(software.getDao());
+        }
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

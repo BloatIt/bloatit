@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Description;
@@ -53,12 +54,14 @@ public final class TranslateAction extends LoggedElveosAction {
     @NonOptional(@tr("You forgot to write a title"))
     @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
+    @FormField(label = @tr("Title"), isShort = false)
     private final String title;
 
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     @MaxConstraint(max = 800000, message = @tr("The description must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("Description"), isShort = false)
     private String content;
 
     private final TranslateActionUrl url;
@@ -120,7 +123,7 @@ public final class TranslateAction extends LoggedElveosAction {
         session.addParameter(url.getTitleParameter());
         session.addParameter(url.getContentParameter());
         session.addParameter(url.getSourceLanguageParameter());
-        session.addParameter(url.getTargetLanguageParameter());        
+        session.addParameter(url.getTargetLanguageParameter());
     }
 
 }

@@ -338,7 +338,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             this.software.removeFeature(this);
         }
         this.software = soft;
-        software.addFeature(this);
+        if (software != null) {
+            software.addFeature(this);
+        }
     }
 
     /*

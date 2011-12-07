@@ -18,12 +18,13 @@ package com.bloatit.web.linkable.usercontent;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.components.HtmlElveosForm;
+import com.bloatit.web.linkable.CreateCommentAction;
 import com.bloatit.web.url.CreateCommentActionUrl;
 
 public class CommentForm extends HtmlDiv {
@@ -34,27 +35,20 @@ public class CommentForm extends HtmlDiv {
 
     public CommentForm(final CreateCommentActionUrl targetUrl) {
         super("new_comment_block");
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         add(form);
 
-        final FieldData inputData = targetUrl.getCommentParameter().pickFieldData();
-        final HtmlTextArea commentInput = new HtmlTextArea(inputData.getName(), Context.tr("New comment : "), NB_ROWS, NB_COLUMNS);
-        commentInput.setDefaultValue(inputData.getSuggestedValue());
-        commentInput.addErrorMessages(inputData.getErrorMessages());
+        FormBuilder ftool = new FormBuilder(CreateCommentAction.class, targetUrl);
+        ftool.add(form, new HtmlTextArea(targetUrl.getCommentParameter().getName(), NB_ROWS, NB_COLUMNS));
 
-        form.add(commentInput);
-        commentInput.setComment(Context.tr("Add a new comment. If you want to reply to a previous comment, use the reply link."));
-
-        form.add(new AsTeamField(targetUrl,
+        form.addAsTeamField(new AsTeamField(targetUrl,
                                  AuthToken.getMember(),
                                  UserTeamRight.TALK,
                                  Context.tr("In the name of"),
                                  Context.tr("Write this comment in the name of this team.")));
 
         form.enableFileUpload();
-        form.add(new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio"));
-
-        form.add(new HtmlSubmit(Context.tr("Submit comment")));
+        form.addSubmit(new HtmlSubmit(Context.tr("Submit comment")));
     }
 
 }

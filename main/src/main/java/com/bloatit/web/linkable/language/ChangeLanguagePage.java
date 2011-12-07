@@ -25,12 +25,13 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.framework.xcgiserver.AvailableLocales;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
@@ -66,10 +67,11 @@ public final class ChangeLanguagePage extends ElveosPage {
         master.add(help);
 
         final ChangeLanguageActionUrl targetAction = new ChangeLanguageActionUrl();
-        final HtmlForm form = new HtmlForm(targetAction.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(targetAction.urlString(), false);
         master.add(form);
         final UrlParameter<String, String> languageParameter = targetAction.getLanguageParameter();
-        final LanguageSelector language = new LanguageSelector(languageParameter.getName(), Context.tr("Choose your temporary language"));
+        final LanguageSelector language = new LanguageSelector(languageParameter.getName(),
+                                                               Context.tr("Choose the web site language for this session"));
         if (languageParameter.getDefaultValue() != null && !languageParameter.getDefaultValue().isEmpty()) {
             language.setDefaultValue(languageParameter.getDefaultValue());
         } else {
@@ -77,6 +79,7 @@ public final class ChangeLanguagePage extends ElveosPage {
         }
         form.add(language);
 
+        form.add(new HtmlClearer());
         form.add(new HtmlSubmit(Context.tr("Change language")));
 
         // Link map

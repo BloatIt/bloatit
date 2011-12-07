@@ -184,9 +184,9 @@ public class FormBuilder {
             throw new BadProgrammerException("The parameter '" + b.getName() + "' is not found.");
         }
         if (data.isShort()) {
-            b.addContainerCssClass("short-form");
+            b.setShort();
         } else {
-            b.addContainerCssClass("long-form");
+            b.setLong();
         }
         form.add(b);
         if (data.getSessionParam() != null) {
@@ -200,7 +200,7 @@ public class FormBuilder {
             b.setComment(Context.tr(data.getComment()));
         }
         if (!data.isOptional()) {
-            b.addAttribute("required", "required");
+            b.setRequired();
         }
 
         // @formatter:off

@@ -1,7 +1,5 @@
 package com.bloatit.web.linkable.features;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -10,24 +8,22 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
-import com.bloatit.model.Software;
-import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.create.CreateFeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.ModifyFeatureActionUrl;
 import com.bloatit.web.url.ModifyFeaturePageUrl;
@@ -55,65 +51,44 @@ public class ModifyFeaturePage extends LoggedElveosPage {
         TwoColumnLayout master = new TwoColumnLayout(true, url);
         master.addLeft(new HtmlTitle(Context.tr("Modify feature page"), 1));
 
-        ModifyFeatureActionUrl modifyUrl = new ModifyFeatureActionUrl(Context.getSession().getShortKey(), feature);
-        HtmlForm modifyForm = new HtmlForm(modifyUrl.urlString());
-        master.addLeft(modifyForm);
+        ModifyFeatureActionUrl targetUrl = new ModifyFeatureActionUrl(Context.getSession().getShortKey(), feature);
+        HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        master.addLeft(form);
+        FormBuilder ftool = new FormBuilder(ModifyFeatureAction.class, targetUrl);
 
         // Title of the feature
-        final FieldData descriptionFieldData = modifyUrl.getTitleParameter().pickFieldData();
-        final HtmlTextField titleInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
-        titleInput.addErrorMessages(descriptionFieldData.getErrorMessages());
-        titleInput.setCssClass("input_long_400px");
-        titleInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
-        if (descriptionFieldData.getSuggestedValue() == null) {
-            titleInput.setDefaultValue(feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getTitle());
-        } else {
-            titleInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        }
-
-        modifyForm.add(titleInput);
-
-        // Linked software
-        final FieldData softwareFieldData = modifyUrl.getSoftwareParameter().pickFieldData();
-        final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.trc("Software (singular)","Software"));
-
-        softwareInput.addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
-        softwareInput.addDropDownElement("", Context.tr("New software"));
-        for (final Software software : SoftwareManager.getAll()) {
-            softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
-        }
-        softwareInput.setComment(Context.tr("The software of the feature request. Select 'new software' if your feature is the creation of a new software."));
-        if (softwareFieldData.getSuggestedValue() != null) {
-            softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
-        } else if (feature.getSoftware() != null) {
-            softwareInput.setDefaultValue(feature.getSoftware().getId().toString());
-        }
-        modifyForm.add(softwareInput);
+        HtmlTextField title = new HtmlTextField(targetUrl.getTitleParameter().getName());
+        ftool.add(form, title);
+        ftool.setDefaultValueIfNeeded(title, feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getTitle());
 
         // Description of the feature
-        final FieldData specificationFieldData = modifyUrl.getDescriptionParameter().pickFieldData();
-        final MarkdownEditor specificationInput = new MarkdownEditor(specificationFieldData.getName(),
-                                                                     tr("Enter the new description"),
-                                                                     CreateFeaturePage.SPECIF_INPUT_NB_LINES,
-                                                                     CreateFeaturePage.SPECIF_INPUT_NB_COLUMNS);
+        MarkdownEditor description = new MarkdownEditor(targetUrl.getDescriptionParameter().getName(),
+                                                        CreateFeaturePage.SPECIF_INPUT_NB_LINES,
+                                                        CreateFeaturePage.SPECIF_INPUT_NB_COLUMNS);
+        ftool.add(form, description);
+        ftool.setDefaultValueIfNeeded(description, feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getText());
 
-        if (specificationFieldData.getSuggestedValue() == null || specificationFieldData.getSuggestedValue().isEmpty()) {
-            specificationInput.setDefaultValue(feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getText());
-        } else {
-            specificationInput.setDefaultValue(specificationFieldData.getSuggestedValue());
+        // Linked software
+        final FieldData newSoftwareNameFD = targetUrl.getNewSoftwareNameParameter().pickFieldData();
+        final FieldData newSoftwareFD = targetUrl.getNewSoftwareParameter().pickFieldData();
+        final SoftwaresTools.SoftwareChooserElement software = new SoftwaresTools.SoftwareChooserElement(targetUrl.getSoftwareParameter().getName(),
+                                                                                                         newSoftwareNameFD.getName(),
+                                                                                                         newSoftwareFD.getName());
+        ftool.add(form, software);
+        if (feature.getSoftware() != null) {
+            software.setDefaultValue(feature.getSoftware().getId().toString());
         }
-        specificationInput.addErrorMessages(specificationFieldData.getErrorMessages());
-        specificationInput.setComment(tr("Enter a long description of the feature : list all features, describe them all "
-                + "... Try to leave as little room for ambiguity as possible."));
-        modifyForm.add(specificationInput);
+        if (newSoftwareNameFD.getSuggestedValue() != null) {
+            software.setNewSoftwareDefaultValue(newSoftwareNameFD.getSuggestedValue());
+        }
+        if (newSoftwareFD.getSuggestedValue() != null) {
+            software.setNewSoftwareCheckboxDefaultValue(newSoftwareFD.getSuggestedValue());
+        }
 
-        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
-        modifyForm.add(mdPreview);
-
-        modifyForm.add(new HtmlSubmit(Context.tr("Modify the feature")));
+        form.addSubmit(new HtmlSubmit(Context.tr("Modify the feature")));
 
         master.addRight(new SidebarMarkdownHelp());
-        
+
         return master;
     }
 

@@ -97,24 +97,17 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         ftool.add(form, new HtmlTextField(targetUrl.getDescriptionParameter().getName()));
 
         // Linked software
-        final FieldData softwareFieldData = targetUrl.getSoftwareParameter().pickFieldData();
-        final FieldData newSoftwareNameFieldData = targetUrl.getNewSoftwareNameParameter().pickFieldData();
-        final FieldData newSoftwareFieldData = targetUrl.getNewSoftwareParameter().pickFieldData();
-
-        final SoftwaresTools.SoftwareChooserElement softwareInput = new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),
-                                                                                                              newSoftwareNameFieldData.getName(),
-                                                                                                              newSoftwareFieldData.getName());
-        ftool.add(form, softwareInput);
-        if (softwareFieldData.getSuggestedValue() != null) {
-            softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
+        final FieldData newSoftwareNameFD = targetUrl.getNewSoftwareNameParameter().pickFieldData();
+        final FieldData newSoftwareFD = targetUrl.getNewSoftwareParameter().pickFieldData();
+        final SoftwaresTools.SoftwareChooserElement software = new SoftwaresTools.SoftwareChooserElement(targetUrl.getSoftwareParameter().getName(),
+                                                                                                         newSoftwareNameFD.getName(),
+                                                                                                         newSoftwareFD.getName());
+        ftool.add(form, software);
+        if (newSoftwareNameFD.getSuggestedValue() != null) {
+            software.setNewSoftwareDefaultValue(newSoftwareNameFD.getSuggestedValue());
         }
-
-        if (newSoftwareNameFieldData.getSuggestedValue() != null) {
-            softwareInput.setNewSoftwareDefaultValue(newSoftwareNameFieldData.getSuggestedValue());
-        }
-
-        if (newSoftwareFieldData.getSuggestedValue() != null) {
-            softwareInput.setNewSoftwareCheckboxDefaultValue(newSoftwareFieldData.getSuggestedValue());
+        if (newSoftwareFD.getSuggestedValue() != null) {
+            software.setNewSoftwareCheckboxDefaultValue(newSoftwareFD.getSuggestedValue());
         }
 
         // license
@@ -188,7 +181,6 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
         form.addSubmit(new HtmlSubmit(Context.tr("Add another milestone")));
         form.addSubmit(new HtmlSubmit(Context.tr("Finish your Offer")).setName(targetUrl.getIsFinishedParameter().getName()));
-
 
         offerPageContainer.add(form);
 

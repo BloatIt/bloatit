@@ -261,6 +261,14 @@ public abstract class HtmlFormField extends HtmlLeaf implements HtmlNamedNode {
         this.commentPh.add(commentBlock);
     }
 
+    public void setShort(){
+        addContainerCssClass("short-form");
+    }
+
+    public void setLong(){
+        addContainerCssClass("long-form");
+    }
+
     @Override
     public final HtmlElement setId(final String id) {
         if (this.label != null) {
@@ -289,6 +297,11 @@ public abstract class HtmlFormField extends HtmlLeaf implements HtmlNamedNode {
 
     public String getName() {
         return name;
+    }
+
+    public void setRequired() {
+        addAttribute("required", "required");
+        addContainerCssClass("required");
     }
 
     /**
@@ -332,7 +345,6 @@ public abstract class HtmlFormField extends HtmlLeaf implements HtmlNamedNode {
      * @param value the default value
      */
     protected abstract void doSetDefaultStringValue(String value);
-
 
     /**
      * Initializes the placeholder for the label
@@ -403,5 +415,4 @@ public abstract class HtmlFormField extends HtmlLeaf implements HtmlNamedNode {
             };
         }
     }
-
 }

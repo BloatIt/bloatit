@@ -45,7 +45,7 @@ public class ModifyPasswordAction extends LoggedElveosAction {
     @MinConstraint(min = 7, message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(max = 255, message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
     @FormField(label = @tr("New password"), autocomplete = false)
-    @FormComment(@tr("7 characters minimum."))
+    @FormComment(@tr("7 characters minimum. Make it strong!"))
     private final String password;
 
     @RequestParam(role = Role.POST)
@@ -107,9 +107,12 @@ public class ModifyPasswordAction extends LoggedElveosAction {
     @Override
     protected void transmitParameters() {
         if (url.getCurrentPasswordParameter().getValue() != null) {
-            url.getCurrentPasswordParameter().setValue("xxxxxxxx");
+            url.getCurrentPasswordParameter().setValue("", true);
         }
         session.addParameter(url.getCurrentPasswordParameter());
+        if (url.getPasswordParameter().getValue() != null) {
+            url.getPasswordParameter().setValue("", true);
+        }
         session.addParameter(url.getPasswordParameter());
     }
 }

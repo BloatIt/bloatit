@@ -86,7 +86,7 @@ public class SoftwaresTools {
     public static class SoftwareChooserElement extends HtmlStringFormField {
 
         public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName) {
-            super(new SoftwareInputBlock(name, newSoftwareCheckboxName), name);
+            super(new SoftwareInputBlock(newSoftwareName, newSoftwareCheckboxName), name);
             initSoftwareChooser();
         }
 
@@ -142,6 +142,7 @@ public class SoftwaresTools {
                 // New software checkbox
                 HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
                 newSoftwareCheckBoxBlock.addAttribute("style", "display:none;");
+                softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
 
                 checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
@@ -192,7 +193,6 @@ public class SoftwaresTools {
 
                 softwareChooserBlock.add(fallbackSelectElement);
 
-                softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
                 // Add js
                 final HtmlScript softwareChooserScript = new HtmlScript();

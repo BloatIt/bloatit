@@ -15,7 +15,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -24,6 +23,7 @@ import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -74,10 +74,10 @@ public class CancelContributionPage extends LoggedElveosPage {
         }
 
         CancelContributionActionUrl targetUrl = new CancelContributionActionUrl(getSession().getShortKey(), contribution);
-        HtmlForm form = new HtmlForm(targetUrl.urlString());
+        HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString(), false);
         master.addLeft(form);
 
-        form.add(new HtmlSubmit(Context.tr("Cancel contribution")));
+        form.addSubmit(new HtmlSubmit(Context.tr("Cancel contribution")));
 
         return master;
     }
