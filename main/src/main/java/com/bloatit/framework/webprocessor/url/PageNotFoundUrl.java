@@ -68,4 +68,8 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
     public Protocol getProtocol() {
         return Protocol.AUTO;
     }
+
+    public static boolean matches(String pageCode) {
+        return getName().equals(pageCode);
+    }
 }

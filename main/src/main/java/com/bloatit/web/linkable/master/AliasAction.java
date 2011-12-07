@@ -31,7 +31,6 @@ public abstract class AliasAction extends ElveosAction {
 
     @Override
     protected Url doProcess() {
-        // TODO: add a system to make a Move Permanently code
         return redirectUrl;
     }
 
@@ -46,6 +45,6 @@ public abstract class AliasAction extends ElveosAction {
 
     @Override
     protected StatusCode getRedirectionType() {
-        return StatusCode.REDIRECTION_301_MOVED_PERMANENTLY;
+        return StatusCode.REDIRECTION_302_FOUND;
     }
 }
