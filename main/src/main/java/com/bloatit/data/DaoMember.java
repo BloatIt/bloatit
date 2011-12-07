@@ -700,6 +700,14 @@ public class DaoMember extends DaoActor {
         }
         return followed;
     }
+    
+    public DaoFollowFeature getFollowFeature(DaoFeature feature) {
+        final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
+                                                                           .setEntity("member", this)
+                                                                           .setEntity("feature", feature)
+                                                                           .uniqueResult();
+        return followed;
+    }
 
     public boolean isFollowing(DaoFeature feature) {
         final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")

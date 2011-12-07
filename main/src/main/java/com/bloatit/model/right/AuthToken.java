@@ -18,6 +18,7 @@
 package com.bloatit.model.right;
 
 import java.util.EnumSet;
+import java.util.Stack;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoExternalServiceMembership;
@@ -42,6 +43,7 @@ import com.bloatit.model.managers.TeamManager;
 public final class AuthToken {
     private Integer asTeamId;
     private Integer memberId;
+    private Stack<Member> temporaryMembers = new Stack<Member>();
     private EnumSet<RightLevel> rights;
     private boolean weakAuthentication;
 
@@ -165,6 +167,19 @@ public final class AuthToken {
         This.get().weakAuthentication = false;
     }
     
+    public static void temporaryAuthenticate(final Member member) {
+        This.get().temporaryMembers.push(AuthToken.getMember());
+        authenticate(member);
+    }
+    
+    public static void temporaryDeauthenticate() {
+        authenticate(This.get().temporaryMembers.pop());
+    }
+    
+    public static boolean isTemporaryAuthenticated() {
+        return This.get().temporaryMembers.size() > 0;
+    }
+    
     public static void authenticate(final Session session) {
         This.get().memberId = session.getMemberId();
         This.get().weakAuthentication = false;
@@ -224,4 +239,6 @@ public final class AuthToken {
         }
         return getMember().getRole().equals(Role.ADMIN);
     }
+
+   
 }

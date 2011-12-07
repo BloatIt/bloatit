@@ -107,8 +107,8 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         @Override
         protected boolean isFollowingWithMail() {
-            FollowFeature followOrGetFeature = AuthToken.getMember().followOrGetFeature(feature);
-            return followOrGetFeature.isMail();
+            FollowFeature followFeature = AuthToken.getMember().getFollowFeature(feature);
+            return followFeature.isMail();
         }
 
         @Override
@@ -153,7 +153,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
             }
 
             if (isFollowing()) {
-                FollowFeature followOrGetFeature = AuthToken.getMember().followOrGetFeature(feature);
+                FollowFeature followOrGetFeature = AuthToken.getMember().getFollowFeature(feature);
                 script.append("elveos_bindFollowFeatureButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + feature.getId()
                         + "', " + followOrGetFeature.isFeatureComment() + ", " + followOrGetFeature.isBugComment() + ");\n");
             } else {

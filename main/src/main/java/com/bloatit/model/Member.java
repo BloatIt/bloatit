@@ -47,6 +47,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.feature.FeatureList;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.JoinTeamInvitationList;
@@ -346,7 +347,8 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().acceptNewsLetter(newsletter);
     }
 
-    public FollowFeature followOrGetFeature(Feature f) {
+    public FollowFeature followOrGetFeature(Feature f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         return FollowFeature.create(getDao().followOrGetFeature(((FeatureImplementation) f).getDao()));
     }
 
@@ -370,13 +372,13 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public FollowSoftware followOrGetSoftware(Software s) throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Follow(), Action.WRITE);
-        if(!isFollowing(s)) {
+        if (!isFollowing(s)) {
             // Follow all features of the software
             for (Feature feature : s.getFeatures()) {
                 FollowFeature followFeature = followOrGetFeature(feature);
                 followFeature.setFeatureComment(true);
                 followFeature.setBugComment(true);
-            }   
+            }
         }
         return FollowSoftware.create(getDao().followOrGetSoftware(s.getDao()));
     }
@@ -413,17 +415,40 @@ public final class Member extends Actor<DaoMember> implements User {
         tryAccess(new Private(), Action.WRITE);
         getDao().setEmailStrategy(emailStrategy);
     }
-    
-    public void setGlobalFollow(boolean globalFollow) throws UnauthorizedPrivateAccessException {
+
+    public void setGlobalFollow(boolean globalFollow) throws UnauthorizedOperationException {
         tryAccess(new Private(), Action.WRITE);
+
+        if (globalFollow && !isGlobalFollow()) {
+            // Follow all
+            for (Feature feature : FeatureManager.getAllByCreationDate()) {
+                FollowFeature followFeature = followOrGetFeature(feature);
+                followFeature.setFeatureComment(true);
+                followFeature.setBugComment(true);
+            }
+        } else if (!globalFollow && isGlobalFollow()) {
+            for (FollowFeature followFeature : getFollowedFeatures()) {
+                if(!isFollowing(followFeature.getFollowed().getSoftware())) {
+                    unfollowFeature(followFeature.getFollowed());
+                }
+            }
+        }
+
         getDao().setGlobalFollow(globalFollow);
     }
-    
-    public void setGlobalFollowWithMail(boolean globalFollow) throws UnauthorizedPrivateAccessException {
+
+    public void setGlobalFollowWithMail(boolean globalFollow) throws UnauthorizedOperationException {
         tryAccess(new Private(), Action.WRITE);
+        
+        for (FollowFeature followFeature : getFollowedFeatures()) {
+            if(!isFollowing(followFeature.getFollowed().getSoftware())) {
+                followFeature.setMail(globalFollow);
+            }
+        }
+        
         getDao().setGlobalFollowWithMail(globalFollow);
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -456,16 +481,20 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getEmailStrategy();
     }
     
+    public FollowFeature getFollowFeature(Feature feature) {
+        return FollowFeature.create(getDao().getFollowFeature(((FeatureImplementation) feature).getDao()));
+    }
+
     public boolean isGlobalFollow() throws UnauthorizedPrivateAccessException {
         tryAccess(new Private(), Action.READ);
         return getDao().isGlobalFollow();
     }
-    
+
     public boolean isGlobalFollowWithMail() throws UnauthorizedPrivateAccessException {
         tryAccess(new Private(), Action.READ);
         return getDao().isGlobalFollowWithMail();
     }
-    
+
     public String getActivationKey() {
         final DaoMember m = getDao();
         final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + ACTIVATE_SALT;
@@ -792,5 +821,7 @@ public final class Member extends Actor<DaoMember> implements User {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
+    
 
 }
