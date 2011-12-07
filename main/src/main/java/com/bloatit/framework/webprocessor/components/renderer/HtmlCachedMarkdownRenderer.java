@@ -39,7 +39,7 @@ public class HtmlCachedMarkdownRenderer extends HtmlDiv {
         if (cached == null) {
             final MarkdownParser parser = new MarkdownParser();
             try {
-                final String renderered = parser.parse(HtmlTools.escape(text));
+                final String renderered = parser.parse(text);
                 MemoryCache.getInstance().cache(text, renderered);
                 add(new HtmlNonEscapedText(renderered));
             } catch (final ParsingException e) {

@@ -1,5 +1,8 @@
 
-.global_description {
+.global_description, .global_personal_description {
+
+    position: relative;
+        
     .padding_box;
     text-align:center;
     margin-bottom: 20px;
@@ -12,6 +15,107 @@
     
     h1 {
         font-size: 2em;
+    }
+    
+    .three-column {
+    
+        h1 {
+            font-size: 0.9em;
+            margin-left: 00px;
+            margin-bottom: 0px;
+            margin-top: -5px;
+        }
+    
+        ul {
+            margin: 0px;
+        }
+    
+        li {
+            margin: 0px;
+            margin-bottom: 3px;
+        }
+    
+        text-align: left;
+        width: 100%;
+        .left-column {
+            display: table-cell;
+            width: 50%;
+            
+            .index-underline {
+                margin-bottom: 10px;
+                
+            }
+            
+            padding-right: 10px;
+        }
+        
+        /*.center-column {
+            display: table-cell;
+            width: 30%;
+        }*/
+        
+        .right-column {
+            display: table-cell;
+            width: 50%;
+            
+            
+        }
+        
+        .feature-p {
+            margin: 0px;
+            margin-bottom: 3px;
+            font-size: 0.8em;
+        }
+        
+        .index_element {
+            margin-bottom: 0px;
+        }
+        
+        .item_date {
+            padding-left: 10px;
+        }
+        
+        .feed_icons {
+        
+            margin-top: -5px;
+        }
+        
+    
+    }
+    
+    .item_content {
+        font-size: 0.8em;
+    
+        .markdown_block {
+            display: inline;
+            
+            p {
+                margin: 0px;
+                display: inline;
+            }
+        }
+    }
+    
+    .public_index_link {
+        position: absolute;
+        font-size: 0.7em;
+        right: 5px;
+        bottom: 2px;
+    }
+    
+    .index-underline {
+        height: 1px;
+        @timeline_border_color: rgb(184,184,184);
+        .vertical-gradient-1-stop(@timeline_border_color, @timeline_border_color,  @light_background_color);
+    }
+    
+}
+
+.global_personal_description {
+    padding-bottom: 0px;
+    .elveos_summary {
+        font-size: 1.0em;
+        margin-bottom: -2px;
     }
 }
 

@@ -42,7 +42,8 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.components.HtmlFollowButton.HtmlFollowActorButton;
+import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
@@ -58,6 +59,7 @@ import com.bloatit.web.linkable.money.SideBarWithdrawMoneyBlock;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
+import com.bloatit.web.url.TimelinePageUrl;
 
 /**
  * <p>
@@ -117,6 +119,18 @@ public final class MemberPage extends ElveosPage {
             layout.addLeft(generateTabPane());
         }
 
+        // Adding timeline page link
+        
+        TimelinePageUrl timelinePageUrl = new TimelinePageUrl();
+        timelinePageUrl.setMember(member);
+        
+        if (myPage) {
+            layout.addRight(new SideBarButton(Context.tr("My timeline"), timelinePageUrl, WebConfiguration.getImgTimelineSmall(), false));
+        } else {
+            layout.addRight(new SideBarButton(Context.tr("{0}''s timeline", member.getDisplayName()), timelinePageUrl, WebConfiguration.getImgTimelineSmall(), false));
+        }
+
+
         // Adding list of teams
         final TitleSideBarElementLayout teamBlock = new TitleSideBarElementLayout();
         try {
@@ -160,7 +174,7 @@ public final class MemberPage extends ElveosPage {
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
             modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change member settings")));
-            //modify.add(new HtmlFollowActorButton(member));
+            // modify.add(new HtmlFollowActorButton(member));
         }
 
         // Title

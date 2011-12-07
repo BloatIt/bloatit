@@ -15,7 +15,8 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.master.sidebar.SideBarElementLayout;
 
 public class NewsFeedSideBlock extends SideBarElementLayout {
-    public NewsFeedSideBlock() {
+
+    public NewsFeedSideBlock(int maxNews) {
         super();
         HtmlDiv master = new HtmlDiv("news_feed");
         add(master);
@@ -38,7 +39,7 @@ public class NewsFeedSideBlock extends SideBarElementLayout {
 
         int count = 1;
         for (final NewsFeed news : NewsFeedManager.getAll()) {
-            if (count > WebConfiguration.getFeedItemNumber()) {
+            if (count > maxNews) {
                 break;
             }
             

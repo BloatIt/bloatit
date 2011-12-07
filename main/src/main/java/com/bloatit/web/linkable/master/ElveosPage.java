@@ -210,11 +210,7 @@ public abstract class ElveosPage extends Page {
         final HtmlDiv logoDiv = new HtmlDiv("logo", "logo");
         final HtmlImage logoImage = new HtmlImage(new Image(WebConfiguration.getImgLogo()), tr("elveos.org logo"));
         logoImage.setCssClass("logo_elveos");
-        if (AuthToken.isAuthenticated()) {
-            logoDiv.add(new TimelinePageUrl().getHtmlLink(logoImage));
-        } else {
-            logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
-        }
+        logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
 
         final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
         logoTextDiv.addText(tr("the collaborative platform for free software funding"));

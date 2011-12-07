@@ -45,6 +45,7 @@ import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlFollowButton.HtmlFollowAllButton;
@@ -92,7 +93,9 @@ public class ManageFollowPage extends LoggedElveosPage {
             menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgTimelineSmall()), ""));
             final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
             menuBarItemBackToTimeline.add(menuBarItemLink);
-            menuBarItemLink.add(new TimelinePageUrl().getHtmlLink(Context.tr("Back to timeline")));
+            TimelinePageUrl timelinePageUrl = new TimelinePageUrl();
+            timelinePageUrl.setMember(loggedUser);
+            menuBarItemLink.add(timelinePageUrl.getHtmlLink(Context.tr("Back to timeline")));
         }
         
         
@@ -185,7 +188,7 @@ public class ManageFollowPage extends LoggedElveosPage {
     }
 
     private static Breadcrumb generateBreadcrumb() {
-        final Breadcrumb breadcrumb = TimelinePage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = TimelinePage.generateBreadcrumb(AuthToken.getMember());
         breadcrumb.pushLink(new ManageFollowPageUrl().getHtmlLink(Context.tr("settings")));
         return breadcrumb;
     }
@@ -229,15 +232,15 @@ public class ManageFollowPage extends LoggedElveosPage {
             content.add(new HtmlFollowFeatureButton(feature));
             
             if(followFeature.isFeatureComment()) {
-                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isBugComment(), false, followFeature.isMail()).getHtmlLink(Context.tr("stop follow comments")).setCssClass("follow-comments"));
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isBugComment(), false, followFeature.isMail()).getHtmlLink(Context.tr("stop following comments")).setCssClass("follow-comments"));
             } else {
                 content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, followFeature.isBugComment(), true, followFeature.isMail()).getHtmlLink(Context.tr("follow comments")).setCssClass("follow-comments"));
             }
             
             if(followFeature.isBugComment()) {
-                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, false, followFeature.isFeatureComment(), followFeature.isMail()).getHtmlLink(Context.tr("stop follow bugs comments")).setCssClass("follow-bugs"));
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, false, followFeature.isFeatureComment(), followFeature.isMail()).getHtmlLink(Context.tr("stop following bugs")).setCssClass("follow-bugs"));
             } else {
-                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, true, followFeature.isFeatureComment(),  followFeature.isMail()).getHtmlLink(Context.tr("follow bugs comments")).setCssClass("follow-bugs"));
+                content.add(new FollowFeatureActionUrl(Context.getSession().getShortKey(), feature, true, true, followFeature.isFeatureComment(),  followFeature.isMail()).getHtmlLink(Context.tr("follow bugs")).setCssClass("follow-bugs"));
             }
             
             
