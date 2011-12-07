@@ -65,6 +65,7 @@ import com.bloatit.web.url.FollowFeatureActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.ManageFollowActionUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
+import com.bloatit.web.url.TimelinePageUrl;
 
 @ParamContainer("timeline/settings")
 public class ManageFollowPage extends LoggedElveosPage {
@@ -79,7 +80,22 @@ public class ManageFollowPage extends LoggedElveosPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException, UnauthorizedPrivateAccessException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-
+        layout.setCssClass("manage-timeline-page");
+        
+        
+        
+        final HtmlDiv menuBarItemBackToTimeline = new HtmlDiv("menu_bar_item");
+        layout.addLeft(menuBarItemBackToTimeline);
+        {
+            final HtmlDiv menuBarItemImage = new HtmlDiv("menu_bar_item_image");
+            menuBarItemBackToTimeline.add(menuBarItemImage);
+            menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgTimelineSmall()), ""));
+            final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
+            menuBarItemBackToTimeline.add(menuBarItemLink);
+            menuBarItemLink.add(new TimelinePageUrl().getHtmlLink(Context.tr("Back to timeline")));
+        }
+        
+        
 
         final HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Manage contents followed"));
@@ -97,7 +113,6 @@ public class ManageFollowPage extends LoggedElveosPage {
         
         for(FollowSoftware followedSoftware: followedSoftwares) {
             smallContentList.add(new SoftwareListRenderer().generate(followedSoftware.getFollowed()));
-            //System.out.println("plop");
         }
         
         for(FollowActor followedActor: followedActors) {
@@ -121,7 +136,7 @@ public class ManageFollowPage extends LoggedElveosPage {
         SideBarElementLayout manageFollowSideElement = new SideBarElementLayout();
         layout.addRight(manageFollowSideElement);
         
-        manageFollowSideElement.add(new HtmlTitle(Context.tr("Global settings"), 1));
+        manageFollowSideElement.add(new HtmlTitle(Context.tr("Email settings"), 1));
         
         final ManageFollowActionUrl doModifyUrl = new ManageFollowActionUrl(Context.getSession().getShortKey());
 
@@ -142,21 +157,7 @@ public class ManageFollowPage extends LoggedElveosPage {
         }
         emailStategyInput.setComment(Context.tr("New email strategy. Current strategy is ''{0}''.", BindedEmailStrategy.getBindedEmailStrategy(loggedUser.getEmailStrategy()).getDisplayName()));
         globalSettingsForm.add(emailStategyInput);
-
-        // Global follow
-        FieldData globalFollowData = doModifyUrl.getGlobalFollowParameter().pickFieldData();
-        HtmlCheckbox globalFollowCheckbox = new HtmlCheckbox(globalFollowData.getName(), LabelPosition.BEFORE);
-        globalFollowCheckbox.setLabel(Context.tr("Follow all"));
-        globalFollowCheckbox.addErrorMessages(globalFollowData.getErrorMessages());
-        globalSettingsForm.add(globalFollowCheckbox);
-        if (globalFollowData.getSuggestedValue() == null) {
-            globalFollowCheckbox.setDefaultValue((loggedUser.isGlobalFollow()? "true": "false"));
-        } else {
-            globalFollowCheckbox.setDefaultValue(globalFollowData.getSuggestedValue());
-        }
-        globalFollowCheckbox.setComment(Context.tr("You will receive mail for all event in the website"));
-        
-        
+       
         //Button
         globalSettingsForm.add(new HtmlSubmit(Context.tr("Save settings")));
         

@@ -35,31 +35,18 @@ import com.bloatit.web.url.ManageFollowActionUrl;
 @ParamContainer("timeline/settings/change")
 public final class ManageFollowAction extends LoggedElveosAction {
 
-    @RequestParam(role=Role.POST)
+    @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must indicate a email frequency"))
     private final EmailStrategy emailStrategy;
-    
-    @RequestParam(role=Role.POST)
-    @Optional
-    private final Boolean globalFollow;
-    
+
     public ManageFollowAction(final ManageFollowActionUrl url) {
         super(url);
         emailStrategy = url.getEmailStrategy();
-        globalFollow = url.getGlobalFollow();
     }
 
     @Override
     public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
-        
-        if(globalFollow != null && globalFollow) {
-            me.setGlobalFollow(true);
-        } else {
-            me.setGlobalFollow(false);
-        }
-        
         me.setEmailStrategy(emailStrategy);
-
         return session.pickPreferredPage();
     }
 

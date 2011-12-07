@@ -72,6 +72,9 @@ optipng $OUTPUT_DIR_PREFIX"commons/img/idea_small.png"
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/settings_small.png" -C -h 24 sources/settings_small.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/settings_small.png"
 
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/timeline_small.png" -C -h 24 sources/timeline_small.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/timeline_small.png"
+
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/mail_settings_small.png" -C -h 24 sources/mail_settings_small.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/mail_settings_small.png"
 

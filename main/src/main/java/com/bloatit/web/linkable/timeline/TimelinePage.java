@@ -104,16 +104,16 @@ public final class TimelinePage extends LoggedElveosPage {
                 menuBarItemLink.add(new ManageFollowPageUrl().getHtmlLink(Context.tr("Manage follows")));
             }
 
-            final HtmlDiv menuBarItemManageNotif = new HtmlDiv("menu_bar_item");
-            menuBar.add(menuBarItemManageNotif);
-            {
-                final HtmlDiv menuBarItemImage = new HtmlDiv("menu_bar_item_image");
-                menuBarItemManageNotif.add(menuBarItemImage);
-                menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgManageNotifSmall()), Context.tr("Manage notifications")));
-                final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
-                menuBarItemManageNotif.add(menuBarItemLink);
-                menuBarItemLink.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Manage notifications")));
-            }
+//            final HtmlDiv menuBarItemManageNotif = new HtmlDiv("menu_bar_item");
+//            menuBar.add(menuBarItemManageNotif);
+//            {
+//                final HtmlDiv menuBarItemImage = new HtmlDiv("menu_bar_item_image");
+//                menuBarItemManageNotif.add(menuBarItemImage);
+//                menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgManageNotifSmall()), Context.tr("Manage notifications")));
+//                final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
+//                menuBarItemManageNotif.add(menuBarItemLink);
+//                menuBarItemLink.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Manage notifications")));
+//            }
 
             final HtmlDiv menuBarItemRSS = new HtmlDiv("menu_bar_item");
             menuBar.add(menuBarItemRSS);

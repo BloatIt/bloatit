@@ -160,7 +160,7 @@ public final class MemberPage extends ElveosPage {
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
             modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change member settings")));
-            modify.add(new HtmlFollowActorButton(member));
+            //modify.add(new HtmlFollowActorButton(member));
         }
 
         // Title

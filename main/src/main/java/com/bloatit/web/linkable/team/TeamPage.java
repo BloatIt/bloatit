@@ -179,7 +179,7 @@ public final class TeamPage extends ElveosPage {
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
             modify.add(new ModifyTeamPageUrl(team).getHtmlLink(Context.tr("Change team settings")));
-            modify.add(new HtmlFollowActorButton(team));
+            //modify.add(new HtmlFollowActorButton(team));
         }
 
         // Title and team type

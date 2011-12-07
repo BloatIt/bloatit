@@ -1,3 +1,31 @@
+
+.manage-timeline-page {
+    .menu_bar_item {
+            float: right;
+            padding: 5px;
+            
+            .menu_bar_item_image {
+                display: table-cell;
+                height: 24px;
+                padding-left: 7px;
+                
+                img {
+                vertical-align: middle;
+                }
+                
+            }
+            
+            .menu_bar_item_link {
+                display: table-cell;
+                vertical-align: middle;
+                height: 24px;
+                padding-left: 7px;
+                padding-right: 5px;
+            }
+        }
+}
+
+
 .timeline_page {
     @timeline_border_color: rgb(184,184,184);
     @curve_size : 10px;
@@ -37,7 +65,7 @@
             }
         }
         
-        .menu_bar_item:last-child {
+        .menu_bar_item:nth-child(3) {
             float: left;
             border-right: none;
         }
