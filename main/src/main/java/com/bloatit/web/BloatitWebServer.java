@@ -59,6 +59,7 @@ import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminAction;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminPage;
 import com.bloatit.web.linkable.aliases.FeaturePageAlias;
 import com.bloatit.web.linkable.aliases.IndexPageAlias;
+import com.bloatit.web.linkable.aliases.MembersPageAlias;
 import com.bloatit.web.linkable.atom.FeatureAtomFeed;
 import com.bloatit.web.linkable.atom.SoftwareAtomFeed;
 import com.bloatit.web.linkable.bugs.BugPage;
@@ -188,11 +189,14 @@ public class BloatitWebServer extends WebProcessor {
     public Linkable constructLinkable(final String pageCode, final Parameters postGetParameters, final Session session) {
 
         // Pages
-        if (PageForbiddenUrl.matches(pageCode)) {
-            return new PageForbidden(new PageForbiddenUrl());
-        }
         if (IndexPageUrl.matches(pageCode)) {
             return new IndexPage(new IndexPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (PageNotFoundUrl.matches(pageCode)) {
+            return new PageNotFound(new PageNotFoundUrl());
+        }
+        if (PageForbiddenUrl.matches(pageCode)) {
+            return new PageForbidden(new PageForbiddenUrl());
         }
         if (LoginPageUrl.matches(pageCode)) {
             return new LoginPage(new LoginPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -623,6 +627,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (IndexPageAliasUrl.matches(pageCode)) {
             return new IndexPageAlias(new IndexPageAliasUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (MembersPageAliasUrl.matches(pageCode)) {
+            return new MembersPageAlias(new MembersPageAliasUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // Create feature process
