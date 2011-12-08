@@ -25,4 +25,6 @@
     <include file="liquibase/add-newsletter.xml" />
     <include file="liquibase/add-contact-iscompany.xml" />
     <include file="liquibase/fix-release-description.xml" />
+    <include file="liquibase/fix-team-contact.xml" />
+
 </databaseChangeLog>

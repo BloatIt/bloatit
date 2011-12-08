@@ -87,6 +87,7 @@ public class BloatitExampleDB { // NO_UCD
         cerbere = createMember("cerbere", "Cerbère", Locale.FRANCE);
         hydre = createMember("hydre", "Hydre", Locale.US);
         elephantman = createMember("elephantman", "ElephantMan", Locale.CANADA);
+        AuthToken.authenticate(yoann);
         yoann.getContact().setName("Babar");
         yoann.getContact().setStreet("Palais royal");
         yoann.getContact().setCity("Celesteville");
