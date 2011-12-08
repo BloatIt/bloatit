@@ -44,6 +44,7 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.CreateFeatureProcessUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
 import com.bloatit.web.url.ReadTimelineActionUrl;
+import com.bloatit.web.url.TimelineAtomFeedUrl;
 import com.bloatit.web.url.TimelinePageUrl;
 
 /**
@@ -99,7 +100,7 @@ public class HtmlTimelineBlock extends HtmlDiv {
                     menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgRssSmall()), Context.tr("Rss feed")));
                     final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
                     menuBarItemRSS.add(menuBarItemLink);
-                    menuBarItemLink.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Rss feed")));
+                    menuBarItemLink.add(new TimelineAtomFeedUrl(member).getHtmlLink(Context.tr("Rss feed")));
                 }
 
                 final HtmlDiv menuBarItemSetAsRead = new HtmlDiv("menu_bar_right_item");

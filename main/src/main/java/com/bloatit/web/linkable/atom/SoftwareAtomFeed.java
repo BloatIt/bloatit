@@ -74,6 +74,7 @@ public class SoftwareAtomFeed extends ElveosAtomFeed {
             addFeedEntry(entry, Position.LAST);
             if (first) {
                 updateDate = feature.getCreationDate();
+                first = false;
             }
         }
     }

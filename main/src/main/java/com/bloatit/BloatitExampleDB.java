@@ -221,7 +221,9 @@ public class BloatitExampleDB { // NO_UCD
         mageia = new Software("Mageia", thomas, Locale.FRANCE, mageiaTitle + mageiaDescription);
         mageia.setImage(getImage(yoann, "mageia.png"));
 
+        AuthToken.authenticate(thomas);
         thomas.followOrGetSoftware(mageia).setMail(true);
+        AuthToken.authenticate(fred);
         fred.followOrGetSoftware(mageia).setMail(true);
     }
 
@@ -234,7 +236,9 @@ public class BloatitExampleDB { // NO_UCD
         libreOffice = new Software("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle + libreOfficeDescription);
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
 
+        AuthToken.authenticate(yoann);
         yoann.followOrGetSoftware(libreOffice).setMail(true);
+        AuthToken.authenticate(fred);
         fred.followOrGetSoftware(libreOffice).setMail(true);
     }
 
@@ -247,6 +251,7 @@ public class BloatitExampleDB { // NO_UCD
         perroquet = new Software("Perroquet", thomas, Locale.FRANCE, perroquetTitle + perroquetDescription);
         perroquet.setImage(getImage(fred, "perroquet.png"));
 
+        AuthToken.authenticate(fred);
         fred.followOrGetSoftware(perroquet).setMail(true);
     }
 
@@ -278,6 +283,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String twoSubtitlesInVlcFeatureTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
 
+        AuthToken.authenticate(chogall);
         final Feature twoSubtitlesInVlcFeature = FeatureFactory.createFeature(chogall,
                                                                               null,
                                                                               Language.fromLocale(chogall.getLocale()),
@@ -285,9 +291,10 @@ public class BloatitExampleDB { // NO_UCD
                                                                               twoSubtitlesInVlcFeatureDescription,
                                                                               vlc);
 
-        AuthToken.authenticate(cerbere);
+        AuthToken.authenticate(thomas);
         thomas.followOrGetFeature(twoSubtitlesInVlcFeature).setMail(true);
 
+        AuthToken.authenticate(cerbere);
         final Comment comment1 = twoSubtitlesInVlcFeature.addComment("Super idée !\n"
                 + "J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
 
@@ -363,6 +370,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String addPerroquetInMageiaFeaturetitle = "Make a packet for Mageia for the Perroquet software";
 
+        AuthToken.authenticate(fred);
         final Feature addPerroquetInMageiaFeature = FeatureFactory.createFeature(fred,
                                                                                  null,
                                                                                  Language.fromLocale(fred.getLocale()),
@@ -456,6 +464,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String featureTitle = "Support des langues arabe";
 
+        AuthToken.authenticate(yoann);
         final Feature feature = FeatureFactory.createFeature(yoann, null, Language.FR, featureTitle, featureDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
@@ -477,6 +486,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String featureTitle = "Suppression du paquet emacs déprécié";
 
+        AuthToken.authenticate(thomas);
         final Feature feature = FeatureFactory.createFeature(thomas, null, Language.FR, featureTitle, featureDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";

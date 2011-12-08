@@ -62,6 +62,7 @@ import com.bloatit.web.linkable.aliases.IndexPageAlias;
 import com.bloatit.web.linkable.aliases.MembersPageAlias;
 import com.bloatit.web.linkable.atom.FeatureAtomFeed;
 import com.bloatit.web.linkable.atom.SoftwareAtomFeed;
+import com.bloatit.web.linkable.atom.TimelineAtomFeed;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -598,6 +599,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (SoftwareAtomFeedUrl.matches(pageCode)) {
             return new SoftwareAtomFeed(new SoftwareAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (TimelineAtomFeedUrl.matches(pageCode)) {
+            return new TimelineAtomFeed(new TimelineAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
