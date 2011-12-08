@@ -62,7 +62,7 @@ public class EventFeatureComponent extends HtmlDiv {
             progressBarText.add(new HtmlDiv("event-progress-no-offer").addText(l.tr("no offer")));
         } else if (f.getFeatureState() == FeatureState.PREPARING) {
             progressBarText.add(new HtmlDiv("event-progress-money").add(new MoneyDisplayComponent(f.getContribution(), l)).addText(l.tr("financed")));
-            final NumberFormat format = Context.getLocalizator().getNumberFormat();
+            final NumberFormat format = l.getNumberFormat();
             format.setMinimumFractionDigits(0);
             progressBarText.add(new HtmlDiv("event-progress-percent").addText( format.format(f.getProgression()) + " %"));
             progressBarText.add(new HtmlDiv("event-progress-pledged").add(new MoneyDisplayComponent(f.getSelectedOffer().getAmount(), l))
