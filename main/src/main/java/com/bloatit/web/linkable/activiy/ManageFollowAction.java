@@ -9,56 +9,44 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.timeline;
+package com.bloatit.web.linkable.activiy;
 
+import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.Actor;
-import com.bloatit.model.FollowActor;
+import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Member;
+import com.bloatit.model.Software;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.FollowActorActionUrl;
+import com.bloatit.web.url.FollowFeatureActionUrl;
+import com.bloatit.web.url.FollowSoftwareActionUrl;
+import com.bloatit.web.url.ManageFollowActionUrl;
 
 /**
  * A response to a form used to assess any <code>kudosable</code> on the bloatit
  * website
  */
-@ParamContainer("timeline/follow/actor")
-public final class FollowActorAction extends LoggedElveosAction {
+@ParamContainer("activiy/settings/change")
+public final class ManageFollowAction extends LoggedElveosAction {
 
-    @RequestParam()
-    @NonOptional(@tr("You must indicate a actor to follow"))
-    private final Actor actor;
-    
-    @RequestParam()
-    @NonOptional(@tr("You must indicate a follow state"))
-    private final Boolean follow;
-    
-    @RequestParam()
-    @NonOptional(@tr("You must indicate a follow mail state"))
-    private final Boolean followMail;
-    
-    public FollowActorAction(final FollowActorActionUrl url) {
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must indicate a email frequency"))
+    private final EmailStrategy emailStrategy;
+
+    public ManageFollowAction(final ManageFollowActionUrl url) {
         super(url);
-        actor = url.getActor();
-        follow = url.getFollow();
-        followMail = url.getFollowMail();
+        emailStrategy = url.getEmailStrategy();
     }
 
     @Override
     public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
-        
-        if(follow) {
-            FollowActor followActor = me.followOrGetActor(actor);
-            followActor.setMail(followMail);
-        } else {
-            me.unfollowActor(actor);
-        }
-
+        me.setEmailStrategy(emailStrategy);
         return session.pickPreferredPage();
     }
 

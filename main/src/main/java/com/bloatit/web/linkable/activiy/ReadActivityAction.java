@@ -9,51 +9,30 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.timeline;
+package com.bloatit.web.linkable.activiy;
 
-import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.FollowAllActionUrl;
+import com.bloatit.web.url.ReadActiviyActionUrl;
 
 /**
  * A response to a form used to assess any <code>kudosable</code> on the bloatit
  * website
  */
-@ParamContainer("timeline/follow/all")
-public final class FollowAllAction extends LoggedElveosAction {
+@ParamContainer("activiy/read")
+public final class ReadActiviyAction extends LoggedElveosAction {
 
-    @RequestParam()
-    @NonOptional(@tr("You must indicate a follow state"))
-    private final Boolean follow;
-    
-    @RequestParam()
-    @NonOptional(@tr("You must indicate a follow mail state"))
-    private final Boolean followMail;
-    
-    public FollowAllAction(final FollowAllActionUrl url) {
+
+    public ReadActiviyAction(final ReadActiviyActionUrl url) {
         super(url);
-        follow = url.getFollow();
-        followMail = url.getFollowMail();
     }
 
     @Override
-    public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
-        
-        if(follow) {
-            me.setGlobalFollow(true);
-            me.setGlobalFollowWithMail(followMail);
-        } else {
-            me.setGlobalFollow(false);
-            me.setGlobalFollowWithMail(false);
-        }
-
+    public Url doProcessRestricted(final Member me) {
+        me.setLastWatchedEvents(DateUtils.now());
         return session.pickPreferredPage();
     }
 
@@ -69,7 +48,7 @@ public final class FollowAllAction extends LoggedElveosAction {
 
     @Override
     protected String getRefusalReason() {
-        return "You must be logged to follow something";
+        return "You must be logged to set your activiy as read";
     }
 
     @Override

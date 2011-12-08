@@ -59,7 +59,7 @@ import com.bloatit.web.linkable.money.SideBarWithdrawMoneyBlock;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
-import com.bloatit.web.url.TimelinePageUrl;
+import com.bloatit.web.url.ActiviyPageUrl;
 
 /**
  * <p>
@@ -119,15 +119,15 @@ public final class MemberPage extends ElveosPage {
             layout.addLeft(generateTabPane());
         }
 
-        // Adding timeline page link
+        // Adding activiy page link
         
-        TimelinePageUrl timelinePageUrl = new TimelinePageUrl();
-        timelinePageUrl.setMember(member);
+        ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
+        activiyPageUrl.setMember(member);
         
         if (myPage) {
-            layout.addRight(new SideBarButton(Context.tr("My timeline"), timelinePageUrl, WebConfiguration.getImgTimelineSmall(), false));
+            layout.addRight(new SideBarButton(Context.tr("My activiy"), activiyPageUrl, WebConfiguration.getImgActiviySmall(), false));
         } else {
-            layout.addRight(new SideBarButton(Context.tr("{0}''s timeline", member.getDisplayName()), timelinePageUrl, WebConfiguration.getImgTimelineSmall(), false));
+            layout.addRight(new SideBarButton(Context.tr("{0}''s activiy", member.getDisplayName()), activiyPageUrl, WebConfiguration.getImgActiviySmall(), false));
         }
 
 

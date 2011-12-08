@@ -37,13 +37,13 @@ import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
-import com.bloatit.web.url.TimelineAtomFeedUrl;
+import com.bloatit.web.url.ActiviyAtomFeedUrl;
 
 /**
  * A feed used to display the recent features related to a given software
  */
-@ParamContainer("timelinefeed")
-public class TimelineAtomFeed extends ElveosAtomFeed {
+@ParamContainer("activiyfeed")
+public class ActiviyAtomFeed extends ElveosAtomFeed {
 
     private Date updateDate;
 
@@ -51,7 +51,7 @@ public class TimelineAtomFeed extends ElveosAtomFeed {
     @RequestParam(role = Role.GET, message = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
 
-    public TimelineAtomFeed(TimelineAtomFeedUrl url) {
+    public ActiviyAtomFeed(ActiviyAtomFeedUrl url) {
         super(url);
         this.member = url.getMember();
     }
@@ -77,7 +77,7 @@ public class TimelineAtomFeed extends ElveosAtomFeed {
 
     @Override
     public String getFeedTitle() {
-        return Context.tr("Elveos feature feed for {0}''s timeline.", member.getDisplayName());
+        return Context.tr("Elveos feature feed for {0}''s activiy.", member.getDisplayName());
     }
 
     @Override

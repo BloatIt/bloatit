@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.linkable.timeline;
+package com.bloatit.web.linkable.activiy;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,11 +30,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.mail.EventFeatureComponent;
 import com.bloatit.mail.HtmlEntry;
-import com.bloatit.mail.TimelineEventVisitor;
-import com.bloatit.mail.TimelineEventVisitor.BugEntries;
-import com.bloatit.mail.TimelineEventVisitor.DayAgreggator;
-import com.bloatit.mail.TimelineEventVisitor.Entries;
-import com.bloatit.mail.TimelineEventVisitor.FeatureEntries;
+import com.bloatit.mail.ActiviyEventVisitor;
+import com.bloatit.mail.ActiviyEventVisitor.BugEntries;
+import com.bloatit.mail.ActiviyEventVisitor.DayAgreggator;
+import com.bloatit.mail.ActiviyEventVisitor.Entries;
+import com.bloatit.mail.ActiviyEventVisitor.FeatureEntries;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.EventManager;
@@ -43,22 +43,22 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.CreateFeatureProcessUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
-import com.bloatit.web.url.ReadTimelineActionUrl;
-import com.bloatit.web.url.TimelineAtomFeedUrl;
-import com.bloatit.web.url.TimelinePageUrl;
+import com.bloatit.web.url.ReadActiviyActionUrl;
+import com.bloatit.web.url.ActiviyAtomFeedUrl;
+import com.bloatit.web.url.ActiviyPageUrl;
 
 /**
  * A simple renderer for teams that display only their name on one line, plus a
  * link to their page
  */
-public class HtmlTimelineBlock extends HtmlDiv {
+public class HtmlActiviyBlock extends HtmlDiv {
     private static final int MIN_LEFT_RIGHT_DIFF = 50;
     private static final int MIN_DAY_HEIGHT = 70;
 
     private Date lastWatchedEvents;
 
-    public HtmlTimelineBlock(Member member) {
-        super("timeline-block");
+    public HtmlActiviyBlock(Member member) {
+        super("activiy-block");
 
         if (AuthToken.isAuthenticated()) {
             lastWatchedEvents = AuthToken.getMember().getLastWatchedEvents();
@@ -100,20 +100,20 @@ public class HtmlTimelineBlock extends HtmlDiv {
                     menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgRssSmall()), Context.tr("Rss feed")));
                     final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
                     menuBarItemRSS.add(menuBarItemLink);
-                    menuBarItemLink.add(new TimelineAtomFeedUrl(member).getHtmlLink(Context.tr("Rss feed")));
+                    menuBarItemLink.add(new ActiviyAtomFeedUrl(member).getHtmlLink(Context.tr("Rss feed")));
                 }
 
                 final HtmlDiv menuBarItemSetAsRead = new HtmlDiv("menu_bar_right_item");
                 menuBar.add(menuBarItemSetAsRead);
                 {
-                    menuBarItemSetAsRead.add(new ReadTimelineActionUrl(Context.getSession().getShortKey()).getHtmlLink(Context.tr("set as read")));
+                    menuBarItemSetAsRead.add(new ReadActiviyActionUrl(Context.getSession().getShortKey()).getHtmlLink(Context.tr("set as read")));
                 }
                 
-                final HtmlDiv menuBarItemGlobalTimeline = new HtmlDiv("menu_bar_right_item");
-                menuBar.add(menuBarItemGlobalTimeline);
+                final HtmlDiv menuBarItemGlobalActiviy = new HtmlDiv("menu_bar_right_item");
+                menuBar.add(menuBarItemGlobalActiviy);
                 {
-                    TimelinePageUrl timelinePageUrl = new TimelinePageUrl();
-                    menuBarItemGlobalTimeline.add(timelinePageUrl.getHtmlLink(Context.tr("global timeline")));
+                    ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
+                    menuBarItemGlobalActiviy.add(activiyPageUrl.getHtmlLink(Context.tr("global activiy")));
                 }
             }
 
@@ -123,37 +123,37 @@ public class HtmlTimelineBlock extends HtmlDiv {
                 final HtmlDiv menuBar = new HtmlDiv("menu_bar");
                 add(menuBar);
                 {
-                    final HtmlDiv menuBarItemMyTimeline = new HtmlDiv("menu_bar_right_item");
-                    menuBar.add(menuBarItemMyTimeline);
+                    final HtmlDiv menuBarItemMyActiviy = new HtmlDiv("menu_bar_right_item");
+                    menuBar.add(menuBarItemMyActiviy);
                     {
-                        TimelinePageUrl timelinePageUrl = new TimelinePageUrl();
-                        timelinePageUrl.setMember(AuthToken.getMember());
-                        menuBarItemMyTimeline.add(timelinePageUrl.getHtmlLink(Context.tr("my timeline")));
+                        ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
+                        activiyPageUrl.setMember(AuthToken.getMember());
+                        menuBarItemMyActiviy.add(activiyPageUrl.getHtmlLink(Context.tr("my activiy")));
                     }
                 }
             }
             
             
             if(member == null) {
-                add(new HtmlTitle(Context.tr("Global Elveos timeline"),1));
+                add(new HtmlTitle(Context.tr("Global Elveos activiy"),1));
             } else {
-                add(new HtmlTitle(Context.tr("{0}''s timeline", member.getDisplayName()),1));
+                add(new HtmlTitle(Context.tr("{0}''s activiy", member.getDisplayName()),1));
             }
         }
 
         EventList events = (member == null ? EventManager.getAllEventAfter(DateUtils.dawnOfTime()) : EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member));
         
-        final HtmlDiv timelineBlockTwoColumn = new HtmlDiv("timeline-block-two-column");
-        add(timelineBlockTwoColumn);
+        final HtmlDiv activiyBlockTwoColumn = new HtmlDiv("activiy-block-two-column");
+        add(activiyBlockTwoColumn);
         {
 
             final HtmlDiv leftColumn = new HtmlDiv("left_column");
-            timelineBlockTwoColumn.add(leftColumn);
+            activiyBlockTwoColumn.add(leftColumn);
             final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
             PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
 
-            timelineBlockTwoColumn.add(timeColumn);
+            activiyBlockTwoColumn.add(timeColumn);
             {
                 final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
                 timeColumn.add(timeColumnHeader);
@@ -165,9 +165,9 @@ public class HtmlTimelineBlock extends HtmlDiv {
             }
 
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
-            timelineBlockTwoColumn.add(rightColumn);
+            activiyBlockTwoColumn.add(rightColumn);
 
-            final TimelineEventVisitor visitor = new TimelineEventVisitor(Context.getLocalizator());
+            final ActiviyEventVisitor visitor = new ActiviyEventVisitor(Context.getLocalizator());
 
             while (events.hasNext()) {
                 events.next();
@@ -179,14 +179,14 @@ public class HtmlTimelineBlock extends HtmlDiv {
 
         events.reset();
         
-        final HtmlDiv timelineBlockOneColumn = new HtmlDiv("timeline-block-one-column");
-        add(timelineBlockOneColumn);
+        final HtmlDiv activiyBlockOneColumn = new HtmlDiv("activiy-block-one-column");
+        add(activiyBlockOneColumn);
         {
             final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
             PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
 
-            timelineBlockOneColumn.add(timeColumn);
+            activiyBlockOneColumn.add(timeColumn);
             {
                 final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
                 timeColumn.add(timeColumnHeader);
@@ -198,9 +198,9 @@ public class HtmlTimelineBlock extends HtmlDiv {
             }
 
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
-            timelineBlockOneColumn.add(rightColumn);
+            activiyBlockOneColumn.add(rightColumn);
 
-            final TimelineEventVisitor visitor = new TimelineEventVisitor(Context.getLocalizator());
+            final ActiviyEventVisitor visitor = new ActiviyEventVisitor(Context.getLocalizator());
 
             while (events.hasNext()) {
                 events.next();
@@ -216,7 +216,7 @@ public class HtmlTimelineBlock extends HtmlDiv {
     private void fillTimeLine(final HtmlDiv leftColumn,
                               PlaceHolderElement daysPlaceHolder,
                               final HtmlDiv rightColumn,
-                              final TimelineEventVisitor visitor,
+                              final ActiviyEventVisitor visitor,
                               final boolean rightOnly) {
         SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
         // boolean insertToLeft = false;

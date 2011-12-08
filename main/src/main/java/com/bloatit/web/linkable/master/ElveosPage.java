@@ -46,7 +46,7 @@ import com.bloatit.model.Image;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.TimelinePageUrl;
+import com.bloatit.web.url.ActiviyPageUrl;
 
 public abstract class ElveosPage extends Page {
 

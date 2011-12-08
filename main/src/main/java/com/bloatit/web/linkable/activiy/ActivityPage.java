@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.timeline;
+package com.bloatit.web.linkable.activiy;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
@@ -26,26 +26,26 @@ import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.members.MemberPage;
-import com.bloatit.web.url.TimelinePageUrl;
+import com.bloatit.web.url.ActiviyPageUrl;
 
 /**
  * Page that hosts the form to create a new feature
  */
-@ParamContainer("timeline")
-public final class TimelinePage extends ElveosPage {
+@ParamContainer("activiy")
+public final class ActiviyPage extends ElveosPage {
 
     @RequestParam(role = Role.GET, message = @tr("I cannot find the member number: ''%value%''."))
     @Optional()
     private final Member member;
 
-    public TimelinePage(final TimelinePageUrl url) {
+    public ActiviyPage(final ActiviyPageUrl url) {
         super(url);
         this.member = url.getMember();
     }
 
     @Override
     protected String createPageTitle() {
-        return tr("Timeline");
+        return tr("Activiy");
     }
 
     @Override
@@ -56,16 +56,16 @@ public final class TimelinePage extends ElveosPage {
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
 
-        final HtmlDiv layout = new HtmlDiv("timeline-page");
+        final HtmlDiv layout = new HtmlDiv("activiy-page");
 
-        layout.add(new HtmlTimelineBlock(member));
+        layout.add(new HtmlActiviyBlock(member));
 
         return layout;
     }
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return TimelinePage.generateBreadcrumb(member);
+        return ActiviyPage.generateBreadcrumb(member);
     }
 
     static Breadcrumb generateBreadcrumb(final Member member) {
@@ -77,11 +77,11 @@ public final class TimelinePage extends ElveosPage {
             breadcrumb = IndexPage.generateBreadcrumb();
         }
 
-        TimelinePageUrl timelinePageUrl = new TimelinePageUrl();
+        ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
         if(member != null) {
-            timelinePageUrl.setMember(member);
+            activiyPageUrl.setMember(member);
         }
-        breadcrumb.pushLink(timelinePageUrl.getHtmlLink(tr("Timeline")));
+        breadcrumb.pushLink(activiyPageUrl.getHtmlLink(tr("Activiy")));
 
         return breadcrumb;
     }

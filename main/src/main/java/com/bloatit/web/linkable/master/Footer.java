@@ -26,7 +26,7 @@ import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.MetaFeedbackListPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
-import com.bloatit.web.url.TimelinePageUrl;
+import com.bloatit.web.url.ActiviyPageUrl;
 
 public class Footer extends HtmlDiv {
 
@@ -42,7 +42,7 @@ public class Footer extends HtmlDiv {
             linkBlock.add(new HtmlDiv("footer_link").add(new SiteMapPageUrl().getHtmlLink(Context.tr("Site map"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new SoftwareListPageUrl().getHtmlLink(Context.trc("Software (list)", "Software"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Change language"))));
-            linkBlock.add(new HtmlDiv("footer_link").add(new TimelinePageUrl().getHtmlLink(Context.tr("Global timeline"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new ActiviyPageUrl().getHtmlLink(Context.tr("Global activiy"))));
             addDocumentationFooterLink(linkBlock, "contribute", Context.tr("Contribute"));
             linkBlock.add(new HtmlDiv("footer_link").add(new MetaFeedbackListPageUrl().getHtmlLink(Context.tr("Report a bug"))));
             addDocumentationFooterLink(linkBlock, "api", Context.tr("APIs"));

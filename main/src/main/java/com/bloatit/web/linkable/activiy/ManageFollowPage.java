@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.linkable.timeline;
+package com.bloatit.web.linkable.activiy;
 
 import java.util.EnumSet;
 
@@ -66,9 +66,9 @@ import com.bloatit.web.url.FollowFeatureActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.ManageFollowActionUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
-import com.bloatit.web.url.TimelinePageUrl;
+import com.bloatit.web.url.ActiviyPageUrl;
 
-@ParamContainer("timeline/settings")
+@ParamContainer("activiy/settings")
 public class ManageFollowPage extends LoggedElveosPage {
     private final ManageFollowPageUrl url;
 
@@ -81,21 +81,21 @@ public class ManageFollowPage extends LoggedElveosPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException, UnauthorizedPrivateAccessException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.setCssClass("manage-timeline-page");
+        layout.setCssClass("manage-activiy-page");
         
         
         
-        final HtmlDiv menuBarItemBackToTimeline = new HtmlDiv("menu_bar_item");
-        layout.addLeft(menuBarItemBackToTimeline);
+        final HtmlDiv menuBarItemBackToActiviy = new HtmlDiv("menu_bar_item");
+        layout.addLeft(menuBarItemBackToActiviy);
         {
             final HtmlDiv menuBarItemImage = new HtmlDiv("menu_bar_item_image");
-            menuBarItemBackToTimeline.add(menuBarItemImage);
-            menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgTimelineSmall()), ""));
+            menuBarItemBackToActiviy.add(menuBarItemImage);
+            menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgActiviySmall()), ""));
             final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
-            menuBarItemBackToTimeline.add(menuBarItemLink);
-            TimelinePageUrl timelinePageUrl = new TimelinePageUrl();
-            timelinePageUrl.setMember(loggedUser);
-            menuBarItemLink.add(timelinePageUrl.getHtmlLink(Context.tr("Back to timeline")));
+            menuBarItemBackToActiviy.add(menuBarItemLink);
+            ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
+            activiyPageUrl.setMember(loggedUser);
+            menuBarItemLink.add(activiyPageUrl.getHtmlLink(Context.tr("Back to activiy")));
         }
         
         
@@ -188,7 +188,7 @@ public class ManageFollowPage extends LoggedElveosPage {
     }
 
     private static Breadcrumb generateBreadcrumb() {
-        final Breadcrumb breadcrumb = TimelinePage.generateBreadcrumb(AuthToken.getMember());
+        final Breadcrumb breadcrumb = ActiviyPage.generateBreadcrumb(AuthToken.getMember());
         breadcrumb.pushLink(new ManageFollowPageUrl().getHtmlLink(Context.tr("settings")));
         return breadcrumb;
     }
