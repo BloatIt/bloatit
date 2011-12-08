@@ -86,10 +86,10 @@ public class HtmlActivityBlock extends HtmlDiv {
                 {
                     final HtmlDiv menuBarItemImage = new HtmlDiv("menu_bar_item_image");
                     menuBarItemManageFollow.add(menuBarItemImage);
-                    menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgManageSmall()), Context.tr("Manage follows")));
+                    menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgManageSmall()), Context.tr("Manage activity")));
                     final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
                     menuBarItemManageFollow.add(menuBarItemLink);
-                    menuBarItemLink.add(new ManageFollowPageUrl().getHtmlLink(Context.tr("Manage follows")));
+                    menuBarItemLink.add(new ManageFollowPageUrl().getHtmlLink(Context.tr("Manage activity")));
                 }
 
                 final HtmlDiv menuBarItemRSS = new HtmlDiv("menu_bar_item");
@@ -97,7 +97,7 @@ public class HtmlActivityBlock extends HtmlDiv {
                 {
                     final HtmlDiv menuBarItemImage = new HtmlDiv("menu_bar_item_image");
                     menuBarItemRSS.add(menuBarItemImage);
-                    menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgRssSmall()), Context.tr("Rss feed")));
+                    menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgRssSmall()), Context.tr("My custom Rss feed")));
                     final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
                     menuBarItemRSS.add(menuBarItemLink);
                     menuBarItemLink.add(new ActivityAtomFeedUrl(member).getHtmlLink(Context.tr("Rss feed")));

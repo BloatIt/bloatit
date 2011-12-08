@@ -101,7 +101,7 @@ public class ManageFollowPage extends LoggedElveosPage {
         
 
         final HtmlTitle title = new HtmlTitle(1);
-        title.addText(Context.tr("Manage contents followed"));
+        title.addText(Context.tr("Manage activity"));
         layout.addLeft(title);
 
         
