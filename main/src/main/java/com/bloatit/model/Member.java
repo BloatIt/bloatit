@@ -561,8 +561,8 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     // TODO make right managements
-    public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
-        return new UserContentList(getDao().getActivity());
+    public PageIterable<UserContent<? extends DaoUserContent>> getHistory() {
+        return new UserContentList(getDao().getHistory());
     }
 
     private static final float INFLUENCE_MULTIPLICATOR = 2;

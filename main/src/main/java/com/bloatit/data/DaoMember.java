@@ -144,7 +144,7 @@ import com.bloatit.model.ModelConfiguration;
                                    "WHERE m = :member AND g = :team"),
 
                        @NamedQuery(
-                           name = "member.getActivity",
+                           name = "member.getHistory",
                            query = "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
@@ -153,7 +153,7 @@ import com.bloatit.model.ModelConfiguration;
                                    "ORDER BY creationDate DESC"),
 
                        @NamedQuery(
-                           name = "member.getActivity.size",
+                           name = "member.getHistory.size",
                            query = "SELECT COUNT(*)" +
                            		   "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
@@ -1031,13 +1031,13 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * Finds the user recent activity.
+     * Finds the user recent history.
      * 
-     * @return the user recent activity
+     * @return the user recent history
      */
-    public PageIterable<DaoUserContent> getActivity() {
-        final Query query = SessionManager.getNamedQuery("member.getActivity");
-        final Query size = SessionManager.getNamedQuery("member.getActivity.size");
+    public PageIterable<DaoUserContent> getHistory() {
+        final Query query = SessionManager.getNamedQuery("member.getHistory");
+        final Query size = SessionManager.getNamedQuery("member.getHistory.size");
 
         final QueryCollection<DaoUserContent> q = new QueryCollection<DaoUserContent>(query, size);
         q.setEntity("member", this);

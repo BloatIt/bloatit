@@ -52,23 +52,23 @@ import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.components.activity.ActivityVisitor;
+import com.bloatit.web.components.history.HistoryVisitor;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 
-@ParamContainer(value = "activityTab", isComponent = true)
-public class ActivityTab extends HtmlTab {
+@ParamContainer(value = "historyTab", isComponent = true)
+public class HistoryTab extends HtmlTab {
     private final Member member;
     private final MemberPageUrl url;
 
     @SuppressWarnings("unused")
     @SubParamContainer
-    private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedActivity;
+    private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedHistory;
 
-    public ActivityTab(final Member member, final String title, final String tabKey, final MemberPageUrl url) {
+    public HistoryTab(final Member member, final String title, final String tabKey, final MemberPageUrl url) {
         super(title, tabKey);
         this.member = member;
         this.url = url;
@@ -78,43 +78,43 @@ public class ActivityTab extends HtmlTab {
     public HtmlNode generateBody() {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
-        // Displaying list of user recent activity
-        final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 1);
+        // Displaying list of user recent history
+        final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent history"), 1);
         master.add(recent);
 
-        recent.add(generateActivities(member, url));
+        recent.add(generateHistorical(member, url));
         return master;
     }
 
-    public static HtmlElement generateActivities(final Member member, final MemberPageUrl url) {
-        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
+    public static HtmlElement generateHistorical(final Member member, final MemberPageUrl url) {
+        final HtmlDiv recentHistory = new HtmlDiv("recent_history");
 
-        final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
+        final PageIterable<UserContent<? extends DaoUserContent>> history = member.getHistory();
 
-        if (activity.size() == 0) {
-            recentActivity.add(new HtmlParagraph(Context.tr("No recent activity")));
+        if (history.size() == 0) {
+            recentHistory.add(new HtmlParagraph(Context.tr("No recent history")));
         }
 
         final MemberPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
-        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl()
-                                                                                                                              .getPagedActivityUrl());
-        recentActivity.add(feed);
+        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new HistoryRenderer(), history, clonedUrl, clonedUrl.getHistoryUrl()
+                                                                                                                              .getPagedHistoryUrl());
+        recentHistory.add(feed);
 
-        return recentActivity;
+        return recentHistory;
     }
 
     /**
-     * Paged renderer for the activity feed
+     * Paged renderer for the history feed
      */
-    private static final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
-        public ActivityRenderer() {
+    private static final class HistoryRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
+        public HistoryRenderer() {
             super();
         }
 
         @Override
         public HtmlNode generate(final UserContent<? extends DaoUserContent> content) {
-            return content.accept(new ActivityVisitor() {
+            return content.accept(new HistoryVisitor() {
                 @Override
                 public HtmlElement visit(final Translation model) {
                     return new HtmlParagraph("translation");

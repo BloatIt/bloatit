@@ -221,14 +221,14 @@ public final class Team extends Actor<DaoTeam> {
         return new MilestoneList(getDao().getMilestones());
     }
 
-    public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
+    public PageIterable<UserContent<? extends DaoUserContent>> getHistory() {
         // TODO set rights
-        return new UserContentList(getDao().getActivity());
+        return new UserContentList(getDao().getHistory());
     }
 
-    public long getRecentActivityCount() {
+    public long getRecentHistoryCount() {
         // TODO set rights
-        return getDao().getRecentActivityCount(ModelConfiguration.getRecentActivityDays());
+        return getDao().getRecentHistoryCount(ModelConfiguration.getRecentHistoryDays());
     }
     
     public PageIterable<Milestone> getMilestoneInvoiced() {

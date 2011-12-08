@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.components.activity;
+package com.bloatit.web.components.history;
 
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Bug;
@@ -28,7 +28,7 @@ import com.bloatit.model.Release;
 import com.bloatit.model.Translation;
 import com.bloatit.model.visitor.AbstractModelClassVisitor;
 
-public abstract class ActivityVisitor extends AbstractModelClassVisitor<HtmlElement> {
+public abstract class HistoryVisitor extends AbstractModelClassVisitor<HtmlElement> {
     @Override
     public abstract HtmlElement visit(final Translation model);
 

@@ -43,7 +43,7 @@ public class DashboardTab extends HtmlTab {
     public HtmlNode generateBody() {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
-        // Displaying list of user recent activity
+        // Displaying list of user recent history
         final HtmlTitleBlock followed = new HtmlTitleBlock(Context.tr("Content you follow"), 1);
         master.add(followed);
 
