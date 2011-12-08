@@ -16,11 +16,11 @@ import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Feature;
 
-public class ActiviyEventVisitor extends GenericEventVisitor {
+public class ActivityEventVisitor extends GenericEventVisitor {
 
     private final LinkedList<DayAgreggator> days = new LinkedList<DayAgreggator>();
 
-    public ActiviyEventVisitor(Localizator localizator) {
+    public ActivityEventVisitor(Localizator localizator) {
         super(localizator);
     }
 
@@ -192,8 +192,8 @@ public class ActiviyEventVisitor extends GenericEventVisitor {
             return Math.abs(date.getTimeInMillis() - other.getDate().getTimeInMillis()) < 1000;
         }
 
-        private ActiviyEventVisitor getOuterType() {
-            return ActiviyEventVisitor.this;
+        private ActivityEventVisitor getOuterType() {
+            return ActivityEventVisitor.this;
         }
 
     }

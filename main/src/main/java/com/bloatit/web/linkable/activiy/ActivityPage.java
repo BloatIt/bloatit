@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.activiy;
+package com.bloatit.web.linkable.activity;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
@@ -26,26 +26,26 @@ import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.members.MemberPage;
-import com.bloatit.web.url.ActiviyPageUrl;
+import com.bloatit.web.url.ActivityPageUrl;
 
 /**
  * Page that hosts the form to create a new feature
  */
-@ParamContainer("activiy")
-public final class ActiviyPage extends ElveosPage {
+@ParamContainer("activity")
+public final class ActivityPage extends ElveosPage {
 
     @RequestParam(role = Role.GET, message = @tr("I cannot find the member number: ''%value%''."))
     @Optional()
     private final Member member;
 
-    public ActiviyPage(final ActiviyPageUrl url) {
+    public ActivityPage(final ActivityPageUrl url) {
         super(url);
         this.member = url.getMember();
     }
 
     @Override
     protected String createPageTitle() {
-        return tr("Activiy");
+        return tr("Activity");
     }
 
     @Override
@@ -56,16 +56,16 @@ public final class ActiviyPage extends ElveosPage {
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
 
-        final HtmlDiv layout = new HtmlDiv("activiy-page");
+        final HtmlDiv layout = new HtmlDiv("activity-page");
 
-        layout.add(new HtmlActiviyBlock(member));
+        layout.add(new HtmlActivityBlock(member));
 
         return layout;
     }
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return ActiviyPage.generateBreadcrumb(member);
+        return ActivityPage.generateBreadcrumb(member);
     }
 
     static Breadcrumb generateBreadcrumb(final Member member) {
@@ -77,11 +77,11 @@ public final class ActiviyPage extends ElveosPage {
             breadcrumb = IndexPage.generateBreadcrumb();
         }
 
-        ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
+        ActivityPageUrl activityPageUrl = new ActivityPageUrl();
         if(member != null) {
-            activiyPageUrl.setMember(member);
+            activityPageUrl.setMember(member);
         }
-        breadcrumb.pushLink(activiyPageUrl.getHtmlLink(tr("Activiy")));
+        breadcrumb.pushLink(activityPageUrl.getHtmlLink(tr("Activity")));
 
         return breadcrumb;
     }

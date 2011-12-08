@@ -340,8 +340,8 @@ public class WebConfiguration extends ReloadableConfiguration {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/elveos_logo_small.png");
     }
 
-    public static String getImgActiviySmall() {
-        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/activiy_small.png");
+    public static String getImgActivitySmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/activity_small.png");
     }
 
 }

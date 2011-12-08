@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.activiy;
+package com.bloatit.web.linkable.activity;
 
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
@@ -32,7 +32,7 @@ import com.bloatit.web.url.ManageFollowActionUrl;
  * A response to a form used to assess any <code>kudosable</code> on the bloatit
  * website
  */
-@ParamContainer("activiy/settings/change")
+@ParamContainer("activity/settings/change")
 public final class ManageFollowAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)

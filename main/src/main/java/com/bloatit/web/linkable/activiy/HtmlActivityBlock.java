@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.linkable.activiy;
+package com.bloatit.web.linkable.activity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,11 +30,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.mail.EventFeatureComponent;
 import com.bloatit.mail.HtmlEntry;
-import com.bloatit.mail.ActiviyEventVisitor;
-import com.bloatit.mail.ActiviyEventVisitor.BugEntries;
-import com.bloatit.mail.ActiviyEventVisitor.DayAgreggator;
-import com.bloatit.mail.ActiviyEventVisitor.Entries;
-import com.bloatit.mail.ActiviyEventVisitor.FeatureEntries;
+import com.bloatit.mail.ActivityEventVisitor;
+import com.bloatit.mail.ActivityEventVisitor.BugEntries;
+import com.bloatit.mail.ActivityEventVisitor.DayAgreggator;
+import com.bloatit.mail.ActivityEventVisitor.Entries;
+import com.bloatit.mail.ActivityEventVisitor.FeatureEntries;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.EventManager;
@@ -43,22 +43,22 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.CreateFeatureProcessUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
-import com.bloatit.web.url.ReadActiviyActionUrl;
-import com.bloatit.web.url.ActiviyAtomFeedUrl;
-import com.bloatit.web.url.ActiviyPageUrl;
+import com.bloatit.web.url.ReadActivityActionUrl;
+import com.bloatit.web.url.ActivityAtomFeedUrl;
+import com.bloatit.web.url.ActivityPageUrl;
 
 /**
  * A simple renderer for teams that display only their name on one line, plus a
  * link to their page
  */
-public class HtmlActiviyBlock extends HtmlDiv {
+public class HtmlActivityBlock extends HtmlDiv {
     private static final int MIN_LEFT_RIGHT_DIFF = 50;
     private static final int MIN_DAY_HEIGHT = 70;
 
     private Date lastWatchedEvents;
 
-    public HtmlActiviyBlock(Member member) {
-        super("activiy-block");
+    public HtmlActivityBlock(Member member) {
+        super("activity-block");
 
         if (AuthToken.isAuthenticated()) {
             lastWatchedEvents = AuthToken.getMember().getLastWatchedEvents();
@@ -100,20 +100,20 @@ public class HtmlActiviyBlock extends HtmlDiv {
                     menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgRssSmall()), Context.tr("Rss feed")));
                     final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
                     menuBarItemRSS.add(menuBarItemLink);
-                    menuBarItemLink.add(new ActiviyAtomFeedUrl(member).getHtmlLink(Context.tr("Rss feed")));
+                    menuBarItemLink.add(new ActivityAtomFeedUrl(member).getHtmlLink(Context.tr("Rss feed")));
                 }
 
                 final HtmlDiv menuBarItemSetAsRead = new HtmlDiv("menu_bar_right_item");
                 menuBar.add(menuBarItemSetAsRead);
                 {
-                    menuBarItemSetAsRead.add(new ReadActiviyActionUrl(Context.getSession().getShortKey()).getHtmlLink(Context.tr("set as read")));
+                    menuBarItemSetAsRead.add(new ReadActivityActionUrl(Context.getSession().getShortKey()).getHtmlLink(Context.tr("set as read")));
                 }
                 
-                final HtmlDiv menuBarItemGlobalActiviy = new HtmlDiv("menu_bar_right_item");
-                menuBar.add(menuBarItemGlobalActiviy);
+                final HtmlDiv menuBarItemGlobalActivity = new HtmlDiv("menu_bar_right_item");
+                menuBar.add(menuBarItemGlobalActivity);
                 {
-                    ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
-                    menuBarItemGlobalActiviy.add(activiyPageUrl.getHtmlLink(Context.tr("global activiy")));
+                    ActivityPageUrl activityPageUrl = new ActivityPageUrl();
+                    menuBarItemGlobalActivity.add(activityPageUrl.getHtmlLink(Context.tr("global activity")));
                 }
             }
 
@@ -123,37 +123,37 @@ public class HtmlActiviyBlock extends HtmlDiv {
                 final HtmlDiv menuBar = new HtmlDiv("menu_bar");
                 add(menuBar);
                 {
-                    final HtmlDiv menuBarItemMyActiviy = new HtmlDiv("menu_bar_right_item");
-                    menuBar.add(menuBarItemMyActiviy);
+                    final HtmlDiv menuBarItemMyActivity = new HtmlDiv("menu_bar_right_item");
+                    menuBar.add(menuBarItemMyActivity);
                     {
-                        ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
-                        activiyPageUrl.setMember(AuthToken.getMember());
-                        menuBarItemMyActiviy.add(activiyPageUrl.getHtmlLink(Context.tr("my activiy")));
+                        ActivityPageUrl activityPageUrl = new ActivityPageUrl();
+                        activityPageUrl.setMember(AuthToken.getMember());
+                        menuBarItemMyActivity.add(activityPageUrl.getHtmlLink(Context.tr("my activity")));
                     }
                 }
             }
             
             
             if(member == null) {
-                add(new HtmlTitle(Context.tr("Global Elveos activiy"),1));
+                add(new HtmlTitle(Context.tr("Global Elveos activity"),1));
             } else {
-                add(new HtmlTitle(Context.tr("{0}''s activiy", member.getDisplayName()),1));
+                add(new HtmlTitle(Context.tr("{0}''s activity", member.getDisplayName()),1));
             }
         }
 
         EventList events = (member == null ? EventManager.getAllEventAfter(DateUtils.dawnOfTime()) : EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member));
         
-        final HtmlDiv activiyBlockTwoColumn = new HtmlDiv("activiy-block-two-column");
-        add(activiyBlockTwoColumn);
+        final HtmlDiv activityBlockTwoColumn = new HtmlDiv("activity-block-two-column");
+        add(activityBlockTwoColumn);
         {
 
             final HtmlDiv leftColumn = new HtmlDiv("left_column");
-            activiyBlockTwoColumn.add(leftColumn);
+            activityBlockTwoColumn.add(leftColumn);
             final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
             PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
 
-            activiyBlockTwoColumn.add(timeColumn);
+            activityBlockTwoColumn.add(timeColumn);
             {
                 final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
                 timeColumn.add(timeColumnHeader);
@@ -165,9 +165,9 @@ public class HtmlActiviyBlock extends HtmlDiv {
             }
 
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
-            activiyBlockTwoColumn.add(rightColumn);
+            activityBlockTwoColumn.add(rightColumn);
 
-            final ActiviyEventVisitor visitor = new ActiviyEventVisitor(Context.getLocalizator());
+            final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
 
             while (events.hasNext()) {
                 events.next();
@@ -179,14 +179,14 @@ public class HtmlActiviyBlock extends HtmlDiv {
 
         events.reset();
         
-        final HtmlDiv activiyBlockOneColumn = new HtmlDiv("activiy-block-one-column");
-        add(activiyBlockOneColumn);
+        final HtmlDiv activityBlockOneColumn = new HtmlDiv("activity-block-one-column");
+        add(activityBlockOneColumn);
         {
             final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
             PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
 
-            activiyBlockOneColumn.add(timeColumn);
+            activityBlockOneColumn.add(timeColumn);
             {
                 final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
                 timeColumn.add(timeColumnHeader);
@@ -198,9 +198,9 @@ public class HtmlActiviyBlock extends HtmlDiv {
             }
 
             final HtmlDiv rightColumn = new HtmlDiv("right_column");
-            activiyBlockOneColumn.add(rightColumn);
+            activityBlockOneColumn.add(rightColumn);
 
-            final ActiviyEventVisitor visitor = new ActiviyEventVisitor(Context.getLocalizator());
+            final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
 
             while (events.hasNext()) {
                 events.next();
@@ -216,7 +216,7 @@ public class HtmlActiviyBlock extends HtmlDiv {
     private void fillTimeLine(final HtmlDiv leftColumn,
                               PlaceHolderElement daysPlaceHolder,
                               final HtmlDiv rightColumn,
-                              final ActiviyEventVisitor visitor,
+                              final ActivityEventVisitor visitor,
                               final boolean rightOnly) {
         SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
         // boolean insertToLeft = false;

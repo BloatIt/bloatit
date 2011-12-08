@@ -9,24 +9,24 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.activiy;
+package com.bloatit.web.linkable.activity;
 
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.ReadActiviyActionUrl;
+import com.bloatit.web.url.ReadActivityActionUrl;
 
 /**
  * A response to a form used to assess any <code>kudosable</code> on the bloatit
  * website
  */
-@ParamContainer("activiy/read")
-public final class ReadActiviyAction extends LoggedElveosAction {
+@ParamContainer("activity/read")
+public final class ReadActivityAction extends LoggedElveosAction {
 
 
-    public ReadActiviyAction(final ReadActiviyActionUrl url) {
+    public ReadActivityAction(final ReadActivityActionUrl url) {
         super(url);
     }
 
@@ -48,7 +48,7 @@ public final class ReadActiviyAction extends LoggedElveosAction {
 
     @Override
     protected String getRefusalReason() {
-        return "You must be logged to set your activiy as read";
+        return "You must be logged to set your activity as read";
     }
 
     @Override

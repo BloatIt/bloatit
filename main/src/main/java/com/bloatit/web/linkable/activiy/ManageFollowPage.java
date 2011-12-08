@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.linkable.activiy;
+package com.bloatit.web.linkable.activity;
 
 import java.util.EnumSet;
 
@@ -66,9 +66,9 @@ import com.bloatit.web.url.FollowFeatureActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.ManageFollowActionUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
-import com.bloatit.web.url.ActiviyPageUrl;
+import com.bloatit.web.url.ActivityPageUrl;
 
-@ParamContainer("activiy/settings")
+@ParamContainer("activity/settings")
 public class ManageFollowPage extends LoggedElveosPage {
     private final ManageFollowPageUrl url;
 
@@ -81,21 +81,21 @@ public class ManageFollowPage extends LoggedElveosPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException, UnauthorizedPrivateAccessException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.setCssClass("manage-activiy-page");
+        layout.setCssClass("manage-activity-page");
         
         
         
-        final HtmlDiv menuBarItemBackToActiviy = new HtmlDiv("menu_bar_item");
-        layout.addLeft(menuBarItemBackToActiviy);
+        final HtmlDiv menuBarItemBackToActivity = new HtmlDiv("menu_bar_item");
+        layout.addLeft(menuBarItemBackToActivity);
         {
             final HtmlDiv menuBarItemImage = new HtmlDiv("menu_bar_item_image");
-            menuBarItemBackToActiviy.add(menuBarItemImage);
-            menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgActiviySmall()), ""));
+            menuBarItemBackToActivity.add(menuBarItemImage);
+            menuBarItemImage.add(new HtmlImage(new Image(WebConfiguration.getImgActivitySmall()), ""));
             final HtmlDiv menuBarItemLink = new HtmlDiv("menu_bar_item_link");
-            menuBarItemBackToActiviy.add(menuBarItemLink);
-            ActiviyPageUrl activiyPageUrl = new ActiviyPageUrl();
-            activiyPageUrl.setMember(loggedUser);
-            menuBarItemLink.add(activiyPageUrl.getHtmlLink(Context.tr("Back to activiy")));
+            menuBarItemBackToActivity.add(menuBarItemLink);
+            ActivityPageUrl activityPageUrl = new ActivityPageUrl();
+            activityPageUrl.setMember(loggedUser);
+            menuBarItemLink.add(activityPageUrl.getHtmlLink(Context.tr("Back to activity")));
         }
         
         
@@ -188,7 +188,7 @@ public class ManageFollowPage extends LoggedElveosPage {
     }
 
     private static Breadcrumb generateBreadcrumb() {
-        final Breadcrumb breadcrumb = ActiviyPage.generateBreadcrumb(AuthToken.getMember());
+        final Breadcrumb breadcrumb = ActivityPage.generateBreadcrumb(AuthToken.getMember());
         breadcrumb.pushLink(new ManageFollowPageUrl().getHtmlLink(Context.tr("settings")));
         return breadcrumb;
     }

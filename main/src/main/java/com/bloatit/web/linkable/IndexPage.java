@@ -62,7 +62,7 @@ import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.linkable.activiy.HtmlActiviyBlock;
+import com.bloatit.web.linkable.activity.HtmlActivityBlock;
 import com.bloatit.web.url.CreateFeatureProcessUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.FeatureAtomFeedUrl;
@@ -252,7 +252,7 @@ public final class IndexPage extends ElveosPage {
             
         }
         
-        element.add(new HtmlActiviyBlock(AuthToken.getMember()));
+        element.add(new HtmlActivityBlock(AuthToken.getMember()));
         
         return  element;
     }

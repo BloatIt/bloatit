@@ -62,7 +62,7 @@ import com.bloatit.web.linkable.aliases.IndexPageAlias;
 import com.bloatit.web.linkable.aliases.MembersPageAlias;
 import com.bloatit.web.linkable.atom.FeatureAtomFeed;
 import com.bloatit.web.linkable.atom.SoftwareAtomFeed;
-import com.bloatit.web.linkable.atom.ActiviyAtomFeed;
+import com.bloatit.web.linkable.atom.ActivityAtomFeed;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -167,14 +167,14 @@ import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
-import com.bloatit.web.linkable.activiy.FollowActorAction;
-import com.bloatit.web.linkable.activiy.FollowAllAction;
-import com.bloatit.web.linkable.activiy.FollowFeatureAction;
-import com.bloatit.web.linkable.activiy.FollowSoftwareAction;
-import com.bloatit.web.linkable.activiy.ManageFollowAction;
-import com.bloatit.web.linkable.activiy.ManageFollowPage;
-import com.bloatit.web.linkable.activiy.ReadActiviyAction;
-import com.bloatit.web.linkable.activiy.ActiviyPage;
+import com.bloatit.web.linkable.activity.FollowActorAction;
+import com.bloatit.web.linkable.activity.FollowAllAction;
+import com.bloatit.web.linkable.activity.FollowFeatureAction;
+import com.bloatit.web.linkable.activity.FollowSoftwareAction;
+import com.bloatit.web.linkable.activity.ManageFollowAction;
+import com.bloatit.web.linkable.activity.ManageFollowPage;
+import com.bloatit.web.linkable.activity.ReadActivityAction;
+import com.bloatit.web.linkable.activity.ActivityPage;
 import com.bloatit.web.linkable.translation.TranslateAction;
 import com.bloatit.web.linkable.translation.TranslatePage;
 import com.bloatit.web.url.*;
@@ -374,8 +374,8 @@ public class BloatitWebServer extends WebProcessor {
         if (ModifyFeaturePageUrl.matches(pageCode)) {
             return new ModifyFeaturePage(new ModifyFeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (ActiviyPageUrl.matches(pageCode)) {
-            return new ActiviyPage(new ActiviyPageUrl(pageCode, postGetParameters, session.getParameters()));
+        if (ActivityPageUrl.matches(pageCode)) {
+            return new ActivityPage(new ActivityPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ManageFollowPageUrl.matches(pageCode)) {
             return new ManageFollowPage(new ManageFollowPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -565,8 +565,8 @@ public class BloatitWebServer extends WebProcessor {
         if (ModifyNewsletterActionUrl.matches(pageCode)) {
             return new ModifyNewsletterAction(new ModifyNewsletterActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (ReadActiviyActionUrl.matches(pageCode)) {
-            return new ReadActiviyAction(new ReadActiviyActionUrl(pageCode, postGetParameters, session.getParameters()));
+        if (ReadActivityActionUrl.matches(pageCode)) {
+            return new ReadActivityAction(new ReadActivityActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (FollowFeatureActionUrl.matches(pageCode)) {
             return new FollowFeatureAction(new FollowFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
@@ -600,8 +600,8 @@ public class BloatitWebServer extends WebProcessor {
         if (SoftwareAtomFeedUrl.matches(pageCode)) {
             return new SoftwareAtomFeed(new SoftwareAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (ActiviyAtomFeedUrl.matches(pageCode)) {
-            return new ActiviyAtomFeed(new ActiviyAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
+        if (ActivityAtomFeedUrl.matches(pageCode)) {
+            return new ActivityAtomFeed(new ActivityAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
