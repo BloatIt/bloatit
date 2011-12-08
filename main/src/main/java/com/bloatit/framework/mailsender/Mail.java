@@ -27,6 +27,7 @@ public class Mail {
     private final String mailSenderId;
     private String uri;
     private String filename;
+    private String mimeType;
 
     /**
      * <p>
@@ -52,6 +53,7 @@ public class Mail {
         this.content = content;
         this.subject = title;
         this.mailSenderId = mailSenderID;
+        this.mimeType = "text/plain";
     }
 
     /**
@@ -116,5 +118,13 @@ public class Mail {
     public void addAttachment(final String uri, final String filename) {
         this.uri = uri;
         this.filename = filename;
+    }
+
+    public String getMimeType() {
+        return this.mimeType;
+    }
+    
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 }

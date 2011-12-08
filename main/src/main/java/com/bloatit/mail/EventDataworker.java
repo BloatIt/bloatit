@@ -52,7 +52,7 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
                                        getLocalizator().trn("Elveos activity – {0} new event", "Elveos activity – {0} new event", eventCount, eventCount),
                                        new String(buffer.toByteArray()),
                                        "activity-feed");
-            
+            mail.setMimeType("text/html");
             MailServer.getInstance().send(mail); 
             
         } catch (IOException e) {
