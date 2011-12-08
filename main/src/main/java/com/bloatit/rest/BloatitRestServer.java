@@ -103,6 +103,8 @@ public class BloatitRestServer extends RestServer {
             put("transactions", RestTransaction.class);
             put("translations", RestTranslation.class);
             put("followfeatures", RestFollowFeature.class);
+            put("followsoftwares", RestFollowSoftware.class);
+            put("followactors", RestFollowActor.class);
         }
     };
 

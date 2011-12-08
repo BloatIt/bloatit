@@ -82,25 +82,25 @@ function elveos_FollowSoftwareButton(elementId, memberId, softwareId) {
     this.onSelectButtonClick = function() {
         var that = this;
         if(this.isSelected) {
-            this.ajax('DELETE', "/rest/followsofwtares?follower="+this.memberId+"&followed="+this.softwareId, function(response) {that.onUnfollowResponse(response);});
+            this.ajax('DELETE', "/rest/followsoftwares?follower="+this.memberId+"&followed="+this.softwareId, function(response) {that.onUnfollowResponse(response);});
         } else {
-            this.ajax('PUT', "/rest/followsofwtares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=false", function(response) {that.onFollowResponse(response);});
+            this.ajax('PUT', "/rest/followsoftwares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=false", function(response) {that.onFollowResponse(response);});
         }
     }
     
     this.onSelectMailButtonClick = function() {
         var that = this;
         if(this.isMailSelected) {
-            this.ajax('PUT', "/rest/followsofwtares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=false", function(response) {that.onFollowResponse(response);});
+            this.ajax('PUT', "/rest/followsoftwares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=false", function(response) {that.onFollowResponse(response);});
         } else {
-            this.ajax('PUT', "/rest/followsofwtares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=true", function(response) {that.onFollowResponse(response);});
+            this.ajax('PUT', "/rest/followsoftwares?follower="+this.memberId+"&followed="+this.softwareId+"&mail=true", function(response) {that.onFollowResponse(response);});
         }
     }
     
     this.onFollowResponse = function(response) {
         if(response.getElementsByTagName("rest")[0].getAttribute("result")=="ok") {
             var rest = response.getElementsByTagName("rest")[0];
-            var follow = rest.getElementsByTagName("followsofware")[0];
+            var follow = rest.getElementsByTagName("followsoftware")[0];
             
             this.isSelected = true;
             this.isMailSelected = (follow.getAttribute("mail") == 'true');
