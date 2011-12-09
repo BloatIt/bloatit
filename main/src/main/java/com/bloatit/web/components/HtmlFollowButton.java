@@ -46,26 +46,26 @@ public abstract class HtmlFollowButton extends HtmlDiv {
     void generate() {
 
         if (isFollowing()) {
-            HtmlLink followWithoutMail = getUnfollowUrl().getHtmlLink();
+            final HtmlLink followWithoutMail = getUnfollowUrl().getHtmlLink();
             followWithoutMail.setCssClass("follow-selected-without-mail");
             followWithoutMail.addText("Following");
             add(followWithoutMail);
 
             if (isFollowingWithMail()) {
-                HtmlLink followWithMail = getFollowUrl().getHtmlLink();
+                final HtmlLink followWithMail = getFollowUrl().getHtmlLink();
                 followWithMail.setCssClass("follow-selected-with-mail");
                 add(followWithMail);
             } else {
-                HtmlLink followWithMail = getFollowWithMailUrl().getHtmlLink();
+                final HtmlLink followWithMail = getFollowWithMailUrl().getHtmlLink();
                 followWithMail.setCssClass("follow-unselected-with-mail");
                 add(followWithMail);
             }
 
         } else {
-            HtmlLink followWithoutMail = getFollowUrl().getHtmlLink();
+            final HtmlLink followWithoutMail = getFollowUrl().getHtmlLink();
             followWithoutMail.setCssClass("follow-unselected-without-mail");
             followWithoutMail.addText("Follow");
-            HtmlLink followWithMail = getFollowWithMailUrl().getHtmlLink();
+            final HtmlLink followWithMail = getFollowWithMailUrl().getHtmlLink();
             followWithMail.setCssClass("follow-unselected-with-mail");
             add(followWithoutMail);
             add(followWithMail);
@@ -91,7 +91,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         final Feature feature;
 
-        public HtmlFollowFeatureButton(Feature feature) {
+        public HtmlFollowFeatureButton(final Feature feature) {
             this.feature = feature;
             generate();
         }
@@ -107,7 +107,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         @Override
         protected boolean isFollowingWithMail() {
-            FollowFeature followFeature = AuthToken.getMember().getFollowFeature(feature);
+            final FollowFeature followFeature = AuthToken.getMember().getFollowFeature(feature);
             return followFeature.isMail();
         }
 
@@ -153,7 +153,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
             }
 
             if (isFollowing()) {
-                FollowFeature followOrGetFeature = AuthToken.getMember().getFollowFeature(feature);
+                final FollowFeature followOrGetFeature = AuthToken.getMember().getFollowFeature(feature);
                 script.append("elveos_bindFollowFeatureButton('" + this.getId() + "', '" + AuthToken.getMember().getId() + "', '" + feature.getId()
                         + "', " + followOrGetFeature.isFeatureComment() + ", " + followOrGetFeature.isBugComment() + ");\n");
             } else {
@@ -168,9 +168,9 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
     public static class HtmlFollowActorButton extends HtmlFollowButton {
 
-        final Actor actor;
+        final Actor<?> actor;
 
-        public HtmlFollowActorButton(Actor actor) {
+        public HtmlFollowActorButton(final Actor<?> actor) {
             this.actor = actor;
             generate();
         }
@@ -189,7 +189,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
             FollowActor followOrGetActor;
             try {
                 followOrGetActor = AuthToken.getMember().followOrGetActor(actor);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 return false;
             }
             return followOrGetActor.isMail();
@@ -222,7 +222,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
         final Software software;
 
-        public HtmlFollowSoftwareButton(Software software) {
+        public HtmlFollowSoftwareButton(final Software software) {
             this.software = software;
             generate();
         }
@@ -241,7 +241,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
             FollowSoftware followOrGetSoftware;
             try {
                 followOrGetSoftware = AuthToken.getMember().followOrGetSoftware(software);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 return false;
             }
             return followOrGetSoftware.isMail();
@@ -310,7 +310,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
             try {
                 return AuthToken.getMember().isGlobalFollow();
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 return false;
             }
         }
@@ -323,7 +323,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
 
             try {
                 return AuthToken.getMember().isGlobalFollowWithMail();
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 return false;
             }
         }

@@ -122,11 +122,11 @@ public class FeaturesTools {
         return master;
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, FeatureContext context) {
+    public static HtmlDiv generateProgress(final Feature feature, final FeatureContext context) {
         return generateProgress(feature, BigDecimal.ZERO, context);
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, final BigDecimal futureAmount, FeatureContext context) {
+    public static HtmlDiv generateProgress(final Feature feature, final BigDecimal futureAmount, final FeatureContext context) {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
             // Progress bar

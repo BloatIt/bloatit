@@ -26,31 +26,31 @@ public class OAuthGetToken extends OAuthBloatitReponse {
 
     private static final int DEFAULT_EXPIRE_TIME = 3600;
 
-    private OAuthAuthenticator authenticator;
+    private final OAuthAuthenticator authenticator;
 
-    public OAuthGetToken(OAuthAuthenticator authenticator) {
+    public OAuthGetToken(final OAuthAuthenticator authenticator) {
         super();
         this.authenticator = authenticator;
     }
 
     @Override
-    public void process(HttpServletRequest request, HttpResponse response) throws IOException {
+    public void process(final HttpServletRequest request, final HttpResponse response) throws IOException {
 
         OAuthTokenRequest oauthRequest = null;
         OAuthResponse oauthResponse;
 
-        OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
+        final OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
         try {
             oauthRequest = new OAuthTokenRequest(request);
-            String authzCode = oauthRequest.getCode();
-            Set<String> scopes = oauthRequest.getScopes();
+            final String authzCode = oauthRequest.getCode();
+            final Set<String> scopes = oauthRequest.getScopes();
             int expiresIn = DEFAULT_EXPIRE_TIME;
             if (scopes.contains(SCOPE_PERMANENT_TOKEN)) {
                 expiresIn = DateUtils.SECOND_PER_DAY * 3650;
             }
 
-            String accessToken = oauthIssuerImpl.accessToken();
-            String refreshToken = oauthIssuerImpl.refreshToken();
+            final String accessToken = oauthIssuerImpl.accessToken();
+            final String refreshToken = oauthIssuerImpl.refreshToken();
             try {
                 authenticator.authorize(authzCode, accessToken, refreshToken, expiresIn);
 
@@ -59,18 +59,18 @@ public class OAuthGetToken extends OAuthBloatitReponse {
                                                .setExpiresIn(String.valueOf(expiresIn))
                                                .setRefreshToken(refreshToken)
                                                .buildJSONMessage();
-            } catch (AuthorizationException e) {
-                oauthResponse = OAuthASResponse.errorResponse(401)
-                                               .setError(OAuthError.TokenResponse.INVALID_GRANT)
-                                               .setErrorDescription("Your authorization token is invalid.")
-                                               .buildJSONMessage();
+            } catch (final AuthorizationException e) {
+                oauthResponse = OAuthResponse.errorResponse(401)
+                                             .setError(OAuthError.TokenResponse.INVALID_GRANT)
+                                             .setErrorDescription("Your authorization token is invalid.")
+                                             .buildJSONMessage();
             }
 
             // if something goes wrong
-        } catch (OAuthProblemException ex) {
+        } catch (final OAuthProblemException ex) {
             try {
                 oauthResponse = OAuthResponse.errorResponse(400).error(ex).buildJSONMessage();
-            } catch (OAuthSystemException e) {
+            } catch (final OAuthSystemException e) {
                 throw new BadProgrammerException(e);
             }
 

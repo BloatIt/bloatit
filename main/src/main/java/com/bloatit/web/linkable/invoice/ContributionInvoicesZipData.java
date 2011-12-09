@@ -41,7 +41,6 @@ import com.bloatit.web.url.ContributionInvoicesZipDataUrl;
 @ParamContainer("contribution_invoices_zip")
 public final class ContributionInvoicesZipData extends Data {
 
-    
     @RequestParam(name = "milestone")
     @NonOptional(@tr("The id of the contribution is incorrect or missing"))
     private final Milestone milestone;
@@ -53,47 +52,46 @@ public final class ContributionInvoicesZipData extends Data {
     public ContributionInvoicesZipData(final ContributionInvoicesZipDataUrl url) throws PageNotFoundException {
         super(url);
         milestone = url.getMilestone();
-        
+
     }
 
     @Override
     protected Url checkRightsAndEverything() {
-        
+
         return NO_ERROR;
     }
 
     @Override
     protected void doProcess() {
-        
-        filename = "invoices-milestone-"+milestone.getId()+".zip";
-        
-        int targetPosition = milestone.getPosition();
-        List<ContributionInvoice> invoices = new ArrayList<ContributionInvoice>();
-        for(MilestoneContributionAmount contribution: milestone.getContributionAmounts()) {
+
+        filename = "invoices-milestone-" + milestone.getId() + ".zip";
+
+        final int targetPosition = milestone.getPosition();
+        final List<ContributionInvoice> invoices = new ArrayList<ContributionInvoice>();
+        for (final MilestoneContributionAmount contribution : milestone.getContributionAmounts()) {
             int position = 1;
-            for(ContributionInvoice invoice: contribution.getContribution().getInvoices()) {
-                if(position == targetPosition) {
+            for (final ContributionInvoice invoice : contribution.getContribution().getInvoices()) {
+                if (position == targetPosition) {
                     invoices.add(invoice);
                 }
                 position++;
             }
         }
-        
-     
+
         // Create a buffer for reading the files
-        byte[] buf = new byte[1024];
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        
+        final byte[] buf = new byte[1024];
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+
         try {
             // Create the ZIP file
-            ZipOutputStream out = new ZipOutputStream(output);
+            final ZipOutputStream out = new ZipOutputStream(output);
 
             // Compress the files
-            for (ContributionInvoice invoice: invoices) {
-                FileInputStream in = new FileInputStream(invoice.getFile());
+            for (final ContributionInvoice invoice : invoices) {
+                final FileInputStream in = new FileInputStream(invoice.getFile());
 
                 // Add ZIP entry to output stream.
-                out.putNextEntry(new ZipEntry(invoice.getInvoiceNumber()+".pdf"));
+                out.putNextEntry(new ZipEntry(invoice.getInvoiceNumber() + ".pdf"));
 
                 // Transfer bytes from the file to the ZIP file
                 int len;
@@ -108,12 +106,12 @@ public final class ContributionInvoicesZipData extends Data {
 
             // Complete the ZIP file
             out.close();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new BadProgrammerException(e);
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException(e);
         }
-     
+
         bytes = output.toByteArray();
     }
 
@@ -131,7 +129,5 @@ public final class ContributionInvoicesZipData extends Data {
     public byte[] getFileData() {
         return bytes;
     }
-
-    
 
 }

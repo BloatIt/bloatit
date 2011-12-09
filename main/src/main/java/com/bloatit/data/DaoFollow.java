@@ -95,7 +95,7 @@ public class DaoFollow extends DaoIdentifiable {
      * reactivate an already existing follow
      */
     public static DaoFollow createAndPersist(final DaoActor actor, final DaoFeature followed) {
-        DaoFollow alreadyFollowed = getFollow(followed, actor);
+        final DaoFollow alreadyFollowed = getFollow(followed, actor);
 
         if (alreadyFollowed != null) {
             // Already exists
@@ -174,7 +174,7 @@ public class DaoFollow extends DaoIdentifiable {
     // Setters
     // ======================================================================
 
-    private void setState(FollowState newState) {
+    private void setState(final FollowState newState) {
         this.followState = newState;
     }
 
@@ -186,7 +186,7 @@ public class DaoFollow extends DaoIdentifiable {
      * @return the state of the follow matching both <code>content</code> and
      *         <code>follower</code> or null if none matches
      */
-    public static DaoFollow getFollow(DaoFeature content, DaoActor follower) {
+    public static DaoFollow getFollow(final DaoFeature content, final DaoActor follower) {
         return (DaoFollow) SessionManager.getNamedQuery("follow.find").setEntity("follower", follower).setEntity("content", content).uniqueResult();
     }
 
@@ -194,7 +194,7 @@ public class DaoFollow extends DaoIdentifiable {
      * @param feature the feature for which you want to find follows
      * @return all the follow for the matching <code>feature</code>
      */
-    public static PageIterable<DaoFollow> getFollow(DaoFeature feature) {
+    public static PageIterable<DaoFollow> getFollow(final DaoFeature feature) {
         return new QueryCollection<DaoFollow>("follow.getByFeature").setEntity("feature", feature);
     }
 
@@ -203,7 +203,7 @@ public class DaoFollow extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -235,36 +235,48 @@ public class DaoFollow extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoFollow other = (DaoFollow) obj;
+        }
+        final DaoFollow other = (DaoFollow) obj;
         if (actor == null) {
-            if (other.actor != null)
+            if (other.actor != null) {
                 return false;
-        } else if (!actor.equals(other.actor))
+            }
+        } else if (!actor.equals(other.actor)) {
             return false;
+        }
         if (creationDate == null) {
-            if (other.creationDate != null)
+            if (other.creationDate != null) {
                 return false;
-        } else if (!creationDate.equals(other.creationDate))
+            }
+        } else if (!creationDate.equals(other.creationDate)) {
             return false;
-        if (followState != other.followState)
+        }
+        if (followState != other.followState) {
             return false;
+        }
         if (followed == null) {
-            if (other.followed != null)
+            if (other.followed != null) {
                 return false;
-        } else if (!followed.equals(other.followed))
+            }
+        } else if (!followed.equals(other.followed)) {
             return false;
+        }
         if (lastConsultationDate == null) {
-            if (other.lastConsultationDate != null)
+            if (other.lastConsultationDate != null) {
                 return false;
-        } else if (!lastConsultationDate.equals(other.lastConsultationDate))
+            }
+        } else if (!lastConsultationDate.equals(other.lastConsultationDate)) {
             return false;
+        }
         return true;
     }
 }

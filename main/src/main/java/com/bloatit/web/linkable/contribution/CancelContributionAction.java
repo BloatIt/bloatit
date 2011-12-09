@@ -23,15 +23,15 @@ public class CancelContributionAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the contribution number: ''%value%''."))
     @NonOptional(@tr("You have to specify a contribution number."))
-    private Contribution contribution;
+    private final Contribution contribution;
 
-    public CancelContributionAction(CancelContributionActionUrl url) {
+    public CancelContributionAction(final CancelContributionActionUrl url) {
         super(url);
         this.contribution = url.getContribution();
     }
 
     @Override
-    protected Url doProcessRestricted(Member me) {
+    protected Url doProcessRestricted(final Member me) {
         contribution.cancel();
 
         HtmlMixedText mixed;
@@ -56,7 +56,7 @@ public class CancelContributionAction extends LoggedElveosAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         if (!contribution.getAuthor().equals(me)) {
             Context.getSession().notifyWarning(Context.tr("You cannot cancel a contribution you didn't make."));
             return new FeaturePageUrl(contribution.getFeature(), FeatureTabKey.description);

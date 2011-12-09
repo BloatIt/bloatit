@@ -149,7 +149,7 @@ public class PaymentProcess extends WebProcess {
         final PaymentResponseActionUrl normalReturnActionUrl = new PaymentResponseActionUrl(this);
         final PaymentResponseActionUrl cancelReturnActionUrl = new PaymentResponseActionUrl(this);
 
-        String token = new RandomString(10).nextString();
+        final String token = new RandomString(10).nextString();
         final PaymentAutoresponseActionUrl autoResponseActionUrl = new PaymentAutoresponseActionUrl(token);
         autoResponseActionUrl.setProcess(this);
 
@@ -180,11 +180,11 @@ public class PaymentProcess extends WebProcess {
             throw new ShallNotPassException("Not authorized", e);
         }
 
-        StringBuilder url = new StringBuilder(mercanetTransaction.getUrl());
+        final StringBuilder url = new StringBuilder(mercanetTransaction.getUrl());
 
         boolean firstParam = true;
 
-        for (Entry<String, String> param : mercanetTransaction.getHiddenParameters(paymentMethod).entrySet()) {
+        for (final Entry<String, String> param : mercanetTransaction.getHiddenParameters(paymentMethod).entrySet()) {
             if (firstParam) {
                 url.append("?");
                 firstParam = false;
@@ -203,9 +203,9 @@ public class PaymentProcess extends WebProcess {
         return ((AccountProcess) getFather()).getAmountToPayBeforeComission();
     }
 
-    synchronized void handlePayment(String data) throws UnauthorizedOperationException {
+    synchronized void handlePayment(final String data) throws UnauthorizedOperationException {
 
-        MercanetResponse response = MercanetAPI.parseResponse(data);
+        final MercanetResponse response = MercanetAPI.parseResponse(data);
 
         if (response.hasError()) {
             throw new BadProgrammerException("Failure during payment response procession. Transaction id: " + mercanetTransactionId
@@ -235,7 +235,7 @@ public class PaymentProcess extends WebProcess {
         }
     }
 
-    synchronized void refusePayment(String data) {
+    synchronized void refusePayment(final String data) {
         // Log.framework().info("Payline transaction failure. (Reason: " +
         // message + ")");
         // session.notifyWarning("Payment canceled. Reason: " + message + ".");

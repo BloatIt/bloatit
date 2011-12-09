@@ -39,10 +39,7 @@ import org.hibernate.annotations.NamedQuery;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@NamedQueries(value = { @NamedQuery(
-    cacheable = true,
-    name = "invoice.max_invoice_number",
-    query = "SELECT MAX(internalInvoiceNumber) FROM DaoInvoice") })
+@NamedQueries(value = { @NamedQuery(cacheable = true, name = "invoice.max_invoice_number", query = "SELECT MAX(internalInvoiceNumber) FROM DaoInvoice") })
 public class DaoInvoice extends DaoIdentifiable {
 
     // Seller

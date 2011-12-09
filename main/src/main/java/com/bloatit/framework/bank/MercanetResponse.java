@@ -105,13 +105,13 @@ public class MercanetResponse {
         public final String code;
         public final String label;
 
-        private ResponseCode(String code, String label) {
+        private ResponseCode(final String code, final String label) {
             this.code = code;
             this.label = label;
         }
 
-        public static ResponseCode create(String code) {
-            for (ResponseCode e : EnumSet.allOf(ResponseCode.class)) {
+        public static ResponseCode create(final String code) {
+            for (final ResponseCode e : EnumSet.allOf(ResponseCode.class)) {
                 if (e.code.equals(code)) {
                     return e;
                 }
@@ -132,7 +132,7 @@ public class MercanetResponse {
 
     }
 
-    public MercanetResponse(String response) {
+    public MercanetResponse(final String response) {
 
         if (response == null) {
             throw new BadProgrammerException("The Merc@net response is null");
@@ -182,7 +182,7 @@ public class MercanetResponse {
      * @return <i>true</i> if the passed values matrches the response values,
      *         <i>false</i> otherwise
      */
-    public boolean check(String returnContext, String customerId, int mercanetTransactionId) {
+    public boolean check(final String returnContext, final String customerId, final int mercanetTransactionId) {
         if (getReturnContext() == null || !getReturnContext().equals(returnContext)) {
             return false;
         }

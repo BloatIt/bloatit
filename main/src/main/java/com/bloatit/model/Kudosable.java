@@ -132,7 +132,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         final int influence = member.calculateInfluence();
 
         if (influence > 0) {
-            //getMember().addToKarma(sign * influence);
+            // getMember().addToKarma(sign * influence);
             calculateNewState(getPopularity(), getDao().addKudos(member.getDao(), DaoGetter.get(AuthToken.getAsTeam()), sign * influence));
         }
 
@@ -162,8 +162,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
                     getMember().addToKarma(-1);
                     notifyPending();
                 } else {
-                    int oldKarma = (oldPop - turnValid())/ModelConfiguration.getKudosableStepToGainKarma();
-                    int newKarma = (oldPop - turnValid())/ModelConfiguration.getKudosableStepToGainKarma();
+                    final int oldKarma = (oldPop - turnValid()) / ModelConfiguration.getKudosableStepToGainKarma();
+                    final int newKarma = (oldPop - turnValid()) / ModelConfiguration.getKudosableStepToGainKarma();
                     getMember().addToKarma(newKarma - oldKarma);
                 }
                 break;
@@ -204,7 +204,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     @Override
-    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+    protected void delete(final boolean delOrder) throws UnauthorizedOperationException {
         for (final Kudos kudos : getKudos()) {
             kudos.delete(delOrder);
         }

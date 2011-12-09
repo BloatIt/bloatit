@@ -177,9 +177,9 @@ public final class FeaturePage extends ElveosPage {
     @Override
     protected String createPageTitle() {
         if (feature != null) {
-            String featureTitle = feature.getDescription()
-                                         .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()))
-                                         .getTitle();
+            final String featureTitle = feature.getDescription()
+                                               .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()))
+                                               .getTitle();
 
             if (feature.getSoftware() == null) {
                 return featureTitle;

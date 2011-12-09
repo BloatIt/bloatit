@@ -90,7 +90,7 @@ public final class IndexPage extends ElveosPage {
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
 
-        if(!AuthToken.isAuthenticated() || forceClassical) {
+        if (!AuthToken.isAuthenticated() || forceClassical) {
             return createClassicalBodyContent();
         }
 
@@ -173,16 +173,16 @@ public final class IndexPage extends ElveosPage {
         {
             final HtmlDiv threeColumn = new HtmlDiv("three-column");
             final HtmlDiv leftColumn = new HtmlDiv("left-column");
-            //final HtmlDiv centerColumn = new HtmlDiv("center-column");
+            // final HtmlDiv centerColumn = new HtmlDiv("center-column");
             final HtmlDiv rightColumn = new HtmlDiv("right-column");
 
             final List<HighlightFeature> hightlightFeatureArray = HighlightFeatureManager.getPositionArray(6);
             leftColumn.add(new HtmlTitle(Context.tr("Hightlighted features"), 1));
             leftColumn.add(new HtmlDiv("index-underline"));
 
-            for(HighlightFeature hFeature : hightlightFeatureArray) {
-                Feature feature = hFeature.getFeature();
-                HtmlParagraph p = new HtmlParagraph();
+            for (final HighlightFeature hFeature : hightlightFeatureArray) {
+                final Feature feature = hFeature.getFeature();
+                final HtmlParagraph p = new HtmlParagraph();
                 p.setCssClass("feature-p");
                 p.add(new SoftwaresTools.Link(feature.getSoftware()));
                 p.addText(" – ");
@@ -192,23 +192,23 @@ public final class IndexPage extends ElveosPage {
             }
 
             // News feed
-            HtmlDiv master = new HtmlDiv("news_feed");
+            final HtmlDiv master = new HtmlDiv("news_feed");
             rightColumn.add(master);
 
             // small icons to display the host of the feed (twitter or identica)
-            HtmlDiv socialFeedIcons = new HtmlDiv("feed_icons");
+            final HtmlDiv socialFeedIcons = new HtmlDiv("feed_icons");
             master.add(socialFeedIcons);
 
-            HtmlImage identicaImg = new HtmlImage(new Image(WebConfiguration.getImgIdenticaIcon()), "", "feed_icon");
-            HtmlLink identicaLink = new HtmlLink("http://identi.ca/elveos", identicaImg);
-            HtmlImage twitterImg = new HtmlImage(new Image(WebConfiguration.getImgTwitterIcon()), "", "feed_icon");
-            HtmlLink twitterLink = new HtmlLink("http://twitter.com/#!/elveos", twitterImg);
+            final HtmlImage identicaImg = new HtmlImage(new Image(WebConfiguration.getImgIdenticaIcon()), "", "feed_icon");
+            final HtmlLink identicaLink = new HtmlLink("http://identi.ca/elveos", identicaImg);
+            final HtmlImage twitterImg = new HtmlImage(new Image(WebConfiguration.getImgTwitterIcon()), "", "feed_icon");
+            final HtmlLink twitterLink = new HtmlLink("http://twitter.com/#!/elveos", twitterImg);
             socialFeedIcons.add(identicaLink);
             socialFeedIcons.add(twitterLink);
             master.add(new HtmlTitle(Context.tr("News feed"), 1));
             master.add(new HtmlDiv("index-underline"));
 
-            HtmlList feedList = new HtmlList();
+            final HtmlList feedList = new HtmlList();
             master.add(feedList);
             feedList.setCssClass("feed_list");
 
@@ -218,11 +218,11 @@ public final class IndexPage extends ElveosPage {
                     break;
                 }
 
-                HtmlDiv feedItem = new HtmlDiv("feed_item");
+                final HtmlDiv feedItem = new HtmlDiv("feed_item");
                 feedList.add(feedItem);
 
-                HtmlSpan itemContent = new HtmlSpan("item_content");
-                HtmlSpan itemDate = new HtmlSpan("item_date");
+                final HtmlSpan itemContent = new HtmlSpan("item_content");
+                final HtmlSpan itemDate = new HtmlSpan("item_date");
                 itemContent.add(new HtmlCachedMarkdownRenderer(news.getMessage()));
                 itemDate.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(news.getCreationDate())));
                 feedItem.add(itemContent);
@@ -231,29 +231,28 @@ public final class IndexPage extends ElveosPage {
                 count++;
             }
 
-
-            //leftColumn.add(new IndexFeatureBlock(hightlightFeatureArray.get(0)));
-            //centerColumn.add(new IndexFeatureBlock(hightlightFeatureArray.get(1)));
+            // leftColumn.add(new
+            // IndexFeatureBlock(hightlightFeatureArray.get(0)));
+            // centerColumn.add(new
+            // IndexFeatureBlock(hightlightFeatureArray.get(1)));
 
             globalDescription.add(threeColumn);
             threeColumn.add(leftColumn);
-            //threeColumn.add(centerColumn);
+            // threeColumn.add(centerColumn);
             threeColumn.add(rightColumn);
 
-
-            IndexPageUrl indexPageUrl = new IndexPageUrl();
+            final IndexPageUrl indexPageUrl = new IndexPageUrl();
             indexPageUrl.setForceClassical(true);
 
             generateCounts(globalDescription);
 
             globalDescription.add(new HtmlDiv("public_index_link").add(indexPageUrl.getHtmlLink(Context.tr("I want the public index page !"))));
 
-
         }
 
         element.add(new HtmlActivityBlock(AuthToken.getMember()));
 
-        return  element;
+        return element;
     }
 
     @Override
@@ -282,7 +281,7 @@ public final class IndexPage extends ElveosPage {
         final HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
         parent.add(summaryBox);
 
-        int featureNb = FeatureManager.getFeatureCount();
+        final int featureNb = FeatureManager.getFeatureCount();
         // Feature count
         final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Feature request, ",
                                                                                        "{0}&nbsp;Features requests, ",
@@ -302,7 +301,7 @@ public final class IndexPage extends ElveosPage {
         summaryBox.add(contributionRaised);
 
         // Count of offers
-        int offerNb = OfferManager.getOfferCount();
+        final int offerNb = OfferManager.getOfferCount();
         final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Development&nbsp;offer, ",
                                                                                      "{0}&nbsp;Development&nbsp;offers, ",
                                                                                      offerNb,
@@ -310,14 +309,14 @@ public final class IndexPage extends ElveosPage {
         summaryBox.add(offerCount);
 
         // Count of releases
-        int releaseNb = ReleaseManager.getReleaseCount();
+        final int releaseNb = ReleaseManager.getReleaseCount();
         final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Release", "{0}&nbsp;Releases", releaseNb, releaseNb));
         summaryBox.add(releaseCount);
     }
 
     @Override
     protected ArrayList<HtmlHeaderLink> getLinks() {
-        ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
+        final ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
         list.add(ElveosAtomFeed.generateHeaderLink(new FeatureAtomFeedUrl(), Context.tr("Feature feed")));
         list.add(new HtmlHeaderLink("https://plus.google.com/112969426055352289328", "publisher"));
         return list;

@@ -17,7 +17,6 @@
 package com.bloatit.model.right;
 
 import com.bloatit.model.Member;
-import com.bloatit.model.Rights;
 
 /**
  * The Class MemberRight store the properties accessor for the {@link Member}

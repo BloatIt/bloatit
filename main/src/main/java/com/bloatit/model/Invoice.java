@@ -130,7 +130,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
         final String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
 
-        Contact recipientContact = recipientActor.getContactUnprotected();
+        final Contact recipientContact = recipientActor.getContactUnprotected();
         final String receiverName = recipientContact.getName();
         final String receiverStreet = recipientContact.getStreet();
         final String receiverExtras = recipientContact.getExtras();
@@ -139,8 +139,8 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final String receiverTaxIdentification = recipientContact.getTaxIdentification();
         final Date invoiceDate = DateUtils.now();
 
-        BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
-        
+        final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
+
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
@@ -202,7 +202,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
             final int size = Integer.valueOf(m.group(2));
             final int intValue = internalInvoiceNumber.intValue();
 
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             for (int i = 0; i < size; i++) {
                 sb.append("0");
             }

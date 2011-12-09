@@ -27,10 +27,10 @@ import com.bloatit.web.url.UserContentActionUrl;
 
 public class AttachmentField extends PlaceHolderElement {
 
-    private HtmlFileInput attachedFileInput;
-    private HtmlTextField attachmentDescriptionInput;
+    private final HtmlFileInput attachedFileInput;
+    private final HtmlTextField attachmentDescriptionInput;
 
-    public AttachmentField(final UserContentActionUrl targetUrl, final String size, boolean multiple) {
+    public AttachmentField(final UserContentActionUrl targetUrl, final String size, final boolean multiple) {
         this(targetUrl, size, multiple, true);
     }
 
@@ -40,14 +40,14 @@ public class AttachmentField extends PlaceHolderElement {
 
     /**
      * Do not forget the: form.enableFileUpload();
-     *
+     * 
      * @param targetUrl
      * @param attachmentLabel
      * @param attachmentComment
      * @param descriptionLabel
      * @param descriptionComment
      */
-    public AttachmentField(final UserContentActionUrl targetUrl, String size, final boolean multiple, final boolean jsAutoHide) {
+    public AttachmentField(final UserContentActionUrl targetUrl, final String size, final boolean multiple, final boolean jsAutoHide) {
         super();
         final JsShowHide showHide = new JsShowHide(this, false);
         showHide.setHasFallback(false);
@@ -61,7 +61,7 @@ public class AttachmentField extends PlaceHolderElement {
         add(attachmentDiv);
 
         if (multiple) {
-            HtmlParagraph multiplePara = new HtmlParagraph(Context.tr("You will be able to add more attachement later."));
+            final HtmlParagraph multiplePara = new HtmlParagraph(Context.tr("You will be able to add more attachement later."));
             attachmentDiv.add(multiplePara);
         }
 

@@ -81,7 +81,7 @@ public final class SignUpPage extends ElveosPage {
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         container.add(form);
 
-        FormBuilder ftool = new FormBuilder(SignUpAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(SignUpAction.class, targetUrl);
 
         ftool.add(form, new HtmlTextField(targetUrl.getLoginParameter().getName()));
         ftool.add(form, new HtmlPasswordField(targetUrl.getPasswordParameter().getName()));
@@ -98,7 +98,7 @@ public final class SignUpPage extends ElveosPage {
         ftool.add(form, countryInput);
 
         // Language
-        FieldData langData = targetUrl.getLangParameter().pickFieldData();
+        final FieldData langData = targetUrl.getLangParameter().pickFieldData();
         final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName());
         langInput.setDefaultValue(langData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
         ftool.add(form, langInput);
@@ -111,14 +111,14 @@ public final class SignUpPage extends ElveosPage {
             form.add(invoicingTitle);
 
             ftool.add(form, new HtmlTextField(targetUrl.getNameParameter().getName()));
-            HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
+            final HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
             ftool.add(form, isCompanyCheckbox);
             ftool.add(form, new HtmlTextField(targetUrl.getStreetParameter().getName()));
             ftool.add(form, new HtmlTextField(targetUrl.getExtrasParameter().getName()));
             ftool.add(form, new HtmlTextField(targetUrl.getCityParameter().getName()));
             ftool.add(form, new HtmlTextField(targetUrl.getPostalCodeParameter().getName()));
 
-            HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, false);
+            final HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, false);
             form.add(hiddenableDiv);
             ftool.add(hiddenableDiv, new HtmlTextField(targetUrl.getTaxIdentificationParameter().getName()));
         }

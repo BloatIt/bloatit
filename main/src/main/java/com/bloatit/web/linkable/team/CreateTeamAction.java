@@ -151,7 +151,7 @@ public final class CreateTeamAction extends LoggedElveosAction {
                 }
             }
 
-        } catch (UnauthorizedPublicAccessException e) {
+        } catch (final UnauthorizedPublicAccessException e) {
             throw new ShallNotPassException(e);
         }
 

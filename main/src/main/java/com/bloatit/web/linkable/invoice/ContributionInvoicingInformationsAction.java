@@ -20,10 +20,9 @@ import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.ContributionInvoice;
@@ -49,16 +48,16 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
     @RequestParam(name = "applyVAT", role = Role.POST)
     @Optional
     private final List<String> applyVAT;
-    
-    
+
+    @SuppressWarnings("unused")
     @RequestParam(name = "generate", role = Role.POST)
     @Optional
     private final String generate;
-    
+
     @RequestParam(name = "preview", role = Role.POST)
     @Optional
     private final String preview;
-    
+
     @SuppressWarnings("unused")
     private final ContributionInvoicingInformationsActionUrl url;
 
@@ -73,51 +72,54 @@ public final class ContributionInvoicingInformationsAction extends LoggedElveosA
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        
-        if(preview != null) {
+
+        if (preview != null) {
             // Return to previous page with the right values
-            ContributionInvoicingInformationsPageUrl contributionInvoicingInformationsPageUrl = new ContributionInvoicingInformationsPageUrl(true, process);
+            final ContributionInvoicingInformationsPageUrl contributionInvoicingInformationsPageUrl = new ContributionInvoicingInformationsPageUrl(true,
+                                                                                                                                                   process);
             contributionInvoicingInformationsPageUrl.setApplyVAT(applyVAT);
             return contributionInvoicingInformationsPageUrl;
         }
-        
-        
+
         // Generate the invoices
         final PageIterable<MilestoneContributionAmount> contributionAmounts = process.getMilestone().getContributionAmounts();
 
         for (final MilestoneContributionAmount contributionAmount : contributionAmounts) {
             try {
 
-                Actor<?> author = contributionAmount.getContribution().getAuthor();
-                ContributionInvoice invoice = new ContributionInvoice(process.getActor(),
-                                        author,
-                                        "Contribution",
-                                        "Contribution",
-                                        contributionAmount.getAmount(),
-                                        contributionAmount.getMilestone(),
-                                        contributionAmount.getContribution(),
-                                        applyVAT.contains(contributionAmount.getId().toString()));
-                
-                if(!author.isTeam()) {
-                    Member member = (Member) author;
-                    MemberPageUrl memberPageUrl = new MemberPageUrl(member);
+                final Actor<?> author = contributionAmount.getContribution().getAuthor();
+                final ContributionInvoice invoice = new ContributionInvoice(process.getActor(),
+                                                                            author,
+                                                                            "Contribution",
+                                                                            "Contribution",
+                                                                            contributionAmount.getAmount(),
+                                                                            contributionAmount.getMilestone(),
+                                                                            contributionAmount.getContribution(),
+                                                                            applyVAT.contains(contributionAmount.getId().toString()));
+
+                if (!author.isTeam()) {
+                    final Member member = (Member) author;
+                    final MemberPageUrl memberPageUrl = new MemberPageUrl(member);
                     memberPageUrl.setActiveTabKey(MemberPage.ACCOUNT_TAB);
-                    ElveosMail mail = new ElveosMail.InvoiceGenerated(contributionAmount.getMilestone().getOffer().getFeature().getTitle());
-                    mail.addAttachment(invoice.getFile(), invoice.getInvoiceNumber()+".pdf");
+                    final ElveosMail mail = new ElveosMail.InvoiceGenerated(contributionAmount.getMilestone().getOffer().getFeature().getTitle());
+                    mail.addAttachment(invoice.getFile(), invoice.getInvoiceNumber() + ".pdf");
                     mail.sendMail(member, "invoice-generated");
-                    
+
                 }
-                
-                //TODO: send mail to team
-                
+
+                // TODO: send mail to team
+
             } catch (final UnauthorizedOperationException e) {
                 throw new BadProgrammerException("Fail create a ContributionInvoice", e);
             }
 
         }
 
-        Context.getSession().notifyGood(Context.trn("{0} invoice succefully generated. You can download it in the invoicing tab", "{0} invoices succefully generated. You can download them in the invoicing tab", contributionAmounts.size(), contributionAmounts.size()));
-        
+        Context.getSession().notifyGood(Context.trn("{0} invoice succefully generated. You can download it in the invoicing tab",
+                                                    "{0} invoices succefully generated. You can download them in the invoicing tab",
+                                                    contributionAmounts.size(),
+                                                    contributionAmounts.size()));
+
         return process.close();
     }
 

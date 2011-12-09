@@ -123,8 +123,8 @@ public class Mail {
     public String getMimeType() {
         return this.mimeType;
     }
-    
-    public void setMimeType(String mimeType) {
+
+    public void setMimeType(final String mimeType) {
         this.mimeType = mimeType;
     }
 }

@@ -181,7 +181,7 @@ public final class SignUpAction extends ElveosAction {
                 m.getContact().setCountry(country);
                 m.getContact().setTaxIdentification(taxIdentification);
                 m.getContact().setIsCompany(isCompany);
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
             }
         }
@@ -191,7 +191,7 @@ public final class SignUpAction extends ElveosAction {
 
     @Override
     protected final Url doProcessErrors() {
-        SignUpPageUrl signUpPageUrl = new SignUpPageUrl();
+        final SignUpPageUrl signUpPageUrl = new SignUpPageUrl();
         signUpPageUrl.setInvoice(invoice);
         return signUpPageUrl;
 
@@ -240,7 +240,7 @@ public final class SignUpAction extends ElveosAction {
         }
     }
 
-    private boolean checkOptional(Object object, String errorText, UrlParameter<?, ?> parameter) {
+    private boolean checkOptional(final Object object, final String errorText, final UrlParameter<?, ?> parameter) {
         if (object == null) {
             parameter.addErrorMessage(errorText);
             session.notifyError(errorText);

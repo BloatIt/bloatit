@@ -39,7 +39,6 @@ import com.bloatit.data.exceptions.UniqueNameExpectedException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.Language;
-import com.bloatit.framework.webprocessor.context.User.ActivationState;
 
 public class SimpleTestDB {
 

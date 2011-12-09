@@ -35,7 +35,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.GenericManager;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.rest.list.RestFollowActorList;
 
 /**

@@ -52,8 +52,8 @@ public final class FollowActorAction extends LoggedElveosAction {
     @Override
     public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
 
-        if(follow) {
-            FollowActor followActor = me.followOrGetActor(actor);
+        if (follow) {
+            final FollowActor followActor = me.followOrGetActor(actor);
             followActor.setMail(followMail);
         } else {
             me.unfollowActor(actor);

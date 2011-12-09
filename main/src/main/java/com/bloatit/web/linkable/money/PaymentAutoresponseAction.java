@@ -59,13 +59,13 @@ public final class PaymentAutoresponseAction extends ElveosAction {
     @Override
     public Url doProcess() {
         Log.payment().info("Got a Merc@net autoresponse");
-        
-        MercanetResponse response = MercanetAPI.parseResponse(data);
+
+        final MercanetResponse response = MercanetAPI.parseResponse(data);
         if (response.hasError()) {
             throw new BadProgrammerException("Failure during payment response processing (autoresponse).");
         }
 
-        BankTransaction bankTransaction = BankTransactionManager.getById(Integer.valueOf(response.getReturnContext()));
+        final BankTransaction bankTransaction = BankTransactionManager.getById(Integer.valueOf(response.getReturnContext()));
         Payment.handlePayment(bankTransaction, response);
 
         if (process != null) {

@@ -68,7 +68,6 @@ public class RecoverPasswordAction extends ElveosAction {
     @FormComment(@tr("7 characters minimum."))
     private final String password;
 
-
     public RecoverPasswordAction(final RecoverPasswordActionUrl url) {
         super(url);
         this.url = url;

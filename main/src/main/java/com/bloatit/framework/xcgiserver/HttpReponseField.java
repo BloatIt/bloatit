@@ -358,16 +358,16 @@ public class HttpReponseField {
         }
     }
 
-    private String name;
-    private String value;
+    private final String name;
+    private final String value;
 
-    public HttpReponseField(String name, String value) {
+    public HttpReponseField(final String name, final String value) {
         super();
         this.name = name;
         this.value = value;
     }
 
-    public void write(OutputStream stream) throws IOException {
+    public void write(final OutputStream stream) throws IOException {
         stream.write(name.getBytes());
         stream.write(SEPARATOR);
         stream.write(value.getBytes());
@@ -381,7 +381,7 @@ public class HttpReponseField {
      * @param value can be for example "Accept-Ranges: bytes"
      * @return "Accept-Ranges" HttpResponseHeader
      */
-    public static HttpReponseField acceptRanges(String value) {
+    public static HttpReponseField acceptRanges(final String value) {
         return new HttpReponseField("Accept-Ranges", value);
     }
 
@@ -392,7 +392,7 @@ public class HttpReponseField {
      * @param value can be for example "Age: 12"
      * @return "Age  " HttpResponseHeader
      */
-    public static HttpReponseField age(String value) {
+    public static HttpReponseField age(final String value) {
         return new HttpReponseField("Age", value);
     }
 
@@ -404,7 +404,7 @@ public class HttpReponseField {
      * @param value can be for example "Allow: GET, HEAD"
      * @return "Allow" HttpResponseHeader
      */
-    public static HttpReponseField allow(String value) {
+    public static HttpReponseField allow(final String value) {
         return new HttpReponseField("Allow", value);
     }
 
@@ -416,7 +416,7 @@ public class HttpReponseField {
      * @param value can be for example "Cache-Control: max-age=3600"
      * @return "Cache-Control" HttpResponseHeader
      */
-    public static HttpReponseField cacheControl(String value) {
+    public static HttpReponseField cacheControl(final String value) {
         return new HttpReponseField("Cache-Control", value);
     }
 
@@ -427,7 +427,7 @@ public class HttpReponseField {
      * @param value can be for example "Connection: close"
      * @return "Connection" HttpResponseHeader
      */
-    public static HttpReponseField connection(String value) {
+    public static HttpReponseField connection(final String value) {
         return new HttpReponseField("Connection", value);
     }
 
@@ -438,7 +438,7 @@ public class HttpReponseField {
      * @param value can be for example "Content-Encoding: gzip"
      * @return "Content-Encoding " HttpResponseHeader
      */
-    public static HttpReponseField contentEncoding(String value) {
+    public static HttpReponseField contentEncoding(final String value) {
         return new HttpReponseField("Content-Encoding", value);
     }
 
@@ -449,7 +449,7 @@ public class HttpReponseField {
      * @param value can be for example "Content-Language: da"
      * @return "Content-Language  " HttpResponseHeader
      */
-    public static HttpReponseField contentLanguage(String value) {
+    public static HttpReponseField contentLanguage(final String value) {
         return new HttpReponseField("Content-Language", value);
     }
 
@@ -462,7 +462,7 @@ public class HttpReponseField {
      *         "Content-Length   The length of the response body in octets (8-bit bytes)"
      *         HttpResponseHeader
      */
-    public static HttpReponseField contentLength(String value) {
+    public static HttpReponseField contentLength(final String value) {
         return new HttpReponseField("Content-Length", value);
     }
 
@@ -473,7 +473,7 @@ public class HttpReponseField {
      * @param value can be for example "Content-Location: /index.htm"
      * @return "Content-Location " HttpResponseHeader
      */
-    public static HttpReponseField contentLocation(String value) {
+    public static HttpReponseField contentLocation(final String value) {
         return new HttpReponseField("Content-Location", value);
     }
 
@@ -484,7 +484,7 @@ public class HttpReponseField {
      * @param value can be for example "Content-MD5: Q2hlY2sgSW50ZWdyaXR5IQ=="
      * @return "Content-MD5" HttpResponseHeader
      */
-    public static HttpReponseField contentMD5(String value) {
+    public static HttpReponseField contentMD5(final String value) {
         return new HttpReponseField("Content-MD5", value);
     }
 
@@ -497,7 +497,7 @@ public class HttpReponseField {
      *            "Content-Disposition: attachment; filename=fname.ext"
      * @return "Content-Disposition" HttpResponseHeader
      */
-    public static HttpReponseField contentDisposition(String value) {
+    public static HttpReponseField contentDisposition(final String value) {
         return new HttpReponseField("Content-Disposition", value);
     }
 
@@ -508,7 +508,7 @@ public class HttpReponseField {
      * @param value can be for example "Content-Range: bytes 21010-47021/47022"
      * @return "Content-Range" HttpResponseHeader
      */
-    public static HttpReponseField contentRange(String value) {
+    public static HttpReponseField contentRange(final String value) {
         return new HttpReponseField("Content-Range", value);
     }
 
@@ -519,7 +519,7 @@ public class HttpReponseField {
      * @param value can be for example "Content-Type: text/html; charset=utf-8"
      * @return "Content-Type" HttpResponseHeader
      */
-    public static HttpReponseField contentType(String value) {
+    public static HttpReponseField contentType(final String value) {
         return new HttpReponseField("Content-Type", value);
     }
 
@@ -530,7 +530,7 @@ public class HttpReponseField {
      * @param value can be for example "Date: Tue, 15 Nov 1994 08:12:31 GMT"
      * @return "Date" HttpResponseHeader
      */
-    public static HttpReponseField date(String value) {
+    public static HttpReponseField date(final String value) {
         return new HttpReponseField("Date", value);
     }
 
@@ -543,7 +543,7 @@ public class HttpReponseField {
      *            "ETag: "737060cd8c284d8af7ad3082f209582d""
      * @return "ETag" HttpResponseHeader
      */
-    public static HttpReponseField eTag(String value) {
+    public static HttpReponseField eTag(final String value) {
         return new HttpReponseField("ETag", value);
     }
 
@@ -554,7 +554,7 @@ public class HttpReponseField {
      * @param value can be for example "Expires: Thu, 01 Dec 1994 16:00:00 GMT"
      * @return "Expires" HttpResponseHeader
      */
-    public static HttpReponseField expires(String value) {
+    public static HttpReponseField expires(final String value) {
         return new HttpReponseField("Expires", value);
     }
 
@@ -566,7 +566,7 @@ public class HttpReponseField {
      *            "Last-Modified: Tue, 15 Nov 1994 12:45:26 GMT"
      * @return "Last-Modified" HttpResponseHeader
      */
-    public static HttpReponseField lastModified(String value) {
+    public static HttpReponseField lastModified(final String value) {
         return new HttpReponseField("Last-Modified", value);
     }
 
@@ -578,7 +578,7 @@ public class HttpReponseField {
      * @param value can be for example "Link: </feed>; rel="alternate""
      * @return "Link" HttpResponseHeader
      */
-    public static HttpReponseField link(String value) {
+    public static HttpReponseField link(final String value) {
         return new HttpReponseField("Link", value);
     }
 
@@ -590,7 +590,7 @@ public class HttpReponseField {
      *            "Location: http://www.w3.org/pub/WWW/People.html"
      * @return "Location" HttpResponseHeader
      */
-    public static HttpReponseField location(String value) {
+    public static HttpReponseField location(final String value) {
         return new HttpReponseField("Location", value);
     }
 
@@ -607,7 +607,7 @@ public class HttpReponseField {
      *            =en&answer=151657 for more info.""
      * @return "P3P" HttpResponseHeader
      */
-    public static HttpReponseField P3P(String value) {
+    public static HttpReponseField P3P(final String value) {
         return new HttpReponseField("P3P", value);
     }
 
@@ -619,7 +619,7 @@ public class HttpReponseField {
      * @param value can be for example "Pragma: no-cache"
      * @return "Pragma" HttpResponseHeader
      */
-    public static HttpReponseField pragma(String value) {
+    public static HttpReponseField pragma(final String value) {
         return new HttpReponseField("Pragma", value);
     }
 
@@ -630,7 +630,7 @@ public class HttpReponseField {
      * @param value can be for example "Proxy-Authenticate: Basic"
      * @return "Proxy-Authenticate" HttpResponseHeader
      */
-    public static HttpReponseField proxyAuthenticate(String value) {
+    public static HttpReponseField proxyAuthenticate(final String value) {
         return new HttpReponseField("Proxy-Authenticate", value);
     }
 
@@ -645,7 +645,7 @@ public class HttpReponseField {
      *            "Refresh: 5; url=http://www.w3.org/pub/WWW/People.html"
      * @return "Refresh" HttpResponseHeader
      */
-    public static HttpReponseField refresh(String value) {
+    public static HttpReponseField refresh(final String value) {
         return new HttpReponseField("Refresh", value);
     }
 
@@ -657,7 +657,7 @@ public class HttpReponseField {
      * @param value can be for example "Retry-After: 120"
      * @return "Retry-After" HttpResponseHeader
      */
-    public static HttpReponseField retryAfter(String value) {
+    public static HttpReponseField retryAfter(final String value) {
         return new HttpReponseField("Retry-After", value);
     }
 
@@ -669,7 +669,7 @@ public class HttpReponseField {
      *            "Server: Apache/1.3.27 (Unix) (Red-Hat/Linux)"
      * @return "Server" HttpResponseHeader
      */
-    public static HttpReponseField server(String value) {
+    public static HttpReponseField server(final String value) {
         return new HttpReponseField("Server", value);
     }
 
@@ -681,7 +681,7 @@ public class HttpReponseField {
      *            "Set-Cookie: UserID=JohnDoe; Max-Age=3600; Version=1"
      * @return "Set-Cookie" HttpResponseHeader
      */
-    public static HttpReponseField setCookie(String value) {
+    public static HttpReponseField setCookie(final String value) {
         return new HttpReponseField("Set-Cookie", value);
     }
 
@@ -694,7 +694,7 @@ public class HttpReponseField {
      *            "Strict-Transport-Security: max-age=16070400; includeSubDomains"
      * @return "Strict-Transport-Security" HttpResponseHeader
      */
-    public static HttpReponseField strictTransportSecurity(String value) {
+    public static HttpReponseField strictTransportSecurity(final String value) {
         return new HttpReponseField("Strict-Transport-Security", value);
     }
 
@@ -707,7 +707,7 @@ public class HttpReponseField {
      * @param value can be for example "Trailer: Max-Forwards"
      * @return "Trailer" HttpResponseHeader
      */
-    public static HttpReponseField trailer(String value) {
+    public static HttpReponseField trailer(final String value) {
         return new HttpReponseField("Trailer", value);
     }
 
@@ -720,7 +720,7 @@ public class HttpReponseField {
      * @param value can be for example "Transfer-Encoding: chunked"
      * @return "Transfer-Encoding" HttpResponseHeader
      */
-    public static HttpReponseField transferEncoding(String value) {
+    public static HttpReponseField transferEncoding(final String value) {
         return new HttpReponseField("Transfer-Encoding", value);
     }
 
@@ -733,7 +733,7 @@ public class HttpReponseField {
      * @param value can be for example "Vary: *"
      * @return "Vary" HttpResponseHeader
      */
-    public static HttpReponseField vary(String value) {
+    public static HttpReponseField vary(final String value) {
         return new HttpReponseField("Vary", value);
     }
 
@@ -745,7 +745,7 @@ public class HttpReponseField {
      *            "Via: 1.0 fred, 1.1 nowhere.com (Apache/1.1)"
      * @return "Via" HttpResponseHeader
      */
-    public static HttpReponseField via(String value) {
+    public static HttpReponseField via(final String value) {
         return new HttpReponseField("Via", value);
     }
 
@@ -756,7 +756,7 @@ public class HttpReponseField {
      * @param value can be for example "Warning: 199 Miscellaneous warning"
      * @return "Warning" HttpResponseHeader
      */
-    public static HttpReponseField warning(String value) {
+    public static HttpReponseField warning(final String value) {
         return new HttpReponseField("Warning", value);
     }
 
@@ -768,11 +768,11 @@ public class HttpReponseField {
      * @param value can be for example "WWW-Authenticate: Basic"
      * @return "WWW-Authenticate" HttpResponseHeader
      */
-    public static HttpReponseField wwwAuthenticate(String value) {
+    public static HttpReponseField wwwAuthenticate(final String value) {
         return new HttpReponseField("WWW-Authenticate", value);
     }
 
-    public static HttpReponseField status(StatusCode value) {
+    public static HttpReponseField status(final StatusCode value) {
         return new HttpReponseField("status", value.toString());
     }
 }

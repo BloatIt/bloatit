@@ -39,42 +39,42 @@ import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("contributions/cancel/%contribution%")
 public class CancelContributionPage extends LoggedElveosPage {
-    private CancelContributionPageUrl url;
+    private final CancelContributionPageUrl url;
 
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the contribution number: ''%value%''."))
     @NonOptional(@tr("You have to specify a contribution number."))
-    private Contribution contribution;
+    private final Contribution contribution;
 
-    public CancelContributionPage(CancelContributionPageUrl url) {
+    public CancelContributionPage(final CancelContributionPageUrl url) {
         super(url);
         this.url = url;
         this.contribution = url.getContribution();
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         if (!checkRightsAndEverything(loggedUser)) {
             throw new RedirectException(new IndexPageUrl());
         }
 
-        TwoColumnLayout master = new TwoColumnLayout(true, url);
+        final TwoColumnLayout master = new TwoColumnLayout(true, url);
 
         SideBarFeatureBlock sbfb;
         // TODO doesn't work now
         sbfb = new SideBarFeatureBlock(contribution.getFeature(), new BigDecimal(-(contribution.getAmount().doubleValue())));
         master.addRight(sbfb);
 
-        HtmlTitle title = new HtmlTitle(Context.tr("Cancel contribution"), 1);
+        final HtmlTitle title = new HtmlTitle(Context.tr("Cancel contribution"), 1);
         master.addLeft(title);
 
         try {
             master.addLeft(contributionCancelSummary(contribution.getFeature(), loggedUser));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Cannot access some contribution info.", e);
         }
 
-        CancelContributionActionUrl targetUrl = new CancelContributionActionUrl(getSession().getShortKey(), contribution);
-        HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString(), false);
+        final CancelContributionActionUrl targetUrl = new CancelContributionActionUrl(getSession().getShortKey(), contribution);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString(), false);
         master.addLeft(form);
 
         form.addSubmit(new HtmlSubmit(Context.tr("Cancel contribution")));
@@ -85,14 +85,14 @@ public class CancelContributionPage extends LoggedElveosPage {
     /**
      * Display a block summarizing the effect of the cancelation of a
      * contribution on both the user account and the feature
-     *
+     * 
      * @param feature the feature on which the contribution happened
      * @param actor the author of the contribution
      * @return the element containing the suymmary
      * @throws UnauthorizedOperationException
      */
     private HtmlElement contributionCancelSummary(final Feature feature, final Actor<?> actor) throws UnauthorizedOperationException {
-        PlaceHolderElement elem = new PlaceHolderElement();
+        final PlaceHolderElement elem = new PlaceHolderElement();
 
         final HtmlDiv contributionSummaryDiv = new HtmlDiv("contribution_summary");
         {
@@ -132,7 +132,7 @@ public class CancelContributionPage extends LoggedElveosPage {
     /**
      * Display a small block with the summary of the feature to be displayed in
      * the contribution cancelation summary block
-     *
+     * 
      * @param feature
      * @return
      * @throws UnauthorizedOperationException
@@ -155,16 +155,16 @@ public class CancelContributionPage extends LoggedElveosPage {
 
     /**
      * Checks if everything is valid in the information provided to the page.
-     *
+     * 
      * @return <i>true</i> if the user can access this page, <i>false</i>
      *         otherwise
      */
-    private boolean checkRightsAndEverything(Member loggedUser) {
+    private boolean checkRightsAndEverything(final Member loggedUser) {
         if (!contribution.getAuthor().equals(loggedUser)) {
             getSession().notifyWarning(Context.tr("You cannot cancel a contribution you didn't make."));
             return false;
         }
-        if(contribution.getState() != DaoContribution.ContributionState.PENDING){
+        if (contribution.getState() != DaoContribution.ContributionState.PENDING) {
             getSession().notifyWarning(Context.tr("You cannot cancel an already canceled contribution."));
             return false;
         }
@@ -188,12 +188,12 @@ public class CancelContributionPage extends LoggedElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member loggedUser) {
+    protected Breadcrumb createBreadcrumb(final Member loggedUser) {
         return generateBreadcrumb(contribution);
     }
 
     public static Breadcrumb generateBreadcrumb(final Contribution contribution) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(contribution.getFeature());
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(contribution.getFeature());
         breadcrumb.pushLink(new CancelContributionPageUrl(contribution).getHtmlLink(Context.tr("Cancel contribution")));
         return breadcrumb;
     }

@@ -23,7 +23,7 @@ public class RestBankTransactionSum extends RestElement<BankTransaction> {
         this.paidValue = BigDecimal.ZERO;
     }
 
-    public RestBankTransactionSum(Long count, BigDecimal chargedValue, BigDecimal paidValue) {
+    public RestBankTransactionSum(final Long count, final BigDecimal chargedValue, final BigDecimal paidValue) {
         this.count = count;
         this.chargedValue = chargedValue;
         this.paidValue = paidValue;

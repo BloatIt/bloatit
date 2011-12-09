@@ -40,13 +40,11 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
     private static final HtmlImage LOGO_COMMENT = new HtmlImage(new Image(WebConfiguration.getImgCommentTiny()), "comment");
     private static final HtmlImage LOGO_RELEASE = new HtmlImage(new Image(WebConfiguration.getImgReleaseTiny()), "release");
     private static final HtmlImage LOGO_BUG = new HtmlImage(new Image(WebConfiguration.getImgBugTiny()), "bug");
-    
-    
 
     protected final Locale locale;
     private final Localizator l;
 
-    public GenericEventVisitor(Localizator localizator) {
+    public GenericEventVisitor(final Localizator localizator) {
         this.locale = localizator.getLocale();
         this.l = localizator;
     }
@@ -60,15 +58,15 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
     protected abstract void addBugEntry(Bug f, HtmlEntry b, Date date);
 
     @Override
-    public String visit(FeatureEvent event) {
+    public String visit(final FeatureEvent event) {
         HtmlEntry entry;
-        FeaturePageUrl featureUrl = new FeaturePageUrl(event.getFeature(), FeatureTabKey.description);
-        HtmlBranch featureLink = new HtmlLink(featureUrl.externalUrlString(locale));
+        final FeaturePageUrl featureUrl = new FeaturePageUrl(event.getFeature(), FeatureTabKey.description);
+        final HtmlBranch featureLink = new HtmlLink(featureUrl.externalUrlString(locale));
         switch (event.getType()) {
             case CREATE_FEATURE:
                 entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("<0::+feature> created by <1:@thomas:>"),
-                                                                               featureLink,
-                                                                               new HtmlAuthorLink(event.getFeature())));
+                                                                                       featureLink,
+                                                                                       new HtmlAuthorLink(event.getFeature())));
                 break;
             case IN_DEVELOPING_STATE:
                 entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new HtmlMixedText(l.tr("the <0::+feature> is now in development"), featureLink));
@@ -87,12 +85,12 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
     }
 
     @Override
-    public String visit(BugEvent event) {
+    public String visit(final BugEvent event) {
         HtmlEntry entry;
-        BugPageUrl bugUrl = new BugPageUrl(event.getBug());
+        final BugPageUrl bugUrl = new BugPageUrl(event.getBug());
         switch (event.getType()) {
             case ADD_BUG:
-                HtmlLink bugLink = new HtmlLink(bugUrl.externalUrlString(locale));
+                final HtmlLink bugLink = new HtmlLink(bugUrl.externalUrlString(locale));
                 bugLink.setCssClass("bug_link");
                 String criticity = "";
                 switch (event.getBug().getErrorLevel()) {
@@ -109,7 +107,8 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
                         criticity = Context.tr("strange");
                         break;
                 }
-                entry = new HtmlEntry(event.getDate(), LOGO_BUG, new PlaceHolderElement().add(new HtmlMixedText(Context.tr("new <0::+bug> ({0})", criticity) , bugLink)));
+                entry = new HtmlEntry(event.getDate(), LOGO_BUG, new PlaceHolderElement().add(new HtmlMixedText(Context.tr("new <0::+bug> ({0})",
+                                                                                                                           criticity), bugLink)));
                 addFeatureEntry(event.getFeature(), entry, event.getDate());
                 break;
             case BUG_CHANGE_LEVEL:
@@ -143,31 +142,31 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
             default:
                 throw new BadProgrammerException("You should have managed all the cases.");
         }
-        
+
         return null;
     }
 
     @Override
-    public String visit(BugCommentEvent event) {
-        HtmlEntry entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new PlaceHolderElement().addText(l.tr("1 new comment by "))
-                                                                                       .add(new HtmlAuthorLink(event.getComment())));
+    public String visit(final BugCommentEvent event) {
+        final HtmlEntry entry = new HtmlEntry(event.getDate(), LOGO_FEATURE, new PlaceHolderElement().addText(l.tr("1 new comment by "))
+                                                                                                     .add(new HtmlAuthorLink(event.getComment())));
         addBugEntry(event.getBug(), entry, event.getDate());
         return null;
     }
 
     @Override
-    public String visit(ContributionEvent event) {
+    public String visit(final ContributionEvent event) {
         HtmlEntry entry;
         switch (event.getType()) {
             case ADD_CONTRIBUTION:
                 entry = new HtmlEntry(event.getDate(),
                                       LOGO_CONTRIBUTION,
                                       new MoneyDisplayComponent(event.getContribution().getAmount(), l).addText(l.tr(" financed by "))
-                                                                                                    .add(new HtmlAuthorLink(event.getContribution())));
+                                                                                                       .add(new HtmlAuthorLink(event.getContribution())));
                 break;
             case REMOVE_CONTRIBUTION:
                 entry = new HtmlEntry(event.getDate(), LOGO_CONTRIBUTION, new HtmlDiv().addText("contribution removed by")
-                                                                          .add(new HtmlAuthorLink(event.getContribution())));
+                                                                                       .add(new HtmlAuthorLink(event.getContribution())));
                 break;
             default:
                 throw new BadProgrammerException("You should have managed all the cases.");
@@ -177,38 +176,38 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
     }
 
     @Override
-    public String visit(FeatureCommentEvent event) {
-        HtmlEntry entry = new HtmlEntry(event.getDate(), LOGO_COMMENT, new PlaceHolderElement().addText(l.tr("1 new comment by "))
-                                                                                       .add(new HtmlAuthorLink(event.getComment())));
+    public String visit(final FeatureCommentEvent event) {
+        final HtmlEntry entry = new HtmlEntry(event.getDate(), LOGO_COMMENT, new PlaceHolderElement().addText(l.tr("1 new comment by "))
+                                                                                                     .add(new HtmlAuthorLink(event.getComment())));
         addFeatureEntry(event.getFeature(), entry, event.getDate());
         return null;
     }
 
     @Override
-    public String visit(OfferEvent event) {
+    public String visit(final OfferEvent event) {
         HtmlEntry entry;
-        FeaturePageUrl featureUrl = new FeaturePageUrl(event.getFeature(), FeatureTabKey.offers);
-        HtmlBranch offerLn = new HtmlLink(featureUrl.externalUrlString(locale));
+        final FeaturePageUrl featureUrl = new FeaturePageUrl(event.getFeature(), FeatureTabKey.offers);
+        final HtmlBranch offerLn = new HtmlLink(featureUrl.externalUrlString(locale));
         switch (event.getType()) {
             case ADD_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, new HtmlMixedText(l.tr("<0::+offer> created by <1:@thomas:>"),
-                                                                               offerLn,
-                                                                               new HtmlAuthorLink(event.getFeature())));
+                                                                                     offerLn,
+                                                                                     new HtmlAuthorLink(event.getFeature())));
                 break;
             case REMOVE_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, new HtmlMixedText(l.tr("the <0::+offer> by <1:@thomas:> has been removed"),
-                                                                               offerLn,
-                                                                               new HtmlAuthorLink(event.getFeature())));
+                                                                                     offerLn,
+                                                                                     new HtmlAuthorLink(event.getFeature())));
                 break;
             case ADD_SELECTED_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, new HtmlMixedText(l.tr("the <0::+offer> by <1:@thomas:> is selected"),
-                                                                               offerLn,
-                                                                               new HtmlAuthorLink(event.getFeature())));
+                                                                                     offerLn,
+                                                                                     new HtmlAuthorLink(event.getFeature())));
                 break;
             case CHANGE_SELECTED_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, new HtmlMixedText(l.tr("the <0::+offer> by <1:@thomas:> is selected"),
-                                                                               offerLn,
-                                                                               new HtmlAuthorLink(event.getFeature())));
+                                                                                     offerLn,
+                                                                                     new HtmlAuthorLink(event.getFeature())));
                 break;
             case REMOVE_SELECTED_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, "no offer selected");
@@ -221,10 +220,12 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
     }
 
     @Override
-    public String visit(ReleaseEvent event) {
-        ReleasePageUrl url = new ReleasePageUrl(event.getRelease());
-        String urlString = url.externalUrlString(locale);
-        HtmlEntry entry = new HtmlEntry(event.getDate(), LOGO_RELEASE, new HtmlMixedText(l.tr("new <0::+release> ({0})", event.getRelease().getVersion()), new HtmlLink(urlString)));
+    public String visit(final ReleaseEvent event) {
+        final ReleasePageUrl url = new ReleasePageUrl(event.getRelease());
+        final String urlString = url.externalUrlString(locale);
+        final HtmlEntry entry = new HtmlEntry(event.getDate(), LOGO_RELEASE, new HtmlMixedText(l.tr("new <0::+release> ({0})", event.getRelease()
+                                                                                                                                    .getVersion()),
+                                                                                               new HtmlLink(urlString)));
         addFeatureEntry(event.getFeature(), entry, event.getDate());
         return null;
     }

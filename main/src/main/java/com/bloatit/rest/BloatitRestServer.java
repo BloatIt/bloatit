@@ -137,7 +137,7 @@ public class BloatitRestServer extends RestServer {
                                                        RestFollowFeature.class,
                                                        RestFollowSoftware.class,
                                                        RestFollowActor.class,
-                                                       
+
                                                        // LISTS
                                                        RestMemberList.class,
                                                        RestMemberList.class,

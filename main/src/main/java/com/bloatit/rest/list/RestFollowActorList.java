@@ -58,8 +58,7 @@ public class RestFollowActorList extends RestListBinder<RestFollowActor, FollowA
     }
 
     /**
-     * Creates a RestFollowActorList from a
-     * {@codePageIterable<FollowActor>}
+     * Creates a RestFollowActorList from a {@codePageIterable<FollowActor>}
      * 
      * @param collection the list of elements from the model
      */

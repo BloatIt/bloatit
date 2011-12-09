@@ -13,19 +13,14 @@ package com.bloatit.web.linkable.activity;
 
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Member;
-import com.bloatit.model.Software;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.FollowFeatureActionUrl;
-import com.bloatit.web.url.FollowSoftwareActionUrl;
 import com.bloatit.web.url.ManageFollowActionUrl;
 
 /**

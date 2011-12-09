@@ -174,16 +174,16 @@ public class RestMember extends RestElement<Member> {
     @REST(name = "setfollow", method = RequestMethod.PUT, params = { "followall", "followallwithmail" })
     public RestMember setFollow(final String followAll, final String followallWithMail) throws RestException {
         try {
-            
-            boolean isFollowAll = Loaders.fromStr(Boolean.class, followAll);
-            boolean isFollowallWithMail = Loaders.fromStr(Boolean.class, followallWithMail);
-            
+
+            final boolean isFollowAll = Loaders.fromStr(Boolean.class, followAll);
+            final boolean isFollowallWithMail = Loaders.fromStr(Boolean.class, followallWithMail);
+
             model.setGlobalFollow(isFollowAll);
             model.setGlobalFollowWithMail(isFollowallWithMail);
-            
-        } catch (ConversionErrorException e) {
+
+        } catch (final ConversionErrorException e) {
             throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "Bad format for one of the parameters", e);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_CLI_403_FORBIDDEN, "Permission denied", e);
         }
 
@@ -218,7 +218,7 @@ public class RestMember extends RestElement<Member> {
             return null;
         }
     }
-    
+
     @XmlAttribute(name = "followall")
     public Boolean getFollowAll() {
         try {
@@ -227,7 +227,7 @@ public class RestMember extends RestElement<Member> {
             return null;
         }
     }
-    
+
     @XmlAttribute(name = "followallwithmail")
     public Boolean getFollowAllWithMail() {
         try {
@@ -236,7 +236,6 @@ public class RestMember extends RestElement<Member> {
             return null;
         }
     }
-    
 
     @XmlAttribute(name = "creation_date")
     public Date getCreationDate() {

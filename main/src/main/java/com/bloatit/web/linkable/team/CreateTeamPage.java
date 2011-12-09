@@ -62,14 +62,14 @@ public final class CreateTeamPage extends LoggedElveosPage {
         final CreateTeamActionUrl target = new CreateTeamActionUrl(getSession().getShortKey());
         final HtmlElveosForm form = new HtmlElveosForm(target.urlString());
         master.add(form);
-        FormBuilder ftool = new FormBuilder(CreateTeamAction.class, target);
+        final FormBuilder ftool = new FormBuilder(CreateTeamAction.class, target);
 
         // name
         ftool.add(form, new HtmlTextField(target.getLoginParameter().getName()));
 
         // Contact
         final String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");
-        HtmlTextArea contact = new HtmlTextArea(target.getContactParameter().getName(), 5, 80);
+        final HtmlTextArea contact = new HtmlTextArea(target.getContactParameter().getName(), 5, 80);
         ftool.add(form, contact);
         ftool.setDefaultValueIfNeeded(contact, suggested);
 

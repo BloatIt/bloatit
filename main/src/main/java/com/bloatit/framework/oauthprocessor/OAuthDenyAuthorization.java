@@ -17,7 +17,7 @@ import com.bloatit.framework.xcgiserver.HttpResponse;
 class OAuthDenyAuthorization extends OAuthBloatitReponse {
 
     @Override
-    public void process(HttpServletRequest request, HttpResponse response) throws IOException {
+    public void process(final HttpServletRequest request, final HttpResponse response) throws IOException {
 
         OAuthResponse oauthResponse;
         try {
@@ -25,8 +25,8 @@ class OAuthDenyAuthorization extends OAuthBloatitReponse {
             final OAuthAuthzRequest oAuthAuthzRequest = new OAuthAuthzRequest(request);
 
             // Get oauth parameters
-            String redirectUri = oAuthAuthzRequest.getRedirectURI();
-            String state = oAuthAuthzRequest.getState();
+            final String redirectUri = oAuthAuthzRequest.getRedirectURI();
+            final String state = oAuthAuthzRequest.getState();
 
             oauthResponse = OAuthResponse.errorResponse(HttpServletResponse.SC_FOUND)
                                          .setState(state)

@@ -26,10 +26,8 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.BankTransaction;
 import com.bloatit.model.FollowFeature;
 import com.bloatit.rest.list.master.RestListBinder;
-import com.bloatit.rest.resources.RestBankTransaction;
 import com.bloatit.rest.resources.RestFollowFeature;
 
 /**
@@ -60,8 +58,7 @@ public class RestFollowFeatureList extends RestListBinder<RestFollowFeature, Fol
     }
 
     /**
-     * Creates a RestFollowFeatureList from a
-     * {@codePageIterable<FollowFeature>}
+     * Creates a RestFollowFeatureList from a {@codePageIterable<FollowFeature>}
      * 
      * @param collection the list of elements from the model
      */

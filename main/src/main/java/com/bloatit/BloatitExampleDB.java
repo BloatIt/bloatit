@@ -67,8 +67,8 @@ public class BloatitExampleDB { // NO_UCD
     private Software vlc;
     private Software perroquet;
     private Software mageia;
-    private Team b219;
-    private Team other;
+    private final Team b219;
+    private final Team other;
 
     public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException, UniqueNameExpectedException {
         System.setProperty("log4J.path", ConfigurationManager.SHARE_DIR + "/log");
@@ -147,7 +147,6 @@ public class BloatitExampleDB { // NO_UCD
         giveMoney(cerbere, 1000);
         giveMoney(hydre, 500);
         giveMoney(elephantman, 100000000);
-
 
         // Add withdrawal
         AuthToken.authenticate(fred);
@@ -380,12 +379,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String hydrePerroquetOfferDescription = "Je le fais et j'ajoute le paquet pour la première release.";
         AuthToken.authenticate(hydre);
-        addPerroquetInMageiaFeature.addOffer(new BigDecimal(200),
-                                             hydrePerroquetOfferDescription,
-                                             "GNU GPL V3",
-                                             Language.FR,
-                                             DateUtils.tomorrow(),
-                                             0);
+        addPerroquetInMageiaFeature.addOffer(new BigDecimal(200), hydrePerroquetOfferDescription, "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
         // Contributions
         AuthToken.authenticate(hydre);
         addPerroquetInMageiaFeature.addContribution(new BigDecimal("10"), "");
@@ -545,7 +539,7 @@ public class BloatitExampleDB { // NO_UCD
 
     /**
      * Work only if the money is available
-     *
+     * 
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {
@@ -558,7 +552,7 @@ public class BloatitExampleDB { // NO_UCD
         try {
             feature.setFeatureState(FeatureState.DEVELOPPING);
             feature.getSelectedOffer().getCurrentMilestone().forceValidate();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

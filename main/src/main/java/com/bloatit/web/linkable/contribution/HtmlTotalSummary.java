@@ -41,7 +41,10 @@ import com.bloatit.web.url.QuotationPageUrl;
 
 public class HtmlTotalSummary extends HtmlTable {
 
-    public HtmlTotalSummary(final StandardQuotation quotation, final boolean showFeesDetails, final QuotationPageUrl myUrl, AccountProcess process) {
+    public HtmlTotalSummary(final StandardQuotation quotation,
+                            final boolean showFeesDetails,
+                            final QuotationPageUrl myUrl,
+                            final AccountProcess process) {
         this(quotation, showFeesDetails, myUrl, null, null, null, process);
     }
 
@@ -50,7 +53,8 @@ public class HtmlTotalSummary extends HtmlTable {
                             final QuotationPageUrl myUrl,
                             final BigDecimal staticAmount,
                             final HtmlElement variableField,
-                            final HtmlBranch scriptContainer, AccountProcess process) {
+                            final HtmlBranch scriptContainer,
+                            final AccountProcess process) {
         super(new HtmlTotalSummaryModel(quotation, showFeesDetails, myUrl, staticAmount, variableField, scriptContainer, process));
         this.setCssClass("quotation_totals_lines");
 
@@ -70,7 +74,8 @@ public class HtmlTotalSummary extends HtmlTable {
                                      final QuotationPageUrl myUrl,
                                      final BigDecimal staticAmount,
                                      final HtmlElement variableField,
-                                     final HtmlBranch scriptContainer,  AccountProcess process) {
+                                     final HtmlBranch scriptContainer,
+                                     final AccountProcess process) {
             // Subtotal
             final HtmlTableLine subtotalLine = new HtmlTableLine();
             addLine(subtotalLine);
@@ -222,7 +227,8 @@ public class HtmlTotalSummary extends HtmlTable {
                 final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("quotation.js");
                 quotationUpdateScriptTemplate.addNamedParameter("pre_total", staticAmount.toPlainString());
                 quotationUpdateScriptTemplate.addNamedParameter("charge_field_id", variableField.getId());
-                ChangePrepaidAmountActionUrl changePrepaidAmountActionUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(), process);
+                final ChangePrepaidAmountActionUrl changePrepaidAmountActionUrl = new ChangePrepaidAmountActionUrl(Context.getSession().getShortKey(),
+                                                                                                                   process);
                 changePrepaidAmountActionUrl.setSilent(true);
                 quotationUpdateScriptTemplate.addNamedParameter("callback_url", changePrepaidAmountActionUrl.urlString());
                 quotationUpdateScriptTemplate.addNamedParameter("commission_variable_rate", String.valueOf(BankTransaction.COMMISSION_VARIABLE_RATE));
@@ -288,7 +294,7 @@ public class HtmlTotalSummary extends HtmlTable {
                 }
 
                 @Override
-                public void visit(QuotationMultiplyEntry entry) {
+                public void visit(final QuotationMultiplyEntry entry) {
                     quotationEntryString.append(quotationEntryStringId + " = new QuotationMultiplyEntry('" + value + "', "
                             + getJsQuotationEntryReference(entry.reference) + ", " + entry.multiplyBy + ");\n");
                 }

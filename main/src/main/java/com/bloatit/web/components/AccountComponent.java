@@ -197,9 +197,15 @@ public class AccountComponent extends HtmlPageComponent {
         private HtmlDiv generateContributionDescription() throws UnauthorizedPrivateAccessException {
             final HtmlDiv description = new HtmlDiv("description");
             final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
-            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", contribution.getFeature().getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle() ), softwareLink);
+            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)",
+                                                                                 contribution.getFeature()
+                                                                                             .getDescription()
+                                                                                             .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator()
+                                                                                                                                                 .getLocale()))
+                                                                                             .getTitle()),
+                                                                      softwareLink);
 
-            HtmlSpan status = new HtmlSpan();
+            final HtmlSpan status = new HtmlSpan();
 
             switch (contribution.getFeature().getFeatureState()) {
                 case DEVELOPPING:
@@ -213,27 +219,27 @@ public class AccountComponent extends HtmlPageComponent {
                     break;
                 case PENDING:
                 case PREPARING:
-                    HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink(Context.tr("(Cancel contribution)"));
+                    final HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink(Context.tr("(Cancel contribution)"));
                     status.addText(tr("Funding "));
                     status.add(cancelLink);
                     break;
             }
-            
+
             description.add(new HtmlDefineParagraph(tr("Description: "), descriptionString));
             description.add(new HtmlDefineParagraph(tr("Status: "), status));
 
-            PageIterable<ContributionInvoice> invoices = contribution.getInvoices();
+            final PageIterable<ContributionInvoice> invoices = contribution.getInvoices();
             if (invoices.size() > 1) {
-                HtmlSpan invoiceList = new HtmlSpan();
-                for (ContributionInvoice invoice : invoices) {
+                final HtmlSpan invoiceList = new HtmlSpan();
+                for (final ContributionInvoice invoice : invoices) {
                     invoiceList.addText(" ");
                     invoiceList.add(new ContributionInvoiceResourceUrl(invoice).getHtmlLink(Context.tr("milestone {0}", invoice.getMilestone()
                                                                                                                                .getPosition())));
                 }
                 description.add(new HtmlDefineParagraph(tr("Invoices: "), invoiceList));
-            } else if(invoices.size() == 1) {
-                HtmlSpan invoiceList = new HtmlSpan();
-                for (ContributionInvoice invoice : invoices) {
+            } else if (invoices.size() == 1) {
+                final HtmlSpan invoiceList = new HtmlSpan();
+                for (final ContributionInvoice invoice : invoices) {
                     invoiceList.addText(" ");
                     invoiceList.add(new ContributionInvoiceResourceUrl(invoice).getHtmlLink(invoice.getInvoiceNumber()));
                 }
@@ -309,9 +315,14 @@ public class AccountComponent extends HtmlPageComponent {
 
         private HtmlDiv generateMilestoneDescription() {
             final HtmlDiv description = new HtmlDiv("description");
-            FeatureImplementation feature = milestone.getOffer().getFeature();
+            final FeatureImplementation feature = milestone.getOffer().getFeature();
             final HtmlSpan softwareLink = new SoftwaresTools.Link(feature.getSoftware());
-            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle()), softwareLink);
+            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)",
+                                                                                 feature.getDescription()
+                                                                                        .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator()
+                                                                                                                                            .getLocale()))
+                                                                                        .getTitle()),
+                                                                      softwareLink);
 
             String statusString = "";
             switch (feature.getFeatureState()) {
@@ -357,7 +368,7 @@ public class AccountComponent extends HtmlPageComponent {
                 addCell(new MoneyVariationCell(false));
             }
             addCell(new TitleCell(moneyWithdrawal.getCreationDate(), generateTitle()));
-            if(!failed) {
+            if (!failed) {
                 addCell(new DescriptionCell(tr("Withdrawal summary"), generateContributionDescription()));
             } else {
                 addCell(new DescriptionCell("", generateContributionDescription()));
@@ -402,7 +413,7 @@ public class AccountComponent extends HtmlPageComponent {
         private HtmlDiv generateTitle() throws UnauthorizedReadOnlyBankDataAccessException {
             final HtmlDiv title = new HtmlDiv("title");
             if (failed) {
-                if(moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.CANCELED) {
+                if (moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.CANCELED) {
                     title.addText(tr("Withdrew money canceled"));
                 } else {
                     title.addText(tr("Withdrew money failure"));

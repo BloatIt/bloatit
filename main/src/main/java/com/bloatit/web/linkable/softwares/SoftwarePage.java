@@ -83,16 +83,19 @@ public final class SoftwarePage extends ElveosPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        layout.addRight(new SideBarButton(Context.tr("Follow {0}", software.getName()), new SoftwareAtomFeedUrl(software), WebConfiguration.getAtomImg(), false));
-         
-        HtmlDiv softwarePage = new HtmlDiv("software_page");
+        layout.addRight(new SideBarButton(Context.tr("Follow {0}", software.getName()),
+                                          new SoftwareAtomFeedUrl(software),
+                                          WebConfiguration.getAtomImg(),
+                                          false));
+
+        final HtmlDiv softwarePage = new HtmlDiv("software_page");
 
         if (AuthToken.isAuthenticated()) {
             final HtmlDiv languageButton = new HtmlDiv("language_button");
-            TranslatePageUrl translatePageUrl = new TranslatePageUrl(software.getDescription(),
-                                                                     new Locale(Context.getLocalizator().getLocale().getLanguage()),
-                                                                     DescriptionType.SOFTWARE);
-            HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
+            final TranslatePageUrl translatePageUrl = new TranslatePageUrl(software.getDescription(),
+                                                                           new Locale(Context.getLocalizator().getLocale().getLanguage()),
+                                                                           DescriptionType.SOFTWARE);
+            final HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
             languageButton.add(link);
 
             softwarePage.add(languageButton);
@@ -120,7 +123,7 @@ public final class SoftwarePage extends ElveosPage {
             modify.add(new HtmlFollowSoftwareButton(software));
         }
 
-        PageIterable<Feature> features = software.getFeatures();
+        final PageIterable<Feature> features = software.getFeatures();
 
         if (features.size() > 0) {
             softwarePage.add(new HtmlTitle(Context.tr("Related features"), 1));

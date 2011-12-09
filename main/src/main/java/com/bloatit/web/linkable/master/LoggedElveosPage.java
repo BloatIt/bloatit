@@ -48,7 +48,7 @@ public abstract class LoggedElveosPage extends ElveosPage {
         if (AuthToken.isAuthenticated()) {
             try {
                 return createRestrictedContent(AuthToken.getMember());
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 throw new ShallNotPassException("Permission error generating page", e);
             }
         }
@@ -71,7 +71,7 @@ public abstract class LoggedElveosPage extends ElveosPage {
      * @return the root HtmlElement for the page
      * @throws RedirectException when an error occurs that need to interrupt
      *             content generation and redirect to another page
-     * @throws UnauthorizedPrivateAccessException 
+     * @throws UnauthorizedPrivateAccessException
      */
     public abstract HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException, UnauthorizedPrivateAccessException;
 

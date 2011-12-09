@@ -94,10 +94,14 @@ public final class CreateExternalServiceAction extends UserContentAction {
     }
 
     @Override
-    public Url doDoProcessRestricted(Member me, Team asTeam) {
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         final Locale langLocale = new Locale(lang);
 
-        final ExternalService p = new ExternalService(me, asTeam, new Description(me, asTeam, Language.fromLocale(langLocale), serviceName, description));
+        final ExternalService p = new ExternalService(me, asTeam, new Description(me,
+                                                                                  asTeam,
+                                                                                  Language.fromLocale(langLocale),
+                                                                                  serviceName,
+                                                                                  description));
 
         if (image != null) {
             final FileConstraintChecker fcc = new FileConstraintChecker(image);
@@ -136,7 +140,7 @@ public final class CreateExternalServiceAction extends UserContentAction {
     }
 
     @Override
-    protected boolean verifyFile(String filename) {
+    protected boolean verifyFile(final String filename) {
         return true;
     }
 

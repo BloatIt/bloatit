@@ -17,7 +17,7 @@ public class IpLocator {
 
     private static IpLocator instance = new IpLocator();
 
-    public static Country localize(String ip) {
+    public static Country localize(final String ip) {
         return instance.localizeIp(ip);
     }
 
@@ -25,7 +25,7 @@ public class IpLocator {
         public final String name;
         public final String code;
 
-        public Country(String name, String code) {
+        public Country(final String name, final String code) {
             super();
             this.name = name;
             this.code = code;
@@ -40,42 +40,42 @@ public class IpLocator {
 
     private final long[] ips = new long[size];
     private final int[] ctr = new int[size];
-    private String[] cnames = new String[256];
-    private String[] ccodes = new String[256];
+    private final String[] cnames = new String[256];
+    private final String[] ccodes = new String[256];
 
     private IpLocator() {
         try {
             parseCountryFile();
             parseIpCountryFile();
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             throw new ExternalErrorException(e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ExternalErrorException(e);
         }
     }
 
-    private Country localizeIp(String addr) {
+    private Country localizeIp(final String addr) {
         // first convert ip to long
-        String[] addrArray = addr.split("\\.");
+        final String[] addrArray = addr.split("\\.");
         long ip = 0;
         if (addrArray.length != 4) {
             throw new BadProgrammerException("The ip address is malformed");
         }
         // Last one is ignore (always 0 in the db)
         for (int i = 0; i < 3; i++) {
-            int power = 3 - i;
+            final int power = 3 - i;
             ip += ((Long.parseLong(addrArray[i]) % 256 * Math.pow(256, power)));
         }
-        int ipIndex = findIPIndex(ip, 0, size);
+        final int ipIndex = findIPIndex(ip, 0, size);
         return new Country(cnames[ctr[ipIndex]], ccodes[ctr[ipIndex]]);
     }
 
     private void parseCountryFile() throws FileNotFoundException, IOException {
-        File countriesFile = new File(ConfigurationManager.SHARE_DIR + "/locales/countries.csv");
-        BufferedReader countriesBufRdr = new BufferedReader(new FileReader(countriesFile));
+        final File countriesFile = new File(ConfigurationManager.SHARE_DIR + "/locales/countries.csv");
+        final BufferedReader countriesBufRdr = new BufferedReader(new FileReader(countriesFile));
         String line = null;
         while ((line = countriesBufRdr.readLine()) != null) {
-            StringTokenizer st = new StringTokenizer(line, ",");
+            final StringTokenizer st = new StringTokenizer(line, ",");
             int id = Integer.parseInt(st.nextToken());
             if (id == -1) {
                 id = 255;
@@ -99,15 +99,15 @@ public class IpLocator {
      * "sort -n $file".
      */
     @SuppressWarnings("unused")
-    private static void generateDBFile(String inputfile, String dbfile) throws FileNotFoundException, IOException {
-        BufferedReader bufRdr = new BufferedReader(new FileReader(new File(inputfile)));
-        BufferedWriter w = new BufferedWriter(new FileWriter(new File(dbfile)));
+    private static void generateDBFile(final String inputfile, final String dbfile) throws FileNotFoundException, IOException {
+        final BufferedReader bufRdr = new BufferedReader(new FileReader(new File(inputfile)));
+        final BufferedWriter w = new BufferedWriter(new FileWriter(new File(dbfile)));
         int lastCountry = -1;
         String line;
         while ((line = bufRdr.readLine()) != null) {
-            StringTokenizer st = new StringTokenizer(line, ",");
-            long ip = Long.parseLong(st.nextToken());
-            int countryId = Integer.parseInt(st.nextToken());
+            final StringTokenizer st = new StringTokenizer(line, ",");
+            final long ip = Long.parseLong(st.nextToken());
+            final int countryId = Integer.parseInt(st.nextToken());
             if (countryId != lastCountry) {
                 w.write(ip + "," + countryId + "\n");
             }
@@ -119,14 +119,14 @@ public class IpLocator {
 
     private void parseIpCountryFile() throws FileNotFoundException, IOException {
         String line;
-        File file = new File(ConfigurationManager.SHARE_DIR + "/locales/ip_country.csv");
-        BufferedReader bufRdr = new BufferedReader(new FileReader(file));
+        final File file = new File(ConfigurationManager.SHARE_DIR + "/locales/ip_country.csv");
+        final BufferedReader bufRdr = new BufferedReader(new FileReader(file));
         int lastCountry = -1;
         int i = 0;
         while ((line = bufRdr.readLine()) != null) {
-            StringTokenizer st = new StringTokenizer(line, ",");
-            long ip = Long.parseLong(st.nextToken());
-            int countryId = Integer.parseInt(st.nextToken());
+            final StringTokenizer st = new StringTokenizer(line, ",");
+            final long ip = Long.parseLong(st.nextToken());
+            final int countryId = Integer.parseInt(st.nextToken());
 
             if (countryId != lastCountry) {
                 ips[i] = ip;
@@ -138,11 +138,11 @@ public class IpLocator {
         bufRdr.close();
     }
 
-    private int findIPIndex(long ip, int bornMin, int bornMax) {
+    private int findIPIndex(final long ip, final int bornMin, final int bornMax) {
         if (bornMin + 1 == bornMax) {
             return bornMin;
         }
-        int center = (bornMin + bornMax) / 2;
+        final int center = (bornMin + bornMax) / 2;
         if (ip > ips[center]) {
             return findIPIndex(ip, center, bornMax);
         } else if (ip < ips[center]) {

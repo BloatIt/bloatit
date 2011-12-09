@@ -137,7 +137,7 @@ public class DaoContribution extends DaoUserContent {
     @OneToMany(mappedBy = "contribution", cascade = { javax.persistence.CascadeType.ALL })
     private List<DaoEvent> event;
 
-    public static PageIterable<DaoContribution> getByFeatureMember(DaoFeature f, DaoMember m) {
+    public static PageIterable<DaoContribution> getByFeatureMember(final DaoFeature f, final DaoMember m) {
         return new QueryCollection<DaoContribution>("contribution.getByFeatureMember").setEntity("member", m).setEntity("feature", f);
     }
 

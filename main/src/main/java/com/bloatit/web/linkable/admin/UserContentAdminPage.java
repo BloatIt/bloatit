@@ -156,13 +156,16 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
             @SuppressWarnings("synthetic-access")
             @Override
             public String getStringBody(final V element) {
-                //try {
+                // try {
                 return String.valueOf(element.isDeleted());
-                //FIXME: isDeleted no more nedd admin rigth. There was a reason to request admin rigth ?
-                //} catch (final UnauthorizedOperationException e) {
-                //    getSession().notifyWarning("HAHAHA !");
-                //    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
-                //}
+                // FIXME: isDeleted no more nedd admin rigth. There was a reason
+                // to request admin rigth ?
+                // } catch (final UnauthorizedOperationException e) {
+                // getSession().notifyWarning("HAHAHA !");
+                // throw new
+                // ShallNotPassException("UnauthorizedOperationException on admin page",
+                // e);
+                // }
             }
         });
     }

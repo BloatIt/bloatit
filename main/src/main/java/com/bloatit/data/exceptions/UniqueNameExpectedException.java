@@ -7,15 +7,15 @@ public class UniqueNameExpectedException extends Exception {
     public UniqueNameExpectedException() {
     }
 
-    public UniqueNameExpectedException(String message) {
+    public UniqueNameExpectedException(final String message) {
         super(message);
     }
 
-    public UniqueNameExpectedException(Throwable cause) {
+    public UniqueNameExpectedException(final Throwable cause) {
         super(cause);
     }
 
-    public UniqueNameExpectedException(String message, Throwable cause) {
+    public UniqueNameExpectedException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

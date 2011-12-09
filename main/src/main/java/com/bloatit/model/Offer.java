@@ -166,7 +166,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     @Override
-    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+    protected void delete(final boolean delOrder) throws UnauthorizedOperationException {
         // Delete all subcomponents of the offer.
         // Because milestones are not userContents, we delete all subcomponents
         // of milestones directly.
@@ -193,7 +193,7 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     @Override
     public EnumSet<SpecialCode> canVoteUp() {
-        EnumSet<SpecialCode> set = super.canVoteUp();
+        final EnumSet<SpecialCode> set = super.canVoteUp();
         if (!canVote()) {
             set.add(SpecialCode.YOU_HAVE_TO_CONTRIBUTE_TO_VOTE_ON_OFFER);
         }
@@ -202,7 +202,7 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     @Override
     public EnumSet<SpecialCode> canVoteDown() {
-        EnumSet<SpecialCode> set = super.canVoteDown();
+        final EnumSet<SpecialCode> set = super.canVoteDown();
         if (!canVote()) {
             set.add(SpecialCode.YOU_HAVE_TO_CONTRIBUTE_TO_VOTE_ON_OFFER);
         }

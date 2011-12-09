@@ -136,7 +136,7 @@ public class FormBuilder {
     private Map<String, FieldData> fields = new HashMap<String, FieldData>();
 
     // TODO translate
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "deprecation" })
     public FormBuilder(Class<? extends Action> target, Url actionUrl) {
 
         while (!Action.class.equals(target) && target != null) {

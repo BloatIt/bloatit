@@ -141,9 +141,9 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      *         and <i>to</i> date.
      */
     @REST(name = "banktransactions", method = RequestMethod.GET, params = { "from", "to" })
-    public static RestBankTransactionSum getBankTransactionsSum(final String from, String to) {
-        DaoBankTransactionSum sum = BankTransactionManager.getSum(DateUtils.nowMinusSomeDays(Integer.parseInt(from)),
-                                                                  DateUtils.nowMinusSomeDays(Integer.parseInt(to)));
+    public static RestBankTransactionSum getBankTransactionsSum(final String from, final String to) {
+        final DaoBankTransactionSum sum = BankTransactionManager.getSum(DateUtils.nowMinusSomeDays(Integer.parseInt(from)),
+                                                                        DateUtils.nowMinusSomeDays(Integer.parseInt(to)));
         return new RestBankTransactionSum(sum.count, sum.chargedValueSum, sum.paidValueSum);
     }
 

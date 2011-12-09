@@ -254,7 +254,7 @@ public final class AvailableLocales {
         availableLangs.put("en", "English");
     }
 
-    public static final String getDefaultCountry(String localLang) {
+    public static final String getDefaultCountry(final String localLang) {
         if (localLang.equals("fr")) {
             return "FR";
         }
@@ -271,6 +271,5 @@ public final class AvailableLocales {
     public static final Map<String, String> getAvailableCountries() {
         return availableCountries;
     }
-
 
 }

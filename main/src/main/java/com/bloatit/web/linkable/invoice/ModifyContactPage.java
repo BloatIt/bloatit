@@ -110,24 +110,24 @@ public final class ModifyContactPage extends LoggedElveosPage {
         // Create contact form
         final ModifyInvoicingContactActionUrl targetUrl = new ModifyInvoicingContactActionUrl(getSession().getShortKey(), process);
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
-        FormBuilder ftool = new FormBuilder(ModifyInvoicingContactAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(ModifyInvoicingContactAction.class, targetUrl);
 
         try {
-            Contact contact = member.getContact();
+            final Contact contact = member.getContact();
 
-            HtmlTextField name = new HtmlTextField(targetUrl.getNameParameter().getName());
+            final HtmlTextField name = new HtmlTextField(targetUrl.getNameParameter().getName());
             ftool.add(form, name);
             ftool.setDefaultValueIfNeeded(name, contact.getName());
 
-            HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
+            final HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
             ftool.add(form, isCompanyCheckbox);
             ftool.setDefaultValueIfNeeded(isCompanyCheckbox, String.valueOf(contact.isCompany()));
 
-            HtmlTextField street = new HtmlTextField(targetUrl.getStreetParameter().getName());
+            final HtmlTextField street = new HtmlTextField(targetUrl.getStreetParameter().getName());
             ftool.add(form, street);
             ftool.setDefaultValueIfNeeded(street, contact.getStreet());
 
-            HtmlTextField extras = new HtmlTextField(targetUrl.getExtrasParameter().getName());
+            final HtmlTextField extras = new HtmlTextField(targetUrl.getExtrasParameter().getName());
             ftool.add(form, extras);
             ftool.setDefaultValueIfNeeded(extras, contact.getExtras());
 
@@ -143,15 +143,15 @@ public final class ModifyContactPage extends LoggedElveosPage {
             }
             ftool.add(form, country);
 
-            HtmlTextField city = new HtmlTextField(targetUrl.getCityParameter().getName());
+            final HtmlTextField city = new HtmlTextField(targetUrl.getCityParameter().getName());
             ftool.add(form, city);
             ftool.setDefaultValueIfNeeded(city, contact.getCity());
 
-            HtmlTextField zipcode = new HtmlTextField(targetUrl.getPostalCodeParameter().getName());
+            final HtmlTextField zipcode = new HtmlTextField(targetUrl.getPostalCodeParameter().getName());
             ftool.add(form, zipcode);
             ftool.setDefaultValueIfNeeded(zipcode, contact.getPostalCode());
 
-            HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, contact.isCompany());
+            final HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, contact.isCompany());
             form.add(hiddenableDiv);
             ftool.add(hiddenableDiv, new HtmlTextField(targetUrl.getTaxIdentificationParameter().getName()));
 
@@ -160,28 +160,28 @@ public final class ModifyContactPage extends LoggedElveosPage {
                 form.add(specificForm);
 
                 // Invoice ID Number
-                BigDecimal invoiceIdNumberValue = contact.getInvoiceIdNumber();
+                final BigDecimal invoiceIdNumberValue = contact.getInvoiceIdNumber();
                 String invoiceIdNumberText = null;
 
                 if (invoiceIdNumberValue != null) {
                     invoiceIdNumberText = String.valueOf(invoiceIdNumberValue.intValue());
                 }
 
-                HtmlNumberField invoiceIdNumber = new HtmlNumberField(targetUrl.getInvoiceIdNumberParameter().getName());
+                final HtmlNumberField invoiceIdNumber = new HtmlNumberField(targetUrl.getInvoiceIdNumberParameter().getName());
                 ftool.add(form, invoiceIdNumber);
                 ftool.setDefaultValueIfNeeded(invoiceIdNumber, invoiceIdNumberText);
 
-                HtmlTextField invoiceIdTemplate = new HtmlTextField(targetUrl.getInvoiceIdTemplateParameter().getName());
+                final HtmlTextField invoiceIdTemplate = new HtmlTextField(targetUrl.getInvoiceIdTemplateParameter().getName());
                 ftool.add(form, invoiceIdTemplate);
                 ftool.setDefaultValueIfNeeded(invoiceIdTemplate, contact.getInvoiceIdTemplate());
 
-                HtmlTextField legalId = new HtmlTextField(targetUrl.getLegalIdParameter().getName());
+                final HtmlTextField legalId = new HtmlTextField(targetUrl.getLegalIdParameter().getName());
                 ftool.add(form, legalId);
                 ftool.setDefaultValueIfNeeded(legalId, contact.getLegalId());
 
-                HtmlPercentField taxeRate = new HtmlPercentField(targetUrl.getTaxRateParameter().getName());
+                final HtmlPercentField taxeRate = new HtmlPercentField(targetUrl.getTaxRateParameter().getName());
                 ftool.add(form, taxeRate);
-                BigDecimal taxRate = contact.getTaxRate();
+                final BigDecimal taxRate = contact.getTaxRate();
                 if (taxRate != null) {
                     ftool.setDefaultValueIfNeeded(taxeRate, taxRate.multiply(new BigDecimal("100")).toPlainString());
                 }
@@ -193,7 +193,6 @@ public final class ModifyContactPage extends LoggedElveosPage {
 
         return form;
     }
-
 
     @Override
     protected String createPageTitle() {

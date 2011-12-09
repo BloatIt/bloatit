@@ -61,7 +61,7 @@ public final class DaoExternalService extends DaoUserContent {
     // Construction
     // ======================================================================
 
-    public static DaoExternalService createAndPersist(DaoMember author, DaoTeam asTeam, DaoDescription description) {
+    public static DaoExternalService createAndPersist(final DaoMember author, final DaoTeam asTeam, final DaoDescription description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoExternalService theMember = new DaoExternalService(author, asTeam, description);
         try {
@@ -74,7 +74,7 @@ public final class DaoExternalService extends DaoUserContent {
         return theMember;
     }
 
-    private DaoExternalService(DaoMember author, DaoTeam asTeam, DaoDescription description) {
+    private DaoExternalService(final DaoMember author, final DaoTeam asTeam, final DaoDescription description) {
         super(author, asTeam);
         if (description == null) {
             throw new NonOptionalParameterException();
@@ -83,11 +83,11 @@ public final class DaoExternalService extends DaoUserContent {
         this.token = Hash.generateUniqueToken(32);
     }
 
-    public void setLogo(DaoFileMetadata fileImage) {
+    public void setLogo(final DaoFileMetadata fileImage) {
         logo = fileImage;
     }
 
-    public void addMembership(DaoExternalServiceMembership membership) {
+    public void addMembership(final DaoExternalServiceMembership membership) {
         this.membership.add(membership);
     }
 
@@ -121,24 +121,31 @@ public final class DaoExternalService extends DaoUserContent {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoExternalService other = (DaoExternalService) obj;
+        }
+        final DaoExternalService other = (DaoExternalService) obj;
         if (description == null) {
-            if (other.description != null)
+            if (other.description != null) {
                 return false;
-        } else if (!description.equals(other.description))
+            }
+        } else if (!description.equals(other.description)) {
             return false;
+        }
         if (logo == null) {
-            if (other.logo != null)
+            if (other.logo != null) {
                 return false;
-        } else if (!logo.equals(other.logo))
+            }
+        } else if (!logo.equals(other.logo)) {
             return false;
+        }
         return true;
     }
 

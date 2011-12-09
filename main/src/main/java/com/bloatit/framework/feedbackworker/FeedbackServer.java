@@ -26,7 +26,7 @@ public class FeedbackServer extends Thread {
         // Nothing to do
     }
 
-    public void addWorker(FeedBackWorker<?> worker) {
+    public void addWorker(final FeedBackWorker<?> worker) {
         workers.add(worker);
     }
 
@@ -37,7 +37,7 @@ public class FeedbackServer extends Thread {
         // Nothing yet
     }
 
-    public synchronized void sendMessage(Object obj) {
+    public synchronized void sendMessage(final Object obj) {
         messages.add(obj);
     }
 
@@ -52,13 +52,13 @@ public class FeedbackServer extends Thread {
                 if (element instanceof StopMessage) {
                     return;
                 }
-                for (FeedBackWorker<?> worker : workers) {
+                for (final FeedBackWorker<?> worker : workers) {
                     if (worker.work(element)) {
                         break;
                     }
                 }
                 ModelAccessor.close();
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 throw new ExternalErrorException(e);
             }
         }

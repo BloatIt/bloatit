@@ -63,7 +63,7 @@ public class AccountChargingProcess extends AccountProcess {
                 }
                 return new IndexPageUrl();
             }
-            if(subPro.hasBadParams()) {
+            if (subPro.hasBadParams()) {
                 unlock();
                 return new StaticAccountChargingPageUrl(this);
             } else {

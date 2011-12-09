@@ -188,32 +188,32 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     }
 
     @Override
-    public RestElement<?> visit(ExternalServiceMembership externalService) {
-        throw new NotImplementedException();
-    }
-    
-    @Override
-    public RestElement<?> visit(Follow follow) {
+    public RestElement<?> visit(final ExternalServiceMembership externalService) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(Event event) {
+    public RestElement<?> visit(final Follow follow) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(FollowFeature model) {
+    public RestElement<?> visit(final Event event) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(final FollowFeature model) {
         return new RestFollowFeature(model);
     }
 
     @Override
-    public RestElement<?> visit(FollowSoftware model) {
+    public RestElement<?> visit(final FollowSoftware model) {
         return new RestFollowSoftware(model);
     }
 
     @Override
-    public RestElement<?> visit(FollowActor model) {
+    public RestElement<?> visit(final FollowActor model) {
         return new RestFollowActor(model);
     }
 }

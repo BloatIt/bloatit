@@ -468,10 +468,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         configuration.loadConfiguration();
     }
 
-    private static String find(String resource, String langCode) {
+    private static String find(final String resource, final String langCode) {
         try {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
-        } catch (ExternalErrorException e) {
+        } catch (final ExternalErrorException e) {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
         }
     }

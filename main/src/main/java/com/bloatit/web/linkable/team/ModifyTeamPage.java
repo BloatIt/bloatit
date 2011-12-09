@@ -66,10 +66,10 @@ public class ModifyTeamPage extends LoggedElveosPage {
 
         final ModifyTeamActionUrl target = new ModifyTeamActionUrl(getSession().getShortKey(), team);
         final HtmlElveosForm form = new HtmlElveosForm(target.urlString());
-        FormBuilder ftool = new FormBuilder(ModifyTeamAction.class, target);
+        final FormBuilder ftool = new FormBuilder(ModifyTeamAction.class, target);
 
         // name
-        HtmlTextField name = new HtmlTextField(target.getDisplayNameParameter().getName());
+        final HtmlTextField name = new HtmlTextField(target.getDisplayNameParameter().getName());
         ftool.add(form, name);
         ftool.setDefaultValueIfNeeded(name, team.getLogin());
 
@@ -81,18 +81,18 @@ public class ModifyTeamPage extends LoggedElveosPage {
         ftool.add(form, rightInput);
 
         // Contact
-        HtmlTextArea contact = new HtmlTextArea(target.getContactParameter().getName(), 5, 80);
+        final HtmlTextArea contact = new HtmlTextArea(target.getContactParameter().getName(), 5, 80);
         ftool.add(form, contact);
         ftool.setDefaultValueIfNeeded(contact, team.getPublicContact());
 
         // Description
-        HtmlTextArea description = new HtmlTextArea(target.getDescriptionParameter().getName(), 5, 80);
+        final HtmlTextArea description = new HtmlTextArea(target.getDescriptionParameter().getName(), 5, 80);
         ftool.add(form, description);
         ftool.setDefaultValueIfNeeded(description, team.getDescription());
 
         // Avatar
         ftool.add(form, new HtmlFileInput(target.getAvatarParameter().getName()));
-        HtmlCheckbox deleteAvatar = new HtmlCheckbox(target.getDeleteAvatarParameter().getName(), LabelPosition.BEFORE);
+        final HtmlCheckbox deleteAvatar = new HtmlCheckbox(target.getDeleteAvatarParameter().getName(), LabelPosition.BEFORE);
         ftool.add(form, deleteAvatar);
         if (team.getAvatar() == null || team.getAvatar().isNull()) {
             deleteAvatar.addAttribute("disabled", "disabled");

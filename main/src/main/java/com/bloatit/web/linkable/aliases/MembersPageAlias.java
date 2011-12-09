@@ -36,9 +36,9 @@ public final class MembersPageAlias extends AliasAction {
         super(url, (getMember(url) == null) ? new PageNotFoundUrl() : new MemberPageUrl(getMember(url)));
     }
 
-    private static Member getMember(MembersPageAliasUrl url) {
-        String memberLogin = url.getMemberLogin();
-        Member m = MemberManager.getMemberByLogin(memberLogin);
+    private static Member getMember(final MembersPageAliasUrl url) {
+        final String memberLogin = url.getMemberLogin();
+        final Member m = MemberManager.getMemberByLogin(memberLogin);
         if (m != null) {
             return m;
         }

@@ -76,11 +76,11 @@ public class RecoverPasswordPage extends ElveosPage {
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery for {0}", member.getLogin()), 1);
         layout.addLeft(master);
 
-        RecoverPasswordActionUrl targetUrl = new RecoverPasswordActionUrl(member.getLogin(), resetKey);
+        final RecoverPasswordActionUrl targetUrl = new RecoverPasswordActionUrl(member.getLogin(), resetKey);
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         master.add(form);
 
-        FormBuilder ftool = new FormBuilder(RecoverPasswordAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(RecoverPasswordAction.class, targetUrl);
         ftool.add(form, new HtmlPasswordField(targetUrl.getPasswordParameter().getName()));
         form.addSubmit(new HtmlSubmit(Context.tr("Reset password")));
         return layout;

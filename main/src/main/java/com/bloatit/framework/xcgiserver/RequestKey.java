@@ -21,7 +21,7 @@ public class RequestKey {
 
     /**
      * Create a key using already existing id and ip address.
-     *
+     * 
      * @param id the id of this session. It must be non null, and
      *            {@value RequestKey#SHA515_HEX_LENGTH} char long if the source
      *            is COOKIE.
@@ -65,7 +65,7 @@ public class RequestKey {
     /**
      * Create a new SessionKey, with a random id, for a user at
      * <i>ipAddress</i>.
-     *
+     * 
      * @param ipAdress the ip address of the user identified by this
      *            {@link RequestKey}.
      */

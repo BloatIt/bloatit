@@ -37,34 +37,34 @@ public class ModifyFeaturePage extends LoggedElveosPage {
 
     private final ModifyFeaturePageUrl url;
 
-    public ModifyFeaturePage(ModifyFeaturePageUrl url) {
+    public ModifyFeaturePage(final ModifyFeaturePageUrl url) {
         super(url);
         this.url = url;
         this.feature = url.getFeature();
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         if (!feature.canModify()) {
             throw new RedirectException(new FeaturePageUrl(feature, FeatureTabKey.description));
         }
-        TwoColumnLayout master = new TwoColumnLayout(true, url);
+        final TwoColumnLayout master = new TwoColumnLayout(true, url);
         master.addLeft(new HtmlTitle(Context.tr("Modify feature page"), 1));
 
-        ModifyFeatureActionUrl targetUrl = new ModifyFeatureActionUrl(Context.getSession().getShortKey(), feature);
-        HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        final ModifyFeatureActionUrl targetUrl = new ModifyFeatureActionUrl(Context.getSession().getShortKey(), feature);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         master.addLeft(form);
-        FormBuilder ftool = new FormBuilder(ModifyFeatureAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(ModifyFeatureAction.class, targetUrl);
 
         // Title of the feature
-        HtmlTextField title = new HtmlTextField(targetUrl.getTitleParameter().getName());
+        final HtmlTextField title = new HtmlTextField(targetUrl.getTitleParameter().getName());
         ftool.add(form, title);
         ftool.setDefaultValueIfNeeded(title, feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getTitle());
 
         // Description of the feature
-        MarkdownEditor description = new MarkdownEditor(targetUrl.getDescriptionParameter().getName(),
-                                                        CreateFeaturePage.SPECIF_INPUT_NB_LINES,
-                                                        CreateFeaturePage.SPECIF_INPUT_NB_COLUMNS);
+        final MarkdownEditor description = new MarkdownEditor(targetUrl.getDescriptionParameter().getName(),
+                                                              CreateFeaturePage.SPECIF_INPUT_NB_LINES,
+                                                              CreateFeaturePage.SPECIF_INPUT_NB_COLUMNS);
         ftool.add(form, description);
         ftool.setDefaultValueIfNeeded(description, feature.getDescription().getTranslation(feature.getDescription().getDefaultLanguage()).getText());
 
@@ -98,8 +98,8 @@ public class ModifyFeaturePage extends LoggedElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member loggedUser) {
-        Breadcrumb br = FeaturePage.generateBreadcrumb(feature);
+    protected Breadcrumb createBreadcrumb(final Member loggedUser) {
+        final Breadcrumb br = FeaturePage.generateBreadcrumb(feature);
         br.pushLink(url.getHtmlLink(Context.tr("modify")));
         return br;
     }

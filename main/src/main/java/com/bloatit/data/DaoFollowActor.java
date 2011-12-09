@@ -38,7 +38,7 @@ public class DaoFollowActor extends DaoIdentifiable {
     // Construct.
     // ======================================================================
 
-    public static DaoFollowActor createAndPersist(DaoMember follower, DaoActor followed, boolean mail) {
+    public static DaoFollowActor createAndPersist(final DaoMember follower, final DaoActor followed, final boolean mail) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoFollowActor feature = new DaoFollowActor(follower, followed, mail);
         try {
@@ -51,17 +51,17 @@ public class DaoFollowActor extends DaoIdentifiable {
         return feature;
     }
 
-    public DaoFollowActor(DaoMember follower, DaoActor followed, boolean mail) {
+    public DaoFollowActor(final DaoMember follower, final DaoActor followed, final boolean mail) {
         super();
         this.follower = follower;
         this.followed = followed;
         this.mail = mail;
     }
 
-    public void setMail(boolean mail) {
+    public void setMail(final boolean mail) {
         this.mail = mail;
     }
-    
+
     public void unfollow() {
         SessionManager.getSessionFactory().getCurrentSession().delete(this);
     }
@@ -69,7 +69,7 @@ public class DaoFollowActor extends DaoIdentifiable {
     // ======================================================================
     // Getters.
     // ======================================================================
-    
+
     public DaoMember getFollower() {
         return follower;
     }
@@ -122,24 +122,31 @@ public class DaoFollowActor extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoFollowActor other = (DaoFollowActor) obj;
+        }
+        final DaoFollowActor other = (DaoFollowActor) obj;
         if (followed == null) {
-            if (other.followed != null)
+            if (other.followed != null) {
                 return false;
-        } else if (!followed.equals(other.followed))
+            }
+        } else if (!followed.equals(other.followed)) {
             return false;
+        }
         if (follower == null) {
-            if (other.follower != null)
+            if (other.follower != null) {
                 return false;
-        } else if (!follower.equals(other.follower))
+            }
+        } else if (!follower.equals(other.follower)) {
             return false;
+        }
         return true;
     }
 

@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.components.HtmlFollowButton.HtmlFollowActorButton;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.url.MemberPageUrl;
 
@@ -40,7 +39,7 @@ public class MemberListRenderer implements HtmlRenderer<Member> {
 
         box.add(new HtmlDiv("actor-box-avatar").add(MembersTools.getMemberAvatar(member)));
 
-        HtmlDiv content = new HtmlDiv("actor-box-content");
+        final HtmlDiv content = new HtmlDiv("actor-box-content");
         box.add(content);
 
         // Name
@@ -56,7 +55,7 @@ public class MemberListRenderer implements HtmlRenderer<Member> {
         content.add(nameBox);
 
         // Subtitle
-        HtmlDiv subtitle = new HtmlDiv("actor-box-subtitle");
+        final HtmlDiv subtitle = new HtmlDiv("actor-box-subtitle");
         content.add(subtitle);
 
         boolean isContributor = false;
@@ -79,7 +78,7 @@ public class MemberListRenderer implements HtmlRenderer<Member> {
         }
 
         // Follow
-        //content.add(new HtmlFollowActorButton(member));
+        // content.add(new HtmlFollowActorButton(member));
 
         return box;
     }

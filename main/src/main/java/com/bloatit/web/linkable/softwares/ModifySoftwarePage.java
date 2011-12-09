@@ -87,12 +87,12 @@ public final class ModifySoftwarePage extends LoggedElveosPage {
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         form.enableFileUpload();
         createFeatureTitle.add(form);
-        FormBuilder ftool = new FormBuilder(ModifySoftwareAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(ModifySoftwareAction.class, targetUrl);
 
         ftool.add(form, new HtmlTextField(targetUrl.getSoftwareNameParameter().getName()));
-        MarkdownEditor markdownEdit = new MarkdownEditor(targetUrl.getDescriptionParameter().getName(),
-                                                         DESCRIPTION_INPUT_NB_LINES,
-                                                         DESCRIPTION_INPUT_NB_COLUMNS);
+        final MarkdownEditor markdownEdit = new MarkdownEditor(targetUrl.getDescriptionParameter().getName(),
+                                                               DESCRIPTION_INPUT_NB_LINES,
+                                                               DESCRIPTION_INPUT_NB_COLUMNS);
         ftool.add(form, markdownEdit);
         ftool.add(form, new HtmlFileInput(ModifySoftwareAction.IMAGE_CODE));
 

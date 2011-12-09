@@ -5,18 +5,17 @@ import java.util.Date;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
-import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 
 public class HtmlEntry extends HtmlDiv {
     private final Date when;
 
-    public HtmlEntry(Date when, HtmlImage logo, String content) {
+    public HtmlEntry(final Date when, final HtmlImage logo, final String content) {
         this(when, logo, new HtmlText(content));
     }
 
-    public HtmlEntry(Date when, HtmlImage logo, HtmlNode content) {
+    public HtmlEntry(final Date when, final HtmlImage logo, final HtmlNode content) {
         super("event-entry");
         this.when = when;
         add(new HtmlDiv("event-entry-logo").add(logo));

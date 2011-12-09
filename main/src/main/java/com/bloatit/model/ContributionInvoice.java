@@ -103,7 +103,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
         private final OutputStream stream;
         private final BigDecimal invoiceNumber;
 
-        public PreviewSettings(OutputStream stream, BigDecimal invoiceNumber) {
+        public PreviewSettings(final OutputStream stream, final BigDecimal invoiceNumber) {
             this.stream = stream;
             this.invoiceNumber = invoiceNumber;
         }
@@ -125,7 +125,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                          final Milestone milestone,
                                                          final Contribution contribution,
                                                          final boolean applyVAT,
-                                                         PreviewSettings preview) throws UnauthorizedPrivateAccessException {
+                                                         final PreviewSettings preview) throws UnauthorizedPrivateAccessException {
 
         final String invoiceId;
         if (preview == null) {
@@ -140,7 +140,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
         final String sellerCountry = new Locale("en", emitterActor.getContact().getCountry()).getDisplayCountry(Locale.ENGLISH);
         final String sellerLegalId = emitterActor.getContact().getLegalId();
         final String sellerTaxIdentification = emitterActor.getContact().getTaxIdentification();
-        Contact recipientContact = recipientActor.getContactUnprotected();
+        final Contact recipientContact = recipientActor.getContactUnprotected();
         final String receiverName = recipientContact.getName();
         final String receiverStreet = recipientContact.getStreet();
         final String receiverExtras = recipientContact.getExtras();
@@ -151,15 +151,13 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
 
         BigDecimal taxRate = emitterActor.getContact().getTaxRate();
 
-        
-
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
         if (!applyVAT) {
             taxRate = null;
         }
-        
+
         final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
                                                                          invoiceId,
                                                                          sellerName,

@@ -65,7 +65,7 @@ public abstract class LoggedElveosAction extends ElveosAction {
         if (AuthToken.isAuthenticated() && session.getShortKey().equals(secure)) {
             try {
                 return doProcessRestricted(AuthToken.getMember());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Permission error in logged action", e);
             }
         }
@@ -77,7 +77,7 @@ public abstract class LoggedElveosAction extends ElveosAction {
         }
         session.setTargetPage(meUrl);
         transmitParameters();
-        LoginPageUrl loginPageUrl = new LoginPageUrl();
+        final LoginPageUrl loginPageUrl = new LoginPageUrl();
         loginPageUrl.setInvoice(isNeedInvoice());
         return loginPageUrl;
     }
@@ -111,7 +111,7 @@ public abstract class LoggedElveosAction extends ElveosAction {
      * Called when user is correctly authentified
      * 
      * @param me the currently logged user
-     * @throws UnauthorizedOperationException 
+     * @throws UnauthorizedOperationException
      */
     protected abstract Url doProcessRestricted(Member me) throws UnauthorizedOperationException;
 

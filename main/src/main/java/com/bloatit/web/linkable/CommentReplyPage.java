@@ -77,14 +77,14 @@ public final class CommentReplyPage extends CreateUserContentPage {
         final HtmlTitle title = new HtmlTitle(Context.tr("Reply to a comment"), 1);
         final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(getSession().getShortKey(), comment);
         final HtmlElveosForm form = new HtmlElveosForm(commentCommentActionUrl.urlString());
-        FormBuilder ftool = new FormBuilder(CreateCommentAction.class, commentCommentActionUrl);
+        final FormBuilder ftool = new FormBuilder(CreateCommentAction.class, commentCommentActionUrl);
 
         // as team
         form.addAsTeamField(new AsTeamField(commentCommentActionUrl,
-                                 loggedUser,
-                                 UserTeamRight.TALK,
-                                 Context.tr("In the name of"),
-                                 Context.tr("Write this comment in the name of this group.")));
+                                            loggedUser,
+                                            UserTeamRight.TALK,
+                                            Context.tr("In the name of"),
+                                            Context.tr("Write this comment in the name of this group.")));
 
         // Comment text
         ftool.add(form, new HtmlTextArea(commentCommentActionUrl.getCommentParameter().getName(), NB_LINES, NB_COLUMNS));

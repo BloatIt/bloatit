@@ -63,7 +63,7 @@ public final class FollowFeatureAction extends LoggedElveosAction {
     public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
 
         if (follow) {
-            FollowFeature followFeature = me.followOrGetFeature(feature);
+            final FollowFeature followFeature = me.followOrGetFeature(feature);
             followFeature.setMail(followMail);
             followFeature.setFeatureComment(followComments);
             followFeature.setBugComment(followBugs);

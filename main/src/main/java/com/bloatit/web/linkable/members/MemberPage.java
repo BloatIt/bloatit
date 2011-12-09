@@ -121,15 +121,17 @@ public final class MemberPage extends ElveosPage {
 
         // Adding activity page link
 
-        ActivityPageUrl activityPageUrl = new ActivityPageUrl();
+        final ActivityPageUrl activityPageUrl = new ActivityPageUrl();
         activityPageUrl.setMember(member);
 
         if (myPage) {
             layout.addRight(new SideBarButton(Context.tr("My activity"), activityPageUrl, WebConfiguration.getImgActivitySmall(), false));
         } else {
-            layout.addRight(new SideBarButton(Context.tr("{0}''s activity", member.getDisplayName()), activityPageUrl, WebConfiguration.getImgActivitySmall(), false));
+            layout.addRight(new SideBarButton(Context.tr("{0}''s activity", member.getDisplayName()),
+                                              activityPageUrl,
+                                              WebConfiguration.getImgActivitySmall(),
+                                              false));
         }
-
 
         // Adding list of teams
         final TitleSideBarElementLayout teamBlock = new TitleSideBarElementLayout();
@@ -197,7 +199,7 @@ public final class MemberPage extends ElveosPage {
         try {
             // Description
             if (member.getDescription() != null && !member.getDescription().isEmpty()) {
-                HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlCachedMarkdownRenderer(member.getDescription())));
+                final HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlCachedMarkdownRenderer(member.getDescription())));
                 memberId.add(memberDescription);
             }
 

@@ -42,9 +42,10 @@ import com.bloatit.web.url.TeamsPageUrl;
 
 @ParamContainer("sitemap.xml")
 public class ElveosSiteMap extends SiteMap {
+    @SuppressWarnings("unused")
     private final Url privateUrl;
 
-    public ElveosSiteMap(Url url) {
+    public ElveosSiteMap(final Url url) {
         super();
         this.privateUrl = url;
         generate();
@@ -54,16 +55,16 @@ public class ElveosSiteMap extends SiteMap {
         // Index page
         addSiteMapEntry(new SiteMapEntry(new IndexPageUrl(), ChangeFrequency.DAILY, null, 1.0f));
 
-        //Master pages
+        // Master pages
         addSiteMapEntry(new SiteMapEntry(new FeatureListPageUrl(), ChangeFrequency.DAILY, null, 0.9f));
         addSiteMapEntry(new SiteMapEntry(new SoftwareListPageUrl(), ChangeFrequency.DAILY, null, 0.8f));
         addSiteMapEntry(new SiteMapEntry(new MembersListPageUrl(), ChangeFrequency.DAILY, null, 0.8f));
         addSiteMapEntry(new SiteMapEntry(new TeamsPageUrl(), ChangeFrequency.DAILY, null, 0.8f));
         addSiteMapEntry(new SiteMapEntry(new DocumentationRootPageUrl(), ChangeFrequency.DAILY, null, 0.8f));
-        
+
         // Features
-        PageIterable<Feature> features = FeatureManager.getFeatures();
-        for (Feature feature : features) {
+        final PageIterable<Feature> features = FeatureManager.getFeatures();
+        for (final Feature feature : features) {
             addSiteMapEntry(new SiteMapEntry(new FeaturePageUrl(feature, FeatureTabKey.description), ChangeFrequency.DAILY, null, 0.7f));
             addSiteMapEntry(new SiteMapEntry(new FeaturePageUrl(feature, FeatureTabKey.contributions), ChangeFrequency.DAILY, null, 0.5f));
             addSiteMapEntry(new SiteMapEntry(new FeaturePageUrl(feature, FeatureTabKey.offers), ChangeFrequency.DAILY, null, 0.5f));
@@ -71,63 +72,60 @@ public class ElveosSiteMap extends SiteMap {
         }
 
         // Software
-        PageIterable<Software> softwares = SoftwareManager.getAll();
-        for (Software software : softwares) {
+        final PageIterable<Software> softwares = SoftwareManager.getAll();
+        for (final Software software : softwares) {
             addSiteMapEntry(new SiteMapEntry(new SoftwarePageUrl(software), ChangeFrequency.DAILY, null, 0.6f));
         }
 
         // Members
-        PageIterable<Member> members = MemberManager.getAll();
-        for (Member member : members) {
+        final PageIterable<Member> members = MemberManager.getAll();
+        for (final Member member : members) {
             addSiteMapEntry(new SiteMapEntry(new MemberPageUrl(member), ChangeFrequency.DAILY, null, 0.5f));
         }
 
         // Teams
-        PageIterable<Team> teams = TeamManager.getAll();
-        for (Team team : teams) {
+        final PageIterable<Team> teams = TeamManager.getAll();
+        for (final Team team : teams) {
             addSiteMapEntry(new SiteMapEntry(new TeamPageUrl(team), ChangeFrequency.DAILY, null, 0.5f));
         }
-        
+
         // Bugs
-        PageIterable<Bug> bugs = BugManager.getAll();
-        for (Bug bug : bugs) {
+        final PageIterable<Bug> bugs = BugManager.getAll();
+        for (final Bug bug : bugs) {
             addSiteMapEntry(new SiteMapEntry(new BugPageUrl(bug), ChangeFrequency.DAILY, null, 0.4f));
         }
-        
+
         // Release
-        PageIterable<Release> releases = ReleaseManager.getAll();
-        for (Release release : releases) {
+        final PageIterable<Release> releases = ReleaseManager.getAll();
+        for (final Release release : releases) {
             addSiteMapEntry(new SiteMapEntry(new ReleasePageUrl(release), ChangeFrequency.DAILY, null, 0.4f));
         }
-        
-        
+
         // Tools
         addSiteMapEntry(new SiteMapEntry(new LoginPageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));
         addSiteMapEntry(new SiteMapEntry(new SignUpPageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));
         addSiteMapEntry(new SiteMapEntry(new LostPasswordPageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));
         addSiteMapEntry(new SiteMapEntry(new ChangeLanguagePageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));
         addSiteMapEntry(new SiteMapEntry(new MetaFeedbackListPageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));
-        
-        
-        //Documentation
-        File docDir = new File(FrameworkConfiguration.getDocumentationDir()+"/main");
-        String[] docFileList = docDir.list(new FilenameFilter() {
-            
+
+        // Documentation
+        final File docDir = new File(FrameworkConfiguration.getDocumentationDir() + "/main");
+        final String[] docFileList = docDir.list(new FilenameFilter() {
+
             @Override
-            public boolean accept(File dir, String name) {
-                if(name.endsWith("_en")) {
+            public boolean accept(final File dir, final String name) {
+                if (name.endsWith("_en")) {
                     return true;
                 }
                 return false;
             }
         });
-        
-        for(String docFile : docFileList) {
-            String docCode = docFile.substring(0, docFile.length()-3);
+
+        for (final String docFile : docFileList) {
+            final String docCode = docFile.substring(0, docFile.length() - 3);
             addSiteMapEntry(new SiteMapEntry(new DocumentationPageUrl(docCode), ChangeFrequency.WEEKLY, null, 0.6f));
         }
-        
-        
+
     }
 
 }

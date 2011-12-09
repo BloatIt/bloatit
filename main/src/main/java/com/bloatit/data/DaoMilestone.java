@@ -215,7 +215,7 @@ public class DaoMilestone extends DaoIdentifiable {
      */
     @Basic(optional = true)
     private Date lastPaymentDate;
-    
+
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "milestone", cascade = { javax.persistence.CascadeType.ALL })
     private List<DaoEvent> event;
@@ -537,11 +537,11 @@ public class DaoMilestone extends DaoIdentifiable {
     public BigDecimal getAmountPaid() {
         final Query q = SessionManager.getNamedQuery("milestone.getAmountPaid");
         q.setEntity("this", this);
-        BigDecimal uniqueResult = (BigDecimal) q.uniqueResult();
-        if(uniqueResult == null) {
+        final BigDecimal uniqueResult = (BigDecimal) q.uniqueResult();
+        if (uniqueResult == null) {
             return BigDecimal.ZERO;
         }
-        
+
         return uniqueResult;
     }
 
@@ -606,8 +606,8 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     public Date getLastPaymentDate() {
-        Date date = lastPaymentDate;
-        if(date == null) {
+        final Date date = lastPaymentDate;
+        if (date == null) {
             return DateUtils.now();
         } else {
             return date;

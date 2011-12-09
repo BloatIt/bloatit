@@ -82,7 +82,7 @@ public final class CreateReleasePage extends CreateUserContentPage {
 
         // Create the form stub
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
-        FormBuilder ftool = new FormBuilder(CreateReleaseAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(CreateReleaseAction.class, targetUrl);
         createReleaseTitle.add(form);
         form.enableFileUpload();
         form.addLanguageChooser(targetUrl.getLocaleParameter().getName(), Context.getLocalizator().getLanguageCode());
@@ -91,7 +91,7 @@ public final class CreateReleasePage extends CreateUserContentPage {
         ftool.add(form, new HtmlTextArea(targetUrl.getDescriptionParameter().getName(), DESCRIPTION_INPUT_NB_LINES, DESCRIPTION_INPUT_NB_COLUMNS));
 
         // Attachment
-        AttachmentField attachment = new AttachmentField(targetUrl, "1 Gio", true);
+        final AttachmentField attachment = new AttachmentField(targetUrl, "1 Gio", true);
         ftool.add(form, attachment.getFileInput());
         ftool.add(form, attachment.getTextInput());
 

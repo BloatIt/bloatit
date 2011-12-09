@@ -81,7 +81,7 @@ public abstract class WebProcess extends ElveosAction {
     protected synchronized void transmitParameters() {
         // Nothing to do
     }
-    
+
     public synchronized void update(final WebProcess subProcess) {
         if (father != null) {
             father.update(this);

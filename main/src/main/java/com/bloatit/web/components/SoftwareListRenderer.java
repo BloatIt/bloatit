@@ -37,10 +37,9 @@ public class SoftwareListRenderer implements HtmlRenderer<Software> {
         final HtmlDiv box = new HtmlDiv("actor-box");
 
         box.add(new HtmlDiv("actor-box-avatar").add((new SoftwaresTools.Logo(software))));
-        
-        HtmlDiv content = new HtmlDiv("actor-box-content");
+
+        final HtmlDiv content = new HtmlDiv("actor-box-content");
         box.add(content);
-        
 
         // Name
         final HtmlDiv nameBox = new HtmlDiv("actor-box-actor-name");
@@ -49,16 +48,15 @@ public class SoftwareListRenderer implements HtmlRenderer<Software> {
         htmlLink.setCssClass("software-link");
         nameBox.add(htmlLink);
         content.add(nameBox);
-        
+
         // Subtitle
-        HtmlDiv subtitle = new HtmlDiv("actor-box-subtitle");
+        final HtmlDiv subtitle = new HtmlDiv("actor-box-subtitle");
         content.add(subtitle);
         subtitle.addText(Context.trn("{0} feature", "{0} features", software.getFeatures().size(), software.getFeatures().size()));
 
-
         // Follow
         content.add(new HtmlFollowSoftwareButton(software));
-        
+
         return box;
     }
 }

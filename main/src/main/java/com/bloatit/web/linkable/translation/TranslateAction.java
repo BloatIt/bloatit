@@ -42,6 +42,7 @@ public final class TranslateAction extends LoggedElveosAction {
     @NonOptional(@tr("You have to specify a description to translate."))
     private final Description description;
 
+    @SuppressWarnings("unused")
     @RequestParam
     @NonOptional(@tr("You have to specify a source language."))
     private final Locale sourceLanguage;
@@ -62,7 +63,7 @@ public final class TranslateAction extends LoggedElveosAction {
     @MaxConstraint(max = 800000, message = @tr("The description must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
     @FormField(label = @tr("Description"), isShort = false)
-    private String content;
+    private final String content;
 
     private final TranslateActionUrl url;
 
@@ -79,7 +80,7 @@ public final class TranslateAction extends LoggedElveosAction {
     @Override
     public Url doProcessRestricted(final Member me) {
 
-        Translation translation = description.getTranslation(targetLanguage);
+        final Translation translation = description.getTranslation(targetLanguage);
         try {
             if (translation == null) {
                 // The translation don't exist
@@ -90,7 +91,7 @@ public final class TranslateAction extends LoggedElveosAction {
                 translation.setText(content, me);
 
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new BadProgrammerException("Fail to update translation");
         }
 

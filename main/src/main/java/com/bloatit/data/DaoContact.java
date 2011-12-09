@@ -121,7 +121,7 @@ public class DaoContact {
         return isCompany;
     }
 
-    public void setIsCompany(boolean isCompany) {
+    public void setIsCompany(final boolean isCompany) {
         this.isCompany = isCompany;
     }
 

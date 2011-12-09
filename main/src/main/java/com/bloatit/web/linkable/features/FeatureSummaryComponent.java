@@ -183,7 +183,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_share
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
-                        HtmlFollowButton followFeature = new HtmlFollowFeatureButton(feature);
+                        final HtmlFollowButton followFeature = new HtmlFollowFeatureButton(feature);
                         featureSummaryShare.add(followFeature);
                         // final HtmlLink showHideShareBlock = new HtmlLink("#",
                         // Context.tr("+ Share"));
@@ -248,7 +248,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(new PlaceHolderElement() {
             @Override
             protected List<HtmlNode> getPostNodes() {
-                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
+                final List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 script.addAttribute("src", "https://platform.twitter.com/widgets.js");
                 nodes.add(script);
@@ -265,7 +265,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(new PlaceHolderElement() {
             @Override
             protected List<HtmlNode> getPostNodes() {
-                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
+                final List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 nodes.add(script);
                 script.addAttribute("src", "https://platform.linkedin.com/in.js");
@@ -288,7 +288,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(new PlaceHolderElement() {
             @Override
             protected List<HtmlNode> getPostNodes() {
-                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
+                final List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 nodes.add(script);
                 script.addAttribute("src", "https://apis.google.com/js/plusone.js");
@@ -336,7 +336,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return item;
     }
 
-    private HtmlDiv generateProgressBlock(final Feature feature, FeaturesTools.FeatureContext context) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature, final FeaturesTools.FeatureContext context) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");

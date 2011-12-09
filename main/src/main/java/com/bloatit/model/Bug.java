@@ -153,7 +153,7 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     }
 
     @Override
-    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+    protected void delete(final boolean delOrder) throws UnauthorizedOperationException {
         // Delete all comments from the bug
         for (final Comment comment : getComments()) {
             comment.delete(delOrder);

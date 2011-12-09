@@ -39,7 +39,7 @@ public class FeatureSearch extends Search<DaoFeature> {
                           "description.translations.title",
 
                           "software.name",
-                          
+
                           // Feature state
                           "featureState",
                           "progress",

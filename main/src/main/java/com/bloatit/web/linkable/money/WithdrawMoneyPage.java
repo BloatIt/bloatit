@@ -64,10 +64,10 @@ public class WithdrawMoneyPage extends LoggedElveosPage {
         final WithdrawMoneyActionUrl targetUrl = new WithdrawMoneyActionUrl(getSession().getShortKey(), actor);
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         master.add(form);
-        FormBuilder ftool = new FormBuilder(WithdrawMoneyAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(WithdrawMoneyAction.class, targetUrl);
 
         // Amount
-        HtmlMoneyField money = new HtmlMoneyField(targetUrl.getAmountParameter().getName());
+        final HtmlMoneyField money = new HtmlMoneyField(targetUrl.getAmountParameter().getName());
         ftool.add(form, money);
         try {
             final BigDecimal available = actor.getInternalAccount().getAmount();

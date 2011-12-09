@@ -105,11 +105,11 @@ public final class Event extends Identifiable<DaoEvent> {
     public static class FeatureEvent {
         protected final DaoEvent event;
 
-        public FeatureEvent(DaoEvent event) {
+        public FeatureEvent(final DaoEvent event) {
             this.event = event;
         }
 
-        public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
+        public <ReturnType> ReturnType accept(final EventVisitor<ReturnType> visitor) {
             return visitor.visit(this);
         }
 
@@ -127,7 +127,7 @@ public final class Event extends Identifiable<DaoEvent> {
     }
 
     public static class ContributionEvent extends FeatureEvent {
-        public ContributionEvent(DaoEvent event) {
+        public ContributionEvent(final DaoEvent event) {
             super(event);
         }
 
@@ -135,13 +135,14 @@ public final class Event extends Identifiable<DaoEvent> {
             return Contribution.create(event.getContribution());
         }
 
-        public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
+        @Override
+        public <ReturnType> ReturnType accept(final EventVisitor<ReturnType> visitor) {
             return visitor.visit(this);
         }
     }
 
     public static class OfferEvent extends FeatureEvent {
-        public OfferEvent(DaoEvent event) {
+        public OfferEvent(final DaoEvent event) {
             super(event);
         }
 
@@ -149,13 +150,14 @@ public final class Event extends Identifiable<DaoEvent> {
             return Offer.create(event.getOffer());
         }
 
-        public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
+        @Override
+        public <ReturnType> ReturnType accept(final EventVisitor<ReturnType> visitor) {
             return visitor.visit(this);
         }
     }
 
     public static class FeatureCommentEvent extends FeatureEvent {
-        public FeatureCommentEvent(DaoEvent event) {
+        public FeatureCommentEvent(final DaoEvent event) {
             super(event);
         }
 
@@ -163,13 +165,14 @@ public final class Event extends Identifiable<DaoEvent> {
             return Comment.create(event.getComment());
         }
 
-        public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
+        @Override
+        public <ReturnType> ReturnType accept(final EventVisitor<ReturnType> visitor) {
             return visitor.visit(this);
         }
     }
 
     public static class ReleaseEvent extends FeatureEvent {
-        public ReleaseEvent(DaoEvent event) {
+        public ReleaseEvent(final DaoEvent event) {
             super(event);
         }
 
@@ -185,14 +188,15 @@ public final class Event extends Identifiable<DaoEvent> {
             return Milestone.create(event.getMilestone());
         }
 
-        public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
+        @Override
+        public <ReturnType> ReturnType accept(final EventVisitor<ReturnType> visitor) {
             return visitor.visit(this);
         }
     }
 
     public static class BugEvent extends FeatureEvent {
 
-        public BugEvent(DaoEvent event) {
+        public BugEvent(final DaoEvent event) {
             super(event);
         }
 
@@ -208,14 +212,15 @@ public final class Event extends Identifiable<DaoEvent> {
             return Milestone.create(event.getMilestone());
         }
 
-        public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
+        @Override
+        public <ReturnType> ReturnType accept(final EventVisitor<ReturnType> visitor) {
             return visitor.visit(this);
         }
     }
 
     public static class BugCommentEvent extends BugEvent {
 
-        public BugCommentEvent(DaoEvent event) {
+        public BugCommentEvent(final DaoEvent event) {
             super(event);
         }
 
@@ -223,7 +228,8 @@ public final class Event extends Identifiable<DaoEvent> {
             return Comment.create(event.getComment());
         }
 
-        public <ReturnType> ReturnType accept(EventVisitor<ReturnType> visitor) {
+        @Override
+        public <ReturnType> ReturnType accept(final EventVisitor<ReturnType> visitor) {
             return visitor.visit(this);
         }
     }

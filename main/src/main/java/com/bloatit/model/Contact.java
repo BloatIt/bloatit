@@ -115,7 +115,7 @@ public final class Contact {
         dao.setExtras(extras);
     }
 
-    public void setIsCompany(boolean isCompany) {
+    public void setIsCompany(final boolean isCompany) {
         dao.setIsCompany(isCompany);
     }
 
@@ -257,17 +257,17 @@ public final class Contact {
      */
     public String pickNextInvoiceId() {
 
-        String invoiceId = getInvoiceId(getInvoiceIdNumber());
+        final String invoiceId = getInvoiceId(getInvoiceIdNumber());
 
         setInvoiceIdNumber(getInvoiceIdNumber().add(BigDecimal.ONE));
         return invoiceId;
 
     }
-    
-    public String getInvoiceId(BigDecimal invoiceIdNumber) {
 
-        InvoiceIdFormatter formatter = new InvoiceIdFormatter(getInvoiceIdTemplate());
-        String invoiceId = formatter.format(invoiceIdNumber);
+    public String getInvoiceId(final BigDecimal invoiceIdNumber) {
+
+        final InvoiceIdFormatter formatter = new InvoiceIdFormatter(getInvoiceIdTemplate());
+        final String invoiceId = formatter.format(invoiceIdNumber);
 
         return invoiceId;
     }
@@ -276,7 +276,7 @@ public final class Contact {
         private final String template;
         private String output;
 
-        public InvoiceIdFormatter(String template) {
+        public InvoiceIdFormatter(final String template) {
             this.template = template;
 
         }
@@ -287,11 +287,11 @@ public final class Contact {
          * characters {YDAY} : day of the year on 2 characters {WEEK} : week of
          * the year on 2 characters
          */
-        public String format(BigDecimal invoiceIdNumber) {
+        public String format(final BigDecimal invoiceIdNumber) {
 
             this.output = this.template;
 
-            GregorianCalendar gregorianCalendar = new GregorianCalendar();
+            final GregorianCalendar gregorianCalendar = new GregorianCalendar();
 
             replaceNumber("YEAR", 4, gregorianCalendar.get(Calendar.YEAR));
             replaceNumber("MONTH", 2, gregorianCalendar.get(Calendar.MONTH));
@@ -303,11 +303,11 @@ public final class Contact {
             return this.output;
         }
 
-        private void replaceNumber(String token, int defaultLength, int value) {
+        private void replaceNumber(final String token, final int defaultLength, final int value) {
 
-            Pattern pattern = Pattern.compile("^(.*)(\\{" + token + "(\\|([0-9]+))?\\})(.*)");
+            final Pattern pattern = Pattern.compile("^(.*)(\\{" + token + "(\\|([0-9]+))?\\})(.*)");
 
-            Matcher matcher = pattern.matcher(this.output);
+            final Matcher matcher = pattern.matcher(this.output);
 
             while (matcher.find()) {
 
@@ -316,18 +316,17 @@ public final class Contact {
                     length = Integer.parseInt(matcher.group(4));
                 }
 
-                DecimalFormat df = new DecimalFormat(multiply("0", length));
+                final DecimalFormat df = new DecimalFormat(multiply("0", length));
 
-                String formated = df.format(value);
-                
-                
-                this.output = matcher.group(1) + df.format(value).substring(formated.length()-length,formated.length()) + matcher.group(5);
+                final String formated = df.format(value);
+
+                this.output = matcher.group(1) + df.format(value).substring(formated.length() - length, formated.length()) + matcher.group(5);
             }
 
         }
 
-        private String multiply(String string, int count) {
-            StringBuffer out = new StringBuffer();
+        private String multiply(final String string, final int count) {
+            final StringBuffer out = new StringBuffer();
             for (int i = 0; i < count; i++) {
                 out.append(string);
             }

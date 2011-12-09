@@ -29,12 +29,12 @@ public class FeatureFactory {
                                         final String title,
                                         final String description,
                                         final Software software) throws UnauthorizedOperationException {
-        FeatureImplementation featureImplementation = new FeatureImplementation(author, team, language, title, description, software);
+        final FeatureImplementation featureImplementation = new FeatureImplementation(author, team, language, title, description, software);
 
         if (software != null) {
-            for (FollowSoftware s : software.getFollowers()) {
+            for (final FollowSoftware s : software.getFollowers()) {
                 AuthToken.temporaryAuthenticate(s.getFollower());
-                FollowFeature followFeature = s.getFollower().followOrGetFeature(featureImplementation);
+                final FollowFeature followFeature = s.getFollower().followOrGetFeature(featureImplementation);
                 followFeature.setBugComment(true);
                 followFeature.setFeatureComment(true);
                 followFeature.setMail(followFeature.isMail());
@@ -42,18 +42,18 @@ public class FeatureFactory {
             }
         }
 
-        for (Member member : MemberManager.getAllMembersFollowingAll()) {
+        for (final Member member : MemberManager.getAllMembersFollowingAll()) {
             if (!member.isFollowing(software)) {
                 AuthToken.temporaryAuthenticate(member);
-                FollowFeature followFeature = member.followOrGetFeature(featureImplementation);
+                final FollowFeature followFeature = member.followOrGetFeature(featureImplementation);
                 followFeature.setBugComment(true);
                 followFeature.setFeatureComment(true);
                 followFeature.setMail(member.isGlobalFollowWithMail());
                 AuthToken.temporaryDeauthenticate();
             }
         }
-        
-        FollowFeature followFeature = author.followOrGetFeature(featureImplementation);
+
+        final FollowFeature followFeature = author.followOrGetFeature(featureImplementation);
         followFeature.setBugComment(true);
         followFeature.setFeatureComment(true);
         followFeature.setMail(true);

@@ -197,32 +197,32 @@ public class BreadcrumbTools {
             }
 
             @Override
-            public Breadcrumb visit(ExternalServiceMembership externalService) {
+            public Breadcrumb visit(final ExternalServiceMembership externalService) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Follow model) {
+            public Breadcrumb visit(final Follow model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Event event) {
+            public Breadcrumb visit(final Event event) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(FollowFeature model) {
+            public Breadcrumb visit(final FollowFeature model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(FollowSoftware model) {
+            public Breadcrumb visit(final FollowSoftware model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(FollowActor model) {
+            public Breadcrumb visit(final FollowActor model) {
                 throw new NotImplementedException();
             }
         });

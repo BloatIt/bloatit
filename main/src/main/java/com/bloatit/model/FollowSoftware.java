@@ -16,9 +16,7 @@
 //
 package com.bloatit.model;
 
-import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoFollowSoftware;
-import com.bloatit.data.DaoMember;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -67,18 +65,18 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
     // Setters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public final void setMail(boolean mail) throws UnauthorizedOperationException {
-        Member follower = Member.create(getDao().getFollower());
-        if(!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
+    public final void setMail(final boolean mail) throws UnauthorizedOperationException {
+        final Member follower = Member.create(getDao().getFollower());
+        if (!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
         getDao().setMail(mail);
-        for(FollowFeature followFeature: getFollower().getFollowedFeatures()) {
+        for (final FollowFeature followFeature : getFollower().getFollowedFeatures()) {
             if (followFeature.getFollowed().getSoftware().equals(getFollowed())) {
                 followFeature.setMail(mail);
             }
         }
-        
+
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

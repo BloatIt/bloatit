@@ -33,12 +33,11 @@ import com.bloatit.web.url.ContributionInvoicePreviewDataUrl;
 
 /**
  * A invoice file
- *
+ * 
  * @author fred
  */
 @ParamContainer("contribution_invoice_preview")
 public final class ContributionInvoicePreviewData extends Data {
-
 
     @RequestParam(name = "contribution")
     @NonOptional(@tr("The id of the contribution is incorrect or missing"))
@@ -60,8 +59,6 @@ public final class ContributionInvoicePreviewData extends Data {
 
     private String filename;
 
-
-
     public ContributionInvoicePreviewData(final ContributionInvoicePreviewDataUrl url) throws PageNotFoundException {
         super(url);
         contribution = url.getContribution();
@@ -78,17 +75,25 @@ public final class ContributionInvoicePreviewData extends Data {
 
     @Override
     protected void doProcess() {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
         try {
-            ContributionInvoice.generateInvoice(actor, contribution.getContribution().getAuthor(), "Contribution", "Contribution", contribution.getAmount(), contribution.getMilestone(), contribution.getContribution(), applyVAT,  new PreviewSettings(output, invoiceNumber));
+            ContributionInvoice.generateInvoice(actor,
+                                                contribution.getContribution().getAuthor(),
+                                                "Contribution",
+                                                "Contribution",
+                                                contribution.getAmount(),
+                                                contribution.getMilestone(),
+                                                contribution.getContribution(),
+                                                applyVAT,
+                                                new PreviewSettings(output, invoiceNumber));
 
-        bytes = output.toByteArray();
-        filename = actor.getContact().getInvoiceId(invoiceNumber)+ ".pdf";
+            bytes = output.toByteArray();
+            filename = actor.getContact().getInvoiceId(invoiceNumber) + ".pdf";
 
-        } catch (UnauthorizedPrivateAccessException e) {
-            throw new ShallNotPassException("Showing this preview is not allowed",e);
-        } catch (UnauthorizedPublicReadOnlyAccessException e) {
-            throw new ShallNotPassException("Showing this preview is not allowed",e);
+        } catch (final UnauthorizedPrivateAccessException e) {
+            throw new ShallNotPassException("Showing this preview is not allowed", e);
+        } catch (final UnauthorizedPublicReadOnlyAccessException e) {
+            throw new ShallNotPassException("Showing this preview is not allowed", e);
         }
     }
 
@@ -106,7 +111,5 @@ public final class ContributionInvoicePreviewData extends Data {
     public byte[] getFileData() {
         return bytes;
     }
-
-
 
 }

@@ -36,7 +36,7 @@ import com.bloatit.web.url.MakeOfferPageUrl;
 public class FeatureOfferListComponent extends HtmlDiv {
     protected FeatureOfferListComponent(final Feature feature) {
         super();
-        PageIterable<Offer> offers = feature.getOffers();
+        final PageIterable<Offer> offers = feature.getOffers();
         int nbUnselected = offers.size();
 
         final Offer selectedOffer = feature.getSelectedOffer();

@@ -38,14 +38,14 @@ public class CommentForm extends HtmlDiv {
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString(), false);
         add(form);
 
-        FormBuilder ftool = new FormBuilder(CreateCommentAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(CreateCommentAction.class, targetUrl);
         ftool.add(form, new HtmlTextArea(targetUrl.getCommentParameter().getName(), NB_ROWS, NB_COLUMNS));
 
         form.addAsTeamField(new AsTeamField(targetUrl,
-                                 AuthToken.getMember(),
-                                 UserTeamRight.TALK,
-                                 Context.tr("In the name of"),
-                                 Context.tr("Write this comment in the name of this team.")));
+                                            AuthToken.getMember(),
+                                            UserTeamRight.TALK,
+                                            Context.tr("In the name of"),
+                                            Context.tr("Write this comment in the name of this team.")));
 
         form.enableFileUpload();
         form.addSubmit(new HtmlSubmit(Context.tr("Submit comment")));

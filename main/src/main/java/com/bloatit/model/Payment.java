@@ -117,7 +117,7 @@ public final class Payment {
         transaction.setRefused();
     }
 
-    public synchronized static void handlePayment(BankTransaction transaction, MercanetResponse response) {
+    public synchronized static void handlePayment(final BankTransaction transaction, final MercanetResponse response) {
         if (transaction.getStateUnprotected() == State.VALIDATED) {
             // Auto response can validate it before response happens
             return;
@@ -131,13 +131,13 @@ public final class Payment {
 
             // Notify the user:
 
-            Actor<?> actor = ActorManager.getById(Integer.valueOf(response.getCustomerId()));
+            final Actor<?> actor = ActorManager.getById(Integer.valueOf(response.getCustomerId()));
 
             // TODO Make a good mail sender for teams
             if (actor.isTeam()) {
-                Team team = (Team) actor;
-                PageIterable<Member> members = team.getMembers();
-                for (Member member : members) {
+                final Team team = (Team) actor;
+                final PageIterable<Member> members = team.getMembers();
+                for (final Member member : members) {
                     if (team.getUserTeamRight(member).contains(UserTeamRight.BANK)) {
                         sendEmail(transaction, member);
                     }
@@ -153,11 +153,11 @@ public final class Payment {
         }
     }
 
-    private static void sendEmail(BankTransaction transaction, Member member) {
-        Localizator localizator = new Localizator(member.getLocaleUnprotected());
+    private static void sendEmail(final BankTransaction transaction, final Member member) {
+        final Localizator localizator = new Localizator(member.getLocaleUnprotected());
         final String valueStr = localizator.getCurrency(transaction.getValueUnprotected()).getSimpleEuroString();
         final String paidValueStr = localizator.getCurrency(transaction.getValuePaidUnprotected()).getTwoDecimalEuroString();
-        ElveosMail mail = new ElveosMail.ChargingAccountSuccess(transaction.getReferenceUnprotected(), paidValueStr, valueStr);
+        final ElveosMail mail = new ElveosMail.ChargingAccountSuccess(transaction.getReferenceUnprotected(), paidValueStr, valueStr);
         mail.sendMail(member, "account-charging");
     }
 

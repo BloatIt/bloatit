@@ -21,7 +21,7 @@ public class ExternalService extends UserContent<DaoExternalService> {
         return new MyCreator().create(dao);
     }
 
-    public ExternalService(Member author, Team asTeam, Description description) {
+    public ExternalService(final Member author, final Team asTeam, final Description description) {
         this(DaoExternalService.createAndPersist(author.getDao(), asTeam != null ? asTeam.getDao() : null, description.getDao()));
     }
 
@@ -29,7 +29,7 @@ public class ExternalService extends UserContent<DaoExternalService> {
         super(dao);
     }
 
-    public void setLogo(FileMetadata fileImage) {
+    public void setLogo(final FileMetadata fileImage) {
         getDao().setLogo(fileImage.getDao());
     }
 

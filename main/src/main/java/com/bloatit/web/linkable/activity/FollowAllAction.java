@@ -16,7 +16,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
@@ -32,11 +31,11 @@ public final class FollowAllAction extends LoggedElveosAction {
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow state"))
     private final Boolean follow;
-    
+
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow mail state"))
     private final Boolean followMail;
-    
+
     public FollowAllAction(final FollowAllActionUrl url) {
         super(url);
         follow = url.getFollow();
@@ -45,8 +44,8 @@ public final class FollowAllAction extends LoggedElveosAction {
 
     @Override
     public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
-        
-        if(follow) {
+
+        if (follow) {
             me.setGlobalFollow(true);
             me.setGlobalFollowWithMail(followMail);
         } else {

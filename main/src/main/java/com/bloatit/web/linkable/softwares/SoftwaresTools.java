@@ -32,7 +32,6 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDownElement;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
-import com.bloatit.framework.webprocessor.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
@@ -54,7 +53,7 @@ public class SoftwaresTools {
                 add(new HtmlImage(new Image(WebConfiguration.getImgSoftwareNoLogo()), tr("Software logo"), "software_logo"));
             } else {
                 final FileResourceUrl imageUrl = new FileResourceUrl(software.getImage());
-                HtmlLink softwareLink = new SoftwarePageUrl(software).getHtmlLink();
+                final HtmlLink softwareLink = new SoftwarePageUrl(software).getHtmlLink();
                 add(softwareLink);
                 softwareLink.add(new HtmlImage(imageUrl, tr("Software logo"), "software_logo"));
             }
@@ -107,41 +106,41 @@ public class SoftwaresTools {
          * {@link #addDropDownElement(String, String)} method (the code which is
          * not visible from the user).
          * </p>
-         *
+         * 
          * @param value the code of the default element
          */
         @Override
         protected void doSetDefaultStringValue(final String value) {
-            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+            final SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setDefaultValue(value);
 
         }
 
-        public void setNewSoftwareDefaultValue(String suggestedValue) {
-            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+        public void setNewSoftwareDefaultValue(final String suggestedValue) {
+            final SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setNewSoftwareDefaultValue(suggestedValue);
         }
 
-        public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
-            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+        public void setNewSoftwareCheckboxDefaultValue(final String suggestedValue) {
+            final SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setNewSoftwareCheckboxDefaultValue(suggestedValue);
         }
 
         static class SoftwareInputBlock extends InputBlock {
 
             private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
-            private HtmlGenericElement fallbackSelectElement;
-            private HtmlDiv softwareChooserBlock;
-            private HtmlElement createInput;
-            private HtmlElement searchSoftwareInput;
-            private HtmlSimpleInput checkboxInput;
+            private final HtmlGenericElement fallbackSelectElement;
+            private final HtmlDiv softwareChooserBlock;
+            private final HtmlElement createInput;
+            private final HtmlElement searchSoftwareInput;
+            private final HtmlSimpleInput checkboxInput;
 
-            public SoftwareInputBlock(String name, String newSoftwareCheckboxName) {
+            public SoftwareInputBlock(final String name, final String newSoftwareCheckboxName) {
                 softwareChooserBlock = new HtmlDiv("software_chooser_block");
                 softwareChooserBlock.setId("software_chooser_block_id");
 
                 // New software checkbox
-                HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
+                final HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
                 newSoftwareCheckBoxBlock.addAttribute("style", "display:none;");
 
                 checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
@@ -149,7 +148,7 @@ public class SoftwaresTools {
                 checkboxInput.addAttribute("autocomplete", "off");
                 checkboxInput.addAttribute("name", newSoftwareCheckboxName);
                 newSoftwareCheckBoxBlock.add(checkboxInput);
-                HtmlBranch checkBoxLabel = new HtmlGenericElement("label");
+                final HtmlBranch checkBoxLabel = new HtmlGenericElement("label");
                 checkBoxLabel.addText(Context.tr("The Feature consists in creating a new software."));
                 checkBoxLabel.addAttribute("for", "software_chooser_checkbox_id");
                 newSoftwareCheckBoxBlock.add(checkBoxLabel);
@@ -172,8 +171,8 @@ public class SoftwaresTools {
                 addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
                 addDropDownElement("", Context.tr("New software"));
 
-                StringBuilder jsSoftwareNameList = new StringBuilder("[");
-                StringBuilder jsSoftwareIdList = new StringBuilder("[");
+                final StringBuilder jsSoftwareNameList = new StringBuilder("[");
+                final StringBuilder jsSoftwareIdList = new StringBuilder("[");
 
                 for (final Software software : SoftwareManager.getAll()) {
                     addDropDownElement(String.valueOf(software.getId()), software.getName());
@@ -213,7 +212,7 @@ public class SoftwaresTools {
                 return fallbackSelectElement;
             }
 
-            public void setDefaultValue(String value) {
+            public void setDefaultValue(final String value) {
                 final HtmlDropDownElement checkedElement = elements.get(value);
                 if (checkedElement != null) {
                     checkedElement.addAttribute("selected", "selected");
@@ -221,11 +220,11 @@ public class SoftwaresTools {
 
             }
 
-            public void setNewSoftwareDefaultValue(String suggestedValue) {
+            public void setNewSoftwareDefaultValue(final String suggestedValue) {
                 createInput.addAttribute("value", suggestedValue);
             }
 
-            public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
+            public void setNewSoftwareCheckboxDefaultValue(final String suggestedValue) {
                 if (suggestedValue.equals("true")) {
                     checkboxInput.addAttribute("checked", "checked");
                 }

@@ -123,7 +123,7 @@ public class ContributionProcess extends AccountProcess {
             session.notifyGood(Context.tr("Thank you for contributing {0} on this feature.", Context.getLocalizator()
                                                                                                     .getCurrency(getAmount())
                                                                                                     .getSimpleEuroString()));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("No right to make a contribution");
         }
     }
@@ -135,7 +135,7 @@ public class ContributionProcess extends AccountProcess {
             if (subPro.isSuccessful()) {
                 try {
                     doContribute();
-                } catch (NotEnoughMoneyException e) {
+                } catch (final NotEnoughMoneyException e) {
                     // Do nothing.
                 }
             }

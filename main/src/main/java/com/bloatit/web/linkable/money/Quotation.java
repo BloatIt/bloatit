@@ -109,23 +109,23 @@ public class Quotation extends QuotationEntry {
             visitor.visit(this);
         }
     }
-    
+
     public static class QuotationMultiplyEntry extends QuotationEntry {
-        
+
         public final BigDecimal multiplyBy;
         public final QuotationEntry reference;
-        
+
         public QuotationMultiplyEntry(final QuotationEntry reference, final BigDecimal multiplyBy) {
             super();
             this.reference = reference;
             this.multiplyBy = multiplyBy;
         }
-        
+
         @Override
         public BigDecimal getValue() {
             return reference.getValue().multiply(multiplyBy);
         }
-        
+
         @Override
         public void accept(final QuotationVisitor visitor) {
             visitor.visit(this);
@@ -164,7 +164,7 @@ public class Quotation extends QuotationEntry {
         void visit(QuotationProxyEntry entry);
 
         void visit(QuotationPercentEntry entry);
-        
+
         void visit(QuotationMultiplyEntry entry);
 
         void visit(QuotationDifferenceEntry entry);

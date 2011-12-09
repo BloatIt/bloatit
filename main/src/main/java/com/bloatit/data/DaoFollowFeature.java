@@ -43,11 +43,11 @@ public class DaoFollowFeature extends DaoIdentifiable {
     // Construct.
     // ======================================================================
 
-    public static DaoFollowFeature createAndPersist(DaoMember follower,
-                                                    DaoFeature followed,
-                                                    boolean featureComment,
-                                                    boolean bugComment,
-                                                    boolean mail) {
+    public static DaoFollowFeature createAndPersist(final DaoMember follower,
+                                                    final DaoFeature followed,
+                                                    final boolean featureComment,
+                                                    final boolean bugComment,
+                                                    final boolean mail) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoFollowFeature feature = new DaoFollowFeature(follower, followed, featureComment, bugComment, mail);
         try {
@@ -60,7 +60,11 @@ public class DaoFollowFeature extends DaoIdentifiable {
         return feature;
     }
 
-    public DaoFollowFeature(DaoMember follower, DaoFeature followed, boolean featureComment, boolean bugComment, boolean mail) {
+    public DaoFollowFeature(final DaoMember follower,
+                            final DaoFeature followed,
+                            final boolean featureComment,
+                            final boolean bugComment,
+                            final boolean mail) {
         super();
         this.follower = follower;
         this.followed = followed;
@@ -69,22 +73,22 @@ public class DaoFollowFeature extends DaoIdentifiable {
         this.mail = mail;
     }
 
-    public void setFeatureComment(boolean featureComment) {
+    public void setFeatureComment(final boolean featureComment) {
         this.featureComment = featureComment;
     }
 
-    public void setBugComment(boolean bugComment) {
+    public void setBugComment(final boolean bugComment) {
         this.bugComment = bugComment;
     }
 
-    public void setMail(boolean mail) {
+    public void setMail(final boolean mail) {
         this.mail = mail;
     }
 
     public void unfollow() {
         SessionManager.getSessionFactory().getCurrentSession().delete(this);
     }
-    
+
     // ======================================================================
     // Getters.
     // ======================================================================
@@ -108,8 +112,6 @@ public class DaoFollowFeature extends DaoIdentifiable {
     public boolean isMail() {
         return mail;
     }
-    
-    
 
     // ======================================================================
     // Visitor.
@@ -154,32 +156,41 @@ public class DaoFollowFeature extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoFollowFeature other = (DaoFollowFeature) obj;
-        if (bugComment != other.bugComment)
+        }
+        final DaoFollowFeature other = (DaoFollowFeature) obj;
+        if (bugComment != other.bugComment) {
             return false;
-        if (featureComment != other.featureComment)
+        }
+        if (featureComment != other.featureComment) {
             return false;
+        }
         if (followed == null) {
-            if (other.followed != null)
+            if (other.followed != null) {
                 return false;
-        } else if (!followed.equals(other.followed))
+            }
+        } else if (!followed.equals(other.followed)) {
             return false;
+        }
         if (follower == null) {
-            if (other.follower != null)
+            if (other.follower != null) {
                 return false;
-        } else if (!follower.equals(other.follower))
+            }
+        } else if (!follower.equals(other.follower)) {
             return false;
-        if (mail != other.mail)
+        }
+        if (mail != other.mail) {
             return false;
+        }
         return true;
     }
 
-    
 }

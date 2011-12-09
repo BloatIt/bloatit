@@ -64,7 +64,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
             throw new BadProgrammerException(e);
         } catch (final ClassCastException e) {
             throw new BadProgrammerException(e);
-        }   
+        }
         return null;
     }
 
@@ -250,7 +250,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         return hasInvoicingContact(false);
     }
 
-    public boolean hasInvoicingContact(boolean all) throws UnauthorizedPrivateAccessException {
+    public boolean hasInvoicingContact(final boolean all) throws UnauthorizedPrivateAccessException {
         final Contact contact = getContact();
         if (contact.getName() == null) {
             return false;

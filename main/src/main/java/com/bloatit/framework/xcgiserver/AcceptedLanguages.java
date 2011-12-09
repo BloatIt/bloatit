@@ -38,7 +38,7 @@ public class AcceptedLanguages {
      * @return the preferred language in the collection, according to the
      *         http_accept_language property, OR "en" if not found.
      */
-    public Locale getPreferedLanguageOrEn(Collection<Locale> possibleLanguages) {
+    public Locale getPreferedLanguageOrEn(final Collection<Locale> possibleLanguages) {
         return getPreferedLanguage(possibleLanguages, new Locale("en"));
     }
 
@@ -50,9 +50,9 @@ public class AcceptedLanguages {
      *         http_accept_language property, OR <i>defaultLocal</i> if not
      *         found.
      */
-    public Locale getPreferedLanguage(Collection<Locale> possibleLanguages, Locale defaultLocal) {
+    public Locale getPreferedLanguage(final Collection<Locale> possibleLanguages, final Locale defaultLocal) {
 
-        Locale preferedLanguage = getPreferedLanguage(possibleLanguages);
+        final Locale preferedLanguage = getPreferedLanguage(possibleLanguages);
         if (preferedLanguage != null) {
             return preferedLanguage;
         }
@@ -66,10 +66,10 @@ public class AcceptedLanguages {
      * @return the preferred language in the collection, according to the
      *         http_accept_language property, OR <i>NULL</i> if not found.
      */
-    public Locale getPreferedLanguage(Collection<Locale> possibleLanguages) {
-        for (Entry<Integer, List<String>> langs : priorityLangs.entrySet()) {
-            for (String lang : langs.getValue()) {
-                Locale locale = new Locale(lang);
+    public Locale getPreferedLanguage(final Collection<Locale> possibleLanguages) {
+        for (final Entry<Integer, List<String>> langs : priorityLangs.entrySet()) {
+            for (final String lang : langs.getValue()) {
+                final Locale locale = new Locale(lang);
                 if (possibleLanguages.contains(locale)) {
                     return locale;
                 }
@@ -86,8 +86,8 @@ public class AcceptedLanguages {
         // read the list of local and find the best one
         String localLang = null;
         String localCountry = null;
-        for (Entry<Integer, List<String>> langOfPriority : priorityLangs.entrySet()) {
-            for (String string : langOfPriority.getValue()) {
+        for (final Entry<Integer, List<String>> langOfPriority : priorityLangs.entrySet()) {
+            for (final String string : langOfPriority.getValue()) {
                 if (string.length() == 2) {
                     // LANG
                     if (localLang == null && AvailableLocales.getAvailableLangs().containsKey(string)) {
@@ -95,11 +95,11 @@ public class AcceptedLanguages {
                     }
                 } else if (string.length() == 5) {
                     // LANG - COUNTRY
-                    String langKey = string.substring(0, 2);
+                    final String langKey = string.substring(0, 2);
                     if (localLang == null && AvailableLocales.getAvailableLangs().containsKey(langKey)) {
                         localLang = langKey;
                     }
-                    String countryKey = string.substring(3, 5).toUpperCase();
+                    final String countryKey = string.substring(3, 5).toUpperCase();
                     if (localCountry == null && AvailableLocales.getAvailableLangs().containsKey(countryKey)) {
                         localCountry = countryKey;
                     }
@@ -120,24 +120,24 @@ public class AcceptedLanguages {
         return new Locale(localLang, AvailableLocales.getDefaultCountry(localLang));
     }
 
-    private void fillUpPriorityLands(String accepted) {
+    private void fillUpPriorityLands(final String accepted) {
         // Split the accepted language in a list of locales order by
         // priority
-        String[] langs = accepted.split(",");
+        final String[] langs = accepted.split(",");
         for (String lang : langs) {
             lang = lang.trim();
             if (lang.length() >= 2) {
-                String[] splited = lang.split(";");
+                final String[] splited = lang.split(";");
                 if (splited.length == 1) {
                     addALang(splited[0].trim(), 1.F);
                 } else if (splited.length == 2) {
                     try {
-                        String wstr = splited[1].trim();
+                        final String wstr = splited[1].trim();
                         if (wstr.length() > 3) {
-                            float w = Float.valueOf(wstr.substring(2));
+                            final float w = Float.valueOf(wstr.substring(2));
                             addALang(splited[0].trim(), w);
                         }
-                    } catch (NumberFormatException e) {
+                    } catch (final NumberFormatException e) {
                         Log.framework().info("Malformed accepedLanguage", e);
                     }
                 }
@@ -148,14 +148,14 @@ public class AcceptedLanguages {
         }
     }
 
-    private void addALang(String lang, float weight) {
+    private void addALang(final String lang, final float weight) {
         if (weight <= 1) {
-            Integer priority = 100 - Math.round(weight * 100.F);
-            List<String> langList = priorityLangs.get(priority);
+            final Integer priority = 100 - Math.round(weight * 100.F);
+            final List<String> langList = priorityLangs.get(priority);
             if (langList != null) {
                 langList.add(lang);
             } else {
-                List<String> list = new ArrayList<String>();
+                final List<String> list = new ArrayList<String>();
                 list.add(lang);
                 priorityLangs.put(priority, list);
             }

@@ -50,7 +50,7 @@ public class ModifyFeatureAction extends LoggedElveosAction {
     @RequestParam(role = Role.POST)
     @FormField(label = @tr("Description"), isShort = false)
     @FormComment(@tr("Try to be the most specific possible."))
-    private String description;
+    private final String description;
 
     @Optional
     @RequestParam(role = Role.POST)
@@ -67,7 +67,7 @@ public class ModifyFeatureAction extends LoggedElveosAction {
 
     private final ModifyFeatureActionUrl url;
 
-    public ModifyFeatureAction(ModifyFeatureActionUrl url) {
+    public ModifyFeatureAction(final ModifyFeatureActionUrl url) {
         super(url);
         this.url = url;
         this.feature = url.getFeature();
@@ -79,14 +79,14 @@ public class ModifyFeatureAction extends LoggedElveosAction {
     }
 
     @Override
-    protected Url doProcessRestricted(Member me) {
+    protected Url doProcessRestricted(final Member me) {
         try {
             feature.setDescription(description, feature.getDescription().getDefaultLanguage());
             if (software == null && newSoftwareName != null && !newSoftwareName.isEmpty()) {
                 Software softwareToUse = null;
                 try {
                     softwareToUse = new Software(newSoftwareName, me, Locale.ENGLISH, "No description yet.");
-                } catch (UniqueNameExpectedException e) {
+                } catch (final UniqueNameExpectedException e) {
                     softwareToUse = SoftwareManager.getByName(newSoftwareName);
                 }
                 if (softwareToUse != null) {
@@ -99,14 +99,14 @@ public class ModifyFeatureAction extends LoggedElveosAction {
             }
             feature.setTitle(title, feature.getDescription().getDefaultLanguage());
 
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("User cannot modify a feature, we checked right before tho ...");
         }
         return new FeaturePageUrl(feature, FeatureTabKey.description);
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         if (!feature.canModify()) {
             return new FeaturePageUrl(feature, FeatureTabKey.description);
         }

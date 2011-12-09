@@ -44,7 +44,6 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
-import com.bloatit.web.components.HtmlFollowButton.HtmlFollowActorButton;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -168,7 +167,7 @@ public final class TeamPage extends ElveosPage {
 
     /**
      * Generates the team block displaying it's ID
-     *
+     * 
      * @param me the connected member
      * @return the ID card
      */
@@ -179,7 +178,7 @@ public final class TeamPage extends ElveosPage {
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
             modify.add(new ModifyTeamPageUrl(team).getHtmlLink(Context.tr("Change team settings")));
-            //modify.add(new HtmlFollowActorButton(team));
+            // modify.add(new HtmlFollowActorButton(team));
         }
 
         // Title and team type
@@ -194,7 +193,8 @@ public final class TeamPage extends ElveosPage {
         final HtmlList informationsList = new HtmlList();
 
         // Visibility
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Membership: "), (team.isPublic() ? Context.tr("Open to all") : Context.tr("By invitation"))));
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Membership: "), (team.isPublic() ? Context.tr("Open to all")
+                : Context.tr("By invitation"))));
 
         // Creation date
         try {

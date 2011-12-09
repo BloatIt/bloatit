@@ -90,7 +90,7 @@ public class HttpHeader {
         this.httpAcceptLanguage = new AcceptedLanguages(notNull(env.get("HTTP_ACCEPT_LANGUAGE")));
     }
 
-    private void parseLanguageAndPageName(String pathInfo) {
+    private void parseLanguageAndPageName(final String pathInfo) {
         // the script name is the first word
         final String[] splitedUri = removeFirstSlashes(pathInfo).split("/", 2);
         final String firstWord = splitedUri[0];
@@ -111,7 +111,7 @@ public class HttpHeader {
         }
     }
 
-    private void parseGetParameters(String queryString) throws UnsupportedEncodingException {
+    private void parseGetParameters(final String queryString) throws UnsupportedEncodingException {
         final String[] params = queryString.split("&");
         for (final String param : params) {
             final String[] pair = param.split("=", 2);
@@ -135,15 +135,15 @@ public class HttpHeader {
         return AvailableLocales.getAvailableLangs().containsKey(langCode);
     }
 
-    private int toInt(String v) {
+    private int toInt(final String v) {
         try {
             return Integer.parseInt(v);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             return 0;
         }
     }
 
-    private String notNull(String v) {
+    private String notNull(final String v) {
         if (v == null) {
             return "";
         }
@@ -151,7 +151,7 @@ public class HttpHeader {
     }
 
     @SuppressWarnings("unchecked")
-    private List<String> toList(String stringValue, String separator) {
+    private List<String> toList(final String stringValue, final String separator) {
         if (stringValue == null) {
             return Collections.EMPTY_LIST;
         }
@@ -159,7 +159,7 @@ public class HttpHeader {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, String> toMap(String stringValue) {
+    private Map<String, String> toMap(final String stringValue) {
         if (stringValue == null) {
             return Collections.EMPTY_MAP;
         }
@@ -205,7 +205,7 @@ public class HttpHeader {
 
     /** example : true */
     public final boolean isHttps() {
-        String ishttps = env.get("HTTPS");
+        final String ishttps = env.get("HTTPS");
         return ishttps != null && ishttps.equals("on");
     }
 

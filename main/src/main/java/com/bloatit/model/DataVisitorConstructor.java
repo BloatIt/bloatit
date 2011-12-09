@@ -274,7 +274,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     public Identifiable<?> visit(final DaoInvoice dao) {
         return Invoice.create(dao);
     }
-    
+
     @Override
     public Identifiable<?> visit(final DaoContributionInvoice dao) {
         return ContributionInvoice.create(dao);
@@ -309,34 +309,33 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     }
 
     @Override
-    public Identifiable<?> visit(DaoExternalServiceMembership daoExternalServiceMembership) {
+    public Identifiable<?> visit(final DaoExternalServiceMembership daoExternalServiceMembership) {
         return ExternalServiceMembership.create(daoExternalServiceMembership);
     }
-    
+
     @Override
     public Identifiable<?> visit(final DaoFollow daoFollow) {
         return Follow.create(daoFollow);
     }
 
     @Override
-    public Identifiable<?> visit(DaoEvent daoEvent) {
+    public Identifiable<?> visit(final DaoEvent daoEvent) {
         return Event.create(daoEvent);
     }
-    
+
     @Override
-    public Identifiable<?> visit(DaoFollowActor daoFollow) {
+    public Identifiable<?> visit(final DaoFollowActor daoFollow) {
         return FollowActor.create(daoFollow);
     }
-    
+
     @Override
-    public Identifiable<?> visit(DaoFollowFeature daoFollow) {
+    public Identifiable<?> visit(final DaoFollowFeature daoFollow) {
         return FollowFeature.create(daoFollow);
     }
-    
+
     @Override
-    public Identifiable<?> visit(DaoFollowSoftware daoFollow) {
+    public Identifiable<?> visit(final DaoFollowSoftware daoFollow) {
         return FollowSoftware.create(daoFollow);
     }
-    
 
 }

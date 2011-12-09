@@ -306,10 +306,10 @@ public class DaoMember extends DaoActor {
 
     @Basic(optional = false)
     private boolean globalFollow;
-    
+
     @Basic(optional = false)
     private boolean globalFollowWithMail;
-    
+
     @Column(length = 1024)
     private String description;
 
@@ -639,7 +639,7 @@ public class DaoMember extends DaoActor {
         this.salt = salt;
     }
 
-    public void setDescription(String userDescription) {
+    public void setDescription(final String userDescription) {
         this.description = userDescription;
     }
 
@@ -648,9 +648,9 @@ public class DaoMember extends DaoActor {
     }
 
     public void addAuthorizedExternalService(final String serviceToken, final String accessToken, final EnumSet<RightLevel> level) {
-        DaoExternalServiceMembership existingService = DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
+        final DaoExternalServiceMembership existingService = DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
         if (existingService == null) {
-            DaoExternalService service = DaoExternalService.getByToken(serviceToken);
+            final DaoExternalService service = DaoExternalService.getByToken(serviceToken);
             if (service != null) {
                 this.authorizedExternalServices.add(DaoExternalServiceMembership.createAndPersist(this, service, accessToken, level));
             }
@@ -659,19 +659,19 @@ public class DaoMember extends DaoActor {
         }
     }
 
-    public void acceptNewsLetter(boolean newsletter) {
+    public void acceptNewsLetter(final boolean newsletter) {
         this.newsletter = newsletter;
     }
-    
-    public void setGlobalFollow(boolean globalFollow) {
+
+    public void setGlobalFollow(final boolean globalFollow) {
         this.globalFollow = globalFollow;
     }
-    
-    public void setGlobalFollowWithMail(boolean globalFollow) {
+
+    public void setGlobalFollowWithMail(final boolean globalFollow) {
         this.globalFollowWithMail = globalFollow;
     }
 
-    public DaoFollowActor followOrGetActor(DaoActor actor) {
+    public DaoFollowActor followOrGetActor(final DaoActor actor) {
         final Object followed = SessionManager.getNamedQuery("member.getFollowedActor.byActor")
                                               .setEntity("member", this)
                                               .setEntity("actor", actor)
@@ -682,7 +682,7 @@ public class DaoMember extends DaoActor {
         return (DaoFollowActor) followed;
     }
 
-    public boolean isFollowing(DaoActor actor) {
+    public boolean isFollowing(final DaoActor actor) {
         final Object followed = SessionManager.getNamedQuery("member.getFollowedActor.byActor")
                                               .setEntity("member", this)
                                               .setEntity("actor", actor)
@@ -690,7 +690,7 @@ public class DaoMember extends DaoActor {
         return followed != null;
     }
 
-    public DaoFollowFeature followOrGetFeature(DaoFeature feature) {
+    public DaoFollowFeature followOrGetFeature(final DaoFeature feature) {
         final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
                                                                            .setEntity("member", this)
                                                                            .setEntity("feature", feature)
@@ -700,8 +700,8 @@ public class DaoMember extends DaoActor {
         }
         return followed;
     }
-    
-    public DaoFollowFeature getFollowFeature(DaoFeature feature) {
+
+    public DaoFollowFeature getFollowFeature(final DaoFeature feature) {
         final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
                                                                            .setEntity("member", this)
                                                                            .setEntity("feature", feature)
@@ -709,7 +709,7 @@ public class DaoMember extends DaoActor {
         return followed;
     }
 
-    public boolean isFollowing(DaoFeature feature) {
+    public boolean isFollowing(final DaoFeature feature) {
         final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
                                                                            .setEntity("member", this)
                                                                            .setEntity("feature", feature)
@@ -717,7 +717,7 @@ public class DaoMember extends DaoActor {
         return followed != null;
     }
 
-    public DaoFollowSoftware followOrGetSoftware(DaoSoftware software) {
+    public DaoFollowSoftware followOrGetSoftware(final DaoSoftware software) {
         final DaoFollowSoftware followed = (DaoFollowSoftware) SessionManager.getNamedQuery("member.getFollowedSoftware.bySoftware")
                                                                              .setEntity("member", this)
                                                                              .setEntity("software", software)
@@ -728,7 +728,7 @@ public class DaoMember extends DaoActor {
         return followed;
     }
 
-    public boolean isFollowing(DaoSoftware software) {
+    public boolean isFollowing(final DaoSoftware software) {
         final DaoFollowSoftware followed = (DaoFollowSoftware) SessionManager.getNamedQuery("member.getFollowedSoftware.bySoftware")
                                                                              .setEntity("member", this)
                                                                              .setEntity("software", software)
@@ -736,29 +736,29 @@ public class DaoMember extends DaoActor {
         return followed != null;
     }
 
-    private DaoFollowFeature follow(DaoFeature feature) {
+    private DaoFollowFeature follow(final DaoFeature feature) {
         final DaoFollowFeature followed = DaoFollowFeature.createAndPersist(this, feature, false, false, false);
         followedFeatures.add(followed);
         return followed;
     }
 
-    private DaoFollowSoftware follow(DaoSoftware soft) {
+    private DaoFollowSoftware follow(final DaoSoftware soft) {
         final DaoFollowSoftware followed = DaoFollowSoftware.createAndPersist(this, soft, false);
         followedSoftware.add(followed);
         return followed;
     }
 
-    private DaoFollowActor follow(DaoActor soft) {
+    private DaoFollowActor follow(final DaoActor soft) {
         final DaoFollowActor followed = DaoFollowActor.createAndPersist(this, soft, false);
         followedActors.add(followed);
         return followed;
     }
 
-    public void setEmailStrategy(EmailStrategy emailStrategy) {
+    public void setEmailStrategy(final EmailStrategy emailStrategy) {
         this.emailStrategy = emailStrategy;
     }
 
-    public void setLastWatchedEvents(Date lastWatchedEvents) {
+    public void setLastWatchedEvents(final Date lastWatchedEvents) {
         this.lastWatchedEvents = lastWatchedEvents;
     }
 
@@ -786,11 +786,11 @@ public class DaoMember extends DaoActor {
     public EmailStrategy getEmailStrategy() {
         return emailStrategy;
     }
-    
+
     public boolean isGlobalFollow() {
         return globalFollow;
     }
-    
+
     public boolean isGlobalFollowWithMail() {
         return globalFollowWithMail;
     }
@@ -1112,22 +1112,22 @@ public class DaoMember extends DaoActor {
         return this.emailToActivate;
     }
 
-    public DaoExternalServiceMembership getAuthorizedExternalServices(String serviceToken) {
+    public DaoExternalServiceMembership getAuthorizedExternalServices(final String serviceToken) {
         return DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
     }
 
     public PageIterable<DaoExternalServiceMembership> getAuthorizedExternalServices() {
         return new MappedList<DaoExternalServiceMembership>(authorizedExternalServices);
     }
-    
+
     public PageIterable<DaoFollowFeature> getFollowedFeatures() {
         return new MappedList<DaoFollowFeature>(followedFeatures);
     }
-    
+
     public PageIterable<DaoFollowActor> getFollowedActors() {
         return new MappedList<DaoFollowActor>(followedActors);
     }
-    
+
     public PageIterable<DaoFollowSoftware> getFollowedSoftware() {
         return new MappedList<DaoFollowSoftware>(followedSoftware);
     }

@@ -48,7 +48,7 @@ public class CommentTools {
         return ph;
     }
 
-    public static HtmlElement generateCommentList(Comment comment) {
+    public static HtmlElement generateCommentList(final Comment comment) {
         final PlaceHolderElement ph = new PlaceHolderElement();
         ph.add(generateComment(comment, false, null));
         return ph;

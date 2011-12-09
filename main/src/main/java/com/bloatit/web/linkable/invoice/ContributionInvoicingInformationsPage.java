@@ -109,9 +109,9 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
         final HtmlDiv modify = new HtmlDiv("float_right");
         layout.add(modify);
 
-        Actor<?> actor = process.getActor();
+        final Actor<?> actor = process.getActor();
 
-        ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor, process);
+        final ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor, process);
         modifyInvoicingContactProcessUrl.setNeedAllInfos(true);
         modify.add(modifyInvoicingContactProcessUrl.getHtmlLink(Context.tr("Change invoicing informations")));
 
@@ -128,8 +128,8 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
         generateInvoiceActionUrl = new ContributionInvoicingInformationsActionUrl(getSession().getShortKey(), process);
         final HtmlElveosForm form = new HtmlElveosForm(generateInvoiceActionUrl.urlString());
 
-        Milestone milestone = process.getMilestone();
-        HtmlTable.HtmlLineTableModel model = new HtmlTable.HtmlLineTableModel();
+        final Milestone milestone = process.getMilestone();
+        final HtmlTable.HtmlLineTableModel model = new HtmlTable.HtmlLineTableModel();
         model.setHeaderLine(new HtmlTableLine() {
 
             {
@@ -147,12 +147,12 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
         try {
             BigDecimal invoiceIdNumberCount = process.getActor().getContact().getInvoiceIdNumber();
 
-            for (MilestoneContributionAmount milestoneContributionAmount : milestone.getContributionAmounts()) {
+            for (final MilestoneContributionAmount milestoneContributionAmount : milestone.getContributionAmounts()) {
                 model.addLine(new InvoiceLine(milestoneContributionAmount, invoiceIdNumberCount));
                 invoiceIdNumberCount = invoiceIdNumberCount.add(BigDecimal.ONE);
             }
 
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException("Fail to generate contributors list", e);
         }
 
@@ -174,11 +174,11 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
         // Name
         final String name;
-        Actor<?> actor = process.getActor();
+        final Actor<?> actor = process.getActor();
         Contact contact;
         try {
             contact = actor.getContact();
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException(e);
         }
         if (actor.isTeam()) {
@@ -299,7 +299,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
 
         public InvoiceLine(final MilestoneContributionAmount milestoneContributionAmount, final BigDecimal invoiceIdNumber) throws UnauthorizedPrivateAccessException {
             final Contribution contribution = milestoneContributionAmount.getContribution();
-            Actor<?> author = contribution.getAuthor();
+            final Actor<?> author = contribution.getAuthor();
             final Contact contact = author.getContactUnprotected();
 
             addCell(new HtmlTableCell("") {
@@ -314,7 +314,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
                 public HtmlNode getBody() {
                     try {
                         return new MoneyDisplayComponent(milestoneContributionAmount.getAmount(), Context.getLocalizator());
-                    } catch (UnauthorizedPublicReadOnlyAccessException e) {
+                    } catch (final UnauthorizedPublicReadOnlyAccessException e) {
                         throw new BadProgrammerException("fail to read the amount of a contribution milestone");
                     }
                 }
@@ -327,13 +327,13 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
                 @Override
                 public HtmlNode getBody() {
 
-                    HtmlDiv div = new HtmlDiv();
-                    String taxIdentification = contact.getTaxIdentification();
+                    final HtmlDiv div = new HtmlDiv();
+                    final String taxIdentification = contact.getTaxIdentification();
                     if (taxIdentification != null) {
                         div.add(new HtmlText(taxIdentification));
-                        UrlString urlString = new UrlString("http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms="
+                        final UrlString urlString = new UrlString("http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms="
                                 + taxIdentification.substring(0, 2) + "&vat=" + taxIdentification.substring(2));
-                        HtmlLink link = urlString.getHtmlLink(Context.tr("Check VAT number"));
+                        final HtmlLink link = urlString.getHtmlLink(Context.tr("Check VAT number"));
                         link.setOpenInNewPage();
 
                         div.add(new HtmlDiv("vat_check").add(link));
@@ -347,7 +347,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
                 public HtmlNode getBody() {
                     final HtmlCheckbox box = new HtmlCheckbox(generateInvoiceActionUrl.getApplyVATParameter().pickFieldData().getName(),
                                                               LabelPosition.AFTER);
-                    String id = milestoneContributionAmount.getId().toString();
+                    final String id = milestoneContributionAmount.getId().toString();
                     box.addAttribute("value", id);
                     if (applyVAT.contains(id) || preview == false) {
                         box.addAttribute("checked", "checked");
@@ -360,10 +360,10 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
             addCell(new HtmlTableCell("") {
                 @Override
                 public HtmlNode getBody() {
-                    ContributionInvoicePreviewDataUrl dataUrl = new ContributionInvoicePreviewDataUrl(process.getActor(),
-                                                                                                      milestoneContributionAmount,
-                                                                                                      invoiceIdNumber);
-                    String id = milestoneContributionAmount.getId().toString();
+                    final ContributionInvoicePreviewDataUrl dataUrl = new ContributionInvoicePreviewDataUrl(process.getActor(),
+                                                                                                            milestoneContributionAmount,
+                                                                                                            invoiceIdNumber);
+                    final String id = milestoneContributionAmount.getId().toString();
                     if (applyVAT.contains(id) || preview == false) {
                         dataUrl.setApplyVAT(true);
                     } else {
@@ -371,7 +371,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedElveosPag
                     }
                     try {
                         return dataUrl.getHtmlLink(process.getActor().getContact().getInvoiceId(invoiceIdNumber));
-                    } catch (UnauthorizedPrivateAccessException e) {
+                    } catch (final UnauthorizedPrivateAccessException e) {
                         throw new BadProgrammerException("fail to read the contact informations for the member");
                     }
                 }

@@ -14,7 +14,7 @@ public class Configuration {
     }
 
     public synchronized int getNextMercanetTransactionId() {
-        int id = dao.getMercanetTransactionId();
+        final int id = dao.getMercanetTransactionId();
         if (id == 999999) {
             dao.setMercanetTransactionId(0);
         } else {

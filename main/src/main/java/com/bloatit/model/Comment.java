@@ -127,7 +127,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     }
 
     @Override
-    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+    protected void delete(final boolean delOrder) throws UnauthorizedOperationException {
         super.delete(delOrder);
         for (final Comment comment : getComments()) {
             comment.delete(delOrder);

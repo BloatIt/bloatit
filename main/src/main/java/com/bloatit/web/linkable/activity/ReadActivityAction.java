@@ -25,7 +25,6 @@ import com.bloatit.web.url.ReadActivityActionUrl;
 @ParamContainer("activity/read")
 public final class ReadActivityAction extends LoggedElveosAction {
 
-
     public ReadActivityAction(final ReadActivityActionUrl url) {
         super(url);
     }

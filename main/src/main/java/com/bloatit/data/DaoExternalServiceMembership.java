@@ -190,7 +190,7 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         this.expirationDate = expirationDate;
     }
 
-    public void reset(String token, EnumSet<RightLevel> level) {
+    public void reset(final String token, final EnumSet<RightLevel> level) {
         authorized = false;
         refreshToken = null;
         this.expirationDate = null;

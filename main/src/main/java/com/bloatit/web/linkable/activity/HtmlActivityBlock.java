@@ -56,7 +56,7 @@ public class HtmlActivityBlock extends HtmlDiv {
 
     private Date lastWatchedEvents;
 
-    public HtmlActivityBlock(Member member) {
+    public HtmlActivityBlock(final Member member) {
         super("activity-block");
 
         if (AuthToken.isAuthenticated()) {
@@ -111,36 +111,36 @@ public class HtmlActivityBlock extends HtmlDiv {
                 final HtmlDiv menuBarItemGlobalActivity = new HtmlDiv("menu_bar_right_item");
                 menuBar.add(menuBarItemGlobalActivity);
                 {
-                    ActivityPageUrl activityPageUrl = new ActivityPageUrl();
+                    final ActivityPageUrl activityPageUrl = new ActivityPageUrl();
                     menuBarItemGlobalActivity.add(activityPageUrl.getHtmlLink(Context.tr("global activity")));
                 }
             }
 
         } else {
 
-            if(AuthToken.isAuthenticated()) {
+            if (AuthToken.isAuthenticated()) {
                 final HtmlDiv menuBar = new HtmlDiv("menu_bar");
                 add(menuBar);
                 {
                     final HtmlDiv menuBarItemMyActivity = new HtmlDiv("menu_bar_right_item");
                     menuBar.add(menuBarItemMyActivity);
                     {
-                        ActivityPageUrl activityPageUrl = new ActivityPageUrl();
+                        final ActivityPageUrl activityPageUrl = new ActivityPageUrl();
                         activityPageUrl.setMember(AuthToken.getMember());
                         menuBarItemMyActivity.add(activityPageUrl.getHtmlLink(Context.tr("my activity")));
                     }
                 }
             }
 
-
-            if(member == null) {
-                add(new HtmlTitle(Context.tr("Global Elveos activity"),1));
+            if (member == null) {
+                add(new HtmlTitle(Context.tr("Global Elveos activity"), 1));
             } else {
-                add(new HtmlTitle(Context.tr("{0}''s activity", member.getDisplayName()),1));
+                add(new HtmlTitle(Context.tr("{0}''s activity", member.getDisplayName()), 1));
             }
         }
 
-        EventList events = (member == null ? EventManager.getAllEventAfter(DateUtils.dawnOfTime()) : EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member));
+        final EventList events = (member == null ? EventManager.getAllEventAfter(DateUtils.dawnOfTime())
+                : EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member));
 
         final HtmlDiv activityBlockTwoColumn = new HtmlDiv("activity-block-two-column");
         add(activityBlockTwoColumn);
@@ -150,7 +150,7 @@ public class HtmlActivityBlock extends HtmlDiv {
             activityBlockTwoColumn.add(leftColumn);
             final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
-            PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
+            final PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
 
             activityBlockTwoColumn.add(timeColumn);
             {
@@ -183,7 +183,7 @@ public class HtmlActivityBlock extends HtmlDiv {
         {
             final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
-            PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
+            final PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
 
             activityBlockOneColumn.add(timeColumn);
             {
@@ -213,11 +213,11 @@ public class HtmlActivityBlock extends HtmlDiv {
     }
 
     private void fillTimeLine(final HtmlDiv leftColumn,
-                              PlaceHolderElement daysPlaceHolder,
+                              final PlaceHolderElement daysPlaceHolder,
                               final HtmlDiv rightColumn,
                               final ActivityEventVisitor visitor,
                               final boolean rightOnly) {
-        SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
+        final SimpleDateFormat dayFormat = new SimpleDateFormat("MMM d", Context.getLocalizator().getLocale());
         // boolean insertToLeft = false;
         int leftOffset = 50;
         int rightOffset = 0;
@@ -230,18 +230,18 @@ public class HtmlActivityBlock extends HtmlDiv {
             leftColumn.add(generateSpacer(leftOffset));
         }
 
-        for (DayAgreggator day : visitor.getDays()) {
+        for (final DayAgreggator day : visitor.getDays()) {
 
             int lastOffset = 0;
 
             HtmlElement element = null;
 
             // for (Entry<Feature, Entries> e : day.getFeatures().entrySet()) {
-            for (Entries<?> e : day.getEntries()) {
+            for (final Entries<?> e : day.getEntries()) {
                 if (e instanceof FeatureEntries) {
-                    FeatureEntries f = (FeatureEntries) e;
-                    EventFeatureComponent featureComponent = new EventFeatureComponent(f.getKey(), Context.getLocalizator(), true);
-                    for (HtmlEntry entry : e) {
+                    final FeatureEntries f = (FeatureEntries) e;
+                    final EventFeatureComponent featureComponent = new EventFeatureComponent(f.getKey(), Context.getLocalizator(), true);
+                    for (final HtmlEntry entry : e) {
                         featureComponent.add(entry);
 
                         if (entry.getDate().after(lastWatchedEvents)) {
@@ -255,7 +255,7 @@ public class HtmlActivityBlock extends HtmlDiv {
                     // throw new NotImplementedException();
                 }
 
-                int blockHeight = 69 + 24 * e.size() + 30;
+                final int blockHeight = 69 + 24 * e.size() + 30;
                 element.addAttribute("style", "height: " + (blockHeight - 30) + "px;");
                 int offset;
 
@@ -267,7 +267,7 @@ public class HtmlActivityBlock extends HtmlDiv {
                     }
 
                     if (leftOffset - rightStartOffset < MIN_LEFT_RIGHT_DIFF) {
-                        int space = MIN_LEFT_RIGHT_DIFF - (leftOffset - rightStartOffset);
+                        final int space = MIN_LEFT_RIGHT_DIFF - (leftOffset - rightStartOffset);
                         leftColumn.add(generateSpacer(space));
                         leftOffset += space;
                     }
@@ -284,7 +284,7 @@ public class HtmlActivityBlock extends HtmlDiv {
                     }
 
                     if (rightOffset - leftStartOffset < MIN_LEFT_RIGHT_DIFF) {
-                        int space = MIN_LEFT_RIGHT_DIFF - (rightOffset - leftStartOffset);
+                        final int space = MIN_LEFT_RIGHT_DIFF - (rightOffset - leftStartOffset);
                         leftColumn.add(generateSpacer(space));
                         rightOffset += space;
                     }
@@ -319,14 +319,14 @@ public class HtmlActivityBlock extends HtmlDiv {
         }
     }
 
-    private HtmlNode generateDay(String text, int height) {
+    private HtmlNode generateDay(final String text, final int height) {
         final HtmlDiv dayBlock = new HtmlDiv("day");
         dayBlock.addText(text);
         dayBlock.addAttribute("style", "height: " + height + "px;");
         return dayBlock;
     }
 
-    private HtmlNode generateSpacer(int height) {
+    private HtmlNode generateSpacer(final int height) {
         final HtmlDiv dayBlock = new HtmlDiv("spacer");
         dayBlock.addAttribute("style", "height: " + height + "px;");
         return dayBlock;

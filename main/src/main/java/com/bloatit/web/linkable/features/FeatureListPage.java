@@ -353,7 +353,7 @@ public final class FeatureListPage extends ElveosPage {
 
     @Override
     protected ArrayList<HtmlHeaderLink> getLinks() {
-        ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
+        final ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
         list.add(ElveosAtomFeed.generateHeaderLink(new FeatureAtomFeedUrl(), Context.tr("Feature feed")));
         return list;
     }

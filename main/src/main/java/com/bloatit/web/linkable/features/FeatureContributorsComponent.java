@@ -118,9 +118,9 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         private Iterator<Contribution> it;
         private Contribution contribution;
         private final PageIterable<Contribution> contributions;
-        private Member loggedMember;
+        private final Member loggedMember;
 
-        private ContributionTableModel(final PageIterable<Contribution> contributions, Member loggedMember) {
+        private ContributionTableModel(final PageIterable<Contribution> contributions, final Member loggedMember) {
             this.contributions = contributions;
             this.loggedMember = loggedMember;
         }
@@ -180,16 +180,16 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             try {
                 switch (column) {
                     case 0:
-                            val.add(new HtmlAuthorLink(contribution));
+                        val.add(new HtmlAuthorLink(contribution));
                         break;
                     case 1:
 
                         if (contribution.getAuthor().equals(loggedMember) && contribution.isCancelable()) {
-                            HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink();
-                            HtmlMixedText mixed = new HtmlMixedText(Context.tr("(<0::Cancel contribution>) {0}",
-                                                                               Context.getLocalizator()
-                                                                                      .getCurrency(contribution.getAmount())
-                                                                                      .getSimpleEuroString()), cancelLink);
+                            final HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink();
+                            final HtmlMixedText mixed = new HtmlMixedText(Context.tr("(<0::Cancel contribution>) {0}",
+                                                                                     Context.getLocalizator()
+                                                                                            .getCurrency(contribution.getAmount())
+                                                                                            .getSimpleEuroString()), cancelLink);
                             val.add(mixed);
                         } else {
                             val.addText(Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString());

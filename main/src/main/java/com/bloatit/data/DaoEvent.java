@@ -184,22 +184,22 @@ public class DaoEvent extends DaoIdentifiable {
     @ManyToOne
     private DaoMilestone milestone;
 
-    public static PageIterable<DaoEvent> getEvent(DaoMember member, Date fromDate) {
+    public static PageIterable<DaoEvent> getEvent(final DaoMember member, final Date fromDate) {
         return new QueryCollection<DaoEvent>("event.byMemberDate");
     }
 
-    public static PageIterable<DaoEvent> getMailEvent(DaoMember member, Date fromDate) {
+    public static PageIterable<DaoEvent> getMailEvent(final DaoMember member, final Date fromDate) {
         return new QueryCollection<DaoEvent>("event.byMemberDate.withMail");
     }
 
-    private static DaoEvent createAndPersist(EventType type,
-                                             DaoFeature feature,
-                                             DaoContribution contribution,
-                                             DaoOffer offer,
-                                             DaoComment comment,
-                                             DaoBug bug,
-                                             DaoRelease release,
-                                             DaoMilestone milestone) {
+    private static DaoEvent createAndPersist(final EventType type,
+                                             final DaoFeature feature,
+                                             final DaoContribution contribution,
+                                             final DaoOffer offer,
+                                             final DaoComment comment,
+                                             final DaoBug bug,
+                                             final DaoRelease release,
+                                             final DaoMilestone milestone) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoEvent event = new DaoEvent(type, feature, contribution, offer, comment, bug, release, milestone);
         try {
@@ -212,56 +212,64 @@ public class DaoEvent extends DaoIdentifiable {
         return event;
     }
 
-    public static DaoEvent createFeatureEvent(DaoFeature feature, EventType type) {
+    public static DaoEvent createFeatureEvent(final DaoFeature feature, final EventType type) {
         return (createAndPersist(type, feature, null, null, null, null, null, null));
     }
 
-    public static DaoEvent createContributionEvent(DaoFeature feature, EventType type, DaoContribution contribution) {
+    public static DaoEvent createContributionEvent(final DaoFeature feature, final EventType type, final DaoContribution contribution) {
         return (createAndPersist(type, feature, contribution, null, null, null, null, null));
     }
 
-    public static DaoEvent createOfferEvent(DaoFeature feature, EventType type, DaoOffer offer) {
+    public static DaoEvent createOfferEvent(final DaoFeature feature, final EventType type, final DaoOffer offer) {
         return (createAndPersist(type, feature, null, offer, null, null, null, null));
     }
 
-    public static DaoEvent createCommentEvent(DaoFeature feature, EventType type, DaoComment comment) {
+    public static DaoEvent createCommentEvent(final DaoFeature feature, final EventType type, final DaoComment comment) {
         return (createAndPersist(type, feature, null, null, comment, null, null, null));
     }
 
-    public static DaoEvent createCommentEvent(DaoFeature feature,
-                                              EventType type,
-                                              DaoBug bug,
-                                              DaoComment comment,
-                                              DaoOffer offer,
-                                              DaoMilestone milestone) {
+    public static DaoEvent createCommentEvent(final DaoFeature feature,
+                                              final EventType type,
+                                              final DaoBug bug,
+                                              final DaoComment comment,
+                                              final DaoOffer offer,
+                                              final DaoMilestone milestone) {
         return (createAndPersist(type, feature, null, offer, comment, bug, null, milestone));
     }
 
-    public static DaoEvent createBugEvent(DaoFeature feature, EventType type, DaoBug bug, DaoOffer offer, DaoMilestone milestone) {
+    public static DaoEvent createBugEvent(final DaoFeature feature,
+                                          final EventType type,
+                                          final DaoBug bug,
+                                          final DaoOffer offer,
+                                          final DaoMilestone milestone) {
         return (createAndPersist(type, feature, null, offer, null, bug, null, milestone));
     }
 
-    public static DaoEvent createReleaseEvent(DaoFeature feature, EventType type, DaoRelease release, DaoOffer offer, DaoMilestone milestone) {
+    public static DaoEvent createReleaseEvent(final DaoFeature feature,
+                                              final EventType type,
+                                              final DaoRelease release,
+                                              final DaoOffer offer,
+                                              final DaoMilestone milestone) {
         return (createAndPersist(type, feature, null, offer, null, null, release, milestone));
     }
 
-    public static DaoEvent createReleaseCommentEvent(DaoFeature feature,
-                                                     EventType type,
-                                                     DaoComment comment,
-                                                     DaoRelease release,
-                                                     DaoOffer offer,
-                                                     DaoMilestone milestone) {
+    public static DaoEvent createReleaseCommentEvent(final DaoFeature feature,
+                                                     final EventType type,
+                                                     final DaoComment comment,
+                                                     final DaoRelease release,
+                                                     final DaoOffer offer,
+                                                     final DaoMilestone milestone) {
         return (createAndPersist(type, feature, null, offer, comment, null, release, milestone));
     }
 
-    private DaoEvent(EventType type,
-                     DaoFeature feature,
-                     DaoContribution contribution,
-                     DaoOffer offer,
-                     DaoComment comment,
-                     DaoBug bug,
-                     DaoRelease release,
-                     DaoMilestone milestone) {
+    private DaoEvent(final EventType type,
+                     final DaoFeature feature,
+                     final DaoContribution contribution,
+                     final DaoOffer offer,
+                     final DaoComment comment,
+                     final DaoBug bug,
+                     final DaoRelease release,
+                     final DaoMilestone milestone) {
         super();
         if (type == null || feature == null) {
             throw new NonOptionalParameterException();
@@ -381,55 +389,75 @@ public class DaoEvent extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoEvent other = (DaoEvent) obj;
+        }
+        final DaoEvent other = (DaoEvent) obj;
         if (bug == null) {
-            if (other.bug != null)
+            if (other.bug != null) {
                 return false;
-        } else if (!bug.equals(other.bug))
+            }
+        } else if (!bug.equals(other.bug)) {
             return false;
+        }
         if (comment == null) {
-            if (other.comment != null)
+            if (other.comment != null) {
                 return false;
-        } else if (!comment.equals(other.comment))
+            }
+        } else if (!comment.equals(other.comment)) {
             return false;
+        }
         if (contribution == null) {
-            if (other.contribution != null)
+            if (other.contribution != null) {
                 return false;
-        } else if (!contribution.equals(other.contribution))
+            }
+        } else if (!contribution.equals(other.contribution)) {
             return false;
+        }
         if (feature == null) {
-            if (other.feature != null)
+            if (other.feature != null) {
                 return false;
-        } else if (!feature.equals(other.feature))
+            }
+        } else if (!feature.equals(other.feature)) {
             return false;
-        if (isBugComment != other.isBugComment)
+        }
+        if (isBugComment != other.isBugComment) {
             return false;
-        if (isFeatureComment != other.isFeatureComment)
+        }
+        if (isFeatureComment != other.isFeatureComment) {
             return false;
+        }
         if (milestone == null) {
-            if (other.milestone != null)
+            if (other.milestone != null) {
                 return false;
-        } else if (!milestone.equals(other.milestone))
+            }
+        } else if (!milestone.equals(other.milestone)) {
             return false;
+        }
         if (offer == null) {
-            if (other.offer != null)
+            if (other.offer != null) {
                 return false;
-        } else if (!offer.equals(other.offer))
+            }
+        } else if (!offer.equals(other.offer)) {
             return false;
+        }
         if (release == null) {
-            if (other.release != null)
+            if (other.release != null) {
                 return false;
-        } else if (!release.equals(other.release))
+            }
+        } else if (!release.equals(other.release)) {
             return false;
-        if (type != other.type)
+        }
+        if (type != other.type) {
             return false;
+        }
         return true;
     }
 }

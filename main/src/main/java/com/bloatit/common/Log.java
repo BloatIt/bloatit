@@ -217,7 +217,7 @@ public final class Log {
     public static LoggerInterface cache() {
         return CACHE;
     }
-    
+
     public static LoggerInterface payment() {
         return PAYMENT;
     }

@@ -27,17 +27,18 @@ import com.bloatit.web.url.MemberPageUrl;
 public class FeatureAtomFeed extends ElveosAtomFeed {
     private Date updateDate;
 
-    public FeatureAtomFeed(Url url) {
+    public FeatureAtomFeed(final Url url) {
         super(url);
     }
 
     @Override
     public void generate() {
         boolean first = true;
-        for (Feature feature : FeatureManager.getAllByCreationDate()) {
-            Translation translation = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
-            String featureTitle = translation.getTitle();
-            Software software = feature.getSoftware();
+        for (final Feature feature : FeatureManager.getAllByCreationDate()) {
+            final Translation translation = feature.getDescription()
+                                                   .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
+            final String featureTitle = translation.getTitle();
+            final Software software = feature.getSoftware();
             String title;
             if (software == null) {
                 title = Context.tr("New software") + " – " + featureTitle;
@@ -56,13 +57,13 @@ public class FeatureAtomFeed extends ElveosAtomFeed {
                 }
             }
 
-            FeedEntry entry = new FeedEntry(title,
-                                            new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
-                                            new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
-                                            feature.getCreationDate(),
-                                            translationText,
-                                            feature.getMember().getDisplayName(),
-                                            new MemberPageUrl(feature.getMember()).externalUrlString());
+            final FeedEntry entry = new FeedEntry(title,
+                                                  new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
+                                                  new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
+                                                  feature.getCreationDate(),
+                                                  translationText,
+                                                  feature.getMember().getDisplayName(),
+                                                  new MemberPageUrl(feature.getMember()).externalUrlString());
             addFeedEntry(entry, Position.LAST);
             if (first) {
                 updateDate = feature.getCreationDate();

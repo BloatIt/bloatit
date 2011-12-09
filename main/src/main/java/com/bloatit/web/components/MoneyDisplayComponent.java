@@ -34,42 +34,41 @@ import com.bloatit.web.linkable.team.TeamPage;
  */
 public class MoneyDisplayComponent extends HtmlSpan {
 
-
     /**
      * Creates a money display component
-     *
+     * 
      * @param amount the amount of money to display (in euro)
      */
-    public MoneyDisplayComponent(final BigDecimal amount, Localizator l) {
+    public MoneyDisplayComponent(final BigDecimal amount, final Localizator l) {
         this(amount, false, null, l);
     }
 
     /**
      * Creates a money display component with a link to user account page
-     *
+     * 
      * @param amount the amount of money to display (in euro)
      * @param me
      */
-    public MoneyDisplayComponent(final BigDecimal amount, final Member me, Localizator l) {
+    public MoneyDisplayComponent(final BigDecimal amount, final Member me, final Localizator l) {
         this(amount, true, me, l);
     }
 
     /**
      * Creates a money display component with or without a link to user account
      * page
-     *
+     * 
      * @param amount the amount of money to display (in euro)
      * @param link <i>true</i> if the component should link to the user account
      * @param me
      */
-    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Member me, Localizator l) {
+    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Member me, final Localizator l) {
         this(amount, link, null, me, l);
     }
 
     /**
      * Creates a money display component with or without a link to user or team
      * account page
-     *
+     * 
      * @param amount the amount of money to display (in euro)
      * @param link <i>true</i> if the component should link to the user account
      * @param teamAccount if not null, the link will point to the account page
@@ -77,7 +76,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
      * @param me
      * @param l TODO
      */
-    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Team teamAccount, final Member me, Localizator l) {
+    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, final Team teamAccount, final Member me, final Localizator l) {
         super();
 
         // Display user money in euro

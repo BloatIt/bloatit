@@ -21,7 +21,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.FollowFeatureActionUrl;
 import com.bloatit.web.url.FollowSoftwareActionUrl;
 
 /**
@@ -34,15 +33,15 @@ public final class FollowSoftwareAction extends LoggedElveosAction {
     @RequestParam()
     @NonOptional(@tr("You must indicate a software to follow"))
     private final Software software;
-    
+
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow state"))
     private final Boolean follow;
-    
+
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow mail state"))
     private final Boolean followMail;
-    
+
     public FollowSoftwareAction(final FollowSoftwareActionUrl url) {
         super(url);
         software = url.getSoftware();
@@ -52,9 +51,9 @@ public final class FollowSoftwareAction extends LoggedElveosAction {
 
     @Override
     public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
-        
-        if(follow) {
-            FollowSoftware followSoftware = me.followOrGetSoftware(software);
+
+        if (follow) {
+            final FollowSoftware followSoftware = me.followOrGetSoftware(software);
             followSoftware.setMail(followMail);
         } else {
             me.unfollowSoftware(software);

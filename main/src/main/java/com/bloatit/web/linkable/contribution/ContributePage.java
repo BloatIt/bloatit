@@ -84,12 +84,12 @@ public final class ContributePage extends ElveosPage {
         final CheckContributeActionUrl targetUrl = new CheckContributeActionUrl(getSession().getShortKey(), process);
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         form.setCssClass("contribution_page");
-        FormBuilder ftool = new FormBuilder(CheckContributeAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(CheckContributeAction.class, targetUrl);
 
         // Input field : choose amount
-        HtmlMoneyField moneyField = new HtmlMoneyField(targetUrl.getAmountParameter().getName());
+        final HtmlMoneyField moneyField = new HtmlMoneyField(targetUrl.getAmountParameter().getName());
         ftool.add(form, moneyField);
-        String defaultValueIfNeeded = ftool.setDefaultValueIfNeeded(moneyField, process.getAmount().toPlainString());
+        final String defaultValueIfNeeded = ftool.setDefaultValueIfNeeded(moneyField, process.getAmount().toPlainString());
         BigDecimal contributionValue = process.getAmount();
         if (defaultValueIfNeeded != null) {
             contributionValue = new BigDecimal(defaultValueIfNeeded);
@@ -115,9 +115,9 @@ public final class ContributePage extends ElveosPage {
             if (process.getAccountChargingAmount().compareTo(BigDecimal.ZERO) == 0
                     && (!AuthToken.isAuthenticated() || AuthToken.getMember().getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) == 0)) {
 
-                HtmlDiv quickQuotationBlock = new HtmlDiv("quick_quotation_block");
+                final HtmlDiv quickQuotationBlock = new HtmlDiv("quick_quotation_block");
 
-                HtmlSpan targetField = new HtmlSpan("", "target_field");
+                final HtmlSpan targetField = new HtmlSpan("", "target_field");
                 targetField.addText(BankTransaction.computateAmountToPay(contributionValue).toPlainString() + " €");
                 quickQuotationBlock.add(new HtmlMixedText(Context.tr("You will have to pay <0::>."), targetField));
                 form.add(quickQuotationBlock);
@@ -142,12 +142,12 @@ public final class ContributePage extends ElveosPage {
                 targetField.add(quotationUpdateScript);
 
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new BadProgrammerException("Fail to access to the internal account value of a user");
         }
 
         // Input field : comment
-        HtmlTextArea commentInput = new HtmlTextArea(targetUrl.getCommentParameter().getName(), 3, 60);
+        final HtmlTextArea commentInput = new HtmlTextArea(targetUrl.getCommentParameter().getName(), 3, 60);
         ftool.add(form, commentInput);
         String suggestedCommentValue = ftool.setDefaultValueIfNeeded(commentInput, process.getComment());
         if (suggestedCommentValue == null) {

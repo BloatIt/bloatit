@@ -58,7 +58,7 @@ public final class TranslatePage extends LoggedElveosPage {
 
     @RequestParam(role = Role.GET)
     @NonOptional(@tr("You have to specify a type of description."))
-    private DescriptionType type;
+    private final DescriptionType type;
 
     public enum DescriptionType {
         SOFTWARE, FEATURE
@@ -89,7 +89,7 @@ public final class TranslatePage extends LoggedElveosPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) {
 
         // Temporary language chooser
-        Language sourceLanguage = description.getDefaultLanguage();
+        final Language sourceLanguage = description.getDefaultLanguage();
         Language targetLanguage;
 
         if (sourceLanguage.equals(Language.FR)) {
@@ -98,8 +98,8 @@ public final class TranslatePage extends LoggedElveosPage {
             targetLanguage = Language.FR;
         }
 
-        Translation targetTranslation = description.getTranslation(targetLanguage);
-        Translation sourceTranslation = description.getTranslation(sourceLanguage);
+        final Translation targetTranslation = description.getTranslation(targetLanguage);
+        final Translation sourceTranslation = description.getTranslation(sourceLanguage);
 
         final HtmlDiv layout = new HtmlDiv("translate_page");
 
@@ -112,7 +112,7 @@ public final class TranslatePage extends LoggedElveosPage {
 
         // Source
         sourceColumn.add(new HtmlTitle(Context.tr("Source language: {0}", sourceLanguage.getLocale().getDisplayLanguage()), 2));
-        HtmlElveosForm sourceCol = new HtmlElveosForm("", false);
+        final HtmlElveosForm sourceCol = new HtmlElveosForm("", false);
         sourceColumn.add(sourceCol);
 
         if (type == DescriptionType.FEATURE) {
@@ -133,23 +133,23 @@ public final class TranslatePage extends LoggedElveosPage {
         // Target
         targetColumn.add(new HtmlTitle(Context.tr("Target language: {0}", targetLanguage.getLocale().getDisplayLanguage()), 2));
 
-        TranslateActionUrl translateUrl = new TranslateActionUrl(Context.getSession().getShortKey(),
-                                                                 description,
-                                                                 sourceLanguage.getLocale(),
-                                                                 targetLanguage);
-        HtmlElveosForm form = new HtmlElveosForm(translateUrl.urlString(), false);
+        final TranslateActionUrl translateUrl = new TranslateActionUrl(Context.getSession().getShortKey(),
+                                                                       description,
+                                                                       sourceLanguage.getLocale(),
+                                                                       targetLanguage);
+        final HtmlElveosForm form = new HtmlElveosForm(translateUrl.urlString(), false);
         targetColumn.add(form);
-        FormBuilder ftool = new FormBuilder(TranslateAction.class, translateUrl);
+        final FormBuilder ftool = new FormBuilder(TranslateAction.class, translateUrl);
 
         // Title of the description
         if (type == DescriptionType.FEATURE) {
-            HtmlTextField title = new HtmlTextField(translateUrl.getTitleParameter().getName());
+            final HtmlTextField title = new HtmlTextField(translateUrl.getTitleParameter().getName());
             ftool.add(form, title);
             if (targetTranslation != null) {
                 ftool.setDefaultValueIfNeeded(title, targetTranslation.getTitle());
             }
         } else {
-            HtmlHidden hidden = new HtmlHidden(translateUrl.getTitleParameter().getName(), "John-Doe-software");
+            final HtmlHidden hidden = new HtmlHidden(translateUrl.getTitleParameter().getName(), "John-Doe-software");
             form.add(hidden);
         }
 
@@ -169,7 +169,7 @@ public final class TranslatePage extends LoggedElveosPage {
         return TranslatePage.generateBreadcrumb(description, sourceLanguage, type);
     }
 
-    private static Breadcrumb generateBreadcrumb(Description description, Locale sourceLanguage, DescriptionType type) {
+    private static Breadcrumb generateBreadcrumb(final Description description, final Locale sourceLanguage, final DescriptionType type) {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new TranslatePageUrl(description, sourceLanguage, type).getHtmlLink(tr("Translation")));

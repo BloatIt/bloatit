@@ -121,7 +121,8 @@ public class ModifyDetailAction extends LoggedElveosAction {
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         try {
-            if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail()) && (MemberManager.emailExists(email) && !email.equals(me.getEmailToActivate()))) {
+            if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail())
+                    && (MemberManager.emailExists(email) && !email.equals(me.getEmailToActivate()))) {
                 session.notifyError(Context.tr("Email already used."));
                 url.getEmailParameter().addErrorMessage(Context.tr("Email already used."));
                 return doProcessErrors();

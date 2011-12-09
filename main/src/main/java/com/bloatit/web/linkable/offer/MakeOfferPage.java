@@ -109,7 +109,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final OfferActionUrl targetUrl = new OfferActionUrl(getSession().getShortKey(), feature);
         targetUrl.setDraftOffer(offer);
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
-        FormBuilder ftool = new FormBuilder(OfferAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(OfferAction.class, targetUrl);
 
         form.addLanguageChooser(targetUrl.getLocaleParameter().getName(), Context.getLocalizator().getLanguageCode());
         form.addAsTeamField(new AsTeamField(targetUrl,
@@ -137,7 +137,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
                 "Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
                 );
         //@formatter:on
-        HtmlTextArea descriptionInput = new HtmlTextArea(targetUrl.getDescriptionParameter().getName(), 10, 80);
+        final HtmlTextArea descriptionInput = new HtmlTextArea(targetUrl.getDescriptionParameter().getName(), 10, 80);
         ftool.add(form, descriptionInput);
         ftool.setDefaultValueIfNeeded(descriptionInput, suggestedValue);
 

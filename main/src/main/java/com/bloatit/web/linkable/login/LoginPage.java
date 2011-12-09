@@ -69,7 +69,7 @@ public final class LoginPage extends ElveosPage {
             final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
             final LoginActionUrl targetUrl = new LoginActionUrl();
             final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
-            FormBuilder ftool = new FormBuilder(LoginAction.class, targetUrl);
+            final FormBuilder ftool = new FormBuilder(LoginAction.class, targetUrl);
             loginTitle.add(form);
 
             // Login field
@@ -79,7 +79,7 @@ public final class LoginPage extends ElveosPage {
             ftool.add(form, new HtmlPasswordField(LoginAction.PASSWORD_CODE));
 
             // Submit
-            SignUpPageUrl signUpPageUrl = new SignUpPageUrl();
+            final SignUpPageUrl signUpPageUrl = new SignUpPageUrl();
             signUpPageUrl.setInvoice(invoice);
             form.addSubmit(signUpPageUrl.getHtmlLink(Context.tr("Sign up")));
             form.addSubmit(new HtmlSubmit(Context.trc("Login (verb)", "Login")));

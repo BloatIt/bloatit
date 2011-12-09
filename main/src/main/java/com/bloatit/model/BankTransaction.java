@@ -50,7 +50,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
         private final BigDecimal subTotal;
 
-        public ElveosPayment(BigDecimal subTotal) {
+        public ElveosPayment(final BigDecimal subTotal) {
             super();
             this.subTotal = subTotal;
         }
@@ -199,7 +199,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     protected void setRefused() {
         getDao().setRefused();
-        Reporting.reporter.reportAccountCharging(getValueUnprotected() + "(" + getValuePaidUnprotected() + ") from " + getAuthorUnprotected().getLogin() + " (" + getAuthorUnprotected().getId() + ") - REFUSED !" + getMessageUnprotected());
+        Reporting.reporter.reportAccountCharging(getValueUnprotected() + "(" + getValuePaidUnprotected() + ") from "
+                + getAuthorUnprotected().getLogin() + " (" + getAuthorUnprotected().getId() + ") - REFUSED !" + getMessageUnprotected());
     }
 
     /**
@@ -221,7 +222,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
             } catch (final UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("Fail to create invoice", e);
             }
-            Reporting.reporter.reportAccountCharging(getValueUnprotected() + "(" + getValuePaidUnprotected() + ") from " + getAuthorUnprotected().getLogin() + " (" + getAuthorUnprotected().getId() + ")");
+            Reporting.reporter.reportAccountCharging(getValueUnprotected() + "(" + getValuePaidUnprotected() + ") from "
+                    + getAuthorUnprotected().getLogin() + " (" + getAuthorUnprotected().getId() + ")");
             return true;
         }
         return false;
@@ -263,7 +265,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     private String getMessageUnprotected() {
         return getDao().getMessage();
     }
-    
+
     /**
      * Gets the paid value.
      * 

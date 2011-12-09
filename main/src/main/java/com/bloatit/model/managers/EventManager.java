@@ -19,8 +19,6 @@ package com.bloatit.model.managers;
 import java.util.Date;
 import java.util.Iterator;
 
-import antlr.collections.List;
-
 import com.bloatit.data.DaoEvent;
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.data.queries.QueryCollection;

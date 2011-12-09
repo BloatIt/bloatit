@@ -18,10 +18,6 @@
  */
 package com.bloatit.rest.resources;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Locale;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -29,33 +25,20 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.bloatit.data.DaoBankTransaction.DaoBankTransactionSum;
-import com.bloatit.data.DaoBankTransaction.State;
-import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.framework.restprocessor.exception.RestException;
-import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
-import com.bloatit.framework.webprocessor.annotations.Loader;
 import com.bloatit.framework.webprocessor.url.Loaders;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
-import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FollowFeature;
 import com.bloatit.model.Member;
-import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.model.managers.FollowFeatureManager;
 import com.bloatit.model.managers.GenericManager;
-import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.rest.adapters.DateAdapter;
-import com.bloatit.rest.list.RestBankTransactionList;
 import com.bloatit.rest.list.RestFollowFeatureList;
 
 /**
@@ -157,14 +140,14 @@ public class RestFollowFeature extends RestElement<FollowFeature> {
                                                  final String bugComment) throws RestException {
 
         try {
-            Member member = Loaders.fromStr(Member.class, follower);
+            final Member member = Loaders.fromStr(Member.class, follower);
 
-            Feature feature = Loaders.fromStr(Feature.class, followed);
-            boolean isMail = Loaders.fromStr(Boolean.class, mail);
-            boolean isFeatureComment = Loaders.fromStr(Boolean.class, featureComment);
-            boolean isBugComment = Loaders.fromStr(Boolean.class, bugComment);
+            final Feature feature = Loaders.fromStr(Feature.class, followed);
+            final boolean isMail = Loaders.fromStr(Boolean.class, mail);
+            final boolean isFeatureComment = Loaders.fromStr(Boolean.class, featureComment);
+            final boolean isBugComment = Loaders.fromStr(Boolean.class, bugComment);
 
-            FollowFeature followFeature = member.followOrGetFeature(feature);
+            final FollowFeature followFeature = member.followOrGetFeature(feature);
             followFeature.setMail(isMail);
             followFeature.setFeatureComment(isFeatureComment);
             followFeature.setBugComment(isBugComment);
@@ -175,45 +158,43 @@ public class RestFollowFeature extends RestElement<FollowFeature> {
             }
             return restFollowFeature;
 
-        } catch (ConversionErrorException e) {
+        } catch (final ConversionErrorException e) {
             throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "Bad format for one of the parameters", e);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_CLI_403_FORBIDDEN, "Permission denied", e);
         }
     }
 
     /**
-     * 
      * @param follower
      * @param followed
      * @return true is the follower was following the feature, false otherwise
      * @throws RestException
      */
-    @REST(name = "followfeatures", method = RequestMethod.DELETE, params = {  "follower", "followed" })
-    public static boolean deleteFollow(final String follower,
-                                    final String followed) throws RestException {
+    @REST(name = "followfeatures", method = RequestMethod.DELETE, params = { "follower", "followed" })
+    public static boolean deleteFollow(final String follower, final String followed) throws RestException {
 
         try {
 
-            Member member = Loaders.fromStr(Member.class, follower);
+            final Member member = Loaders.fromStr(Member.class, follower);
 
-            Feature feature = Loaders.fromStr(Feature.class, followed);
-            if(member.isFollowing(feature)) {
-                FollowFeature followFeature = member.followOrGetFeature(feature);
+            final Feature feature = Loaders.fromStr(Feature.class, followed);
+            if (member.isFollowing(feature)) {
+                final FollowFeature followFeature = member.followOrGetFeature(feature);
                 followFeature.getFollower().unfollowFeature(followFeature.getFollowed());
                 return true;
             } else {
                 return false;
             }
-            
-        } catch (ConversionErrorException e) {
+
+        } catch (final ConversionErrorException e) {
             throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "Bad format for one of the parameters", e);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_CLI_403_FORBIDDEN, "Permission denied", e);
         }
-        
+
     }
-    
+
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------

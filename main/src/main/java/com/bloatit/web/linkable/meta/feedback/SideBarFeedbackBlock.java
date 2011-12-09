@@ -40,7 +40,8 @@ public class SideBarFeedbackBlock extends TitleSideBarElementLayout {
 
         final HtmlLink htmlLink = new MetaFeedbackListPageUrl().getHtmlLink();
         htmlLink.setNoFollow();
-        bugDetail.add(new HtmlMixedText(tr("You can use the <0::feedback> system to report any problem or suggestion on elveos.org website."), htmlLink));
+        bugDetail.add(new HtmlMixedText(tr("You can use the <0::feedback> system to report any problem or suggestion on elveos.org website."),
+                                        htmlLink));
 
         add(bugDetail);
 

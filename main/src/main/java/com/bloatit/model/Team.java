@@ -149,7 +149,6 @@ public final class Team extends Actor<DaoTeam> {
     }
 
     /**
-     * 
      * @return
      */
     public String getPublicContact() {
@@ -230,7 +229,7 @@ public final class Team extends Actor<DaoTeam> {
         // TODO set rights
         return getDao().getRecentHistoryCount(ModelConfiguration.getRecentHistoryDays());
     }
-    
+
     public PageIterable<Milestone> getMilestoneInvoiced() {
         return new MilestoneList(getDao().getMilestoneInvoiced());
     }

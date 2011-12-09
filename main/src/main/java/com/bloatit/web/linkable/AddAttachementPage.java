@@ -79,8 +79,8 @@ public final class AddAttachementPage extends CreateUserContentPage {
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         form.enableFileUpload();
 
-        FormBuilder ftool = new FormBuilder(AddAttachementAction.class, targetUrl);
-        AttachmentField attachment = new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio");
+        final FormBuilder ftool = new FormBuilder(AddAttachementAction.class, targetUrl);
+        final AttachmentField attachment = new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio");
         ftool.add(form, attachment.getFileInput());
         ftool.add(form, attachment.getTextInput());
         form.addSubmit(new HtmlSubmit(tr("Submit")));

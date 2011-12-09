@@ -75,7 +75,7 @@ public class Release extends UserContent<DaoRelease> {
     }
 
     @Override
-    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+    protected void delete(final boolean delOrder) throws UnauthorizedOperationException {
         super.delete(delOrder);
     }
 

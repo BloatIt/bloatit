@@ -16,7 +16,7 @@ public class MercanetTransaction {
     // FIXME why the transactionId is not used ?
     // private final int transactionId;
 
-    protected MercanetTransaction(String data, String url, int transactionId) {
+    protected MercanetTransaction(final String data, final String url, final int transactionId) {
         this.data = data;
         this.url = url;
         // this.transactionId = transactionId;
@@ -30,8 +30,8 @@ public class MercanetTransaction {
         return url;
     }
 
-    public Map<String, String> getHiddenParameters(PaymentMethod method) {
-        Map<String, String> params = new HashMap<String, String>();
+    public Map<String, String> getHiddenParameters(final PaymentMethod method) {
+        final Map<String, String> params = new HashMap<String, String>();
         params.put("DATA", data);
         params.put(method.toString() + ".x", "0");
         params.put(method.toString() + ".y", "0");

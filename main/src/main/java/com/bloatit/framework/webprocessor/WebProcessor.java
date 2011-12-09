@@ -52,13 +52,13 @@ public abstract class WebProcessor implements XcgiProcessor {
             Context.reInitializeContext(httpHeader, session);
 
             try {
-                String pageCode = httpHeader.getPageName();
+                final String pageCode = httpHeader.getPageName();
                 final String requestLanguage = httpHeader.getPageLanguage();
 
                 if (requestLanguage.equalsIgnoreCase(HttpHeader.DEFAULT_LANG)) {
                     // Redirect to same page but with language code set
-                    String redirectUrl = createLowerCaseUrl(Context.getLocalizator().getLanguageCode(), httpHeader.getQueryString(), pageCode);
-                    response.writeRedirect(StatusCode.REDIRECTION_307_TEMPORARY_REDIRECT,  redirectUrl);
+                    final String redirectUrl = createLowerCaseUrl(Context.getLocalizator().getLanguageCode(), httpHeader.getQueryString(), pageCode);
+                    response.writeRedirect(StatusCode.REDIRECTION_307_TEMPORARY_REDIRECT, redirectUrl);
                 } else if (pageCode.matches(".*[A-Z].*")) {
                     // Redirect to same page but in lower case
                     response.writeRedirect(StatusCode.REDIRECTION_300_MULTIPLE_CHOICES,

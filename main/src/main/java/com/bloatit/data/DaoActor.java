@@ -112,7 +112,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * This method use a HQL request. If you intend to use "getByLogin" or
      * "getByName", "exist" is useless. (In that case you'd better test if
      * getByLogin != null, to minimize the number of HQL request).
-     *
+     * 
      * @param login the login we are looking for.
      * @return true if found.
      */
@@ -134,7 +134,7 @@ public abstract class DaoActor extends DaoIdentifiable {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     *
+     * 
      * @param login is the login or name of this actor. It must be non null,
      *            unique, longer than 2 chars and do not contains space chars
      *            ("[^\\p{Space}]+").
@@ -177,7 +177,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * Set the external account for this actor.
-     *
+     * 
      * @param externalAccount the new external account for this actor
      * @throws BadProgrammerException if the externalAccount.getActor() != this
      */

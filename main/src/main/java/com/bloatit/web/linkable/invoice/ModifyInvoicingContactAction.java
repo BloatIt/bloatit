@@ -168,10 +168,10 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
             isOk &= checkOptional(this.taxRate, Context.tr("You must add a tax rate."), url.getTaxRateParameter());
 
             if (this.invoiceIdTemplate != null) {
-                Pattern pattern = Pattern.compile("^(.*)(\\{ID(\\|([0-9]+))?\\})(.*)");
-                Matcher matcher = pattern.matcher(this.invoiceIdTemplate);
+                final Pattern pattern = Pattern.compile("^(.*)(\\{ID(\\|([0-9]+))?\\})(.*)");
+                final Matcher matcher = pattern.matcher(this.invoiceIdTemplate);
                 if (!matcher.matches()) {
-                    String errorText = Context.tr("You must indicate a ID field in the template.");
+                    final String errorText = Context.tr("You must indicate a ID field in the template.");
                     url.getInvoiceIdTemplateParameter().addErrorMessage(errorText);
                     session.notifyError(errorText);
                     isOk = false;
@@ -185,7 +185,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         return NO_ERROR;
     }
 
-    private boolean checkOptional(Object object, String errorText, UrlParameter<?, ?> parameter) {
+    private boolean checkOptional(final Object object, final String errorText, final UrlParameter<?, ?> parameter) {
         if (object == null) {
             parameter.addErrorMessage(errorText);
             session.notifyError(errorText);

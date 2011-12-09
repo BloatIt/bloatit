@@ -61,7 +61,7 @@ public class LostPasswordPage extends ElveosPage {
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         master.add(form);
 
-        FormBuilder ftool = new FormBuilder(LostPasswordAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(LostPasswordAction.class, targetUrl);
         ftool.add(form, new HtmlEmailField(targetUrl.getEmailParameter().getName()));
         form.addSubmit(new HtmlSubmit(Context.tr("Submit")));
         return layout;

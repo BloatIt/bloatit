@@ -31,7 +31,7 @@ public class SideBarButton extends SideBarElementLayout {
         this(text, to, imgUri, true);
     }
 
-    public SideBarButton(final String text, final Url to, final String imgUri, boolean decorated) {
+    public SideBarButton(final String text, final Url to, final String imgUri, final boolean decorated) {
         final SideBarElementLayout createBox = new SideBarElementLayout();
         final HtmlDiv buttonMasterDiv;
         if (decorated) {

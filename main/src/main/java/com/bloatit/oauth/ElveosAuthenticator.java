@@ -23,10 +23,10 @@ public class ElveosAuthenticator extends OAuthAuthenticator {
     private static final String SCOPE_COMMENT = "comment";
 
     @Override
-    protected void addExternalService(String clientId, String login, String password, String token, Set<String> scope)
+    protected void addExternalService(final String clientId, final String login, final String password, final String token, final Set<String> scope)
             throws ElementNotFoundException {
-        Member member = authenticate(login, password);
-        EnumSet<RightLevel> rights = EnumSet.noneOf(RightLevel.class);
+        final Member member = authenticate(login, password);
+        final EnumSet<RightLevel> rights = EnumSet.noneOf(RightLevel.class);
         if (scope.contains(SCOPE_COMMENT)) {
             rights.add(RightLevel.COMMENT);
         }
@@ -46,21 +46,22 @@ public class ElveosAuthenticator extends OAuthAuthenticator {
     }
 
     @Override
-    protected void authorize(String authzCode, String accessToken, String refreshToken, int expiresIn) throws AuthorizationException {
-        ExternalServiceMembership serviceMembership = ExternalServiceManager.getMembershipByToken(authzCode);
+    protected void authorize(final String authzCode, final String accessToken, final String refreshToken, final int expiresIn)
+            throws AuthorizationException {
+        final ExternalServiceMembership serviceMembership = ExternalServiceManager.getMembershipByToken(authzCode);
         if (serviceMembership == null || serviceMembership.isAuthorized()) {
             throw new AuthorizationException();
         }
         serviceMembership.authorize(accessToken, refreshToken, DateUtils.nowPlusSomeSeconds(expiresIn));
     }
 
-    private Member authenticate(String login, String password) throws ElementNotFoundException {
+    private Member authenticate(final String login, final String password) throws ElementNotFoundException {
         // Authenticate the user
         if (login == null || password == null) {
             throw new ElementNotFoundException("login or password missing");
         }
         AuthToken.authenticate(login, password);
-        Member member = AuthToken.getMember();
+        final Member member = AuthToken.getMember();
         if (member == null) {
             throw new ElementNotFoundException("Member not found");
         }

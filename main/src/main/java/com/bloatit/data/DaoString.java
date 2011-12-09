@@ -17,7 +17,7 @@ public class DaoString {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String content;
 
-    @ManyToOne(optional = false, cascade = { CascadeType.ALL }, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     private DaoVersionedString versions;
 
     public DaoString(final String content, final DaoMember author) {

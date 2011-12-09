@@ -306,9 +306,8 @@ public class DaoTeam extends DaoActor {
 
     public PageIterable<DaoMilestone> getMilestoneInvoiced() {
         return new QueryCollection<DaoMilestone>("team.getMilestoneInvoiced").setEntity("this", this)
-                                                                                .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
+                                                                             .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
     }
-
 
     /**
      * @return the avatar

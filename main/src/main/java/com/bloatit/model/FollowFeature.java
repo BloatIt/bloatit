@@ -16,9 +16,7 @@
 //
 package com.bloatit.model;
 
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFollowFeature;
-import com.bloatit.data.DaoMember;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -75,25 +73,25 @@ public final class FollowFeature extends Identifiable<DaoFollowFeature> {
     // Setters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public final void setFeatureComment(boolean featureComment) throws UnauthorizedOperationException {
-        Member follower = Member.create(getDao().getFollower());
-        if(!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
+    public final void setFeatureComment(final boolean featureComment) throws UnauthorizedOperationException {
+        final Member follower = Member.create(getDao().getFollower());
+        if (!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
         getDao().setFeatureComment(featureComment);
     }
 
-    public final void setBugComment(boolean bugComment) throws UnauthorizedOperationException {
-        Member follower = Member.create(getDao().getFollower());
-        if(!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
+    public final void setBugComment(final boolean bugComment) throws UnauthorizedOperationException {
+        final Member follower = Member.create(getDao().getFollower());
+        if (!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
         getDao().setBugComment(bugComment);
     }
 
-    public final void setMail(boolean mail) throws UnauthorizedOperationException {
-        Member follower = Member.create(getDao().getFollower());
-        if(!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
+    public final void setMail(final boolean mail) throws UnauthorizedOperationException {
+        final Member follower = Member.create(getDao().getFollower());
+        if (!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
         getDao().setMail(mail);

@@ -1,7 +1,6 @@
 package com.bloatit.web.linkable.atom;
 
 import java.util.Date;
-import java.util.Stack;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -11,11 +10,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
-import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.mail.HtmlEntry;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Event.BugCommentEvent;
 import com.bloatit.model.Event.BugEvent;
@@ -28,16 +24,14 @@ import com.bloatit.model.Event.ReleaseEvent;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.EventManager;
 import com.bloatit.model.managers.EventManager.EventList;
-import com.bloatit.web.components.HtmlAuthorLink;
-import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.url.ActivityAtomFeedUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
-import com.bloatit.web.url.ActivityAtomFeedUrl;
 
 /**
  * A feed used to display the recent features related to a given software
@@ -51,7 +45,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
     @RequestParam(role = Role.GET, message = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
 
-    public ActivityAtomFeed(ActivityAtomFeedUrl url) {
+    public ActivityAtomFeed(final ActivityAtomFeedUrl url) {
         super(url);
         this.member = url.getMember();
     }
@@ -60,9 +54,8 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
     public void generate() {
         boolean first = true;
 
-        EventList eventList = EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member);
+        final EventList eventList = EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member);
 
-        
         while (eventList.hasNext()) {
             eventList.next();
             addFeedEntry(eventList.event().getEvent().accept(new AtomVisitor()), Position.FIRST);
@@ -72,7 +65,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                 first = false;
             }
         }
-        
+
     }
 
     @Override
@@ -90,7 +83,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
 
     private final class AtomVisitor implements EventVisitor<FeedEntry> {
         @Override
-        public FeedEntry visit(FeatureEvent event) {
+        public FeedEntry visit(final FeatureEvent event) {
 
             Actor<?> author;
             Url authorLink;
@@ -121,7 +114,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                     throw new NotImplementedException();
             }
 
-            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName()+ " – " + FeaturesTools.getTitle(event.getFeature()),
+            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName() + " – " + FeaturesTools.getTitle(event.getFeature()),
                                  new FeaturePageUrl(event.getFeature(), FeatureTabKey.description).externalUrlString(),
                                  "elveos-event-" + event.getDate().toString(),
                                  event.getDate(),
@@ -131,8 +124,8 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
         }
 
         @Override
-        public FeedEntry visit(BugEvent event) {
-            
+        public FeedEntry visit(final BugEvent event) {
+
             Actor<?> author;
             Url authorLink;
             if (event.getBug().getAsTeam() == null) {
@@ -162,7 +155,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                     throw new NotImplementedException();
             }
 
-            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName()+ " – " + FeaturesTools.getTitle(event.getFeature()),
+            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName() + " – " + FeaturesTools.getTitle(event.getFeature()),
                                  new BugPageUrl(event.getBug()).externalUrlString(),
                                  "elveos-event-" + event.getDate().toString(),
                                  event.getDate(),
@@ -172,7 +165,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
         }
 
         @Override
-        public FeedEntry visit(BugCommentEvent event) {
+        public FeedEntry visit(final BugCommentEvent event) {
             Actor<?> author;
             Url authorLink;
             if (event.getComment().getAsTeam() == null) {
@@ -183,9 +176,9 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                 authorLink = new TeamPageUrl(event.getComment().getAsTeam());
             }
 
-            String title = Context.tr("New bug comment by {0}", author.getDisplayName());
-                   
-            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName()+ " – " + FeaturesTools.getTitle(event.getFeature()),
+            final String title = Context.tr("New bug comment by {0}", author.getDisplayName());
+
+            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName() + " – " + FeaturesTools.getTitle(event.getFeature()),
                                  new BugPageUrl(event.getBug()).externalUrlString(),
                                  "elveos-event-" + event.getDate().toString(),
                                  event.getDate(),
@@ -195,7 +188,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
         }
 
         @Override
-        public FeedEntry visit(ContributionEvent event) {
+        public FeedEntry visit(final ContributionEvent event) {
             Actor<?> author;
             Url authorLink;
             if (event.getContribution().getAsTeam() == null) {
@@ -210,7 +203,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
 
             switch (event.getType()) {
                 case ADD_CONTRIBUTION:
-                    title = Context.tr("{0} € financed by {1}", event.getContribution().getAmount() , author.getDisplayName());
+                    title = Context.tr("{0} € financed by {1}", event.getContribution().getAmount(), author.getDisplayName());
                     break;
                 case REMOVE_CONTRIBUTION:
                     title = Context.tr("Contribution by {0} has been removed", author.getDisplayName());
@@ -219,7 +212,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                     throw new NotImplementedException();
             }
 
-            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName()+ " – " + FeaturesTools.getTitle(event.getFeature()),
+            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName() + " – " + FeaturesTools.getTitle(event.getFeature()),
                                  new FeaturePageUrl(event.getFeature(), FeatureTabKey.contributions).externalUrlString(),
                                  "elveos-event-" + event.getDate().toString(),
                                  event.getDate(),
@@ -229,7 +222,7 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
         }
 
         @Override
-        public FeedEntry visit(FeatureCommentEvent event) {
+        public FeedEntry visit(final FeatureCommentEvent event) {
             Actor<?> author;
             Url authorLink;
             if (event.getComment().getAsTeam() == null) {
@@ -240,9 +233,9 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                 authorLink = new TeamPageUrl(event.getComment().getAsTeam());
             }
 
-            String title = Context.tr("New comment by {0}", author.getDisplayName());
-                   
-            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName()+ " – " + FeaturesTools.getTitle(event.getFeature()),
+            final String title = Context.tr("New comment by {0}", author.getDisplayName());
+
+            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName() + " – " + FeaturesTools.getTitle(event.getFeature()),
                                  new FeaturePageUrl(event.getFeature(), FeatureTabKey.description).externalUrlString(),
                                  "elveos-event-" + event.getDate().toString(),
                                  event.getDate(),
@@ -252,8 +245,8 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
         }
 
         @Override
-        public FeedEntry visit(OfferEvent event) {
-            
+        public FeedEntry visit(final OfferEvent event) {
+
             Actor<?> author;
             Url authorLink;
             if (event.getOffer().getAsTeam() == null) {
@@ -286,18 +279,18 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                     throw new NotImplementedException();
             }
 
-            return new FeedEntry( title + " – " +event.getFeature().getSoftware().getName()+ " – " + FeaturesTools.getTitle(event.getFeature()) ,
+            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName() + " – " + FeaturesTools.getTitle(event.getFeature()),
                                  new FeaturePageUrl(event.getFeature(), FeatureTabKey.offers).externalUrlString(),
                                  "elveos-event-" + event.getDate().toString(),
                                  event.getDate(),
                                  "",
                                  author.getDisplayName(),
                                  authorLink.externalUrlString());
-            
+
         }
 
         @Override
-        public FeedEntry visit(ReleaseEvent event) {
+        public FeedEntry visit(final ReleaseEvent event) {
             Actor<?> author;
             Url authorLink;
             if (event.getRelease().getAsTeam() == null) {
@@ -308,9 +301,9 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                 authorLink = new TeamPageUrl(event.getRelease().getAsTeam());
             }
 
-            String title = Context.tr("New release by {0}", author.getDisplayName());
-                   
-            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName()+ " – " + FeaturesTools.getTitle(event.getFeature()),
+            final String title = Context.tr("New release by {0}", author.getDisplayName());
+
+            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName() + " – " + FeaturesTools.getTitle(event.getFeature()),
                                  new FeaturePageUrl(event.getFeature(), FeatureTabKey.offers).externalUrlString(),
                                  "elveos-event-" + event.getDate().toString(),
                                  event.getDate(),

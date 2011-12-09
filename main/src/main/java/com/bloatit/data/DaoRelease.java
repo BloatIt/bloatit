@@ -56,7 +56,7 @@ public class DaoRelease extends DaoUserContent {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMilestone milestone;
-    
+
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "release", cascade = { javax.persistence.CascadeType.ALL })
     private List<DaoEvent> event;
@@ -106,7 +106,6 @@ public class DaoRelease extends DaoUserContent {
         DaoEvent.createReleaseEvent(release.getMilestone().getOffer().getFeature(), EventType.ADD_RELEASE, release, milestone.getOffer(), milestone);
         return release;
     }
-
 
     /**
      * @return the description

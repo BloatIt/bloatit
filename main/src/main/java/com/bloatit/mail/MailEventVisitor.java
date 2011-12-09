@@ -11,11 +11,10 @@ import com.bloatit.model.Feature;
 
 public class MailEventVisitor extends GenericEventVisitor {
 
-    
     private final Map<Feature, Entries> features = new HashMap<Feature, Entries>();
     private final Map<Bug, Entries> bugs = new HashMap<Bug, Entries>();
-    
-    public MailEventVisitor(Localizator localizator) {
+
+    public MailEventVisitor(final Localizator localizator) {
         super(localizator);
     }
 
@@ -32,16 +31,16 @@ public class MailEventVisitor extends GenericEventVisitor {
     }
 
     @Override
-    protected void addFeatureEntry(Feature f, HtmlEntry b, Date date) {
+    protected void addFeatureEntry(final Feature f, final HtmlEntry b, final Date date) {
         addEntry(features, f, b);
     }
 
     @Override
-    protected void addBugEntry(Bug f, HtmlEntry b, Date date) {
+    protected void addBugEntry(final Bug f, final HtmlEntry b, final Date date) {
         addEntry(bugs, f, b);
     }
 
-    private <T> void addEntry(Map<T, Entries> m, T f, HtmlEntry b) {
+    private <T> void addEntry(final Map<T, Entries> m, final T f, final HtmlEntry b) {
         if (m.containsKey(f)) {
             m.get(f).add(b);
         } else {

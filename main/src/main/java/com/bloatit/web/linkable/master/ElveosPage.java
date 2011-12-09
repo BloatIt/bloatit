@@ -46,7 +46,6 @@ import com.bloatit.model.Image;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.ActivityPageUrl;
 
 public abstract class ElveosPage extends Page {
 
@@ -114,8 +113,8 @@ public abstract class ElveosPage extends Page {
         final HtmlGenericElement body = new HtmlGenericElement("body");
         body.addCustomJs(FrameworkConfiguration.getJsJquery());
         body.addCustomJs(FrameworkConfiguration.getJsJqueryUi());
-        //body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
-        //body.addCustomJs(FrameworkConfiguration.getJsFlexie());
+        // body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
+        // body.addCustomJs(FrameworkConfiguration.getJsFlexie());
 
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);
@@ -177,7 +176,7 @@ public abstract class ElveosPage extends Page {
 
     @Override
     protected final ArrayList<HtmlElement> getMetas() {
-        ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();
+        final ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();
         return metas;
     }
 

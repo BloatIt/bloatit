@@ -81,8 +81,8 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "comment", cascade = { javax.persistence.CascadeType.ALL })
     private List<DaoEvent> event;
-    
-    public static DaoCommentable getCommentable(int id) {
+
+    public static DaoCommentable getCommentable(final int id) {
         return (DaoCommentable) SessionManager.getNamedQuery("commentable.byId").setInteger("id", id).uniqueResult();
     }
 

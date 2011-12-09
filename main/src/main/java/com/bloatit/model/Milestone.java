@@ -158,7 +158,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
         return release;
 
     }
-    
+
     public final boolean canAddRelease() {
         return canAccess(new RgtMilestone.Release(), Action.WRITE);
     }

@@ -164,7 +164,7 @@ public class RestSoftware extends RestElement<Software> {
      */
     @XmlElement
     public RestFileMetadata getImage() {
-        FileMetadata image = model.getImage();
+        final FileMetadata image = model.getImage();
         if (image != null) {
             return new RestFileMetadata(image);
         }

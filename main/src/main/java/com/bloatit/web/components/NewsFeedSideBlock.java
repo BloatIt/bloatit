@@ -16,24 +16,24 @@ import com.bloatit.web.linkable.master.sidebar.SideBarElementLayout;
 
 public class NewsFeedSideBlock extends SideBarElementLayout {
 
-    public NewsFeedSideBlock(int maxNews) {
+    public NewsFeedSideBlock(final int maxNews) {
         super();
-        HtmlDiv master = new HtmlDiv("news_feed");
+        final HtmlDiv master = new HtmlDiv("news_feed");
         add(master);
 
         // small icons to display the host of the feed (twitter or identica)
-        HtmlDiv socialFeedIcons = new HtmlDiv("feed_icons");
+        final HtmlDiv socialFeedIcons = new HtmlDiv("feed_icons");
         master.add(socialFeedIcons);
 
-        HtmlImage identicaImg = new HtmlImage(new Image(WebConfiguration.getImgIdenticaIcon()), "", "feed_icon");
-        HtmlLink identicaLink = new HtmlLink("http://identi.ca/elveos", identicaImg);
-        HtmlImage twitterImg = new HtmlImage(new Image(WebConfiguration.getImgTwitterIcon()), "", "feed_icon");
-        HtmlLink twitterLink = new HtmlLink("http://twitter.com/#!/elveos", twitterImg);
+        final HtmlImage identicaImg = new HtmlImage(new Image(WebConfiguration.getImgIdenticaIcon()), "", "feed_icon");
+        final HtmlLink identicaLink = new HtmlLink("http://identi.ca/elveos", identicaImg);
+        final HtmlImage twitterImg = new HtmlImage(new Image(WebConfiguration.getImgTwitterIcon()), "", "feed_icon");
+        final HtmlLink twitterLink = new HtmlLink("http://twitter.com/#!/elveos", twitterImg);
         socialFeedIcons.add(identicaLink);
         socialFeedIcons.add(twitterLink);
         master.add(new HtmlTitle(Context.tr("News feed"), 1));
 
-        HtmlList feedList = new HtmlList();
+        final HtmlList feedList = new HtmlList();
         master.add(feedList);
         feedList.setCssClass("feed_list");
 
@@ -42,17 +42,17 @@ public class NewsFeedSideBlock extends SideBarElementLayout {
             if (count > maxNews) {
                 break;
             }
-            
-            HtmlDiv feedItem = new HtmlDiv("feed_item");
+
+            final HtmlDiv feedItem = new HtmlDiv("feed_item");
             feedList.add(feedItem);
 
-            HtmlDiv itemContent = new HtmlDiv("item_content");
-            HtmlDiv itemDate = new HtmlDiv("item_date");
+            final HtmlDiv itemContent = new HtmlDiv("item_content");
+            final HtmlDiv itemDate = new HtmlDiv("item_date");
             itemContent.add(new HtmlCachedMarkdownRenderer(news.getMessage()));
             itemDate.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(news.getCreationDate())));
             feedItem.add(itemContent);
             feedItem.add(itemDate);
-            
+
             count++;
         }
     }

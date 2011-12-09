@@ -24,7 +24,6 @@ import java.util.Set;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
-import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
@@ -343,39 +342,39 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().setEmailToActivate(email);
     }
 
-    public void acceptNewsLetter(boolean newsletter) {
+    public void acceptNewsLetter(final boolean newsletter) {
         getDao().acceptNewsLetter(newsletter);
     }
 
-    public FollowFeature followOrGetFeature(Feature f) throws UnauthorizedPrivateAccessException {
+    public FollowFeature followOrGetFeature(final Feature f) throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMember.Follow(), Action.WRITE);
         return FollowFeature.create(getDao().followOrGetFeature(((FeatureImplementation) f).getDao()));
     }
 
-    public boolean isFollowing(Feature feature) {
+    public boolean isFollowing(final Feature feature) {
         return getDao().isFollowing(((FeatureImplementation) feature).getDao());
     }
 
-    public boolean isFollowing(Software software) {
+    public boolean isFollowing(final Software software) {
         return getDao().isFollowing(software.getDao());
     }
 
-    public boolean isFollowing(Actor<DaoActor> actor) {
+    public boolean isFollowing(final Actor<?> actor) {
         return getDao().isFollowing(actor.getDao());
     }
 
-    public void unfollowFeature(Feature f) throws UnauthorizedPrivateAccessException {
+    public void unfollowFeature(final Feature f) throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMember.Follow(), Action.WRITE);
-        FollowFeature followFeature = followOrGetFeature(f);
+        final FollowFeature followFeature = followOrGetFeature(f);
         followFeature.getDao().unfollow();
     }
 
-    public FollowSoftware followOrGetSoftware(Software s) throws UnauthorizedOperationException {
+    public FollowSoftware followOrGetSoftware(final Software s) throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Follow(), Action.WRITE);
         if (!isFollowing(s)) {
             // Follow all features of the software
-            for (Feature feature : s.getFeatures()) {
-                FollowFeature followFeature = followOrGetFeature(feature);
+            for (final Feature feature : s.getFeatures()) {
+                final FollowFeature followFeature = followOrGetFeature(feature);
                 followFeature.setFeatureComment(true);
                 followFeature.setBugComment(true);
             }
@@ -383,53 +382,52 @@ public final class Member extends Actor<DaoMember> implements User {
         return FollowSoftware.create(getDao().followOrGetSoftware(s.getDao()));
     }
 
-    public void unfollowSoftware(Software s) throws UnauthorizedOperationException {
+    public void unfollowSoftware(final Software s) throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Follow(), Action.WRITE);
-        FollowSoftware followSoftware = followOrGetSoftware(s);
+        final FollowSoftware followSoftware = followOrGetSoftware(s);
         followSoftware.getDao().unfollow();
 
         // Unfollow all features of the software
-        for (FollowFeature followFeature : getFollowedFeatures()) {
+        for (final FollowFeature followFeature : getFollowedFeatures()) {
             if (followFeature.getFollowed().getSoftware().equals(s)) {
                 unfollowFeature(followFeature.getFollowed());
             }
         }
     }
 
-
-    public FollowActor followOrGetActor(Actor<?> f) throws UnauthorizedPrivateAccessException {
+    public FollowActor followOrGetActor(final Actor<?> f) throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMember.Follow(), Action.WRITE);
         return FollowActor.create(getDao().followOrGetActor(f.getDao()));
     }
 
-    public void unfollowActor(Actor<?> a) throws UnauthorizedPrivateAccessException {
+    public void unfollowActor(final Actor<?> a) throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMember.Follow(), Action.WRITE);
-        FollowActor followActor = followOrGetActor(a);
+        final FollowActor followActor = followOrGetActor(a);
         followActor.getDao().unfollow();
     }
 
-    public void setLastWatchedEvents(Date lastWatchedEvents) {
+    public void setLastWatchedEvents(final Date lastWatchedEvents) {
         getDao().setLastWatchedEvents(lastWatchedEvents);
     }
 
-    public void setEmailStrategy(EmailStrategy emailStrategy) throws UnauthorizedPrivateAccessException {
+    public void setEmailStrategy(final EmailStrategy emailStrategy) throws UnauthorizedPrivateAccessException {
         tryAccess(new Private(), Action.WRITE);
         getDao().setEmailStrategy(emailStrategy);
     }
 
-    public void setGlobalFollow(boolean globalFollow) throws UnauthorizedOperationException {
+    public void setGlobalFollow(final boolean globalFollow) throws UnauthorizedOperationException {
         tryAccess(new Private(), Action.WRITE);
 
         if (globalFollow && !isGlobalFollow()) {
             // Follow all
-            for (Feature feature : FeatureManager.getAllByCreationDate()) {
-                FollowFeature followFeature = followOrGetFeature(feature);
+            for (final Feature feature : FeatureManager.getAllByCreationDate()) {
+                final FollowFeature followFeature = followOrGetFeature(feature);
                 followFeature.setFeatureComment(true);
                 followFeature.setBugComment(true);
             }
         } else if (!globalFollow && isGlobalFollow()) {
-            for (FollowFeature followFeature : getFollowedFeatures()) {
-                if(!isFollowing(followFeature.getFollowed().getSoftware())) {
+            for (final FollowFeature followFeature : getFollowedFeatures()) {
+                if (!isFollowing(followFeature.getFollowed().getSoftware())) {
                     unfollowFeature(followFeature.getFollowed());
                 }
             }
@@ -438,11 +436,11 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().setGlobalFollow(globalFollow);
     }
 
-    public void setGlobalFollowWithMail(boolean globalFollow) throws UnauthorizedOperationException {
+    public void setGlobalFollowWithMail(final boolean globalFollow) throws UnauthorizedOperationException {
         tryAccess(new Private(), Action.WRITE);
 
-        for (FollowFeature followFeature : getFollowedFeatures()) {
-            if(!isFollowing(followFeature.getFollowed().getSoftware())) {
+        for (final FollowFeature followFeature : getFollowedFeatures()) {
+            if (!isFollowing(followFeature.getFollowed().getSoftware())) {
                 followFeature.setMail(globalFollow);
             }
         }
@@ -455,7 +453,7 @@ public final class Member extends Actor<DaoMember> implements User {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public Date getLastWatchedEvents() {
-        Date lastWatchedEvents = getDao().getLastWatchedEvents();
+        final Date lastWatchedEvents = getDao().getLastWatchedEvents();
         if (lastWatchedEvents == null) {
             return DateUtils.dawnOfTime();
         } else {
@@ -481,7 +479,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getEmailStrategy();
     }
 
-    public FollowFeature getFollowFeature(Feature feature) {
+    public FollowFeature getFollowFeature(final Feature feature) {
         return FollowFeature.create(getDao().getFollowFeature(((FeatureImplementation) feature).getDao()));
     }
 
@@ -713,7 +711,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return new ListBinder<FollowSoftware, DaoFollowSoftware>(getDao().getFollowedSoftware());
     }
 
-    public void addAuthorizedExternalService(String clientId, String token, EnumSet<RightLevel> rights) {
+    public void addAuthorizedExternalService(final String clientId, final String token, final EnumSet<RightLevel> rights) {
         getDao().addAuthorizedExternalService(clientId, token, rights);
     }
 

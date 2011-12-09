@@ -21,12 +21,12 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
+import com.bloatit.web.url.ActivityPageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.MetaFeedbackListPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
-import com.bloatit.web.url.ActivityPageUrl;
 
 public class Footer extends HtmlDiv {
 
@@ -49,7 +49,6 @@ public class Footer extends HtmlDiv {
             addDocumentationFooterLink(linkBlock, "contacts", Context.tr("Contacts"));
             addDocumentationFooterLink(linkBlock, "cgu", Context.tr("Terms of Use"));
             linkBlock.add(new HtmlDiv("footer_link").add(new UrlString("http://blog.elveos.org").getHtmlLink(Context.tr("Blog & news"))));
-            
 
         }
         footerBlock.add(linkBlock);

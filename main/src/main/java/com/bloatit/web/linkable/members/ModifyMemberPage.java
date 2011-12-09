@@ -71,15 +71,15 @@ public class ModifyMemberPage extends LoggedElveosPage {
             final HtmlElveosForm nameForm = new HtmlElveosForm(targetUrl.urlString());
             nameForm.enableFileUpload();
             layout.addLeft(nameForm);
-            FormBuilder nameFBuilder = new FormBuilder(ModifyMemberAction.class, targetUrl);
+            final FormBuilder nameFBuilder = new FormBuilder(ModifyMemberAction.class, targetUrl);
 
             // Full name
-            HtmlTextField nameField = new HtmlTextField(targetUrl.getFullnameParameter().getName());
+            final HtmlTextField nameField = new HtmlTextField(targetUrl.getFullnameParameter().getName());
             nameFBuilder.add(nameForm, nameField);
             nameFBuilder.setDefaultValueIfNeeded(nameField, loggedUser.getFullname());
 
             // User description
-            HtmlTextArea description = new HtmlTextArea(targetUrl.getDescriptionParameter().getName(), 4, 75);
+            final HtmlTextArea description = new HtmlTextArea(targetUrl.getDescriptionParameter().getName(), 4, 75);
             nameFBuilder.add(nameForm, description);
             nameFBuilder.setDefaultValueIfNeeded(description, loggedUser.getDescription());
 
@@ -87,7 +87,7 @@ public class ModifyMemberPage extends LoggedElveosPage {
             nameFBuilder.add(nameForm, new HtmlFileInput(targetUrl.getAvatarParameter().getName()));
 
             // Delete avatar
-            HtmlCheckbox deleteAvatar = new HtmlCheckbox(targetUrl.getDeleteAvatarParameter().getName(), LabelPosition.BEFORE);
+            final HtmlCheckbox deleteAvatar = new HtmlCheckbox(targetUrl.getDeleteAvatarParameter().getName(), LabelPosition.BEFORE);
             nameFBuilder.add(nameForm, deleteAvatar);
             if (loggedUser.getAvatar() == null && loggedUser.getAvatar().isNull()) {
                 deleteAvatar.addAttribute("disabled", "disabled");
@@ -99,7 +99,7 @@ public class ModifyMemberPage extends LoggedElveosPage {
             final ModifyPasswordActionUrl passwordUrl = new ModifyPasswordActionUrl(getSession().getShortKey());
             final HtmlElveosForm passwordForm = new HtmlElveosForm(passwordUrl.urlString());
             layout.addLeft(passwordForm);
-            FormBuilder ftool = new FormBuilder(ModifyPasswordAction.class, passwordUrl);
+            final FormBuilder ftool = new FormBuilder(ModifyPasswordAction.class, passwordUrl);
             ftool.add(passwordForm, new HtmlPasswordField(passwordUrl.getCurrentPasswordParameter().getName()));
             ftool.add(passwordForm, new HtmlPasswordField(passwordUrl.getPasswordParameter().getName()));
             passwordForm.addSubmit(new HtmlSubmit(Context.tr("Submit")));
@@ -109,10 +109,10 @@ public class ModifyMemberPage extends LoggedElveosPage {
             final ModifyDetailActionUrl detailUrl = new ModifyDetailActionUrl(getSession().getShortKey());
             final HtmlElveosForm detailForm = new HtmlElveosForm(detailUrl.urlString());
             layout.addLeft(detailForm);
-            FormBuilder detailFBuilder = new FormBuilder(ModifyDetailAction.class, detailUrl);
+            final FormBuilder detailFBuilder = new FormBuilder(ModifyDetailAction.class, detailUrl);
 
             // Email
-            HtmlTextField emailInput = new HtmlTextField(detailUrl.getEmailParameter().getName());
+            final HtmlTextField emailInput = new HtmlTextField(detailUrl.getEmailParameter().getName());
             detailFBuilder.add(detailForm, emailInput);
             if (loggedUser.hasEmailToActivate()) {
                 emailInput.setComment(Context.tr("Waiting for activation: {0}", loggedUser.getEmailToActivate()));
@@ -134,12 +134,12 @@ public class ModifyMemberPage extends LoggedElveosPage {
             detailForm.addSubmit(new HtmlSubmit(Context.tr("Submit")));
 
             // Newsletter
-            ModifyNewsletterActionUrl nlUrl = new ModifyNewsletterActionUrl(getSession().getShortKey());
+            final ModifyNewsletterActionUrl nlUrl = new ModifyNewsletterActionUrl(getSession().getShortKey());
             final HtmlElveosForm nlForm = new HtmlElveosForm(nlUrl.urlString());
             layout.addLeft(nlForm);
-            FormBuilder nlFBuilder = new FormBuilder(ModifyNewsletterAction.class, nlUrl);
+            final FormBuilder nlFBuilder = new FormBuilder(ModifyNewsletterAction.class, nlUrl);
 
-            HtmlCheckbox nlInput = new HtmlCheckbox(nlUrl.getNewsletterParameter().getName(), LabelPosition.BEFORE);
+            final HtmlCheckbox nlInput = new HtmlCheckbox(nlUrl.getNewsletterParameter().getName(), LabelPosition.BEFORE);
             nlFBuilder.add(nlForm, nlInput);
             nlFBuilder.setDefaultValueIfNeeded(nlInput, String.valueOf(loggedUser.getNewsletterAccept()));
             nlForm.addSubmit(new HtmlSubmit(Context.tr("Submit")));

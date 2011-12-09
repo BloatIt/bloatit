@@ -80,7 +80,7 @@ public final class ModifyBugPage extends LoggedElveosPage {
         // Create the form stub
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         formTitle.add(form);
-        FormBuilder ftool = new FormBuilder(ModifyBugAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(ModifyBugAction.class, targetUrl);
 
         // Level
         final HtmlDropDown levelInput = new HtmlDropDown(targetUrl.getLevelParameter().getName());

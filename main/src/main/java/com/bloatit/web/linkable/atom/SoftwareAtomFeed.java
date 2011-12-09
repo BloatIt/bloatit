@@ -34,7 +34,7 @@ public class SoftwareAtomFeed extends ElveosAtomFeed {
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the software number: ''%value%''."))
     private final Software software;
 
-    public SoftwareAtomFeed(SoftwareAtomFeedUrl url) {
+    public SoftwareAtomFeed(final SoftwareAtomFeedUrl url) {
         super(url);
         this.software = url.getSoftware();
     }
@@ -42,10 +42,11 @@ public class SoftwareAtomFeed extends ElveosAtomFeed {
     @Override
     public void generate() {
         boolean first = true;
-        for (Feature feature : software.getFeaturesByCreationDate()) {
-            Translation translation = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
-            String featureTitle = translation.getTitle();
-            Software software = feature.getSoftware();
+        for (final Feature feature : software.getFeaturesByCreationDate()) {
+            final Translation translation = feature.getDescription()
+                                                   .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
+            final String featureTitle = translation.getTitle();
+            final Software software = feature.getSoftware();
             String title;
             if (software == null) {
                 title = Context.tr("New software") + " – " + featureTitle;
@@ -64,13 +65,13 @@ public class SoftwareAtomFeed extends ElveosAtomFeed {
                 }
             }
 
-            FeedEntry entry = new FeedEntry(title,
-                                            new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
-                                            new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
-                                            feature.getCreationDate(),
-                                            translationText,
-                                            feature.getMember().getDisplayName(),
-                                            new MemberPageUrl(feature.getMember()).externalUrlString());
+            final FeedEntry entry = new FeedEntry(title,
+                                                  new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
+                                                  new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
+                                                  feature.getCreationDate(),
+                                                  translationText,
+                                                  feature.getMember().getDisplayName(),
+                                                  new MemberPageUrl(feature.getMember()).externalUrlString());
             addFeedEntry(entry, Position.LAST);
             if (first) {
                 updateDate = feature.getCreationDate();

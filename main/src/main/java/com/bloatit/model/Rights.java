@@ -10,7 +10,6 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RestrictedObject;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.visitor.HighLevelModelVisitor;
 
 public class Rights {
@@ -262,7 +261,7 @@ public class Rights {
         @Override
         public Team visit(final ContributionInvoice model) {
             if (model.getEmitterActorUnprotected().isTeam()) {
-                Team team = (Team) model.getEmitterActorUnprotected();
+                final Team team = (Team) model.getEmitterActorUnprotected();
                 if (AuthToken.getMember().isInTeam(team)) {
                     return team;
                 }
@@ -281,32 +280,32 @@ public class Rights {
         }
 
         @Override
-        public Team visit(ExternalServiceMembership externalService) {
+        public Team visit(final ExternalServiceMembership externalService) {
             return null;
         }
 
         @Override
-        public Team visitAbstract(Follow model) {
+        public Team visitAbstract(final Follow model) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Team visit(Event event) {
+        public Team visit(final Event event) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Team visit(FollowFeature model) {
+        public Team visit(final FollowFeature model) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Team visit(FollowSoftware model) {
+        public Team visit(final FollowSoftware model) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Team visit(FollowActor model) {
+        public Team visit(final FollowActor model) {
             throw new NotImplementedException();
         }
 
@@ -403,27 +402,27 @@ public class Rights {
         }
 
         @Override
-        public Boolean visitAbstract(Follow model) {
+        public Boolean visitAbstract(final Follow model) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Boolean visit(Event event) {
+        public Boolean visit(final Event event) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Boolean visit(FollowFeature model) {
+        public Boolean visit(final FollowFeature model) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Boolean visit(FollowSoftware model) {
+        public Boolean visit(final FollowSoftware model) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Boolean visit(FollowActor model) {
+        public Boolean visit(final FollowActor model) {
             throw new NotImplementedException();
         }
     }
@@ -517,27 +516,27 @@ public class Rights {
         }
 
         @Override
-        public Boolean visitAbstract(Follow model) {
+        public Boolean visitAbstract(final Follow model) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Boolean visit(Event event) {
+        public Boolean visit(final Event event) {
             throw new NotImplementedException();
         }
 
         @Override
-        public Boolean visit(FollowFeature model) {
+        public Boolean visit(final FollowFeature model) {
             return model.getFollower().equals(member);
         }
 
         @Override
-        public Boolean visit(FollowSoftware model) {
+        public Boolean visit(final FollowSoftware model) {
             return model.getFollower().equals(member);
         }
 
         @Override
-        public Boolean visit(FollowActor model) {
+        public Boolean visit(final FollowActor model) {
             return model.getFollower().equals(member);
         }
 
@@ -545,27 +544,27 @@ public class Rights {
 
     // Karma
     public boolean hasKarmaToComment() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToComment();
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToComment();
         return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
 
     public boolean hasKarmaToCreateFeature() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
         return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
 
     public boolean hasKarmaToMakeOffer() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
         return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
 
     public boolean hasKarmaToVoteUp() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
         return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
 
     public boolean hasKarmaToVoteDown() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
         return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
 }

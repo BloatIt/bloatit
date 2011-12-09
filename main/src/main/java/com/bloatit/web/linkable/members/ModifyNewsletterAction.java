@@ -43,7 +43,7 @@ public class ModifyNewsletterAction extends LoggedElveosAction {
 
     public ModifyNewsletterAction(final ModifyNewsletterActionUrl url) {
         super(url);
-        Boolean newsletterTmp = url.getNewsletter();
+        final Boolean newsletterTmp = url.getNewsletter();
         if (newsletterTmp == null) {
             this.newsletter = Boolean.FALSE;
         } else {

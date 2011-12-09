@@ -167,7 +167,7 @@ public class MailServer extends Thread {
             final Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(FrameworkConfiguration.getMailFrom()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getTo()));
-            Address[] replyTo = {new InternetAddress(FrameworkConfiguration.getMailReplyTo())};
+            final Address[] replyTo = { new InternetAddress(FrameworkConfiguration.getMailReplyTo()) };
             message.setReplyTo(replyTo);
             message.setSubject(mail.getSubject());
 

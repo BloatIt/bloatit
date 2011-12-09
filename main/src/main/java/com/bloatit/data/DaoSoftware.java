@@ -173,7 +173,7 @@ public class DaoSoftware extends DaoIdentifiable {
 
     /**
      * Change the logo of this soft.
-     *
+     * 
      * @param image the image to add.
      */
     public void setImage(final DaoFileMetadata image) {
@@ -223,7 +223,7 @@ public class DaoSoftware extends DaoIdentifiable {
     public String getName() {
         return this.name;
     }
-    
+
     public PageIterable<DaoFollowSoftware> getFollowers() {
         return new MappedList<DaoFollowSoftware>(followers);
     }

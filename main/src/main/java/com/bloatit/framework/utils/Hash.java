@@ -50,7 +50,7 @@ public class Hash {
         return DigestUtils.sha512Hex(value).substring(10, 20);
     }
 
-    public static String generateUniqueToken(int size) {
+    public static String generateUniqueToken(final int size) {
         return generateUniqueToken().substring(0, size);
     }
 

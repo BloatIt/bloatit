@@ -34,8 +34,6 @@ import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.url.Loaders;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
-import com.bloatit.model.Feature;
-import com.bloatit.model.FollowFeature;
 import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
@@ -138,19 +136,16 @@ public class RestFollowSoftware extends RestElement<FollowSoftware> {
         return new RestFollowSoftwareList(new EmptyPageIterable<FollowSoftware>());
     }
 
-    
     @REST(name = "followsoftwares", method = RequestMethod.PUT, params = { "follower", "followed", "mail" })
-    public static RestFollowSoftware createFollow(final String follower,
-                                                 final String followed,
-                                                 final String mail) throws RestException {
+    public static RestFollowSoftware createFollow(final String follower, final String followed, final String mail) throws RestException {
 
         try {
-            Member member = Loaders.fromStr(Member.class, follower);
+            final Member member = Loaders.fromStr(Member.class, follower);
 
-            Software software = Loaders.fromStr(Software.class, followed);
-            boolean isMail = Loaders.fromStr(Boolean.class, mail);
+            final Software software = Loaders.fromStr(Software.class, followed);
+            final boolean isMail = Loaders.fromStr(Boolean.class, mail);
 
-            FollowSoftware followSoftware = member.followOrGetSoftware(software);
+            final FollowSoftware followSoftware = member.followOrGetSoftware(software);
             followSoftware.setMail(isMail);
 
             final RestFollowSoftware restFollowSoftware = new RestFollowSoftware(followSoftware);
@@ -159,46 +154,43 @@ public class RestFollowSoftware extends RestElement<FollowSoftware> {
             }
             return restFollowSoftware;
 
-        } catch (ConversionErrorException e) {
+        } catch (final ConversionErrorException e) {
             throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "Bad format for one of the parameters", e);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_CLI_403_FORBIDDEN, "Permission denied", e);
         }
     }
 
     /**
-     * 
      * @param follower
      * @param followed
      * @return true is the follower was following the feature, false otherwise
      * @throws RestException
      */
-    @REST(name = "followsoftwares", method = RequestMethod.DELETE, params = {  "follower", "followed" })
-    public static boolean deleteFollow(final String follower,
-                                    final String followed) throws RestException {
+    @REST(name = "followsoftwares", method = RequestMethod.DELETE, params = { "follower", "followed" })
+    public static boolean deleteFollow(final String follower, final String followed) throws RestException {
 
         try {
 
-            Member member = Loaders.fromStr(Member.class, follower);
+            final Member member = Loaders.fromStr(Member.class, follower);
 
-            Software software = Loaders.fromStr(Software.class, followed);
-            if(member.isFollowing(software)) {
-                FollowSoftware followSoftware = member.followOrGetSoftware(software);
+            final Software software = Loaders.fromStr(Software.class, followed);
+            if (member.isFollowing(software)) {
+                final FollowSoftware followSoftware = member.followOrGetSoftware(software);
                 followSoftware.getFollower().unfollowSoftware(followSoftware.getFollowed());
                 return true;
             } else {
                 return false;
             }
-            
-        } catch (ConversionErrorException e) {
+
+        } catch (final ConversionErrorException e) {
             throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "Bad format for one of the parameters", e);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_CLI_403_FORBIDDEN, "Permission denied", e);
         }
-        
+
     }
-    
-    
+
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
@@ -225,7 +217,7 @@ public class RestFollowSoftware extends RestElement<FollowSoftware> {
     public RestMember getFollower() {
         return new RestMember(model.getFollower());
     }
-    
+
     @XmlAttribute
     public boolean isMail() {
         return model.isMail();

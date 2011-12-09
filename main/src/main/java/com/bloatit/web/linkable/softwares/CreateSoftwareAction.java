@@ -102,7 +102,7 @@ public final class CreateSoftwareAction extends LoggedElveosAction {
         final Locale langLocale = new Locale(lang);
 
         try {
-            Software p = new Software(softwareName, me, langLocale, description);
+            final Software p = new Software(softwareName, me, langLocale, description);
 
             if (image != null) {
                 final FileConstraintChecker fcc = new FileConstraintChecker(image);
@@ -120,7 +120,7 @@ public final class CreateSoftwareAction extends LoggedElveosAction {
             final SoftwarePageUrl to = new SoftwarePageUrl(p);
 
             return to;
-        } catch (UniqueNameExpectedException e) {
+        } catch (final UniqueNameExpectedException e) {
             Context.getSession().notifyError(Context.tr("A software with the same name already exists."));
             return doProcessErrors();
         }

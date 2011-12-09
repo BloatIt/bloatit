@@ -70,15 +70,15 @@ public final class ActivityPage extends ElveosPage {
 
     static Breadcrumb generateBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb;
-        
-        if(member != null) {
+
+        if (member != null) {
             breadcrumb = MemberPage.generateBreadcrumb(member);
         } else {
             breadcrumb = IndexPage.generateBreadcrumb();
         }
 
-        ActivityPageUrl activityPageUrl = new ActivityPageUrl();
-        if(member != null) {
+        final ActivityPageUrl activityPageUrl = new ActivityPageUrl();
+        if (member != null) {
             activityPageUrl.setMember(member);
         }
         breadcrumb.pushLink(activityPageUrl.getHtmlLink(tr("Activity")));

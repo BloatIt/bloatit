@@ -105,7 +105,7 @@ public final class ReportBugPage extends CreateUserContentPage {
         final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         formTitle.add(form);
 
-        FormBuilder ftool = new FormBuilder(ReportBugAction.class, targetUrl);
+        final FormBuilder ftool = new FormBuilder(ReportBugAction.class, targetUrl);
 
         form.addLanguageChooser(targetUrl.getLocaleParameter().getName(), Context.getLocalizator().getLanguageCode());
         form.addAsTeamField(new AsTeamField(targetUrl,
@@ -126,9 +126,9 @@ public final class ReportBugPage extends CreateUserContentPage {
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
 
         // Attachment
-        AttachmentField attachment = new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio");
-        HtmlParagraph actuator = new HtmlParagraph(Context.tr("+ add attachement"), "fake_link");
-        HtmlHiddenableDiv hiddenable = new HtmlHiddenableDiv(actuator, false);
+        final AttachmentField attachment = new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio");
+        final HtmlParagraph actuator = new HtmlParagraph(Context.tr("+ add attachement"), "fake_link");
+        final HtmlHiddenableDiv hiddenable = new HtmlHiddenableDiv(actuator, false);
         form.add(actuator);
         form.add(hiddenable);
         ftool.add(hiddenable, attachment.getFileInput());
