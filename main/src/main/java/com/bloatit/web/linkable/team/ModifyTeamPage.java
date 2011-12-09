@@ -22,13 +22,13 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -81,12 +81,12 @@ public class ModifyTeamPage extends LoggedElveosPage {
         ftool.add(form, rightInput);
 
         // Contact
-        MarkdownEditor contact = new MarkdownEditor(target.getContactParameter().getName(), 5, 80);
+        HtmlTextArea contact = new HtmlTextArea(target.getContactParameter().getName(), 5, 80);
         ftool.add(form, contact);
         ftool.setDefaultValueIfNeeded(contact, team.getPublicContact());
 
         // Description
-        MarkdownEditor description = new MarkdownEditor(target.getDescriptionParameter().getName(), 5, 80);
+        HtmlTextArea description = new HtmlTextArea(target.getDescriptionParameter().getName(), 5, 80);
         ftool.add(form, description);
         ftool.setDefaultValueIfNeeded(description, team.getDescription());
 

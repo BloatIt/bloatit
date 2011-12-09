@@ -22,11 +22,11 @@ import com.bloatit.data.DaoTeam;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -69,12 +69,12 @@ public final class CreateTeamPage extends LoggedElveosPage {
 
         // Contact
         final String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");
-        MarkdownEditor contact = new MarkdownEditor(target.getContactParameter().getName(), 5, 80);
+        HtmlTextArea contact = new HtmlTextArea(target.getContactParameter().getName(), 5, 80);
         ftool.add(form, contact);
         ftool.setDefaultValueIfNeeded(contact, suggested);
 
         // Description
-        ftool.add(form, new MarkdownEditor(target.getDescriptionParameter().getName(), 5, 80));
+        ftool.add(form, new HtmlTextArea(target.getDescriptionParameter().getName(), 5, 80));
 
         // PUBLIC / PRIVATE
         final HtmlDropDown rightInput = new HtmlDropDown(target.getRightParameter().getName());
