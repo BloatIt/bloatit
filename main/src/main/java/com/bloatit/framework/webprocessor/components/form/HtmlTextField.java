@@ -14,7 +14,7 @@ package com.bloatit.framework.webprocessor.components.form;
 /**
  * Class used to create a 1 line text input field
  */
-public final class HtmlTextField extends HtmlStringFormField {
+public final class HtmlTextField extends HtmlFormField {
 
     public HtmlTextField(final String name) {
         super(InputBlock.create(new HtmlSimpleInput("text")), name);

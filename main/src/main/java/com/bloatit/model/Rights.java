@@ -10,6 +10,7 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RestrictedObject;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.visitor.HighLevelModelVisitor;
 
 public class Rights {
@@ -260,9 +261,9 @@ public class Rights {
 
         @Override
         public Team visit(final ContributionInvoice model) {
-            if(model.getEmitterActorUnprotected().isTeam()) {
+            if (model.getEmitterActorUnprotected().isTeam()) {
                 Team team = (Team) model.getEmitterActorUnprotected();
-                if(AuthToken.getMember().isInTeam(team)) {
+                if (AuthToken.getMember().isInTeam(team)) {
                     return team;
                 }
             }
@@ -291,6 +292,21 @@ public class Rights {
 
         @Override
         public Team visit(Event event) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Team visit(FollowFeature model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Team visit(FollowSoftware model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Team visit(FollowActor model) {
             throw new NotImplementedException();
         }
 
@@ -395,6 +411,21 @@ public class Rights {
         public Boolean visit(Event event) {
             throw new NotImplementedException();
         }
+
+        @Override
+        public Boolean visit(FollowFeature model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(FollowSoftware model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(FollowActor model) {
+            throw new NotImplementedException();
+        }
     }
 
     private static class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -493,6 +524,21 @@ public class Rights {
         @Override
         public Boolean visit(Event event) {
             throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(FollowFeature model) {
+            return model.getFollower().equals(member);
+        }
+
+        @Override
+        public Boolean visit(FollowSoftware model) {
+            return model.getFollower().equals(member);
+        }
+
+        @Override
+        public Boolean visit(FollowActor model) {
+            return model.getFollower().equals(member);
         }
 
     }

@@ -29,10 +29,14 @@ import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoFileMetadata;
+import com.bloatit.data.DaoFollowActor;
+import com.bloatit.data.DaoFollowFeature;
+import com.bloatit.data.DaoFollowSoftware;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
@@ -43,6 +47,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.feature.FeatureList;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.JoinTeamInvitationList;
@@ -58,6 +63,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.RightManager;
+import com.bloatit.model.right.RightManager.Private;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
@@ -341,7 +347,8 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().acceptNewsLetter(newsletter);
     }
 
-    public FollowFeature followOrGetFeature(Feature f) {
+    public FollowFeature followOrGetFeature(Feature f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         return FollowFeature.create(getDao().followOrGetFeature(((FeatureImplementation) f).getDao()));
     }
 
@@ -357,25 +364,46 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().isFollowing(actor.getDao());
     }
 
-    public void unfollowFeature(Feature f) {
+    public void unfollowFeature(Feature f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         FollowFeature followFeature = followOrGetFeature(f);
         followFeature.getDao().unfollow();
     }
 
-    public FollowSoftware followOrGetSoftware(Software f) {
-        return FollowSoftware.create(getDao().followOrGetSoftware(f.getDao()));
+    public FollowSoftware followOrGetSoftware(Software s) throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
+        if (!isFollowing(s)) {
+            // Follow all features of the software
+            for (Feature feature : s.getFeatures()) {
+                FollowFeature followFeature = followOrGetFeature(feature);
+                followFeature.setFeatureComment(true);
+                followFeature.setBugComment(true);
+            }
+        }
+        return FollowSoftware.create(getDao().followOrGetSoftware(s.getDao()));
     }
 
-    public void unfollowSoftware(Software s) {
+    public void unfollowSoftware(Software s) throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         FollowSoftware followSoftware = followOrGetSoftware(s);
         followSoftware.getDao().unfollow();
+
+        // Unfollow all features of the software
+        for (FollowFeature followFeature : getFollowedFeatures()) {
+            if (followFeature.getFollowed().getSoftware().equals(s)) {
+                unfollowFeature(followFeature.getFollowed());
+            }
+        }
     }
 
-    public FollowActor followOrGetActor(Actor<DaoActor> f) {
+
+    public FollowActor followOrGetActor(Actor<?> f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         return FollowActor.create(getDao().followOrGetActor(f.getDao()));
     }
 
-    public void unfollowActor(Actor<DaoActor> a) {
+    public void unfollowActor(Actor<?> a) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
         FollowActor followActor = followOrGetActor(a);
         followActor.getDao().unfollow();
     }
@@ -384,13 +412,51 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().setLastWatchedEvents(lastWatchedEvents);
     }
 
+    public void setEmailStrategy(EmailStrategy emailStrategy) throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.WRITE);
+        getDao().setEmailStrategy(emailStrategy);
+    }
+
+    public void setGlobalFollow(boolean globalFollow) throws UnauthorizedOperationException {
+        tryAccess(new Private(), Action.WRITE);
+
+        if (globalFollow && !isGlobalFollow()) {
+            // Follow all
+            for (Feature feature : FeatureManager.getAllByCreationDate()) {
+                FollowFeature followFeature = followOrGetFeature(feature);
+                followFeature.setFeatureComment(true);
+                followFeature.setBugComment(true);
+            }
+        } else if (!globalFollow && isGlobalFollow()) {
+            for (FollowFeature followFeature : getFollowedFeatures()) {
+                if(!isFollowing(followFeature.getFollowed().getSoftware())) {
+                    unfollowFeature(followFeature.getFollowed());
+                }
+            }
+        }
+
+        getDao().setGlobalFollow(globalFollow);
+    }
+
+    public void setGlobalFollowWithMail(boolean globalFollow) throws UnauthorizedOperationException {
+        tryAccess(new Private(), Action.WRITE);
+
+        for (FollowFeature followFeature : getFollowedFeatures()) {
+            if(!isFollowing(followFeature.getFollowed().getSoftware())) {
+                followFeature.setMail(globalFollow);
+            }
+        }
+
+        getDao().setGlobalFollowWithMail(globalFollow);
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public Date getLastWatchedEvents() {
         Date lastWatchedEvents = getDao().getLastWatchedEvents();
-        if(lastWatchedEvents == null) {
+        if (lastWatchedEvents == null) {
             return DateUtils.dawnOfTime();
         } else {
             return lastWatchedEvents;
@@ -408,6 +474,25 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public String getDescription() {
         return getDao().getDescription();
+    }
+
+    public EmailStrategy getEmailStrategy() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().getEmailStrategy();
+    }
+
+    public FollowFeature getFollowFeature(Feature feature) {
+        return FollowFeature.create(getDao().getFollowFeature(((FeatureImplementation) feature).getDao()));
+    }
+
+    public boolean isGlobalFollow() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().isGlobalFollow();
+    }
+
+    public boolean isGlobalFollowWithMail() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().isGlobalFollowWithMail();
     }
 
     public String getActivationKey() {
@@ -476,8 +561,8 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     // TODO make right managements
-    public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
-        return new UserContentList(getDao().getActivity());
+    public PageIterable<UserContent<? extends DaoUserContent>> getHistory() {
+        return new UserContentList(getDao().getHistory());
     }
 
     private static final float INFLUENCE_MULTIPLICATOR = 2;
@@ -567,7 +652,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     @Override
-    public PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException {
+    public PageIterable<Contribution> doGetContributions() {
         return getContributions(true);
     }
 
@@ -614,6 +699,18 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public PageIterable<ExternalServiceMembership> getExternalServices() {
         return new ListBinder<ExternalServiceMembership, DaoExternalServiceMembership>(getDao().getAuthorizedExternalServices());
+    }
+
+    public PageIterable<FollowFeature> getFollowedFeatures() {
+        return new ListBinder<FollowFeature, DaoFollowFeature>(getDao().getFollowedFeatures());
+    }
+
+    public PageIterable<FollowActor> getFollowedActors() {
+        return new ListBinder<FollowActor, DaoFollowActor>(getDao().getFollowedActors());
+    }
+
+    public PageIterable<FollowSoftware> getFollowedSoftware() {
+        return new ListBinder<FollowSoftware, DaoFollowSoftware>(getDao().getFollowedSoftware());
     }
 
     public void addAuthorizedExternalService(String clientId, String token, EnumSet<RightLevel> rights) {
@@ -724,6 +821,5 @@ public final class Member extends Actor<DaoMember> implements User {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
 
 }

@@ -30,5 +30,5 @@
     <include file="liquibase/add-date-event-member.xml" />
     <include file="liquibase/remove-not-null-constraint-on-software-event.xml" />
     <include file="liquibase/fix-team-contact.xml" />
-
+    <include file="liquibase/add-global-follow-member.xml" />
 </databaseChangeLog>

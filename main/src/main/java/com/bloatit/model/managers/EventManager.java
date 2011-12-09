@@ -19,6 +19,8 @@ package com.bloatit.model.managers;
 import java.util.Date;
 import java.util.Iterator;
 
+import antlr.collections.List;
+
 import com.bloatit.data.DaoEvent;
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.data.queries.QueryCollection;
@@ -32,32 +34,48 @@ public final class EventManager {
         // Desactivate default ctor
     }
 
-    public static EventList getAllEventAfter(Date date, EmailStrategy strategy) {
+    public static EventList getAllEventAfter(Date beginDate, Date endDate,  EmailStrategy strategy) {
         QueryCollection<Object[]> q = new QueryCollection<Object[]>("memberid.event.byDate.withMail");
-        q.setTimestamp("date", date);
+        q.setTimestamp("beginDate", beginDate);
+        q.setTimestamp("endDate", endDate);
         q.setParameter("strategy", strategy);
-        return new EventList(q);
+        return new EventList(q, -1);
+    }
+    
+    public static EventList getAllEventAfter(Date date) {
+        QueryCollection<Object[]> q = new QueryCollection<Object[]>("event.byDate");
+        q.setTimestamp("date", date);
+        return new EventList(q, 100);
     }
     
     public static EventList getAllEventByMemberAfter(Date date, Member member) {
         QueryCollection<Object[]> q = new QueryCollection<Object[]>("event.byDate.byMember");
         q.setTimestamp("date", date);
         q.setEntity("member", member.getDao());
-        return new EventList(q);
+        return new EventList(q, 100);
     }
 
     public static class EventList {
         private Iterator<Object[]> it;
         private Member currentMember;
         private Event currentEvent;
+        private final PageIterable<Object[]> list;
 
-        protected EventList(PageIterable<Object[]> list) {
+        protected EventList(PageIterable<Object[]> list, int maxSize) {
             super();
-            it = list.iterator();
+            this.list = list;
+            if(maxSize > 0) {
+                this.list.setPageSize(maxSize);
+            }
+            reset();
         }
 
         public boolean hasNext() {
             return it.hasNext();
+        }
+        
+        public void reset() {
+            it = list.iterator();
         }
 
         public Member member() {

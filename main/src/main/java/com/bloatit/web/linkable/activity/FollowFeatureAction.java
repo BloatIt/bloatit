@@ -9,54 +9,66 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.timeline;
+package com.bloatit.web.linkable.activity;
 
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.FollowSoftware;
+import com.bloatit.model.Feature;
+import com.bloatit.model.FollowFeature;
 import com.bloatit.model.Member;
-import com.bloatit.model.Software;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
 import com.bloatit.web.url.FollowFeatureActionUrl;
-import com.bloatit.web.url.FollowSoftwareActionUrl;
 
 /**
  * A response to a form used to assess any <code>kudosable</code> on the bloatit
  * website
  */
-@ParamContainer("timeline/follow/software")
-public final class FollowSoftwareAction extends LoggedElveosAction {
+@ParamContainer("activity/follow/feature")
+public final class FollowFeatureAction extends LoggedElveosAction {
 
     @RequestParam()
-    @NonOptional(@tr("You must indicate a software to follow"))
-    private final Software software;
-    
+    @NonOptional(@tr("You must indicate a feature to follow"))
+    private final Feature feature;
+
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow state"))
     private final Boolean follow;
-    
+
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow mail state"))
     private final Boolean followMail;
-    
-    public FollowSoftwareAction(final FollowSoftwareActionUrl url) {
+
+    @RequestParam()
+    @NonOptional(@tr("You must indicate a follow comments state"))
+    private final Boolean followComments;
+
+    @RequestParam()
+    @NonOptional(@tr("You must indicate a follow bugs state"))
+    private final Boolean followBugs;
+
+    public FollowFeatureAction(final FollowFeatureActionUrl url) {
         super(url);
-        software = url.getSoftware();
+        feature = url.getFeature();
         follow = url.getFollow();
         followMail = url.getFollowMail();
+        followComments = url.getFollowComments();
+        followBugs = url.getFollowBugs();
     }
 
     @Override
-    public Url doProcessRestricted(final Member me) {
-        
-        if(follow) {
-            FollowSoftware followSoftware = me.followOrGetSoftware(software);
-            followSoftware.setMail(followMail);
+    public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
+
+        if (follow) {
+            FollowFeature followFeature = me.followOrGetFeature(feature);
+            followFeature.setMail(followMail);
+            followFeature.setFeatureComment(followComments);
+            followFeature.setBugComment(followBugs);
         } else {
-            me.unfollowSoftware(software);
+            me.unfollowFeature(feature);
         }
 
         return session.pickPreferredPage();
@@ -74,7 +86,7 @@ public final class FollowSoftwareAction extends LoggedElveosAction {
 
     @Override
     protected String getRefusalReason() {
-        return "You must be logged to set your timeline as read";
+        return "You must be logged to follow something";
     }
 
     @Override

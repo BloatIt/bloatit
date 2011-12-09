@@ -29,7 +29,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
  * <div> <textarea name="..." class="cssClass" ...>defaultValue</textarea>
  * </div> </div> </pre> </p>
  */
-public final class HtmlTextArea extends HtmlStringFormField {
+public final class HtmlTextArea extends HtmlFormField {
 
     public HtmlTextArea(final String name, final int rows, final int cols) {
         super(InputBlock.create(new HtmlSimpleTextArea(rows, cols)), name);

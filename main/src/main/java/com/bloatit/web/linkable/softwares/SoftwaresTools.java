@@ -31,9 +31,10 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDownElement;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
-import com.bloatit.framework.webprocessor.components.form.HtmlStringFormField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -83,7 +84,7 @@ public class SoftwaresTools {
         }
     }
 
-    public static class SoftwareChooserElement extends HtmlStringFormField {
+    public static class SoftwareChooserElement extends HtmlFormField {
 
         public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName) {
             super(new SoftwareInputBlock(newSoftwareName, newSoftwareCheckboxName), name);

@@ -12,11 +12,13 @@
 
 package com.bloatit.web.linkable.master;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -44,7 +46,11 @@ public abstract class LoggedElveosPage extends ElveosPage {
     @Override
     protected final HtmlElement createBodyContent() throws RedirectException {
         if (AuthToken.isAuthenticated()) {
-            return createRestrictedContent(AuthToken.getMember());
+            try {
+                return createRestrictedContent(AuthToken.getMember());
+            } catch (UnauthorizedPrivateAccessException e) {
+                throw new ShallNotPassException("Permission error generating page", e);
+            }
         }
         getSession().notifyWarning(getRefusalReason());
         getSession().setTargetPage(getUrl());
@@ -65,8 +71,9 @@ public abstract class LoggedElveosPage extends ElveosPage {
      * @return the root HtmlElement for the page
      * @throws RedirectException when an error occurs that need to interrupt
      *             content generation and redirect to another page
+     * @throws UnauthorizedPrivateAccessException 
      */
-    public abstract HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException;
+    public abstract HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException, UnauthorizedPrivateAccessException;
 
     /**
      * <p>

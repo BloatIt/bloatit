@@ -639,6 +639,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             getDao().setSoftware(null);
         } else {
             getDao().setSoftware(software.getDao());
+            for (FollowSoftware s : software.getFollowers()) {
+                FollowFeature followFeature = s.getFollower().followOrGetFeature(this);
+                followFeature.setBugComment(true);
+                followFeature.setFeatureComment(true);
+                followFeature.setMail(followFeature.isMail());
+            }
         }
     }
 
@@ -711,7 +717,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public float getMemberProgression(final Member author) throws UnauthorizedOperationException {
+    public float getMemberProgression(final Member author) {
         final BigDecimal memberAmount = getContributionOf(author);
         final float memberAmountFloat = memberAmount.floatValue();
         final float totalAmountFloat = getContribution().floatValue();

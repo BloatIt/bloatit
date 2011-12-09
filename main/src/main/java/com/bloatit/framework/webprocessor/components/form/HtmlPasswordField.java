@@ -27,7 +27,7 @@ package com.bloatit.framework.webprocessor.components.form;
  *
  * </p>
  */
-public final class HtmlPasswordField extends HtmlStringFormField {
+public final class HtmlPasswordField extends HtmlFormField {
 
     /**
      * <p>

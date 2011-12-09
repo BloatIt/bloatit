@@ -77,4 +77,10 @@ public class TwoColumnLayout extends HtmlLeaf {
         // rightColumn.add(element);
         plugins.addPageContent(element);
     }
+    
+    @Override
+    public HtmlElement setCssClass(String cssClass) {
+        leftColumn.setCssClass(cssClass);
+        return this;
+    }
 }

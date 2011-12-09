@@ -138,6 +138,13 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgNoAvatar() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + configuration.imgNoAvatar);
     }
+    
+    /**
+     * @return the imgNoAvatar
+     */
+    public static String getImgNoTeamAvatar() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/avatar_team.png");
+    }
 
     /**
      * @return the imgValidIcon
@@ -327,6 +334,14 @@ public class WebConfiguration extends ReloadableConfiguration {
     
     public static String getImgBugTiny() {
         return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/bug_tiny.png");
+    }
+
+    public static String getImgLogoSmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/elveos_logo_small.png");
+    }
+
+    public static String getImgActivitySmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/activity_small.png");
     }
 
 }

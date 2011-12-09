@@ -204,6 +204,7 @@ public final class XcgiServer {
                 for (final XcgiProcessor processor : getProcessors()) {
                     if (processor.process(createKey(header, header.getGetParameters()), header, post, new HttpResponse(parser.getResponseStream(),
                                                                                                                        header))) {
+                        //Check temporary autentification
                         break;
                     }
                 }

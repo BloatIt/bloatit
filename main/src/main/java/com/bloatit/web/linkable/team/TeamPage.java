@@ -57,7 +57,7 @@ import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.members.tabs.InvoicingContactTab;
 import com.bloatit.web.linkable.money.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.team.tabs.AccountTab;
-import com.bloatit.web.linkable.team.tabs.ActivityTab;
+import com.bloatit.web.linkable.team.tabs.HistoryTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -72,14 +72,14 @@ import com.bloatit.web.url.WithdrawMoneyPageUrl;
 public final class TeamPage extends ElveosPage {
     public final static String TEAM_TAB_PANE = "tab";
     public final static String MEMBERS_TAB = "members";
-    public final static String ACTIVITY_TAB = "activity";
+    public final static String ACTIVITY_TAB = "history";
     public final static String ACCOUNT_TAB = "account";
     public final static String INVOICING_TAB = "invoicing";
 
     private final TeamPageUrl url;
 
     @SubParamContainer
-    private ActivityTab activity;
+    private HistoryTab history;
 
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the team number: ''%value%''."))
     @NonOptional(@tr("You have to specify a team number."))
@@ -160,8 +160,8 @@ public final class TeamPage extends ElveosPage {
             tabPane.addTab(new AccountTab(team, tr("Account"), ACCOUNT_TAB));
             tabPane.addTab(new InvoicingContactTab(team, tr("Invoicing"), INVOICING_TAB));
         }
-        activity = new ActivityTab(team, tr("Activity"), ACTIVITY_TAB, url);
-        tabPane.addTab(activity);
+        history = new HistoryTab(team, tr("History"), ACTIVITY_TAB, url);
+        tabPane.addTab(history);
 
         return master;
     }
@@ -179,7 +179,7 @@ public final class TeamPage extends ElveosPage {
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
             modify.add(new ModifyTeamPageUrl(team).getHtmlLink(Context.tr("Change team settings")));
-            modify.add(new HtmlFollowActorButton(team));
+            //modify.add(new HtmlFollowActorButton(team));
         }
 
         // Title and team type
@@ -210,11 +210,11 @@ public final class TeamPage extends ElveosPage {
         informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "), String.valueOf(team.getMembers().size())));
 
         // Features count
-        final long featuresCount = getActivityCount();
-        final TeamPageUrl activityPage = new TeamPageUrl(team);
-        activityPage.setActiveTabKey(ACTIVITY_TAB);
-        final HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), activityPage.getHtmlLink());
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent activity: "), mixed));
+        final long featuresCount = getHistoryCount();
+        final TeamPageUrl historyPage = new TeamPageUrl(team);
+        historyPage.setActiveTabKey(ACTIVITY_TAB);
+        final HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), historyPage.getHtmlLink());
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent history: "), mixed));
         titleBlock.add(informationsList);
 
         // Description
@@ -279,8 +279,8 @@ public final class TeamPage extends ElveosPage {
         return breadcrumb;
     }
 
-    private long getActivityCount() {
-        return team.getRecentActivityCount();
+    private long getHistoryCount() {
+        return team.getRecentHistoryCount();
     }
 
     private static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {

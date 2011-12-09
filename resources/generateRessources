@@ -24,6 +24,9 @@ done
 generateRessources process_doc 800
 generateRessources archi_doc 400
 
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/elveos_logo_small.png" -C -w 64 sources/logo_elveos_small.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/elveos_logo_small.png"
+
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/idea.png" -C -w 40 sources/idea.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/idea.png"
 
@@ -69,6 +72,9 @@ optipng $OUTPUT_DIR_PREFIX"commons/img/idea_small.png"
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/settings_small.png" -C -h 24 sources/settings_small.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/settings_small.png"
 
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/activity_small.png" -C -h 24 sources/activity_small.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/activity_small.png"
+
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/mail_settings_small.png" -C -h 24 sources/mail_settings_small.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/mail_settings_small.png"
 
@@ -81,5 +87,9 @@ optipng $OUTPUT_DIR_PREFIX"commons/img/mail_light.png"
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/mail_dark.png" -C -h 12 sources/mail_dark.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/mail_dark.png"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 
-inkscape -e $OUTPUT_DIR_PREFIX"commons/img/unfollow.png" -C -h 10 sources/unfollow.svg
-optipng $OUTPUT_DIR_PREFIX"commons/img/unfollow.png"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/unfollow.png" -C -h 8 sources/unfollow.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/unfollow.png"
+
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/avatar_team.png" -C -w 64 sources/avatar_team.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/avatar_team.png"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          

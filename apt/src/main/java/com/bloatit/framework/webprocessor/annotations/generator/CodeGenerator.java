@@ -256,9 +256,9 @@ public class CodeGenerator {
 
     private void addNameParameterComponents(final ComponentDescription componentDescription, Method getParameterMethod, String cmpName) {
         for (ComponentDescription scomponents : componentDescription.getSubComponents()) {
-            cmpName += "get" + Utils.firstCharUpper(scomponents.getAttributeName()) + "Url().";
-            addNamedParameter(getParameterMethod, scomponents, cmpName);
-            addNameParameterComponents(scomponents, getParameterMethod, cmpName);
+            addNamedParameter(getParameterMethod, scomponents, cmpName + "get" + Utils.firstCharUpper(scomponents.getAttributeName()) + "Url().");
+            addNameParameterComponents(scomponents, getParameterMethod, cmpName + "get" + Utils.firstCharUpper(scomponents.getAttributeName())
+                    + "Url().");
         }
     }
 

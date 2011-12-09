@@ -127,4 +127,11 @@ public final class MemberManager {
         return DBRequests.count(DaoMember.class);
     }
 
+    public static PageIterable<Member> getAllMembersFollowingAll() {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(DaoMember.class);
+        final Query query = SessionManager.createQuery("FROM " + meta.getEntityName() + " WHERE globalfollow=true");
+        final Query size = SessionManager.createQuery("SELECT count(*) FROM " + meta.getEntityName() + " WHERE globalfollow=true");
+        return new MemberList(new QueryCollection<DaoMember>(query, size));
+    }
+
 }

@@ -62,6 +62,7 @@ import com.bloatit.web.linkable.aliases.IndexPageAlias;
 import com.bloatit.web.linkable.aliases.MembersPageAlias;
 import com.bloatit.web.linkable.atom.FeatureAtomFeed;
 import com.bloatit.web.linkable.atom.SoftwareAtomFeed;
+import com.bloatit.web.linkable.atom.ActivityAtomFeed;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -164,11 +165,14 @@ import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
-import com.bloatit.web.linkable.timeline.FollowActorAction;
-import com.bloatit.web.linkable.timeline.FollowFeatureAction;
-import com.bloatit.web.linkable.timeline.FollowSoftwareAction;
-import com.bloatit.web.linkable.timeline.ReadTimelineAction;
-import com.bloatit.web.linkable.timeline.TimelinePage;
+import com.bloatit.web.linkable.activity.FollowActorAction;
+import com.bloatit.web.linkable.activity.FollowAllAction;
+import com.bloatit.web.linkable.activity.FollowFeatureAction;
+import com.bloatit.web.linkable.activity.FollowSoftwareAction;
+import com.bloatit.web.linkable.activity.ManageFollowAction;
+import com.bloatit.web.linkable.activity.ManageFollowPage;
+import com.bloatit.web.linkable.activity.ReadActivityAction;
+import com.bloatit.web.linkable.activity.ActivityPage;
 import com.bloatit.web.linkable.translation.TranslateAction;
 import com.bloatit.web.linkable.translation.TranslatePage;
 import com.bloatit.web.url.*;
@@ -368,8 +372,11 @@ public class BloatitWebServer extends WebProcessor {
         if (ModifyFeaturePageUrl.matches(pageCode)) {
             return new ModifyFeaturePage(new ModifyFeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (TimelinePageUrl.matches(pageCode)) {
-            return new TimelinePage(new TimelinePageUrl(pageCode, postGetParameters, session.getParameters()));
+        if (ActivityPageUrl.matches(pageCode)) {
+            return new ActivityPage(new ActivityPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ManageFollowPageUrl.matches(pageCode)) {
+            return new ManageFollowPage(new ManageFollowPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
@@ -556,8 +563,8 @@ public class BloatitWebServer extends WebProcessor {
         if (ModifyNewsletterActionUrl.matches(pageCode)) {
             return new ModifyNewsletterAction(new ModifyNewsletterActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (ReadTimelineActionUrl.matches(pageCode)) {
-            return new ReadTimelineAction(new ReadTimelineActionUrl(pageCode, postGetParameters, session.getParameters()));
+        if (ReadActivityActionUrl.matches(pageCode)) {
+            return new ReadActivityAction(new ReadActivityActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (FollowFeatureActionUrl.matches(pageCode)) {
             return new FollowFeatureAction(new FollowFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
@@ -567,6 +574,12 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (FollowActorActionUrl.matches(pageCode)) {
             return new FollowActorAction(new FollowActorActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (FollowAllActionUrl.matches(pageCode)) {
+            return new FollowAllAction(new FollowAllActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ManageFollowActionUrl.matches(pageCode)) {
+            return new ManageFollowAction(new ManageFollowActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
@@ -584,6 +597,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (SoftwareAtomFeedUrl.matches(pageCode)) {
             return new SoftwareAtomFeed(new SoftwareAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ActivityAtomFeedUrl.matches(pageCode)) {
+            return new ActivityAtomFeed(new ActivityAtomFeedUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////

@@ -55,7 +55,7 @@ public class FeaturesTools {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public enum FeatureContext { 
+    public enum FeatureContext {
         FEATURE_PAGE, FEATURE_LIST_PAGE, INDEX_PAGE, OTHER, DASHBOARD,
     }
 
@@ -122,12 +122,11 @@ public class FeaturesTools {
         return master;
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, FeatureContext context) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, FeatureContext context) {
         return generateProgress(feature, BigDecimal.ZERO, context);
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, final BigDecimal futureAmount, FeatureContext context)
-            throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final BigDecimal futureAmount, FeatureContext context) {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
             // Progress bar

@@ -172,7 +172,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) throws UnauthorizedOperationException {
 
         Software softwareToUse = software;
 

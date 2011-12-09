@@ -31,6 +31,9 @@ import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Follow;
+import com.bloatit.model.FollowActor;
+import com.bloatit.model.FollowFeature;
+import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
@@ -205,6 +208,21 @@ public class BreadcrumbTools {
 
             @Override
             public Breadcrumb visit(Event event) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(FollowFeature model) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(FollowSoftware model) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(FollowActor model) {
                 throw new NotImplementedException();
             }
         });

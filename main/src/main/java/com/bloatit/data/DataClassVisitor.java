@@ -256,4 +256,8 @@ public interface DataClassVisitor<ReturnType> {
     ReturnType visit(DaoFollow daoFollow);
 
     ReturnType visit(DaoEvent daoEvent);
+    
+    ReturnType visit(DaoFollowFeature daoFollow);
+    ReturnType visit(DaoFollowActor daoFollow);
+    ReturnType visit(DaoFollowSoftware daoFollow);
 }

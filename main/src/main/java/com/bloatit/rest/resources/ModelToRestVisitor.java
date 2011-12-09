@@ -34,6 +34,9 @@ import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Follow;
+import com.bloatit.model.FollowActor;
+import com.bloatit.model.FollowFeature;
+import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
@@ -197,5 +200,20 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     @Override
     public RestElement<?> visit(Event event) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(FollowFeature model) {
+        return new RestFollowFeature(model);
+    }
+
+    @Override
+    public RestElement<?> visit(FollowSoftware model) {
+        return new RestFollowSoftware(model);
+    }
+
+    @Override
+    public RestElement<?> visit(FollowActor model) {
+        return new RestFollowActor(model);
     }
 }

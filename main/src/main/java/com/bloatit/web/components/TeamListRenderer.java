@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Team;
 import com.bloatit.web.components.HtmlFollowButton.HtmlFollowActorButton;
 import com.bloatit.web.linkable.team.TeamTools;
@@ -34,18 +35,29 @@ public class TeamListRenderer implements HtmlRenderer<Team> {
     @Override
     public HtmlNode generate(final Team team) {
         final TeamPageUrl teamUrl = new TeamPageUrl(team);
-        final HtmlDiv box = new HtmlDiv("team_box");
+        final HtmlDiv box = new HtmlDiv("actor-box");
 
-        box.add(new HtmlDiv("float_right").add(TeamTools.getTeamAvatar(team)));
+        box.add(new HtmlDiv("actor-box-avatar").add(TeamTools.getTeamAvatar(team)));
+        
+        HtmlDiv content = new HtmlDiv("actor-box-content");
+        box.add(content);
+        
 
-        final HtmlDiv textBox = new HtmlDiv("team_text");
+        // Name
+        final HtmlDiv nameBox = new HtmlDiv("actor-box-actor-name");
         HtmlLink htmlLink;
         htmlLink = teamUrl.getHtmlLink(team.getDisplayName());
+        htmlLink.setCssClass("team-link");
+        nameBox.add(htmlLink);
+        content.add(nameBox);
+        
+        // Subtitle
+        HtmlDiv subtitle = new HtmlDiv("actor-box-subtitle");
+        content.add(subtitle);
+        subtitle.addText(Context.trn("{0} member", "{0} members", team.getMembers().size(), team.getMembers().size()));
 
-        textBox.add(htmlLink);
-        box.add(textBox);
-        box.add(new HtmlClearer());
-        box.add(new HtmlFollowActorButton(team));
+        // Follow
+        //content.add(new HtmlFollowActorButton(team));
         
         return box;
     }

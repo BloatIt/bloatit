@@ -1,6 +1,7 @@
 package com.bloatit.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,10 +19,17 @@ public final class EventMailer {
     }
 
     public static void start() {
-        new RecursiveMailer(11 * 60, EmailStrategy.VERY_FREQUENTLY);
+        // TODO :  remove in production !!!
+        
+        new RecursiveMailer(11 , EmailStrategy.VERY_FREQUENTLY, DateUtils.now());
+        new RecursiveMailer(61 , EmailStrategy.HOURLY, DateUtils.now());
+        new RecursiveMailer(120, EmailStrategy.DAILY, DateUtils.now());
+        new RecursiveMailer(200, EmailStrategy.WEEKLY, DateUtils.now());
+        
+        /*new RecursiveMailer(11 * 60, EmailStrategy.VERY_FREQUENTLY);
         new RecursiveMailer(61 * 60, EmailStrategy.HOURLY);
         new RecursiveMailer(24 * 3601, EmailStrategy.DAILY);
-        new RecursiveMailer(7 * 24 * 3599, EmailStrategy.WEEKLY);
+        new RecursiveMailer(7 * 24 * 3599, EmailStrategy.WEEKLY);*/
     }
 
     public static class EventMailData implements Iterable<Event> {
@@ -51,21 +59,28 @@ public final class EventMailer {
         private static final long serialVersionUID = 2566496487502210170L;
         private final int periode;
         private final EmailStrategy strategy;
+        
+        //Storing the last date permit to avoid duplicate sending or lost event
+        private Date lastDate;
 
         /**
          * @param periode in seconds
          */
-        public RecursiveMailer(int periode, DaoMember.EmailStrategy strategy) {
+        public RecursiveMailer(int periode, DaoMember.EmailStrategy strategy, Date lastDate) {
             super(DateUtils.nowPlusSomeSeconds(periode), periode);
-            this.periode = periode;
+            this.periode = periode; 
             this.strategy = strategy;
+            this.lastDate = lastDate;
         }
 
         @Override
         public void doRun() {
-            new RecursiveMailer(periode, strategy);
-            EventList eventList = EventManager.getAllEventAfter(DateUtils.nowMinusSomeSeconds(periode), strategy);
-
+            Date currentDate = DateUtils.now();
+            new RecursiveMailer(periode, strategy, currentDate);
+            
+            EventList eventList = EventManager.getAllEventAfter(lastDate, currentDate, strategy);
+            lastDate = currentDate;
+            
             Member currentMember = null;
             EventMailData data = null;
 
@@ -79,6 +94,11 @@ public final class EventMailer {
                     currentMember = eventList.member();
                 }
                 data.addEvent(eventList.event());
+            }
+            
+            // Flush
+            if (data != null) {
+                FeedbackServer.getInstance().sendMessage(data);
             }
 
         }

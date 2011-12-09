@@ -17,6 +17,9 @@
 package com.bloatit.model;
 
 import com.bloatit.framework.utils.i18n.Language;
+import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class FeatureFactory {
 
@@ -25,7 +28,36 @@ public class FeatureFactory {
                                         final Language language,
                                         final String title,
                                         final String description,
-                                        final Software software) {
-        return new FeatureImplementation(author, team, language, title, description, software);
+                                        final Software software) throws UnauthorizedOperationException {
+        FeatureImplementation featureImplementation = new FeatureImplementation(author, team, language, title, description, software);
+
+        if (software != null) {
+            for (FollowSoftware s : software.getFollowers()) {
+                AuthToken.temporaryAuthenticate(s.getFollower());
+                FollowFeature followFeature = s.getFollower().followOrGetFeature(featureImplementation);
+                followFeature.setBugComment(true);
+                followFeature.setFeatureComment(true);
+                followFeature.setMail(followFeature.isMail());
+                AuthToken.temporaryDeauthenticate();
+            }
+        }
+
+        for (Member member : MemberManager.getAllMembersFollowingAll()) {
+            if (!member.isFollowing(software)) {
+                AuthToken.temporaryAuthenticate(member);
+                FollowFeature followFeature = member.followOrGetFeature(featureImplementation);
+                followFeature.setBugComment(true);
+                followFeature.setFeatureComment(true);
+                followFeature.setMail(member.isGlobalFollowWithMail());
+                AuthToken.temporaryDeauthenticate();
+            }
+        }
+        
+        FollowFeature followFeature = author.followOrGetFeature(featureImplementation);
+        followFeature.setBugComment(true);
+        followFeature.setFeatureComment(true);
+        followFeature.setMail(true);
+
+        return featureImplementation;
     }
 }

@@ -52,32 +52,27 @@ public class IndexFeatureBlock extends HtmlDiv {
         floatRight = new PlaceHolderElement();
         indexBodyElement.add(floatRight);
 
-        try {
+        setFloatRight(new SoftwaresTools.Logo(highlightFeature.getFeature().getSoftware()));
 
-            setFloatRight(new SoftwaresTools.Logo(highlightFeature.getFeature().getSoftware()));
+        indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature(), FeatureTabKey.description).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
+                                           3));
 
-            indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature(), FeatureTabKey.description).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
-                                               3));
+        indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(highlightFeature.getFeature().getSoftware())));
 
-            indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(highlightFeature.getFeature().getSoftware())));
+        // Generate progess bar and text
+        indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), FeaturesTools.FeatureContext.INDEX_PAGE));
 
-            // Generate progess bar and text
-            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), FeaturesTools.FeatureContext.INDEX_PAGE));
+        indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 
-            indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
-
-            if (highlightFeature.getFeature().getFeatureState() == FeatureState.FINISHED) {
-                final HtmlImage sucessImage = new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(Context.getLocalizator()
-                                                                                                                        .getLanguageCode())),
-                                                            tr("success"));
-                final HtmlDiv sucessImageBlock = new HtmlDiv("successImageBlock");
-                sucessImageBlock.add(sucessImage);
-                indexBodyElement.add(sucessImageBlock);
-            }
-
-        } catch (final UnauthorizedOperationException e) {
-            throw new ShallNotPassException(e);
+        if (highlightFeature.getFeature().getFeatureState() == FeatureState.FINISHED) {
+            final HtmlImage sucessImage = new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(Context.getLocalizator()
+                                                                                                                    .getLanguageCode())),
+                                                        tr("success"));
+            final HtmlDiv sucessImageBlock = new HtmlDiv("successImageBlock");
+            sucessImageBlock.add(sucessImage);
+            indexBodyElement.add(sucessImageBlock);
         }
+
     }
 
     private final HtmlBranch setFloatRight(final HtmlElement element) {

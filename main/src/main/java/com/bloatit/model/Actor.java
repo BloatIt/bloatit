@@ -154,8 +154,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * @return the contributions done by this actor
      * @throws UnauthorizedOperationException
      */
-    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
-        tryAccess(new RgtActor.Contribution(), Action.READ);
+    public PageIterable<Contribution> getContributions() {
         return doGetContributions();
     }
 
@@ -168,7 +167,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         return Contact.create(getDao().getContact());
     }
 
-    public abstract PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException;
+    public abstract PageIterable<Contribution> doGetContributions();
 
     /**
      * Returns the money withdraw done by this actor.

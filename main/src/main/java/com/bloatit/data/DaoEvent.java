@@ -44,25 +44,16 @@ import com.bloatit.framework.utils.PageIterable;
 @NamedQueries(value = {
           @NamedQuery(
                       name =  "memberid.event.byDate.withMail",
-                      query = "SELECT coalesce(mff.id,maf.id,msf.id), e " +
+                      query = "SELECT mff.id, e " +
                               "FROM DaoEvent e " +
                               "JOIN e.feature f " +
                               "LEFT JOIN f.followers mf " +
-                              "JOIN e.software s " +
-                              "LEFT JOIN s.followers ms " +
-                              "JOIN e.actor a " +
-                              "LEFT JOIN a.followers ma " +
                               "LEFT JOIN mf.follower mff " +
-                              "LEFT JOIN ms.follower msf " +
-                              "LEFT JOIN ma.follower maf " +
-                              "WHERE e.creationDate > :date " +
+                              "WHERE e.creationDate > :beginDate " +
+                              "AND e.creationDate <= :endDate " +
                               "AND (mff.emailStrategy = :strategy OR mff is null) " +
-                              "AND (msf.emailStrategy = :strategy OR msf is null) " +
-                              "AND (maf.emailStrategy = :strategy OR maf is null) " +
                               "AND (mf.mail = true OR mf is null) " +
-                              "AND (ms.mail = true OR ms is null) " +
-                              "AND (ma.mail = true OR ma is null) " +
-                              "ORDER BY mff.id, maf.id, msf.id, e.creationDate "
+                              "ORDER BY mff.id, e.creationDate "
                               ),
           @NamedQuery(
                       name =  "memberid.event.byDate.withMail.size",
@@ -70,38 +61,25 @@ import com.bloatit.framework.utils.PageIterable;
                               "FROM DaoEvent e " +
                               "JOIN e.feature f " +
                               "LEFT JOIN f.followers mf " +
-                              "JOIN e.software s " +
-                              "LEFT JOIN s.followers ms " +
-                              "JOIN e.actor a " +
-                              "LEFT JOIN a.followers ma " +
                               "LEFT JOIN mf.follower mff " +
-                              "LEFT JOIN ms.follower msf " +
-                              "LEFT JOIN ma.follower maf " +
-                              "WHERE e.creationDate > :date " +
+                              "WHERE e.creationDate > :beginDate " +
+                              "AND e.creationDate <= :endDate " +
                               "AND (mff.emailStrategy = :strategy OR mff is null) " +
-                              "AND (msf.emailStrategy = :strategy OR msf is null) " +
-                              "AND (maf.emailStrategy = :strategy OR maf is null) " +
-                              "AND (mf.mail = true OR mf is null) " +
-                              "AND (ms.mail = true OR ms is null) " +
-                              "AND (ma.mail = true OR ma is null) "
+                              "AND (mf.mail = true OR mf is null) "
                               ),
                               
           @NamedQuery(
                       name =  "event.byDate.byMember",
-                      query = "SELECT coalesce(mff.id,maf.id,msf.id), e " +
+                      query = "SELECT mff.id, e " +
                               "FROM DaoEvent e " +
                               "JOIN e.feature f " +
                               "LEFT JOIN f.followers mf " +
-                              "JOIN e.software s " +
-                              "LEFT JOIN s.followers ms " +
-                              "JOIN e.actor a " +
-                              "LEFT JOIN a.followers ma " +
                               "LEFT JOIN mf.follower mff " +
-                              "LEFT JOIN ms.follower msf " +
-                              "LEFT JOIN ma.follower maf " +
                               "WHERE e.creationDate > :date " +
-                              "AND (mff.id = :member OR maf.id = :member OR msf.id = :member) "+
-                              "ORDER BY mff.id, maf.id, msf.id, e.creationDate "
+                              "AND NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
+                              "AND NOT (mf.bugComment=false AND e.isBugComment=true) " +
+                              "AND mff.id = :member "+
+                              "ORDER BY mff.id, e.creationDate "
                               ),
           @NamedQuery(
                       name =  "event.byDate.byMember.size",
@@ -109,15 +87,34 @@ import com.bloatit.framework.utils.PageIterable;
                               "FROM DaoEvent e " +
                               "JOIN e.feature f " +
                               "LEFT JOIN f.followers mf " +
-                              "JOIN e.software s " +
-                              "LEFT JOIN s.followers ms " +
-                              "JOIN e.actor a " +
-                              "LEFT JOIN a.followers ma " +
                               "LEFT JOIN mf.follower mff " +
-                              "LEFT JOIN ms.follower msf " +
-                              "LEFT JOIN ma.follower maf " +
                               "WHERE e.creationDate > :date " +
-                              "AND (mff.id = :member OR maf.id = :member OR msf.id = :member) "
+                              "AND NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
+                              "AND NOT (mf.bugComment=false AND e.isBugComment=true) " +
+                              "AND mff.id = :member "
+                              ),
+          @NamedQuery(
+                      name =  "event.byDate",
+                      query = "SELECT mff.id, e " +
+                              "FROM DaoEvent e " +
+                              "JOIN e.feature f " +
+                              "LEFT JOIN f.followers mf " +
+                              "LEFT JOIN mf.follower mff " +
+                              "WHERE e.creationDate > :date " +
+                              "AND NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
+                              "AND NOT (mf.bugComment=false AND e.isBugComment=true) " +
+                              "ORDER BY mff.id, e.creationDate "
+                              ),
+          @NamedQuery(
+                      name =  "event.byDate.size",
+                      query = "SELECT count(*) " +
+                              "FROM DaoEvent e " +
+                              "JOIN e.feature f " +
+                              "LEFT JOIN f.followers mf " +
+                              "LEFT JOIN mf.follower mff " +
+                              "WHERE e.creationDate > :date " +
+                              "AND NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
+                              "AND NOT (mf.bugComment=false AND e.isBugComment=true) "
                               ),
 })
 //@formatter:on

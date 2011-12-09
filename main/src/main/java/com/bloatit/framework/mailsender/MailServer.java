@@ -173,7 +173,7 @@ public class MailServer extends Thread {
 
             if (mail.hasAttachment()) {
                 final MimeBodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setText(mail.getContent());
+                messageBodyPart.setContent(mail.getContent(), mail.getMimeType());
                 final Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
 
@@ -192,7 +192,7 @@ public class MailServer extends Thread {
                 // Put parts in message
                 message.setContent(multipart);
             } else {
-                message.setText(mail.getContent());
+                message.setContent(mail.getContent(), mail.getMimeType());
             }
 
             final UUID uuid = UUID.randomUUID();

@@ -22,7 +22,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 /**
  * Class to create Html drop down ({@code<select>} tag)
  */
-public class HtmlDropDown extends HtmlStringFormField {
+public class HtmlDropDown extends HtmlFormField {
 
     private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
 

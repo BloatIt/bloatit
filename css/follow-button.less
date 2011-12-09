@@ -2,40 +2,44 @@
     @follow_unselected_color_1: rgb(220,220,220);
     @follow_unselected_color_2: rgb(230,230,230);
     @follow_unselected_color_3: rgb(210,210,210);
-    
-    @follow_selected_color_1: rgb(33,101,135);
-    @follow_selected_color_2: rgb(31,139,185);
 
-    @follow_unselected_hover_color_1: rgb(33,101,135);
-    @follow_unselected_hover_color_2: rgb(31,139,185);
+    @follow_selected_color_1: rgb(47,117,163);
+    @follow_selected_color_2: rgb(72,139,185);
+
+    @follow_unselected_hover_color_1: rgb(47,117,163);
+    @follow_unselected_hover_color_2: rgb(72,139,185);
 
     @follow_selected_hover_color_1: rgb(211,17,17);    
     @follow_selected_hover_color_2: rgb(247,100,100);
     @follow_selected_hover_color_3: rgb(216,80,80);
 
+    @follow_height: 22px;
 
-    width:120px;
+    width:110px;
 
+    a {
+        outline: none;
+    }
 
     .follow-unselected-without-mail, .follow-selected-without-mail {
         display: table-cell;
-        width:90px;
+        width:80px;
         font-weight: bold;
         font-size: 12px;
         vertical-align: middle;
         text-align: center;
-        height: 25px;
-        .rounded_corners_top_left (2px);
-        .rounded_corners_bottom_left (2px);       
+        height: @follow_height;
+        .rounded_corners_top_left (3px);
+        .rounded_corners_bottom_left (3px);       
         border-right:1px solid white; 
     }
 
     .follow-unselected-with-mail, .follow-selected-with-mail {
         display: table-cell;
         width:30px;
-        height: 25px;
-        .rounded_corners_top_right (2px);
-        .rounded_corners_bottom_right (2px);
+        height: @follow_height;
+        .rounded_corners_top_right (3px);
+        .rounded_corners_bottom_right (3px);
         background-position: center center;
         background-repeat: no-repeat;
     }
@@ -52,7 +56,8 @@
     .follow-selected-without-mail {
         .horizontal-gradient(@follow_selected_color_1, @follow_selected_color_2, @follow_unselected_color_3);
         color: white;
-        font-size: 11px;
+        //font-size: 11px;
+
     }   
     
     .follow-selected-with-mail {
@@ -71,12 +76,13 @@
     }   
   
     .follow-selected-without-mail:hover{
-        .image-and-horizontal-gradient-1-stop(url(/resources/commons/img/unfollow.png),@follow_selected_hover_color_1, @follow_selected_hover_color_2, @follow_selected_hover_color_3);
+        //.image-and-horizontal-gradient-1-stop(url(/resources/commons/img/unfollow.png),@follow_selected_hover_color_1, @follow_selected_hover_color_2, @follow_selected_hover_color_3);
+        .image-and-horizontal-gradient(url(/resources/commons/img/unfollow.png),@follow_selected_hover_color_1, @follow_selected_hover_color_2);
         color: white;
         background-position: left center;
         background-repeat: no-repeat;
-        padding-left: 15px;
-         width:75px;
+        padding-left: 10px;
+         width:70px;
     }
     
     .follow-selected-with-mail:hover  {
@@ -85,8 +91,20 @@
     }                                                                                                                            
     
     
+    .follow-unselect-with-mail {
+        display: table-cell;
+        width:30px;
+        height: @follow_height;
+        .rounded_corners_top_right (3px);
+        .rounded_corners_bottom_right (3px);
+        background-position: center center;
+        background-repeat: no-repeat;
+        .image-and-horizontal-gradient(url(/resources/commons/img/mail_light.png),@follow_selected_hover_color_1, @follow_selected_hover_color_2);
+        color: white;
+    }
+    
      .follow-unselected-without-mail:active{
-        .horizontal-gradient(@follow_unselected_hover_color_1*1.5, @follow_unselected_hover_color_2*1.5);
+        .horizontal-gradient(@follow_unselected_hover_color_1*1.2, @follow_unselected_hover_color_2*1.2);
     }
     
     .follow-unselected-with-mail:active  {

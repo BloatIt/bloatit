@@ -36,6 +36,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -105,7 +106,7 @@ public final class CreateFeatureAction extends UserContentAction {
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) throws UnauthorizedOperationException {
         Software softwareToUse = software;
 
         if (software == null && newSoftwareName != null && !newSoftwareName.isEmpty()) {

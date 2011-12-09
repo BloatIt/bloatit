@@ -9,29 +9,31 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.timeline;
+package com.bloatit.web.linkable.activity;
 
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.Actor;
-import com.bloatit.model.FollowActor;
+import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.Member;
+import com.bloatit.model.Software;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.master.LoggedElveosAction;
-import com.bloatit.web.url.FollowActorActionUrl;
+import com.bloatit.web.url.FollowFeatureActionUrl;
+import com.bloatit.web.url.FollowSoftwareActionUrl;
 
 /**
  * A response to a form used to assess any <code>kudosable</code> on the bloatit
  * website
  */
-@ParamContainer("timeline/follow/actor")
-public final class FollowActorAction extends LoggedElveosAction {
+@ParamContainer("activity/follow/software")
+public final class FollowSoftwareAction extends LoggedElveosAction {
 
     @RequestParam()
-    @NonOptional(@tr("You must indicate a actor to follow"))
-    private final Actor actor;
+    @NonOptional(@tr("You must indicate a software to follow"))
+    private final Software software;
     
     @RequestParam()
     @NonOptional(@tr("You must indicate a follow state"))
@@ -41,21 +43,21 @@ public final class FollowActorAction extends LoggedElveosAction {
     @NonOptional(@tr("You must indicate a follow mail state"))
     private final Boolean followMail;
     
-    public FollowActorAction(final FollowActorActionUrl url) {
+    public FollowSoftwareAction(final FollowSoftwareActionUrl url) {
         super(url);
-        actor = url.getActor();
+        software = url.getSoftware();
         follow = url.getFollow();
         followMail = url.getFollowMail();
     }
 
     @Override
-    public Url doProcessRestricted(final Member me) {
+    public Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
         
         if(follow) {
-            FollowActor followActor = me.followOrGetActor(actor);
-            followActor.setMail(followMail);
+            FollowSoftware followSoftware = me.followOrGetSoftware(software);
+            followSoftware.setMail(followMail);
         } else {
-            me.unfollowActor(actor);
+            me.unfollowSoftware(software);
         }
 
         return session.pickPreferredPage();
@@ -73,7 +75,7 @@ public final class FollowActorAction extends LoggedElveosAction {
 
     @Override
     protected String getRefusalReason() {
-        return "You must be logged to set your timeline as read";
+        return "You must be logged to follow something";
     }
 
     @Override

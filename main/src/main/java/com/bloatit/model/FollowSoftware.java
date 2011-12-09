@@ -19,6 +19,9 @@ package com.bloatit.model;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoFollowSoftware;
 import com.bloatit.data.DaoMember;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.visitor.ModelClassVisitor;
 
 public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
@@ -48,12 +51,12 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public final DaoMember getFollower() {
-        return getDao().getFollower();
+    public final Member getFollower() {
+        return Member.create(getDao().getFollower());
     }
 
-    public final DaoSoftware getFollowed() {
-        return getDao().getFollowed();
+    public final Software getFollowed() {
+        return Software.create(getDao().getFollowed());
     }
 
     public final boolean isMail() {
@@ -64,8 +67,18 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
     // Setters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public final void setMail(boolean mail) {
+    public final void setMail(boolean mail) throws UnauthorizedOperationException {
+        Member follower = Member.create(getDao().getFollower());
+        if(!(AuthToken.isAdmin() || (AuthToken.isAuthenticated() && AuthToken.getMember().equals(follower)))) {
+            throw new UnauthorizedOperationException(Action.WRITE);
+        }
         getDao().setMail(mail);
+        for(FollowFeature followFeature: getFollower().getFollowedFeatures()) {
+            if (followFeature.getFollowed().getSoftware().equals(getFollowed())) {
+                followFeature.setMail(mail);
+            }
+        }
+        
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +87,7 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
 
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
-        return null;
+        return visitor.visit(this);
     }
 
 }

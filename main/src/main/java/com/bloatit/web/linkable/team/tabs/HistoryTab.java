@@ -51,7 +51,7 @@ import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.components.activity.ActivityVisitor;
+import com.bloatit.web.components.history.HistoryVisitor;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.master.HtmlDefineParagraph;
 import com.bloatit.web.url.BugPageUrl;
@@ -59,16 +59,16 @@ import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
-@ParamContainer(value = "activityTab", isComponent = true)
-public class ActivityTab extends HtmlTab {
+@ParamContainer(value = "historyTab", isComponent = true)
+public class HistoryTab extends HtmlTab {
     private final Team team;
     private final TeamPageUrl url;
 
     @SuppressWarnings("unused")
     @SubParamContainer
-    private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedActivity;
+    private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedHistory;
 
-    public ActivityTab(final Team team, final String title, final String tabKey, final TeamPageUrl url) {
+    public HistoryTab(final Team team, final String title, final String tabKey, final TeamPageUrl url) {
         super(title, tabKey);
         this.team = team;
         this.url = url;
@@ -78,39 +78,39 @@ public class ActivityTab extends HtmlTab {
     public HtmlNode generateBody() {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
-        // Displaying list of user recent activity
-        final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 1);
+        // Displaying list of user recent history
+        final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent history"), 1);
         master.add(recent);
 
-        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
-        recent.add(recentActivity);
+        final HtmlDiv recentHistory = new HtmlDiv("recent_history");
+        recent.add(recentHistory);
 
-        final PageIterable<UserContent<? extends DaoUserContent>> activity = team.getActivity();
+        final PageIterable<UserContent<? extends DaoUserContent>> history = team.getHistory();
 
-        if (activity.size() == 0) {
-            recent.add(new HtmlParagraph(Context.tr("No recent activity")));
+        if (history.size() == 0) {
+            recent.add(new HtmlParagraph(Context.tr("No recent history")));
         }
 
         final TeamPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
-        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl()
-                                                                                                                              .getPagedActivityUrl());
-        recentActivity.add(feed);
+        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new HistoryRenderer(), history, clonedUrl, clonedUrl.getHistoryUrl()
+                                                                                                                              .getPagedHistoryUrl());
+        recentHistory.add(feed);
 
         return master;
     }
 
     /**
-     * Paged renderer for the activity feed
+     * Paged renderer for the history feed
      */
-    private static final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
-        public ActivityRenderer() {
+    private static final class HistoryRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
+        public HistoryRenderer() {
             super();
         }
 
         @Override
         public HtmlNode generate(final UserContent<? extends DaoUserContent> content) {
-            return content.accept(new ActivityVisitor() {
+            return content.accept(new HistoryVisitor() {
                 @Override
                 public HtmlElement visit(final Translation model) {
                     return new HtmlParagraph("translation");
@@ -252,19 +252,19 @@ public class ActivityTab extends HtmlTab {
             final HtmlDiv master = new HtmlDiv("feed_item");
             // Title
             master.add(new HtmlDiv("feed_item_title").add(firstLine));
-            final HtmlDiv activityDetail = new HtmlDiv("feed_content");
-            master.add(activityDetail);
-            activityDetail.add(new HtmlDiv("feed_item_description").add(secondLine));
+            final HtmlDiv historyDetail = new HtmlDiv("feed_content");
+            master.add(historyDetail);
+            historyDetail.add(new HtmlDiv("feed_item_description").add(secondLine));
 
             // Author
             final HtmlBranch authorBox = new HtmlDiv("feed_item_author");
-            activityDetail.add(authorBox);
+            historyDetail.add(authorBox);
             final MemberPageUrl to = new MemberPageUrl(content.getMember());
             authorBox.add(new HtmlDefineParagraph(Context.tr("Author: "), to.getHtmlLink(content.getMember().getDisplayName())));
 
             // Date
             final HtmlBranch dateBox = new HtmlDiv("feed_item_date");
-            activityDetail.add(dateBox);
+            historyDetail.add(dateBox);
             final String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
             dateBox.addText(dateString);
 

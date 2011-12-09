@@ -1,9 +1,16 @@
 package com.bloatit.mail;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map.Entry;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.feedbackworker.FeedBackWorker;
+import com.bloatit.framework.mails.ElveosMail;
+import com.bloatit.framework.mailsender.Mail;
+import com.bloatit.framework.mailsender.MailServer;
+import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.model.Event;
@@ -20,8 +27,10 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
     protected boolean doWork(EventMailData data) {
         setLocal(data.getTo().getLocale());
         final MailEventVisitor visitor = new MailEventVisitor(getLocalizator());
+        int eventCount = 0;
         for (Event event : data) {
             event.getEvent().accept(visitor);
+            eventCount ++;
         }
 
         HtmlBranch html = new HtmlGenericElement("html");
@@ -33,11 +42,26 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
             html.add(featureComponent);
         }
 
+        
         try {
-            html.write(System.out);
-        } catch (IOException e1) {
-            e1.printStackTrace();
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            html.write(buffer);
+            
+            
+            final Mail mail = new Mail(data.getTo().getEmailUnprotected(), 
+                                       getLocalizator().trn("Elveos activity – {0} new event", "Elveos activity – {0} new event", eventCount, eventCount),
+                                       new String(buffer.toByteArray()),
+                                       "activity-feed");
+            mail.setMimeType("text/html");
+            MailServer.getInstance().send(mail); 
+            
+        } catch (IOException e) {
+            Log.mail().fatal("Fail to generate activity email", e);
         }
+        
+        
+        
+        
         // for (Entry<Bug, MailEventVisitor.Entries> e :
         // visitor.getBugs().entrySet()) {
         // System.out.println("Bug - " + e.getKey().getId());

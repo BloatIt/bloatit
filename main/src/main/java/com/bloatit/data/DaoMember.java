@@ -144,7 +144,7 @@ import com.bloatit.model.ModelConfiguration;
                                    "WHERE m = :member AND g = :team"),
 
                        @NamedQuery(
-                           name = "member.getActivity",
+                           name = "member.getHistory",
                            query = "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
@@ -153,7 +153,7 @@ import com.bloatit.model.ModelConfiguration;
                                    "ORDER BY creationDate DESC"),
 
                        @NamedQuery(
-                           name = "member.getActivity.size",
+                           name = "member.getHistory.size",
                            query = "SELECT COUNT(*)" +
                            		   "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
@@ -304,6 +304,12 @@ public class DaoMember extends DaoActor {
     @Basic(optional = false)
     private boolean newsletter;
 
+    @Basic(optional = false)
+    private boolean globalFollow;
+    
+    @Basic(optional = false)
+    private boolean globalFollowWithMail;
+    
     @Column(length = 1024)
     private String description;
 
@@ -476,6 +482,7 @@ public class DaoMember extends DaoActor {
         this.fullname = "";
         this.description = "";
         this.newsletter = false;
+        this.globalFollow = false;
         this.emailStrategy = EmailStrategy.VERY_FREQUENTLY;
     }
 
@@ -655,6 +662,14 @@ public class DaoMember extends DaoActor {
     public void acceptNewsLetter(boolean newsletter) {
         this.newsletter = newsletter;
     }
+    
+    public void setGlobalFollow(boolean globalFollow) {
+        this.globalFollow = globalFollow;
+    }
+    
+    public void setGlobalFollowWithMail(boolean globalFollow) {
+        this.globalFollowWithMail = globalFollow;
+    }
 
     public DaoFollowActor followOrGetActor(DaoActor actor) {
         final Object followed = SessionManager.getNamedQuery("member.getFollowedActor.byActor")
@@ -683,6 +698,14 @@ public class DaoMember extends DaoActor {
         if (followed == null) {
             return follow(feature);
         }
+        return followed;
+    }
+    
+    public DaoFollowFeature getFollowFeature(DaoFeature feature) {
+        final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
+                                                                           .setEntity("member", this)
+                                                                           .setEntity("feature", feature)
+                                                                           .uniqueResult();
         return followed;
     }
 
@@ -762,6 +785,14 @@ public class DaoMember extends DaoActor {
 
     public EmailStrategy getEmailStrategy() {
         return emailStrategy;
+    }
+    
+    public boolean isGlobalFollow() {
+        return globalFollow;
+    }
+    
+    public boolean isGlobalFollowWithMail() {
+        return globalFollowWithMail;
     }
 
     /**
@@ -1000,13 +1031,13 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * Finds the user recent activity.
+     * Finds the user recent history.
      * 
-     * @return the user recent activity
+     * @return the user recent history
      */
-    public PageIterable<DaoUserContent> getActivity() {
-        final Query query = SessionManager.getNamedQuery("member.getActivity");
-        final Query size = SessionManager.getNamedQuery("member.getActivity.size");
+    public PageIterable<DaoUserContent> getHistory() {
+        final Query query = SessionManager.getNamedQuery("member.getHistory");
+        final Query size = SessionManager.getNamedQuery("member.getHistory.size");
 
         final QueryCollection<DaoUserContent> q = new QueryCollection<DaoUserContent>(query, size);
         q.setEntity("member", this);
@@ -1087,6 +1118,18 @@ public class DaoMember extends DaoActor {
 
     public PageIterable<DaoExternalServiceMembership> getAuthorizedExternalServices() {
         return new MappedList<DaoExternalServiceMembership>(authorizedExternalServices);
+    }
+    
+    public PageIterable<DaoFollowFeature> getFollowedFeatures() {
+        return new MappedList<DaoFollowFeature>(followedFeatures);
+    }
+    
+    public PageIterable<DaoFollowActor> getFollowedActors() {
+        return new MappedList<DaoFollowActor>(followedActors);
+    }
+    
+    public PageIterable<DaoFollowSoftware> getFollowedSoftware() {
+        return new MappedList<DaoFollowSoftware>(followedSoftware);
     }
 
     public EnumSet<RightLevel> getExternalServiceRights(final String token) {

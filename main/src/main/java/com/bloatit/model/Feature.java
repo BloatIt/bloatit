@@ -160,7 +160,7 @@ public interface Feature extends KudosableInterface, Commentable {
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
      * @throws UnauthorizedOperationException
      */
-    float getMemberProgression(Member author) throws UnauthorizedOperationException;
+    float getMemberProgression(Member author);
 
     /**
      * Return the progression due by the amount in percent. It compare the

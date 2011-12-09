@@ -32,6 +32,7 @@ import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.HtmlFollowButton.HtmlFollowActorButton;
+import com.bloatit.web.components.MemberListRenderer;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
@@ -57,7 +58,7 @@ public final class MembersListPage extends ElveosPage {
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
         final PageIterable<Member> memberList = MemberManager.getAllMembersButAdmins();
-        final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
+        final HtmlRenderer<Member> memberItemRenderer = new MemberListRenderer();
 
         final MembersListPageUrl clonedUrl = url.clone();
         pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer,
@@ -82,39 +83,7 @@ public final class MembersListPage extends ElveosPage {
     public boolean isStable() {
         return true;
     }
-
-    private final class MemberRenderer implements HtmlRenderer<Member> {
-        public MemberRenderer() {
-            super();
-        }
-
-        @SuppressWarnings("synthetic-access")
-        @Override
-        public HtmlNode generate(final Member member) {
-            final MemberPageUrl memberUrl = new MemberPageUrl(member);
-            final HtmlDiv box = new HtmlDiv("member_box");
-
-            
-
-            final HtmlDiv textBox = new HtmlDiv("member_text");
-            HtmlLink htmlLink;
-            htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-            final HtmlSpan karma = new HtmlSpan("karma");
-            karma.addAttribute("title", Context.tr("{0} karma's ", member.getDisplayName()));
-            karma.addText(HtmlTools.compressKarma(member.getKarma()));
-
-            textBox.add(htmlLink);
-            textBox.add(karma);
-            box.add(textBox);
-            box.add(new HtmlDiv("member_avatar").add(MembersTools.getMemberAvatar(member)));
-            
-            box.add(new HtmlClearer());
-            box.add(new HtmlFollowActorButton(member));
-
-            return box;
-        }
-    }
-
+   
     @Override
     protected Breadcrumb createBreadcrumb() {
         return MembersListPage.generateBreadcrumb();
