@@ -60,7 +60,7 @@ public class ModifyTeamAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @MinConstraint(min = 4, message = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 300, message = @tr("The contact size has to be inferior to %constraint%."))
+    @MaxConstraint(max = 600, message = @tr("The contact size has to be inferior to %constraint%."))
     @NonOptional(@tr("You forgot to write a specification"))
     @FormField(label = @tr("Contact information"))
     private final String contact;

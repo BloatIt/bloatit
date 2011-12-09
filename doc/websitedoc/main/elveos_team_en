@@ -1,9 +1,30 @@
 Elveos team
 -----------
 
-Elveos platform is managed by 3 people.
+### Frédéric bertolus
 
-* Yoann Plénet
-* Thomas Guyard
-* Frédéric Bertolus
+<span class="float_left" style="margin-right:10px">![Photo of Fred](/resources/commons/img/fred.jpg)</span>
+Twitter: [@fredb219](https://twitter.com/fredb219)
+Elveos : [fred](/m/fred)
 
+Fred is our front-end developer. He is the only person of the team able to do CSS. He created almost all the design of Elveos, including the resources (such as our lovely elveos gal & guy).
+
+<div class="clearer"></div>
+
+### Thomas Guyard
+
+<span class="float_left" style="margin-right:10px">![Photo of Thomas](/resources/commons/img/thomas.jpg)</span>
+Twitter: [@tguyard](https://twitter.com/tguyard)
+Elveos : [fred](/m/thomas)
+
+Tom is our back-end developer. He created the whole database part of Elveos along with most of the process handling. He also administrates our server and is the security guy of Elveos!
+
+<div class="clearer"></div>
+
+### Yoann Plénet
+
+<span class="float_left" style="margin-right:10px">![Photo of Yoann](/resources/commons/img/yoann.jpg)</span>
+Twitter: [@yplenet](https://twitter.com/yplenet)
+Elveos : [fred](/m/yoann)
+
+Nobody really knows what Yoann does. He takes care of some of the administrative stuff, does some programming (but not that much) redacts some documents. Mostly however he criticizes the UI, maybe hoping to lead Elveos to perfection.

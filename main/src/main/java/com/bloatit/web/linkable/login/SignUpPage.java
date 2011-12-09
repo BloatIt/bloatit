@@ -131,7 +131,7 @@ public final class SignUpPage extends ElveosPage {
 
     @Override
     protected String createPageTitle() {
-        return Context.tr("Sign-in");
+        return Context.tr("Signup");
     }
 
     @Override
