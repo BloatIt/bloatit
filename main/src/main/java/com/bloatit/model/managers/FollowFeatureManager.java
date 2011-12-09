@@ -37,7 +37,7 @@ public class FollowFeatureManager {
         return  new ListBinder<FollowFeature, DaoFollowFeature>(DBRequests.getAll(DaoFollowFeature.class));
     }
 
-    public static int getReleaseCount() {
+    public static Long getReleaseCount() {
         return DBRequests.count(DaoRelease.class);
     }
 

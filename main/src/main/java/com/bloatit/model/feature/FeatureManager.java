@@ -38,7 +38,7 @@ public final class FeatureManager {
 
     /**
      * Gets the all features stored in the DB.
-     * 
+     *
      * @return the features
      */
     public static PageIterable<Feature> getFeatures() {
@@ -47,7 +47,7 @@ public final class FeatureManager {
 
     /**
      * Gets the feature by id.
-     * 
+     *
      * @param id the id of the feature we are looking for.
      * @return the feature or null if not found.
      */
@@ -55,13 +55,13 @@ public final class FeatureManager {
         return getFeatureImplementationById(id);
     }
 
-    public static int getFeatureCount() {
+    public static Long getFeatureCount() {
         return DBRequests.count(DaoFeature.class);
     }
 
     /**
      * Gets the featureImplementation by id.
-     * 
+     *
      * @param id the id of the feature
      * @return the feature or null if not found
      */
@@ -71,17 +71,17 @@ public final class FeatureManager {
 
     /**
      * Gets the number of feature.
-     * 
+     *
      * @return the number of feature.
      */
-    public static int getFeaturesCount() {
+    public static Long getFeaturesCount() {
         return DBRequests.count(DaoFeature.class);
     }
 
     // Can create if authenticated.
     /**
      * Tells if a user can create a feature.
-     * 
+     *
      * @param userToken the auth token representing the user wanting to create a
      *            feature.
      * @return true, if successful

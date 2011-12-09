@@ -34,6 +34,9 @@ import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
+import com.bloatit.framework.restprocessor.exception.RestException;
+import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.model.Comment;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.rest.adapters.DateAdapter;
@@ -109,7 +112,7 @@ public class RestComment extends RestElement<Comment> {
      * <p>
      * Finds the RestComment matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestComment
      */
     @REST(name = "comments", method = RequestMethod.GET)
@@ -129,6 +132,15 @@ public class RestComment extends RestElement<Comment> {
     @REST(name = "comments", method = RequestMethod.GET)
     public static RestCommentList getAll() {
         return new RestCommentList(CommentManager.getAll());
+    }
+
+    @REST(name = "comments", method = RequestMethod.GET, params = { "size", "from", "to" })
+    public static RestSize getNbComment(String size, String from, String to) throws RestException {
+        if (size != null) {
+            return new RestSize(CommentManager.getNbComments(DateUtils.nowMinusSomeDays(Integer.parseInt(from)),
+                                                             DateUtils.nowMinusSomeDays(Integer.parseInt(to))));
+        }
+        throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "The size parameter should not be empty.");
     }
 
     // ---------------------------------------------------------------------------------------

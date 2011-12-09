@@ -19,6 +19,7 @@ package com.bloatit.data;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -52,20 +53,27 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           cacheable=true,
-                           name = "contribution.getMoneyRaised",
-                           query = "SELECT sum(amount) " +
-                           		   "FROM DaoContribution " +
-                           		   "WHERE state != :state"),
+                                   cacheable=true,
+                                   name = "contribution.getMoneyRaised",
+                                   query = "SELECT sum(amount) " +
+                                   		   "FROM DaoContribution " +
+                                   		   "WHERE state != :state"),
+               		   @NamedQuery(
+               		               cacheable=true,
+               		               name = "contribution.getMoneyRaised.byDateInterval",
+               		               query = "SELECT sum(amount) " +
+               		                       "FROM DaoContribution " +
+               		                       "WHERE state != :state " +
+               		                       "AND creationDate BETWEEN :from AND :to "),
                         @NamedQuery(
                                     name = "contribution.getInvoices",
                                     query = "FROM com.bloatit.data.DaoContributionInvoice invoice_ " +
-                                    "WHERE invoice_.contribution = :this "),
+                                            "WHERE invoice_.contribution = :this "),
                         @NamedQuery(
                                     name = "contribution.getInvoices.size",
                                     query = "SELECT count(*) " +
-                                    "FROM com.bloatit.data.DaoContributionInvoice invoice_ " +
-                                    "WHERE invoice_.contribution = :this "),
+                                            "FROM com.bloatit.data.DaoContributionInvoice invoice_ " +
+                                            "WHERE invoice_.contribution = :this "),
                         @NamedQuery(
                                     name = "contribution.getByFeatureMember",
                                     query = "FROM com.bloatit.data.DaoContribution contrib_ \n" +
@@ -143,19 +151,30 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the money raised.
-     * 
+     *
      * @return the money raised
      */
     public static BigDecimal getMoneyRaised() {
         final Query q = SessionManager.getNamedQuery("contribution.getMoneyRaised").setParameter("state", ContributionState.CANCELED);
-
         return (BigDecimal) q.uniqueResult();
+    }
+
+    public static BigDecimal getMoneyRaised(Date from, Date to) {
+        final Query q = SessionManager.getNamedQuery("contribution.getMoneyRaised.byDateInterval")
+                                      .setParameter("state", ContributionState.CANCELED)
+                                      .setDate("from", from)
+                                      .setDate("to", to);
+        BigDecimal res = (BigDecimal) q.uniqueResult();
+        if (res == null) {
+            return BigDecimal.ZERO;
+        }
+        return res;
     }
 
     /**
      * Create a new contribution. Update the internal account of the author
      * (block the value that is reserved to this contribution)
-     * 
+     *
      * @param member the person making the contribution. (Use
      *            DaoUserContent#setAsTeam() to make a contribution in the name
      *            of team)
@@ -188,7 +207,7 @@ public class DaoContribution extends DaoUserContent {
      * not enough money then throw and set the state to canceled. After that if
      * all the money is transfered, the state of this contribution is become
      * VALIDATED.
-     * 
+     *
      * @param offer the offer that is accepted.
      * @param percent integer ]0,100]. It is the percent of the total amount and
      *            not a percent of what is remaining. It is the percent of the
@@ -267,7 +286,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the amount is the quantity of money put in this contribution.
-     * 
+     *
      * @return the amount is the quantity of money put in this contribution
      */
     public BigDecimal getAmount() {
@@ -276,7 +295,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the state.
-     * 
+     *
      * @return the state
      */
     public ContributionState getState() {
@@ -285,7 +304,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the comment.
-     * 
+     *
      * @return the comment
      */
     public String getComment() {
@@ -294,7 +313,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the feature.
-     * 
+     *
      * @return the feature
      */
     public DaoFeature getFeature() {
@@ -303,7 +322,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the feature.
-     * 
+     *
      * @return the feature
      */
     public PageIterable<DaoContributionInvoice> getInvoices() {

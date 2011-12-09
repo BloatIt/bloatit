@@ -16,6 +16,8 @@
 //
 package com.bloatit.model.managers;
 
+import java.util.Date;
+
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoCommentable;
@@ -42,7 +44,7 @@ public final class CommentManager {
 
     /**
      * Gets a Comment by id.
-     * 
+     *
      * @param id the {@link Comment} id
      * @return the Comment or null if not found.
      */
@@ -52,6 +54,10 @@ public final class CommentManager {
 
     public static CommentList getAll() {
         return new CommentList(DBRequests.getAll(DaoComment.class));
+    }
+
+    public static Long getNbComments(Date from, Date to) {
+        return DaoComment.getCommentCount(from, to);
     }
 
     public static Commentable getCommentable(final int id) {

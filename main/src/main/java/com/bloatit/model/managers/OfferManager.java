@@ -36,7 +36,7 @@ public final class OfferManager {
 
     /**
      * Gets the offer by id.
-     * 
+     *
      * @param id the id
      * @return the offer or <code>null</code> if not found.
      */
@@ -48,7 +48,7 @@ public final class OfferManager {
         return new OfferList(DBRequests.getAll(DaoOffer.class));
     }
 
-    public static int getOfferCount() {
+    public static Long getOfferCount() {
         return DBRequests.count(DaoOffer.class);
     }
 

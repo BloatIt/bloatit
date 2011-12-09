@@ -49,7 +49,6 @@ import com.bloatit.rest.list.RestTeamList;
 import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.rest.list.RestTranslationList;
 import com.bloatit.rest.resources.RestBankTransaction;
-import com.bloatit.rest.resources.RestBankTransactionSum;
 import com.bloatit.rest.resources.RestBug;
 import com.bloatit.rest.resources.RestComment;
 import com.bloatit.rest.resources.RestContribution;
@@ -66,8 +65,10 @@ import com.bloatit.rest.resources.RestJoinTeamInvitation;
 import com.bloatit.rest.resources.RestKudos;
 import com.bloatit.rest.resources.RestMember;
 import com.bloatit.rest.resources.RestMilestone;
+import com.bloatit.rest.resources.RestMoneyResults;
 import com.bloatit.rest.resources.RestOffer;
 import com.bloatit.rest.resources.RestRelease;
+import com.bloatit.rest.resources.RestSize;
 import com.bloatit.rest.resources.RestSoftware;
 import com.bloatit.rest.resources.RestTeam;
 import com.bloatit.rest.resources.RestTransaction;
@@ -105,6 +106,9 @@ public class BloatitRestServer extends RestServer {
             put("followfeatures", RestFollowFeature.class);
             put("followsoftwares", RestFollowSoftware.class);
             put("followactors", RestFollowActor.class);
+
+            put("size", RestSize.class);
+            put("moneyquery", RestMoneyResults.class);
         }
     };
 
@@ -115,7 +119,7 @@ public class BloatitRestServer extends RestServer {
                                                        // ENTITIES
                                                        RestMember.class,
                                                        RestBankTransaction.class,
-                                                       RestBankTransactionSum.class,
+                                                       RestMoneyResults.class,
                                                        RestMilestone.class,
                                                        RestBug.class,
                                                        RestComment.class,
@@ -165,7 +169,12 @@ public class BloatitRestServer extends RestServer {
                                                        RestFollowActorList.class,
 
                                                        // EXPANDED LISTS
-                                                       RestFeatureListExpanded.class, };
+                                                       RestFeatureListExpanded.class,
+
+                                                       // Utilities
+                                                       RestSize.class,
+                                                       RestMoneyResults.class,
+                                                       };
 
     @Override
     protected Set<String> getResourcesDirectories() {

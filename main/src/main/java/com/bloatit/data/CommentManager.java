@@ -34,7 +34,7 @@ public class CommentManager {
 
     /**
      * Gets the comments.
-     * 
+     *
      * @param persistentSetOfComments a persistent set of comments
      * @return the comments
      */
@@ -46,7 +46,7 @@ public class CommentManager {
 
     /**
      * Gets the last comment.
-     * 
+     *
      * @param persistentSetOfComments the persistent set of comments
      * @return the last comment
      */

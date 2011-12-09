@@ -37,7 +37,7 @@ public class FollowSoftwareManager {
         return  new ListBinder<FollowSoftware, DaoFollowSoftware>(DBRequests.getAll(DaoFollowSoftware.class));
     }
 
-    public static int getReleaseCount() {
+    public static Long getReleaseCount() {
         return DBRequests.count(DaoRelease.class);
     }
 

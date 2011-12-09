@@ -19,6 +19,7 @@
 package com.bloatit.model.managers;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.queries.DBRequests;
@@ -39,7 +40,7 @@ public class ContributionManager {
 
     /**
      * Gets a Comment by id.
-     * 
+     *
      * @param id the {@link Comment} id
      * @return the Comment or null if not found.
      */
@@ -57,5 +58,9 @@ public class ContributionManager {
 
     public static BigDecimal getMoneyRaised() {
         return DaoContribution.getMoneyRaised();
+    }
+
+    public static BigDecimal getMoneyRaised(Date from, Date to) {
+        return DaoContribution.getMoneyRaised(from, to);
     }
 }

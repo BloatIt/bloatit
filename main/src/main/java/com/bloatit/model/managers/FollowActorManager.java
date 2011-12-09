@@ -37,7 +37,7 @@ public class FollowActorManager {
         return  new ListBinder<FollowActor, DaoFollowActor>(DBRequests.getAll(DaoFollowActor.class));
     }
 
-    public static int getReleaseCount() {
+    public static Long getReleaseCount() {
         return DBRequests.count(DaoRelease.class);
     }
 

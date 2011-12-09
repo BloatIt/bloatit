@@ -69,54 +69,93 @@ str += '<table>';
 str += '<thead>';
 str +='<th></th>';
 str +='<th class="month">30 jours</th>';
-str +='<th class="day">24 heures</th>';
+//str +='<th class="day">24 heures</th>';
 str +='<th class="old">Il y a un mois</th>';
+str +='<th class="tot">All time</th>';
 str +='</tr>';
 str +='</thead>\n';
 str +='<tbody>\n';
 str +='  <tr>\n';
 str +='     <td class="header">Visites</td>\n';
 str +='     <td class="month">'+visits[0]+'</td>\n';
-str +='     <td class="day">'+visits[1]+' <span class="detail">'+visits[2]+'</span></td>\n';
+//str +='     <td class="day">'+visits[1]+' <span class="detail">'+visits[2]+'</span></td>\n';
 str +='     <td class="old"><div class="'+progression(visits[0],visits[3])+'">'+visits[3]+'</div></td>\n';
+str +='     <td class="tot">'+visits[4]+'</td>\n';
 str +='  </tr>\n';
 str +='  <tr>\n';
 str +='     <td class="header">Taux inscription</td>\n';
 str +='     <td class="month">'+percent(insc[0], visits[0]).toFixed(2)+' % <span class="detail">'+insc[0]+'</span></td>\n';
-str +='     <td class="day">'+insc[1]+' % <span class="detail">'+insc[2]+' %</span></td>\n';
+//str +='     <td class="day">'+insc[1]+' % <span class="detail">'+insc[2]+' %</span></td>\n';
 str +='     <td class="old"><div class="'+progression(insc[0], insc[3])+'">'+insc[3]+' %</div></td>\n';
+str +='     <td class="tot">'+percent(insc[4], visits[4]).toFixed(2)+' % <span class="detail">'+insc[4]+'</span></td>\n';
 str +='  </tr>\n';
 str +='  <tr>\n';
 str +='     <td class="header">Taux conversion</td>\n';
 str +='     <td class="month">'+percent(conv[0], visits[0]).toFixed(2)+' % <span class="detail">'+conv[0]+'</span></td>\n';
-str +='     <td class="day">'+conv[1]+' % <span class="detail">'+conv[2]+' %</span></td>\n';
-str +='     <td class="old"><div class="'+progression(percent(conv[0], visits[0]), percent(conv[3], visits[3]))+'">'+percent(conv[3], visits[3])+' %</div></td>\n';
+//str +='     <td class="day">'+conv[1]+' % <span class="detail">'+conv[2]+' %</span></td>\n';
+str +='     <td class="old"><div class="'+progression(percent(conv[0], visits[0]).toFixed(2), percent(conv[3], visits[3]).toFixed(2))+'">'+percent(conv[3], visits[3]).toFixed(2)+' %</div></td>\n';
+str +='     <td class="tot">'+percent(conv[4], visits[4]).toFixed(2)+' % <span class="detail">'+conv[4]+'</span></td>\n';
+
 str +='  </tr> \n';
 str +='  <tr>\n';
 str +='     <td class="header">Panier moyen</td>\n';
 str +='     <td class="month">'+moy[0]+' €</td>\n';
-str +='     <td class="day">'+moy[1]+' € <span class="detail">'+moy[2]+' €</span></td>\n';
+//str +='     <td class="day">'+moy[1]+' € <span class="detail">'+moy[2]+' €</span></td>\n';
 str +='     <td class="old"><div class="'+progression(moy[0], moy[3])+'">'+moy[3]+' €</div></td>\n';
+str +='     <td class="tot">'+moy[4]+' €</td>\n';
 str +='  </tr> \n';
+
+str +='  <tr>\n';
+str +='    <td class="header">Contribution</td>\n';
+str +='    <td class="month">'+contrib[0]+' € <span class="detail">'+stock[0]+' €</span></td>\n';
+//str +='    <td class="day"> € <span class="detail"> € </span></td>\n';
+str +='    <td class="old"><div class="'+progression(contrib[0], contrib[3])+'">'+contrib[3]+' € </div> <span class="detail">'+stock[3]+' €</span></td>\n';
+str +='    <td class="tot">'+contrib[4]+' € <span class="detail">'+stock[4]+' €</span></td>\n';
+str +='  </tr> \n';
+
+
 str +='  <tr class="CA">\n';
 str +='    <td class="header">CA</td>\n';
 str +='    <td class="month">'+tot[0]+' €</td>\n';
-str +='    <td class="day">'+tot[1]+' € <span class="detail">'+tot[2]+' € </span></td>\n';
+//str +='    <td class="day">'+tot[1]+' € <span class="detail">'+tot[2]+' € </span></td>\n';
 str +='    <td class="old"><div class="'+progression(tot[0], tot[3])+'">'+tot[3]+' €</div></td>\n';
+str +='    <td class="tot">'+tot[4]+' €</td>\n';
 str +='  </tr> \n';
+
 str +='  <tr><td><div id="separator"> </div></td></tr>'
+
 str +='  <tr>\n';
 str +='     <td class="header">Visiteurs uniques</td>\n';
 str +='     <td class="month">'+visitors[0]+'</td>\n';
-str +='     <td class="day">'+visitors[1]+' <span class="detail">'+visitors[2]+'</span></td>\n';
+//str +='     <td class="day">'+visitors[1]+' <span class="detail">'+visitors[2]+'</span></td>\n';
 str +='     <td class="old"><div class="'+progression(visitors[0],visitors[3])+'">'+visitors[3]+'</div></td>\n';
+str +='     <td class="tot">'+visitors[4]+'</td>\n';
 str +='  </tr>\n';
+
+str +='  <tr>\n';
+str +='     <td class="header">Gain par visiteur</td>\n';
+str +='     <td class="month">'+(stock[0] + contrib[0]) / visitors[0]+'</td>\n';
+//str +='     <td class="day">'+(stock[1] + contrib[1]) / visitors[1]+'</td>\n';
+str +='     <td class="old"><div class="'+progression((stock[0] + contrib[0]) / visitors[0],(stock[3] + contrib[3]) / visitors[3])+'">'+(stock[3] + contrib[3]) / visitors[3]+'</div></td>\n';
+str +='     <td class="tot">'+(stock[4] + contrib[4]) / visitors[4]+'</td>\n';
+str +='  </tr>\n';
+
 str +='  <tr>\n';
 str +='     <td class="header">Membres uniques</td>\n';
 str +='     <td class="month">'+members[0]+'</td>\n';
-str +='     <td class="day">'+members[1]+' <span class="detail">'+members[2]+'</span></td>\n';
+//str +='     <td class="day">'+members[1]+' <span class="detail">'+members[2]+'</span></td>\n';
 str +='     <td class="old"><div class="'+progression(members[0],members[3])+'">'+members[3]+'</div></td>\n';
+str +='     <td class="tot">'+members[4]+'</td>\n';
 str +='  </tr>\n';
+
+str +='  <tr>\n';
+str +='     <td class="header">Nb comments</td>\n';
+str +='     <td class="month">'+com[0]+'</td>\n';
+//str +='     <td class="day">'+com[1]+' <span class="detail">'+com[2]+'</span></td>\n';
+str +='     <td class="old"><div class="'+progression(com[0],com[3])+'">'+com[3]+'</div></td>\n';
+str +='     <td class="tot">'+com[4]+'</td>\n';
+str +='  </tr>\n';
+
 str +='</tbody> \n';
 str +='</table>'
 
