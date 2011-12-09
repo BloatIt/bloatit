@@ -192,6 +192,83 @@
     timeToLiveSeconds="600"
     overflowToDisk="true"
   />
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <cache
+    name="com.bloatit.data.DaoEvent"
+    maxElementsInMemory="1000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="false"
+  />
+  <cache
+    name="com.bloatit.data.DaoMilestoneContributionAmount"
+    maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="false"
+  />
+  <cache
+    name="com.bloatit.data.DaoInvoice"
+    maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="true"
+  />
+  <cache
+    name="com.bloatit.data.DaoStringVersion"
+    maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="true"
+  />
+  <cache
+    name="com.bloatit.data.DaoVersionedString"
+    maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="true"
+  />
+  <cache
+    name="com.bloatit.data.DaoVersionedString.versions"
+    maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="true"
+  />
+  <cache
+    name="com.bloatit.data.DaoMilestone.invoices"
+    maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="true"
+  />
+  <cache
+    name="com.bloatit.data.DaoMilestone.contribtutionAmounts"
+    maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="false"
+  />
 </ehcache>
 
 

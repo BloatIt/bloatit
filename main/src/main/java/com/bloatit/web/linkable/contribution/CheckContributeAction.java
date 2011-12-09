@@ -27,6 +27,8 @@ import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -50,12 +52,16 @@ public final class CheckContributeAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @MaxConstraint(max = 140, message = @tr("Your comment is too long. It must be less than %constraint% char long."))
     @Optional
+    @FormField(label = @tr("Comment"), isShort = false)
+    @FormComment(@tr("The comment will be publicly visible in the contribution list. Max 140 characters."))
     private final String comment;
 
     @RequestParam(role = Role.POST)
     @MaxConstraint(max = 1000000, message = @tr("We cannot accept such a generous offer!"))
     @MinConstraint(min = 0, isExclusive = true, message = @tr("Amount must be superior to 0."))
     @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
+    @FormField(label = @tr("Choose amount"))
+    @FormComment(@tr("The minimum is 1 €. Don't use cents. Elveos takes a 10 % + 0,30 € fee."))
     private final BigDecimal amount;
 
     private final CheckContributeActionUrl url;

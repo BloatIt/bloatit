@@ -208,7 +208,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                                                       DaoGetter.get(AuthToken.getAsTeam()),
                                                                       amount,
                                                                       comment);
-        setStateObject(getStateObject().eventAddContribution());
+        // setStateObject(getStateObject().eventAddContribution());
 
         // Contributing automatically puts the feature in your follow list
         follow(AuthToken.getMember());

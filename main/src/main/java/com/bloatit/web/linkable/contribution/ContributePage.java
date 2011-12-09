@@ -31,7 +31,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
@@ -81,54 +81,34 @@ public final class ContributePage extends ElveosPage {
     }
 
     private HtmlElement generateContributeForm() {
-        final CheckContributeActionUrl formActionUrl = new CheckContributeActionUrl(getSession().getShortKey(), process);
-        final HtmlElveosForm contribForm = new HtmlElveosForm(formActionUrl.urlString());
-        contribForm.setCssClass("contribution_page");
+        final CheckContributeActionUrl targetUrl = new CheckContributeActionUrl(getSession().getShortKey(), process);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        form.setCssClass("contribution_page");
+        FormBuilder ftool = new FormBuilder(CheckContributeAction.class, targetUrl);
 
         // Input field : choose amount
-        final FieldData amountData = formActionUrl.getAmountParameter().pickFieldData();
-        final HtmlMoneyField contribInput = new HtmlMoneyField(amountData.getName(), tr("Choose amount: "));
-        final String suggestedAmountValue = amountData.getSuggestedValue();
-        BigDecimal contributionValue = BigDecimal.ZERO;
-        if (suggestedAmountValue != null) {
-            contribInput.setDefaultValue(suggestedAmountValue);
-            contributionValue = new BigDecimal(suggestedAmountValue);
-        } else if (process.getAmount() != null) {
-            contribInput.setDefaultValue(process.getAmount().toPlainString());
-            contributionValue = process.getAmount();
+        HtmlMoneyField moneyField = new HtmlMoneyField(targetUrl.getAmountParameter().getName());
+        ftool.add(form, moneyField);
+        String defaultValueIfNeeded = ftool.setDefaultValueIfNeeded(moneyField, process.getAmount().toPlainString());
+        BigDecimal contributionValue = process.getAmount();
+        if (defaultValueIfNeeded != null) {
+            contributionValue = new BigDecimal(defaultValueIfNeeded);
+        } else if (contributionValue == null) {
+            contributionValue = BigDecimal.ZERO;
         }
-        contribInput.addErrorMessages(amountData.getErrorMessages());
-        contribInput.setComment(Context.tr("The minimum is 1&nbsp;€. Don't use cents. Elveos takes a 10&nbsp;% + 0,30&nbsp;€ fee."));
 
         if (AuthToken.isAuthenticated()) {
             // Input field : As team
-            final AsTeamField teamField = new AsTeamField(formActionUrl,
+            final AsTeamField teamField = new AsTeamField(targetUrl,
                                                           AuthToken.getMember(),
                                                           UserTeamRight.BANK,
                                                           tr("In the name of"),
                                                           tr("Talk in the name of this team and use its money to make a contribution."));
-            contribForm.add(teamField);
+            form.addAsTeamField(teamField);
             if (process.getTeam() != null) {
                 teamField.getTeamInput().setDefaultValue(process.getTeam().getId().toString());
             }
         }
-
-        // Input field : comment
-        final FieldData commentData = formActionUrl.getCommentParameter().pickFieldData();
-        final HtmlTextArea commentInput = new HtmlTextArea(commentData.getName(), tr("Comment: "), 3, 60);
-        final String suggestedCommentValue = commentData.getSuggestedValue();
-        if (suggestedCommentValue != null) {
-            commentInput.setDefaultValue(suggestedCommentValue);
-        } else if (process.getComment() != null) {
-            commentInput.setDefaultValue(process.getComment());
-        }
-        commentInput.addErrorMessages(commentData.getErrorMessages());
-        commentInput.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list. Max 140 characters."));
-
-        final HtmlSubmit submitButton = new HtmlSubmit(tr("Contribute"));
-
-        // Create the form
-        contribForm.add(contribInput);
 
         // Js quick uotation
         try {
@@ -140,16 +120,16 @@ public final class ContributePage extends ElveosPage {
                 HtmlSpan targetField = new HtmlSpan("", "target_field");
                 targetField.addText(BankTransaction.computateAmountToPay(contributionValue).toPlainString() + " €");
                 quickQuotationBlock.add(new HtmlMixedText(Context.tr("You will have to pay <0::>."), targetField));
-                contribForm.add(quickQuotationBlock);
+                form.add(quickQuotationBlock);
 
                 final HtmlScript quotationUpdateScript = new HtmlScript();
 
                 final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("quick_quotation.js");
                 final RandomString rng = new RandomString(8);
-                contribInput.setId(rng.nextString());
+                moneyField.setId(rng.nextString());
 
                 quotationUpdateScriptTemplate.addNamedParameter("target_field", targetField.getId());
-                quotationUpdateScriptTemplate.addNamedParameter("charge_field_id", contribInput.getId());
+                quotationUpdateScriptTemplate.addNamedParameter("charge_field_id", moneyField.getId());
                 quotationUpdateScriptTemplate.addNamedParameter("commission_variable_rate", String.valueOf(BankTransaction.COMMISSION_VARIABLE_RATE));
                 quotationUpdateScriptTemplate.addNamedParameter("commission_fix_rate", String.valueOf(BankTransaction.COMMISSION_FIX_RATE));
 
@@ -166,11 +146,18 @@ public final class ContributePage extends ElveosPage {
             throw new BadProgrammerException("Fail to access to the internal account value of a user");
         }
 
-        contribForm.add(commentInput);
-        contribForm.addSubmit(submitButton);
+        // Input field : comment
+        HtmlTextArea commentInput = new HtmlTextArea(targetUrl.getCommentParameter().getName(), 3, 60);
+        ftool.add(form, commentInput);
+        String suggestedCommentValue = ftool.setDefaultValueIfNeeded(commentInput, process.getComment());
+        if (suggestedCommentValue == null) {
+            suggestedCommentValue = process.getComment();
+        }
+
+        form.addSubmit(new HtmlSubmit(tr("Contribute")));
 
         final HtmlTitleBlock contribTitle = new HtmlTitleBlock(tr("Contribute"), 1);
-        contribTitle.add(contribForm);
+        contribTitle.add(form);
 
         final HtmlDiv group = new HtmlDiv();
         group.add(contribTitle);

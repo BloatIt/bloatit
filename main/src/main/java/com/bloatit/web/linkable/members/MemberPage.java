@@ -35,7 +35,7 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -183,7 +183,7 @@ public final class MemberPage extends ElveosPage {
         try {
             // Description
             if (member.getDescription() != null && !member.getDescription().isEmpty()) {
-                HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlMarkdownRenderer(member.getDescription())));
+                HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlCachedMarkdownRenderer(member.getDescription())));
                 memberId.add(memberDescription);
             }
 

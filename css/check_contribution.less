@@ -237,7 +237,6 @@
                     .money_input {
                     
                         input {
-                            width: 80px;
                         }
                     }      
                 }
@@ -474,7 +473,7 @@
     .payment_methods {
         margin-left: -120px;
         //border: 1px solid red;
-     //   width: 650px;
+        //width: 650px;
     
         p {
             text-align: left;
@@ -483,23 +482,25 @@
             margin-bottom: 3px;
         }
     
+        width: 600px;
+        text-align:left;
         .field {
-            display: table-cell;
-            //width: 600px;
-            padding-right: 50px;
-            vertical-align: middle;
-            height: 75px;
+            display: inline;
+            width: 200px;
+            padding:0px;
+            padding-right:30px;
+            horizontal-align:left;
             .label {
-                width: 100px;
-                min-width: 0px;
-                //display: inline-block;
-                padding-right: 0px;
+                display: table-cell;
+                vertical-align: middle;
             }
             .input {
+                display: table-cell;
                 vertical-align: middle;
-                //height: 100px;
-                //display: block;
             }
+        }
+        .field:last{
+            padding-right:0px;
         }
     }
 }

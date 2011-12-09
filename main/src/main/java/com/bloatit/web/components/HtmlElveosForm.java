@@ -1,6 +1,7 @@
 package com.bloatit.web.components;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -14,6 +15,7 @@ public class HtmlElveosForm extends HtmlForm {
 
     private final HtmlDiv header;
     private final PlaceHolderElement body;
+    private final PlaceHolderElement languageComment;
     private final PlaceHolderElement submits;
 
     public HtmlElveosForm(String target) {
@@ -25,6 +27,8 @@ public class HtmlElveosForm extends HtmlForm {
         header = new HtmlDiv("form-header");
         submits = new PlaceHolderElement();
         body = new PlaceHolderElement();
+        languageComment = new PlaceHolderElement();
+
         HtmlDiv bodyblock = new HtmlDiv("form-body");
         HtmlDiv submitsBlock = new HtmlDiv("form-submits");
 
@@ -35,6 +39,7 @@ public class HtmlElveosForm extends HtmlForm {
         super.add(header);
         super.add(bodyblock);
         bodyblock.add(body);
+        body.add(languageComment);
         bodyblock.add(new HtmlClearer());
         bodyblock.add(submitsBlock);
         submitsBlock.add(submits);
@@ -56,9 +61,8 @@ public class HtmlElveosForm extends HtmlForm {
         HtmlDiv divNotEn = new HtmlDiv("fheader-second-line");
         divLang.add(divNotEn);
         if (defaultLang != "en") {
-            Context.getSession().notifyWarning(Context.tr("You would have more impact by writing this in English."));
+            languageComment.add(new HtmlSpan("light-notification").addText("Please consider writing in English, it's the most understood language on the Web."));
         }
-
     }
 
     public void addAsTeamField(AsTeamField f) {

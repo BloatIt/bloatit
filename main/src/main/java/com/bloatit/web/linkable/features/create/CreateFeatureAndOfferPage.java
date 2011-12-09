@@ -18,6 +18,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
@@ -25,7 +26,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -145,7 +145,7 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
                 );
         //@formatter:on
         final String svalue = targetUrl.getSpecificationParameter().getSuggestedValue();
-        HtmlFormField specifInput = ftool.add(form, new HtmlTextArea(targetUrl.getSpecificationParameter().getName(), 10, 80));
+        HtmlFormField specifInput = ftool.add(form, new MarkdownEditor(targetUrl.getSpecificationParameter().getName(), 10, 80));
         if (svalue == null || svalue.isEmpty()) {
             specifInput.setDefaultValue(suggestedValue);
         }

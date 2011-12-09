@@ -186,6 +186,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
                 final HtmlElveosForm form = new HtmlElveosForm(recalculateTargetForm.urlString(), false);
 
                 moneyField = new HtmlMoneyField("preload");
+                moneyField.setLong();
                 if (amountToCharge == null) {
                     moneyField.setDefaultValue("0");
                 } else {

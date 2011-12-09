@@ -379,10 +379,13 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         if (team != null && !team.getUserTeamRight(member).contains(UserTeamRight.BANK)) {
             throw new BadProgrammerException("This member cannot contribute as a team.");
         }
+
         final DaoContribution newContribution = new DaoContribution(member, team, this, amount, comment);
         this.contributions.add(newContribution);
         this.contribution = this.contribution.add(amount);
-        DaoEvent.createContributionEvent(this, EventType.ADD_CONTRIBUTION, newContribution);
+
+        // DaoEvent.createContributionEvent(this, EventType.ADD_CONTRIBUTION,
+        // newContribution);
         return newContribution;
     }
 

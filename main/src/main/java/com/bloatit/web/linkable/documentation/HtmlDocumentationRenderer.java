@@ -101,7 +101,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 
     /**
      * Loads the markdown file at <code>path</code>
-     * 
+     *
      * @param path the path of the file to load
      * @return <i>true</i> if the file has been loaded, <i>false</i> otherwise
      */

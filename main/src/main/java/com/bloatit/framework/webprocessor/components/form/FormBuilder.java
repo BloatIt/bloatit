@@ -241,13 +241,19 @@ public class FormBuilder {
         if (data.getSessionParam() == null) {
             return false;
         }
-        return !data.getSessionParam().getSuggestedValue().equals(data.getTargetParameter().getSuggestedValue());
+        String suggestedValue = data.getSessionParam().getSuggestedValue();
+        if (suggestedValue == null) {
+            return data.getTargetParameter().getSuggestedValue() != null;
+        }
+        return !suggestedValue.equals(data.getTargetParameter().getSuggestedValue());
     }
 
-    public void setDefaultValueIfNeeded(HtmlFormField b, String defaultValue) {
+    public String setDefaultValueIfNeeded(HtmlFormField b, String defaultValue) {
         if (!suggestedValueChanged(b)) {
             b.setDefaultValue(defaultValue);
+            return null;
         }
+        return defaultValue;
     }
 
 }

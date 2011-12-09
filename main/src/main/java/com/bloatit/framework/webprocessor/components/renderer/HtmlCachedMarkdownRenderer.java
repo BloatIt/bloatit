@@ -16,35 +16,31 @@
 //
 package com.bloatit.framework.webprocessor.components.renderer;
 
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import org.springframework.web.util.HtmlUtils;
+
 import com.bloatit.framework.utils.cache.MemoryCache;
-import com.bloatit.framework.utils.parsers.MarkdownParser;
-import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
-import com.bloatit.web.HtmlTools;
+import com.github.rjeschke.txtmark.Processor;
 
 public class HtmlCachedMarkdownRenderer extends HtmlDiv {
     /**
      * Creates a new MarkdownRenderer based on markdown or html text
-     * 
+     *
      * @param text the content to display, must be markdown text if
      *            <code>alreadyRenderer</code> is <code>true</code> or html text
      *            if <code>alreadyRenderer</code> is <code>false</code>
      */
-    public HtmlCachedMarkdownRenderer(final String text) {
+    public HtmlCachedMarkdownRenderer(String text) {
         super("markdown_block");
+
+        text = HtmlUtils.htmlEscape(text);
 
         final String cached = MemoryCache.getInstance().get(text);
         if (cached == null) {
-            final MarkdownParser parser = new MarkdownParser();
-            try {
-                final String renderered = parser.parse(HtmlTools.escape(text));
-                MemoryCache.getInstance().cache(text, renderered);
-                add(new HtmlNonEscapedText(renderered));
-            } catch (final ParsingException e) {
-                throw new BadProgrammerException("An error occured during markdown parsing", e);
-            }
+            final String renderered = Processor.process(text);
+            MemoryCache.getInstance().cache(text, renderered);
+            add(new HtmlNonEscapedText(renderered));
         } else {
             add(new HtmlNonEscapedText(cached));
         }

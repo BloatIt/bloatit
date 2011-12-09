@@ -64,13 +64,6 @@ public class MarkdownEditor extends HtmlFormField {
         return js;
     }
 
-    @Override
-    protected List<String> getCustomCss() {
-        final List<String> css = new ArrayList<String>();
-        css.add(FrameworkConfiguration.getCssShowdown());
-        return css;
-    }
-
     private static class MarkdownEditorInputBlock extends InputBlock {
         private final HtmlGenericElement input;
         private final HtmlDiv buttonBar = new HtmlDiv("md_button");
@@ -81,11 +74,12 @@ public class MarkdownEditor extends HtmlFormField {
             input.addAttribute("cols", String.valueOf(cols));
             input.addAttribute("rows", String.valueOf(rows));
             input.addAttribute("name", name);
+            input.addAttribute("id", "wmd-input");
             generate();
         }
 
         private void generate() {
-            buttonBar.setId("blmdbar-" + RandomStringUtils.randomAlphabetic(4));
+            buttonBar.setId("wmd-button-bar");
             container.add(buttonBar);
             container.add(input);
         }

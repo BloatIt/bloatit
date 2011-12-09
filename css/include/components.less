@@ -162,7 +162,6 @@ textarea {
     border:1px solid #aaa;
     .horizontal-gradient(#fff, #eee);
     .rounded_corners(1px); 
-    .shadow(2px, #bbb);
     padding:2px;
     vertical-align: middle;
 }
@@ -181,7 +180,7 @@ a.submit {
     background: @default_link_color * 1.2;
     .horizontal-gradient(@default_link_color * 1.1, @default_link_color * 1.4);
     border:1px solid @default_link_color;
-    .rounded_corners(3px); 
+    .rounded_corners(2px); 
     color:white;
     cursor:pointer;
     font-size:14px;
@@ -270,16 +269,17 @@ select:focus{
 
     .fheader-first-line{
         float:left;
-        margin-left:10px;
+        margin-left:20px;
         .fheader-label{
             margin-left:15px;
         }
     }
     .fheader-team{
         float:left;
+        margin-left:20px;
     }
     .fheader-label{
-        margin-top: 5px;
+        margin-top: 7px;
         margin-left: 12px;
         float:left;
     }
@@ -289,7 +289,11 @@ select:focus{
     }
     select{
         margin:2px;
+        margin-left:5px;
         padding:0px;
+        -webkit-box-shadow: none; 
+        -moz-box-shadow: none; 
+        box-shadow: none;
     }
 }
 
@@ -308,10 +312,13 @@ select:focus{
 
     //input[type=button],
     //input[type=checkbox],
-    //input[type=file],
     //input[type=hidden],
     //input[type=radio],
     //input[type=submit],
+
+    input[type=file]{
+        margin-top:10px;
+    }
 
     input[type=color],
     input[type=date],
@@ -342,6 +349,7 @@ select:focus{
         margin:0px;
         font-size:20px;
         padding:8px;
+        margin-top:2px;
     }
     input[type=radio],
     input[type=checkbox] {
@@ -361,12 +369,23 @@ select:focus{
     textarea {
         font-size:14px;
     }
+    .md_editor{
+        textarea#wmd-input {
+            padding-top:37px;
+            background-color:white;
+            height:auto;
+        }
+        ul#wmd-button-row{
+            margin-bottom:-26px;
+            background-color:rgba(255,255,255,0);
+        }
+    }
     
     .field {
         margin-bottom:30px;
     }
-    .required .label {
-        font-weight:bold;
+    .required .label:after {
+        content:"\2606";
     }
     .long-form{
          width: 100%;
@@ -380,10 +399,16 @@ select:focus{
         margin-right:-20px;
         padding-right:40px;
      }
+    .light-notification {
+        font-size:12px;
+        color:#E4900A;
+        text-align:center;
+        display:block;
+    }
 
 }
 .one-line-form{
-    padding-top:25px;
+    padding-top:38px;
     .input{
         display:inline;
         .input_field{
@@ -393,13 +418,16 @@ select:focus{
     .label{
         display:inline;
     }
+    label:before{
+        content:none;
+    }
 }
 label{
     cursor:pointer;
     //font-weight:bold;
 }
 label:before{
-    content:"\2192  ";
+    content:"\2192";
     margin-right:8px;
 }
 .form-submits {
@@ -410,6 +438,7 @@ label:before{
         padding-right:30px;
         width:auto;
         vertical-align:middle;
+        margin:0px;
     }
 }
 .money_input {
@@ -432,7 +461,7 @@ label:before{
     background: @default_link_color * 1.2;
     .horizontal-gradient(@default_link_color * 1.1, @default_link_color * 1.4);
     border:1px solid @default_link_color;
-    .rounded_corners(3px); 
+    .rounded_corners(2px); 
     color:white;
     cursor:pointer;
     font-size:14px;
@@ -600,8 +629,6 @@ label:before{
         vertical-align: middle;
     }
 
-    
-
     .idea_karma {
         margin: 0px;
         margin-right: 15px;
@@ -623,7 +650,6 @@ label:before{
         margin: 0px;
         padding: 0px;
         font-weight: bold;
-        
     }
 
     .progress_bar{
@@ -636,9 +662,7 @@ label:before{
         padding:0;
         margin-top:0px;
         margin-bottom:0px
-        
     }
-
 
     .progress_bar_state{
         display:block;
@@ -649,7 +673,6 @@ label:before{
         .rounded_corners(6px);
         height:8px
     }
-
 }
 
 table {
@@ -697,23 +720,18 @@ border-left : 1px solid @dark_border_color;
 thead {
    tr {
         background-color: @default_background_color;       
-       
     }
 }
 
 tbody {
     tr:nth-child(even) {
         background-color: @light_background_color;       
-       
     }
 
     tr:nth-child(odd) {
-
         background-color: @very_light_background_color;
     }   
-
 }
-
 
 blockquote p {
     padding: 0px 10px 0px 10px;

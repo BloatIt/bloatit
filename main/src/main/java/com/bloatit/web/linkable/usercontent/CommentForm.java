@@ -35,7 +35,7 @@ public class CommentForm extends HtmlDiv {
 
     public CommentForm(final CreateCommentActionUrl targetUrl) {
         super("new_comment_block");
-        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString(), false);
         add(form);
 
         FormBuilder ftool = new FormBuilder(CreateCommentAction.class, targetUrl);
