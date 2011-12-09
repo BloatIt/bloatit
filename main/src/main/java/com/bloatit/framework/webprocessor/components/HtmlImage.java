@@ -25,7 +25,9 @@ public class HtmlImage extends HtmlLeaf {
         String uri = "";
         uri = image.getIdentifier();
         addAttribute("src", uri);
-        addAttribute("alt", alt);
+        if(alt != null) {
+            addAttribute("alt", alt);
+        }
     }
 
     public HtmlImage(final Image image, final String alt, final String cssClass) {
@@ -36,11 +38,27 @@ public class HtmlImage extends HtmlLeaf {
     private HtmlImage(final Url imageUrl, final String alt) {
         super("img");
         addAttribute("src", imageUrl.urlString());
-        addAttribute("alt", alt);
+        if(alt != null) {
+            addAttribute("alt", alt);
+        }
     }
 
     public HtmlImage(final Url imageUrl, final String alt, final String cssClass) {
         this(imageUrl, alt);
         addAttribute("class", cssClass);
+    }
+
+    public HtmlImage(String url, String alt, String cssClass) {
+        super("img");
+        addAttribute("src", url);
+        if(alt != null) {
+            addAttribute("alt", alt);
+        }
+        addAttribute("class", cssClass);
+    }
+    
+    public HtmlImage(String url) {
+        super("img");
+        addAttribute("src", url);
     }
 }

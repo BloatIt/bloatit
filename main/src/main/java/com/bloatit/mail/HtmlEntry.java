@@ -4,24 +4,45 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 
-public class HtmlEntry extends HtmlDiv {
+public class HtmlEntry {
     private final Date when;
+    private final HtmlImage logo;
+    private HtmlNode content;
 
     public HtmlEntry(Date when, HtmlImage logo, String content) {
         this(when, logo, new HtmlText(content));
+        
     }
 
     public HtmlEntry(Date when, HtmlImage logo, HtmlNode content) {
-        super("event-entry");
         this.when = when;
-        add(new HtmlDiv("event-entry-logo").add(logo));
-        add(new HtmlDiv("event-entry-content").add(content));
-        add(new HtmlDiv("date").addText(new SimpleDateFormat("HH:mm").format(when).toString()));
+        this.logo = logo;
+        this.content = content;
+    }
+    
+    public HtmlElement generateForWebSite() {
+        HtmlDiv div = new HtmlDiv("event-entry");
+        div.add(new HtmlDiv("event-entry-logo").add(logo));
+        div.add(new HtmlDiv("event-entry-content").add(content));
+        div.add(new HtmlDiv("date").addText(new SimpleDateFormat("HH:mm").format(when).toString()));
+        return div;
+    }
+    
+    public HtmlElement generateForMail() {
+        HtmlBranch tr = new HtmlGenericElement("tr");
+        tr.add(new HtmlGenericElement("td").add(logo).addAttribute("style", "vertical-align: middle;"));
+        tr.add(new HtmlGenericElement("td").add(content).addAttribute("style", "vertical-align: middle;"));
+        tr.add(new HtmlGenericElement("td").addText(" – "+new SimpleDateFormat("HH:mm").format(when).toString()).addAttribute("style", "vertical-align: middle; color: rgb(150,150,150);"));
+        return tr;
     }
 
     public Date getDate() {

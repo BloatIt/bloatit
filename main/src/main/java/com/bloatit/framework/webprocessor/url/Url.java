@@ -103,7 +103,7 @@ public abstract class Url implements Cloneable {
         return internalUrlString(multilanguage, null);
     }
 
-    private String internalUrlString(boolean multilanguage, Locale forcedLanguage) {
+    public String internalUrlString(boolean multilanguage, Locale forcedLanguage) {
         final StringBuilder sb = new StringBuilder();
         if (Context.getSession() != null && !multilanguage) {
             String langCode;
@@ -168,7 +168,7 @@ public abstract class Url implements Cloneable {
             Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
             return "http://" + header.getHttpHost() + internalUrlString(multilanguage, forcedLanguage);
         }
-        return "http://elveos.org/" + internalUrlString(multilanguage, forcedLanguage); // FIXME
+        return FrameworkConfiguration.getDefaultBaseUrl() + internalUrlString(multilanguage, forcedLanguage); // FIXME
                                                                         // :
                                                                         // Replace
         // http://elveos.org
@@ -181,6 +181,10 @@ public abstract class Url implements Cloneable {
 
     public final HtmlLink getHtmlLink() {
         return new HtmlLink(urlString());
+    }
+    
+    public final HtmlLink getHtmlExternalLink() {
+        return new HtmlLink(externalUrlString());
     }
 
     public final HtmlLink getHtmlLink(final String text) {

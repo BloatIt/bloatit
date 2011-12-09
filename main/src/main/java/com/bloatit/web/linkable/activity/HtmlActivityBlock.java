@@ -243,10 +243,11 @@ public class HtmlActivityBlock extends HtmlDiv {
                     FeatureEntries f = (FeatureEntries) e;
                     EventFeatureComponent featureComponent = new EventFeatureComponent(f.getKey(), Context.getLocalizator(), true);
                     for (HtmlEntry entry : e) {
-                        featureComponent.add(entry);
+                        HtmlElement entryElement = entry.generateForWebSite();
+                        featureComponent.add(entryElement);
 
                         if (entry.getDate().after(lastWatchedEvents)) {
-                            entry.setCssClass("unseen-entry");
+                            entryElement.setCssClass("unseen-entry");
                         }
 
                     }

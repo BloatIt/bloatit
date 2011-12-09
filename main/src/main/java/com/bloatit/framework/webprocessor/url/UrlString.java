@@ -16,6 +16,8 @@
 //
 package com.bloatit.framework.webprocessor.url;
 
+import java.util.Locale;
+
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 
@@ -35,6 +37,11 @@ public class UrlString extends Url {
 
     @Override
     public String urlString() {
+        return url;
+    }
+    
+    @Override
+    public String internalUrlString(boolean multilanguage, Locale forcedLanguage) {
         return url;
     }
 

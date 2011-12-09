@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
+import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.feedbackworker.FeedBackWorker;
 import com.bloatit.framework.mails.ElveosMail;
 import com.bloatit.framework.mailsender.Mail;
@@ -34,10 +35,12 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
         }
 
         HtmlBranch html = new HtmlGenericElement("html");
+        
+        
         for (Entry<Feature, MailEventVisitor.Entries> e : visitor.getFeatures().entrySet()) {
-            EventFeatureComponent featureComponent = new EventFeatureComponent(e.getKey(), getLocalizator());
+            EventFeatureMailComponent featureComponent = new EventFeatureMailComponent(e.getKey(), getLocalizator());
             for (HtmlEntry entry : e.getValue()) {
-                featureComponent.add(entry);
+                featureComponent.add(entry.generateForMail());
             }
             html.add(featureComponent);
         }
@@ -49,7 +52,7 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
             
             
             final Mail mail = new Mail(data.getTo().getEmailUnprotected(), 
-                                       getLocalizator().trn("Elveos activity – {0} new event", "Elveos activity – {0} new event", eventCount, eventCount),
+                                       getLocalizator().trn("Elveos activity – {0} new event", "Elveos activity – {0} new events", eventCount, eventCount),
                                        new String(buffer.toByteArray()),
                                        "activity-feed");
             mail.setMimeType("text/html");
@@ -59,16 +62,6 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
             Log.mail().fatal("Fail to generate activity email", e);
         }
         
-        
-        
-        
-        // for (Entry<Bug, MailEventVisitor.Entries> e :
-        // visitor.getBugs().entrySet()) {
-        // System.out.println("Bug - " + e.getKey().getId());
-        // for (MailEventVisitor.HtmlEntry line : e.getValue()) {
-        // line.write(System.out);
-        // }
-        // }
         return true;
     }
 
