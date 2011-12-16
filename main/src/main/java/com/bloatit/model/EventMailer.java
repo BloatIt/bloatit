@@ -21,11 +21,10 @@ public final class EventMailer {
     public static void start() {
         // TODO : remove in production !!!
 
-        // new RecursiveMailer(11, EmailStrategy.VERY_FREQUENTLY,
-        // DateUtils.now());
-        // new RecursiveMailer(61, EmailStrategy.HOURLY, DateUtils.now());
-        // new RecursiveMailer(120, EmailStrategy.DAILY, DateUtils.now());
-        // new RecursiveMailer(200, EmailStrategy.WEEKLY, DateUtils.now());
+        new RecursiveMailer(11, EmailStrategy.VERY_FREQUENTLY, DateUtils.now());
+        new RecursiveMailer(61, EmailStrategy.HOURLY, DateUtils.now());
+        new RecursiveMailer(120, EmailStrategy.DAILY, DateUtils.now());
+        new RecursiveMailer(200, EmailStrategy.WEEKLY, DateUtils.now());
 
         /*
          * new RecursiveMailer(11 * 60, EmailStrategy.VERY_FREQUENTLY); new

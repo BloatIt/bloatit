@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
-import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.feedbackworker.FeedBackWorker;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;

@@ -24,7 +24,6 @@ import com.bloatit.model.Event.FeatureEvent;
 import com.bloatit.model.Event.OfferEvent;
 import com.bloatit.model.Event.ReleaseEvent;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Image;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.components.MoneyDisplayComponent;
