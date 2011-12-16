@@ -35,7 +35,7 @@ import com.bloatit.web.url.ActivityPageUrl;
 public final class ActivityPage extends ElveosPage {
 
     @RequestParam(role = Role.GET, message = @tr("I cannot find the member number: ''%value%''."))
-    @Optional()
+    @Optional
     private final Member member;
 
     public ActivityPage(final ActivityPageUrl url) {

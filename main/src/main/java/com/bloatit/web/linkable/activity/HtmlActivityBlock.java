@@ -22,9 +22,12 @@ import java.util.Date;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.mail.ActivityEventVisitor;
@@ -43,6 +46,7 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.ActivityAtomFeedUrl;
 import com.bloatit.web.url.ActivityPageUrl;
 import com.bloatit.web.url.ChooseFeatureTypePageUrl;
+import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.ManageFollowPageUrl;
 import com.bloatit.web.url.ReadActivityActionUrl;
 
@@ -142,72 +146,82 @@ public class HtmlActivityBlock extends HtmlDiv {
         final EventList events = (member == null ? EventManager.getAllEventAfter(DateUtils.dawnOfTime())
                 : EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member));
 
-        final HtmlDiv activityBlockTwoColumn = new HtmlDiv("activity-block-two-column");
-        add(activityBlockTwoColumn);
-        {
+        if (!events.hasNext()) {
+            HtmlDiv alt = new HtmlDiv("alt_activity_block");
+            alt.add(new HtmlParagraph(Context.tr("Your activity page is empty because you are not following any content yet.")));
+            alt.add(new HtmlParagraph().add(new HtmlMixedText(Context.tr("You can look for <0::feature requests you like>, and <1::follow> them !"),
+                                                              new FeatureListPageUrl().getHtmlLink(),
+                                                              new HtmlSpan("strong"))));
+            alt.add(new HtmlParagraph().add(new HtmlMixedText(Context.tr("Or <0::create a new feature request>."),
+                                                              new ChooseFeatureTypePageUrl().getHtmlLink())));
+            add(alt);
+        } else {
 
-            final HtmlDiv leftColumn = new HtmlDiv("left_column");
-            activityBlockTwoColumn.add(leftColumn);
-            final HtmlDiv timeColumn = new HtmlDiv("time_column");
-
-            final PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
-
-            activityBlockTwoColumn.add(timeColumn);
             {
-                final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
-                timeColumn.add(timeColumnHeader);
+                final HtmlDiv activityBlockTwoColumn = new HtmlDiv("activity-block-two-column");
+                add(activityBlockTwoColumn);
 
-                timeColumn.add(daysPlaceHolder);
+                final HtmlDiv leftColumn = new HtmlDiv("left_column");
+                activityBlockTwoColumn.add(leftColumn);
+                final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
-                final HtmlDiv timeColumnFooter = new HtmlDiv("time_column_footer");
-                timeColumn.add(timeColumnFooter);
+                final PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
+
+                activityBlockTwoColumn.add(timeColumn);
+                {
+                    final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
+                    timeColumn.add(timeColumnHeader);
+
+                    timeColumn.add(daysPlaceHolder);
+
+                    final HtmlDiv timeColumnFooter = new HtmlDiv("time_column_footer");
+                    timeColumn.add(timeColumnFooter);
+                }
+
+                final HtmlDiv rightColumn = new HtmlDiv("right_column");
+                activityBlockTwoColumn.add(rightColumn);
+
+                final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
+
+                while (events.hasNext()) {
+                    events.next();
+                    events.event().getEvent().accept(visitor);
+                }
+
+                fillTimeLine(leftColumn, daysPlaceHolder, rightColumn, visitor, false);
             }
+            events.reset();
 
-            final HtmlDiv rightColumn = new HtmlDiv("right_column");
-            activityBlockTwoColumn.add(rightColumn);
-
-            final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
-
-            while (events.hasNext()) {
-                events.next();
-                events.event().getEvent().accept(visitor);
-            }
-
-            fillTimeLine(leftColumn, daysPlaceHolder, rightColumn, visitor, false);
-        }
-
-        events.reset();
-
-        final HtmlDiv activityBlockOneColumn = new HtmlDiv("activity-block-one-column");
-        add(activityBlockOneColumn);
-        {
-            final HtmlDiv timeColumn = new HtmlDiv("time_column");
-
-            final PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
-
-            activityBlockOneColumn.add(timeColumn);
+            final HtmlDiv activityBlockOneColumn = new HtmlDiv("activity-block-one-column");
+            add(activityBlockOneColumn);
             {
-                final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
-                timeColumn.add(timeColumnHeader);
+                final HtmlDiv timeColumn = new HtmlDiv("time_column");
 
-                timeColumn.add(daysPlaceHolder);
+                final PlaceHolderElement daysPlaceHolder = new PlaceHolderElement();
 
-                final HtmlDiv timeColumnFooter = new HtmlDiv("time_column_footer");
-                timeColumn.add(timeColumnFooter);
+                activityBlockOneColumn.add(timeColumn);
+                {
+                    final HtmlDiv timeColumnHeader = new HtmlDiv("time_column_header");
+                    timeColumn.add(timeColumnHeader);
+
+                    timeColumn.add(daysPlaceHolder);
+
+                    final HtmlDiv timeColumnFooter = new HtmlDiv("time_column_footer");
+                    timeColumn.add(timeColumnFooter);
+                }
+
+                final HtmlDiv rightColumn = new HtmlDiv("right_column");
+                activityBlockOneColumn.add(rightColumn);
+
+                final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
+
+                while (events.hasNext()) {
+                    events.next();
+                    events.event().getEvent().accept(visitor);
+                }
+
+                fillTimeLine(null, daysPlaceHolder, rightColumn, visitor, true);
             }
-
-            final HtmlDiv rightColumn = new HtmlDiv("right_column");
-            activityBlockOneColumn.add(rightColumn);
-
-            final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
-
-            while (events.hasNext()) {
-                events.next();
-                events.event().getEvent().accept(visitor);
-            }
-
-            fillTimeLine(null, daysPlaceHolder, rightColumn, visitor, true);
-
         }
 
     }
