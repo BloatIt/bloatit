@@ -1,6 +1,19 @@
 Changelog
 =========
 
+Version 1.2.1
+--------------
+
+### Features
+ - Generate old events
+
+### Bug fixes
+ - fix follow problem with feature with no software
+ - fix follow button translation
+ - fix email strategy button
+
+
+
 Version 1.2.0
 --------------
 
