@@ -13,6 +13,7 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Event.BugCommentEvent;
 import com.bloatit.model.Event.BugEvent;
@@ -34,13 +35,13 @@ import com.bloatit.web.url.ReleasePageUrl;
 
 public abstract class GenericEventVisitor implements EventVisitor<String> {
 
-    private static final HtmlImage LOGO_FEATURE = new HtmlImage(new Image(WebConfiguration.getImgIdeaTiny()), "feature");
-    private static final HtmlImage LOGO_CONTRIBUTION = new HtmlImage(new Image(WebConfiguration.getImgContributionTiny()), "contribution");
-    private static final HtmlImage LOGO_OFFER = new HtmlImage(new Image(WebConfiguration.getImgOfferTiny()), "offer");
-    private static final HtmlImage LOGO_COMMENT = new HtmlImage(new Image(WebConfiguration.getImgCommentTiny()), "comment");
-    private static final HtmlImage LOGO_RELEASE = new HtmlImage(new Image(WebConfiguration.getImgReleaseTiny()), "release");
-    private static final HtmlImage LOGO_BUG = new HtmlImage(new Image(WebConfiguration.getImgBugTiny()), "bug");
-
+    private static final HtmlImage LOGO_FEATURE = new HtmlImage(new UrlString(WebConfiguration.getImgIdeaTiny()).externalUrlString());
+    private static final HtmlImage LOGO_CONTRIBUTION = new HtmlImage(new UrlString(WebConfiguration.getImgContributionTiny()).externalUrlString());
+    private static final HtmlImage LOGO_OFFER = new HtmlImage(new UrlString(WebConfiguration.getImgOfferTiny()).externalUrlString());
+    private static final HtmlImage LOGO_COMMENT = new HtmlImage(new UrlString(WebConfiguration.getImgCommentTiny()).externalUrlString());
+    private static final HtmlImage LOGO_RELEASE = new HtmlImage(new UrlString(WebConfiguration.getImgReleaseTiny()).externalUrlString());
+    private static final HtmlImage LOGO_BUG = new HtmlImage(new UrlString(WebConfiguration.getImgBugTiny()).externalUrlString());
+    
     protected final Locale locale;
     private final Localizator l;
 

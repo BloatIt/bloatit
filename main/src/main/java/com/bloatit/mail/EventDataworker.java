@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
+import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.feedbackworker.FeedBackWorker;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
@@ -30,11 +31,11 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
             eventCount++;
         }
 
-        final HtmlBranch html = new HtmlGenericElement("html");
-        for (final Entry<Feature, MailEventVisitor.Entries> e : visitor.getFeatures().entrySet()) {
-            final EventFeatureComponent featureComponent = new EventFeatureComponent(e.getKey(), getLocalizator());
-            for (final HtmlEntry entry : e.getValue()) {
-                featureComponent.add(entry);
+        HtmlBranch html = new HtmlGenericElement("html");
+        for (Entry<Feature, MailEventVisitor.Entries> e : visitor.getFeatures().entrySet()) {
+            EventFeatureMailComponent featureComponent = new EventFeatureMailComponent(e.getKey(), getLocalizator());
+            for (HtmlEntry entry : e.getValue()) {
+                featureComponent.add(entry.generateForMail());
             }
             html.add(featureComponent);
         }
@@ -42,12 +43,9 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
         try {
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             html.write(buffer);
-
-            final Mail mail = new Mail(data.getTo().getEmailUnprotected(),
-                                       getLocalizator().trn("Elveos activity – {0} new event",
-                                                            "Elveos activity – {0} new event",
-                                                            eventCount,
-                                                            eventCount),
+           
+            final Mail mail = new Mail(data.getTo().getEmailUnprotected(), 
+                                       getLocalizator().trn("Elveos activity – {0} new event", "Elveos activity – {0} new events", eventCount, eventCount),
                                        new String(buffer.toByteArray()),
                                        "activity-feed");
             mail.setMimeType("text/html");
@@ -56,14 +54,6 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
         } catch (final IOException e) {
             Log.mail().fatal("Fail to generate activity email", e);
         }
-
-        // for (Entry<Bug, MailEventVisitor.Entries> e :
-        // visitor.getBugs().entrySet()) {
-        // System.out.println("Bug - " + e.getKey().getId());
-        // for (MailEventVisitor.HtmlEntry line : e.getValue()) {
-        // line.write(System.out);
-        // }
-        // }
         return true;
     }
 
