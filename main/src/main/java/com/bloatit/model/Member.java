@@ -427,7 +427,8 @@ public final class Member extends Actor<DaoMember> implements User {
             }
         } else if (!globalFollow && isGlobalFollow()) {
             for (final FollowFeature followFeature : getFollowedFeatures()) {
-                if (!isFollowing(followFeature.getFollowed().getSoftware())) {
+                Software software = followFeature.getFollowed().getSoftware();
+                if (software != null && !isFollowing(software)) {
                     unfollowFeature(followFeature.getFollowed());
                 }
             }
@@ -440,7 +441,8 @@ public final class Member extends Actor<DaoMember> implements User {
         tryAccess(new Private(), Action.WRITE);
 
         for (final FollowFeature followFeature : getFollowedFeatures()) {
-            if (!isFollowing(followFeature.getFollowed().getSoftware())) {
+            Software software = followFeature.getFollowed().getSoftware();
+            if (software != null && !isFollowing(software)) {
                 followFeature.setMail(globalFollow);
             }
         }
