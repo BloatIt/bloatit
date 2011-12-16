@@ -20,6 +20,8 @@ public class ActivityEventVisitor extends GenericEventVisitor {
     }
 
     public List<DayAgreggator> getDays() {
+        Collections.sort(days);
+        Collections.reverse(days);
         return days;
     }
 
@@ -81,8 +83,7 @@ public class ActivityEventVisitor extends GenericEventVisitor {
 
         @Override
         public int compareTo(final Entries<?> o) {
-            lastDate.compareTo(o.getLastDate());
-            return 0;
+            return lastDate.compareTo(o.getLastDate());
         }
 
     }
@@ -103,7 +104,7 @@ public class ActivityEventVisitor extends GenericEventVisitor {
         }
     }
 
-    public class DayAgreggator {
+    public class DayAgreggator implements Comparable<DayAgreggator> {
         private final Calendar date;
 
         // private final Map<Feature, Entries<Feature>> features = new
@@ -185,6 +186,11 @@ public class ActivityEventVisitor extends GenericEventVisitor {
             return Math.abs(date.getTimeInMillis() - other.getDate().getTimeInMillis()) < 1000;
         }
 
+        @Override
+        public int compareTo(final DayAgreggator o) {
+            return date.compareTo(o.getDate());
+        }
+        
         private ActivityEventVisitor getOuterType() {
             return ActivityEventVisitor.this;
         }
