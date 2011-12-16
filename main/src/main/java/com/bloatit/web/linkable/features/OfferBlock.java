@@ -76,7 +76,7 @@ public final class OfferBlock extends HtmlDiv {
                     if (offer.getAsTeam() != null) {
                         HtmlLink author = null;
                         author = new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getDisplayName());
-                        author.setCssClass("offer_block_author");
+                        author.setCssClass("offer_block_team_author");
                         authorPara.add(author);
 
                         authorPara.addText(tr(" by "));
@@ -90,7 +90,7 @@ public final class OfferBlock extends HtmlDiv {
                     } else {
                         HtmlLink author = null;
                         author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
-                        author.setCssClass("offer_block_author");
+                        author.setCssClass("offer_block_member_author");
                         authorPara.add(author);
 
                         final HtmlSpan karma = new HtmlSpan("karma");

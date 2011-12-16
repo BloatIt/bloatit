@@ -5274,7 +5274,7 @@ msgstr "Nouvelle stategie d'envoie de mail. La stratégie actuel est ''{0}''."
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:158
 msgid "Save settings"
-msgstr "Sauvegarder les paramètres"
+msgstr "Sauvegarder"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:165
 msgid "You must be logged to manage contents followed"

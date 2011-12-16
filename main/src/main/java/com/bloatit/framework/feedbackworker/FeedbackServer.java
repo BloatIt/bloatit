@@ -57,9 +57,10 @@ public class FeedbackServer extends Thread {
                         break;
                     }
                 }
-                ModelAccessor.close();
             } catch (final InterruptedException e) {
                 throw new ExternalErrorException(e);
+            } finally {
+                ModelAccessor.close();
             }
         }
     }

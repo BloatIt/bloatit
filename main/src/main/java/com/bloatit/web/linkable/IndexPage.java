@@ -181,14 +181,16 @@ public final class IndexPage extends ElveosPage {
             leftColumn.add(new HtmlDiv("index-underline"));
 
             for (final HighlightFeature hFeature : hightlightFeatureArray) {
-                final Feature feature = hFeature.getFeature();
-                final HtmlParagraph p = new HtmlParagraph();
-                p.setCssClass("feature-p");
-                p.add(new SoftwaresTools.Link(feature.getSoftware()));
-                p.addText(" – ");
-                p.add(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(FeaturesTools.getTitle(feature)));
+                if (hFeature != null) {
+                    final Feature feature = hFeature.getFeature();
+                    final HtmlParagraph p = new HtmlParagraph();
+                    p.setCssClass("feature-p");
+                    p.add(new SoftwaresTools.Link(feature.getSoftware()));
+                    p.addText(" – ");
+                    p.add(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(FeaturesTools.getTitle(feature)));
 
-                leftColumn.add(p);
+                    leftColumn.add(p);
+                }
             }
 
             // News feed

@@ -72,7 +72,7 @@ public final class FollowSoftware extends Identifiable<DaoFollowSoftware> {
         }
         getDao().setMail(mail);
         for (final FollowFeature followFeature : getFollower().getFollowedFeatures()) {
-            if (followFeature.getFollowed().getSoftware().equals(getFollowed())) {
+            if (followFeature.getFollowed().getSoftware() != null && followFeature.getFollowed().getSoftware().equals(getFollowed())) {
                 followFeature.setMail(mail);
             }
         }

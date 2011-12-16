@@ -30,7 +30,6 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
@@ -46,6 +45,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.HtmlFollowButton.HtmlFollowAllButton;
 import com.bloatit.web.components.HtmlFollowButton.HtmlFollowFeatureButton;
 import com.bloatit.web.components.MemberListRenderer;
@@ -136,7 +136,7 @@ public class ManageFollowPage extends LoggedElveosPage {
         final ManageFollowActionUrl doModifyUrl = new ManageFollowActionUrl(Context.getSession().getShortKey());
 
         // Create the form stub
-        final HtmlForm globalSettingsForm = new HtmlForm(doModifyUrl.urlString());
+        final HtmlElveosForm globalSettingsForm = new HtmlElveosForm(doModifyUrl.urlString(), false);
         manageFollowSideElement.add(globalSettingsForm);
 
         // Email strategy
@@ -155,7 +155,7 @@ public class ManageFollowPage extends LoggedElveosPage {
         globalSettingsForm.add(emailStategyInput);
 
         // Button
-        globalSettingsForm.add(new HtmlSubmit(Context.tr("Save settings")));
+        globalSettingsForm.addSubmit(new HtmlSubmit(Context.tr("Save settings")));
 
         return layout;
     }
