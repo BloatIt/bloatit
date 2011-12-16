@@ -48,7 +48,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
         if (isFollowing()) {
             final HtmlLink followWithoutMail = getUnfollowUrl().getHtmlLink();
             followWithoutMail.setCssClass("follow-selected-without-mail");
-            followWithoutMail.addText("Following");
+            followWithoutMail.addText(Context.tr("Following"));
             add(followWithoutMail);
 
             if (isFollowingWithMail()) {
@@ -64,7 +64,7 @@ public abstract class HtmlFollowButton extends HtmlDiv {
         } else {
             final HtmlLink followWithoutMail = getFollowUrl().getHtmlLink();
             followWithoutMail.setCssClass("follow-unselected-without-mail");
-            followWithoutMail.addText("Follow");
+            followWithoutMail.addText(Context.tr("Follow"));
             final HtmlLink followWithMail = getFollowWithMailUrl().getHtmlLink();
             followWithMail.setCssClass("follow-unselected-with-mail");
             add(followWithoutMail);
