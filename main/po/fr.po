@@ -1035,7 +1035,7 @@ msgstr "Vous devez spécifier une valeur positive."
 #: com/bloatit/web/linkable/money/ChangePrepaidAmountAction.java:40
 #: com/bloatit/web/linkable/contribution/CheckContributeAction.java:62
 msgid "Please do not use cents."
-msgstr "N''utilisez pas les centimes."
+msgstr "N'utilisez pas les centimes."
 
 #: com/bloatit/web/linkable/money/ChangePrepaidAmountAction.java:84
 msgid "The preload amount is locked during the payment process."
@@ -1963,7 +1963,7 @@ msgstr "La demande a été supprimée"
 
 #: com/bloatit/web/linkable/atom/ActivityAtomFeed.java:111
 msgid "The feature is now successful"
-msgstr "La demande est maintenant terminée avec succès"
+msgstr "La demande est terminée avec succès"
 
 #: com/bloatit/web/linkable/atom/ActivityAtomFeed.java:143
 #, java-format
@@ -1972,15 +1972,15 @@ msgstr "Nouveau bug reporté par {0}"
 
 #: com/bloatit/web/linkable/atom/ActivityAtomFeed.java:146
 msgid "A bug level changed"
-msgstr "La criticité d''un bug a changé"
+msgstr "La criticité d'un bug a changé"
 
 #: com/bloatit/web/linkable/atom/ActivityAtomFeed.java:149
 msgid "A bug is now in development"
-msgstr "Un bug est maintenant en développement"
+msgstr "Un bug est en développement"
 
 #: com/bloatit/web/linkable/atom/ActivityAtomFeed.java:152
 msgid "A bug is now resolved"
-msgstr "Un bug est maintenant résolu"
+msgstr "Un bug est résolu"
 
 #: com/bloatit/web/linkable/atom/ActivityAtomFeed.java:179
 #, java-format
@@ -2501,7 +2501,7 @@ msgstr "L'identifiant de la contribution est incorrect ou manquant"
 
 #: com/bloatit/web/linkable/invoice/ContributionInvoicePreviewData.java:47
 msgid "The id of the actor is incorrect or missing"
-msgstr "L''identifiant de l'acteur est incorrect ou manquant"
+msgstr "L'identifiant de l'acteur est incorrect ou manquant"
 
 #: com/bloatit/web/linkable/invoice/ContributionInvoicePreviewData.java:51
 msgid "The invoice number is incorrect or missing"
@@ -4260,13 +4260,12 @@ msgid "Full name"
 msgstr "Nom complet"
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:62
-#, fuzzy
 msgid ""
 "If you set a value here, it will be used instead of your login to designate "
 "you."
 msgstr ""
-"Si vous définissez une valeur comme nom complet, il sera utilisé à la place "
-"de votre login pour vous désigner."
+"Si vous définissez une valeur ici, elle sera utilisé à la place de votre "
+"login pour vous désigner."
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:67
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:77
@@ -4283,7 +4282,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:73
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:74
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:84
@@ -4336,15 +4335,14 @@ msgid "Members"
 msgstr "Membres"
 
 #: com/bloatit/web/linkable/members/MemberPage.java:128
-#, fuzzy
 msgid "My activity"
-msgstr "Activité"
+msgstr "Mon flux d'activité"
 
 #: com/bloatit/web/linkable/members/MemberPage.java:130
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:138
-#, fuzzy, java-format
+#, java-format
 msgid "{0}''s activity"
-msgstr "Page de {0}"
+msgstr "Flux d''activité de {0}"
 
 #: com/bloatit/web/linkable/members/MemberPage.java:140
 msgid "My teams"
@@ -4388,9 +4386,8 @@ msgstr "Karma : "
 #: com/bloatit/web/linkable/members/MemberPage.java:260
 #: com/bloatit/web/linkable/members/tabs/HistoryTab.java:82
 #: com/bloatit/web/linkable/team/tabs/HistoryTab.java:82
-#, fuzzy
 msgid "Recent history"
-msgstr "Activité récente"
+msgstr "Historique récent"
 
 #: com/bloatit/web/linkable/members/MemberPage.java:276
 msgid "Dashboard"
@@ -4399,7 +4396,7 @@ msgstr "Tableau&nbsp;de&nbsp;bord"
 #: com/bloatit/web/linkable/members/MemberPage.java:281
 #: com/bloatit/web/linkable/team/TeamPage.java:162
 msgid "History"
-msgstr ""
+msgstr "Historique"
 
 #: com/bloatit/web/linkable/members/MemberPage.java:285
 #: com/bloatit/web/linkable/members/MemberPage.java:322
@@ -4471,15 +4468,13 @@ msgid " (<0::>) - (<1::>)"
 msgstr " <0::> - (<1::>)"
 
 #: com/bloatit/web/linkable/members/tabs/TasksTab.java:78
-#, fuzzy
 msgid "Invoice to create"
-msgstr "Modèle de numéro de facture"
+msgstr "Facture à générer"
 
 #: com/bloatit/web/linkable/members/tabs/HistoryTab.java:95
 #: com/bloatit/web/linkable/team/tabs/HistoryTab.java:91
-#, fuzzy
 msgid "No recent history"
-msgstr "Aucune activité récente"
+msgstr "Aucun historique"
 
 #: com/bloatit/web/linkable/members/tabs/HistoryTab.java:139
 msgid "<0::Contributed> on a deleted feature"
@@ -4652,7 +4647,7 @@ msgstr "Vous pourrez ajouter d'autre fichiers joints plus tard."
 #: com/bloatit/web/linkable/usercontent/AttachmentField.java:70
 #, java-format
 msgid "Max size is {0}."
-msgstr ""
+msgstr "La taille maximale est {0}."
 
 #: com/bloatit/web/linkable/usercontent/AsTeamField.java:46
 msgid "Myself"
@@ -4682,11 +4677,8 @@ msgid "Join a file"
 msgstr "Attacher un fichier"
 
 #: com/bloatit/web/linkable/usercontent/UserContentAction.java:60
-#, fuzzy
 msgid "When you join a file, you have to add a description."
-msgstr ""
-"Taille maximale {0}. Quand vous attachez un fichier, vous devez ajouter une "
-"description."
+msgstr "Quand vous attachez un fichier, vous devez ajouter une description."
 
 #: com/bloatit/web/linkable/usercontent/UserContentAction.java:69
 msgid "File description"
@@ -4727,7 +4719,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/language/ChangeLanguagePage.java:74
 msgid "Choose the web site language for this session"
-msgstr ""
+msgstr "Choisissez la langue du site pour cette session"
 
 #: com/bloatit/web/linkable/language/ChangeLanguagePage.java:105
 msgid "Index"
@@ -4799,14 +4791,12 @@ msgid "Recover password"
 msgstr "Récupérer votre mot de passe"
 
 #: com/bloatit/web/linkable/login/LostPasswordAction.java:56
-#, fuzzy
 msgid "You must provide an email"
-msgstr "Vous devez indiquer un fichier image comme avatar"
+msgstr "Vous devez indiquer un adresse email"
 
 #: com/bloatit/web/linkable/login/LostPasswordAction.java:57
-#, fuzzy
 msgid "Your email must be less than 255 characters."
-msgstr "Présentez vous en moins de 200 caractères."
+msgstr "Votre email doit comporter moins de 255 caractères."
 
 #: com/bloatit/web/linkable/login/LostPasswordAction.java:58
 msgid "Enter your email"
@@ -4878,9 +4868,9 @@ msgstr ""
 "pas fait d'erreur en copiant collant l'URL."
 
 #: com/bloatit/web/linkable/login/RecoverPasswordPage.java:76
-#, fuzzy, java-format
+#, java-format
 msgid "Password recovery for {0}"
-msgstr "Récupération du mot de passe"
+msgstr "Récupération du mot de passe pour {0}"
 
 #: com/bloatit/web/linkable/login/RecoverPasswordPage.java:85
 #: com/bloatit/web/linkable/login/RecoverPasswordPage.java:91
@@ -4951,6 +4941,8 @@ msgstr ""
 #: com/bloatit/web/linkable/login/RecoverPasswordAction.java:64
 msgid "I cannot change your password if you don't give me one !"
 msgstr ""
+"Je ne peux pas changer votre mot de passe  si vous ne m'en donnez pas un "
+"nouveau !"
 
 #: com/bloatit/web/linkable/login/RecoverPasswordAction.java:68
 msgid "7 characters minimum."
@@ -5041,20 +5033,20 @@ msgid ""
 "You will receive an account activation email, but you can contribute without "
 "it."
 msgstr ""
+"Vous allez recevoir un email d'activation, mais vous pouvez contribuer sans "
+"cet email."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:83
-#, fuzzy
 msgid "You have to specify a language."
-msgstr "Vous devez spécifier une langue valide."
+msgstr "Vous devez spécifier une langue."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:91
 msgid "Name, first name"
-msgstr ""
+msgstr "Nom, prénom"
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:92
-#, fuzzy
 msgid "Your full name."
-msgstr "Votre nom réel"
+msgstr "Votre nom complet."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:113
 #: com/bloatit/web/linkable/login/SignUpAction.java:119
@@ -5236,177 +5228,154 @@ msgid "Activity"
 msgstr "Activité"
 
 #: com/bloatit/web/linkable/activity/FollowSoftwareAction.java:34
-#, fuzzy
 msgid "You must indicate a software to follow"
-msgstr "Vous devez indiquer un état au bug"
+msgstr "Vous devez indiquer un logiciel à suivre"
 
 #: com/bloatit/web/linkable/activity/FollowSoftwareAction.java:38
 #: com/bloatit/web/linkable/activity/FollowAllAction.java:32
 #: com/bloatit/web/linkable/activity/FollowActorAction.java:38
 #: com/bloatit/web/linkable/activity/FollowFeatureAction.java:38
-#, fuzzy
 msgid "You must indicate a follow state"
-msgstr "Vous devez indiquer un état au bug"
+msgstr "Vous devrez indiquer un état de suivi"
 
 #: com/bloatit/web/linkable/activity/FollowSoftwareAction.java:42
 #: com/bloatit/web/linkable/activity/FollowAllAction.java:36
 #: com/bloatit/web/linkable/activity/FollowActorAction.java:42
 #: com/bloatit/web/linkable/activity/FollowFeatureAction.java:42
-#, fuzzy
 msgid "You must indicate a follow mail state"
-msgstr "Vous devez indiquer un état au bug"
+msgstr "Vous devez indiquer un état de suivi par mail"
 
 #: com/bloatit/web/linkable/activity/ManageFollowAction.java:34
-#, fuzzy
 msgid "You must indicate a email frequency"
-msgstr "Vous devez indiquer un niveau de gravité du bug"
+msgstr "Vous devez indiquer une fréquence d'email"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:93
-#, fuzzy
 msgid "Back to activity"
-msgstr "Activité récente"
+msgstr "Retourner au flux d'activité"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:97
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:88
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:91
-#, fuzzy
 msgid "Manage activity"
-msgstr "Activité récente"
+msgstr "Gérer le flux d'activité"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:134
-#, fuzzy
 msgid "Email settings"
-msgstr "Modifier les paramètres de {0}"
+msgstr "Paramètres d'email"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:144
-#, fuzzy
 msgid "Email strategy"
-msgstr "Email mis à jour."
+msgstr "Strategie d'envoi de mail"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:153
-#, fuzzy, java-format
+#, java-format
 msgid "New email strategy. Current strategy is ''{0}''."
-msgstr "Nouvel état du bug. L''état actuel est ''{0}''."
+msgstr "Nouvelle stategie d'envoie de mail. La stratégie actuel est ''{0}''."
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:158
-#, fuzzy
 msgid "Save settings"
-msgstr "Modifier les paramètres de {0}"
+msgstr "Sauvegarder les paramètres"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:165
-#, fuzzy
 msgid "You must be logged to manage contents followed"
-msgstr "Vous devez être connecté pour faire une offre"
+msgstr "Vous devez être connecté pour gérer les éléments suivis"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:170
-#, fuzzy
 msgid "Manage contents followed"
-msgstr "Contenu que vous suivez"
+msgstr "Géré le contenu suivi"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:185
 msgid "settings"
-msgstr ""
+msgstr "paramètres"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:232
 msgid "stop following comments"
-msgstr ""
+msgstr "arrêter de suivre les commentaires"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:240
-#, fuzzy
 msgid "follow comments"
-msgstr "Aucun commentaire"
+msgstr "suivre les commentaires"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:250
 msgid "stop following bugs"
-msgstr ""
+msgstr "arrêter de suivre les bugs"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:258
 msgid "follow bugs"
-msgstr ""
+msgstr "suivre les bugs"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:266
-#, fuzzy
 msgid "Very frequently"
-msgstr "Nouvelle demande"
+msgstr "Très fréquement"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:266
 msgid "Hourly"
-msgstr ""
+msgstr "Par heure"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:267
 msgid "Daily"
-msgstr ""
+msgstr "Par jour"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:269
 msgid "Weekly"
-msgstr ""
+msgstr "Par semaine"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:312
 msgid "Whole Elveos"
-msgstr ""
+msgstr "Tout Elveos"
 
 #: com/bloatit/web/linkable/activity/ManageFollowPage.java:319
 msgid "Follow all current and future features"
-msgstr ""
+msgstr "Suivre toutes les demandes actuelles et futures"
 
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:99
 msgid "My custom Rss feed"
-msgstr ""
+msgstr "Mon flux rss personalisé"
 
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:102
-#, fuzzy
 msgid "Rss feed"
-msgstr "Flux d'informations"
+msgstr "Flux Rss"
 
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:108
-#, fuzzy
 msgid "set as read"
-msgstr "Changer de mot de passe"
+msgstr "marquer comme lu"
 
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:115
-#, fuzzy
 msgid "global activity"
-msgstr "Activité"
+msgstr "Activité globale"
 
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:130
-#, fuzzy
 msgid "my activity"
-msgstr "Activité"
+msgstr "mon flux d'activité"
 
 #: com/bloatit/web/linkable/activity/HtmlActivityBlock.java:136
-#, fuzzy
 msgid "Global Elveos activity"
-msgstr "Aucune activité récente"
+msgstr "Activité globale d'Elveos"
 
 #: com/bloatit/web/linkable/activity/FollowActorAction.java:34
-#, fuzzy
 msgid "You must indicate a actor to follow"
-msgstr "Vous devez indiquer un niveau de gravité du bug"
+msgstr "Vous devez indiquer un acteur à suivre"
 
 #: com/bloatit/web/linkable/activity/FollowFeatureAction.java:34
-#, fuzzy
 msgid "You must indicate a feature to follow"
-msgstr "Vous devez indiquer un niveau de gravité du bug"
+msgstr "Vous devez indiquer une demande à suivre"
 
 #: com/bloatit/web/linkable/activity/FollowFeatureAction.java:46
-#, fuzzy
 msgid "You must indicate a follow comments state"
-msgstr "Vous devez indiquer un état au bug"
+msgstr "Vous devez indiquer un été de suivi des commentaires"
 
 #: com/bloatit/web/linkable/activity/FollowFeatureAction.java:50
-#, fuzzy
 msgid "You must indicate a follow bugs state"
-msgstr "Vous devez indiquer un état au bug"
+msgstr "Vous devez indiquer un état de suivi de bug"
 
 #: com/bloatit/web/linkable/aliases/MembersPageAlias.java:32
-#, fuzzy
 msgid "You have to specify a member name."
-msgstr "Vous devez spécifier un numéro de membre."
+msgstr "Vous devez spécifier un nom de membre."
 
 #: com/bloatit/web/linkable/aliases/MembersPageAlias.java:45
-#, fuzzy, java-format
+#, java-format
 msgid "Member {0} doesn''t exist."
-msgstr "L''entrée de documentation {0} n''existe pas."
+msgstr "Le member {0} n''existe pas."
 
 #: com/bloatit/web/linkable/documentation/DocumentationPage.java:84
 #, java-format
@@ -5445,12 +5414,11 @@ msgstr "Décrivez le logiciel"
 
 #: com/bloatit/web/linkable/softwares/ModifySoftwareAction.java:61
 #: com/bloatit/web/linkable/softwares/CreateSoftwareAction.java:53
-#, fuzzy
 msgid ""
 "Minimum 10 character. You can enter a long description of the project : list "
 "all features, add siteweb links, etc."
 msgstr ""
-"Minimum 10 caractère. Vous pouvez entrer une longue description du projet : "
+"Minimum 10 caractères. Vous pouvez entrer une longue description du projet : "
 "liste des fonctionnalités, liens vers le site, etc."
 
 #: com/bloatit/web/linkable/softwares/ModifySoftwareAction.java:65
@@ -5490,6 +5458,8 @@ msgid ""
 "Optional. The logo must be an image on a usable license, in png with "
 "transparency for the background. The size must be inferior to 64px x 64px."
 msgstr ""
+"Optionel. Le logo doit être une image sous une licence utilisable, en png, "
+"avec un fond transparent. La taille doit être inférieure à 60px x 64px."
 
 #: com/bloatit/web/linkable/softwares/ModifySoftwareAction.java:108
 #: com/bloatit/web/linkable/softwares/ModifySoftwareAction.java:109
@@ -5526,7 +5496,6 @@ msgid "No software"
 msgstr "Aucun logiciel"
 
 #: com/bloatit/web/linkable/softwares/SoftwaresTools.java:99
-#, fuzzy
 msgid "In which software do you want to have this feature."
 msgstr "Sur quel logiciel porte cette demande."
 
@@ -5543,9 +5512,8 @@ msgid "Select a software"
 msgstr "Sélectionnez un logiciel"
 
 #: com/bloatit/web/linkable/softwares/ModifySoftwarePage.java:83
-#, fuzzy
 msgid "Modify a software"
-msgstr "Ajouter un logiciel"
+msgstr "Modifier un logiciel"
 
 #: com/bloatit/web/linkable/softwares/SoftwareListPage.java:92
 #: com/bloatit/web/linkable/master/Footer.java:43
@@ -5576,14 +5544,15 @@ msgid ""
 "Elveos is a crowdfunding website dedicated to the financing of anything "
 "under a free license."
 msgstr ""
+"Elveos est un site de crowndfunding dédié au financement de tout ce qui est "
+"sous licence libre."
 
 #: com/bloatit/web/linkable/master/ElveosPage.java:171
-#, fuzzy
 msgid ""
 "free software, open-source, crowdfunding, crowdsourcing, funding, pledge"
 msgstr ""
-"financemement de logiciel libre, open-source, financement collaboratif, "
-"achat groupé"
+"financemement de logiciel libre, open-source, crowdfunding, financement "
+"collaboratif, achat groupé, pledge"
 
 #: com/bloatit/web/linkable/master/ElveosPage.java:212
 msgid "elveos.org logo"
@@ -5600,9 +5569,8 @@ msgstr ""
 "devez vous relogger."
 
 #: com/bloatit/web/linkable/master/Footer.java:45
-#, fuzzy
 msgid "Global activity"
-msgstr "Activité"
+msgstr "Activité globale"
 
 #: com/bloatit/web/linkable/master/Footer.java:48
 msgid "APIs"
@@ -5691,7 +5659,7 @@ msgstr "Rechercher"
 #: com/bloatit/web/linkable/team/GiveRightAction.java:71
 msgid "You are not allowed to remove people in the team."
 msgstr ""
-"Vous n''avez pas l''autorisation de promouvoir quelqu''un au sein de cette "
+"Vous n'avez pas l'autorisation de promouvoir quelqu''un au sein de cette "
 "équipe."
 
 #: com/bloatit/web/linkable/team/GiveRightAction.java:76
@@ -5814,9 +5782,8 @@ msgstr "Vous avez oublié d'écrire un nom d'équipe"
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:58
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:61
-#, fuzzy
 msgid "Team name"
-msgstr "Nom du membre"
+msgstr "Nom de l'équipe"
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:62
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:66
@@ -5856,17 +5823,16 @@ msgstr ""
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:72
 msgid "Team description"
-msgstr "Description de l''équipe"
+msgstr "Description de l'équipe"
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:78
 msgid "Checking this box will delete team's avatar."
-msgstr "Cocher cette case va supprimer l''avatar de l'équipe."
+msgstr "Cocher cette case va supprimer l'avatar de l'équipe."
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:83
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:83
-#, fuzzy
 msgid "Avatar of your team"
-msgstr "Ne fait pas actuellement partie d'une équipe"
+msgstr "Avatar de votre équipe"
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:98
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:97
@@ -5877,9 +5843,8 @@ msgstr ""
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:99
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:96
-#, fuzzy
 msgid "Team membership"
-msgstr "Adhésion à l'équipe&nbsp;: "
+msgstr "Adhésion à l'équipe"
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:123
 msgid "Team's display updated."
@@ -5891,7 +5856,7 @@ msgstr "Les informations de contact de l'équipe ont été mises à jour."
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:135
 msgid "Team's description changed."
-msgstr "La description de l''équipe a été mise à jour."
+msgstr "La description de l'équipe a été mise à jour."
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:163
 msgid "Team's join right changed."
@@ -5909,12 +5874,12 @@ msgstr "Nom d'équipe déjà utilisé."
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:196
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:197
 msgid "Cannot delete team's display name."
-msgstr "Vous ne pouvez pas supprimer le nom visible d''une équipe."
+msgstr "Vous ne pouvez pas supprimer le nom visible d'une équipe."
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:202
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:203
 msgid "Cannot delete team's description."
-msgstr "Vous ne pouvez supprimer la description de l''équipe."
+msgstr "Vous ne pouvez supprimer la description de l'équipe."
 
 #: com/bloatit/web/linkable/team/JoinTeamAction.java:57
 msgid ""
@@ -5962,7 +5927,7 @@ msgstr "Par invitation"
 
 #: com/bloatit/web/linkable/team/ModifyTeamPage.java:114
 msgid "You must be logged to change team's information"
-msgstr "Vous devez être connecté pour modifier les informations de l''équipe"
+msgstr "Vous devez être connecté pour modifier les informations de l'équipe"
 
 #: com/bloatit/web/linkable/team/ModifyTeamPage.java:119
 msgid "Modify team information"
@@ -5991,9 +5956,8 @@ msgstr ""
 "caractères."
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:69
-#, fuzzy
 msgid "Team contact"
-msgstr "Compte de l'équipe"
+msgstr "Contact de l'équipe"
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:70
 msgid ""
@@ -6026,9 +5990,8 @@ msgid "Description of the team"
 msgstr "Description de l'équipe"
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:78
-#, fuzzy
 msgid "Minimum 5 characters."
-msgstr "7 caractères minimum."
+msgstr "5 caractères minimum."
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:118
 #, java-format
@@ -6092,9 +6055,8 @@ msgid "{0} (<0::see details>)"
 msgstr "{0} (<0::voir les détails>)"
 
 #: com/bloatit/web/linkable/team/TeamPage.java:217
-#, fuzzy
 msgid "Team's recent history: "
-msgstr "Activité récente de l'équipe&nbsp;: "
+msgstr "Historique récent de l'équipe&nbsp;: "
 
 #: com/bloatit/web/linkable/team/TeamPage.java:237
 msgid "Bank informations"
@@ -6246,136 +6208,127 @@ msgstr "Retirer"
 #, java-format
 msgid "Elveos activity – {0} new event"
 msgid_plural "Elveos activity – {0} new events"
-msgstr[0] ""
+msgstr[0] "Activité Elveos – {0} nouvel évenement"
+msgstr[1] "Activité Elveos – {0} nouveaux évenements"
 
 #: com/bloatit/mail/EventFeatureMailComponent.java:89
 #: com/bloatit/mail/EventFeatureMailComponent.java:92
 #: com/bloatit/mail/EventFeatureMailComponent.java:98
 #: com/bloatit/mail/EventFeatureMailComponent.java:102
 msgid "&nbsp;financed"
-msgstr ""
+msgstr "&nbsp;financés"
 
 #: com/bloatit/mail/EventFeatureMailComponent.java:90
 #: com/bloatit/mail/EventFeatureComponent.java:61
-#, fuzzy
 msgid "no offer"
 msgstr "aucune offre"
 
 #: com/bloatit/mail/EventFeatureMailComponent.java:96
-#, fuzzy
 msgid "&nbsp;requested"
-msgstr "Demandée"
+msgstr "&nbsp;demandés"
 
 #: com/bloatit/mail/EventFeatureMailComponent.java:100
-#, fuzzy
 msgid "In&nbsp;development"
-msgstr "En développement"
+msgstr "En&nbsp;développement"
 
 #: com/bloatit/mail/GenericEventVisitor.java:67
 msgid "<0::+feature> created by <1:@thomas:>"
-msgstr ""
+msgstr "<0::+demande> créée par<1:@thomas:>"
 
 #: com/bloatit/mail/GenericEventVisitor.java:72
-#, fuzzy
 msgid "the <0::+feature> is now in development"
-msgstr "Cette demande est actuellement en développement."
+msgstr "la <0::+demande> est en développement"
 
 #: com/bloatit/mail/GenericEventVisitor.java:75
-#, fuzzy
 msgid "the <0::+feature> has been discarded"
-msgstr "La demande a été supprimer avec succés"
+msgstr "la <0::+demande> a été annulée"
 
 #: com/bloatit/mail/GenericEventVisitor.java:78
-#, fuzzy
 msgid "the <0::+feature> is now successful"
-msgstr "La demande a été supprimer avec succés"
+msgstr "la <0::+demande> est en succès"
 
 #: com/bloatit/mail/GenericEventVisitor.java:98
 msgid "critical"
-msgstr ""
+msgstr "critique"
 
 #: com/bloatit/mail/GenericEventVisitor.java:101
 msgid "major"
-msgstr ""
+msgstr "majeur"
 
 #: com/bloatit/mail/GenericEventVisitor.java:104
 msgid "minor"
-msgstr ""
+msgstr "mineur"
 
 #: com/bloatit/mail/GenericEventVisitor.java:107
-#, fuzzy
 msgid "strange"
-msgstr "traduire"
+msgstr "étrange"
 
 #: com/bloatit/mail/GenericEventVisitor.java:110
-#, fuzzy, java-format
+#, java-format
 msgid "new <0::+bug> ({0})"
-msgstr "Bugs ouverts ({0})"
+msgstr "nouveau <0::+bug> ({0})"
 
 #: com/bloatit/mail/GenericEventVisitor.java:118
 msgid "the <0::+bug> level is now to 'critical'"
-msgstr ""
+msgstr "la criticité du <0::+bug> est 'critique'"
 
 #: com/bloatit/mail/GenericEventVisitor.java:121
 msgid "the <0::+bug> level is now to 'major'"
-msgstr ""
+msgstr "la criticité du <0::+bug> est 'majeur'"
 
 #: com/bloatit/mail/GenericEventVisitor.java:124
 msgid "the <0::+bug> level is now 'minor'"
-msgstr ""
+msgstr "la criticité du <0::+bug> est 'mineur'"
 
 #: com/bloatit/mail/GenericEventVisitor.java:127
 msgid "the <0::+bug> is now in a new state"
-msgstr ""
+msgstr "le <0::+bug> est dans un nouvel état"
 
 #: com/bloatit/mail/GenericEventVisitor.java:134
 msgid "the <0::+bug> is now resolved"
-msgstr ""
+msgstr "le <0::+bug> est résolu"
 
 #: com/bloatit/mail/GenericEventVisitor.java:139
 msgid "the <0::+bug> is being developed"
-msgstr ""
+msgstr "le <0::+bug> est en développement"
 
 #: com/bloatit/mail/GenericEventVisitor.java:151
 #: com/bloatit/mail/GenericEventVisitor.java:180
-#, fuzzy
 msgid "1 new comment by "
-msgstr "Nouveau commentaire :"
+msgstr "1 commentaire par "
 
 #: com/bloatit/mail/GenericEventVisitor.java:164
 msgid " financed by "
-msgstr ""
+msgstr " financé par "
 
 #: com/bloatit/mail/GenericEventVisitor.java:193
 msgid "<0::+offer> created by <1:@thomas:>"
-msgstr ""
+msgstr "<0::+offre> créé par <1:@thomas:>"
 
 #: com/bloatit/mail/GenericEventVisitor.java:198
 msgid "the <0::+offer> by <1:@thomas:> has been removed"
-msgstr ""
+msgstr "l'<0::+offre> par <1:@thomas:> a été supprimée"
 
 #: com/bloatit/mail/GenericEventVisitor.java:203
 #: com/bloatit/mail/GenericEventVisitor.java:208
 msgid "the <0::+offer> by <1:@thomas:> is selected"
-msgstr ""
+msgstr "l'<0::+offre> par <1:@thomas:> est sélectionnée"
 
 #: com/bloatit/mail/GenericEventVisitor.java:226
-#, fuzzy, java-format
+#, java-format
 msgid "new <0::+release> ({0})"
-msgstr "Ajouter une <0::livraison>"
+msgstr "nouvelle <0::livraison> ({0})"
 
 #: com/bloatit/mail/EventFeatureComponent.java:60
 #: com/bloatit/mail/EventFeatureComponent.java:63
 #: com/bloatit/mail/EventFeatureComponent.java:70
 #: com/bloatit/mail/EventFeatureComponent.java:73
-#, fuzzy
 msgid "financed"
-msgstr "Annulée"
+msgstr "financés"
 
 #: com/bloatit/mail/EventFeatureComponent.java:68
-#, fuzzy
 msgid "requested"
-msgstr "Demandée"
+msgstr "demandés"
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:160
 msgid "Sorry we messed up and lost the file you uploaded. Please try again."
