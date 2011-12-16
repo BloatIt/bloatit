@@ -9,7 +9,7 @@ import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Feature;
 
-public class MailEventVisitor extends GenericEventVisitor {
+public class MailEventVisitor extends MailTxtEventVisitor {
 
     private final Map<Feature, Entries> features = new HashMap<Feature, Entries>();
     private final Map<Bug, Entries> bugs = new HashMap<Bug, Entries>();
@@ -26,21 +26,21 @@ public class MailEventVisitor extends GenericEventVisitor {
         return bugs;
     }
 
-    public class Entries extends ArrayList<HtmlEntry> {
+    public class Entries extends ArrayList<TxtEntry> {
         private static final long serialVersionUID = 4240985577107981629L;
     }
 
     @Override
-    protected void addFeatureEntry(final Feature f, final HtmlEntry b, final Date date) {
+    protected void addFeatureEntry(final Feature f, final TxtEntry b, final Date date) {
         addEntry(features, f, b);
     }
 
     @Override
-    protected void addBugEntry(final Bug f, final HtmlEntry b, final Date date) {
+    protected void addBugEntry(final Bug f, final TxtEntry b, final Date date) {
         addEntry(bugs, f, b);
     }
 
-    private <T> void addEntry(final Map<T, Entries> m, final T f, final HtmlEntry b) {
+    private <T> void addEntry(final Map<T, Entries> m, final T f, final TxtEntry b) {
         if (m.containsKey(f)) {
             m.get(f).add(b);
         } else {

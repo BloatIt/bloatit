@@ -39,7 +39,7 @@ public class CommentManager {
      * @return the comments
      */
     protected static PageIterable<DaoComment> getComments(final Collection<DaoComment> persistentSetOfComments) {
-        final Query allComments = createFilter(persistentSetOfComments, "");
+        final Query allComments = createFilter(persistentSetOfComments, "ORDER BY creationDate DESC");
         final Query allCommentsSize = createFilter(persistentSetOfComments, "select count(*)");
         return new QueryCollection<DaoComment>(allComments, allCommentsSize);
     }

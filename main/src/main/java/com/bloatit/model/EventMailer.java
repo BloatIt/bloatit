@@ -19,19 +19,10 @@ public final class EventMailer {
     }
 
     public static void start() {
-        // TODO : remove in production !!!
-
-        new RecursiveMailer(11, EmailStrategy.VERY_FREQUENTLY, DateUtils.now());
-        new RecursiveMailer(61, EmailStrategy.HOURLY, DateUtils.now());
-        new RecursiveMailer(120, EmailStrategy.DAILY, DateUtils.now());
-        new RecursiveMailer(200, EmailStrategy.WEEKLY, DateUtils.now());
-
-        /*
-         * new RecursiveMailer(11 * 60, EmailStrategy.VERY_FREQUENTLY); new
-         * RecursiveMailer(61 * 60, EmailStrategy.HOURLY); new
-         * RecursiveMailer(24 * 3601, EmailStrategy.DAILY); new
-         * RecursiveMailer(7 * 24 * 3599, EmailStrategy.WEEKLY);
-         */
+        new RecursiveMailer(11 * 60, EmailStrategy.VERY_FREQUENTLY, DateUtils.now());
+        new RecursiveMailer(61 * 60, EmailStrategy.HOURLY, DateUtils.now());
+        new RecursiveMailer(24 * 3601, EmailStrategy.DAILY, DateUtils.now());
+        new RecursiveMailer(7 * 24 * 3599, EmailStrategy.WEEKLY, DateUtils.now());
     }
 
     public static class EventMailData implements Iterable<Event> {
@@ -89,17 +80,19 @@ public final class EventMailer {
             while (eventList.hasNext()) {
                 eventList.next();
                 if (currentMember != eventList.member()) {
-                    if (data != null) {
+                    if (data != null && data.getTo() != null) {
                         FeedbackServer.getInstance().sendMessage(data);
                     }
                     data = new EventMailData(eventList.member());
                     currentMember = eventList.member();
                 }
-                data.addEvent(eventList.event());
+                if (data != null) {
+                    data.addEvent(eventList.event());
+                }
             }
 
             // Flush
-            if (data != null) {
+            if (data != null && data.getTo() != null) {
                 FeedbackServer.getInstance().sendMessage(data);
             }
 
