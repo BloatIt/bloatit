@@ -69,53 +69,41 @@ import com.bloatit.framework.utils.PageIterable;
                               ),
                               
           @NamedQuery(
-                      name =  "event.byDate.byMember",
-                      query = "SELECT mff.id, e " +
+                      name =  "event.byMember",
+                      query = "SELECT e " +
                               "FROM DaoEvent e " +
                               "JOIN e.feature f " +
                               "LEFT JOIN f.followers mf " +
                               "LEFT JOIN mf.follower mff " +
-                              "WHERE e.creationDate > :date " +
-                              "AND NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
+                              "WHERE NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
                               "AND NOT (mf.bugComment=false AND e.isBugComment=true) " +
                               "AND mff.id = :member "+
                               "ORDER BY mff.id, e.creationDate "
                               ),
           @NamedQuery(
-                      name =  "event.byDate.byMember.size",
+                      name =  "event.byMember.size",
                       query = "SELECT count(*) " +
                               "FROM DaoEvent e " +
                               "JOIN e.feature f " +
                               "LEFT JOIN f.followers mf " +
                               "LEFT JOIN mf.follower mff " +
-                              "WHERE e.creationDate > :date " +
-                              "AND NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
+                              "WHERE NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
                               "AND NOT (mf.bugComment=false AND e.isBugComment=true) " +
                               "AND mff.id = :member "
                               ),
           @NamedQuery(
-                      name =  "event.byDate",
-                      query = "SELECT mff.id, e " +
+                      name =  "event.getall",
+                      query = "SELECT e " +
                               "FROM DaoEvent e " +
                               "JOIN e.feature f " +
-                              "LEFT JOIN f.followers mf " +
-                              "LEFT JOIN mf.follower mff " +
-                              "WHERE e.creationDate > :date " +
-                              "AND NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
-                              "AND NOT (mf.bugComment=false AND e.isBugComment=true) " +
-                              "ORDER BY mff.id, e.creationDate "
+                              "ORDER BY e.creationDate "
                               ),
           @NamedQuery(
-                      name =  "event.byDate.size",
+                      name =  "event.getall.size",
                       query = "SELECT count(*) " +
                               "FROM DaoEvent e " +
-                              "JOIN e.feature f " +
-                              "LEFT JOIN f.followers mf " +
-                              "LEFT JOIN mf.follower mff " +
-                              "WHERE e.creationDate > :date " +
-                              "AND NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
-                              "AND NOT (mf.bugComment=false AND e.isBugComment=true) "
-                              ),
+                              "JOIN e.feature f "
+                      ),
 })
 //@formatter:on
 public class DaoEvent extends DaoIdentifiable {

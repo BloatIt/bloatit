@@ -81,10 +81,8 @@ public class ActivityEventVisitor extends GenericEventVisitor {
 
         @Override
         public int compareTo(final Entries<?> o) {
-            lastDate.compareTo(o.getLastDate());
-            return 0;
+            return lastDate.compareTo(o.getLastDate());
         }
-
     }
 
     public class FeatureEntries extends Entries<Feature> {

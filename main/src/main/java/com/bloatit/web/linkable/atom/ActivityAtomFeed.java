@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -13,6 +14,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
+import com.bloatit.model.Event;
 import com.bloatit.model.Event.BugCommentEvent;
 import com.bloatit.model.Event.BugEvent;
 import com.bloatit.model.Event.ContributionEvent;
@@ -54,18 +56,15 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
     public void generate() {
         boolean first = true;
 
-        final EventList eventList = EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member);
-
-        while (eventList.hasNext()) {
-            eventList.next();
-            addFeedEntry(eventList.event().getEvent().accept(new AtomVisitor()), Position.FIRST);
-
+        PageIterable<Event> allEventByMember = EventManager.getAllEventByMember(member);
+        allEventByMember.setPageSize(100);
+        for (Event event : allEventByMember) {
+            addFeedEntry(event.getEvent().accept(new AtomVisitor()), Position.FIRST);
             if (first) {
-                updateDate = eventList.event().getEvent().getDate();
+                updateDate = event.getEvent().getDate();
                 first = false;
             }
         }
-
     }
 
     @Override

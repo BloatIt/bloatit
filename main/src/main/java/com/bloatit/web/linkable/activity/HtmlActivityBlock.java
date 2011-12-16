@@ -19,6 +19,7 @@ package com.bloatit.web.linkable.activity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -37,6 +38,7 @@ import com.bloatit.mail.ActivityEventVisitor.Entries;
 import com.bloatit.mail.ActivityEventVisitor.FeatureEntries;
 import com.bloatit.mail.EventFeatureComponent;
 import com.bloatit.mail.HtmlEntry;
+import com.bloatit.model.Event;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.EventManager;
@@ -143,10 +145,12 @@ public class HtmlActivityBlock extends HtmlDiv {
             }
         }
 
-        final EventList events = (member == null ? EventManager.getAllEventAfter(DateUtils.dawnOfTime())
-                : EventManager.getAllEventByMemberAfter(DateUtils.dawnOfTime(), member));
+        
+         PageIterable<Event> events = (member == null ? EventManager.getAllEvents()
+                : EventManager.getAllEventByMember(member));
+         events.setPageSize(100);
 
-        if (!events.hasNext()) {
+        if (events.size() == 0) {
             HtmlDiv alt = new HtmlDiv("alt_activity_block");
             alt.add(new HtmlParagraph(Context.tr("Your activity page is empty because you are not following any content yet.")));
             alt.add(new HtmlParagraph().add(new HtmlMixedText(Context.tr("You can look for <0::feature requests you like>, and <1::follow> them !"),
@@ -183,14 +187,12 @@ public class HtmlActivityBlock extends HtmlDiv {
 
                 final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
 
-                while (events.hasNext()) {
-                    events.next();
-                    events.event().getEvent().accept(visitor);
+                for (Event event : events) {
+                    event.getEvent().accept(visitor);
                 }
 
                 fillTimeLine(leftColumn, daysPlaceHolder, rightColumn, visitor, false);
             }
-            events.reset();
 
             final HtmlDiv activityBlockOneColumn = new HtmlDiv("activity-block-one-column");
             add(activityBlockOneColumn);
@@ -215,9 +217,9 @@ public class HtmlActivityBlock extends HtmlDiv {
 
                 final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
 
-                while (events.hasNext()) {
-                    events.next();
-                    events.event().getEvent().accept(visitor);
+                
+                for (Event event : events) {
+                    event.getEvent().accept(visitor);
                 }
 
                 fillTimeLine(null, daysPlaceHolder, rightColumn, visitor, true);

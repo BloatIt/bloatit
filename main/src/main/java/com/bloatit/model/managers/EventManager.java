@@ -25,6 +25,7 @@ import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Event;
 import com.bloatit.model.Member;
+import com.bloatit.model.lists.ListBinder;
 
 public final class EventManager {
 
@@ -40,17 +41,12 @@ public final class EventManager {
         return new EventList(q, -1);
     }
     
-    public static EventList getAllEventAfter(Date date) {
-        QueryCollection<Object[]> q = new QueryCollection<Object[]>("event.byDate");
-        q.setTimestamp("date", date);
-        return new EventList(q, 100);
+    public static PageIterable<Event> getAllEvents() {
+        return new ListBinder<Event, DaoEvent>(new QueryCollection<DaoEvent>("event.getall"));
     }
     
-    public static EventList getAllEventByMemberAfter(Date date, Member member) {
-        QueryCollection<Object[]> q = new QueryCollection<Object[]>("event.byDate.byMember");
-        q.setTimestamp("date", date);
-        q.setEntity("member", member.getDao());
-        return new EventList(q, 100);
+    public static PageIterable<Event> getAllEventByMember(Member member) {
+        return new ListBinder<Event, DaoEvent>(new QueryCollection<DaoEvent>("event.byMember").setEntity("member", member.getDao()));
     }
 
     public static class EventList {
