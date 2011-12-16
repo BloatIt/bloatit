@@ -26,7 +26,7 @@ import com.bloatit.web.url.SoftwarePageUrl;
 
 public class EventFeatureMailComponent extends PlaceHolderElement {
 
-    private HtmlGenericElement bodyContent;
+    private final HtmlGenericElement bodyContent = new HtmlGenericElement("table");
 
     public EventFeatureMailComponent(Feature f, Localizator l) {
 
@@ -46,7 +46,7 @@ public class EventFeatureMailComponent extends PlaceHolderElement {
         super.add(progress);
         {
             progress.addAttribute("style", "margin-top: 15px; border-collapse: collapse; padding: 0px; width: 80%;  max-width: 600px;  height: 5px; border-top: 1px solid rgb(225, 225, 225);border-left: 1px solid rgb(225, 225, 225); background: rgb(237,237,237)");
-            
+
             HtmlBranch progressRow = new HtmlGenericElement("tr");
             progress.add(progressRow);
             {
@@ -54,7 +54,7 @@ public class EventFeatureMailComponent extends PlaceHolderElement {
                 if (f.getFeatureState() == FeatureState.FINISHED) {
                     backgroundColor = "126,200,135";
                 }
-                
+
                 HtmlBranch progressFilled = new HtmlGenericElement("td");
                 progressRow.add(progressFilled);
                 progressFilled.addAttribute("style", "width: " + String.valueOf(progression) + "%; height: 5px;padding-top: 5px; background: rgb("+backgroundColor+");");
@@ -69,9 +69,9 @@ public class EventFeatureMailComponent extends PlaceHolderElement {
         HtmlBranch progressText = new HtmlGenericElement("table");
         super.add(progressText);
         {
-            
+
             String backgroundColor = "237,237,237";
-            
+
             HtmlBranch progressTextRow = new HtmlGenericElement("tr");
             progressText.add(progressTextRow);
             {
@@ -107,10 +107,10 @@ public class EventFeatureMailComponent extends PlaceHolderElement {
                 }
 
             }
-            
-            
+
+
             progressText.addAttribute("style", "width: 80%; max-width: 600px;padding-bottom: 5px; font-size: 0.9em; border-left: 1px solid rgb(225, 225, 225); background: rgb("+backgroundColor+"); color: rgb(89,89,89);");
-            
+
         }
         HtmlBranch body = new HtmlGenericElement("table");
         body.addAttribute("style", "margin-bottom: 15px;width: 80%; max-width: 600px; background: rgb(247,247,247); padding-bottom: 10px; padding-top: 5px;");
@@ -122,10 +122,10 @@ public class EventFeatureMailComponent extends PlaceHolderElement {
                 HtmlBranch bodyLogo = new HtmlGenericElement("td");
                 bodyRow.add(bodyLogo);
                 {
-                    
+
                     bodyLogo.addAttribute("style", "max-width: 40px; width: 40px;  ");
-                    
-                    
+
+
                     if (f.getSoftware() == null || f.getSoftware().getImage() == null) {
                         UrlString urlString = new UrlString(WebConfiguration.getImgSoftwareNoLogo());
 
@@ -146,12 +146,11 @@ public class EventFeatureMailComponent extends PlaceHolderElement {
                 bodyRow.add(bodyContentContainer);
                 {
                     bodyContentContainer.addAttribute("style", "padding-left: 20px;");
-                    
+
                     HtmlLink htmlLink = new FeaturePageUrl(f, FeatureTabKey.description).getHtmlLink(f.getTitle(l.getLocale()));
                     htmlLink.addAttribute("style", "color: rgb(0,82,108); text-decoration: none;");
                     bodyContentContainer.add(htmlLink);
-                    
-                    bodyContent = new HtmlGenericElement("table");
+
                     bodyContentContainer.add(bodyContent);
                     {
 

@@ -4,9 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
-import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
@@ -35,14 +33,6 @@ public class HtmlEntry {
         return div;
     }
     
-    public HtmlElement generateForMail() {
-        HtmlBranch tr = new HtmlGenericElement("tr");
-        tr.add(new HtmlGenericElement("td").add(logo).addAttribute("style", "vertical-align: middle;"));
-        tr.add(new HtmlGenericElement("td").add(content).addAttribute("style", "vertical-align: middle;"));
-        tr.add(new HtmlGenericElement("td").addText(" – "+new SimpleDateFormat("HH:mm").format(when).toString()).addAttribute("style", "vertical-align: middle; color: rgb(150,150,150);"));
-        return tr;
-    }
-
     public Date getDate() {
         return when;
     }

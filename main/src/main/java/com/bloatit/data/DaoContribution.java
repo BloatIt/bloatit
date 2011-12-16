@@ -200,6 +200,7 @@ public class DaoContribution extends DaoUserContent {
         this.percentDone = 0;
         this.alreadyGivenMoney = BigDecimal.ZERO;
         getAuthor().getInternalAccount().block(amount);
+        DaoEvent.createContributionEvent(feature, EventType.ADD_CONTRIBUTION, this);
     }
 
     /**
