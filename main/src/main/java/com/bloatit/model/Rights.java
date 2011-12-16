@@ -215,7 +215,11 @@ public class Rights {
         
         @Override
         public Team visitAbstract(final Bug model) {
-            return model.getAsTeam();
+            if(model.getAsTeam() != null) {
+                return model.getAsTeam();
+            }
+            return model.getFeature().getSelectedOffer().getAsTeam();
+            
         }
         
         @Override
