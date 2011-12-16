@@ -1,6 +1,19 @@
 Changelog
 =========
 
+Version 1.2.0
+--------------
+
+### Features
+ - Add activity system
+ - Improve forms
+
+### Bug fixes
+ - fix chained actions flush bug
+ - fix rights problem on bugs
+ - fix comment order
+ - update translation
+ 
 Version 1.1.27
 --------------
 
