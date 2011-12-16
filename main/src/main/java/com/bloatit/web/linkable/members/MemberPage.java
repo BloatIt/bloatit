@@ -126,7 +126,7 @@ public final class MemberPage extends ElveosPage {
 
         if (myPage) {
             layout.addRight(new SideBarButton(Context.tr("My activity"), activityPageUrl, WebConfiguration.getImgActivitySmall(), false));
-        } else {
+        } else if(member.getFollowedFeatures().size() > 0){
             layout.addRight(new SideBarButton(Context.tr("{0}''s activity", member.getDisplayName()),
                                               activityPageUrl,
                                               WebConfiguration.getImgActivitySmall(),
