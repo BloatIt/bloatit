@@ -16,8 +16,6 @@
 //
 package com.bloatit.framework.webprocessor.components.renderer;
 
-import org.springframework.web.util.HtmlUtils;
-
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
 import com.github.rjeschke.txtmark.Processor;
@@ -38,8 +36,12 @@ public class HtmlMarkdownRenderer extends HtmlDiv {
      *            if <code>alreadyRenderer</code> is <code>false</code>
      */
     public HtmlMarkdownRenderer(final String text) {
+        this(text, true);
+    }
+
+    public HtmlMarkdownRenderer(final String text, boolean safeMode) {
         super("markdown_block");
-        renderered = Processor.process(HtmlUtils.htmlEscape(text));
+        renderered = Processor.process(text, safeMode);
         add(new HtmlNonEscapedText(renderered));
     }
 

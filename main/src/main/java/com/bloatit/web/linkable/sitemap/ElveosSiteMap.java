@@ -102,7 +102,7 @@ public class ElveosSiteMap extends SiteMap {
         }
 
         // Tools
-        addSiteMapEntry(new SiteMapEntry(new LoginPageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));
+        addSiteMapEntry(new SiteMapEntry(new LoginPageUrl(new IndexPageUrl().urlString()), ChangeFrequency.WEEKLY, null, 0.4f));
         addSiteMapEntry(new SiteMapEntry(new SignUpPageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));
         addSiteMapEntry(new SiteMapEntry(new LostPasswordPageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));
         addSiteMapEntry(new SiteMapEntry(new ChangeLanguagePageUrl(), ChangeFrequency.WEEKLY, null, 0.4f));

@@ -53,9 +53,11 @@ public abstract class ElveosPage extends Page {
     private final HtmlDiv notificationBlock;
     private final Session session;
     private final Localizator localizator;
+    private final Url myurl;
 
     public ElveosPage(final Url url) {
         super(url);
+        this.myurl = url;
         notifications = null;
         notificationBlock = new HtmlDiv("notifications");
         session = Context.getSession();
@@ -125,7 +127,7 @@ public abstract class ElveosPage extends Page {
         if (AuthToken.isAuthenticated()) {
             headerContent.add(new SessionBar(AuthToken.getMember()));
         } else {
-            headerContent.add(new SessionBar());
+            headerContent.add(new SessionBar(myurl));
         }
         headerContent.add(generateLogo());
 
@@ -196,7 +198,7 @@ public abstract class ElveosPage extends Page {
      * class feeling the need to have special robot mechanism should overload
      * this function and return a set with various robots parameters.
      * </p>
-     * 
+     *
      * @see Robot
      */
     @Override

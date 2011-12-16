@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
@@ -37,10 +38,10 @@ public class SessionBar extends HtmlDiv {
 
     private static String SESSION_BAR_COMPONENT_CSS_CLASS = "session_bar_component";
 
-    protected SessionBar() {
+    protected SessionBar(Url url) {
         super();
         setId("session_bar");
-        final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.trc("Login (verb)", "Login"));
+        final HtmlLink loginLink = new LoginPageUrl(url.urlString()).getHtmlLink(Context.trc("Login (verb)", "Login"));
         final HtmlLink signupLink = new SignUpPageUrl().getHtmlLink(Context.trc("Sign up (verb)", "Sign up"));
         final HtmlLink changeLanguageLink = new ChangeLanguagePageUrl().getHtmlLink(Context.getLocalizator().getLanguageCode());
         add(new HtmlSpan().setCssClass("small_session_bar_component").add(changeLanguageLink));

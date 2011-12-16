@@ -43,11 +43,14 @@ import com.bloatit.web.url.LoginPageUrl;
 @ParamContainer("AdminAction")
 public abstract class AdminAction extends LoggedElveosAction {
 
+    private final AdminActionUrl url;
+
     /**
      * @param url
      */
     public AdminAction(final AdminActionUrl url) {
         super(url);
+        this.url = url;
         SessionManager.getSessionFactory().getCurrentSession().disableFilter("usercontent.nonDeleted");
     }
 
@@ -55,7 +58,7 @@ public abstract class AdminAction extends LoggedElveosAction {
     public final Url doProcessRestricted(final Member me) {
         if (!me.getRights().hasAdminUserPrivilege()) {
             session.notifyError(getRefusalReason());
-            return new LoginPageUrl();
+            return new LoginPageUrl(url.urlString());
         }
         try {
             return doProcessAdmin();
@@ -78,7 +81,7 @@ public abstract class AdminAction extends LoggedElveosAction {
      * This is the place where extending classes should implement their standard
      * behavior
      * </p>
-     * 
+     *
      * @return the destination Url
      */
     protected abstract Url doProcessAdmin() throws UnauthorizedOperationException;

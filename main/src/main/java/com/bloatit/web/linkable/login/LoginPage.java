@@ -33,6 +33,7 @@ import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
@@ -44,6 +45,9 @@ public final class LoginPage extends ElveosPage {
     private final LoginPageUrl url;
 
     @RequestParam
+    private final String returnUrl;
+
+    @RequestParam
     @Optional
     private final Boolean invoice;
 
@@ -51,6 +55,7 @@ public final class LoginPage extends ElveosPage {
         super(url);
         this.url = url;
         this.invoice = url.getInvoice();
+        this.returnUrl = url.getReturnUrl();
     }
 
     @Override
@@ -67,7 +72,7 @@ public final class LoginPage extends ElveosPage {
         final HtmlDiv master = new HtmlDiv();
         {
             final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
-            final LoginActionUrl targetUrl = new LoginActionUrl();
+            final LoginActionUrl targetUrl = new LoginActionUrl(returnUrl);
             final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
             final FormBuilder ftool = new FormBuilder(LoginAction.class, targetUrl);
             loginTitle.add(form);
@@ -114,7 +119,7 @@ public final class LoginPage extends ElveosPage {
 
     protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
-        breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(trc("Login (verb)", "Login")));
+        breadcrumb.pushLink(new LoginPageUrl(new IndexPageUrl().urlString()).getHtmlLink(trc("Login (verb)", "Login")));
         return breadcrumb;
     }
 }

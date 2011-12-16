@@ -1,4 +1,3 @@
-
 Accueil de la documentation
 ===========================
 
@@ -8,30 +7,30 @@ Table des matières
 ------------------
 
 - Général
-  - [Présentation d'Elveos](/fr/documentation/presentation)
-  - [Vision, ouverture et éthique](/fr/documentation/ethics)
-  - [Nos Conditions Générales](/fr/documentation/cgu)
-  - [FAQ](/fr/documentation/faq)
-  - [Nous contacter](/fr/documentation/contacts)
- <!-- - [Glossaire](/fr/documentation/glossary)-->
+    * [Présentation d'Elveos](/fr/documentation/presentation)
+    * [Vision, ouverture et éthique](/fr/documentation/ethics)
+    * [Nos Conditions Générales](/fr/documentation/cgu)
+    * [FAQ](/fr/documentation/faq)
+    * [Nous contacter](/fr/documentation/contacts)
+     <!-- - [Glossaire](/fr/documentation/glossary)-->
 
 - Fonctionnement détaillé d'elveos
-  - [Cycle de vie d'une demande](/fr/documentation/feature_lifecycle)
-  - [Les offres](/fr/documentation/offer_presentation)
-  - [Réputation et popularité](/fr/documentation/reputation_popularity)
-  - [Équipes et délégation](/fr/documentation/team_presentation)
-  - [Brainstorms](/fr/documentation/brainstorm)
+    - [Cycle de vie d'une demande](/fr/documentation/feature_lifecycle)
+    - [Les offres](/fr/documentation/offer_presentation)
+    - [Réputation et popularité](/fr/documentation/reputation_popularity)
+    - [Équipes et délégation](/fr/documentation/team_presentation)
+    - [Brainstorms](/fr/documentation/brainstorm)
 
 - Informations techniques
-  - [API](/fr/documentation/api)
-  - [Architecture système](/fr/documentation/architecture)
-  - [Bloatit, le moteur d'elveos](/fr/documentation/bloatit)
-  - [Licence du site et du contenu](/fr/documentation/licenses)
-  - [Contribuer](/fr/documentation/contribute)
-  - [Changelog](/fr/documentation/changelog)
+    - [API](/fr/documentation/api)
+    - [Architecture système](/fr/documentation/architecture)
+    - [Bloatit, le moteur d'elveos](/fr/documentation/bloatit)
+    - [Licence du site et du contenu](/fr/documentation/licenses)
+    - [Contribuer](/fr/documentation/contribute)
+    - [Changelog](/fr/documentation/changelog)
 
 - À propos de nous
-  - [L'entreprise Linkeos](/fr/documentation/linkeos)
-  - [L'équipe d'Elveos](/fr/documentation/elveos_team)
-  - [Informations financières](/fr/documentation/financial)
+    - [L'entreprise Linkeos](/fr/documentation/linkeos)
+    - [L'équipe d'Elveos](/fr/documentation/elveos_team)
+    - [Informations financières](/fr/documentation/financial)
 

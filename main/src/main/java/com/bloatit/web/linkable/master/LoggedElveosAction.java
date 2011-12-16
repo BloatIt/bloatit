@@ -77,7 +77,7 @@ public abstract class LoggedElveosAction extends ElveosAction {
         }
         session.setTargetPage(meUrl);
         transmitParameters();
-        final LoginPageUrl loginPageUrl = new LoginPageUrl();
+        final LoginPageUrl loginPageUrl = new LoginPageUrl(meUrl.urlString());
         loginPageUrl.setInvoice(isNeedInvoice());
         return loginPageUrl;
     }
@@ -100,7 +100,7 @@ public abstract class LoggedElveosAction extends ElveosAction {
     /**
      * Called before creating the page, used to check if there are additional
      * errors that can't be spotted by Url.
-     * 
+     *
      * @param me the logged member
      * @return {@value Action#NO_ERROR} if there is no error, an Url to the page
      *         to handle errors otherwise
@@ -109,7 +109,7 @@ public abstract class LoggedElveosAction extends ElveosAction {
 
     /**
      * Called when user is correctly authentified
-     * 
+     *
      * @param me the currently logged user
      * @throws UnauthorizedOperationException
      */
@@ -123,7 +123,7 @@ public abstract class LoggedElveosAction extends ElveosAction {
 
     /**
      * <b>Do not forget to localize</p>
-     * 
+     *
      * @return the error message to dislay to the user, informing him while he
      *         couldn't access the page
      */

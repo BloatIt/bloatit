@@ -23,6 +23,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;
@@ -51,11 +52,15 @@ public final class LoginAction extends ElveosAction {
     private final String password;
     private final LoginActionUrl url;
 
+    @RequestParam
+    private final String returnUrl;
+
     public LoginAction(final LoginActionUrl url) {
         super(url);
         this.url = url;
         this.login = url.getLogin();
         this.password = url.getPassword();
+        this.returnUrl = url.getReturnUrl();
     }
 
     @Override
@@ -64,7 +69,7 @@ public final class LoginAction extends ElveosAction {
             AuthToken.authenticate(login, password);
             session.notifyGood(Context.tr("Login success."));
             Context.getLocalizator().forceLanguage(Context.getSession().getMemberLocale());
-            return session.pickPreferredPage();
+            return new UrlString(returnUrl);
         } catch (final ElementNotFoundException e) {
 
             // We check if member is non existing or not validated
@@ -72,7 +77,7 @@ public final class LoginAction extends ElveosAction {
             if (m != null && m.getActivationState() == ActivationState.VALIDATING) {
                 session.notifyWarning(Context.tr("Your account has not been validated yet. Please check your emails."));
                 transmitParameters();
-                return new LoginPageUrl();
+                return new LoginPageUrl(url.urlString());
             }
 
             AuthToken.unAuthenticate();
@@ -83,14 +88,14 @@ public final class LoginAction extends ElveosAction {
             url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
             url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));
             transmitParameters();
-            return new LoginPageUrl();
+            return new LoginPageUrl(url.urlString());
         }
 
     }
 
     @Override
     protected Url doProcessErrors() {
-        return new LoginPageUrl();
+        return new LoginPageUrl(url.urlString());
     }
 
     @Override

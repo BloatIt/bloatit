@@ -31,8 +31,11 @@ import com.bloatit.web.url.LoginPageUrl;
 
 public abstract class AdminPage extends LoggedElveosPage {
 
+    private final Url url2;
+
     public AdminPage(final Url url) {
         super(url);
+        url2 = url;
         SessionManager.getSessionFactory().getCurrentSession().disableFilter("usercontent.nonDeleted");
     }
 
@@ -46,7 +49,7 @@ public abstract class AdminPage extends LoggedElveosPage {
                 throw new ShallNotPassException("Admin content got a UnauthorizedOperationException", e);
             }
         }
-        throw new RedirectException(new LoginPageUrl());
+        throw new RedirectException(new LoginPageUrl(url2.urlString()));
     }
 
     @Override

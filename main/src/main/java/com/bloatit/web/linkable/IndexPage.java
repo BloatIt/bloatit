@@ -281,7 +281,7 @@ public final class IndexPage extends ElveosPage {
         final HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
         parent.add(summaryBox);
 
-        final int featureNb = FeatureManager.getFeatureCount();
+        final Long featureNb = FeatureManager.getFeatureCount();
         // Feature count
         final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Feature request, ",
                                                                                        "{0}&nbsp;Features requests, ",
@@ -301,7 +301,7 @@ public final class IndexPage extends ElveosPage {
         summaryBox.add(contributionRaised);
 
         // Count of offers
-        final int offerNb = OfferManager.getOfferCount();
+        final Long offerNb = OfferManager.getOfferCount();
         final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Development&nbsp;offer, ",
                                                                                      "{0}&nbsp;Development&nbsp;offers, ",
                                                                                      offerNb,
@@ -309,7 +309,7 @@ public final class IndexPage extends ElveosPage {
         summaryBox.add(offerCount);
 
         // Count of releases
-        final int releaseNb = ReleaseManager.getReleaseCount();
+        final Long releaseNb = ReleaseManager.getReleaseCount();
         final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.trn("{0}&nbsp;Release", "{0}&nbsp;Releases", releaseNb, releaseNb));
         summaryBox.add(releaseCount);
     }

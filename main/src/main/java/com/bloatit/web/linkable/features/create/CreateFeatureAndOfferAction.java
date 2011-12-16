@@ -60,7 +60,7 @@ public final class CreateFeatureAndOfferAction extends UserContentAction {
     @NonOptional(@tr("You forgot to write a title"))
     @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
-    @FormField(label = @tr("Title"), isShort = false)
+    @FormField(label = @tr("Title"), isShort = false, autocomplete = false)
     @FormComment(@tr("The feature title should clearly show the feature specificities"))
     private final String description;
 

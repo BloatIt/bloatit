@@ -191,7 +191,11 @@ public class FormBuilder {
         form.add(b);
         if (data.getSessionParam() != null) {
             b.addErrorMessages(data.getSessionParam().getMessages());
-            b.setDefaultValue(data.getSessionParam().getSuggestedValue());
+            String suggestedValue = data.getSessionParam().getSuggestedValue();
+            b.setDefaultValue(suggestedValue);
+            if (suggestedValue == null) {
+                b.setDefaultValue(data.getTargetParameter().getSuggestedValue());
+            }
         } else {
             b.setDefaultValue(data.getTargetParameter().getSuggestedValue());
         }
@@ -201,6 +205,9 @@ public class FormBuilder {
         }
         if (!data.isOptional()) {
             b.setRequired();
+        }
+        if (!data.isAutocomplete()) {
+            b.addAttribute("autocomplete", "off");
         }
 
         // @formatter:off

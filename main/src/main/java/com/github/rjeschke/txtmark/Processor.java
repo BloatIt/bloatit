@@ -15,16 +15,16 @@ import java.io.StringReader;
 
 /**
  * Markdown processor class.
- * 
+ *
  * <p>
  * Example usage:
  * </p>
- * 
+ *
  * <pre>
  * <code>String result = Processor.process("This is ***TXTMARK***");
  * </code>
  * </pre>
- * 
+ *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 public class Processor
@@ -34,11 +34,11 @@ public class Processor
     /** The emitter. */
     private final Emitter emitter;
     /** Extension flag. */
-    private boolean useExtensions = false;
+    private boolean useExtensions = true;
 
     /**
      * Constructor.
-     * 
+     *
      * @param reader
      *            The input reader.
      */
@@ -51,7 +51,7 @@ public class Processor
 
     /**
      * Transforms an input String into XHTML using the default Decorator.
-     * 
+     *
      * @param input
      *            The String to process.
      * @return The processed String.
@@ -71,7 +71,7 @@ public class Processor
 
     /**
      * Transforms an input String into XHTML using the default Decorator.
-     * 
+     *
      * @param input
      *            The String to process.
      * @param safeMode
@@ -93,7 +93,7 @@ public class Processor
 
     /**
      * Transforms an input String into XHTML.
-     * 
+     *
      * @param input
      *            The String to process.
      * @param decorator
@@ -115,7 +115,7 @@ public class Processor
 
     /**
      * Transforms an input String into XHTML.
-     * 
+     *
      * @param input
      *            The String to process.
      * @param decorator
@@ -141,7 +141,7 @@ public class Processor
     /**
      * Transforms an input file into XHTML using UTF-8 encoding and the default
      * Decorator.
-     * 
+     *
      * @param file
      *            The File to process.
      * @return The processed String.
@@ -156,7 +156,7 @@ public class Processor
     /**
      * Transforms an input file into XHTML using UTF-8 encoding and the default
      * Decorator.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param safeMode
@@ -173,7 +173,7 @@ public class Processor
 
     /**
      * Transforms an input file into XHTML using UTF-8 encoding.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param decorator
@@ -190,7 +190,7 @@ public class Processor
 
     /**
      * Transforms an input file into XHTML using UTF-8 encoding.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param decorator
@@ -209,7 +209,7 @@ public class Processor
 
     /**
      * Transforms an input file into XHTML using the default Decorator.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param encoding
@@ -226,7 +226,7 @@ public class Processor
 
     /**
      * Transforms an input file into XHTML using the default Decorator.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param encoding
@@ -245,7 +245,7 @@ public class Processor
 
     /**
      * Transforms an input file into XHTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param encoding
@@ -267,7 +267,7 @@ public class Processor
 
     /**
      * Transforms an input file into XHTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param encoding
@@ -293,7 +293,7 @@ public class Processor
     /**
      * Transforms an input stream into XHTML using UTF-8 encoding using the
      * default Decorator.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @return The processed String.
@@ -308,7 +308,7 @@ public class Processor
     /**
      * Transforms an input stream into XHTML using UTF-8 encoding using the
      * default Decorator.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param safeMode
@@ -325,7 +325,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML using UTF-8 encoding.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param decorator
@@ -342,7 +342,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML using UTF-8 encoding.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param decorator
@@ -362,7 +362,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML using the default Decorator.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param encoding
@@ -382,7 +382,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML using the default Decorator.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param encoding
@@ -404,7 +404,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param encoding
@@ -426,7 +426,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param encoding
@@ -450,7 +450,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML using the default Decorator.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @return The processed String.
@@ -467,7 +467,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML using the default Decorator.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @param safeMode
@@ -487,7 +487,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @param decorator
@@ -507,7 +507,7 @@ public class Processor
 
     /**
      * Transforms an input stream into XHTML.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @param decorator
@@ -533,7 +533,7 @@ public class Processor
      * <p>
      * Takes care of markdown link references.
      * </p>
-     * 
+     *
      * @return A Block containing all lines.
      * @throws IOException
      *             If an IO error occurred.
@@ -698,7 +698,7 @@ public class Processor
 
     /**
      * Initializes a list block by separating it into list item blocks.
-     * 
+     *
      * @param root
      *            The Block to process.
      */
@@ -721,7 +721,7 @@ public class Processor
 
     /**
      * Recursively process the given Block.
-     * 
+     *
      * @param root
      *            The Block to process.
      * @param listMode
@@ -890,7 +890,7 @@ public class Processor
 
     /**
      * Does all the processing.
-     * 
+     *
      * @return The processed String.
      * @throws IOException
      *             If an IO error occurred.

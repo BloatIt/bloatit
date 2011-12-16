@@ -33,6 +33,7 @@ import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.DocumentationRootPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
+import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
@@ -83,7 +84,7 @@ public final class SiteMapPage extends ElveosPage {
         final HtmlList usefulLinkList = new HtmlList();
         layout.addLeft(usefulLinkList);
 
-        usefulLinkList.add(new LoginPageUrl().getHtmlLink(Context.tr("Login")));
+        usefulLinkList.add(new LoginPageUrl(new IndexPageUrl().urlString()).getHtmlLink(Context.tr("Login")));
         usefulLinkList.add(new SignUpPageUrl().getHtmlLink(Context.tr("Sign up ")));
         usefulLinkList.add(new LostPasswordPageUrl().getHtmlLink(Context.tr("Password recovery")));
         usefulLinkList.add(new SiteMapPageUrl().getHtmlLink(Context.tr("Site map")));

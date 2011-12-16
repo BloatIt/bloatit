@@ -118,11 +118,8 @@ public final class CreateFeaturePage extends CreateUserContentPage {
                 "Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
                 );
         //@formatter:on
-        final String svalue = targetUrl.getSpecificationParameter().getSuggestedValue();
         HtmlFormField specifInput = formBuilder.add(form, new MarkdownEditor(targetUrl.getSpecificationParameter().getName(), 10, 80));
-        if (svalue == null || svalue.isEmpty()) {
-            specifInput.setDefaultValue(suggestedValue);
-        }
+        formBuilder.setDefaultValueIfNeeded(specifInput, suggestedValue);
 
         // Submit button
         form.addSubmit(new HtmlSubmit(tr("submit")));

@@ -144,11 +144,8 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
                 "Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
                 );
         //@formatter:on
-        final String svalue = targetUrl.getSpecificationParameter().getSuggestedValue();
         HtmlFormField specifInput = ftool.add(form, new MarkdownEditor(targetUrl.getSpecificationParameter().getName(), 10, 80));
-        if (svalue == null || svalue.isEmpty()) {
-            specifInput.setDefaultValue(suggestedValue);
-        }
+        ftool.setDefaultValueIfNeeded(specifInput, suggestedValue);
 
         // Price field
         ftool.add(form, new HtmlMoneyField(targetUrl.getPriceParameter().getName()));

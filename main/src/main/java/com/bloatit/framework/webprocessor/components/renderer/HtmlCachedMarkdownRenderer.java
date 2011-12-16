@@ -16,8 +16,6 @@
 //
 package com.bloatit.framework.webprocessor.components.renderer;
 
-import org.springframework.web.util.HtmlUtils;
-
 import com.bloatit.framework.utils.cache.MemoryCache;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
@@ -34,11 +32,9 @@ public class HtmlCachedMarkdownRenderer extends HtmlDiv {
     public HtmlCachedMarkdownRenderer(String text) {
         super("markdown_block");
 
-        text = HtmlUtils.htmlEscape(text);
-
         final String cached = MemoryCache.getInstance().get(text);
         if (cached == null) {
-            final String renderered = Processor.process(text);
+            final String renderered = Processor.process(text, true);
             MemoryCache.getInstance().cache(text, renderered);
             add(new HtmlNonEscapedText(renderered));
         } else {
