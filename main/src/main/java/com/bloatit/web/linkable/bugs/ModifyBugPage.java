@@ -84,23 +84,25 @@ public final class ModifyBugPage extends LoggedElveosPage {
 
         // Level
         final HtmlDropDown levelInput = new HtmlDropDown(targetUrl.getLevelParameter().getName());
+        levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
         ftool.add(form, levelInput);
         if (!ftool.suggestedValueChanged(levelInput)) {
             levelInput.setDefaultValue(BindedLevel.getBindedLevel(bug.getErrorLevel()).getLevel().toString());
         }
         levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel())
                                                                                                        .getDisplayName()));
-        levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
+        
 
         // State
         final HtmlDropDown stateInput = new HtmlDropDown(targetUrl.getStateParameter().getName());
+        stateInput.addDropDownElements(EnumSet.allOf(BindedState.class));
         ftool.add(form, stateInput);
         if (!ftool.suggestedValueChanged(stateInput)) {
             stateInput.setDefaultValue(BindedState.getBindedState(bug.getState()).getState().toString());
         }
         stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState())
                                                                                                        .getDisplayName()));
-        stateInput.addDropDownElements(EnumSet.allOf(BindedState.class));
+        
 
         // Create the fields that will describe the reason of bug change
         ftool.add(form, new HtmlTextArea(targetUrl.getReasonParameter().getName(),

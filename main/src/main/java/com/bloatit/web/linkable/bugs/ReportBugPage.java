@@ -122,8 +122,9 @@ public final class ReportBugPage extends CreateUserContentPage {
 
         // Level
         final HtmlDropDown levelInput = new HtmlDropDown(targetUrl.getLevelParameter().getName());
-        ftool.add(form, levelInput);
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
+        ftool.add(form, levelInput);
+        
 
         // Attachment
         final AttachmentField attachment = new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio");

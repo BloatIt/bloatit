@@ -212,7 +212,12 @@ public class Rights {
         public Team visitAbstract(final UserContentInterface model) {
             return model.getAsTeam();
         }
-
+        
+        @Override
+        public Team visitAbstract(final Bug model) {
+            return model.getAsTeam();
+        }
+        
         @Override
         public Team visitAbstract(final BankTransaction model) {
             return visitAbstract(model.getAuthorUnprotected());
@@ -335,6 +340,15 @@ public class Rights {
         public Boolean visitAbstract(final UserContentInterface model) {
             return visitAbstract(model.getAuthor());
         }
+        
+        @Override
+        public Boolean visitAbstract(final Bug model) {
+            if(visitAbstract(model.getAuthor())) {
+                return true;
+            }
+            
+            return visit(model.getFeature().getSelectedOffer());
+        }
 
         @Override
         public Boolean visitAbstract(final BankTransaction model) {
@@ -447,6 +461,15 @@ public class Rights {
         @Override
         public Boolean visitAbstract(final UserContentInterface model) {
             return model.getAuthor().equals(member);
+        }
+        
+        @Override
+        public Boolean visitAbstract(final Bug model) {
+            if(model.getAuthor().equals(member)) {
+                return true;
+            }
+            
+            return visit(model.getFeature().getSelectedOffer());
         }
 
         @Override
