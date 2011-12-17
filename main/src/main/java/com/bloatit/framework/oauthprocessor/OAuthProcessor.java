@@ -13,52 +13,57 @@ import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 public class OAuthProcessor implements XcgiProcessor {
 
-    public static final String GET_AUTHTOKEN_PAGE_NAME = "get_authtoken";
-    public static final String DENY_AUTHORIZATION_PAGE_NAME = "deny_authorization";
-    public static final String GET_AUTHORIZATION_PAGE_NAME = "get_authorization";
-    public static final String PASSWORD_CODE = "password";
-    public static final String LOGIN_CODE = "login";
-    public static final String OAUTH_GET_CREDENTIAL_PAGENAME = "oauth_credential";
+	public static final String GET_AUTHTOKEN_PAGE_NAME = "get_authtoken";
+	public static final String DENY_AUTHORIZATION_PAGE_NAME = "deny_authorization";
+	public static final String GET_AUTHORIZATION_PAGE_NAME = "get_authorization";
+	public static final String PASSWORD_CODE = "password";
+	public static final String LOGIN_CODE = "login";
+	public static final String OAUTH_GET_CREDENTIAL_PAGENAME = "oauth_credential";
 
-    private final OAuthGetAuthorization authGetAuthorization;
-    private final OAuthGetToken authGetToken;
+	private final OAuthGetAuthorization authGetAuthorization;
+	private final OAuthGetToken authGetToken;
 
-    public OAuthProcessor(final OAuthAuthenticator authenticator) {
-        super();
-        this.authGetAuthorization = new OAuthGetAuthorization(authenticator);
-        this.authGetToken = new OAuthGetToken(authenticator);
-    }
+	public OAuthProcessor(final OAuthAuthenticator authenticator) {
+		super();
+		this.authGetAuthorization = new OAuthGetAuthorization(authenticator);
+		this.authGetToken = new OAuthGetToken(authenticator);
+	}
 
-    @Override
-    public boolean initialize() {
-        return true;
-    }
+	@Override
+	public boolean initialize() {
+		return true;
+	}
 
-    @Override
-    public boolean process(final RequestKey key, final HttpHeader header, final HttpPost postData, final HttpResponse response) throws IOException {
+	@Override
+	public boolean process(final RequestKey key, final HttpHeader header,
+			final HttpPost postData, final HttpResponse response)
+			throws IOException {
 
-        // TODO verify httpS
+		// TODO verify httpS
 
-        final Parameters parameters = new Parameters();
-        parameters.putAll(header.getGetParameters());
-        parameters.putAll(postData.getParameters());
+		final Parameters parameters = new Parameters();
+		parameters.putAll(header.getGetParameters());
+		parameters.putAll(postData.getParameters());
 
-        ModelAccessor.open();
+		try {
+			ModelAccessor.open();
+			final HttpBloatitRequest request = new HttpBloatitRequest(header,
+					parameters);
 
-        final HttpBloatitRequest request = new HttpBloatitRequest(header, parameters);
+			if (header.getPageName().equals(GET_AUTHORIZATION_PAGE_NAME)) {
+				authGetAuthorization.process(request, response);
+			} else if (header.getPageName()
+					.equals(DENY_AUTHORIZATION_PAGE_NAME)) {
+				new OAuthDenyAuthorization().process(request, response);
+			} else if (header.getPageName().equals(GET_AUTHTOKEN_PAGE_NAME)) {
+				authGetToken.process(request, response);
+			} else {
+				return false;
+			}
+			return true;
 
-        if (header.getPageName().equals(GET_AUTHORIZATION_PAGE_NAME)) {
-            authGetAuthorization.process(request, response);
-        } else if (header.getPageName().equals(DENY_AUTHORIZATION_PAGE_NAME)) {
-            new OAuthDenyAuthorization().process(request, response);
-        } else if (header.getPageName().equals(GET_AUTHTOKEN_PAGE_NAME)) {
-            authGetToken.process(request, response);
-        } else {
-            return false;
-        }
-
-        ModelAccessor.close();
-
-        return true;
-    }
+		} finally {
+			ModelAccessor.close();
+		}
+	}
 }
