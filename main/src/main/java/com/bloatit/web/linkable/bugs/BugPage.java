@@ -94,7 +94,7 @@ public final class BugPage extends ElveosPage {
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
         bugListDiv.add(new HtmlParagraph(featurePageUrl.getHtmlLink(tr("Return to bugs list"))));
 
-        if (bug.canAccessErrorLevel(Action.WRITE) && bug.canAccessStatus(Action.WRITE)) {
+        if (bug.canModify()) {
             bugListDiv.add(new HtmlParagraph(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties"))));
         }
 

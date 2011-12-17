@@ -107,33 +107,33 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
      * Sets the error level.
      * 
      * @param level the new error level
-     * @throws UnauthorizedPublicAccessException
+     * @throws UnauthorizedOperationException 
      * @see com.bloatit.data.DaoBug#setErrorLevel(com.bloatit.data.DaoBug.Level)
      */
-    public void setErrorLevel(final Level level) throws UnauthorizedPublicAccessException {
-        tryAccess(new RgtBug.ErrorLevel(), Action.WRITE);
+    public void setErrorLevel(final Level level) throws UnauthorizedOperationException {
+    	tryModify();
         getDao().setErrorLevel(level);
     }
 
     /**
      * Sets the bug to resolved.
+     * @throws UnauthorizedOperationException 
      * 
-     * @throws UnauthorizedPublicAccessException
      * @see com.bloatit.data.DaoBug#setResolved()
      */
-    public void setResolved() throws UnauthorizedPublicAccessException {
-        tryAccess(new RgtBug.Status(), Action.WRITE);
+    public void setResolved() throws UnauthorizedOperationException {
+        tryModify();
         getDao().setResolved();
     }
 
     /**
      * Sets the bug to developing.
+     * @throws UnauthorizedOperationException 
      * 
-     * @throws UnauthorizedPublicAccessException
      * @see com.bloatit.data.DaoBug#setDeveloping()
      */
-    public void setDeveloping() throws UnauthorizedPublicAccessException {
-        tryAccess(new RgtBug.Status(), Action.WRITE);
+    public void setDeveloping() throws UnauthorizedOperationException {
+    	tryModify();
         getDao().setDeveloping();
     }
 
@@ -281,6 +281,13 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     // Can ...
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    private final void tryModify() throws UnauthorizedOperationException {
+    	if(canModify()) {
+    		return;
+    	}
+    	throw new UnauthorizedOperationException(Action.WRITE);
+    }
+    
     /**
      * Tells if the authenticated user can access the <i>ErrorLevel</i>
      * property.
@@ -289,10 +296,8 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
      *            property.
      * @return true if you can access the <i>ErrorLevel</i> property.
      */
-    public final boolean canAccessErrorLevel(final Action action) {
-        if(action == Action.READ) {
-            return true;
-        } else if(!AuthToken.isAuthenticated()) {
+    public final boolean canModify() {
+        if(!AuthToken.isAuthenticated()) {
             return false;
         } else if(this.getAuthor().equals(AuthToken.getMember())) {
             return true;
@@ -305,29 +310,7 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
         }
         return false;
     }
-
-    /**
-     * Tells if the authenticated user can access the <i>Status</i> property.
-     * 
-     * @param action the type of access you want to do on the <i>Status</i>
-     *            property.
-     * @return true if you can access the <i>Status</i> property.
-     */
-    public final boolean canAccessStatus(final Action action) {
-        if(action == Action.READ) {
-            return true;
-        } else if(this.getAuthor().equals(AuthToken.getMember())) {
-            return true;
-        } else if(this.getFeature().getSelectedOffer().getAuthor().equals(AuthToken.getMember())) {
-            return true;
-        } else if(this.getAsTeam() != null && this.getAsTeam().getUserTeamRight(AuthToken.getMember()).contains(UserTeamRight.TALK)) {
-            return true;
-        } else if(this.getFeature().getSelectedOffer().getAsTeam() != null && this.getFeature().getSelectedOffer().getAsTeam().getUserTeamRight(AuthToken.getMember()).contains(UserTeamRight.TALK)) {
-            return true;
-        }
-        return false;
-    }
-
+  
     /**
      * Tells if the authenticated user can access the <i>Comment</i> property.
      * 
