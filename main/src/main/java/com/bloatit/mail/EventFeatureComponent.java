@@ -74,7 +74,7 @@ public class EventFeatureComponent extends HtmlDiv {
             progressBarText.add(new HtmlDiv("event-progress-success").addText(l.tr("success")));
             progressBar.add(new HtmlDiv("event-progress-filled-success"));
         } else if (f.getFeatureState() == FeatureState.DISCARDED) {
-            throw new NotImplementedException();
+        	progressBarText.add(new HtmlDiv("event-progress-no-offer").addText(l.tr("discarded")));
         }
 
         final HtmlDiv logodiv = new HtmlDiv("software_logo_block");

@@ -19,6 +19,7 @@ package com.bloatit.web.linkable.activity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -256,6 +257,9 @@ public class HtmlActivityBlock extends HtmlDiv {
             for (final Entries<?> e : day.getEntries()) {
                 if (e instanceof FeatureEntries) {
                     FeatureEntries f = (FeatureEntries) e;
+                    if(f.getKey().getFeatureState() == FeatureState.DISCARDED) {
+                    	continue;
+                    }
                     EventFeatureComponent featureComponent = new EventFeatureComponent(f.getKey(), Context.getLocalizator(), true);
                     for (HtmlEntry entry : e) {
                         HtmlElement entryElement = entry.generateForWebSite();

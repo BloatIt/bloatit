@@ -18,6 +18,7 @@ package com.bloatit.web.linkable.activity;
 
 import java.util.EnumSet;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
@@ -123,6 +124,9 @@ public class ManageFollowPage extends LoggedElveosPage {
         layout.addLeft(longContentList);
 
         for (final FollowFeature followedFeature : followedFeatures) {
+        	if(followedFeature.getFollowed().getFeatureState() == FeatureState.DISCARDED) {
+            	continue;
+            }
             longContentList.add(new FeatureListRenderer(followedFeature).generate(followedFeature.getFollowed()));
 
         }

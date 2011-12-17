@@ -3,6 +3,7 @@ package com.bloatit.mail;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.feedbackworker.FeedBackWorker;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
@@ -33,6 +34,10 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
         int oldLength = sb.length();
 
         for (Entry<Feature, MailEventVisitor.Entries> e : visitor.getFeatures().entrySet()) {
+        	if(e.getKey().getFeatureState() == FeatureState.DISCARDED) {
+            	continue;
+            }
+        	
             EventFeatureMailTxtComponent featureComponent = new EventFeatureMailTxtComponent(e.getKey(), getLocalizator());
             for (TxtEntry entry : e.getValue()) {
                 featureComponent.addEntry(entry.generate());
