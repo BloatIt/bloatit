@@ -35,6 +35,7 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
 
         for (Entry<Feature, MailEventVisitor.Entries> e : visitor.getFeatures().entrySet()) {
         	if(e.getKey().getFeatureState() == FeatureState.DISCARDED) {
+        		eventCount -= e.getValue().size();
             	continue;
             }
         	
@@ -47,8 +48,8 @@ public class EventDataworker extends FeedBackWorker<EventMailData> {
         }
 
         if (sb.length() == oldLength) {
-            sb.append("Nothing to report !");
-            Log.web().warn("Nothing to report in a sent mail from activity feed. It should never append!");
+            Log.web().warn("Nothing to report in a sent mail from activity feed.");
+            return true;
         }
 
         sb.append("Sincerly,\n");
