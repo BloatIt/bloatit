@@ -192,22 +192,22 @@ public abstract class GenericEventVisitor implements EventVisitor<String> {
             case ADD_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, new HtmlMixedText(l.tr("<0::+offer> created by <1:@thomas:>"),
                                                                                      offerLn,
-                                                                                     new HtmlAuthorLink(event.getFeature())));
+                                                                                     new HtmlAuthorLink(event.getOffer())));
                 break;
             case REMOVE_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, new HtmlMixedText(l.tr("the <0::+offer> by <1:@thomas:> has been removed"),
                                                                                      offerLn,
-                                                                                     new HtmlAuthorLink(event.getFeature())));
+                                                                                     new HtmlAuthorLink(event.getOffer())));
                 break;
             case ADD_SELECTED_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, new HtmlMixedText(l.tr("the <0::+offer> by <1:@thomas:> is selected"),
                                                                                      offerLn,
-                                                                                     new HtmlAuthorLink(event.getFeature())));
+                                                                                     new HtmlAuthorLink(event.getOffer())));
                 break;
             case CHANGE_SELECTED_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, new HtmlMixedText(l.tr("the <0::+offer> by <1:@thomas:> is selected"),
                                                                                      offerLn,
-                                                                                     new HtmlAuthorLink(event.getFeature())));
+                                                                                     new HtmlAuthorLink(event.getOffer())));
                 break;
             case REMOVE_SELECTED_OFFER:
                 entry = new HtmlEntry(event.getDate(), LOGO_OFFER, "no offer selected");
