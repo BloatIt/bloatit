@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 1.2.2
+--------------
+
+### Bug fixes
+ - fix crash in activity with deleted features
+ - fix offer author name in activity
+ - fix rights problem on bugs
+
 Version 1.2.1
 --------------
 
