@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -47,14 +48,17 @@ public class ModifyDetailAction extends LoggedElveosAction {
     @Optional
     @MinConstraint(min = 4, message = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(max = 255, message = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @FormField(label = @tr("Email"), isShort = false)
     private final String email;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Country"))
     private final String country;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Language"))
     private final String lang;
 
     private final ModifyDetailActionUrl url;
@@ -117,7 +121,8 @@ public class ModifyDetailAction extends LoggedElveosAction {
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         try {
-            if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail()) && (MemberManager.emailExists(email) && !email.equals(me.getEmailToActivate()))) {
+            if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail())
+                    && (MemberManager.emailExists(email) && !email.equals(me.getEmailToActivate()))) {
                 session.notifyError(Context.tr("Email already used."));
                 url.getEmailParameter().addErrorMessage(Context.tr("Email already used."));
                 return doProcessErrors();

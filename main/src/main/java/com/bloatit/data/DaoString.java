@@ -17,7 +17,7 @@ public class DaoString {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String content;
 
-    @ManyToOne(optional = false, cascade = { CascadeType.ALL }, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     private DaoVersionedString versions;
 
     public DaoString(final String content, final DaoMember author) {
@@ -25,16 +25,16 @@ public class DaoString {
         this.versions = DaoVersionedString.createAndPersist(content, author);
     }
 
-    public final String getContent() {
+    public String getContent() {
         return content;
     }
 
-    public final void setContent(final String content, final DaoMember author) {
+    public void setContent(final String content, final DaoMember author) {
         versions.addVersion(content, author);
         this.content = content;
     }
 
-    public final DaoVersionedString getVersions() {
+    public DaoVersionedString getVersions() {
         return versions;
     }
 

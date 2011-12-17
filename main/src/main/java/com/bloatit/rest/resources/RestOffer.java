@@ -239,20 +239,18 @@ public class RestOffer extends RestElement<Offer> {
         }
         return restTeam;
     }
-    
+
     /**
      * The name of the actor
      */
     @XmlAttribute
     public String getActorName() {
-        Team team = model.getAsTeam();
-        if(team != null) {
+        final Team team = model.getAsTeam();
+        if (team != null) {
             return team.getDisplayName();
         }
         return model.getMember().getDisplayName();
     }
-    
-    
 
     /**
      * @see com.bloatit.model.UserContent#getFiles()

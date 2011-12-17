@@ -53,9 +53,11 @@ public abstract class ElveosPage extends Page {
     private final HtmlDiv notificationBlock;
     private final Session session;
     private final Localizator localizator;
+    private final Url myurl;
 
     public ElveosPage(final Url url) {
         super(url);
+        this.myurl = url;
         notifications = null;
         notificationBlock = new HtmlDiv("notifications");
         session = Context.getSession();
@@ -113,8 +115,8 @@ public abstract class ElveosPage extends Page {
         final HtmlGenericElement body = new HtmlGenericElement("body");
         body.addCustomJs(FrameworkConfiguration.getJsJquery());
         body.addCustomJs(FrameworkConfiguration.getJsJqueryUi());
-        body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
-        body.addCustomJs(FrameworkConfiguration.getJsFlexie());
+        // body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
+        // body.addCustomJs(FrameworkConfiguration.getJsFlexie());
 
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);
@@ -125,7 +127,7 @@ public abstract class ElveosPage extends Page {
         if (AuthToken.isAuthenticated()) {
             headerContent.add(new SessionBar(AuthToken.getMember()));
         } else {
-            headerContent.add(new SessionBar());
+            headerContent.add(new SessionBar(myurl));
         }
         headerContent.add(generateLogo());
 
@@ -158,9 +160,7 @@ public abstract class ElveosPage extends Page {
      */
     @Override
     protected String getPageDescription() {
-        return Context.tr("Elveos is a platform where people gather to finance the development of open source software. "
-                + "Elveos offers a streamlined process for the user, from the description of his needs, to the validation of the project ; "
-                + "Elveos also guarantees that when you decide to fund a project, you will either get what you asked, or be reimbursed.");
+        return Context.tr("Elveos is a crowdfunding website dedicated to the financing of anything under a free license.");
     }
 
     /**
@@ -168,7 +168,7 @@ public abstract class ElveosPage extends Page {
      */
     @Override
     protected final String getPageKeyWords() {
-        return Context.tr("free software funding, open-source, crowdfunding, bulk purchases");
+        return Context.tr("free software, open-source, crowdfunding, crowdsourcing, funding, pledge");
     }
 
     @Override
@@ -178,7 +178,7 @@ public abstract class ElveosPage extends Page {
 
     @Override
     protected final ArrayList<HtmlElement> getMetas() {
-        ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();
+        final ArrayList<HtmlElement> metas = new ArrayList<HtmlElement>();
         return metas;
     }
 
@@ -198,7 +198,7 @@ public abstract class ElveosPage extends Page {
      * class feeling the need to have special robot mechanism should overload
      * this function and return a set with various robots parameters.
      * </p>
-     * 
+     *
      * @see Robot
      */
     @Override

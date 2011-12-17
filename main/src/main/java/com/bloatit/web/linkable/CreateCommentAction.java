@@ -21,6 +21,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Comment;
@@ -45,6 +47,8 @@ public final class CreateCommentAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must type a comment"))
     @MinConstraint(min = 2, message = @tr("The comment must be at least 2 characters long."))
+    @FormField(label = @tr("Your comment"), isShort = false)
+    @FormComment(@tr("A comment must have at least 2 characters. And do not troll please ;)"))
     private final String comment;
 
     private final CreateCommentActionUrl url;

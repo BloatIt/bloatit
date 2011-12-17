@@ -17,22 +17,24 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlEmailField;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.javascript.HtmlHiddenableDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.UrlParameter;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -76,114 +78,60 @@ public final class SignUpPage extends ElveosPage {
         final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Sign up"), 1);
         final SignUpActionUrl targetUrl = new SignUpActionUrl();
         targetUrl.setInvoice(invoice);
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         container.add(form);
 
-        // Login
-        final FieldData loginFieldData = targetUrl.getLoginParameter().pickFieldData();
-        final HtmlTextField loginInput = new HtmlTextField(loginFieldData.getName(), Context.trc("Login (noun)", "Login"));
-        loginInput.setDefaultValue(loginFieldData.getSuggestedValue());
-        loginInput.setComment(Context.tr("When you login, case of login field be will be ignored."));
-        loginInput.addErrorMessages(loginFieldData.getErrorMessages());
-        form.add(loginInput);
+        final FormBuilder ftool = new FormBuilder(SignUpAction.class, targetUrl);
 
-        // Password
-        final FieldData passwordFieldData = targetUrl.getPasswordParameter().pickFieldData();
-        final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), tr("Password"));
-        passwordInput.addErrorMessages(passwordFieldData.getErrorMessages());
-        passwordInput.addAttribute("autocomplete", "off");
-        passwordInput.setComment(Context.tr("7 characters minimum."));
-        form.add(passwordInput);
-
-        // Password check
-        final FieldData passwordCheckFieldData = targetUrl.getPasswordCheckParameter().pickFieldData();
-        final HtmlPasswordField passwordCheckInput = new HtmlPasswordField(passwordCheckFieldData.getName(), tr("Reenter your password"));
-        passwordCheckInput.addErrorMessages(passwordCheckFieldData.getErrorMessages());
-        passwordCheckInput.addAttribute("autocomplete", "off");
-        form.add(passwordCheckInput);
-
-        // Email
-        final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
-        final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), tr("Email"));
-        emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
-        emailInput.addErrorMessages(emailFieldData.getErrorMessages());
-        form.add(emailInput);
+        ftool.add(form, new HtmlTextField(targetUrl.getLoginParameter().getName()));
+        ftool.add(form, new HtmlPasswordField(targetUrl.getPasswordParameter().getName()));
+        ftool.add(form, new HtmlEmailField(targetUrl.getEmailParameter().getName()));
 
         // Country
-        final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName(), tr("Country"));
+        final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName());
         for (final Country entry : Country.getAvailableCountries()) {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
-        if (targetUrl.getCountryParameter().getStringValue() != null && !targetUrl.getCountryParameter().getStringValue().isEmpty()) {
-            countryInput.setDefaultValue(targetUrl.getCountryParameter().getStringValue());
-        } else {
+        if (!ftool.suggestedValueChanged(countryInput)) {
             countryInput.setDefaultValue(Context.getLocalizator().getCountryCode());
         }
-        form.add(countryInput);
+        ftool.add(form, countryInput);
 
         // Language
-        final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName(), tr("Language"));
-        langInput.setDefaultValue(targetUrl.getLangParameter().getStringValue(), Context.getLocalizator().getLanguageCode());
-        form.add(langInput);
+        final FieldData langData = targetUrl.getLangParameter().pickFieldData();
+        final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName());
+        langInput.setDefaultValue(langData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
+        ftool.add(form, langInput);
 
         // Newsletter
-        final FieldData newsletterFieldData = targetUrl.getNewsletterParameter().pickFieldData();
-        final HtmlCheckbox newsletterinput = new HtmlCheckbox(newsletterFieldData.getName(), LabelPosition.BEFORE);
-        newsletterinput.setLabel(Context.tr("Register to newsletter"));
-        newsletterinput.setComment(Context.tr("Allows Elveos to send you a newsletter. Note we don't like spam, we won't send a lot of newsletter. Maybe one every 2 or 3 months."));
-        newsletterinput.setDefaultValue(newsletterFieldData.getSuggestedValue());
-        form.add(newsletterinput);
+        ftool.add(form, new HtmlCheckbox(targetUrl.getNewsletterParameter().getName(), LabelPosition.BEFORE));
 
         if (invoice != null && invoice) {
-            
-         // Invoice
-
             final HtmlTitle invoicingTitle = new HtmlTitle(Context.tr("Invoicing informations"), 1);
             form.add(invoicingTitle);
 
-            // Name
-            final FieldData nameData = targetUrl.getNameParameter().pickFieldData();
-            
-            final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Name"));
-            nameInput.setDefaultValue(nameData.getSuggestedValue());
-            nameInput.addErrorMessages(nameData.getErrorMessages());
-            nameInput.setComment(Context.tr("Your full name"));
-            form.add(nameInput);
+            ftool.add(form, new HtmlTextField(targetUrl.getNameParameter().getName()));
+            final HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
+            ftool.add(form, isCompanyCheckbox);
+            ftool.add(form, new HtmlTextField(targetUrl.getStreetParameter().getName()));
+            ftool.add(form, new HtmlTextField(targetUrl.getExtrasParameter().getName()));
+            ftool.add(form, new HtmlTextField(targetUrl.getCityParameter().getName()));
+            ftool.add(form, new HtmlTextField(targetUrl.getPostalCodeParameter().getName()));
 
-            // Street
-            form.add(generateTextField(targetUrl.getStreetParameter(),//
-                                       Context.tr("Street")//
-            ));
-
-            // Extras
-            form.add(generateTextField(targetUrl.getExtrasParameter(),//
-                                       Context.tr("Extras"),//
-
-                                       Context.tr("Optional.")));
-
-            // City
-            form.add(generateTextField(targetUrl.getCityParameter(),//
-                                       Context.tr("City")//
-            ));
-
-            // Postal code
-            form.add(generateTextField(targetUrl.getPostalCodeParameter(),//
-                                       Context.tr("Postcode")//
-            ));
-
+            final HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, false);
+            form.add(hiddenableDiv);
+            ftool.add(hiddenableDiv, new HtmlTextField(targetUrl.getTaxIdentificationParameter().getName()));
         }
         // Submit
-        final HtmlSubmit button = new HtmlSubmit(tr("Signup"));
-        form.add(button);
+        form.addSubmit(new HtmlSubmit(tr("Signup")));
 
         master.add(container);
-
         return master;
     }
 
     @Override
     protected String createPageTitle() {
-        return Context.tr("Sign-in");
+        return Context.tr("Signup");
     }
 
     @Override
@@ -202,20 +150,5 @@ public final class SignUpPage extends ElveosPage {
         breadcrumb.pushLink(new SignUpPageUrl().getHtmlLink(tr("Sign-in")));
 
         return breadcrumb;
-    }
-
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name) {
-        return generateTextField(parameter, name, null);
-    }
-
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name, final String comment) {
-        final FieldData fieldData = parameter.pickFieldData();
-        final HtmlTextField input = new HtmlTextField(fieldData.getName(), name);
-        input.setDefaultValue(fieldData.getSuggestedValue());
-        if (comment != null) {
-            input.setComment(comment);
-        }
-        input.addErrorMessages(fieldData.getErrorMessages());
-        return input;
     }
 }

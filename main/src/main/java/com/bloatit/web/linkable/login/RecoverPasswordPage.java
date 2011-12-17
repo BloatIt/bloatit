@@ -23,14 +23,14 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -68,32 +68,21 @@ public class RecoverPasswordPage extends ElveosPage {
             getSession().notifyWarning(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
             throw new PageNotFoundException();
         }
-        
+
         member.activate(resetKey);
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery for {0}", member.getLogin()), 1);
         layout.addLeft(master);
 
-        RecoverPasswordActionUrl targetUrl;
-        targetUrl = new RecoverPasswordActionUrl(member.getLogin(), resetKey);
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final RecoverPasswordActionUrl targetUrl = new RecoverPasswordActionUrl(member.getLogin(), resetKey);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         master.add(form);
 
-        final FieldData passwFieldData = targetUrl.getNewPasswordParameter().pickFieldData();
-        final HtmlPasswordField passInput = new HtmlPasswordField(passwFieldData.getName(), Context.tr("New password"));
-        passInput.setComment(Context.tr("Minimum 7 characters."));
-        passInput.addErrorMessages(passwFieldData.getErrorMessages());
-        form.add(passInput);
-
-        final FieldData checkFieldData = targetUrl.getCheckNewPasswordParameter().pickFieldData();
-        final HtmlPasswordField checkInput = new HtmlPasswordField(checkFieldData.getName(), Context.tr("Reenter password"));
-        checkInput.addErrorMessages(checkFieldData.getErrorMessages());
-        form.add(checkInput);
-
-        form.add(new HtmlSubmit(Context.tr("Reset password")));
-
+        final FormBuilder ftool = new FormBuilder(RecoverPasswordAction.class, targetUrl);
+        ftool.add(form, new HtmlPasswordField(targetUrl.getPasswordParameter().getName()));
+        form.addSubmit(new HtmlSubmit(Context.tr("Reset password")));
         return layout;
     }
 

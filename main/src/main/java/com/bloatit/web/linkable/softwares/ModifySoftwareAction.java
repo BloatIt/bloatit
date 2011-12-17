@@ -23,6 +23,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -47,7 +49,7 @@ public final class ModifySoftwareAction extends LoggedElveosAction {
     protected static final String IMAGE_CODE = "image";
     private static final String IMAGE_NAME_CODE = "image/filename";
     private static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";
-    
+
     @RequestParam(role = Role.PAGENAME)
     @NonOptional(@tr("You must specify the software to modify"))
     private final Software software;
@@ -55,16 +57,21 @@ public final class ModifySoftwareAction extends LoggedElveosAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
+    @FormField(label = @tr("Describe the software"), isShort = false)
+    @FormComment(@tr("Minimum 10 character. You can enter a long description of the project : list all features, add siteweb links, etc."))
     private final String description;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("The software name is required."))
     @MinConstraint(min = 3, message = @tr("The software name must have at least %constraint% chars."))
     @MaxConstraint(max = 64, message = @tr("The software name must be %constraint% chars length max."))
+    @FormField(label = @tr("Software name"), isShort = false)
     private final String softwareName;
 
     @Optional
     @RequestParam(name = IMAGE_CODE, role = Role.POST)
+    @FormField(label = @tr("Software logo"))
+    @FormComment(@tr("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px."))
     private final String image;
 
     @Optional
@@ -125,7 +132,8 @@ public final class ModifySoftwareAction extends LoggedElveosAction {
     public Url doProcessRestricted(final Member me) {
 
         // Description
-        if (!isEmpty(description.trim()) && !description.equals(software.getDescription().getTranslation(software.getDescription().getDefaultLanguage()).getText())) {
+        if (!isEmpty(description.trim())
+                && !description.equals(software.getDescription().getTranslation(software.getDescription().getDefaultLanguage()).getText())) {
             try {
                 software.getDescription().getTranslation(software.getDescription().getDefaultLanguage()).setText(description, me);
             } catch (final UnauthorizedOperationException e) {

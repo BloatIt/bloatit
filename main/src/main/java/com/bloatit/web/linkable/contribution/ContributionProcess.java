@@ -101,7 +101,7 @@ public class ContributionProcess extends AccountProcess {
                 return new ContributeActionUrl(Context.getSession().getShortKey(), this);
             }
             unlock();
-            if(subPro.hasBadParams()) {
+            if (subPro.hasBadParams()) {
                 return new StaticCheckContributionPageUrl(this);
             } else {
                 return new CheckContributePageUrl(this);
@@ -113,18 +113,17 @@ public class ContributionProcess extends AccountProcess {
     }
 
     public synchronized void doContribute() throws NotEnoughMoneyException {
-        if(contributionDone) {
+        if (contributionDone) {
             return;
         }
-        
+
         try {
             getFeature().addContribution(getAmount(), getComment());
             contributionDone = true;
-
             session.notifyGood(Context.tr("Thank you for contributing {0} on this feature.", Context.getLocalizator()
                                                                                                     .getCurrency(getAmount())
                                                                                                     .getSimpleEuroString()));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("No right to make a contribution");
         }
     }
@@ -133,16 +132,15 @@ public class ContributionProcess extends AccountProcess {
     public synchronized void update(final WebProcess subProcess) {
         if (subProcess instanceof PaymentProcess) {
             final PaymentProcess subPro = (PaymentProcess) subProcess;
-            if(subPro.isSuccessful()) {
+            if (subPro.isSuccessful()) {
                 try {
                     doContribute();
-                } catch (NotEnoughMoneyException e) {
+                } catch (final NotEnoughMoneyException e) {
                     // Do nothing.
                 }
             }
         }
         super.update(this);
     }
-    
-    
+
 }

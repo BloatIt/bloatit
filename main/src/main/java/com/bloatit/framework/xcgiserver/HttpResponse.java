@@ -56,7 +56,7 @@ public final class HttpResponse {
     private final SimpleDateFormat httpDateformat;
     private Encoding encoding = Encoding.NONE;
 
-    private Set<HttpReponseField> headers = new HashSet<HttpReponseField>();
+    private final Set<HttpReponseField> headers = new HashSet<HttpReponseField>();
 
     public HttpResponse(final OutputStream output, final HttpHeader header) {
         httpDateformat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
@@ -73,7 +73,7 @@ public final class HttpResponse {
         this.output = output;
     }
 
-    public void addField(HttpReponseField headerField) {
+    public void addField(final HttpReponseField headerField) {
         headers.add(headerField);
     }
 
@@ -103,7 +103,7 @@ public final class HttpResponse {
         }
     }
 
-    public void writeRedirect(StatusCode status, final String url) throws IOException {
+    public void writeRedirect(final StatusCode status, final String url) throws IOException {
         addField(HttpReponseField.status(status));
         addField(HttpReponseField.location(url));
         addSessionCookie();
@@ -111,18 +111,18 @@ public final class HttpResponse {
         writeHeader();
     }
 
-    public void writeOAuthRedirect(int status, final String url) throws IOException {
+    public void writeOAuthRedirect(final int status, final String url) throws IOException {
         addField(new HttpReponseField("status", String.valueOf(status)));
         addField(HttpReponseField.location(url));
         writeHeader();
     }
 
-    public void writeOAuth(int status, Map<String, String> headers, final String body) throws IOException {
+    public void writeOAuth(final int status, final Map<String, String> headers, final String body) throws IOException {
         addField(new HttpReponseField("status", String.valueOf(status)));
         addField(HttpReponseField.contentType("application/json;charset=UTF-8"));
         addField(HttpReponseField.cacheControl("no-store"));
         addField(HttpReponseField.pragma("no-cache"));
-        for (Entry<String, String> header : headers.entrySet()) {
+        for (final Entry<String, String> header : headers.entrySet()) {
             addField(new HttpReponseField(header.getKey(), header.getValue()));
         }
         writeHeader();
@@ -130,13 +130,13 @@ public final class HttpResponse {
         output.write(body.getBytes());
     }
 
-    public void writePage(StatusCode status, String contentType, final HtmlElement page) throws IOException {
+    public void writePage(final StatusCode status, final String contentType, final HtmlElement page) throws IOException {
         addField(HttpReponseField.status(status));
         addSessionCookie();
         addField(HttpReponseField.vary("Accept-Encoding"));
         addField(HttpReponseField.contentType(contentType));
         addField(HttpReponseField.acceptRanges("bytes"));
-        String languageCode = Context.getLocalizator().getCode();
+        final String languageCode = Context.getLocalizator().getLanguageCode();
         if (!languageCode.isEmpty()) {
             addField(HttpReponseField.contentLanguage(languageCode));
         }
@@ -187,18 +187,42 @@ public final class HttpResponse {
         writeLine("Expires: " + httpDateformat.format(DateUtils.nowPlusSomeYears(1)));
 
         // Content type
-        if (fileName.endsWith(".css")) {
-            addField(HttpReponseField.contentType("text/css"));
-        } else if (fileName.endsWith(".png")) {
-            addField(HttpReponseField.contentType("image/png"));
-        } else {
-            // FIXME manage other content types !!
-            Log.framework().warn("FIXME: Unknown content type for file '" + fileName + "' in HttpResponse.writeResource");
-        }
+        inferContentType(fileName);
 
         // Send file
         addField(new HttpReponseField("X-sendfile2", path + " 0-" + (size - 1)));
         writeHeader();
+    }
+
+    public void writeData(final byte[] data, final long size, final String fileName) throws IOException {
+        // addField(HttpReponseField.status(status));
+        addField(HttpReponseField.contentDisposition("inline; filename=" + fileName));
+        addField(HttpReponseField.vary("Accept-Encoding"));
+        addField(HttpReponseField.acceptRanges("bytes"));
+
+        // Content type
+        inferContentType(fileName);
+
+        writeHeader();
+
+        // Send file
+        output.write(data);
+    }
+
+    private void inferContentType(final String fileName) {
+        if (fileName.endsWith(".css")) {
+            addField(HttpReponseField.contentType("text/css"));
+        } else if (fileName.endsWith(".png")) {
+            addField(HttpReponseField.contentType("image/png"));
+        } else if (fileName.endsWith(".pdf")) {
+            addField(HttpReponseField.contentType("application/pdf"));
+        } else if (fileName.endsWith(".zip")) {
+            addField(HttpReponseField.contentType("multipart/x-zip"));
+        } else {
+
+            // FIXME manage other content types !!
+            Log.framework().warn("FIXME: Unknown content type for file '" + fileName + "' in HttpResponse.writeResource");
+        }
     }
 
     /**
@@ -288,7 +312,7 @@ public final class HttpResponse {
     }
 
     private void writeHeader() throws IOException {
-        for (HttpReponseField field : headers) {
+        for (final HttpReponseField field : headers) {
             field.write(output);
         }
         output.write(EOL);
@@ -307,7 +331,7 @@ public final class HttpResponse {
         }
     }
 
-    public void writeAtomFeed(AtomFeed feed) throws IOException {
+    public void writeAtomFeed(final AtomFeed feed) throws IOException {
         addField(HttpReponseField.contentType("text/xml"));
         addField(HttpReponseField.vary("Accept-Encoding"));
         addField(HttpReponseField.acceptRanges("bytes"));
@@ -315,8 +339,8 @@ public final class HttpResponse {
 
         feed.write(output);
     }
-    
-    public void writeSiteMap(SiteMap siteMap) throws IOException {
+
+    public void writeSiteMap(final SiteMap siteMap) throws IOException {
         addField(HttpReponseField.contentType("text/xml"));
         addField(HttpReponseField.vary("Accept-Encoding"));
         addField(HttpReponseField.acceptRanges("bytes"));

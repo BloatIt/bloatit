@@ -130,17 +130,19 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         final String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
         final String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
 
-        final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
-        final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
-        final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
-
-        Contact recipientContact = recipientActor.getContactUnprotected();
+        final Contact recipientContact = recipientActor.getContactUnprotected();
         final String receiverName = recipientContact.getName();
         final String receiverStreet = recipientContact.getStreet();
         final String receiverExtras = recipientContact.getExtras();
         final String receiverCity = recipientContact.getPostalCode() + " " + recipientContact.getCity();
         final String receiverCountry = recipientContact.getCountry();
+        final String receiverTaxIdentification = recipientContact.getTaxIdentification();
         final Date invoiceDate = DateUtils.now();
+
+        final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
+
+        final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
+        final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
 
         final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
                                                                          invoiceId,
@@ -154,6 +156,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                                                          receiverExtras,
                                                                          receiverCity,
                                                                          receiverCountry,
+                                                                         receiverTaxIdentification,
                                                                          invoiceDate,
                                                                          deliveryName,
                                                                          priceExcludingTax,
@@ -161,7 +164,8 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                                                          taxAmount,
                                                                          totalPrice,
                                                                          sellerLegalId,
-                                                                         sellerTaxId);
+                                                                         sellerTaxId,
+                                                                         ModelConfiguration.getInvoiceLinkeosLogo());
 
         return DaoInvoice.createAndPersist(recipientActor.getDao(),
                                            pdfGenerator.getPdfUrl(),
@@ -177,6 +181,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                            receiverExtras,
                                            receiverCity,
                                            receiverCountry,
+                                           receiverTaxIdentification,
                                            invoiceDate,
                                            deliveryName,
                                            priceExcludingTax,
@@ -197,7 +202,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
             final int size = Integer.valueOf(m.group(2));
             final int intValue = internalInvoiceNumber.intValue();
 
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             for (int i = 0; i < size; i++) {
                 sb.append("0");
             }

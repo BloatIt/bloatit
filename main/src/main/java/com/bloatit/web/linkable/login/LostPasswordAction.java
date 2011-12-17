@@ -23,10 +23,15 @@ import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -48,6 +53,10 @@ public class LostPasswordAction extends ElveosAction {
     private final LostPasswordActionUrl url;
 
     @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must provide an email"))
+    @MaxConstraint(max = 255, message = @tr("Your email must be less than 255 characters."))
+    @FormField(label = @tr("Enter your email"), isShort = false)
+    @FormComment(@tr("We will send you an email explaining how to recover your password."))
     private final String email;
 
     private Member m;

@@ -59,7 +59,7 @@ public class DaoMemberCreationTest {
         assertEquals(theMember.getFullname(), "");
         assertEquals(theMember.getLogin(), "Thomas");
         assertEquals(theMember.getPassword(), "password");
-        assertEquals(theMember.getKarma().intValue(), 0);
+        assertEquals(theMember.getKarma().intValue(), -10);
         assertEquals(theMember.getRole(), Role.NORMAL);
         assertEquals(theMember.getLocale(), Locale.FRANCE);
 

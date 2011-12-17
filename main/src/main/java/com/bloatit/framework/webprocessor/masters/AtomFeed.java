@@ -9,7 +9,6 @@ import java.util.Date;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.components.meta.XmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNonEscapedElement;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 /**

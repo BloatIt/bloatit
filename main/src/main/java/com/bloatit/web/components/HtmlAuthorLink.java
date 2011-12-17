@@ -18,6 +18,7 @@ package com.bloatit.web.components;
 
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -25,11 +26,20 @@ public class HtmlAuthorLink extends HtmlLink {
     public HtmlAuthorLink(final UserContentInterface content) {
         // @formatter:off
         super(
-              content.getAsTeam() != null ? 
+              content.getAsTeam() != null ?
                       new TeamPageUrl(content.getAsTeam()).urlString() :
                       new MemberPageUrl(content.getMember()).urlString()
                       ,
-              content.getAuthor().getDisplayName());
+              "@" + content.getAuthor().getDisplayName());
+        if(content.getAsTeam() != null) {
+            setCssClass("team-link");
+        } else {
+            if(content.getMember().equals(AuthToken.getMember())) {
+                setCssClass("me-link");
+            } else {
+                setCssClass("member-link");
+            }
+        }
     }
     // @formatter:on
 }

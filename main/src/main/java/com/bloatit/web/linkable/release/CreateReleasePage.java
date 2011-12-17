@@ -19,21 +19,21 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
-import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.url.CreateReleaseActionUrl;
 import com.bloatit.web.url.CreateReleasePageUrl;
 
@@ -78,40 +78,24 @@ public final class CreateReleasePage extends CreateUserContentPage {
     private HtmlElement generateReleaseCreationForm() {
         final HtmlTitleBlock createReleaseTitle = new HtmlTitleBlock(tr("Add a new Release"), 1);
 
-        final CreateReleaseActionUrl doCreateUrl = new CreateReleaseActionUrl(getSession().getShortKey(), milestone);
+        final CreateReleaseActionUrl targetUrl = new CreateReleaseActionUrl(getSession().getShortKey(), milestone);
 
         // Create the form stub
-        final HtmlForm form = new HtmlForm(doCreateUrl.urlString());
-        form.enableFileUpload();
-
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        final FormBuilder ftool = new FormBuilder(CreateReleaseAction.class, targetUrl);
         createReleaseTitle.add(form);
+        form.enableFileUpload();
+        form.addLanguageChooser(targetUrl.getLocaleParameter().getName(), Context.getLocalizator().getLanguageCode());
 
-        // version
-        final FieldData versionData = doCreateUrl.getVersionParameter().pickFieldData();
-        final HtmlTextField versionInput = new HtmlTextField(versionData.getName(), tr("Version"));
-        versionInput.setDefaultValue(versionData.getSuggestedValue());
-        versionInput.addErrorMessages(versionData.getErrorMessages());
-        versionInput.setComment(tr("Enter your release version. For example ''1.2.3''."));
-        form.add(versionInput);
+        ftool.add(form, new HtmlTextField(targetUrl.getVersionParameter().getName()));
+        ftool.add(form, new HtmlTextArea(targetUrl.getDescriptionParameter().getName(), DESCRIPTION_INPUT_NB_LINES, DESCRIPTION_INPUT_NB_COLUMNS));
 
-        // description
-        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(),
-                                                               tr("Comment your release"),
-                                                               DESCRIPTION_INPUT_NB_LINES,
-                                                               DESCRIPTION_INPUT_NB_COLUMNS);
-        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
-        descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
-        descriptionInput.setComment(tr("Enter a short comment on your release. The description must have at least 10 chars."));
-        form.add(descriptionInput);
+        // Attachment
+        final AttachmentField attachment = new AttachmentField(targetUrl, "1 Gio", true);
+        ftool.add(form, attachment.getFileInput());
+        ftool.add(form, attachment.getTextInput());
 
-        // Language
-        form.add(new LanguageField(doCreateUrl, tr("Language"), tr("Language of the descriptions.")));
-
-        // attachment
-        form.add(new AttachmentField(doCreateUrl, "1 Gio"));
-
-        form.add(new HtmlSubmit(tr("submit")));
+        form.addSubmit(new HtmlSubmit(tr("submit")));
 
         final HtmlDiv group = new HtmlDiv();
         group.add(createReleaseTitle);

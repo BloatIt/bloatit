@@ -19,17 +19,17 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
  * Class used to created html textarea blocks
  * </p>
  * <p>
- * 
+ *
  * <pre>
  * <div>
  *      <div>
  * <label for="...">labeltext</label>
- * 
+ *
  * </p>
  * <div> <textarea name="..." class="cssClass" ...>defaultValue</textarea>
  * </div> </div> </pre> </p>
  */
-public final class HtmlTextArea extends HtmlStringFormField {
+public final class HtmlTextArea extends HtmlFormField {
 
     public HtmlTextArea(final String name, final int rows, final int cols) {
         super(InputBlock.create(new HtmlSimpleTextArea(rows, cols)), name);
@@ -41,13 +41,13 @@ public final class HtmlTextArea extends HtmlStringFormField {
 
     @Override
     public void setComment(final HtmlNode comment) {
-        final HtmlDiv commentBlock = new HtmlDiv("comment_after");
+        final HtmlDiv commentBlock = new HtmlDiv("comment");
         commentBlock.add(comment);
         this.commentPh.add(commentBlock);
     }
 
     @Override
-    protected void doSetDefaultValue(final String value) {
+    protected void doSetDefaultStringValue(final String value) {
         ((HtmlSimpleTextArea) this.inputBlock.getInputElement()).setDefaultValue(value);
     }
 }

@@ -49,7 +49,7 @@ public class OAuthAuthorizationPage extends ElveosPage {
      */
     @RequestParam(name = OAuth.OAUTH_CLIENT_ID)
     @NonOptional(@tr("OAuth request need a %paramName% parameter."))
-    private String clientId;
+    private final String clientId;
 
     /**
      * OPTIONAL, as described in Section 3.1.2.
@@ -58,7 +58,7 @@ public class OAuthAuthorizationPage extends ElveosPage {
     // redirectUri
     @RequestParam(name = OAuth.OAUTH_REDIRECT_URI)
     @NonOptional(@tr("OAuth request need a %paramName% parameter."))
-    private String redirectUri;
+    private final String redirectUri;
 
     /**
      * OPTIONAL. The scope of the access request expressed as a list of
@@ -104,13 +104,13 @@ public class OAuthAuthorizationPage extends ElveosPage {
             getSession().notifyError(Context.tr("Wrong login or password, please retry."));
         }
 
-        ExternalService service = ExternalServiceManager.getByToken(clientId);
+        final ExternalService service = ExternalServiceManager.getByToken(clientId);
         if (service == null) {
             getSession().notifyError(Context.tr("Service not found!"));
             throw new RedirectException(new IndexPageUrl());
         }
 
-        String yesUrl = createYesUrl();
+        final String yesUrl = createYesUrl();
 
         // TODO make this page pretty(er) !
         final HtmlDiv div = new HtmlDiv("oauth_question");
@@ -144,18 +144,18 @@ public class OAuthAuthorizationPage extends ElveosPage {
     }
 
     private String createYesUrl() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append("/oauth/");
         sb.append(OAuthProcessor.GET_AUTHORIZATION_PAGE_NAME);
         sb.append("?");
         final URLCodec urlCodec = new URLCodec();
-        for (Entry<String, HttpParameter> param : url.getStringParameters().entrySet()) {
-            for (String value : param.getValue()) {
+        for (final Entry<String, HttpParameter> param : url.getStringParameters().entrySet()) {
+            for (final String value : param.getValue()) {
                 sb.append(param.getKey());
                 sb.append("=");
                 try {
                     sb.append(urlCodec.encode(value));
-                } catch (EncoderException e) {
+                } catch (final EncoderException e) {
                     throw new ExternalErrorException(e);
                 }
                 sb.append("&");

@@ -23,7 +23,8 @@ public class RequestKey {
      * Create a key using already existing id and ip address.
      * 
      * @param id the id of this session. It must be non null, and
-     *            {@value RequestKey#SHA515_HEX_LENGTH} char long.
+     *            {@value RequestKey#SHA515_HEX_LENGTH} char long if the source
+     *            is COOKIE.
      * @param ipAddress can be null. If it is less than 7 chars long it is
      *            considered has null (because invalid).
      * @throws WrongSessionKeyFormatException

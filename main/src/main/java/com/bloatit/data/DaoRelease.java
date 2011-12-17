@@ -16,7 +16,6 @@
 //
 package com.bloatit.data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,12 +30,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.OrderBy;
 
+import com.bloatit.data.DaoEvent.EventType;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A Release is a finished version of an implemented feature. There should be at
@@ -47,7 +43,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class DaoRelease extends DaoUserContent implements DaoCommentable {
+public class DaoRelease extends DaoUserContent {
     @Basic(optional = false)
     private String description;
 
@@ -57,15 +53,13 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
     @Basic(optional = false)
     private Locale locale;
 
-    @OneToMany(mappedBy = "release")
-    @Cascade(value = { CascadeType.ALL })
-    @OrderBy(clause = "id")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private final List<DaoComment> comments = new ArrayList<DaoComment>();
-
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMilestone milestone;
+
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "release", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
 
     private String version;
 
@@ -109,12 +103,8 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        DaoEvent.createReleaseEvent(release.getMilestone().getOffer().getFeature(), EventType.ADD_RELEASE, release, milestone.getOffer(), milestone);
         return release;
-    }
-
-    @Override
-    public void addComment(final DaoComment comment) {
-        this.comments.add(comment);
     }
 
     /**
@@ -143,22 +133,6 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
      */
     public DaoMilestone getMilestone() {
         return this.milestone;
-    }
-
-    /**
-     * @return the comments
-     */
-    @Override
-    public PageIterable<DaoComment> getComments() {
-        return new MappedUserContentList<DaoComment>(this.comments);
-    }
-
-    /**
-     * @return the last comment
-     */
-    @Override
-    public DaoComment getLastComment() {
-        return this.comments.get(this.comments.size() - 1);
     }
 
     // ======================================================================

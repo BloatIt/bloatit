@@ -20,11 +20,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SideBarUserContentBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -74,14 +75,15 @@ public final class AddAttachementPage extends CreateUserContentPage {
     private HtmlElement generateReleaseCreationForm() {
         final HtmlDiv group = new HtmlDiv();
         final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachment"), 1);
-        final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(getSession().getShortKey(), userContent);
-        final HtmlForm form = new HtmlForm(formUrl.urlString());
-
+        final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(getSession().getShortKey(), userContent);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         form.enableFileUpload();
 
-        form.add(new AttachmentField(formUrl, FILE_MAX_SIZE_MIO + " Mio", false));
-        form.add(new HtmlSubmit(tr("Submit")));
-
+        final FormBuilder ftool = new FormBuilder(AddAttachementAction.class, targetUrl);
+        final AttachmentField attachment = new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio");
+        ftool.add(form, attachment.getFileInput());
+        ftool.add(form, attachment.getTextInput());
+        form.addSubmit(new HtmlSubmit(tr("Submit")));
         group.add(title);
         title.add(form);
         return group;

@@ -16,6 +16,9 @@
 //
 package com.bloatit.framework.webprocessor.url;
 
+import org.apache.commons.lang.NotImplementedException;
+import java.util.Locale;
+
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 
@@ -35,6 +38,11 @@ public class UrlString extends Url {
 
     @Override
     public String urlString() {
+        return url;
+    }
+    
+    @Override
+    public String internalUrlString(boolean multilanguage, Locale forcedLanguage) {
         return url;
     }
 
@@ -71,6 +79,11 @@ public class UrlString extends Url {
     @Override
     public Protocol getProtocol() {
         return Protocol.AUTO;
+    }
+
+    @Override
+    public UrlParameter<?, ?> getParameter(String name) {
+        throw new NotImplementedException();
     }
 
 }

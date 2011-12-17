@@ -31,9 +31,9 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDownElement;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
-import com.bloatit.framework.webprocessor.components.form.HtmlStringFormField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -53,7 +53,7 @@ public class SoftwaresTools {
                 add(new HtmlImage(new Image(WebConfiguration.getImgSoftwareNoLogo()), tr("Software logo"), "software_logo"));
             } else {
                 final FileResourceUrl imageUrl = new FileResourceUrl(software.getImage());
-                HtmlLink softwareLink = new SoftwarePageUrl(software).getHtmlLink();
+                final HtmlLink softwareLink = new SoftwarePageUrl(software).getHtmlLink();
                 add(softwareLink);
                 softwareLink.add(new HtmlImage(imageUrl, tr("Software logo"), "software_logo"));
             }
@@ -83,20 +83,20 @@ public class SoftwaresTools {
         }
     }
 
-    public static class SoftwareChooserElement extends HtmlStringFormField {
+    public static class SoftwareChooserElement extends HtmlFormField {
 
         public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName) {
-            super(new SoftwareInputBlock(name, newSoftwareCheckboxName), name);
+            super(new SoftwareInputBlock(newSoftwareName, newSoftwareCheckboxName), name);
             initSoftwareChooser();
         }
 
-        public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName , final String label) {
+        public SoftwareChooserElement(final String name, final String newSoftwareName, final String newSoftwareCheckboxName, final String label) {
             super(new SoftwareInputBlock(newSoftwareName, newSoftwareCheckboxName), name, label);
             initSoftwareChooser();
         }
 
         public void initSoftwareChooser() {
-            setComment(Context.tr("On what software do you want to have this feature."));
+            setComment(Context.tr("In which software do you want to have this feature."));
         }
 
         /**
@@ -110,47 +110,45 @@ public class SoftwaresTools {
          * @param value the code of the default element
          */
         @Override
-        protected void doSetDefaultValue(final String value) {
-            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+        protected void doSetDefaultStringValue(final String value) {
+            final SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setDefaultValue(value);
 
         }
-        
-        public void setNewSoftwareDefaultValue(String suggestedValue) {
-            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+
+        public void setNewSoftwareDefaultValue(final String suggestedValue) {
+            final SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setNewSoftwareDefaultValue(suggestedValue);
         }
-        
-        public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
-            SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
+
+        public void setNewSoftwareCheckboxDefaultValue(final String suggestedValue) {
+            final SoftwareInputBlock softwareInputBlock = (SoftwareInputBlock) getInputBlock();
             softwareInputBlock.setNewSoftwareCheckboxDefaultValue(suggestedValue);
         }
 
         static class SoftwareInputBlock extends InputBlock {
 
             private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
-            private HtmlGenericElement fallbackSelectElement;
-            private HtmlDiv softwareChooserBlock;
-            private HtmlElement createInput;
-            private HtmlElement searchSoftwareInput;
-            private HtmlSimpleInput checkboxInput;
+            private final HtmlGenericElement fallbackSelectElement;
+            private final HtmlDiv softwareChooserBlock;
+            private final HtmlElement createInput;
+            private final HtmlElement searchSoftwareInput;
+            private final HtmlSimpleInput checkboxInput;
 
-            public SoftwareInputBlock(String name, String newSoftwareCheckboxName) {
+            public SoftwareInputBlock(final String name, final String newSoftwareCheckboxName) {
                 softwareChooserBlock = new HtmlDiv("software_chooser_block");
                 softwareChooserBlock.setId("software_chooser_block_id");
 
                 // New software checkbox
-                HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
+                final HtmlDiv newSoftwareCheckBoxBlock = new HtmlDiv("new_software_checkbox_block");
                 newSoftwareCheckBoxBlock.addAttribute("style", "display:none;");
-                
-                softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
                 checkboxInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT));
                 checkboxInput.setId("software_chooser_checkbox_id");
                 checkboxInput.addAttribute("autocomplete", "off");
                 checkboxInput.addAttribute("name", newSoftwareCheckboxName);
                 newSoftwareCheckBoxBlock.add(checkboxInput);
-                HtmlBranch checkBoxLabel = new HtmlGenericElement("label");
+                final HtmlBranch checkBoxLabel = new HtmlGenericElement("label");
                 checkBoxLabel.addText(Context.tr("The Feature consists in creating a new software."));
                 checkBoxLabel.addAttribute("for", "software_chooser_checkbox_id");
                 newSoftwareCheckBoxBlock.add(checkBoxLabel);
@@ -161,12 +159,11 @@ public class SoftwaresTools {
                 searchSoftwareInput.addAttribute("placeholder", Context.tr("Choose a software"));
                 searchSoftwareInput.addAttribute("autocomplete", "off");
                 softwareChooserBlock.add(searchSoftwareInput);
-                
+
                 createInput = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.HIDDEN_INPUT));
                 createInput.addAttribute("name", name);
                 createInput.setId("software_chooser_create");
                 softwareChooserBlock.add(createInput);
-                
 
                 fallbackSelectElement = new HtmlGenericElement("select");
                 fallbackSelectElement.setId("software_chooser_fallback");
@@ -174,8 +171,8 @@ public class SoftwaresTools {
                 addDropDownElement("", Context.tr("Select a software")).setDisabled().setSelected();
                 addDropDownElement("", Context.tr("New software"));
 
-                StringBuilder jsSoftwareNameList = new StringBuilder("[");
-                StringBuilder jsSoftwareIdList = new StringBuilder("[");
+                final StringBuilder jsSoftwareNameList = new StringBuilder("[");
+                final StringBuilder jsSoftwareIdList = new StringBuilder("[");
 
                 for (final Software software : SoftwareManager.getAll()) {
                     addDropDownElement(String.valueOf(software.getId()), software.getName());
@@ -191,6 +188,7 @@ public class SoftwaresTools {
                 jsSoftwareIdList.append("]");
 
                 softwareChooserBlock.add(fallbackSelectElement);
+                softwareChooserBlock.add(newSoftwareCheckBoxBlock);
 
                 // Add js
                 final HtmlScript softwareChooserScript = new HtmlScript();
@@ -214,26 +212,24 @@ public class SoftwaresTools {
                 return fallbackSelectElement;
             }
 
-            public void setDefaultValue(String value) {
+            public void setDefaultValue(final String value) {
                 final HtmlDropDownElement checkedElement = elements.get(value);
                 if (checkedElement != null) {
                     checkedElement.addAttribute("selected", "selected");
                 }
-                
 
             }
-            
-            public void setNewSoftwareDefaultValue(String suggestedValue) {
+
+            public void setNewSoftwareDefaultValue(final String suggestedValue) {
                 createInput.addAttribute("value", suggestedValue);
             }
-            
-            public void setNewSoftwareCheckboxDefaultValue(String suggestedValue) {
-                if(suggestedValue.equals("true")) {
-                    checkboxInput.addAttribute("checked", "checked");    
+
+            public void setNewSoftwareCheckboxDefaultValue(final String suggestedValue) {
+                if (suggestedValue.equals("true")) {
+                    checkboxInput.addAttribute("checked", "checked");
                 }
-                
+
             }
-            
 
             @Override
             public HtmlElement getContentElement() {
@@ -250,10 +246,6 @@ public class SoftwaresTools {
             }
 
         }
-
-        
-
-        
 
     }
 

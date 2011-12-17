@@ -1,6 +1,63 @@
 Changelog
 =========
 
+Version 1.2.1
+--------------
+
+### Features
+ - Generate old events
+
+### Bug fixes
+ - fix follow problem with feature with no software
+ - fix follow button translation
+ - fix email strategy button
+
+
+
+Version 1.2.0
+--------------
+
+### Features
+ - Add activity system
+ - Improve forms
+
+### Bug fixes
+ - fix chained actions flush bug
+ - fix rights problem on bugs
+ - fix comment order
+ - update translation
+
+Version 1.1.27
+--------------
+
+### Features
+ - New signup process
+ - Add markdown for comments
+ - Display previous comments when replying
+ - Add invoicing system for contributions
+ - Improve js API
+ - Add a text to explains that its possible to add attachement to a release later
+ - Various small css improvements
+
+### Bug fixes
+ - Fix various translation problems
+ - Fix realease button presence when the offer author is a team
+ - Add missing contraints on forms
+ - Fix Konqueror freeze
+ 
+Version 1.1.26
+--------------
+
+### Features
+ - Add software filter in REST api
+ - Restore Beta logo
+ - Use *Recommend* verb instead of *Like* for Facebook button
+
+### Bug fixes
+ - Fix bug in passsword recovery process
+ - Set max password length to 255 characters in passsword recovery process
+
+
 Version 1.1.25
 --------------
 

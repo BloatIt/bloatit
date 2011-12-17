@@ -101,7 +101,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 
     /**
      * Loads the markdown file at <code>path</code>
-     * 
+     *
      * @param path the path of the file to load
      * @return <i>true</i> if the file has been loaded, <i>false</i> otherwise
      */
@@ -126,7 +126,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                 final byte[] b = new byte[fis.available()];
                 fis.read(b);
                 final String markDownContent = new String(b);
-                final HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(markDownContent);
+                final HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(markDownContent, false);
                 cache.put(mdm, new MarkdownDocumentationContent(new Date(), content.getRendereredContent()));
                 add(content);
             } else {

@@ -29,7 +29,7 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
 import com.bloatit.model.FileMetadata;
@@ -48,6 +48,12 @@ public class CommentTools {
         return ph;
     }
 
+    public static HtmlElement generateCommentList(final Comment comment) {
+        final PlaceHolderElement ph = new PlaceHolderElement();
+        ph.add(generateComment(comment, false, null));
+        return ph;
+    }
+
     public static HtmlElement generateCommentList(final PageIterable<Comment> comments, final Map<String, String> formatMap) {
         final PlaceHolderElement ph = new PlaceHolderElement();
         for (final Comment comment : comments) {
@@ -62,7 +68,7 @@ public class CommentTools {
             commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getAuthor())));
 
             final HtmlParagraph commentText = new HtmlParagraph();
-            commentText.add(new HtmlRawTextRenderer(formatComment(comment.getText(), formatMap)));
+            commentText.add(new HtmlCachedMarkdownRenderer(formatComment(comment.getText(), formatMap)));
             commentBlock.add(commentText);
 
             // Attachements

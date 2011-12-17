@@ -26,6 +26,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
@@ -34,45 +36,47 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.IndexPageUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("feature/%process%/docreate")
+@ParamContainer("feature/docreate")
 public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a title"))
     @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
+    @FormField(label = @tr("Title"), isShort = false, autocomplete = false)
+    @FormComment(@tr("The title length must be at least 10 chars long."))
     private final String description;
 
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     @MaxConstraint(max = 800000, message = @tr("The description must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("Description"), isShort = false)
+    @FormComment(@tr("Try to be the most specific possible."))
     private final String specification;
 
     @Optional
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("Software"))
     private final Software software;
 
     @Optional
     @RequestParam(role = Role.POST)
     private final String newSoftwareName;
 
+    @SuppressWarnings("unused")
     @RequestParam(role = Role.POST)
     @Optional
     private final Boolean newSoftware;
-    
-    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam(role = Role.PAGENAME)
-    private final CreateFeatureProcess process;
 
     private final CreateFeatureActionUrl url;
 
@@ -84,7 +88,6 @@ public final class CreateFeatureAction extends UserContentAction {
         this.specification = url.getSpecification();
         this.software = url.getSoftware();
         this.newSoftwareName = url.getNewSoftwareName();
-        this.process = url.getProcess();
         this.newSoftware = url.getNewSoftware();
     }
 
@@ -92,26 +95,18 @@ public final class CreateFeatureAction extends UserContentAction {
     protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyError(Context.tr("You have to specify a valid language."));
-            if (process == null) {
-                return new IndexPageUrl();
-            } else {
-                return new CreateFeaturePageUrl(process);
-            }
+            return new CreateFeaturePageUrl();
         }
-        
-        if(software == null && newSoftwareName != null &&  newSoftwareName.equals("--invalid--")) {
+
+        if (software == null && newSoftwareName != null && newSoftwareName.equals("--invalid--")) {
             session.notifyError(Context.tr("You have to specify a valid software."));
-            if (process == null) {
-                return new IndexPageUrl();
-            } else {
-                return new CreateFeaturePageUrl(process);
-            }
+            return new CreateFeaturePageUrl();
         }
         return NO_ERROR;
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) throws UnauthorizedOperationException {
         Software softwareToUse = software;
 
         if (software == null && newSoftwareName != null && !newSoftwareName.isEmpty()) {
@@ -125,17 +120,12 @@ public final class CreateFeatureAction extends UserContentAction {
 
         final Feature feature = FeatureFactory.createFeature(me, asTeam, Language.fromLocale(getLocale()), description, specification, softwareToUse);
         propagateAttachedFileIfPossible(feature);
-        process.close();
         return new FeaturePageUrl(feature, FeatureTabKey.description);
     }
 
     @Override
     protected Url doProcessErrors() {
-        if (process == null) {
-            return new IndexPageUrl();
-        } else {
-            return new CreateFeaturePageUrl(process);
-        }
+        return new CreateFeaturePageUrl();
     }
 
     @Override

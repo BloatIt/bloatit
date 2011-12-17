@@ -1,6 +1,7 @@
 //Settings
 var featureId = "${feature_id}";
 var protocol = "${protocol}";
+
 var host = protocol+'://'+ window.location.hostname;
 
 function update_output() {

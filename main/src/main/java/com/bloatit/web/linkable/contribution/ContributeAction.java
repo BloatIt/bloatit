@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.contribution;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -52,10 +53,11 @@ public final class ContributeAction extends UserContentAction {
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         try {
             process.doContribute();
+            ModelAccessor.flush();
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature(), FeatureTabKey.contributions);
             process.close();
             return featurePageUrl;
-        
+
         } catch (final NotEnoughMoneyException e) {
             session.notifyWarning(Context.tr("You need to charge your account before you can contribute."));
             return new CheckContributePageUrl(process);

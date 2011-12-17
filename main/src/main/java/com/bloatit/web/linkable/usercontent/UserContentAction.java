@@ -26,6 +26,9 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
@@ -47,18 +50,24 @@ public abstract class UserContentAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Description language"))
+    @FormComment(@tr("The language of the title and description. These texts can be translated in other language later."))
     private final Locale locale;
 
     @RequestParam(name = "attachment", role = Role.POST)
     @Optional
+    @FormField(label = @tr("Join a file"))
+    @FormComment(@tr("When you join a file, you have to add a description."))
     private final String attachment;
 
     @RequestParam(name = "attachment/filename", role = Role.POST)
     @Optional
     private final String attachmentFileName;
 
-    @RequestParam(name = "attachment_description", role = Role.POST)
+    @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("File description"))
+    @FormComment(@tr("Input a short description of the file you want to upload."))
     private final String attachmentDescription;
 
     @RequestParam(name = "attachment/contenttype", role = Role.POST)
@@ -101,10 +110,10 @@ public abstract class UserContentAction extends LoggedElveosAction {
 
     protected abstract boolean verifyFile(String filename);
 
-    protected abstract Url doDoProcessRestricted(Member me, Team asTeam);
+    protected abstract Url doDoProcessRestricted(Member me, Team asTeam) throws UnauthorizedOperationException;
 
     @Override
-    protected final Url doProcessRestricted(final Member me) {
+    protected final Url doProcessRestricted(final Member me) throws UnauthorizedOperationException {
         if (attachment != null) {
             if (!isEmpty(attachmentFileName) && !isEmpty(attachmentDescription) && verifyFile(attachment)) {
                 file = FileMetadataManager.createFromTempFile(me, team, attachment, attachmentFileName, attachmentDescription);

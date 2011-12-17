@@ -35,25 +35,28 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.components.InvoicingContactTab;
+import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.members.tabs.AccountTab;
-import com.bloatit.web.linkable.members.tabs.ActivityTab;
 import com.bloatit.web.linkable.members.tabs.DashboardTab;
+import com.bloatit.web.linkable.members.tabs.HistoryTab;
+import com.bloatit.web.linkable.members.tabs.InvoicingContactTab;
 import com.bloatit.web.linkable.members.tabs.TasksTab;
 import com.bloatit.web.linkable.money.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.money.SideBarWithdrawMoneyBlock;
+import com.bloatit.web.url.ActivityPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -73,13 +76,13 @@ public final class MemberPage extends ElveosPage {
 
     public final static String MEMBER_TAB_PANE = "tab";
     public final static String TASKS_TAB = "tasks";
-    public final static String ACTIVITY_TAB = "activity";
+    public final static String ACTIVITY_TAB = "history";
     public final static String ACCOUNT_TAB = "account";
     public final static String INVOICING_TAB = "invoicing";
     public final static String DASHBOARD_TAB = "dashboard";
 
     @SubParamContainer
-    private ActivityTab activity;
+    private HistoryTab history;
 
     @SubParamContainer
     private DashboardTab dashboard;
@@ -114,6 +117,20 @@ public final class MemberPage extends ElveosPage {
 
         if (member.canGetInternalAccount()) {
             layout.addLeft(generateTabPane());
+        }
+
+        // Adding activity page link
+
+        final ActivityPageUrl activityPageUrl = new ActivityPageUrl();
+        activityPageUrl.setMember(member);
+
+        if (myPage) {
+            layout.addRight(new SideBarButton(Context.tr("My activity"), activityPageUrl, WebConfiguration.getImgActivitySmall(), false));
+        } else if(member.getFollowedFeatures().size() > 0){
+            layout.addRight(new SideBarButton(Context.tr("{0}''s activity", member.getDisplayName()),
+                                              activityPageUrl,
+                                              WebConfiguration.getImgActivitySmall(),
+                                              false));
         }
 
         // Adding list of teams
@@ -159,6 +176,7 @@ public final class MemberPage extends ElveosPage {
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
             modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change member settings")));
+            // modify.add(new HtmlFollowActorButton(member));
         }
 
         // Title
@@ -181,7 +199,7 @@ public final class MemberPage extends ElveosPage {
         try {
             // Description
             if (member.getDescription() != null && !member.getDescription().isEmpty()) {
-                HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlMarkdownRenderer(member.getDescription())));
+                final HtmlBranch memberDescription = new HtmlBlockquote("member_description").add(new HtmlParagraph(new HtmlCachedMarkdownRenderer(member.getDescription())));
                 memberId.add(memberDescription);
             }
 
@@ -238,10 +256,10 @@ public final class MemberPage extends ElveosPage {
         }
 
         if (!member.canGetInternalAccount()) {
-            // Displaying list of user recent activity
-            final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
+            // Displaying list of user recent history
+            final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent history"), 2);
             main.add(recent);
-            recent.add(ActivityTab.generateActivities(member, url));
+            recent.add(HistoryTab.generateHistorical(member, url));
         }
 
         return master;
@@ -259,9 +277,9 @@ public final class MemberPage extends ElveosPage {
         dashboard.setEasterEgg(true);
         tabPane.addTab(dashboard);
 
-        // Activity tab
-        activity = new ActivityTab(member, tr("Activity"), ACTIVITY_TAB, url);
-        tabPane.addTab(activity);
+        // History tab
+        history = new HistoryTab(member, tr("History"), ACTIVITY_TAB, url);
+        tabPane.addTab(history);
 
         // Account tab
         tabPane.addTab(new AccountTab(member, tr("Account"), ACCOUNT_TAB));

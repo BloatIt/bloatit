@@ -31,6 +31,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
@@ -53,26 +55,33 @@ public class ModifyTeamAction extends LoggedElveosAction {
     @MinConstraint(min = 4, message = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(max = 50, message = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."))
     @NonOptional(@tr("You forgot to write a team name"))
+    @FormField(label = @tr("Team name"))
     private final String displayName;
 
     @RequestParam(role = Role.POST)
     @MinConstraint(min = 4, message = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 300, message = @tr("The contact size has to be inferior to %constraint%."))
+    @MaxConstraint(max = 600, message = @tr("The contact size has to be inferior to %constraint%."))
     @NonOptional(@tr("You forgot to write a specification"))
+    @FormField(label = @tr("Contact information"))
     private final String contact;
 
     @RequestParam(role = Role.POST)
     @MinConstraint(min = 4, message = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(max = 5000, message = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."))
     @NonOptional(@tr("You forgot to write a description"))
+    @FormField(label = @tr("Team description"))
     private final String description;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Delete avatar"))
+    @FormComment(@tr("Checking this box will delete team's avatar."))
     private final Boolean deleteAvatar;
 
     @RequestParam(name = "avatar", role = Role.POST)
     @Optional
+    @FormField(label = @tr("Avatar of your team"))
+    @FormComment(@tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"))
     private final String avatar;
 
     @RequestParam(name = "avatar/filename", role = Role.POST)
@@ -86,6 +95,8 @@ public class ModifyTeamAction extends LoggedElveosAction {
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormComment(@tr("\"Open to all\" teams can be joined by anybody without an invitation."))
+    @FormField(label = @tr("Team membership"))
     private final Right right;
 
     private final ModifyTeamActionUrl url;

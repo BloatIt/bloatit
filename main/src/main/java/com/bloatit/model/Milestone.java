@@ -159,6 +159,10 @@ public final class Milestone extends Identifiable<DaoMilestone> {
 
     }
 
+    public final boolean canAddRelease() {
+        return canAccess(new RgtMilestone.Release(), Action.WRITE);
+    }
+
     public void setDeveloping() throws UnauthorizedPublicAccessException {
         tryAccess(new RgtMilestone.State(), Action.WRITE);
         setDevelopingUnprotected();

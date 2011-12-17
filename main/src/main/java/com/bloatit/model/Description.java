@@ -76,7 +76,8 @@ public final class Description extends Identifiable<DaoDescription> {
         super(dao);
     }
 
-    public void addTranslation(final Member member, final Team team, final Language language, final String title, final String description) throws UnauthorizedOperationException {
+    public void addTranslation(final Member member, final Team team, final Language language, final String title, final String description)
+            throws UnauthorizedOperationException {
         tryAccess(new RgtTranslation.Text(), Action.WRITE);
         getDao().addTranslation(member.getDao(), DaoGetter.get(team), language, title, description);
     }
@@ -106,9 +107,9 @@ public final class Description extends Identifiable<DaoDescription> {
         return tr;
     }
 
-//    private Translation getDefaultTranslation() {
-//        return Translation.create(getDao().getDefaultTranslation());
-//    }
+    // private Translation getDefaultTranslation() {
+    // return Translation.create(getDao().getDefaultTranslation());
+    // }
 
     public Language getDefaultLanguage() {
         return getDao().getDefaultLanguage();

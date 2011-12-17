@@ -30,7 +30,7 @@ public class ExternalServiceMembership extends Identifiable<DaoExternalServiceMe
         super(dao);
     }
 
-    public final void authorize(String accessToken, String refreshToken, Date expirationDate) {
+    public final void authorize(final String accessToken, final String refreshToken, final Date expirationDate) {
         getDao().authorize(accessToken, refreshToken, expirationDate);
     }
 
@@ -67,7 +67,7 @@ public class ExternalServiceMembership extends Identifiable<DaoExternalServiceMe
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public <ReturnType> ReturnType accept(ModelClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

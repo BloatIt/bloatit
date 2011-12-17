@@ -15,7 +15,7 @@ GET en/features?filter=finished&sort=contribution	200	NOP
 GET en/features?filter=finished	200	NOP
 GET en/features?filter=in_progress			200	NOP
 GET en/teams			200	NOP
-GET en/teams/237?tab=activity	200	NOP
+GET en/teams/237?tab=history	200	NOP
 GET en/teams/237			200	NOP
 GET en/features?filter=finished&sort=creation_date	200	NOP
 GET en/index			200	NOP
@@ -71,7 +71,7 @@ GET fr/features?filter=finished&sort=contribution		200	NOP
 GET fr/features?filter=finished		200	NOP
 GET fr/features?filter=in_progress		200	NOP
 GET fr/teams		200	NOP
-GET fr/teams/237?tab=activity		200	NOP
+GET fr/teams/237?tab=history		200	NOP
 GET fr/teams/237		200	NOP
 GET fr/features?filter=finished&sort=creation_date		200	NOP
 GET fr/index		200	NOP

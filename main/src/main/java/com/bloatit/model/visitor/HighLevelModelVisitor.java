@@ -34,6 +34,8 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
     public abstract T visitAbstract(Actor<?> model);
 
     public abstract T visitAbstract(UserContentInterface model);
+    
+    public abstract T visitAbstract(Bug model);
 
     public abstract T visitAbstract(BankTransaction model);
 

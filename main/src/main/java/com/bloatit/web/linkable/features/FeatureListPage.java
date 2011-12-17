@@ -46,7 +46,7 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.CreateFeatureProcessUrl;
+import com.bloatit.web.url.ChooseFeatureTypePageUrl;
 import com.bloatit.web.url.FeatureAtomFeedUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 
@@ -71,7 +71,7 @@ public final class FeatureListPage extends ElveosPage {
     private static final String SORT_BY_CREATION_DATE = "creation_date";
     private static final String SORT_BY_EXPIRATION_DATE = "expiration_date";
     private static final String SORT_CODE = "sort";
-    
+
     @RequestParam(name = SORT_CODE)
     @Optional(SORT_BY_RELEVANCE)
     private final String sort;
@@ -264,7 +264,7 @@ public final class FeatureListPage extends ElveosPage {
 
         // //////////
         // Right bar
-        layout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeatureProcessUrl(), WebConfiguration.getImgIdea()));
+        layout.addRight(new SideBarButton(Context.tr("Request a feature"), new ChooseFeatureTypePageUrl(), WebConfiguration.getImgIdea()));
         layout.addRight(new SideBarButton(Context.tr("Elveos Atom feed"), new FeatureAtomFeedUrl(), WebConfiguration.getAtomImg(), false));
         layout.addRight(new SideBarDocumentationBlock("feature"));
 
@@ -350,10 +350,10 @@ public final class FeatureListPage extends ElveosPage {
     protected Breadcrumb createBreadcrumb() {
         return FeatureListPage.generateBreadcrumb();
     }
-    
+
     @Override
     protected ArrayList<HtmlHeaderLink> getLinks() {
-        ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
+        final ArrayList<HtmlHeaderLink> list = new ArrayList<HtmlHeaderLink>();
         list.add(ElveosAtomFeed.generateHeaderLink(new FeatureAtomFeedUrl(), Context.tr("Feature feed")));
         return list;
     }

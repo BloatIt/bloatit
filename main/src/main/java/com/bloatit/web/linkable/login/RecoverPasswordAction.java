@@ -26,6 +26,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
@@ -59,20 +61,17 @@ public class RecoverPasswordAction extends ElveosAction {
     private final String login;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("Password cannot be blank."))
-    @MinConstraint(min = 7, message = @tr("Minimal length for new password is %constraint%."))
-    @MaxConstraint(max = 255, message = @tr("Number of characters for password has to be inferior to %constraint%."))
-    private final String newPassword;
-
-    @RequestParam(role = Role.POST)
-    @NonOptional(@tr("Password check cannot be blank."))
-    private final String checkNewPassword;
+    @NonOptional(@tr("I cannot change your password if you don't give me one !"))
+    @MinConstraint(min = 7, message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 255, message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @FormField(label = @tr("New password"), autocomplete = false, isShort = false)
+    @FormComment(@tr("7 characters minimum."))
+    private final String password;
 
     public RecoverPasswordAction(final RecoverPasswordActionUrl url) {
         super(url);
         this.url = url;
-        this.newPassword = url.getNewPassword();
-        this.checkNewPassword = url.getCheckNewPassword();
+        this.password = url.getPassword();
         this.login = url.getLogin();
         this.resetKey = url.getResetKey();
     }
@@ -86,7 +85,7 @@ public class RecoverPasswordAction extends ElveosAction {
 
         AuthToken.authenticate(member);
         try {
-            member.setPassword(newPassword);
+            member.setPassword(password);
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Error setting user password.", e);
         }
@@ -105,12 +104,6 @@ public class RecoverPasswordAction extends ElveosAction {
 
     @Override
     protected Url checkRightsAndEverything() {
-        if (!newPassword.equals(checkNewPassword)) {
-            session.notifyWarning(Context.tr("Password doesn't match confirmation."));
-            url.getNewPasswordParameter().addErrorMessage(Context.tr("New password doesn't match with confirmation."));
-            url.getCheckNewPasswordParameter().addErrorMessage(Context.tr("Confirmation doesn't match with new password."));
-            return new RecoverPasswordPageUrl(resetKey, login);
-        }
         member = MemberManager.getMemberByLogin(login);
         if (member == null || !member.getResetKey().equals(resetKey)) {
             session.notifyWarning(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
@@ -121,7 +114,9 @@ public class RecoverPasswordAction extends ElveosAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParameter(url.getNewPasswordParameter());
-        session.addParameter(url.getCheckNewPasswordParameter());
+        if (url.getPasswordParameter().getValue() != null) {
+            url.getPasswordParameter().setValue("", true);
+        }
+        session.addParameter(url.getPasswordParameter());
     }
 }

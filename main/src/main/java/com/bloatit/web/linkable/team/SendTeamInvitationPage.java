@@ -27,13 +27,13 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -66,7 +66,7 @@ public class SendTeamInvitationPage extends LoggedElveosPage {
         layout.addLeft(left);
 
         final SendTeamInvitationActionUrl target = new SendTeamInvitationActionUrl(getSession().getShortKey(), team);
-        final HtmlForm form = new HtmlForm(target.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(target.urlString());
         left.add(form);
         final FieldData fieldData = target.getReceiverParameter().pickFieldData();
         final HtmlDropDown receiverInput = new HtmlDropDown(fieldData.getName(), Context.tr("Select a member"));
@@ -76,7 +76,7 @@ public class SendTeamInvitationPage extends LoggedElveosPage {
                 receiverInput.addDropDownElement(m.getId().toString(), m.getDisplayName());
             }
         }
-        form.add(new HtmlSubmit(Context.tr("Submit")));
+        form.addSubmit(new HtmlSubmit(Context.tr("Submit")));
         return layout;
     }
 

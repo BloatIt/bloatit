@@ -110,7 +110,7 @@ public class DaoNewsFeed extends DaoIdentifiable {
     // Static accessors
     // ======================================================================
 
-    public static PageIterable<DaoNewsFeed> getAll(boolean isDeleted) {
+    public static PageIterable<DaoNewsFeed> getAll(final boolean isDeleted) {
         return new QueryCollection<DaoNewsFeed>("newsFeed.getAll").setBoolean("isDeleted", isDeleted);
     }
 

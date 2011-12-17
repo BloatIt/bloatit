@@ -174,7 +174,7 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         }
     }
 
-    public final void authorize(final String accessToken, final String refreshToken, final Date expirationDate) {
+    public void authorize(final String accessToken, final String refreshToken, final Date expirationDate) {
         if (accessToken == null || refreshToken == null || expirationDate == null) {
             throw new NonOptionalParameterException();
         }
@@ -190,7 +190,7 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
         this.expirationDate = expirationDate;
     }
 
-    public void reset(String token, EnumSet<RightLevel> level) {
+    public void reset(final String token, final EnumSet<RightLevel> level) {
         authorized = false;
         refreshToken = null;
         this.expirationDate = null;
@@ -202,35 +202,35 @@ public final class DaoExternalServiceMembership extends DaoIdentifiable {
     // Getters
     // ======================================================================
 
-    public final boolean isValid() {
+    public boolean isValid() {
         return authorized && expirationDate != null && DateUtils.isInTheFuture(expirationDate);
     }
 
-    public final DaoExternalService getService() {
+    public DaoExternalService getService() {
         return service;
     }
 
-    public final String getToken() {
+    public String getToken() {
         return token;
     }
 
-    public final boolean isAuthorized() {
+    public boolean isAuthorized() {
         return authorized;
     }
 
-    public final String getRefreshToken() {
+    public String getRefreshToken() {
         return refreshToken;
     }
 
-    public final Date getExpirationDate() {
+    public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public final DaoMember getMember() {
+    public DaoMember getMember() {
         return member;
     }
 
-    public final EnumSet<RightLevel> getLevels() {
+    public EnumSet<RightLevel> getLevels() {
         final EnumSet<RightLevel> levels = EnumSet.noneOf(RightLevel.class);
         if (trust) {
             levels.add(RightLevel.TRUST_ME);

@@ -12,14 +12,19 @@
 package com.bloatit.web.linkable.invoice;
 
 import java.math.BigDecimal;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.webprocessor.annotations.LengthConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
@@ -40,48 +45,67 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
     private final ModifyInvoicingContactProcess process;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a name."))
+    @NonOptional(@tr("You have to specify a name."))
+    @FormField(label = @tr("Name"))
+    @FormComment(@tr("Your full name, or the name of your organization."))
     private final String name;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a street."))
+    @NonOptional(@tr("You have to specify a street."))
+    @FormField(label = @tr("Street"), isShort = false)
     private final String street;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a Postcode."))
+    @NonOptional(@tr("You have to specify a ZIP code."))
+    @FormField(label = @tr("ZIP code"))
     private final String postalCode;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a city."))
+    @NonOptional(@tr("You have to specify a city."))
+    @FormField(label = @tr("City"))
     private final String city;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a country."))
-    private final String country;
+    @Optional
+    @FormField(label = @tr("Extras"))
+    private final String extras;
 
     @RequestParam(role = Role.POST)
     @Optional
-    private final String extras;
-
-    // Specific informations
-    @RequestParam(role = Role.POST)
-    @Optional()
-    private final String invoiceIdTemplate;
-
-    @RequestParam(role = Role.POST)
-    @Optional()
-    private final BigDecimal invoiceIdNumber;
-
-    @RequestParam(role = Role.POST)
-    @Optional()
-    private final String legalId;
-
-    @RequestParam(role = Role.POST)
-    @Optional()
+    @FormField(label = @tr("VAT identification number"))
     private final String taxIdentification;
 
     @RequestParam(role = Role.POST)
-    @Optional()
+    @Optional
+    @FormField(label = @tr("I represent a company"))
+    private final Boolean isCompany;
+
+    @RequestParam(role = Role.POST)
+    @LengthConstraint(length = 2, message = @tr("The country code must be %constraint% length."))
+    @NonOptional(@tr("You have to specify a country."))
+    @FormField(label = @tr("Country"))
+    private final String country;
+
+    // Specific informations
+    @RequestParam(role = Role.POST)
+    @Optional
+    @FormField(label = @tr("Invoice ID template"))
+    @FormComment(@tr("Format of the generated invoice numbers. See the side documentation for available fields. Example:&nbsp;'ELVEOS-{YEAR|4}{MONTH}{DAY}-F{ID|4}'"))
+    private final String invoiceIdTemplate;
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    @FormField(label = @tr("Next Invoice ID number"))
+    @FormComment(@tr("ID that will be used for the next generated invoice."))
+    private final BigDecimal invoiceIdNumber;
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    @FormField(label = @tr("Legal identification"))
+    private final String legalId;
+
+    @RequestParam(role = Role.POST)
+    @Optional
     private final BigDecimal taxRate;
 
     private final ModifyInvoicingContactActionUrl url;
@@ -96,12 +120,14 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         this.city = url.getCity();
         this.country = url.getCountry();
         this.extras = url.getExtras();
+        this.taxIdentification = url.getTaxIdentification();
+        this.isCompany = (url.getIsCompany() == null ? false : url.getIsCompany());
 
         // Specific informations
         this.invoiceIdTemplate = url.getInvoiceIdTemplate();
         this.invoiceIdNumber = url.getInvoiceIdNumber();
         this.legalId = url.getLegalId();
-        this.taxIdentification = url.getTaxIdentification();
+
         this.taxRate = url.getTaxRate();
     }
 
@@ -114,12 +140,13 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
             process.getActor().getContact().setPostalCode(postalCode);
             process.getActor().getContact().setCity(city);
             process.getActor().getContact().setCountry(country);
+            process.getActor().getContact().setTaxIdentification(taxIdentification);
+            process.getActor().getContact().setIsCompany(isCompany);
 
             if (process.getNeedAllInfos()) {
                 process.getActor().getContact().setInvoiceIdTemplate(invoiceIdTemplate);
                 process.getActor().getContact().setInvoiceIdNumber(invoiceIdNumber.setScale(0, BigDecimal.ROUND_HALF_EVEN));
                 process.getActor().getContact().setLegalId(legalId);
-                process.getActor().getContact().setTaxIdentification(taxIdentification);
                 process.getActor().getContact().setTaxRate(taxRate.divide(new BigDecimal("100"), 4, BigDecimal.ROUND_HALF_EVEN));
             }
 
@@ -138,8 +165,18 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
             isOk &= checkOptional(this.invoiceIdTemplate, Context.tr("You must add an invoice number template."), url.getInvoiceIdTemplateParameter());
             isOk &= checkOptional(this.invoiceIdNumber, Context.tr("You must add an invoice No initial value."), url.getInvoiceIdNumberParameter());
             isOk &= checkOptional(this.legalId, Context.tr("You must add a legal ID."), url.getLegalIdParameter());
-            isOk &= checkOptional(this.taxIdentification, Context.tr("You must add a tax identification."), url.getTaxIdentificationParameter());
             isOk &= checkOptional(this.taxRate, Context.tr("You must add a tax rate."), url.getTaxRateParameter());
+
+            if (this.invoiceIdTemplate != null) {
+                final Pattern pattern = Pattern.compile("^(.*)(\\{ID(\\|([0-9]+))?\\})(.*)");
+                final Matcher matcher = pattern.matcher(this.invoiceIdTemplate);
+                if (!matcher.matches()) {
+                    final String errorText = Context.tr("You must indicate a ID field in the template.");
+                    url.getInvoiceIdTemplateParameter().addErrorMessage(errorText);
+                    session.notifyError(errorText);
+                    isOk = false;
+                }
+            }
         }
 
         if (!isOk) {
@@ -148,7 +185,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         return NO_ERROR;
     }
 
-    private boolean checkOptional(Object object, String errorText, UrlParameter<?, ?> parameter) {
+    private boolean checkOptional(final Object object, final String errorText, final UrlParameter<?, ?> parameter) {
         if (object == null) {
             parameter.addErrorMessage(errorText);
             session.notifyError(errorText);
@@ -176,7 +213,7 @@ public final class ModifyInvoicingContactAction extends LoggedElveosAction {
         session.addParameter(url.getCityParameter());
         session.addParameter(url.getCountryParameter());
 
-        if (process.getNeedAllInfos()) {
+        if (process != null && process.getNeedAllInfos()) {
             session.addParameter(url.getInvoiceIdTemplateParameter());
             session.addParameter(url.getInvoiceIdNumberParameter());
             session.addParameter(url.getLegalIdParameter());

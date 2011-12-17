@@ -70,24 +70,24 @@ public final class OAuthPage extends LoggedElveosPage {
 
     private HtmlElement generateFeatureCreationForm(final Member me) {
 
-        PlaceHolderElement all = new PlaceHolderElement();
+        final PlaceHolderElement all = new PlaceHolderElement();
 
         final HtmlTitleBlock authorizedApplication = new HtmlTitleBlock(Context.tr("These applications can access your Elveos account"), 1);
-        PageIterable<ExternalServiceMembership> externalServices = me.getExternalServices();
-        for (ExternalServiceMembership serviceMembership : externalServices) {
-            ExternalService service = serviceMembership.getService();
-            DaoTranslation translation = service.getDescription().getDefaultTranslation();
+        final PageIterable<ExternalServiceMembership> externalServices = me.getExternalServices();
+        for (final ExternalServiceMembership serviceMembership : externalServices) {
+            final ExternalService service = serviceMembership.getService();
+            final DaoTranslation translation = service.getDescription().getDefaultTranslation();
 
             HtmlBranch logo = new HtmlDiv();
             if (service.getLogo() != null) {
                 logo = new HtmlDiv().add(new HtmlImage(new FileResourceUrl(service.getLogo()), service.getLogo().getShortDescription(), "logo"));
             }
-            HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText()))
-                                                                                                    .add(new HtmlParagraph(String.valueOf(serviceMembership.isValid()))));
-            HtmlBranch revoke = new HtmlDiv().add(new HtmlLink("TODO", Context.tr("Revoke permissions")))
-                                             .add(new HtmlParagraph(Context.getLocalizator()
-                                                                           .getDate(serviceMembership.getExpirationDate())
-                                                                           .toString(FormatStyle.MEDIUM)));
+            final HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText()))
+                                                                                                          .add(new HtmlParagraph(String.valueOf(serviceMembership.isValid()))));
+            final HtmlBranch revoke = new HtmlDiv().add(new HtmlLink("TODO", Context.tr("Revoke permissions")))
+                                                   .add(new HtmlParagraph(Context.getLocalizator()
+                                                                                 .getDate(serviceMembership.getExpirationDate())
+                                                                                 .toString(FormatStyle.MEDIUM)));
             // serviceMembership.getLevels();
 
             authorizedApplication.add(new HtmlDiv().add(logo).add(description).add(revoke));
@@ -95,16 +95,16 @@ public final class OAuthPage extends LoggedElveosPage {
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Manage your created applications"), 1);
 
-        for (ExternalServiceMembership serviceMembership : externalServices) {
-            ExternalService service = serviceMembership.getService();
-            DaoTranslation translation = service.getDescription().getDefaultTranslation();
+        for (final ExternalServiceMembership serviceMembership : externalServices) {
+            final ExternalService service = serviceMembership.getService();
+            final DaoTranslation translation = service.getDescription().getDefaultTranslation();
 
             HtmlBranch logo = new HtmlDiv();
             if (service.getLogo() != null) {
                 logo = new HtmlDiv().add(new HtmlImage(new FileResourceUrl(service.getLogo()), service.getLogo().getShortDescription(), "logo"));
             }
-            HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText()))
-                                                                                                    .addText(service.getToken()));
+            final HtmlBranch description = new HtmlDiv().add(new HtmlTitleBlock(translation.getTitle(), 2).add(new HtmlParagraph(translation.getText()))
+                                                                                                          .addText(service.getToken()));
             // serviceMembership.getLevels();
 
             createFeatureTitle.add(new HtmlDiv().add(logo).add(description));

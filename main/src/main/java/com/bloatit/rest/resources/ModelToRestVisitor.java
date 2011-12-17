@@ -27,12 +27,16 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
+import com.bloatit.model.Event;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Follow;
+import com.bloatit.model.FollowActor;
+import com.bloatit.model.FollowFeature;
+import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
@@ -184,12 +188,32 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     }
 
     @Override
-    public RestElement<?> visit(ExternalServiceMembership externalService) {
+    public RestElement<?> visit(final ExternalServiceMembership externalService) {
         throw new NotImplementedException();
     }
-    
+
     @Override
-    public RestElement<?> visit(Follow follow) {
+    public RestElement<?> visit(final Follow follow) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(final Event event) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(final FollowFeature model) {
+        return new RestFollowFeature(model);
+    }
+
+    @Override
+    public RestElement<?> visit(final FollowSoftware model) {
+        return new RestFollowSoftware(model);
+    }
+
+    @Override
+    public RestElement<?> visit(final FollowActor model) {
+        return new RestFollowActor(model);
     }
 }

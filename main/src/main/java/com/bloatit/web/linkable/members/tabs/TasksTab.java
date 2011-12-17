@@ -49,38 +49,47 @@ public class TasksTab extends HtmlTab {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Generating links to team invites
-        final HtmlTitleBlock teamInvites = new HtmlTitleBlock(Context.tr("Team invites"), 2);
-        master.add(teamInvites);
+        if (member.getInvitationCount() > 0) {
+            final HtmlTitleBlock teamInvites = new HtmlTitleBlock(Context.tr("Team invites"), 2);
+            master.add(teamInvites);
 
-        final PageIterable<JoinTeamInvitation> invitations = member.getReceivedInvitation(State.PENDING);
-        for (final JoinTeamInvitation invitation : invitations) {
-            final HtmlParagraph p = new HtmlParagraph();
-            try {
-                p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
-                        + invitation.getSender().getDisplayName() + "'");
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException(e);
+            final PageIterable<JoinTeamInvitation> invitations = member.getReceivedInvitation(State.PENDING);
+            for (final JoinTeamInvitation invitation : invitations) {
+                final HtmlParagraph p = new HtmlParagraph();
+                try {
+                    p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
+                            + invitation.getSender().getDisplayName() + "'");
+                } catch (final UnauthorizedOperationException e) {
+                    throw new ShallNotPassException(e);
+                }
+                final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), true, invitation).urlString(),
+                                                     Context.tr("accept"));
+                final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), false, invitation).urlString(),
+                                                     Context.tr("refuse"));
+
+                final HtmlMixedText acceptOrRefuse = new HtmlMixedText(Context.tr(" (<0::>) - (<1::>)"), accept, refuse);
+                p.add(acceptOrRefuse);
+                teamInvites.add(p);
             }
-            final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), true, invitation).urlString(),
-                                                 Context.tr("accept"));
-            final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), false, invitation).urlString(),
-                                                 Context.tr("refuse"));
-
-            final HtmlMixedText acceptOrRefuse = new HtmlMixedText(Context.tr(" (<0::>) - (<1::>)"), accept, refuse);
-            p.add(acceptOrRefuse);
-            teamInvites.add(p);
         }
 
-        final HtmlTitleBlock incoiving = new HtmlTitleBlock(Context.tr("Milestones to invoice"), 2);
-        master.add(incoiving);
+        if (member.getMilestoneToInvoice().size() > 0) {
 
-        final PageIterable<Milestone> milestoneToInvoice = member.getMilestoneToInvoice();
+            final HtmlTitleBlock incoiving = new HtmlTitleBlock(Context.tr("Invoice to create"), 2);
+            master.add(incoiving);
 
-        for (final Milestone milestone : milestoneToInvoice) {
-            final HtmlParagraph p = new HtmlParagraph();
-            p.addText("Invoicing " + milestone.getOffer().getFeature().getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle() + " - Milestone " + milestone.getPosition());
-            p.add(new ContributionInvoicingProcessUrl(milestone.getOffer().getAuthor(), milestone).getHtmlLink("Generate invoices"));
-            incoiving.add(p);
+            final PageIterable<Milestone> milestoneToInvoice = member.getMilestoneToInvoice();
+
+            for (final Milestone milestone : milestoneToInvoice) {
+                final HtmlParagraph p = new HtmlParagraph();
+                p.addText(milestone.getOffer()
+                                   .getFeature()
+                                   .getDescription()
+                                   .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()))
+                                   .getTitle() + " - Milestone " + milestone.getPosition());
+                p.add(new ContributionInvoicingProcessUrl(milestone.getOffer().getAuthor(), milestone).getHtmlLink("Generate invoices").setCssClass("button"));
+                incoiving.add(p);
+            }
         }
 
         return master;

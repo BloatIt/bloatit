@@ -20,11 +20,11 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
@@ -55,7 +55,7 @@ public final class MetaFeedbackEditPage extends ElveosPage {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Feedback", 1);
 
         final MetaEditFeedbackActionUrl editBugActionUrl = new MetaEditFeedbackActionUrl(getSession().getShortKey(), feedbackId);
-        final HtmlForm form = new HtmlForm(editBugActionUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(editBugActionUrl.urlString());
 
         final FieldData descriptionFieldData = editBugActionUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea bugDescription = new HtmlTextArea(descriptionFieldData.getName(), 20, 100);
@@ -74,10 +74,8 @@ public final class MetaFeedbackEditPage extends ElveosPage {
 
         bugDescription.setComment(tr("You can use markdown syntax in this field."));
 
-        final HtmlSubmit submit = new HtmlSubmit(tr("Update the feedback"));
-
         form.add(bugDescription);
-        form.add(submit);
+        form.addSubmit(new HtmlSubmit(tr("Update the feedback")));
         pageTitle.add(form);
 
         layout.addLeft(pageTitle);

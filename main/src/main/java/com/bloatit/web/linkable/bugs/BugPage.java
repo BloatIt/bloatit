@@ -31,7 +31,6 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
@@ -41,6 +40,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.right.Action;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeatureTabPane;
@@ -191,10 +191,10 @@ public final class BugPage extends ElveosPage {
 
     private HtmlBranch generateNewAttachementForm() {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(getSession().getShortKey(), bug);
-        final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
+        final HtmlElveosForm addAttachementForm = new HtmlElveosForm(targetUrl.urlString());
         addAttachementForm.enableFileUpload();
-        addAttachementForm.add(new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio", false));
-        addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachment")));
+        addAttachementForm.add(new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio", false, false));
+        addAttachementForm.addSubmit(new HtmlSubmit(Context.tr("Add attachment")));
         return addAttachementForm;
     }
 

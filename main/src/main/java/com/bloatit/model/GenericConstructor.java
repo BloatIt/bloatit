@@ -40,6 +40,7 @@ import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMilestoneContributionAmount;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoNewsFeed;
 import com.bloatit.data.DaoOffer;
@@ -139,6 +140,9 @@ public class GenericConstructor {
         }
         if (clazz.equals(ContributionInvoice.class)) {
             return DaoContributionInvoice.class;
+        }
+        if (clazz.equals(MilestoneContributionAmount.class)) {
+            return DaoMilestoneContributionAmount.class;
         }
         if (clazz.equals(Contact.class)) {
             return DaoContact.class;

@@ -1,0 +1,16 @@
+.activity-block .event-feature{color:#595959;position:relative;margin-bottom:30px;clear:both;}.activity-block .event-feature .event-top-border{height:1px;margin-top:-1px;}
+.activity-block .event-feature .event-progress{height:25px;width:100%;border-top:1px solid #b8b8b8;}.activity-block .event-feature .event-progress .event-progress-bar{width:85%;position:relative;}.activity-block .event-feature .event-progress .event-progress-bar .event-progress-background{height:20px;width:100%;}
+.activity-block .event-feature .event-progress .event-progress-bar .event-progress-filled{height:20px;background:#bcc7fe;margin-top:-20px;}
+.activity-block .event-feature .event-progress .event-progress-bar .event-progress-filled-success{height:20px;background:#7ec887;margin-top:-20px;width:100%;}
+.activity-block .event-feature .event-progress .event-progress-bar .event-progress-text .event-progress-money{position:absolute;top:3px;font-size:11px;}
+.activity-block .event-feature .event-progress .event-progress-bar .event-progress-text .money{padding-right:10px;}
+.activity-block .event-feature .event-progress .event-progress-bar .event-progress-text .event-progress-developing,.activity-block .event-feature .event-progress .event-progress-bar .event-progress-text .event-progress-success,.activity-block .event-feature .event-progress .event-progress-bar .event-progress-text .event-progress-no-offer,.activity-block .event-feature .event-progress .event-progress-bar .event-progress-text .event-progress-pledged{position:absolute;top:3px;font-size:11px;}
+.activity-block .event-feature .event-progress .event-progress-bar .event-progress-text .event-progress-percent{position:absolute;top:3px;font-size:11px;}
+.activity-block .event-feature .event-feature-logo{width:48px;padding-top:5px;position:absolute;}.activity-block .event-feature .event-feature-logo .software_logo_block{width:48px;height:40px;}.activity-block .event-feature .event-feature-logo .software_logo_block .software_logo{max-width:40px;max-height:40px;}
+.activity-block .event-feature .event-feature-description h2{color:#595959;font-size:14px;border:none;margin-top:5px;margin-left:5px;margin-bottom:5px;margin-right:5px;width:85%;}.activity-block .event-feature .event-feature-description h2 a{color:#595959;}
+.activity-block .event-feature .event-feature-description h2 a:hover{color:#868686;}
+.activity-block .event-feature .event-feature-description .event-entry{font-size:13px;clear:both;height:22px;max-height:22px;}.activity-block .event-feature .event-feature-description .event-entry .event-entry-logo{width:20px;text-align:center;}.activity-block .event-feature .event-feature-description .event-entry .event-entry-logo img{max-height:22px;}
+.activity-block .event-feature .event-feature-description .event-entry .event-entry-content{padding-top:2px;max-width:300px;}
+.activity-block .event-feature .event-feature-description .event-entry .date{color:#848484;font-size:8px;padding-top:7px;}
+.activity-block .event-feature .event-feature-description .unseen-entry{color:#141414;}.activity-block .event-feature .event-feature-description .unseen-entry .date{color:#646464;}
+

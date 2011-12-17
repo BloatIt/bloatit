@@ -17,28 +17,34 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
+import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
+import com.bloatit.framework.webprocessor.components.form.HtmlNumberField;
 import com.bloatit.framework.webprocessor.components.form.HtmlPercentField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.javascript.HtmlHiddenableDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Contact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -78,6 +84,11 @@ public final class ModifyContactPage extends LoggedElveosPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateInvoicingContactForm(loggedUser));
+
+        if (process.getNeedAllInfos()) {
+            layout.addRight(new SideBarDocumentationBlock("invoice_id_template"));
+        }
+
         return layout;
     }
 
@@ -97,137 +108,90 @@ public final class ModifyContactPage extends LoggedElveosPage {
     private HtmlElement generateCommonInvoicingContactForm(final Member member) {
 
         // Create contact form
-        final ModifyInvoicingContactActionUrl modifyInvoicingContextActionUrl = new ModifyInvoicingContactActionUrl(getSession().getShortKey(),
-                                                                                                                    process);
-        final HtmlForm newContactForm = new HtmlForm(modifyInvoicingContextActionUrl.urlString());
+        final ModifyInvoicingContactActionUrl targetUrl = new ModifyInvoicingContactActionUrl(getSession().getShortKey(), process);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        final FormBuilder ftool = new FormBuilder(ModifyInvoicingContactAction.class, targetUrl);
 
         try {
+            final Contact contact = member.getContact();
 
-            // Name
-            final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
+            final HtmlTextField name = new HtmlTextField(targetUrl.getNameParameter().getName());
+            ftool.add(form, name);
+            ftool.setDefaultValueIfNeeded(name, contact.getName());
 
-            String name = "";
+            final HtmlCheckbox isCompanyCheckbox = new HtmlCheckbox(targetUrl.getIsCompanyParameter().getName(), LabelPosition.BEFORE);
+            ftool.add(form, isCompanyCheckbox);
+            ftool.setDefaultValueIfNeeded(isCompanyCheckbox, String.valueOf(contact.isCompany()));
 
-            if (process.getActor().isTeam()) {
-                name = Context.tr("Organisation name");
-            } else {
-                name = Context.tr("Name");
-            }
+            final HtmlTextField street = new HtmlTextField(targetUrl.getStreetParameter().getName());
+            ftool.add(form, street);
+            ftool.setDefaultValueIfNeeded(street, contact.getStreet());
 
-            final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
-            if (nameData.getSuggestedValue() == null) {
-                nameInput.setDefaultValue(process.getActor().getContact().getName());
-            } else {
-                nameInput.setDefaultValue(nameData.getSuggestedValue());
-            }
-            nameInput.addErrorMessages(nameData.getErrorMessages());
-            if (process.getActor().isTeam()) {
-                nameInput.setComment(Context.tr("The name of your company or your association."));
-            } else {
-                nameInput.setComment(Context.tr("Your full name"));
-            }
-            newContactForm.add(nameInput);
-
-            // Street
-            final Contact contact = process.getActor().getContact();
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getStreetParameter(),//
-                                                 Context.tr("Street"),//
-                                                 contact.getStreet()));
-
-            // Extras
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getExtrasParameter(),//
-                                                 Context.tr("Extras"),//
-                                                 contact.getExtras(),
-                                                 Context.tr("Optional.")));
-
-            // City
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getCityParameter(),//
-                                                 Context.tr("City"),//
-                                                 contact.getCity()));
-
-            // Postal code
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getPostalCodeParameter(),//
-                                                 Context.tr("Postcode"),//
-                                                 contact.getPostalCode()));
+            final HtmlTextField extras = new HtmlTextField(targetUrl.getExtrasParameter().getName());
+            ftool.add(form, extras);
+            ftool.setDefaultValueIfNeeded(extras, contact.getExtras());
 
             // Country
-            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getCountryParameter(),//
-                                                 Context.tr("Country"),//
-                                                 contact.getCountry()));
+            final HtmlDropDown country = new HtmlDropDown(targetUrl.getCountryParameter().getName());
+            for (final Country entry : Country.getAvailableCountries()) {
+                country.addDropDownElement(entry.getCode(), entry.getName());
+            }
+            if (contact.getCountry() != null) {
+                ftool.setDefaultValueIfNeeded(country, contact.getCountry());
+            } else {
+                ftool.setDefaultValueIfNeeded(country, Context.getLocalizator().getCountryCode());
+            }
+            ftool.add(form, country);
+
+            final HtmlTextField city = new HtmlTextField(targetUrl.getCityParameter().getName());
+            ftool.add(form, city);
+            ftool.setDefaultValueIfNeeded(city, contact.getCity());
+
+            final HtmlTextField zipcode = new HtmlTextField(targetUrl.getPostalCodeParameter().getName());
+            ftool.add(form, zipcode);
+            ftool.setDefaultValueIfNeeded(zipcode, contact.getPostalCode());
+
+            final HtmlHiddenableDiv hiddenableDiv = new HtmlHiddenableDiv(isCompanyCheckbox, contact.isCompany());
+            form.add(hiddenableDiv);
+            ftool.add(hiddenableDiv, new HtmlTextField(targetUrl.getTaxIdentificationParameter().getName()));
 
             if (process.getNeedAllInfos()) {
-                final HtmlTitleBlock specificForm = new HtmlTitleBlock(Context.tr("Invoice emission"), 1);
-
-                // Invoice ID template
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdTemplateParameter(),//
-                                                   Context.tr("Invoice ID template"),//
-                                                   contact.getInvoiceIdTemplate()));
+                final HtmlTitleBlock specificForm = new HtmlTitleBlock(Context.tr("Invoice issuing"), 1);
+                form.add(specificForm);
 
                 // Invoice ID Number
-                BigDecimal invoiceIdNumber = contact.getInvoiceIdNumber();
+                final BigDecimal invoiceIdNumberValue = contact.getInvoiceIdNumber();
                 String invoiceIdNumberText = null;
 
-                if (invoiceIdNumber != null) {
-                    invoiceIdNumberText = "" + invoiceIdNumber.intValue();
+                if (invoiceIdNumberValue != null) {
+                    invoiceIdNumberText = String.valueOf(invoiceIdNumberValue.intValue());
                 }
 
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getInvoiceIdNumberParameter(),//
-                                                   Context.tr("Invoice ID number"),//
-                                                   invoiceIdNumberText));
+                final HtmlNumberField invoiceIdNumber = new HtmlNumberField(targetUrl.getInvoiceIdNumberParameter().getName());
+                ftool.add(form, invoiceIdNumber);
+                ftool.setDefaultValueIfNeeded(invoiceIdNumber, invoiceIdNumberText);
 
-                // Legal identification
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getLegalIdParameter(),//
-                                                   Context.tr("Legal identification"),//
-                                                   contact.getLegalId()));
+                final HtmlTextField invoiceIdTemplate = new HtmlTextField(targetUrl.getInvoiceIdTemplateParameter().getName());
+                ftool.add(form, invoiceIdTemplate);
+                ftool.setDefaultValueIfNeeded(invoiceIdTemplate, contact.getInvoiceIdTemplate());
 
-                // Tax identification
-                specificForm.add(generateTextField(modifyInvoicingContextActionUrl.getTaxIdentificationParameter(),//
-                                                   Context.tr("Tax identification"),//
-                                                   contact.getTaxIdentification()));
+                final HtmlTextField legalId = new HtmlTextField(targetUrl.getLegalIdParameter().getName());
+                ftool.add(form, legalId);
+                ftool.setDefaultValueIfNeeded(legalId, contact.getLegalId());
 
-                // Tax Rate
-                BigDecimal taxRate = contact.getTaxRate().multiply(new BigDecimal("100"));
-
-                final FieldData fieldDataTaxRate = modifyInvoicingContextActionUrl.getTaxRateParameter().pickFieldData();
-                final HtmlPercentField inputTaxRate = new HtmlPercentField(fieldDataTaxRate.getName(), Context.tr("Tax Rate"));
-                if (fieldDataTaxRate.getSuggestedValue() == null) {
-                    inputTaxRate.setDefaultStringValue(taxRate);
-                } else {
-                    inputTaxRate.setDefaultValue(fieldDataTaxRate.getSuggestedValue());
+                final HtmlPercentField taxeRate = new HtmlPercentField(targetUrl.getTaxRateParameter().getName());
+                ftool.add(form, taxeRate);
+                final BigDecimal taxRate = contact.getTaxRate();
+                if (taxRate != null) {
+                    ftool.setDefaultValueIfNeeded(taxeRate, taxRate.multiply(new BigDecimal("100")).toPlainString());
                 }
-                inputTaxRate.setComment(Context.tr("Example: 19.6 for TVA in France."));
-                inputTaxRate.addErrorMessages(fieldDataTaxRate.getErrorMessages());
-                specificForm.add(inputTaxRate);
-
-                newContactForm.add(specificForm);
             }
-
-            final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
-            newContactForm.add(newContactButton);
+            form.addSubmit(new HtmlSubmit(Context.tr("Update invoicing contact")));
         } catch (final UnauthorizedPrivateAccessException e) {
             throw new ShallNotPassException("The user is not allowed to access to his contact informations");
         }
 
-        return newContactForm;
-    }
-
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name, final String defaultValue) {
-        return generateTextField(parameter, name, defaultValue, null);
-    }
-
-    private HtmlTextField generateTextField(final UrlParameter<?, ?> parameter, final String name, final String defaultValue, final String comment) {
-        final FieldData fieldData = parameter.pickFieldData();
-        final HtmlTextField input = new HtmlTextField(fieldData.getName(), name);
-        if (fieldData.getSuggestedValue() == null) {
-            input.setDefaultValue(defaultValue);
-        } else {
-            input.setDefaultValue(fieldData.getSuggestedValue());
-        }
-        if (comment != null) {
-            input.setComment(comment);
-        }
-        input.addErrorMessages(fieldData.getErrorMessages());
-        return input;
+        return form;
     }
 
     @Override

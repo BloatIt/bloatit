@@ -11,25 +11,21 @@
  */
 package com.bloatit.web.linkable.softwares;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
-import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
+import com.bloatit.web.components.SoftwareListRenderer;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
@@ -37,7 +33,6 @@ import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
-import com.bloatit.web.url.SoftwarePageUrl;
 
 @ParamContainer("softwares")
 public final class SoftwareListPage extends ElveosPage {
@@ -60,7 +55,7 @@ public final class SoftwareListPage extends ElveosPage {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Software list"), 1);
 
         final PageIterable<Software> softwareList = SoftwareManager.getAll();
-        final HtmlRenderer<Software> softwareItemRenderer = new SoftwareRenderer();
+        final HtmlRenderer<Software> softwareItemRenderer = new SoftwareListRenderer();
 
         final SoftwareListPageUrl clonedUrl = url.clone();
         pagedSoftwareList = new HtmlPagedList<Software>(softwareItemRenderer, softwareList, clonedUrl, clonedUrl.getPagedSoftwareListUrl());
@@ -86,30 +81,6 @@ public final class SoftwareListPage extends ElveosPage {
         return true;
     }
 
-    private static class SoftwareRenderer implements HtmlRenderer<Software> {
-
-        public SoftwareRenderer() {
-            super();
-        }
-
-        @Override
-        public HtmlNode generate(final Software software) {
-            final SoftwarePageUrl softwareUrl = new SoftwarePageUrl(software);
-            final HtmlDiv box = new HtmlDiv("software_box");
-
-            box.add(new HtmlDiv("float_right").add(new SoftwaresTools.Logo(software)));
-
-            final HtmlDiv textBox = new HtmlDiv("software_text");
-            HtmlLink htmlLink;
-            htmlLink = softwareUrl.getHtmlLink(software.getName());
-            textBox.add(htmlLink);
-            box.add(textBox);
-            box.add(new HtmlClearer());
-
-            return box;
-        }
-    };
-
     @Override
     protected Breadcrumb createBreadcrumb() {
         return SoftwareListPage.generateBreadcrumb();
@@ -118,7 +89,7 @@ public final class SoftwareListPage extends ElveosPage {
     protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
-        breadcrumb.pushLink(new SoftwareListPageUrl().getHtmlLink(tr("Software")));
+        breadcrumb.pushLink(new SoftwareListPageUrl().getHtmlLink(Context.trc("Software (list)", "Software")));
 
         return breadcrumb;
     }

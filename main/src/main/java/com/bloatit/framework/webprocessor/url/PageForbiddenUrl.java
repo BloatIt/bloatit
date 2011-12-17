@@ -72,4 +72,9 @@ public final class PageForbiddenUrl extends Url implements Cloneable {
     public static boolean matches(final String pageCode) {
         return getPageName().equals(pageCode);
     }
+
+    @Override
+    public UrlParameter<?, ?> getParameter(String name) {
+        return null;
+    }
 }

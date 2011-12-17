@@ -29,12 +29,10 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.bloatit.data.DaoBankTransaction.DaoBankTransactionSum;
 import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -130,21 +128,6 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     @REST(name = "banktransactions", method = RequestMethod.GET)
     public static RestBankTransactionList getAll() {
         return new RestBankTransactionList(BankTransactionManager.getAll());
-    }
-
-    /**
-     * @param from number of days from now. Represent the begin date of the
-     *            aggregated sum.
-     * @param to number of days from now. Represent the end date of the
-     *            aggregated sum.
-     * @return the sum of all {@link BankTransaction} between the <i>from</i>
-     *         and <i>to</i> date.
-     */
-    @REST(name = "banktransactions", method = RequestMethod.GET, params = { "from", "to" })
-    public static RestBankTransactionSum getBankTransactionsSum(final String from, String to) {
-        DaoBankTransactionSum sum = BankTransactionManager.getSum(DateUtils.nowMinusSomeDays(Integer.parseInt(from)),
-                                                                  DateUtils.nowMinusSomeDays(Integer.parseInt(to)));
-        return new RestBankTransactionSum(sum.count, sum.chargedValueSum, sum.paidValueSum);
     }
 
     // ---------------------------------------------------------------------------------------

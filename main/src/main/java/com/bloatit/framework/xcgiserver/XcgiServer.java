@@ -52,7 +52,7 @@ public final class XcgiServer {
         private final Map<String, Integer> lastAccessedIp = new HashMap<String, Integer>();
         private long lasteTimestamp = new Date().getTime();
 
-        public void access(String ip, long timestamp) {
+        public void access(final String ip, final long timestamp) {
             if (timestamp > (lasteTimestamp + FrameworkConfiguration.getXcgiBlockerElapse())) {
                 lasteTimestamp = timestamp;
                 lastAccessedIp.clear();
@@ -204,6 +204,7 @@ public final class XcgiServer {
                 for (final XcgiProcessor processor : getProcessors()) {
                     if (processor.process(createKey(header, header.getGetParameters()), header, post, new HttpResponse(parser.getResponseStream(),
                                                                                                                        header))) {
+                        // Check temporary autentification
                         break;
                     }
                 }
@@ -242,7 +243,7 @@ public final class XcgiServer {
             }
         }
 
-        private XcgiParser getXCGIParser(ByteChannel channel) throws IOException {
+        private XcgiParser getXCGIParser(final ByteChannel channel) throws IOException {
             // You can also use scgi parser
             return new FCGIParser(channel);
         }

@@ -20,10 +20,8 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.model.Feature;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.master.HtmlDefineParagraph;
@@ -36,17 +34,13 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
     public SideBarFeatureBlock(final Feature feature, final BigDecimal amount) {
         setTitle(tr("Feature abstract"));
 
-        try {
-            setFloatRight(new SoftwaresTools.Logo(feature.getSoftware()));
-            add(new HtmlDefineParagraph(tr("Title: "), FeaturesTools.getTitle(feature)));
-            add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(feature.getSoftware())));
-            add(new HtmlDefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
-            
-            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount, FeaturesTools.FeatureContext.OTHER)));
-            add(new HtmlParagraph(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(tr("more details..."))));
-        } catch (final UnauthorizedOperationException e) {
-            throw new ShallNotPassException(e);
-        }
+        setFloatRight(new SoftwaresTools.Logo(feature.getSoftware()));
+        add(new HtmlDefineParagraph(tr("Title: "), FeaturesTools.getTitle(feature)));
+        add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(feature.getSoftware())));
+        add(new HtmlDefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
+
+        add(new HtmlParagraph(FeaturesTools.generateProgress(feature, amount, FeaturesTools.FeatureContext.OTHER)));
+        add(new HtmlParagraph(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(tr("more details..."))));
     }
 
     public SideBarFeatureBlock(final Feature feature) {

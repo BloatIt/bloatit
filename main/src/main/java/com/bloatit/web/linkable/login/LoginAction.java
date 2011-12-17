@@ -18,10 +18,12 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;
@@ -41,18 +43,24 @@ public final class LoginAction extends ElveosAction {
 
     @NonOptional(@tr("You must enter a login."))
     @RequestParam(name = LOGIN_CODE, role = RequestParam.Role.POST)
+    @FormField(label = @tr("Name"), isShort = true)
     private final String login;
 
     @NonOptional(@tr("You must enter a password."))
     @RequestParam(name = PASSWORD_CODE, role = RequestParam.Role.POST)
+    @FormField(label = @tr("Password"), isShort = true)
     private final String password;
     private final LoginActionUrl url;
+
+    @RequestParam
+    private final String returnUrl;
 
     public LoginAction(final LoginActionUrl url) {
         super(url);
         this.url = url;
         this.login = url.getLogin();
         this.password = url.getPassword();
+        this.returnUrl = url.getReturnUrl();
     }
 
     @Override
@@ -60,8 +68,8 @@ public final class LoginAction extends ElveosAction {
         try {
             AuthToken.authenticate(login, password);
             session.notifyGood(Context.tr("Login success."));
-            Context.getLocalizator().forceMemberChoice();
-            return session.pickPreferredPage();
+            Context.getLocalizator().forceLanguage(Context.getSession().getMemberLocale());
+            return new UrlString(returnUrl);
         } catch (final ElementNotFoundException e) {
 
             // We check if member is non existing or not validated
@@ -69,7 +77,7 @@ public final class LoginAction extends ElveosAction {
             if (m != null && m.getActivationState() == ActivationState.VALIDATING) {
                 session.notifyWarning(Context.tr("Your account has not been validated yet. Please check your emails."));
                 transmitParameters();
-                return new LoginPageUrl();
+                return new LoginPageUrl(url.urlString());
             }
 
             AuthToken.unAuthenticate();
@@ -80,14 +88,14 @@ public final class LoginAction extends ElveosAction {
             url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
             url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));
             transmitParameters();
-            return new LoginPageUrl();
+            return new LoginPageUrl(url.urlString());
         }
 
     }
 
     @Override
     protected Url doProcessErrors() {
-        return new LoginPageUrl();
+        return new LoginPageUrl(url.urlString());
     }
 
     @Override

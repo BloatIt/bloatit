@@ -38,8 +38,6 @@ public final class Translation extends Kudosable<DaoTranslation> {
         }
     }
 
-    
-    
     @SuppressWarnings("synthetic-access")
     public static Translation create(final DaoTranslation dao) {
         return new MyCreator().create(dao);
@@ -48,7 +46,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
     private Translation(final DaoTranslation dao) {
         super(dao);
     }
-    
+
     public String getTitle() {
         return getDao().getTitle();
     }

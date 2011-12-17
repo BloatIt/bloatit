@@ -16,6 +16,7 @@
 //
 package com.bloatit.model;
 
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
@@ -27,10 +28,14 @@ import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoFileMetadata;
+import com.bloatit.data.DaoFollowActor;
+import com.bloatit.data.DaoFollowFeature;
+import com.bloatit.data.DaoFollowSoftware;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMember.EmailStrategy;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
@@ -38,8 +43,10 @@ import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.feature.FeatureList;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.JoinTeamInvitationList;
@@ -55,6 +62,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.RightManager;
+import com.bloatit.model.right.RightManager.Private;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
@@ -81,7 +89,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Create a new member using its Dao version.
-     * 
+     *
      * @param dao a DaoMember
      * @return the new member or null if dao is null.
      */
@@ -93,7 +101,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     * 
+     *
      * @param login is the login or name of this actor. It must be non null,
      *            unique, longer than 2 chars and do not contains space chars
      *            ("[^\\p{Space}]+").
@@ -129,7 +137,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * To invite a member into a team you have to have the WRITE right on the
      * "invite" property.
-     * 
+     *
      * @param member The member you want to invite
      * @param team The team in which you invite a member.
      * @throws UnauthorizedOperationException
@@ -145,7 +153,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * To accept an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done,
      * and <i>false</i> is returned.
-     * 
+     *
      * @param invitation the authenticate member must be receiver of the
      *            invitation.
      * @return true if the invitation is accepted, false if there is an error.
@@ -172,7 +180,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * To refuse an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done.
-     * 
+     *
      * @param invitation the authenticate member must be receiver of the
      *            invitation.
      * @throws UnauthorizedOperationException
@@ -188,7 +196,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * To remove this member from a team you have to have the DELETED right on
      * the "team" property. If the member is not in the "team", nothing is done.
      * (Although it should be considered as an error and will be logged)
-     * 
+     *
      * @param aTeam is the team from which the user will be removed.
      * @throws UnauthorizedOperationException
      */
@@ -202,7 +210,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * To add a user into a public team, you have to make sure you can access
      * the teams with the {@link Action#WRITE} action.
-     * 
+     *
      * @param team must be a public team.
      * @throws UnauthorizedOperationException if the authenticated member do not
      *             have the right to use this methods.
@@ -216,7 +224,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Adds a user to a team without checking if the team is Public or not
-     * 
+     *
      * @param team the team to which the user will be added
      */
     void addToTeamUnprotected(final Team team) {
@@ -227,7 +235,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Updates user password with right checking
-     * 
+     *
      * @param password the new password
      * @throws UnauthorizedPrivateAccessException when the logged user cannot
      *             modify the password
@@ -239,7 +247,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Checks if an inputed password matches the user password
-     * 
+     *
      * @param password the password to match
      * @return <i>true</i> if the inputed password matches the password in the
      *         database, <i>false</i> otherwise
@@ -312,7 +320,6 @@ public final class Member extends Actor<DaoMember> implements User {
         return false;
     }
 
-
     public boolean hasEmailToActivate() {
         return getDao().getEmailToActivate() != null;
     }
@@ -334,14 +341,127 @@ public final class Member extends Actor<DaoMember> implements User {
     public void setEmailToActivate(final String email) {
         getDao().setEmailToActivate(email);
     }
-    
-    public void acceptNewsLetter(boolean newsletter) {
+
+    public void acceptNewsLetter(final boolean newsletter) {
         getDao().acceptNewsLetter(newsletter);
+    }
+
+    public FollowFeature followOrGetFeature(final Feature f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
+        return FollowFeature.create(getDao().followOrGetFeature(((FeatureImplementation) f).getDao()));
+    }
+
+    public boolean isFollowing(final Feature feature) {
+        return getDao().isFollowing(((FeatureImplementation) feature).getDao());
+    }
+
+    public boolean isFollowing(final Software software) {
+        return getDao().isFollowing(software.getDao());
+    }
+
+    public boolean isFollowing(final Actor<?> actor) {
+        return getDao().isFollowing(actor.getDao());
+    }
+
+    public void unfollowFeature(final Feature f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
+        final FollowFeature followFeature = followOrGetFeature(f);
+        followFeature.getDao().unfollow();
+    }
+
+    public FollowSoftware followOrGetSoftware(final Software s) throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
+        if (!isFollowing(s)) {
+            // Follow all features of the software
+            for (final Feature feature : s.getFeatures()) {
+                final FollowFeature followFeature = followOrGetFeature(feature);
+                followFeature.setFeatureComment(true);
+                followFeature.setBugComment(true);
+            }
+        }
+        return FollowSoftware.create(getDao().followOrGetSoftware(s.getDao()));
+    }
+
+    public void unfollowSoftware(final Software s) throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
+        final FollowSoftware followSoftware = followOrGetSoftware(s);
+        followSoftware.getDao().unfollow();
+
+        // Unfollow all features of the software
+        for (final FollowFeature followFeature : getFollowedFeatures()) {
+            if (followFeature.getFollowed().getSoftware().equals(s)) {
+                unfollowFeature(followFeature.getFollowed());
+            }
+        }
+    }
+
+    public FollowActor followOrGetActor(final Actor<?> f) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
+        return FollowActor.create(getDao().followOrGetActor(f.getDao()));
+    }
+
+    public void unfollowActor(final Actor<?> a) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Follow(), Action.WRITE);
+        final FollowActor followActor = followOrGetActor(a);
+        followActor.getDao().unfollow();
+    }
+
+    public void setLastWatchedEvents(final Date lastWatchedEvents) {
+        getDao().setLastWatchedEvents(lastWatchedEvents);
+    }
+
+    public void setEmailStrategy(final EmailStrategy emailStrategy) throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.WRITE);
+        getDao().setEmailStrategy(emailStrategy);
+    }
+
+    public void setGlobalFollow(final boolean globalFollow) throws UnauthorizedOperationException {
+        tryAccess(new Private(), Action.WRITE);
+
+        if (globalFollow && !isGlobalFollow()) {
+            // Follow all
+            for (final Feature feature : FeatureManager.getAllByCreationDate()) {
+                final FollowFeature followFeature = followOrGetFeature(feature);
+                followFeature.setFeatureComment(true);
+                followFeature.setBugComment(true);
+            }
+        } else if (!globalFollow && isGlobalFollow()) {
+            for (final FollowFeature followFeature : getFollowedFeatures()) {
+                Software software = followFeature.getFollowed().getSoftware();
+                if (software != null && !isFollowing(software)) {
+                    unfollowFeature(followFeature.getFollowed());
+                }
+            }
+        }
+
+        getDao().setGlobalFollow(globalFollow);
+    }
+
+    public void setGlobalFollowWithMail(final boolean globalFollow) throws UnauthorizedOperationException {
+        tryAccess(new Private(), Action.WRITE);
+
+        for (final FollowFeature followFeature : getFollowedFeatures()) {
+            Software software = followFeature.getFollowed().getSoftware();
+            if (software != null && !isFollowing(software)) {
+                followFeature.setMail(globalFollow);
+            }
+        }
+
+        getDao().setGlobalFollowWithMail(globalFollow);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public Date getLastWatchedEvents() {
+        final Date lastWatchedEvents = getDao().getLastWatchedEvents();
+        if (lastWatchedEvents == null) {
+            return DateUtils.dawnOfTime();
+        } else {
+            return lastWatchedEvents;
+        }
+    }
 
     /*
      * (non-Javadoc)
@@ -352,9 +472,27 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getActivationState();
     }
 
-    public String getDescription() throws UnauthorizedPublicAccessException {
-        tryAccess(new RgtMember.UserDescription(), Action.READ);
+    public String getDescription() {
         return getDao().getDescription();
+    }
+
+    public EmailStrategy getEmailStrategy() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().getEmailStrategy();
+    }
+
+    public FollowFeature getFollowFeature(final Feature feature) {
+        return FollowFeature.create(getDao().getFollowFeature(((FeatureImplementation) feature).getDao()));
+    }
+
+    public boolean isGlobalFollow() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().isGlobalFollow();
+    }
+
+    public boolean isGlobalFollowWithMail() throws UnauthorizedPrivateAccessException {
+        tryAccess(new Private(), Action.READ);
+        return getDao().isGlobalFollowWithMail();
     }
 
     public String getActivationKey() {
@@ -397,7 +535,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * To get the teams you have the have the READ right on the "team" property.
-     * 
+     *
      * @return all the team in which this member is.
      * @throws UnauthorizedOperationException
      */
@@ -414,13 +552,17 @@ public final class Member extends Actor<DaoMember> implements User {
         return new MilestoneList(getDao().getMilestoneToInvoice());
     }
 
+    public PageIterable<Milestone> getMilestoneInvoiced() {
+        return new MilestoneList(getDao().getMilestoneInvoiced());
+    }
+
     public PageIterable<Milestone> getMilestones() {
         return new MilestoneList(getDao().getMilestones());
     }
 
     // TODO make right managements
-    public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
-        return new UserContentList(getDao().getActivity());
+    public PageIterable<UserContent<? extends DaoUserContent>> getHistory() {
+        return new UserContentList(getDao().getHistory());
     }
 
     private static final float INFLUENCE_MULTIPLICATOR = 2;
@@ -458,7 +600,7 @@ public final class Member extends Actor<DaoMember> implements User {
     public String getEmailUnprotected() {
         return getDao().getEmail();
     }
-    
+
     public boolean getNewsletterAccept() {
         return getDao().getNewsletterAccept();
     }
@@ -510,7 +652,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     @Override
-    public PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException {
+    public PageIterable<Contribution> doGetContributions() {
         return getContributions(true);
     }
 
@@ -559,7 +701,19 @@ public final class Member extends Actor<DaoMember> implements User {
         return new ListBinder<ExternalServiceMembership, DaoExternalServiceMembership>(getDao().getAuthorizedExternalServices());
     }
 
-    public void addAuthorizedExternalService(String clientId, String token, EnumSet<RightLevel> rights) {
+    public PageIterable<FollowFeature> getFollowedFeatures() {
+        return new ListBinder<FollowFeature, DaoFollowFeature>(getDao().getFollowedFeatures());
+    }
+
+    public PageIterable<FollowActor> getFollowedActors() {
+        return new ListBinder<FollowActor, DaoFollowActor>(getDao().getFollowedActors());
+    }
+
+    public PageIterable<FollowSoftware> getFollowedSoftware() {
+        return new ListBinder<FollowSoftware, DaoFollowSoftware>(getDao().getFollowedSoftware());
+    }
+
+    public void addAuthorizedExternalService(final String clientId, final String token, final EnumSet<RightLevel> rights) {
         getDao().addAuthorizedExternalService(clientId, token, rights);
     }
 
@@ -569,7 +723,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Tells if the authenticated user can access the <i>Avatar</i> property.
-     * 
+     *
      * @param action the type of access you want to do on the <i>Avatar</i>
      *            property.
      * @return true if you can access the <i>Avatar</i> property.
@@ -593,7 +747,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * Indicates whether the logged member can access <code>ANY</code>of the
      * user's information
-     * 
+     *
      * @param action the type of action
      */
     public boolean canAccessUserInformations(final Action action) {
@@ -667,4 +821,5 @@ public final class Member extends Actor<DaoMember> implements User {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
 }

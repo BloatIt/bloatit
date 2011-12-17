@@ -22,12 +22,16 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
+import com.bloatit.data.DaoEvent;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalService;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFollow;
+import com.bloatit.data.DaoFollowActor;
+import com.bloatit.data.DaoFollowFeature;
+import com.bloatit.data.DaoFollowSoftware;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoInvoice;
@@ -49,12 +53,16 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
+import com.bloatit.model.Event;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Follow;
+import com.bloatit.model.FollowActor;
+import com.bloatit.model.FollowFeature;
+import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
@@ -215,5 +223,25 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     @Override
     public Class<?> visit(Follow model) {
         return DaoFollow.class;
+    }
+
+    @Override
+    public Class<?> visit(Event event) {
+        return DaoEvent.class;
+    }
+
+    @Override
+    public Class<?> visit(FollowFeature model) {
+        return DaoFollowFeature.class;
+    }
+
+    @Override
+    public Class<?> visit(FollowSoftware model) {
+        return DaoFollowSoftware.class;
+    }
+
+    @Override
+    public Class<?> visit(FollowActor model) {
+        return DaoFollowActor.class;
     }
 }

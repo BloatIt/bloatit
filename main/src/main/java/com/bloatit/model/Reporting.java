@@ -18,7 +18,7 @@ public class Reporting {
     private final static class PlannedTaskReport extends PlannedTask {
         private static final long serialVersionUID = -605135073621984416L;
 
-        private PlannedTaskReport(Date time, int id) {
+        private PlannedTaskReport(final Date time, final int id) {
             super(time, id);
         }
 
@@ -43,32 +43,32 @@ public class Reporting {
     public void reportServerStart() {
         report("Server start", new Date().toString());
     }
-    
+
     public void reportServerStop() {
         report("Server stop", new Date().toString());
     }
-    
-    public void reportMemberCreation(String login) {
+
+    public void reportMemberCreation(final String login) {
         report("Member creation", login);
     }
 
-    public void reportTeamCreation(String name) {
+    public void reportTeamCreation(final String name) {
         report("Team creation", name);
     }
 
-    public void reportAccountCharging(String amountFrom) {
+    public void reportAccountCharging(final String amountFrom) {
         report("Account charging", amountFrom);
     }
-    
-    public void reportNewFeature(String featureName) {
+
+    public void reportNewFeature(final String featureName) {
         report("New Feature", featureName);
     }
-    
-    public void reportOffer(String offerName) {
+
+    public void reportOffer(final String offerName) {
         report("New Offer", offerName);
     }
 
-    public void report(String key, String value) {
+    public void report(final String key, final String value) {
         List<String> values = lineToReport.get(key);
         if (values == null) {
             values = new LinkedList<String>();
@@ -78,8 +78,8 @@ public class Reporting {
     }
 
     public void report() {
-        Date now = new Date();
-        StringBuilder message = new StringBuilder();
+        final Date now = new Date();
+        final StringBuilder message = new StringBuilder();
 
         message.append("Report from ");
         message.append(lastReportDate);
@@ -92,7 +92,7 @@ public class Reporting {
             message.append("Nothing to report !");
         }
 
-        for (Entry<String, List<String>> entrie : lineToReport.entrySet()) {
+        for (final Entry<String, List<String>> entrie : lineToReport.entrySet()) {
             message.append(" - ");
             message.append(entrie.getValue().size());
 
@@ -100,7 +100,7 @@ public class Reporting {
             message.append(entrie.getKey());
             message.append(" : \n");
 
-            for (String value : entrie.getValue()) {
+            for (final String value : entrie.getValue()) {
                 message.append("\t\t\t");
                 message.append(value);
                 message.append(" ;\n");
@@ -113,7 +113,7 @@ public class Reporting {
         // RAZ
         lineToReport.clear();
 
-        Mail email = new Mail("sysadmin@linkeos.com", "[elveos] daily reporting", message.toString(), "Reporting");
+        final Mail email = new Mail("sysadmin@linkeos.com", "[elveos] daily reporting", message.toString(), "Reporting");
         MailServer.getInstance().send(email);
     }
 

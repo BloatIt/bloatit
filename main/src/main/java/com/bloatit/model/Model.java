@@ -63,6 +63,8 @@ public class Model implements com.bloatit.framework.model.Model {
             new TaskUpdateDevelopingState(feature.getId(), feature.getValidationDate());
         }
         close();
+
+        EventMailer.start();
     }
 
     /*
@@ -103,6 +105,13 @@ public class Model implements com.bloatit.framework.model.Model {
      */
     @Override
     public void close() {
+        // Check temporary authenticatoin integrity
+        if (AuthToken.isTemporaryAuthenticated()) {
+            Log.model().fatal("The session is temporary autenticated !");
+            rollback();
+            return;
+        }
+
         if (!isClosed.get()) {
             Log.model().trace("Close the current transaction.");
             CacheManager.clear();
@@ -151,7 +160,7 @@ public class Model implements com.bloatit.framework.model.Model {
         } else {
             sessionKey = Hash.shortHash(key.getId());
         }
-        Localizator localizator = Context.getLocalizator();
+        final Localizator localizator = Context.getLocalizator();
         Locale locale = null;
         if (localizator != null) {
             locale = localizator.getLocale();

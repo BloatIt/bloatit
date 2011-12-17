@@ -33,7 +33,9 @@ import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.framework.restprocessor.exception.RestException;
+import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.context.User;
+import com.bloatit.framework.webprocessor.url.Loaders;
 import com.bloatit.framework.xcgiserver.HttpReponseField.StatusCode;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
@@ -166,6 +168,29 @@ public class RestMember extends RestElement<Member> {
     }
 
     // ---------------------------------------------------------------------------------------
+    // -- Custom PUTTERS
+    // ---------------------------------------------------------------------------------------
+
+    @REST(name = "setfollow", method = RequestMethod.PUT, params = { "followall", "followallwithmail" })
+    public RestMember setFollow(final String followAll, final String followallWithMail) throws RestException {
+        try {
+
+            final boolean isFollowAll = Loaders.fromStr(Boolean.class, followAll);
+            final boolean isFollowallWithMail = Loaders.fromStr(Boolean.class, followallWithMail);
+
+            model.setGlobalFollow(isFollowAll);
+            model.setGlobalFollowWithMail(isFollowallWithMail);
+
+        } catch (final ConversionErrorException e) {
+            throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "Bad format for one of the parameters", e);
+        } catch (final UnauthorizedOperationException e) {
+            throw new RestException(StatusCode.ERROR_CLI_403_FORBIDDEN, "Permission denied", e);
+        }
+
+        return this;
+    }
+
+    // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
@@ -184,9 +209,7 @@ public class RestMember extends RestElement<Member> {
     public String getDisplayName() {
         return model.getDisplayName();
     }
-    
-    
-    
+
     @XmlAttribute(name = "email")
     public String getEmail() {
         try {
@@ -195,8 +218,25 @@ public class RestMember extends RestElement<Member> {
             return null;
         }
     }
-    
-    
+
+    @XmlAttribute(name = "followall")
+    public Boolean getFollowAll() {
+        try {
+            return model.isGlobalFollow();
+        } catch (final UnauthorizedOperationException e) {
+            return null;
+        }
+    }
+
+    @XmlAttribute(name = "followallwithmail")
+    public Boolean getFollowAllWithMail() {
+        try {
+            return model.isGlobalFollowWithMail();
+        } catch (final UnauthorizedOperationException e) {
+            return null;
+        }
+    }
+
     @XmlAttribute(name = "creation_date")
     public Date getCreationDate() {
         try {
@@ -215,7 +255,7 @@ public class RestMember extends RestElement<Member> {
             return null;
         }
     }
-    
+
     @XmlElement(name = "karma")
     public int getKarma() throws RestException {
         return model.getKarma();

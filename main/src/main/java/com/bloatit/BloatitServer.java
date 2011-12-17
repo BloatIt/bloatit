@@ -20,6 +20,7 @@ import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.framework.Framework;
 import com.bloatit.framework.oauthprocessor.OAuthProcessor;
+import com.bloatit.mail.EventDataworker;
 import com.bloatit.model.Model;
 import com.bloatit.oauth.ElveosAuthenticator;
 import com.bloatit.rest.BloatitRestServer;
@@ -33,6 +34,7 @@ public class BloatitServer {
         framework.addProcessor(new OAuthProcessor(new ElveosAuthenticator()));
         framework.addProcessor(new BloatitRestServer());
         framework.addProcessor(new BloatitWebServer());
+        framework.addWorker(new EventDataworker());
 
         try {
             if (framework.initialize()) {

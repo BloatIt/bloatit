@@ -242,7 +242,11 @@ public final class Loaders {
     private static class ToBoolean extends Loader<Boolean> {
         @Override
         public Boolean fromString(final String data) {
-            return Boolean.valueOf(data) || data.equals("on");
+            try {
+                return data != null && !data.equals("off") && !data.equals("OFF") && !data.equals("FALSE") && !data.equals("false");
+            } catch (final NumberFormatException e) {
+                return true;
+            }
         }
     }
 

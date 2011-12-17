@@ -117,7 +117,10 @@ public class HightlightedFeatureAdminPage extends AdminPage {
         final HtmlDropDown featureInput = new HtmlDropDown(featureFieldData.getName(), "Feature");
         final PageIterable<Feature> features = FeatureManager.getFeatures();
         for (final Feature feature : features) {
-            featureInput.addDropDownElement(String.valueOf(feature.getId()), feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle());
+            featureInput.addDropDownElement(String.valueOf(feature.getId()),
+                                            feature.getDescription()
+                                                   .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()))
+                                                   .getTitle());
         }
         featureInput.setDefaultValue(featureFieldData.getSuggestedValue());
         newHightlightedFeatureForm.add(featureInput);
@@ -218,7 +221,11 @@ public class HightlightedFeatureAdminPage extends AdminPage {
 
                 @Override
                 public HtmlNode getBody() {
-                    return new FeaturePageUrl(feature.getFeature(), FeatureTabKey.description).getHtmlLink(feature.getFeature().getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale())).getTitle());
+                    return new FeaturePageUrl(feature.getFeature(), FeatureTabKey.description).getHtmlLink(feature.getFeature()
+                                                                                                                  .getDescription()
+                                                                                                                  .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator()
+                                                                                                                                                                      .getLocale()))
+                                                                                                                  .getTitle());
                 }
             });
 

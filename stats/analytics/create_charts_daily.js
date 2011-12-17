@@ -5,7 +5,7 @@ $(document).ready(function(){
         location: 'ne'
     },
     stackSeries: true,
-    title: 'Monthly report',
+    title: 'Daily report',
     series:[{
         label: 'Member visits',
         renderer: $.jqplot.BarRenderer,
@@ -71,7 +71,7 @@ $(document).ready(function(){
         show: true,
         location: 'ne'
     },
-    title: 'Monthly user agent',
+    title: 'Daily user agent',
     seriesDefaults: {
         renderer: $.jqplot.BarRenderer,
         rendererOptions: {

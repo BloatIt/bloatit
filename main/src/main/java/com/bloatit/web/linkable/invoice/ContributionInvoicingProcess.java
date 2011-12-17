@@ -63,14 +63,14 @@ public class ContributionInvoicingProcess extends WebProcess {
     @Override
     protected synchronized Url doProcess() {
         try {
-            if(actor.hasInvoicingContact(true)) {
-                return new ContributionInvoicingInformationsPageUrl(this);
+            if (actor.hasInvoicingContact(true)) {
+                return new ContributionInvoicingInformationsPageUrl(false, this);
             } else {
-                ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor, this);
+                final ModifyInvoicingContactProcessUrl modifyInvoicingContactProcessUrl = new ModifyInvoicingContactProcessUrl(actor, this);
                 modifyInvoicingContactProcessUrl.setNeedAllInfos(true);
                 return modifyInvoicingContactProcessUrl;
             }
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException("No access to invoicing informations in ContributionInvocingProcess", e);
         }
     }
@@ -113,7 +113,7 @@ public class ContributionInvoicingProcess extends WebProcess {
     @Override
     protected synchronized Url notifyChildClosed(final WebProcess subProcess) {
         if (subProcess instanceof ModifyInvoicingContactProcess) {
-            return new ContributionInvoicingInformationsPageUrl(this);
+            return new ContributionInvoicingInformationsPageUrl(false, this);
         }
         return super.notifyChildClosed(subProcess);
     }
@@ -123,9 +123,13 @@ public class ContributionInvoicingProcess extends WebProcess {
         super.close();
 
         if (actor.isTeam()) {
-            return new TeamPageUrl((Team) actor);
+            final TeamPageUrl teamPageUrl = new TeamPageUrl((Team) actor);
+            teamPageUrl.setActiveTabKey("invoicing");
+            return teamPageUrl;
         } else {
-            return new MemberPageUrl((Member) actor);
+            final MemberPageUrl memberPageUrl = new MemberPageUrl((Member) actor);
+            memberPageUrl.setActiveTabKey("invoicing");
+            return memberPageUrl;
         }
 
     }

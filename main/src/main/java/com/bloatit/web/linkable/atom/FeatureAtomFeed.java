@@ -8,9 +8,6 @@ import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.framework.utils.parsers.MarkdownParser;
 import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
-import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
@@ -30,17 +27,18 @@ import com.bloatit.web.url.MemberPageUrl;
 public class FeatureAtomFeed extends ElveosAtomFeed {
     private Date updateDate;
 
-    public FeatureAtomFeed(Url url) {
+    public FeatureAtomFeed(final Url url) {
         super(url);
     }
 
     @Override
     public void generate() {
         boolean first = true;
-        for (Feature feature : FeatureManager.getAllByCreationDate()) {
-            Translation translation = feature.getDescription().getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
-            String featureTitle = translation.getTitle();
-            Software software = feature.getSoftware();
+        for (final Feature feature : FeatureManager.getAllByCreationDate()) {
+            final Translation translation = feature.getDescription()
+                                                   .getTranslationOrDefault(Language.fromLocale(Context.getLocalizator().getLocale()));
+            final String featureTitle = translation.getTitle();
+            final Software software = feature.getSoftware();
             String title;
             if (software == null) {
                 title = Context.tr("New software") + " – " + featureTitle;
@@ -59,16 +57,17 @@ public class FeatureAtomFeed extends ElveosAtomFeed {
                 }
             }
 
-            FeedEntry entry = new FeedEntry(title,
-                                            new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
-                                            new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
-                                            feature.getCreationDate(),
-                                            translationText,
-                                            feature.getMember().getDisplayName(),
-                                            new MemberPageUrl(feature.getMember()).externalUrlString());
+            final FeedEntry entry = new FeedEntry(title,
+                                                  new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
+                                                  new FeaturePageUrl(feature, FeatureTabKey.description).externalUrlString(),
+                                                  feature.getCreationDate(),
+                                                  translationText,
+                                                  feature.getMember().getDisplayName(),
+                                                  new MemberPageUrl(feature.getMember()).externalUrlString());
             addFeedEntry(entry, Position.LAST);
             if (first) {
                 updateDate = feature.getCreationDate();
+                first = false;
             }
         }
     }

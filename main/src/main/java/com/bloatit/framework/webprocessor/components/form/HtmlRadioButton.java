@@ -15,28 +15,28 @@ package com.bloatit.framework.webprocessor.components.form;
 import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputType;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 
-final class HtmlRadioButton extends HtmlFormField<Boolean> {
+final class HtmlRadioButton extends HtmlFormField {
 
     public HtmlRadioButton(final String name, final String value, final LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, position);
         addAttribute("value", value);
+        addContainerCssClass("one-line-form");
     }
 
     public HtmlRadioButton(final String name, final String value, final String label, final LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, label, position);
         addAttribute("value", value);
+        addContainerCssClass("one-line-form");
     }
 
     public HtmlRadioButton(String name, String value, HtmlElement label, LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, label, position);
         addAttribute("value", value);
+        addContainerCssClass("one-line-form");
     }
 
-    @Override
-    protected void doSetDefaultValue(final Boolean value) {
-        if (value.booleanValue()) {
-            addAttribute("checked", "checked");
-        }
+    protected void setDefaultValue(final Boolean value) {
+        setDefaultValue(value.toString());
     }
 
     @Override

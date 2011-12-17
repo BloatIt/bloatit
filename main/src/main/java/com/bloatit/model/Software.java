@@ -19,11 +19,14 @@ package com.bloatit.model;
 import java.util.Locale;
 
 import com.bloatit.data.DaoDescription;
+import com.bloatit.data.DaoFollowSoftware;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.exceptions.UniqueNameExpectedException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.Language;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
@@ -58,7 +61,8 @@ public final class Software extends Identifiable<DaoSoftware> {
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link FeatureManager#canCreate(AuthToken)} to make sure
      * you can create a new feature.
-     * @throws UniqueNameExpectedException 
+     * 
+     * @throws UniqueNameExpectedException
      */
     public Software(final String name, final Member author, final Locale locale, final String description) throws UniqueNameExpectedException {
         this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), null, Language.fromLocale(locale), " ", description)));
@@ -95,9 +99,13 @@ public final class Software extends Identifiable<DaoSoftware> {
     public final FeatureList getFeatures() {
         return new FeatureList(getDao().getFeatures());
     }
-    
+
     public FeatureList getFeaturesByCreationDate() {
         return new FeatureList(getDao().getFeaturesByCreationDate());
+    }
+
+    public PageIterable<FollowSoftware> getFollowers() {
+        return new ListBinder<FollowSoftware, DaoFollowSoftware>(getDao().getFollowers());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -123,4 +131,5 @@ public final class Software extends Identifiable<DaoSoftware> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
 }

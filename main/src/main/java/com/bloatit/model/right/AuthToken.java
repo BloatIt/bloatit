@@ -18,17 +18,18 @@
 package com.bloatit.model.right;
 
 import java.util.EnumSet;
+import java.util.Stack;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoExternalServiceMembership;
 import com.bloatit.data.DaoExternalServiceMembership.RightLevel;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.exceptions.ElementNotFoundException;
 import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.SessionManager;
-import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.xcgiserver.RequestKey;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -42,6 +43,7 @@ import com.bloatit.model.managers.TeamManager;
 public final class AuthToken {
     private Integer asTeamId;
     private Integer memberId;
+    private Stack<Member> temporaryMembers = new Stack<Member>();
     private EnumSet<RightLevel> rights;
     private boolean weakAuthentication;
 
@@ -165,6 +167,19 @@ public final class AuthToken {
         This.get().weakAuthentication = false;
     }
     
+    public static void temporaryAuthenticate(final Member member) {
+        This.get().temporaryMembers.push(AuthToken.getMember());
+        authenticate(member);
+    }
+    
+    public static void temporaryDeauthenticate() {
+        authenticate(This.get().temporaryMembers.pop());
+    }
+    
+    public static boolean isTemporaryAuthenticated() {
+        return This.get().temporaryMembers.size() > 0;
+    }
+    
     public static void authenticate(final Session session) {
         This.get().memberId = session.getMemberId();
         This.get().weakAuthentication = false;
@@ -217,4 +232,13 @@ public final class AuthToken {
     private AuthToken() {
         memberId = null;
     }
+
+    public static boolean isAdmin() {
+        if(!isAuthenticated()) {
+            return false;
+        }
+        return getMember().getRole().equals(Role.ADMIN);
+    }
+
+   
 }

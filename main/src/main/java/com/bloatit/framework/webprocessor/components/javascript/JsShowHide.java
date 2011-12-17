@@ -57,7 +57,6 @@ public class JsShowHide {
     }
 
     public void apply() {
-
         if (!state && hasFallback) {
             for (final HtmlElement listener : listeners) {
                 listener.addAttribute("style", "display: none;");
@@ -78,7 +77,7 @@ public class JsShowHide {
             }
             script.append("        }\n");
             script.append("        $( \"#" + actuator.getId() + "\" ).click(function() {\n" + "            runEffect();\n"
-                    + "            return false;\n" + "        });\n");
+                    + "            return true;\n" + "        });\n");
 
             if (!state) {
                 for (final HtmlElement listener : listeners) {
@@ -86,11 +85,10 @@ public class JsShowHide {
                 }
             }
 
-            script.append("    });");
+            script.append(" });");
 
             scriptableElement.add(script);
         }
-
     }
 
     private void prepareIds() {

@@ -1,22 +1,19 @@
 package com.bloatit.model.invoicePdf;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.model.Actor;
-import com.bloatit.model.ModelConfiguration;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -50,42 +47,34 @@ public class InvoicePdfGenerator {
     private final String filename;
     private final Rectangle pageSize;
     private final Document document;
-    private final PdfWriter writer;
+    private PdfWriter writer;
 
     private static final float LEFT_MARGIN = 60;
     private static final float RIGHT_MARGIN = LEFT_MARGIN;
     private static final float TOP_MARGIN = 60;
     private static final float BOTTOM_MARGIN = 30;
-
-    public InvoicePdfGenerator(final String sellerName,
-                               final String sellerAddress,
-                               final String sellerTaxIdentification,
-                               final Actor<?> recipientActor,
-                               final String contributorName,
-                               final String contributorAdress,
-                               final String deliveryName,
-                               final BigDecimal priceExcludingTax,
-                               final BigDecimal totalPrice,
-                               final String invoiceId) {
-        this.pageSize = PageSize.A4;
-        this.document = new Document();
-        this.filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + UUID.randomUUID().toString();
-        createDirectory();
-
-        try {
-            try {
-                writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
-            } catch (final FileNotFoundException e) {
-                throw new ExternalErrorException("Failed to write a pdf in '" + filename + "'.", e);
-            }
-
-            document.open();
-            document.add(new Paragraph("Ugly almost empty invoice !"));
-        } catch (final DocumentException e) {
-            throw new ExternalErrorException("Failed to generate pdf.", e);
-        }
-        document.close();
-    }
+    private final String invoiceType;
+    private final String invoiceId;
+    private final String sellerName;
+    private final String sellerStreet;
+    private final String sellerExtras;
+    private final String sellerCity;
+    private final String sellerCountry;
+    private final String receiverName;
+    private final String receiverStreet;
+    private final String receiverExtras;
+    private final String receiverCity;
+    private final String receiverCountry;
+    private final String receiverTaxIdentification;
+    private final Date invoiceDate;
+    private final String deliveryName;
+    private final BigDecimal priceExcludingTax;
+    private final BigDecimal taxRate;
+    private final BigDecimal taxAmount;
+    private final BigDecimal totalPrice;
+    private final String sellerLegalId;
+    private final String sellerTaxId;
+    private final String logo;
 
     /**
      * Generates a pdf for an invoice
@@ -129,6 +118,7 @@ public class InvoicePdfGenerator {
                                final String receiverExtras,
                                final String receiverCity,
                                final String receiverCountry,
+                               final String receiverTaxIdentification,
                                final Date invoiceDate,
                                final String deliveryName,
                                final BigDecimal priceExcludingTax,
@@ -136,44 +126,86 @@ public class InvoicePdfGenerator {
                                final BigDecimal taxAmount,
                                final BigDecimal totalPrice,
                                final String sellerLegalId,
-                               final String sellerTaxId) {
+                               final String sellerTaxId,
+                               final String logo) {
+
         // We check that we didn't receive null or empty parameters
         if (invoiceType == null || invoiceId == null || sellerName == null || sellerStreet == null || sellerCity == null || sellerCountry == null
                 || receiverName == null || receiverStreet == null || receiverCountry == null || invoiceDate == null || deliveryName == null
-                || priceExcludingTax == null || taxRate == null || taxAmount == null || totalPrice == null || sellerLegalId == null
-                || sellerTaxId == null) {
+                || priceExcludingTax == null || taxAmount == null || totalPrice == null || sellerLegalId == null) {
             throw new NonOptionalParameterException("No parameter except sellerExtras or receiverExtras can be null.");
         }
         if (invoiceType.isEmpty() || invoiceId.isEmpty() || sellerName.isEmpty() || sellerStreet.isEmpty() || sellerCity.isEmpty()
                 || sellerCountry.isEmpty() || receiverName.isEmpty() || receiverStreet.isEmpty() || receiverCountry.isEmpty()
-                || deliveryName.isEmpty() || sellerLegalId.isEmpty() || sellerTaxId.isEmpty()) {
+                || deliveryName.isEmpty() || sellerLegalId.isEmpty()) {
             throw new NonOptionalParameterException("No parameter can be empty.");
         }
 
         this.pageSize = PageSize.A4;
         this.document = new Document();
+        this.invoiceType = invoiceType;
+
         String filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + ".pdf";
         int retry = 1;
-        
+
         while (new File(filename).exists()) {
-            filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + "-"+retry+".pdf";
+            filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + "-" + (retry++) + ".pdf";
         }
 
         this.filename = filename;
-        
+        this.invoiceId = invoiceId;
+        this.sellerName = sellerName;
+        this.sellerStreet = sellerStreet;
+        this.sellerExtras = sellerExtras;
+        this.sellerCity = sellerCity;
+        this.sellerCountry = sellerCountry;
+        this.receiverName = receiverName;
+        this.receiverStreet = receiverStreet;
+        this.receiverExtras = receiverExtras;
+        this.receiverCity = receiverCity;
+        this.receiverCountry = receiverCountry;
+        this.receiverTaxIdentification = receiverTaxIdentification;
+        this.invoiceDate = invoiceDate;
+        this.deliveryName = deliveryName;
+        this.priceExcludingTax = priceExcludingTax;
+        this.taxRate = taxRate;
+        this.taxAmount = taxAmount;
+        this.totalPrice = totalPrice;
+        this.sellerLegalId = sellerLegalId;
+        this.sellerTaxId = sellerTaxId;
+        this.logo = logo;
+    }
+
+    public String getPdfUrl() {
+
         createDirectory();
 
         try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
+            write(new FileOutputStream(filename));
+        } catch (final IOException e) {
+            throw new ExternalErrorException("Failed load logo to generate invoice.", e);
+        }
+
+        return filename;
+    }
+
+    public void write(OutputStream output) {
+
+        try {
+            writer = PdfWriter.getInstance(document, output);
             document.open();
             addMetaData(invoiceType, invoiceId, sellerName);
-            addLinkeosImg();
+            addLogoImg();
             addEmitter(sellerName, sellerStreet, sellerExtras, sellerCity, sellerCountry);
-            addReceiver(receiverName, receiverStreet, receiverExtras, receiverCity, receiverCountry);
+            addReceiver(receiverName, receiverStreet, receiverExtras, receiverCity, receiverCountry, receiverTaxIdentification);
             addDate(invoiceDate);
             addFactureNumber(invoiceId);
             addDetailTable(deliveryName, priceExcludingTax);
-            addTaxesTable(priceExcludingTax, taxRate, taxAmount, totalPrice);
+            if (taxRate == null) {
+                addNoTaxesTable(totalPrice);
+            } else {
+                addTaxesTable(priceExcludingTax, taxRate, taxAmount, totalPrice);
+            }
             addFooter(sellerName, sellerLegalId, sellerTaxId);
         } catch (final DocumentException e) {
             throw new ExternalErrorException("Failed to generate pdf.", e);
@@ -183,43 +215,6 @@ public class InvoicePdfGenerator {
             throw new BadProgrammerException("Added content out of the invoice bounds", e);
         }
         document.close();
-    }
-
-    /**
-     * Exists for testing purpose TODO: Delete when done with this.
-     */
-    private InvoicePdfGenerator() {
-        this.pageSize = PageSize.A4;
-        this.filename = "/home/yoann/plop.pdf";
-        this.document = new Document();
-        try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
-            document.open();
-            addMetaData("Elveos invoice", "123", "elveos.org");
-            addLinkeosImg();
-            addEmitter("Elveos", "27 Avenue Louis Georgeon", null, "94230 Cachan", "FRANCE");
-            addReceiver("IBM", "New Orchard road,", "914-499-1900", "Armonk, New York 10504", "USA");
-            addDate(new Date());
-            addFactureNumber("123");
-            addDetailTable("Payment on elveos.org", new BigDecimal("5.35"));
-            addTaxesTable(new BigDecimal("5.35"), new BigDecimal("19.6"), new BigDecimal("1.35"), new BigDecimal("6.40"));
-            addFooter("Elveos", "SAS au capital de 10 500€. RCS Paris 321 654 987", "FR 000 444 333 22");
-        } catch (final DocumentException e) {
-            throw new ExternalErrorException("Failed to generate pdf.", e);
-        } catch (final IOException e) {
-            throw new ExternalErrorException("Failed load logo to generate invoice.", e);
-        } catch (final InvalidPositionException e) {
-            throw new BadProgrammerException("Added content out of the invoice bounds", e);
-        }
-        document.close();
-    }
-
-    public String getPdfUrl() {
-        return filename;
-    }
-
-    public static void main(final String... args) {
-        new InvoicePdfGenerator();
     }
 
     /**
@@ -256,8 +251,11 @@ public class InvoicePdfGenerator {
      *             position
      * @throws IOException if the image file cannot be read
      */
-    private void addLinkeosImg() throws DocumentException, InvalidPositionException, IOException {
-        final Image img = Image.getInstance(ModelConfiguration.getInvoiceLinkeosLogo());
+    private void addLogoImg() throws DocumentException, InvalidPositionException, IOException {
+        if (logo == null) {
+            return;
+        }
+        final Image img = Image.getInstance(logo);
         img.setAbsolutePosition(LEFT_MARGIN, pageSize.getHeight() - TOP_MARGIN - BOTTOM_MARGIN + 15);
         img.scalePercent(20);
         img.setCompressionLevel(8);
@@ -298,6 +296,7 @@ public class InvoicePdfGenerator {
     /**
      * Adds the receiver information to the invoice
      * 
+     * @param receiverTaxIdentification
      * @param sellerName Name of the receiver
      * @param sellerStreet Street of the receiver
      * @param sellerExtras Extra informations on receiver's address. <b>Can be
@@ -313,7 +312,8 @@ public class InvoicePdfGenerator {
                              final String receiverStreet,
                              final String receiverExtras,
                              final String receiverZIP,
-                             final String receiverCountry) throws DocumentException, InvalidPositionException {
+                             final String receiverCountry,
+                             final String receiverTaxIdentification) throws DocumentException, InvalidPositionException {
         final StringBuilder sb = new StringBuilder();
         sb.append(receiverName).append('\n');
         sb.append(receiverStreet).append('\n');
@@ -322,6 +322,9 @@ public class InvoicePdfGenerator {
         }
         sb.append(receiverZIP).append('\n');
         sb.append(receiverCountry).append('\n');
+        if (receiverTaxIdentification != null) {
+            sb.append("Tax id: ").append(receiverTaxIdentification).append('\n');
+        }
         final Paragraph p = new Paragraph(sb.toString());
 
         setAt(RIGHT_COLUMN, 670, p);
@@ -366,6 +369,18 @@ public class InvoicePdfGenerator {
         setLeft(430, table);
     }
 
+    private void addNoTaxesTable(final BigDecimal totalPrice) throws DocumentException, InvalidPositionException {
+        final PdfPTable table = new PdfPTable(2);
+        table.addCell(createTableBodyCell("Total (no taxes included)"));
+        table.addCell(createTableBodyCell(totalPrice));
+
+        table.setWidthPercentage(100);
+        final float[] widths = { 186f, 85f };
+        table.setWidths(widths);
+
+        setAt(TAXES_TABLE_LEFT, 375, table);
+    }
+
     private void addTaxesTable(final BigDecimal amountNoTaxes,
                                final BigDecimal taxRate,
                                final BigDecimal taxAmount,
@@ -373,7 +388,8 @@ public class InvoicePdfGenerator {
         final PdfPTable table = new PdfPTable(2);
         table.addCell(createTableBodyCell("Sub Total"));
         table.addCell(createTableBodyCell(amountNoTaxes));
-        table.addCell(createTableBodyCell("Taxes (" + taxRate.multiply(new BigDecimal("100")).setScale(TAX_RATE_SCALE, BigDecimal.ROUND_HALF_EVEN).toPlainString() + " %)"));
+        table.addCell(createTableBodyCell("Taxes ("
+                + taxRate.multiply(new BigDecimal("100")).setScale(TAX_RATE_SCALE, BigDecimal.ROUND_HALF_EVEN).toPlainString() + " %)"));
         table.addCell(createTableBodyCell(taxAmount));
         table.addCell(createTableBodyCell("Total (taxes included)"));
         table.addCell(createTableBodyCell(amountTaxesIncluded));
@@ -409,7 +425,9 @@ public class InvoicePdfGenerator {
         final StringBuilder sb = new StringBuilder();
         sb.append(sellerName).append('\n');
         sb.append(sellerId).append('\n');
-        sb.append("Tax id: ").append(sellerTaxIdentification).append('\n');
+        if (sellerTaxIdentification != null) {
+            sb.append("Tax id: ").append(sellerTaxIdentification).append('\n');
+        }
 
         final Paragraph p = new Paragraph(sb.toString());
         p.setAlignment(Element.ALIGN_CENTER);
@@ -504,4 +522,5 @@ public class InvoicePdfGenerator {
             Log.model().info("Created directory " + dir);
         }
     }
+
 }

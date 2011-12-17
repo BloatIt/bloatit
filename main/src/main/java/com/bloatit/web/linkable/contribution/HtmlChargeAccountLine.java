@@ -26,8 +26,6 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
@@ -38,6 +36,7 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Image;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.members.MembersTools;
 
 public class HtmlChargeAccountLine extends HtmlTableLine {
@@ -184,9 +183,10 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
                                                                                                      .getTwoDecimalEuroString()));
             } else {
                 amountBlock = new HtmlDiv("quotation_detail_line_field");
-                final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(), Method.POST);
+                final HtmlElveosForm form = new HtmlElveosForm(recalculateTargetForm.urlString(), false);
 
                 moneyField = new HtmlMoneyField("preload");
+                moneyField.setLong();
                 if (amountToCharge == null) {
                     moneyField.setDefaultValue("0");
                 } else {

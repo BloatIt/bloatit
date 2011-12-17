@@ -121,7 +121,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
             if (process.getAccountChargingAmount().compareTo(BigDecimal.ZERO) > 0) {
                 model.addLine(new HtmlChargeAccountLine(true, process.getAccountChargingAmount(), actor, null));
             }
-            
+
         } catch (final UnauthorizedOperationException e) {
             getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);

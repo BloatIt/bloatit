@@ -23,6 +23,48 @@ a {
     }
 }
 
+a:hover {
+    color: @default_link_color * 1.5;
+}
+
+.member-link {
+    color: @member_color;
+}
+    
+.member-link:hover {
+    color: @member_color * 1.2;
+}
+
+.me-link {
+    color: @me_color;
+}
+    
+.me-link:hover {
+    color: @me_color * 1.2;
+}
+
+.team-link {
+    color: @team_color;
+}  
+.team-link:hover {
+    color: @team_color * 1.2;
+}
+
+
+.bug-link {
+    color: @bug_color;
+}  
+.bug-link:hover {
+    color: @bug_color * 1.2;
+}
+
+.software-link {
+    color: @software_color;
+}  
+.software-link:hover {
+    color: @software_color * 1.2;
+}
+
 .selected {
     color: @link_selected_color;
 }
@@ -32,9 +74,8 @@ a {
 }
 
 
-a:hover {
-    color: @default_link_color * 1.5;
-}
+
+
 
 h1 {
     margin: 0;
@@ -107,50 +148,107 @@ legend {
     margin-bottom: 0.5em;
     text-align: justify;
 }
+input[type=color],
+input[type=date],
+input[type=datetime],
+input[type=datetime-local],
+input[type=email],
+input[type=image],
+input[type=month],
+input[type=number],
+input[type=password],
+input[type=range],
+input[type=reset],
+input[type=search],
+input[type=tel],
+input[type=text],
+input[type=time],
+input[type=url],
+input[type=week],
+textarea {
+    border:1px solid #aaa;
+    .horizontal-gradient(#fff, #eee);
+    .rounded_corners(1px); 
+    padding:2px;
+    vertical-align: middle;
+}
+textarea {
+    width: 90%;
+    .horizontal-gradient(#fff, #fafafa);
+}
+select{
+    cursor:pointer;
+    .shadow(2px, #bbb);
+    padding:2px;
+    vertical-align: middle;
+}
+input[type=submit],
+a.submit {
+    background: @default_link_color * 1.2;
+    .horizontal-gradient(@default_link_color * 1.1, @default_link_color * 1.4);
+    border:1px solid @default_link_color;
+    .rounded_corners(2px); 
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:bold;
+    text-shadow:0 0px 1px rgb(0,0,50);
+    padding: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    text-decoration:none;
+    vertical-align: middle;
+    horizontal-align: right;
+    margin-left:160px;
+}
+input[type=submit]:hover,
+a.submit:hover{
+    color:white;
+    background: @default_link_color * 1.5;
+    .horizontal-gradient(@default_link_color * 1.1, @default_link_color * 1.9);
+    text-decoration:none;
+}
+input[type=submit]:active,
+input[type=submit]:focus,
+a.submit:active,
+a.submit:focus{
+    background: @default_link_color * 1.1;
+    .horizontal-gradient(@default_link_color * 1.9, @default_link_color * 1.1);
+    outline:none;
+}
+input:focus,
+textarea:focus {
+    border-color:#093c75;
+    .shadow(2px, #0459b7);
+    outline:none; 
+}
+select:focus{
+    .shadow(2px, #0459b7);
+    outline:none; 
+}
 
 .field {
     margin:8px;
     margin-bottom:15px;
-    
-    vertical-align: middle;
-    overflow: hidden;
-    
+    vertical-align: top;
+    display:inline-block;
     .label {
-        display:table-cell;
-        width:150px;
-        min-width:150px;
-        text-align:right;
-        vertical-align: top;
-        padding-top: 2px;
-        padding-right: 10px;
-        
+        font-size:17px;
+        margin-top:4px;
+        margin-bottom:4px;
+        padding-left:2px;
     }
     
     .input {
-        display:table-cell;
-        //width:100%;
         .comment {
-
-            float: left;
-            max-width:80%;
+            clear:both;
             .comment_format;
-            margin-top: 3px;
+            padding-top: 6px;
             margin-left: 0em;
         }
         
         .input_field {
-            float:left;
-            margin-right: 1em;
-        }
-        
-        select {
-            float:left;
-            margin-right: 1em;
-        }
-
-        .comment_after {
-            .comment_format;
-            width: 80%;    
+            max-size:18px;
         }
         
         .notification_error {
@@ -168,102 +266,224 @@ legend {
  
 }
 
+.input_field{
+    width:100%;
+}
+
+.form-header{
+    font-size:14px;
+    color:@light_text_color;
+
+    .fheader-first-line{
+        float:left;
+        margin-left:20px;
+        .fheader-label{
+            margin-left:15px;
+        }
+    }
+    .fheader-team{
+        float:left;
+        margin-left:20px;
+    }
+    .fheader-label{
+        margin-top: 7px;
+        margin-left: 12px;
+        float:left;
+    }
+    .field{
+        margin:0px;
+        padding:0px;
+    }
+    select{
+        margin:2px;
+        margin-left:5px;
+        padding:0px;
+        -webkit-box-shadow: none; 
+        -moz-box-shadow: none; 
+        box-shadow: none;
+    }
+}
+
+.form-show-body {
+    border: 1px solid rgba(196, 196, 196, 1);
+    background: rgba(237, 237, 245, 1);
+}
+
+.form-body{
+    clear:both;
+    .rounded_corners(8px); 
+    padding-top:14px;
+    padding-bottom:14px;
+    padding-left:20px;
+    margin-bottom:20px;
+
+    //input[type=button],
+    //input[type=checkbox],
+    //input[type=hidden],
+    //input[type=radio],
+    //input[type=submit],
+
+    input[type=file]{
+        margin-top:10px;
+    }
+
+    input[type=color],
+    input[type=date],
+    input[type=datetime],
+    input[type=datetime-local],
+    input[type=email],
+    input[type=image],
+    input[type=month],
+    input[type=number],
+    input[type=password],
+    input[type=range],
+    input[type=reset],
+    input[type=search],
+    input[type=tel],
+    input[type=text],
+    input[type=time],
+    input[type=url],
+    input[type=week],
+    textarea {
+        width:100%;
+        .box-sizing;
+        background-image:none;
+        background: rgba(255, 255, 255, 1);
+        border:1px solid #aaa;
+        .rounded_corners(1px); 
+        vertical-align: middle;
+        horizontal-align: left;
+        margin:0px;
+        font-size:20px;
+        padding:8px;
+        margin-top:2px;
+    }
+    input[type=radio],
+    input[type=checkbox] {
+        vertical-align: middle;
+    }
+    input[type=submit],
+    a.submit {
+        margin:0px;
+        font-size:20px;
+    }
+    select{
+        font-size:18px;
+        padding: 8px;
+        cursor:pointer;
+        width:100%
+    }
+    textarea {
+        font-size:14px;
+    }
+    .md_editor{
+        textarea#wmd-input {
+            padding-top:37px;
+            background-color:white;
+            height:auto;
+        }
+        ul#wmd-button-row{
+            margin-bottom:-26px;
+            background-color:rgba(255,255,255,0);
+        }
+    }
+    
+    .field {
+        margin-bottom:30px;
+    }
+    .required .label:after {
+        content:"\2606";
+    }
+    .long-form{
+         width: 100%;
+        .box-sizing;
+        margin-right:-20px;
+        padding-right:40px;
+     }
+     .short-form{
+         width: 50%;
+        .box-sizing;
+        margin-right:-20px;
+        padding-right:40px;
+     }
+    .light-notification {
+        font-size:12px;
+        color:#E4900A;
+        text-align:center;
+        display:block;
+    }
+
+}
+.one-line-form{
+    padding-top:38px;
+    .input{
+        display:inline;
+        .input_field{
+            display:inline;
+        }
+    }
+    .label{
+        display:inline;
+    }
+    label:before{
+        content:none;
+    }
+}
 label{
     cursor:pointer;
-    font-size: 0.9em;
-    font-weight:bold;
-    //padding-right: 15px;
+    //font-weight:bold;
 }
-
-input[type=text],
-input[type=password]{
-       background: rgba(255, 255, 255, 0.9);
-       background:-moz-linear-gradient(90deg, #fff, #eee); // Firefox 
-       background:-webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff), color-stop(0.2, #fff)); // Webkit 
-       border:1px solid #aaa;
-       .rounded_corners(3px); 
-       -moz-box-shadow:0 0 3px #bbb;
-       -webkit-box-shadow:0 0 3px #bbb;
-       padding:2px;
-       vertical-align: middle;
+label:before{
+    content:"\2192";
+    margin-right:8px;
 }
-input[type=text]:focus,
-input[type=password]:focus{
-       border-color:#093c75;
-       -moz-box-shadow:0 0 3px #0459b7;
-       -webkit-box-shadow:0 0 3px #0459b7;
-       outline:none; // Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome 
+.form-submits {
+    display:block;
+    float:right;
+    .field{
+        display:inline-block;
+        padding-right:30px;
+        padding-left:13px;
+        width:auto;
+        vertical-align:middle;
+        margin:0px;
+    }
 }
-
 .money_input {
-
-    input {
-        width: 100px;
-        text-align: right;
-        font-size: 1em;
+    font-size: 25px;
+    input[type=number] {
+        margin-right:-35px;
+        text-align:right;
+        padding-right: 35px;
     }
-    font-size: 2em;
 }
-
 .percent_input {
-
-    input {
+    input[type=number] {
         width: 100px;
         text-align: right;
         font-size: 1em;
     }
-}
-
-.input_long_500px {
-    width: 500px;
-}
-
-.input_long_400px {
-    width: 400px;
-}
-
-
-select{
-       cursor:pointer;
-       -moz-box-shadow:0 0 3px #aaa;
-       -webkit-box-shadow:0 0 3px #aaa;
-}
-
-textarea {
-    width: 90%;
-
-    background: rgba(255, 255, 255, 0.9);
-       background:-moz-linear-gradient(90deg, #fff, #fafafa); /* Firefox */
-       background:-webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#fff) ); /* Webkit */
-       border:1px solid #aaa;
-       .rounded_corners(3px); 
-       -moz-box-shadow:0 0 3px #bbb;
-       -webkit-box-shadow:0 0 3px #bbb;
-       padding:2px;
-       vertical-align: middle;
-}
-
-textarea:focus {
-       border-color:#093c75;
-       -moz-box-shadow:0 0 3px #0459b7;
-       -webkit-box-shadow:0 0 3px #0459b7;
-       outline:none; /* Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome */
 }
 
 .button, .button_good, .button_bad  {
-        color:white;
-        background: @default_link_color * 1.2;
-        .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
-        border:1px solid @default_link_color;
-        .rounded_corners(3px); 
-        text-shadow:0 1px 1px rgb(50,50,50);
-        .shadow(1px, white);
+    background: @default_link_color * 1.2;
+    .horizontal-gradient(@default_link_color * 1.1, @default_link_color * 1.4);
+    border:1px solid @default_link_color;
+    .rounded_corners(2px); 
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:bold;
+    padding: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    text-decoration:none;
+    vertical-align: middle;
+    horizontal-align: right;
+    margin-left:160px;
+    color:white;
+        text-shadow:0 0px 1px rgb(0,0,50);
         cursor:pointer;
-        font-size:0.9em;
-        font-weight:bold;
-        padding: 3px;
-        padding-right: 8px;
-        padding-left: 8px;
         margin-left: 0.5em;
         margin-right: 0.5em;
         text-decoration:none;
@@ -318,41 +538,6 @@ textarea:focus {
        .horizontal-gradient(@error_color * 1.9,  @error_color * 1.1);
 }
 
-input[type=submit],
-a.submit {
-       background: @default_link_color * 1.2;
-       .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
-       border:1px solid @default_link_color;
-       .rounded_corners(3px); 
-       .shadow(1px, white);
-       color:white;
-       cursor:pointer;
-       font-size:0.9em;
-       font-weight:bold;
-       margin-left:160px;
-       padding: 3px;
-       padding-right: 8px;
-       padding-left: 8px;
-       text-decoration:none;
-       text-shadow:0 1px 1px rgb(50,50,50);
-       vertical-align: middle;
-}
-input[type=submit]:hover,
-a.submit:hover{
-    color:white;
-    background: @default_link_color * 1.5;
-       
-    .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.9);
-    text-decoration:none;
-}
-input[type=submit]:active,
-input[type=submit]:focus,
-a.submit:active,
-a.submit:focus{
-    background: @default_link_color * 1.1;
-    .horizontal-gradient(@default_link_color * 1.9,  @default_link_color * 1.1);
-    outline:none;
-}
 
 .idea_conpact_summary {
     width: 100%;
@@ -452,8 +637,6 @@ a.submit:focus{
         vertical-align: middle;
     }
 
-    
-
     .idea_karma {
         margin: 0px;
         margin-right: 15px;
@@ -475,7 +658,6 @@ a.submit:focus{
         margin: 0px;
         padding: 0px;
         font-weight: bold;
-        
     }
 
     .progress_bar{
@@ -488,9 +670,7 @@ a.submit:focus{
         padding:0;
         margin-top:0px;
         margin-bottom:0px
-        
     }
-
 
     .progress_bar_state{
         display:block;
@@ -501,7 +681,6 @@ a.submit:focus{
         .rounded_corners(6px);
         height:8px
     }
-
 }
 
 table {
@@ -549,23 +728,18 @@ border-left : 1px solid @dark_border_color;
 thead {
    tr {
         background-color: @default_background_color;       
-       
     }
 }
 
 tbody {
     tr:nth-child(even) {
         background-color: @light_background_color;       
-       
     }
 
     tr:nth-child(odd) {
-
         background-color: @very_light_background_color;
     }   
-
 }
-
 
 blockquote p {
     padding: 0px 10px 0px 10px;
@@ -625,19 +799,21 @@ dd:last-child {
 
 .side_bar_button{
     width:100%;
-    .display-box;
-    .box-align(center);
-    
+    display: table;
     
     .side_bar_button_img{
+        display: table-cell;
         width: 40px;
         margin-left:20px;
+        vertical-align: middle;
     }
     
     .side_bar_button_text_box{
-        .box-flex;
+        display: table-cell;
+        width:100%;
         margin-right:15px;
         margin-left:10px;
+        vertical-align: middle;
     }
     
     .side_bar_button_text {
@@ -646,7 +822,7 @@ dd:last-child {
         padding-bottom: 8px;
         font-size: 1.4em;
         text-align: center;
-        margin-bottom: 9px;
+        margin-bottom: 0px;
     }
 }
 
@@ -656,21 +832,23 @@ dd:last-child {
 
 .side_bar_button_undecorated{
     width:100%;
-    .display-box;
-    .box-align(center);
-    margin-top:-13px;
-    margin-bottom:-16px;
+    margin-top:-5px;
+    margin-bottom:-5px;
+    display: table;
     
     .side_bar_button_img{
+        display: table-cell;
         width: 35px;
         margin-left:23px;
+        vertical-align: middle;
     }
     
     .side_bar_button_text_box{
-        .box-flex;
-        padding-top:7px;
+        display: table-cell;
+        width:100%;
         margin-right:20px;
         margin-left:10px;
+        vertical-align: middle;
     }
     
     .side_bar_button_text {
@@ -679,14 +857,14 @@ dd:last-child {
         padding-bottom: 8px;
         font-size: 1.4em;
         text-align: center;
-        margin-bottom: 9px;
+        margin-bottom: 0px;
     }
 }
 
 .locale_money {
     color: @money_color;
     font-size: 0.7em;
-    vertical-align: super;
+    vertical-align: top;
     margin-left: 0.2em;
 }
 
@@ -700,8 +878,7 @@ dd:last-child {
 }
 
 form .fake_link {
- text-align: right;
- font-size: 0.8em;
+ font-size: 14px;
 }
 
 .bold{

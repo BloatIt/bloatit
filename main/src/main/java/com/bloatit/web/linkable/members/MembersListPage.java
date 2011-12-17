@@ -17,25 +17,20 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
-import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
-import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.components.MemberListRenderer;
 import com.bloatit.web.linkable.IndexPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.ElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 
 @ParamContainer("members")
@@ -56,7 +51,7 @@ public final class MembersListPage extends ElveosPage {
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
         final PageIterable<Member> memberList = MemberManager.getAllMembersButAdmins();
-        final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
+        final HtmlRenderer<Member> memberItemRenderer = new MemberListRenderer();
 
         final MembersListPageUrl clonedUrl = url.clone();
         pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer,
@@ -80,37 +75,6 @@ public final class MembersListPage extends ElveosPage {
     @Override
     public boolean isStable() {
         return true;
-    }
-
-    private final class MemberRenderer implements HtmlRenderer<Member> {
-        public MemberRenderer() {
-            super();
-        }
-
-        @SuppressWarnings("synthetic-access")
-        @Override
-        public HtmlNode generate(final Member member) {
-            final MemberPageUrl memberUrl = new MemberPageUrl(member);
-            final HtmlDiv box = new HtmlDiv("member_box");
-
-            
-
-            final HtmlDiv textBox = new HtmlDiv("member_text");
-            HtmlLink htmlLink;
-            htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-            final HtmlSpan karma = new HtmlSpan("karma");
-            karma.addAttribute("title", Context.tr("{0} karma's ", member.getDisplayName()));
-            karma.addText(HtmlTools.compressKarma(member.getKarma()));
-
-            textBox.add(htmlLink);
-            textBox.add(karma);
-            box.add(textBox);
-            box.add(new HtmlDiv("member_avatar").add(MembersTools.getMemberAvatar(member)));
-            
-            box.add(new HtmlClearer());
-
-            return box;
-        }
     }
 
     @Override

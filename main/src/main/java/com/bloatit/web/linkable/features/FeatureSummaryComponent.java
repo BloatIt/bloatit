@@ -51,6 +51,8 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlAuthorLink;
+import com.bloatit.web.components.HtmlFollowButton;
+import com.bloatit.web.components.HtmlFollowButton.HtmlFollowFeatureButton;
 import com.bloatit.web.linkable.master.HtmlPageComponent;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
@@ -129,7 +131,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                             if (vote == 0) {
                                 final HtmlDiv featurePopularityJudge = new HtmlDiv("feature_popularity_judge");
                                 {
-                                    if (feature.canVoteUp().isEmpty()) {
+                                    if (!AuthToken.isAuthenticated() || feature.canVoteUp().isEmpty()) {
                                         final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
                                                                                                               feature,
                                                                                                               true);
@@ -138,7 +140,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                                         featurePopularityJudge.add(usefulLink);
                                     }
 
-                                    if (feature.canVoteDown().isEmpty()) {
+                                    if (!AuthToken.isAuthenticated() || feature.canVoteDown().isEmpty()) {
 
                                         final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
                                                                                                                feature,
@@ -181,6 +183,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_share
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
+                        final HtmlFollowButton followFeature = new HtmlFollowFeatureButton(feature);
+                        featureSummaryShare.add(followFeature);
                         // final HtmlLink showHideShareBlock = new HtmlLink("#",
                         // Context.tr("+ Share"));
                         // shareBlockShowHide.addActuator(showHideShareBlock);
@@ -244,7 +248,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(new PlaceHolderElement() {
             @Override
             protected List<HtmlNode> getPostNodes() {
-                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
+                final List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 script.addAttribute("src", "https://platform.twitter.com/widgets.js");
                 nodes.add(script);
@@ -261,7 +265,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(new PlaceHolderElement() {
             @Override
             protected List<HtmlNode> getPostNodes() {
-                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
+                final List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 nodes.add(script);
                 script.addAttribute("src", "https://platform.linkedin.com/in.js");
@@ -284,11 +288,11 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         item.add(new PlaceHolderElement() {
             @Override
             protected List<HtmlNode> getPostNodes() {
-                List<HtmlNode> nodes = new ArrayList<HtmlNode>();
+                final List<HtmlNode> nodes = new ArrayList<HtmlNode>();
                 final HtmlScript script = new HtmlScript();
                 nodes.add(script);
                 script.addAttribute("src", "https://apis.google.com/js/plusone.js");
-                script.append("{lang: '" + Context.getLocalizator().getCode() + "'}");
+                script.append("{lang: '" + Context.getLocalizator().getLanguageCode() + "'}");
 
                 return nodes;
             }
@@ -328,11 +332,11 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         element.addAttribute("data-width", "110");
         element.addAttribute("data-show-faces", "false");
         element.addAttribute("data-action", "recommend");
-        
+
         return item;
     }
 
-    private HtmlDiv generateProgressBlock(final Feature feature, FeaturesTools.FeatureContext context) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature, final FeaturesTools.FeatureContext context) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
@@ -465,7 +469,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             element.add(link);
         }
 
-        if (selectedOffer.getAuthor().equals(AuthToken.getMember())) {
+        if (selectedOffer.getCurrentMilestone() != null && selectedOffer.getCurrentMilestone().canAddRelease()) {
             final HtmlLink link = new CreateReleasePageUrl(currentMilestone).getHtmlLink(Context.tr("Add a release"));
             link.setCssClass("button");
             element.add(link);

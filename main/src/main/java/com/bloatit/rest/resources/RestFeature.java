@@ -148,16 +148,16 @@ public class RestFeature extends RestElement<Feature> {
      * 
      * @throws RestException
      */
-    @REST(name = "features", method = RequestMethod.GET, params = {"software"})
-    public static RestListBinder<RestFeature, Feature> getAllBySofware(String sofwareId) throws RestException {
+    @REST(name = "features", method = RequestMethod.GET, params = { "software" })
+    public static RestListBinder<RestFeature, Feature> getAllBySofware(final String sofwareId) throws RestException {
         try {
-            Software software = SoftwareManager.getById(Integer.parseInt(sofwareId));
+            final Software software = SoftwareManager.getById(Integer.parseInt(sofwareId));
             if (software == null) {
                 throw new RestException(StatusCode.ERROR_CLI_404_NOT_FOUND, "The software doesn't exist");
             }
-            
+
             return new RestFeatureListExpanded(software.getFeatures());
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new RestException(StatusCode.ERROR_CLI_400_BAD_REQUEST, "The software id has a bad format");
         }
     }

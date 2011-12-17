@@ -31,67 +31,67 @@ import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 public class ResourceFinder {
 
     private final String baseUrl;
-    private final Map<String,String> map = new HashMap<String, String>();
-    
-    public ResourceFinder(String baseUrl) {
+    private final Map<String, String> map = new HashMap<String, String>();
+
+    public ResourceFinder(final String baseUrl) {
         this.baseUrl = baseUrl;
     }
 
-    public String find(String resourceUrl) {
-        if(!map.containsKey(resourceUrl)) {
+    public String find(final String resourceUrl) {
+        if (!map.containsKey(resourceUrl)) {
             map.put(resourceUrl, findForCache(resourceUrl));
-        } 
-        
+        }
+
         return map.get(resourceUrl);
     }
-        
-    public String findForCache(String resourceUrl) {
-        
-        String dirName = resourceUrl.split("/[^/]+$")[0];
-        String fileName = resourceUrl.substring(dirName.length() + 1);
+
+    public String findForCache(final String resourceUrl) {
+
+        final String dirName = resourceUrl.split("/[^/]+$")[0];
+        final String fileName = resourceUrl.substring(dirName.length() + 1);
 
         final String fileNameBase = fileName.split(".[^.]+$")[0];
         final String fileNameExtension = fileName.substring(fileNameBase.length());
 
-        File dir = new File(baseUrl + dirName);
+        final File dir = new File(baseUrl + dirName);
         if (!dir.isDirectory()) {
-            throw new ExternalErrorException(dirName + " is not a valid directory for "+resourceUrl);
+            throw new ExternalErrorException(dirName + " is not a valid directory for " + resourceUrl);
         }
 
-        String[] versionList = dir.list(new FilenameFilter() {
+        final String[] versionList = dir.list(new FilenameFilter() {
 
             @Override
-            public boolean accept(File dir, String name) {
-                if (name.startsWith(fileNameBase+"-") && name.endsWith(fileNameExtension)) {
+            public boolean accept(final File dir, final String name) {
+                if (name.startsWith(fileNameBase + "-") && name.endsWith(fileNameExtension)) {
                     return true;
                 }
                 return false;
             }
         });
 
-        List<VersionFile> versionFileList = new ArrayList<VersionFile>();
+        final List<VersionFile> versionFileList = new ArrayList<VersionFile>();
 
-        for (String versionFile : versionList) {
-            int begin = Math.min(fileNameBase.length() + 1, versionFile.length() - 1);
-            int end = Math.max(begin, versionFile.length() - fileNameExtension.length());
-            String version = versionFile.substring(begin, end);
+        for (final String versionFile : versionList) {
+            final int begin = Math.min(fileNameBase.length() + 1, versionFile.length() - 1);
+            final int end = Math.max(begin, versionFile.length() - fileNameExtension.length());
+            final String version = versionFile.substring(begin, end);
 
             versionFileList.add(new VersionFile(versionFile, version));
         }
 
-        VersionFile last = findMax(versionFileList);
+        final VersionFile last = findMax(versionFileList);
 
         if (last == null) {
             throw new ExternalErrorException(resourceUrl + " resource not found");
         }
-        
+
         return dirName + '/' + last.fileName;
     }
 
-    private <T extends Comparable<T>> T findMax(List<T> list) {
+    private <T extends Comparable<T>> T findMax(final List<T> list) {
         T max = null;
 
-        for (T item : list) {
+        for (final T item : list) {
             if (max == null) {
                 max = item;
             } else {
@@ -106,14 +106,14 @@ public class ResourceFinder {
     public static class VersionFile implements Comparable<VersionFile> {
 
         private final String fileName;
-        private List<Integer> versionParts = new ArrayList<Integer>();
+        private final List<Integer> versionParts = new ArrayList<Integer>();
 
-        public VersionFile(String fileName, String version) {
+        public VersionFile(final String fileName, final String version) {
             this.fileName = fileName;
 
-            String[] split = version.split("[^0-9]");
+            final String[] split = version.split("[^0-9]");
 
-            for (String s : split) {
+            for (final String s : split) {
                 if (s.length() == 0) {
                     versionParts.add(-1);
                 } else {
@@ -124,9 +124,9 @@ public class ResourceFinder {
         }
 
         @Override
-        public int compareTo(VersionFile o) {
+        public int compareTo(final VersionFile o) {
             for (int i = 0; i < versionParts.size(); i++) {
-                int compareTo = getPart(i).compareTo(o.getPart(i));
+                final int compareTo = getPart(i).compareTo(o.getPart(i));
                 if (compareTo != 0) {
                     return compareTo;
                 }
@@ -135,10 +135,8 @@ public class ResourceFinder {
 
             return -1;
         }
-        
-        
 
-        private Integer getPart(int index) {
+        private Integer getPart(final int index) {
             if (index < versionParts.size()) {
                 return versionParts.get(index);
             }

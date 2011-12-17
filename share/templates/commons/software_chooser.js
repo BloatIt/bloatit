@@ -4,14 +4,13 @@ $(".new_software_checkbox_block").show();
 
 
 Array.prototype.contains = function (element) {
-for (var i = 0; i < this.length; i++) {
-    if (this[i] == element) {
-        return true;
-    }
+	for (var i = 0; i < this.length; i++) {
+	    if (this[i] == element) {
+	        return true;
+	    }
     }
     return false;
 }
-
 
 function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
 
@@ -49,7 +48,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         this.isShown = true;
         this.panel = $(document.createElement('div'));
         this.panel.addClass("dropdown_panel");
-        //this.panel.html("coucou");
+        // this.panel.html("coucou");
         
         this.listContainer = $(document.createElement('div'));
         this.listContainer.addClass("list_container");
@@ -125,7 +124,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         this.focusoutTime = new Date().getTime();
 
         console.log("key event"+ event.keyCode);
-        //ESCAPE
+        // ESCAPE
         if(event.keyCode == 27) {
             
             var that = this;
@@ -136,7 +135,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
             return true;
         }
         
-        //ENTER
+        // ENTER
         if(event.keyCode == 13 && this.isShown) {
             this.chooseSelection();
             return false;
@@ -156,7 +155,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
             }
         }
         
-        //Tab
+        // Tab
         if(event.keyCode == 9) {
             if(this.isShown && this.selection != "new") {
                 this.chooseSelection();
@@ -238,9 +237,6 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
             } else {
                 this.resultCount.html(extraResult+" additionnal results");
             }
-            
-
-            
         } else {
             this.resultCount.html("no results");
             this.select("new");
@@ -252,12 +248,7 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
         } else if(!this.hasExactMatch && $(this.softwareAdder.children()[0]).hasClass('entry_disabled')) {
                 $(this.softwareAdder.children()[0]).removeClass('entry_disabled');
         }
-        
-        
-        
-    
     }
-    
     
     this.emptyList = function() {
         this.listContainer.empty();
@@ -427,11 +418,11 @@ function Dropdown(referenceElement, targetInputElement, entryList, keyList) {
     }
 
     this.valueChange = function(value) {
-        //To overwrite
+        // To overwrite
     }
     
     this.askCreate = function(newName) {
-        //To overwrite
+        // To overwrite
     }
 
     
@@ -457,7 +448,6 @@ dropdown.askCreate = function(newName) {
     $("#software_chooser_create").val(newName)
      $("#software_chooser_fallback").val("")
 }
-
 
 var lastChoosenValue
 var lastNewSoftwareValue

@@ -23,7 +23,7 @@ public class OAuthProcessor implements XcgiProcessor {
     private final OAuthGetAuthorization authGetAuthorization;
     private final OAuthGetToken authGetToken;
 
-    public OAuthProcessor(OAuthAuthenticator authenticator) {
+    public OAuthProcessor(final OAuthAuthenticator authenticator) {
         super();
         this.authGetAuthorization = new OAuthGetAuthorization(authenticator);
         this.authGetToken = new OAuthGetToken(authenticator);
@@ -35,7 +35,7 @@ public class OAuthProcessor implements XcgiProcessor {
     }
 
     @Override
-    public boolean process(RequestKey key, HttpHeader header, HttpPost postData, HttpResponse response) throws IOException {
+    public boolean process(final RequestKey key, final HttpHeader header, final HttpPost postData, final HttpResponse response) throws IOException {
 
         // TODO verify httpS
 

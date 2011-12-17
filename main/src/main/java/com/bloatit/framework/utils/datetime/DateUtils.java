@@ -74,6 +74,12 @@ public class DateUtils {
         calendar.add(Calendar.YEAR, years);
         return calendar.getTime();
     }
+    
+    public static Date nowMinusSomeYears(final int years) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -years);
+        return calendar.getTime();
+    }
 
     public static Date now() {
         return new Date();
@@ -81,6 +87,10 @@ public class DateUtils {
 
     public static Date flyingPigDate() {
         return nowPlusSomeYears(1000);
+    }
+    
+    public static Date dawnOfTime() {
+        return nowMinusSomeYears(1000);
     }
 
     /**
@@ -96,5 +106,7 @@ public class DateUtils {
     public static boolean isInTheFuture(final Date date) {
         return date.after(now());
     }
+
+    
 
 }

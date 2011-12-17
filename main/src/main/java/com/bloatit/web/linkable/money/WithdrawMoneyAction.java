@@ -10,6 +10,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -35,12 +36,14 @@ public class WithdrawMoneyAction extends LoggedElveosAction {
     @MaxConstraint(max = 100000, message = @tr("Amount to withdraw must be smaller or equal than %constraint%."))
     @MinConstraint(min = 1, message = @tr("Amount to withdraw must be greater or equal than %constraint%."))
     @NonOptional(@tr("The amount is needed."))
+    @FormField(label = @tr("Amount to withdraw"))
     private final BigDecimal amount;
 
     @RequestParam(role = Role.POST)
     @MinConstraint(min = 14, message = @tr("IBAN must be between 14 and 34 characters."))
     @MaxConstraint(max = 34, message = @tr("IBAN must be between 14 and 34 characters."))
     @NonOptional(@tr("Please specify your IBAN."))
+    @FormField(label = @tr("Your IBAN"))
     private final String IBAN;
 
     public WithdrawMoneyAction(final WithdrawMoneyActionUrl url) {

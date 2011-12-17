@@ -17,7 +17,6 @@
 package com.bloatit.data;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -63,23 +62,6 @@ public class DaoFeatureTest extends DataTestUnit {
         assertEquals(feature, DBRequests.getAll(DaoFeature.class).iterator().next());
 
         assertEquals(yo, feature.getMember());
-    }
-
-    @Test
-    public void testDeleteFeature() {
-        final DaoFeature feature = DaoFeature.createAndPersist(yo,
-                                                               null,
-                                                               DaoDescription.createAndPersist(yo,
-                                                                                               null,
-                                                                                               Language.FR,
-                                                                                               "Ma super demande !",
-                                                                                               "Ceci est la descption de ma demande :) "),
-                                                               project);
-        SessionManager.flush();
-
-        feature.delete();
-
-        assertFalse(DBRequests.getAll(DaoFeature.class).iterator().hasNext());
     }
 
     @Test

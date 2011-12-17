@@ -31,6 +31,7 @@ import com.bloatit.web.url.StopFollowActionUrl;
 @ParamContainer(value = "dashboardTab", isComponent = true)
 public class DashboardTab extends HtmlTab {
     private final Actor<?> actor;
+    @SuppressWarnings("unused")
     private final MemberPageUrl url;
 
     public DashboardTab(final Actor<?> actor, final String title, final String tabKey, final MemberPageUrl url) {
@@ -43,7 +44,7 @@ public class DashboardTab extends HtmlTab {
     public HtmlNode generateBody() {
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
-        // Displaying list of user recent activity
+        // Displaying list of user recent history
         final HtmlTitleBlock followed = new HtmlTitleBlock(Context.tr("Content you follow"), 1);
         master.add(followed);
 
@@ -171,7 +172,6 @@ public class DashboardTab extends HtmlTab {
 
     private ArrayList<DashboardStep> offerStep(ArrayList<DashboardStep> steps, Feature feature) {
         contributionStep(steps, feature);
-        DashboardStep offer = null;
         return steps;
     }
 

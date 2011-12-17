@@ -18,6 +18,7 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Locale;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoComment;
@@ -173,13 +174,13 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             return false;
         }
 
-        for (Contribution c : getContributions(false)) {
+        for (final Contribution c : getContributions(false)) {
             if (!c.getMember().equals(getMember())) {
                 return false;
             }
         }
 
-        for (Offer o : getOffers()) {
+        for (final Offer o : getOffers()) {
             if (!o.getMember().equals(getMember())) {
                 return false;
             }
@@ -207,7 +208,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                                                       DaoGetter.get(AuthToken.getAsTeam()),
                                                                       amount,
                                                                       comment);
-        setStateObject(getStateObject().eventAddContribution());
+        // setStateObject(getStateObject().eventAddContribution());
 
         // Contributing automatically puts the feature in your follow list
         follow(AuthToken.getMember());
@@ -216,7 +217,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public void follow(Member member) {
+    public void follow(final Member member) {
         new Follow(this, member);
     }
 
@@ -264,8 +265,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         if (getDao().getSelectedOffer().getId() != null && getDao().getSelectedOffer().getId().equals(offer.getId())) {
             setSelectedOffer(Offer.create(getDao().computeSelectedOffer()));
         }
-        getDao().removeOffer(offer.getDao());
         setStateObject(getStateObject().eventRemoveOffer(offer));
+        getDao().removeOffer(offer.getDao());
     }
 
     @Override
@@ -347,7 +348,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+    protected void delete(final boolean delOrder) throws UnauthorizedOperationException {
         if (delOrder) {
             this.setFeatureState(FeatureState.DISCARDED);
         }
@@ -380,7 +381,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         }
 
         if (delOrder) {
-            for (Follow f : new FollowList(DaoFollow.getFollow(getDao()))) {
+            for (final Follow f : new FollowList(DaoFollow.getFollow(getDao()))) {
                 f.delete();
             }
         }
@@ -400,12 +401,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         if (getSelectedOffer().isFinished()) {
             throw new BadProgrammerException("Cannot be in development state and have no milestone left.");
         }
-        
-        if(!getValidationDate().before(new Date())) {
-        	//Force to a valide date
-        	getDao().setValidationDate(new Date());
+
+        if (!getValidationDate().before(new Date())) {
+            // Force to a valide date
+            getDao().setValidationDate(new Date());
         }
-        
+
         getDao().setFeatureState(FeatureState.DEVELOPPING);
         getSelectedOffer().getCurrentMilestone().setDevelopingUnprotected();
         new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentMilestone().getExpirationDate());
@@ -422,7 +423,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                 contribution.cancel();
             }
         }
-        Offer selectedOffer = getSelectedOffer();
+        final Offer selectedOffer = getSelectedOffer();
         if (selectedOffer != null) {
             selectedOffer.cancelEverythingLeft();
         }
@@ -605,7 +606,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public void setDescription(String newDescription, final Language language) throws UnauthorizedOperationException {
+    public void setDescription(final String newDescription, final Language language) throws UnauthorizedOperationException {
         if (!canModify()) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
@@ -617,7 +618,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public void setTitle(String title, final Language language) throws UnauthorizedOperationException {
+    public void setTitle(final String title, final Language language) throws UnauthorizedOperationException {
         if (!canModify()) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
@@ -629,12 +630,22 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public void setSoftware(Software software) throws UnauthorizedOperationException {
+    public void setSoftware(final Software software) throws UnauthorizedOperationException {
         if (!canModify()) {
             throw new UnauthorizedOperationException(Action.WRITE);
         }
 
-        getDao().setSoftware(software.getDao());
+        if (software == null) {
+            getDao().setSoftware(null);
+        } else {
+            getDao().setSoftware(software.getDao());
+            for (final FollowSoftware s : software.getFollowers()) {
+                final FollowFeature followFeature = s.getFollower().followOrGetFeature(this);
+                followFeature.setBugComment(true);
+                followFeature.setFeatureComment(true);
+                followFeature.setMail(followFeature.isMail());
+            }
+        }
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -693,7 +704,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public PageIterable<Contribution> getContributions(boolean isCanceled) {
+    public PageIterable<Contribution> getContributions(final boolean isCanceled) {
         return new ContributionList(getDao().getContributions(isCanceled));
     }
 
@@ -706,7 +717,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public float getMemberProgression(final Member author) throws UnauthorizedOperationException {
+    public float getMemberProgression(final Member author) {
         final BigDecimal memberAmount = getContributionOf(author);
         final float memberAmountFloat = memberAmount.floatValue();
         final float totalAmountFloat = getContribution().floatValue();
@@ -735,7 +746,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public BigDecimal getContributionMax() {
-        BigDecimal contributionMax = getDao().getContributionMax();
+        final BigDecimal contributionMax = getDao().getContributionMax();
         if (contributionMax == null) {
             return BigDecimal.ZERO;
         } else {
@@ -745,7 +756,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public BigDecimal getContributionMin() {
-        BigDecimal contributionMin = getDao().getContributionMin();
+        final BigDecimal contributionMin = getDao().getContributionMin();
         if (contributionMin == null) {
             return BigDecimal.ZERO;
         } else {
@@ -924,5 +935,15 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
+    }
+
+    @Override
+    public String getTitle(final Locale l) {
+        return getDescription().getTranslationOrDefault(Language.fromLocale(l)).getTitle();
+    }
+
+    @Override
+    public String getDescription(final Locale l) {
+        return getDescription().getTranslationOrDefault(Language.fromLocale(l)).getText();
     }
 }

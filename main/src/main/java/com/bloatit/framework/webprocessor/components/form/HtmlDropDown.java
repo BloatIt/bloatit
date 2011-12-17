@@ -15,13 +15,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 
 /**
  * Class to create Html drop down ({@code<select>} tag)
  */
-public class HtmlDropDown extends HtmlStringFormField {
+public class HtmlDropDown extends HtmlFormField {
 
     private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
 
@@ -44,7 +45,7 @@ public class HtmlDropDown extends HtmlStringFormField {
 
     /**
      * Adds elements based on an enum
-     * 
+     *
      * @param <T> the type of the elements of the set
      * @param elements the enum set
      */
@@ -61,14 +62,16 @@ public class HtmlDropDown extends HtmlStringFormField {
      * {@link #addDropDownElement(String, String)} method (the code which is not
      * visible from the user).
      * </p>
-     * 
+     *
      * @param value the code of the default element
      */
     @Override
-    protected void doSetDefaultValue(final String value) {
+    protected void doSetDefaultStringValue(final String value) {
         final HtmlDropDownElement checkedElement = elements.get(value);
         if (checkedElement != null) {
             checkedElement.addAttribute("selected", "selected");
+        } else {
+            throw new BadProgrammerException("Cannot set default value, element not found: " + value);
         }
     }
 }

@@ -33,7 +33,7 @@ import com.bloatit.framework.webprocessor.url.Messages;
  * default value
  * </p>
  */
-public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implements HtmlNamedNode {
+public abstract class HtmlFormField extends HtmlLeaf implements HtmlNamedNode {
 
     private LabelPosition position;
 
@@ -75,6 +75,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     private final HtmlDiv container = new HtmlDiv();
     private final HtmlDiv input = new HtmlDiv();
     private final RandomString rng = new RandomString(10);
+    private String name;
 
     /**
      * <p>
@@ -83,7 +84,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * If a label is added, it will will be positioned BEFORE the element
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      */
@@ -99,7 +100,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * The Label will be positioned BEFORE the element
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -117,7 +118,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * If a label is added later, it will be added before or after the element,
      * depending on the value of the parameter <code>position</code>
      * <p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param position the position of the future label
@@ -139,7 +140,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * The label position depends on the value of the parameter
      * <code>position</code>
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -172,7 +173,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * depending on the kind of field. CSS can then be used to render it
      * properly.
      * </p>
-     * 
+     *
      * @param messages The list of messages to display
      */
     public void addErrorMessages(final Messages messages) {
@@ -201,7 +202,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and
      * not modify any other parameters than redefining the placeholder
      * </p>
-     * 
+     *
      * @param label the label for the element
      */
     public final void setLabel(final String label) {
@@ -221,7 +222,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and
      * not modify any other parameters than redefining the placeholder
      * </p>
-     * 
+     *
      * @param label the label for the element
      */
     public final void setLabel(final HtmlElement label) {
@@ -232,7 +233,11 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         this.ph.add(labelBlock);
         checkIdLabel();
     }
-    
+
+    public final void addContainerCssClass(String cssClass) {
+        this.container.setCssClass(cssClass);
+    }
+
     /**
      * <p>
      * Adds some text that explains the meaning of this
@@ -243,7 +248,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * depending on the kind of field. CSS can then be used to render it
      * properly.
      * </p>
-     * 
+     *
      * @param comment The text describing the goal of the form field
      */
     public final void setComment(final String comment) {
@@ -254,6 +259,14 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         final HtmlDiv commentBlock = new HtmlDiv("comment");
         commentBlock.add(comment);
         this.commentPh.add(commentBlock);
+    }
+
+    public void setShort(){
+        addContainerCssClass("short-form");
+    }
+
+    public void setLong(){
+        addContainerCssClass("long-form");
     }
 
     @Override
@@ -271,7 +284,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     @Override
-    public final HtmlFormField<T> addAttribute(final String name, final String value) {
+    public final HtmlFormField addAttribute(final String name, final String value) {
         this.inputBlock.getInputElement().addAttribute(name, value);
         return this;
     }
@@ -279,6 +292,16 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     @Override
     public final void setName(final String name) {
         inputBlock.getInputElement().addAttribute("name", name);
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setRequired() {
+        addAttribute("required", "required");
+        addContainerCssClass("required");
     }
 
     /**
@@ -286,18 +309,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Adds a default value to the object object.
      * </p>
      * The corresponding element must have been added
-     * 
+     *
      * @param value the Object representing the default value
      */
     public final void setDefaultValue(final String value) {
         if (value != null) {
             this.doSetDefaultStringValue(value);
-        }
-    }
-
-    public final void setDefaultStringValue(final T value) {
-        if (value != null) {
-            this.doSetDefaultValue(value);
         }
     }
 
@@ -324,12 +341,10 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Default value of an element is the value displayed to the user when the
      * page loads, before he even started adding data.
      * </p>
-     * 
+     *
      * @param value the default value
      */
     protected abstract void doSetDefaultStringValue(String value);
-
-    protected abstract void doSetDefaultValue(T value);
 
     /**
      * Initializes the placeholder for the label
@@ -399,7 +414,5 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
                 }
             };
         }
-
     }
-
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+         
+	<changeSet author='Yoann Plénet' id="create old events">
+		<sql splitStatements="false">
+            CREATE OR REPLACE FUNCTION migrate_events() RETURNS void AS $$
+            DECLARE  
+                uc	RECORD;
+                seq	INTEGER;
+            BEGIN SET CONSTRAINTS ALL DEFERRED;
+                -- FEATURES
+                RAISE NOTICE 'Now handling : FEATURES';
+                FOR uc IN SELECT * FROM daofeature, daousercontent 
+		            WHERE daofeature.id = daousercontent.id 
+                LOOP
+	                SELECT nextval('hibernate_sequence') INTO seq;
+	                INSERT INTO daoevent VALUES (seq, 'CREATE_FEATURE', FALSE, FALSE, uc.creationdate, uc.id, NULL, NULL, NULL, NULL, NULL, NULL, uc.member_id, uc.software_id);
+                END LOOP;
+
+                -- CONTRIBUTIONS
+                RAISE NOTICE 'Now handling : CONTRIBUTIONS';
+                FOR uc IN SELECT * FROM daocontribution, daousercontent, daofeature 
+		            WHERE daocontribution.id = daousercontent.id 
+		            AND daocontribution.feature_id = daofeature.id 
+                LOOP
+	                SELECT nextval('hibernate_sequence') INTO seq;
+	                INSERT INTO daoevent VALUES (seq, 'ADD_CONTRIBUTION', FALSE, FALSE, uc.creationdate, uc.feature_id, uc.id, NULL, NULL, NULL, NULL, NULL, uc.member_id, uc.software_id);
+                END LOOP;
+
+                -- OFFERS
+                RAISE NOTICE 'Now handling : OFFERS';
+                FOR uc IN SELECT * FROM daooffer, daousercontent, daofeature
+		            WHERE daooffer.id = daousercontent.id 
+		            AND daooffer.feature_id = daofeature.id 
+                LOOP
+	                SELECT nextval('hibernate_sequence') INTO seq;
+	                INSERT INTO daoevent VALUES (seq, 'ADD_OFFER', FALSE, FALSE, uc.creationdate, uc.feature_id, NULL, uc.id, NULL, NULL, NULL, NULL, uc.member_id, uc.software_id);
+                END LOOP;
+
+                -- RELEASES
+                RAISE NOTICE 'Now handling : RELEASES';
+                FOR uc IN SELECT * FROM daorelease, daousercontent, daomilestone, daooffer, daofeature 
+		                WHERE daorelease.id = daousercontent.id 
+		                AND daorelease.milestone_id = daomilestone.id
+		                AND daomilestone.offer_id = daooffer.id
+		                AND daooffer.feature_id = daofeature.id
+                LOOP
+	                SELECT nextval('hibernate_sequence') INTO seq;
+	                INSERT INTO daoevent VALUES (seq, 'ADD_RELEASE', FALSE, FALSE, uc.creationdate, uc.feature_id, NULL, uc.offer_id, NULL, NULL, uc.id, uc.milestone_id, uc.member_id, uc.software_id);
+                END LOOP;
+
+                -- BUGS
+                RAISE NOTICE 'Now handling : BUGS';
+                FOR uc IN SELECT * FROM daobug, daousercontent, daomilestone, daooffer, daofeature 
+		                WHERE daobug.id = daousercontent.id 
+		                AND daobug.milestone_id = daomilestone.id
+		                AND daomilestone.offer_id = daooffer.id
+		                AND daooffer.feature_id = daofeature.id
+                LOOP
+	                SELECT nextval('hibernate_sequence') INTO seq;
+	                INSERT INTO daoevent VALUES (seq, 'ADD_BUG', FALSE, FALSE, uc.creationdate, uc.feature_id, NULL, uc.offer_id, NULL, uc.id, NULL, uc.milestone_id, uc.member_id, uc.software_id);
+                END LOOP;
+
+                -- COMMENTS
+                RAISE NOTICE 'Now handling : COMMENTS';
+                FOR uc IN SELECT * FROM daocomment, daousercontent, daofeature
+		                WHERE daocomment.id = daousercontent.id 
+		                AND daocomment.feature_id = daofeature.id 
+                LOOP
+	                SELECT nextval('hibernate_sequence') INTO seq;
+	                INSERT INTO daoevent VALUES (seq, 'FEATURE_ADD_COMMENT', FALSE, TRUE, uc.creationdate, uc.feature_id, NULL, NULL, uc.id, NULL, NULL, NULL, uc.member_id, uc.software_id);
+                END LOOP;
+
+            END;
+            $$ LANGUAGE plpgsql;
+            SELECT * FROM migrate_events();
+            DROP FUNCTION migrate_events();
+		</sql>
+    </changeSet>
+
+</databaseChangeLog>

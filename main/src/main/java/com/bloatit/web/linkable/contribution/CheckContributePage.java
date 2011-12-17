@@ -286,7 +286,13 @@ public final class CheckContributePage extends QuotationPage {
         group.add(showChargeAccountLink);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process.getAmount().subtract(account), line.getMoneyField(), summary, process));
+        summary.add(new HtmlTotalSummary(quotation,
+                                         hasToShowFeeDetails(),
+                                         url,
+                                         process.getAmount().subtract(account),
+                                         line.getMoneyField(),
+                                         summary,
+                                         process));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);

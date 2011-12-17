@@ -39,10 +39,7 @@ import org.hibernate.annotations.NamedQuery;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@NamedQueries(value = { @NamedQuery(
-    cacheable = true,
-    name = "invoice.max_invoice_number",
-    query = "SELECT MAX(internalInvoiceNumber) FROM DaoInvoice") })
+@NamedQueries(value = { @NamedQuery(cacheable = true, name = "invoice.max_invoice_number", query = "SELECT MAX(internalInvoiceNumber) FROM DaoInvoice") })
 public class DaoInvoice extends DaoIdentifiable {
 
     // Seller
@@ -182,6 +179,7 @@ public class DaoInvoice extends DaoIdentifiable {
                          final String receiverExtras,
                          final String receiverCity,
                          final String receiverCountry,
+                         final String receiverTaxIdentification,
                          final Date invoiceDate,
                          final String deliveryName,
                          final BigDecimal priceExcludingTax,
@@ -211,8 +209,7 @@ public class DaoInvoice extends DaoIdentifiable {
                        taxRate,
                        taxAmount,
                        totalPrice,
-                       sellerLegalId,
-                       sellerTaxIdentification);
+                       sellerLegalId);
 
         this.invoiceFile = invoiceFile;
         this.invoiceType = invoiceType;
@@ -228,6 +225,7 @@ public class DaoInvoice extends DaoIdentifiable {
         this.receiverExtras = receiverExtras;
         this.receiverCity = receiverCity;
         this.receiverCountry = receiverCountry;
+        this.receiverTaxIdentification = receiverTaxIdentification;
         this.invoiceDate = invoiceDate;
         this.deliveryName = deliveryName;
         this.priceExcludingTax = priceExcludingTax;
@@ -266,6 +264,7 @@ public class DaoInvoice extends DaoIdentifiable {
                                               final String receiverExtras,
                                               final String receiverCity,
                                               final String receiverCountry,
+                                              final String receiverTaxIdentification,
                                               final Date invoiceDate,
                                               final String deliveryName,
                                               final BigDecimal priceExcludingTax,
@@ -290,6 +289,7 @@ public class DaoInvoice extends DaoIdentifiable {
                                                   receiverExtras,
                                                   receiverCity,
                                                   receiverCountry,
+                                                  receiverTaxIdentification,
                                                   invoiceDate,
                                                   deliveryName,
                                                   priceExcludingTax,

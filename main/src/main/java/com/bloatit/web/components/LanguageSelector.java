@@ -20,9 +20,8 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
+import com.bloatit.framework.xcgiserver.AvailableLocales;
 
 /**
  * A simple component that proposes the users a drop down menu allowing him to
@@ -32,20 +31,28 @@ public class LanguageSelector extends HtmlDropDown {
     private static final String DEFAULT_LANG = "en";
     private final Set<String> codes = new HashSet<String>();
 
+    public LanguageSelector(final String name) {
+        super(name);
+        for (final Entry<String, String> langEntry : AvailableLocales.getAvailableLangs().entrySet()) {
+            codes.add(langEntry.getKey());
+            addDropDownElement(langEntry.getKey(), langEntry.getValue());
+        }
+    }
+
     public LanguageSelector(final String name, final String label) {
         super(name, label);
-        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
-            codes.add(langEntry.getValue().getCode());
-            addDropDownElement(langEntry.getValue().getCode(), langEntry.getValue().getName());
+        for (final Entry<String, String> langEntry : AvailableLocales.getAvailableLangs().entrySet()) {
+            codes.add(langEntry.getKey());
+            addDropDownElement(langEntry.getKey(), langEntry.getValue());
         }
     }
 
     @Override
-    protected void doSetDefaultValue(final String value) {
+    protected void doSetDefaultStringValue(final String value) {
         if (codes.contains(value)) {
-            super.doSetDefaultValue(value);
+            super.doSetDefaultStringValue(value);
         } else {
-            super.doSetDefaultValue(DEFAULT_LANG);
+            super.doSetDefaultStringValue(DEFAULT_LANG);
         }
     }
 
@@ -59,10 +66,10 @@ public class LanguageSelector extends HtmlDropDown {
         }
         for (final String lang : langs) {
             if (lang != null && !lang.isEmpty()) {
-                setDefaultStringValue(lang);
+                setDefaultValue(lang);
                 return;
             }
         }
-        setDefaultStringValue("en");
+        setDefaultValue("en");
     }
 }

@@ -57,10 +57,8 @@ public class AdministrationAction extends AdminAction {
     @Optional
     private final DisplayableFeatureState featureStateToSet;
 
-    @SuppressWarnings("unused")
     private final AdministrationActionUrl url;
 
-    @SuppressWarnings("unchecked")
     public AdministrationAction(final AdministrationActionUrl url) {
         super(url);
         this.url = url;
@@ -148,7 +146,7 @@ public class AdministrationAction extends AdminAction {
             }
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(getRefusalReason());
-            return new LoginPageUrl();
+            return new LoginPageUrl(url.urlString());
         } catch (final ConversionErrorException e) {
             session.notifyError(e.getMessage());
         }

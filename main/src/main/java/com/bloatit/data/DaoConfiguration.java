@@ -23,11 +23,11 @@ public class DaoConfiguration {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @DocumentId
     private Integer id;
-    
+
     @Basic(optional = false)
     public int mercanetTransactionId;
-    
-    private DaoConfiguration(){
+
+    private DaoConfiguration() {
         // For hibernate mapping
     }
 
@@ -47,10 +47,10 @@ public class DaoConfiguration {
         return mercanetTransactionId;
     }
 
-    public void setMercanetTransactionId(int mercanetTransactionId) {
+    public void setMercanetTransactionId(final int mercanetTransactionId) {
         this.mercanetTransactionId = mercanetTransactionId;
     }
-    
+
     public Integer getId() {
         return this.id;
     }

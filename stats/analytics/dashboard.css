@@ -38,6 +38,11 @@ tbody tr:nth-child(odd){background-color:white;}
     font-size:15px;
     color: #8C8C8C;
 }
+#bilan td.tot {
+    font-weight: normal;
+    font-size:15px;
+    color: #8C8C8C;
+}
 #separator {
     padding-top: 100px;
 }

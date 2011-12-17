@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Cacheable;
@@ -37,6 +38,7 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
+import com.bloatit.data.DaoEvent.EventType;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -52,6 +54,11 @@ import com.bloatit.framework.utils.PageIterable;
                         name = "commentable.byId",
                         query = "FROM com.bloatit.data.DaoCommentable " +
                         		"WHERE id = :id "),
+            		@NamedQuery(
+                                name = "comment.bydate.size",
+                                query = "SELECT count(*) " +
+                                		"FROM com.bloatit.data.DaoComment " +
+                                        "WHERE creationDate BETWEEN :from AND :to "),
 })
 //@formatter:on
 public class DaoComment extends DaoKudosable implements DaoCommentable {
@@ -66,8 +73,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     private DaoBug bug;
     @ManyToOne(fetch = FetchType.LAZY)
     private DaoFeature feature;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private DaoRelease release;
 
     /**
      * Any comment can have some child comments.
@@ -78,17 +83,28 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded(depth = 1)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoComment> children = new ArrayList<DaoComment>(0);
-    
-    
-    public static DaoCommentable getCommentable(int id){
+
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "comment", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
+
+    public static DaoCommentable getCommentable(final int id) {
         return (DaoCommentable) SessionManager.getNamedQuery("commentable.byId").setInteger("id", id).uniqueResult();
+    }
+
+    public static Long getCommentCount(Date from, Date to) {
+        Long count = (Long) SessionManager.getNamedQuery("comment.bydate.size").setDate("from", from).setDate("to", to).uniqueResult();
+        if (count == null) {
+            return 0L;
+        }
+        return count;
     }
 
     /**
      * Create a comment. This constructor is protected because you should use
      * the createAndPersist method (to make sure your comment really goes into
      * the db.
-     * 
+     *
      * @param father the content on which this comment is added.
      * @param team the As Team property. can be null.
      * @param member is the author.
@@ -106,6 +122,12 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        DaoEvent.createCommentEvent(father.getMilestone().getOffer().getFeature(),
+                                    EventType.BUG_ADD_COMMENT,
+                                    father,
+                                    comment,
+                                    father.getMilestone().getOffer(),
+                                    father.getMilestone());
         return comment;
     }
 
@@ -113,7 +135,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      * Create a comment. This constructor is protected because you should use
      * the createAndPersist method (to make sure your comment really goes into
      * the db.
-     * 
+     *
      * @param father the content on which this comment is added.
      * @param team the As Team property. can be null.
      * @param member is the author.
@@ -131,7 +153,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        
+        DaoEvent.createCommentEvent(father, EventType.FEATURE_ADD_COMMENT, comment);
         return comment;
     }
 
@@ -139,32 +161,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      * Create a comment. This constructor is protected because you should use
      * the createAndPersist method (to make sure your comment really goes into
      * the db.
-     * 
-     * @param father the content on which this comment is added.
-     * @param team the As Team property. can be null.
-     * @param member is the author.
-     * @param text is the content.
-     * @return the newly created comment
-     * @throws NonOptionalParameterException if the text is null
-     */
-    public static DaoComment createAndPersist(final DaoRelease father, final DaoTeam team, final DaoMember member, final String text) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment comment = new DaoComment(father, team, member, text);
-        try {
-            session.save(comment);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-            throw e;
-        }
-        return comment;
-    }
-
-    /**
-     * Create a comment. This constructor is protected because you should use
-     * the createAndPersist method (to make sure your comment really goes into
-     * the db.
-     * 
+     *
      * @param father the content on which this comment is added.
      * @param team the As Team property. can be null.
      * @param member is the author.
@@ -182,6 +179,21 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
+        if (father == null) {
+            return comment;
+        }
+        final DaoUserContent commented = father.getCommented();
+        if (commented instanceof DaoFeature) {
+            DaoEvent.createCommentEvent((DaoFeature) commented, EventType.FEATURE_ADD_COMMENT, comment);
+        } else if (commented instanceof DaoBug) {
+            DaoEvent.createCommentEvent(((DaoBug) commented).getMilestone().getOffer().getFeature(),
+                                        EventType.BUG_ADD_COMMENT,
+                                        (DaoBug) commented,
+                                        comment,
+                                        ((DaoBug) commented).getMilestone().getOffer(),
+                                        ((DaoBug) commented).getMilestone());
+
+        }
         return comment;
     }
 
@@ -189,7 +201,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      * Create a comment. This constructor is protected because you should use
      * the createAndPersist method (to make sure your comment really goes into
      * the db.
-     * 
+     *
      * @param member is the author.
      * @param text is the content.
      * @throws NonOptionalParameterException if the text is null
@@ -211,11 +223,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     private DaoComment(final DaoFeature father, final DaoTeam team, final DaoMember member, final String text) {
         this(member, team, text);
         this.feature = father;
-    }
-
-    private DaoComment(final DaoRelease father, final DaoTeam team, final DaoMember member, final String text) {
-        this(member, team, text);
-        this.release = father;
     }
 
     private DaoComment(final DaoComment father, final DaoTeam team, final DaoMember member, final String text) {
@@ -252,7 +259,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     /**
      * Use a HQL query to return the children of this comment. It allows the use
      * of PageIterable. Order by creation date, older first.
-     * 
+     *
      * @return the list of this comment children. return an empty list if there
      *         is no child.
      */
@@ -288,9 +295,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         if (feature != null) {
             return feature;
         }
-        if (release != null) {
-            return release;
-        }
         return null;
     }
 
@@ -306,13 +310,6 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      */
     public DaoBug getFatherBug() {
         return this.bug;
-    }
-
-    /**
-     * @return the father if it is a release
-     */
-    public DaoRelease getFatherRelease() {
-        return this.release;
     }
 
     /**

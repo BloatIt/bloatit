@@ -16,8 +16,10 @@
 //
 package com.bloatit.model;
 
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Locale;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoContributionInvoice;
@@ -92,38 +94,69 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                final String deliveryName,
                                final BigDecimal totalPrice,
                                final Milestone milestone,
-                               final Contribution contribution) throws UnauthorizedPrivateAccessException {
-
-        super(generateInvoice(emitterActor, recipientActor, invoiceType, deliveryName, totalPrice, milestone, contribution));
+                               final Contribution contribution,
+                               final boolean applyVAT) throws UnauthorizedPrivateAccessException {
+        super(generateInvoice(emitterActor, recipientActor, invoiceType, deliveryName, totalPrice, milestone, contribution, applyVAT, null));
     }
 
-    private static DaoContributionInvoice generateInvoice(final Actor<?> emitterActor,
-                                                          final Actor<?> recipientActor,
-                                                          final String invoiceType,
-                                                          final String deliveryName,
-                                                          final BigDecimal totalPrice,
-                                                          final Milestone milestone,
-                                                          final Contribution contribution) throws UnauthorizedPrivateAccessException {
+    public static class PreviewSettings {
+        private final OutputStream stream;
+        private final BigDecimal invoiceNumber;
 
-        final String invoiceId = emitterActor.getContact().pickNextInvoiceId();
+        public PreviewSettings(final OutputStream stream, final BigDecimal invoiceNumber) {
+            this.stream = stream;
+            this.invoiceNumber = invoiceNumber;
+        }
+
+        public BigDecimal getInvoiceNumber() {
+            return invoiceNumber;
+        }
+
+        public OutputStream getStream() {
+            return stream;
+        }
+    }
+
+    public static DaoContributionInvoice generateInvoice(final Actor<?> emitterActor,
+                                                         final Actor<?> recipientActor,
+                                                         final String invoiceType,
+                                                         final String deliveryName,
+                                                         final BigDecimal totalPrice,
+                                                         final Milestone milestone,
+                                                         final Contribution contribution,
+                                                         final boolean applyVAT,
+                                                         final PreviewSettings preview) throws UnauthorizedPrivateAccessException {
+
+        final String invoiceId;
+        if (preview == null) {
+            invoiceId = emitterActor.getContact().pickNextInvoiceId();
+        } else {
+            invoiceId = emitterActor.getContact().getInvoiceId(preview.getInvoiceNumber());
+        }
         final String sellerName = emitterActor.getContact().getName();
         final String sellerStreet = emitterActor.getContact().getStreet();
         final String sellerExtras = emitterActor.getContact().getExtras();
         final String sellerCity = emitterActor.getContact().getPostalCode() + " " + emitterActor.getContact().getCity();
-        final String sellerCountry = emitterActor.getContact().getCountry();
+        final String sellerCountry = new Locale("en", emitterActor.getContact().getCountry()).getDisplayCountry(Locale.ENGLISH);
         final String sellerLegalId = emitterActor.getContact().getLegalId();
         final String sellerTaxIdentification = emitterActor.getContact().getTaxIdentification();
-        Contact recipientContact = recipientActor.getContactUnprotected();
+        final Contact recipientContact = recipientActor.getContactUnprotected();
         final String receiverName = recipientContact.getName();
         final String receiverStreet = recipientContact.getStreet();
         final String receiverExtras = recipientContact.getExtras();
         final String receiverCity = recipientContact.getPostalCode() + " " + recipientContact.getCity();
-        final String receiverCountry = recipientContact.getCountry();
+        final String receiverCountry = new Locale("en", recipientContact.getCountry()).getDisplayCountry(Locale.ENGLISH);
+        final String receiverTaxIdentification = recipientContact.getTaxIdentification();
         final Date invoiceDate = DateUtils.now();
 
-        final BigDecimal taxRate = emitterActor.getContact().getTaxRate();
+        BigDecimal taxRate = emitterActor.getContact().getTaxRate();
+
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         final BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
+
+        if (!applyVAT) {
+            taxRate = null;
+        }
 
         final InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
                                                                          invoiceId,
@@ -137,6 +170,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                                          receiverExtras,
                                                                          receiverCity,
                                                                          receiverCountry,
+                                                                         receiverTaxIdentification,
                                                                          invoiceDate,
                                                                          deliveryName,
                                                                          priceExcludingTax,
@@ -144,35 +178,42 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                                          taxAmount,
                                                                          totalPrice,
                                                                          sellerLegalId,
-                                                                         sellerTaxIdentification);
+                                                                         sellerTaxIdentification,
+                                                                         null);
 
-        return DaoContributionInvoice.createAndPersist(emitterActor.getDao(),
-                                                       recipientActor.getDao(),
-                                                       pdfGenerator.getPdfUrl(),
-                                                       invoiceType,
-                                                       invoiceId,
-                                                       sellerName,
-                                                       sellerStreet,
-                                                       sellerExtras,
-                                                       sellerCity,
-                                                       sellerCountry,
-                                                       receiverName,
-                                                       receiverStreet,
-                                                       receiverExtras,
-                                                       receiverCity,
-                                                       receiverCountry,
-                                                       invoiceDate,
-                                                       deliveryName,
-                                                       priceExcludingTax,
-                                                       taxRate.multiply(BigDecimal.valueOf(100)),
-                                                       taxAmount,
-                                                       totalPrice,
-                                                       sellerLegalId,
-                                                       sellerTaxIdentification,
-                                                       milestone.getDao(),
-                                                       contribution.getDao());
+        if (preview == null) {
+            return DaoContributionInvoice.createAndPersist(emitterActor.getDao(),
+                                                           recipientActor.getDao(),
+                                                           pdfGenerator.getPdfUrl(),
+                                                           invoiceType,
+                                                           invoiceId,
+                                                           sellerName,
+                                                           sellerStreet,
+                                                           sellerExtras,
+                                                           sellerCity,
+                                                           sellerCountry,
+                                                           receiverName,
+                                                           receiverStreet,
+                                                           receiverExtras,
+                                                           receiverCity,
+                                                           receiverCountry,
+                                                           receiverTaxIdentification,
+                                                           invoiceDate,
+                                                           deliveryName,
+                                                           priceExcludingTax,
+                                                           taxRate.multiply(BigDecimal.valueOf(100)),
+                                                           taxAmount,
+                                                           totalPrice,
+                                                           sellerLegalId,
+                                                           sellerTaxIdentification,
+                                                           milestone.getDao(),
+                                                           contribution.getDao());
+        } else {
+            pdfGenerator.write(preview.getStream());
+            return null;
+        }
     }
-    
+
     public String getFile() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtInvoice.File(), Action.READ);
         return getDao().getFile();
@@ -182,7 +223,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
         tryAccess(new RgtInvoice.InvoiceNumber(), Action.READ);
         return getDao().getInvoiceNumber();
     }
-    
+
     public Milestone getMilestone() {
         return Milestone.create(getDao().getMilestone());
     }
@@ -220,7 +261,4 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
     final Actor<?> getEmitterActorUnprotected() {
         return (Actor<?>) getDao().getEmitterActor().accept(new DataVisitorConstructor());
     }
-
-    
-
 }

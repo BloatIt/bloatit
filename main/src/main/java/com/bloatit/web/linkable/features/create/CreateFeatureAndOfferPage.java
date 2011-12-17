@@ -14,22 +14,18 @@ package com.bloatit.web.linkable.features.create;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
-import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -37,6 +33,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Member;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SidebarMarkdownHelp;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -45,7 +42,6 @@ import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
-import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.url.CreateFeatureAndOfferActionUrl;
 import com.bloatit.web.url.CreateFeatureAndOfferPageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -53,21 +49,16 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 /**
  * Page that hosts the form to create a new Feature
  */
-@ParamContainer("feature/%process%/createwithoffer")
+@ParamContainer("feature/createwithoffer")
 public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
     public static final int FILE_MAX_SIZE_MIO = 2;
-
-    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam(role = Role.PAGENAME)
-    CreateFeatureProcess process;
 
     private final CreateFeatureAndOfferPageUrl url;
 
     public CreateFeatureAndOfferPage(final CreateFeatureAndOfferPageUrl url) {
         super(url);
         this.url = url;
-        this.process = url.getProcess();
     }
 
     @Override
@@ -91,99 +82,37 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Create a feature"), 1);
 
         // Create offer form
-        final CreateFeatureAndOfferActionUrl offerActionUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey(), process);
-        final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
+        final CreateFeatureAndOfferActionUrl targetUrl = new CreateFeatureAndOfferActionUrl(getSession().getShortKey());
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        FormBuilder ftool = new FormBuilder(CreateFeatureAndOfferAction.class, targetUrl);
 
-        // Locale
-        offerForm.add(new LanguageField(offerActionUrl, //
-                                        Context.tr("Description language"), //
-                                        Context.tr("The language of the title and description. These texts can be translated in other language later.")));
+        form.addLanguageChooser(targetUrl.getLocaleParameter().getName(), Context.getLocalizator().getLanguageCode());
+        form.addAsTeamField(new AsTeamField(targetUrl,
+                                            loggedUser,
+                                            UserTeamRight.TALK,
+                                            Context.tr("In the name of "),
+                                            Context.tr("Write this offer in the name of a team, and offer the contributions to this team.")));
 
         // Title of the feature
-        final FieldData descriptionFieldData = offerActionUrl.getDescriptionParameter().pickFieldData();
-        final HtmlTextField titleInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
-        titleInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        titleInput.addErrorMessages(descriptionFieldData.getErrorMessages());
-        titleInput.setCssClass("input_long_400px");
-        titleInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
-        offerForm.add(titleInput);
-
-        // Price field
-        final FieldData priceData = offerActionUrl.getPriceParameter().pickFieldData();
-        final HtmlMoneyField priceInput = new HtmlMoneyField(priceData.getName(), Context.tr("Offer price"));
-        priceInput.setDefaultValue(priceData.getSuggestedValue());
-        priceInput.addErrorMessages(priceData.getErrorMessages());
-        priceInput.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
-        offerForm.add(priceInput);
+        ftool.add(form, new HtmlTextField(targetUrl.getDescriptionParameter().getName()));
 
         // Linked software
-        final FieldData softwareFieldData = offerActionUrl.getSoftwareParameter().pickFieldData();
-        final FieldData newSoftwareNameFieldData = offerActionUrl.getNewSoftwareNameParameter().pickFieldData();
-        final FieldData newSoftwareFieldData = offerActionUrl.getNewSoftwareParameter().pickFieldData();
-
-        final SoftwaresTools.SoftwareChooserElement softwareInput = new SoftwaresTools.SoftwareChooserElement(softwareFieldData.getName(),
-                                                                                                              newSoftwareNameFieldData.getName(),
-                                                                                                              newSoftwareFieldData.getName(),
-                                                                                                              Context.tr("Software"));
-        if (softwareFieldData.getSuggestedValue() != null) {
-            softwareInput.setDefaultValue(softwareFieldData.getSuggestedValue());
+        final FieldData newSoftwareNameFD = targetUrl.getNewSoftwareNameParameter().pickFieldData();
+        final FieldData newSoftwareFD = targetUrl.getNewSoftwareParameter().pickFieldData();
+        final SoftwaresTools.SoftwareChooserElement software = new SoftwaresTools.SoftwareChooserElement(targetUrl.getSoftwareParameter().getName(),
+                                                                                                         newSoftwareNameFD.getName(),
+                                                                                                         newSoftwareFD.getName());
+        ftool.add(form, software);
+        if (newSoftwareNameFD.getSuggestedValue() != null) {
+            software.setNewSoftwareDefaultValue(newSoftwareNameFD.getSuggestedValue());
         }
-
-        if (newSoftwareNameFieldData.getSuggestedValue() != null) {
-            softwareInput.setNewSoftwareDefaultValue(newSoftwareNameFieldData.getSuggestedValue());
+        if (newSoftwareFD.getSuggestedValue() != null) {
+            software.setNewSoftwareCheckboxDefaultValue(newSoftwareFD.getSuggestedValue());
         }
-
-        if (newSoftwareFieldData.getSuggestedValue() != null) {
-            softwareInput.setNewSoftwareCheckboxDefaultValue(newSoftwareFieldData.getSuggestedValue());
-        }
-
-        offerForm.add(softwareInput);
-
-        // asTeam
-        offerForm.add(new AsTeamField(offerActionUrl,
-                                      loggedUser,
-                                      UserTeamRight.TALK,
-                                      Context.tr("In the name of "),
-                                      Context.tr("Write this offer in the name of a team, and offer the contributions to this team.")));
-
-        // Date field
-        final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
-        final HtmlDateField dateInput = new HtmlDateField(dateData.getName(), Context.tr("Release date"), Context.getLocalizator().getLocale());
-        dateInput.setDefaultValue(dateData.getSuggestedValue());
-        dateInput.addErrorMessages(dateData.getErrorMessages());
-        dateInput.setComment(Context.tr("You will have to release this feature before the release date."));
-        offerForm.add(dateInput);
-
-        // Specification
-        final FieldData specificationData = offerActionUrl.getSpecificationParameter().pickFieldData();
-        final HtmlTextArea specificationInput = new HtmlTextArea(specificationData.getName(), Context.tr("Description"), 10, 80);
-        //@formatter:off
-        
-        final String suggestedValue = tr(
-                "Be precise, don't forget to specify :\n" + 
-                " - The expected result\n" + 
-                " - On which system it has to work (Windows/Mac/Linux ...)\n" +
-                " - When do you want to have the result\n" + 
-                " - In which free license the result must be.\n" +
-                "\n" + 
-                "You can also join a diagram, or a design/mockup of the expected user interface.\n" +
-                "\n" + 
-                "Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
-                );
-        //@formatter:on
-
-        if (specificationData.getSuggestedValue() == null || specificationData.getSuggestedValue().isEmpty()) {
-            specificationInput.setDefaultValue(suggestedValue);
-        } else {
-            specificationInput.setDefaultValue(specificationData.getSuggestedValue());
-        }
-        specificationInput.addErrorMessages(specificationData.getErrorMessages());
-        specificationInput.setComment(Context.tr("Describe the feature and your offer. This description must be accurate because it will be used to validate the conformity at the end of the development."));
-        offerForm.add(specificationInput);
 
         // license
-        final FieldData licenseData = offerActionUrl.getLicenseParameter().pickFieldData();
-        final HtmlDropDown licenseInput = new HtmlDropDown(licenseData.getName(), Context.tr("License"));
+        final FieldData licenseData = targetUrl.getLicenseParameter().pickFieldData();
+        final HtmlDropDown licenseInput = new HtmlDropDown(licenseData.getName());
         licenseInput.addDropDownElement("", Context.tr("Select a license…")).setDisabled().setSelected();
         licenseInput.addDropDownElement("Apache License 2.0", "Apache License 2.0");
         licenseInput.addDropDownElement("Artistic License/GPL", "Artistic License/GPL");
@@ -196,75 +125,61 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
         licenseInput.addDropDownElement("Mozilla Public License 1.1", "Mozilla Public License 1.1");
         licenseInput.addDropDownElement("Eclipse Public License", "Eclipse Public License");
         licenseInput.addDropDownElement("Other Open Source", Context.tr("Other Open Source"));
-        licenseInput.setDefaultValue(licenseData.getSuggestedValue());
-        licenseInput.addErrorMessages(licenseData.getErrorMessages());
+
+        ftool.add(form, licenseInput);
         licenseInput.setComment(new HtmlMixedText(Context.tr("Licenses must be <0::OSI-approved>. You should use one of the listed licenses to avoid <1::license proliferation>."),
                                                   new UrlString("http://opensource.org/licenses").getHtmlLink(),
                                                   new UrlString(Context.tr("http://en.wikipedia.org/wiki/License_proliferation")).getHtmlLink()));
 
-        offerForm.add(licenseInput);
+        //@formatter:off
+        final String suggestedValue = tr(
+                "Be precise, don't forget to specify :\n" +
+                " - The expected result\n" +
+                " - On which system it has to work (Windows/Mac/Linux ...)\n" +
+                " - When do you want to have the result\n" +
+                " - In which free license the result must be.\n" +
+                "\n" +
+                "You can also join a diagram, or a design/mockup of the expected user interface.\n" +
+                "\n" +
+                "Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
+                );
+        //@formatter:on
+        HtmlFormField specifInput = ftool.add(form, new MarkdownEditor(targetUrl.getSpecificationParameter().getName(), 10, 80));
+        ftool.setDefaultValueIfNeeded(specifInput, suggestedValue);
+
+        // Price field
+        ftool.add(form, new HtmlMoneyField(targetUrl.getPriceParameter().getName()));
+
+        // Date field
+        ftool.add(form, new HtmlDateField(targetUrl.getExpiryDateParameter().getName(), Context.getLocalizator().getLocale()));
 
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
         showHideLink.setCssClass("fake_link");
 
-        final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();
-        final FieldData percentFatalData = offerActionUrl.getPercentFatalParameter().pickFieldData();
-        final FieldData percentMajorData = offerActionUrl.getPercentMajorParameter().pickFieldData();
-        final boolean percentMajorChanged = !(offerActionUrl.getPercentMajorParameter().getDefaultSuggestedValue().equals(percentMajorData.getSuggestedValue()));
-        final boolean percentFatalChanged = !(offerActionUrl.getPercentFatalParameter().getDefaultSuggestedValue().equals(percentFatalData.getSuggestedValue()));
-        final boolean daysBeforeValidationChanged = !(offerActionUrl.getDaysBeforeValidationParameter().getDefaultSuggestedValue().equals(nbDaysData.getSuggestedValue()));
-
-        final JsShowHide showHideValidationDetails = new JsShowHide(offerForm, percentMajorChanged || percentFatalChanged
-                || daysBeforeValidationChanged);
+        final JsShowHide showHideValidationDetails = new JsShowHide(form, ftool.suggestedValueChanged(targetUrl.getPercentMajorParameter().getName())
+                || ftool.suggestedValueChanged(targetUrl.getPercentFatalParameter().getName())
+                || ftool.suggestedValueChanged(targetUrl.getDaysBeforeValidationParameter().getName()));
         showHideValidationDetails.setHasFallback(false);
         showHideValidationDetails.addActuator(showHideLink);
         showHideValidationDetails.addListener(validationDetails);
-
-        offerForm.add(showHideLink);
-        offerForm.add(validationDetails);
+        // form.add(showHideLink);
+        // form.add(validationDetails);
         showHideValidationDetails.apply();
 
         // days before validation
-        final HtmlTextField nbDaysInput = new HtmlTextField(nbDaysData.getName(), Context.tr("Days before validation"));
-        nbDaysInput.setDefaultValue(nbDaysData.getSuggestedValue());
-        nbDaysInput.addErrorMessages(nbDaysData.getErrorMessages());
-        nbDaysInput.setComment(Context.tr("The number of days to wait before this offer is can be validated. "
-                + "During this time users can add bugs un the bug tracker. Fatal bugs have to be closed before the validation."));
-        validationDetails.add(nbDaysInput);
+        ftool.add(validationDetails, new HtmlTextField(targetUrl.getDaysBeforeValidationParameter().getName()));
 
         // percent Fatal
-        final HtmlTextField percentFatalInput = new HtmlTextField(percentFatalData.getName(), Context.tr("Percent gained when no FATAL bugs"));
-        percentFatalInput.setDefaultValue(percentFatalData.getSuggestedValue());
-        percentFatalInput.addErrorMessages(percentFatalData.getErrorMessages());
-        percentFatalInput.setComment(Context.tr("If you want to add some warranty to the contributor you can say that you want to gain less than 100% "
-                + "of the amount on this feature request when all the FATAL bugs are closed. "
-                + "The money left will be transfered when all the MAJOR bugs are closed. If you specify this field, you have to specify the next one on MAJOR bug percent. "
-                + "By default, all the money on this feature request is transfered when all the FATAL bugs are closed."));
-        validationDetails.add(percentFatalInput);
+        ftool.add(validationDetails, new HtmlTextField(targetUrl.getPercentFatalParameter().getName()));
 
         // percent Major
-        final HtmlTextField percentMajorInput = new HtmlTextField(percentMajorData.getName(), Context.tr("Percent gained when no MAJOR bugs"));
-        percentMajorInput.setDefaultValue(percentMajorData.getSuggestedValue());
-        percentMajorInput.addErrorMessages(percentMajorData.getErrorMessages());
-        percentMajorInput.setComment(Context.tr("If you specified a value for the 'FATAL bugs percent', you have to also specify one for the MAJOR bugs. "
-                + "You can say that you want to gain less than 100% of the amount on this offer when all the MAJOR bugs are closed. "
-                + "The money left will be transfered when all the MINOR bugs are closed. Make sure that (FATAL percent + MAJOR percent) <= 100."));
-        validationDetails.add(percentMajorInput);
+        ftool.add(validationDetails, new HtmlTextField(targetUrl.getPercentMajorParameter().getName()));
 
-        // Is finished
-        final FieldData isFinishedData = offerActionUrl.getIsFinishedParameter().pickFieldData();
-        final HtmlRadioButtonGroup isFinishedInput = new HtmlRadioButtonGroup(isFinishedData.getName());
-        // isFinishedInput.addErrorMessages(isFinishedData.getErrorMessages());
-        isFinishedInput.addRadioButton("true", Context.tr("Finish your Offer"));
-        isFinishedInput.addRadioButton("false", Context.tr("Add another milestone"));
-        offerForm.add(isFinishedInput);
-        isFinishedInput.setDefaultValue(isFinishedData.getSuggestedValue());
+        form.addSubmit(new HtmlSubmit(Context.tr("Add another milestone")));
+        form.addSubmit(new HtmlSubmit(Context.tr("Finish your Offer")).setName(targetUrl.getIsFinishedParameter().getName()));
 
-        final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Validate !"));
-        offerForm.add(offerButton);
-
-        offerPageContainer.add(offerForm);
+        offerPageContainer.add(form);
 
         layout.addLeft(offerPageContainer);
 
@@ -283,12 +198,12 @@ public final class CreateFeatureAndOfferPage extends CreateUserContentPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return CreateFeatureAndOfferPage.generateBreadcrumb(process);
+        return CreateFeatureAndOfferPage.generateBreadcrumb();
     }
 
-    private static Breadcrumb generateBreadcrumb(CreateFeatureProcess process) {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-        breadcrumb.pushLink(new CreateFeaturePageUrl(process).getHtmlLink(tr("Create a feature")));
+        breadcrumb.pushLink(new CreateFeaturePageUrl().getHtmlLink(tr("Create a feature")));
         return breadcrumb;
     }
 }

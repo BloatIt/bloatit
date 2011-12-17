@@ -16,7 +16,6 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.utils.Pair;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 
 /**
@@ -64,20 +63,23 @@ public class MercanetAPI {
      * @param cancelReturnUrl the url where the user will be redirected when he
      *            decides to cancel the transaction
      * @param automaticResponseUrl the url that will be called by the server
+     * @param languageCode the 2 chars language code for the page ( 'en' or 'fr'
+     *            or ...)
      * @throws BadProgrammerException if userData contains any of the forbidden
      *             characters
      * @throws ExternalErrorException if errors occurs when using the API binary
      *             file
      */
-    public static MercanetTransaction createTransaction(int transactionId,
-                                                        BigDecimal amount,
-                                                        String userData,
-                                                        String customerId,
-                                                        String customerContact,
-                                                        Url normalReturnUrl,
-                                                        Url cancelReturnUrl,
-                                                        Url automaticResponseUrl) {
-        Map<String, String> params = new HashMap<String, String>();
+    public static MercanetTransaction createTransaction(final int transactionId,
+                                                        final BigDecimal amount,
+                                                        final String userData,
+                                                        final String customerId,
+                                                        final String customerContact,
+                                                        final Url normalReturnUrl,
+                                                        final Url cancelReturnUrl,
+                                                        final Url automaticResponseUrl,
+                                                        final String languageCode) {
+        final Map<String, String> params = new HashMap<String, String>();
 
         // Static informations
         params.put("merchant_id", FrameworkConfiguration.getMercanetMerchantId());
@@ -86,7 +88,6 @@ public class MercanetAPI {
         params.put("pathfile", FrameworkConfiguration.getMercanetPathfile());
         params.put("data", "NO_WINDOWS_MSG;NO_SSL_SYMBOLS");
         params.put("advert", "logo_elveos.png");
-        
 
         // Dynamics informations
         params.put("amount", amount.multiply(new BigDecimal("100")).setScale(0).toPlainString());
@@ -96,12 +97,12 @@ public class MercanetAPI {
         params.put("normal_return_url", normalReturnUrl.externalUrlString());
         params.put("cancel_return_url", cancelReturnUrl.externalUrlString());
         params.put("automatic_response_url", automaticResponseUrl.externalUrlString());
-        params.put("language", filterLanguage(Context.getLocalizator().getLanguageCode()));
+        params.put("language", filterLanguage(languageCode));
         params.put("return_context", checkReturnContext(userData));
 
-        Pair<String, String> executionResultPairOfString = executeRequest(params);
-        String data = executionResultPairOfString.first;
-        String baseUrl = executionResultPairOfString.second;
+        final Pair<String, String> executionResultPairOfString = executeRequest(params);
+        final String data = executionResultPairOfString.first;
+        final String baseUrl = executionResultPairOfString.second;
         return new MercanetTransaction(data, baseUrl, transactionId);
     }
 
@@ -113,10 +114,10 @@ public class MercanetAPI {
      * @return the string if it is valid
      * @throws BadProgrammerException if the string is not valid
      */
-    private static String checkReturnContext(String returnContext) {
-        String[] forbiddenChars = { "|", ";", ":", "\"" };
+    private static String checkReturnContext(final String returnContext) {
+        final String[] forbiddenChars = { "|", ";", ":", "\"" };
 
-        for (String forbiddenChar : forbiddenChars) {
+        for (final String forbiddenChar : forbiddenChars) {
             if (returnContext.contains(forbiddenChar)) {
                 throw new BadProgrammerException("The user data contains forbidden chars (" + String.valueOf(forbiddenChars) + ") : " + returnContext);
             }
@@ -131,7 +132,7 @@ public class MercanetAPI {
      * @param languageCode the code to validate
      * @return <code>languageCode</code> if it is valid, <i>en</i> otherwise
      */
-    private static String filterLanguage(String languageCode) {
+    private static String filterLanguage(final String languageCode) {
         if (!supportedLanguages.contains(languageCode)) {
             return "en";
         }
@@ -155,51 +156,51 @@ public class MercanetAPI {
      * @returns a pair containing first the data, second the url to go for the
      *          payment
      */
-    private static Pair<String, String> executeRequest(Map<String, String> params) {
+    private static Pair<String, String> executeRequest(final Map<String, String> params) {
         // Execute binary
-        StringBuilder query = new StringBuilder();
+        final StringBuilder query = new StringBuilder();
         query.append(FrameworkConfiguration.getMercanetRequestBin());
 
-        for (Entry<String, String> param : params.entrySet()) {
+        for (final Entry<String, String> param : params.entrySet()) {
             query.append(" ");
             query.append(param.getKey());
             query.append("=");
             query.append(param.getValue());
         }
 
-        Runtime runtime = Runtime.getRuntime();
+        final Runtime runtime = Runtime.getRuntime();
         String response;
         try {
-            Process proc = runtime.exec(query.toString());
+            final Process proc = runtime.exec(query.toString());
             response = IOUtils.toString(proc.getInputStream(), "UTF-8");
 
             if (proc.waitFor() != 0) {
                 throw new ExternalErrorException("Failure during execution of Merc@net binary: " + query.toString() + " - exit value: "
                         + proc.exitValue());
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ExternalErrorException("Failed to execute Merc@net binary: " + query.toString(), e);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new ExternalErrorException("No luck, you have been hit by a signal !", e);
         }
 
         // Extract data
-        Pattern p = Pattern.compile("^.*<FORM METHOD=POST ACTION=\"([^\"]+)\".*<INPUT TYPE=HIDDEN NAME=DATA VALUE=\"([a-f0-9]+)\".*$");
-        Matcher m = p.matcher(response);
+        final Pattern p = Pattern.compile("^.*<FORM METHOD=POST ACTION=\"([^\"]+)\".*<INPUT TYPE=HIDDEN NAME=DATA VALUE=\"([a-f0-9]+)\".*$");
+        final Matcher m = p.matcher(response);
         if (!m.matches()) {
             throw new ExternalErrorException("Failed to parse Merc@net binary response.\nQuery:" + query.toString() + "\nResponse:" + response);
         }
 
-        String baseUrl = m.group(1);
-        String data = m.group(2);
+        final String baseUrl = m.group(1);
+        final String data = m.group(2);
 
         return new Pair<String, String>(data, baseUrl);
     }
 
-    public static MercanetResponse parseResponse(String data) {
+    public static MercanetResponse parseResponse(final String data) {
 
         // Execute response binary
-        StringBuilder query = new StringBuilder();
+        final StringBuilder query = new StringBuilder();
         query.append(FrameworkConfiguration.getMercanetResponseBin());
 
         query.append(" pathfile=");
@@ -207,19 +208,19 @@ public class MercanetAPI {
         query.append(" message=");
         query.append(data);
 
-        Runtime runtime = Runtime.getRuntime();
+        final Runtime runtime = Runtime.getRuntime();
         String response;
         try {
-            Process proc = runtime.exec(query.toString());
+            final Process proc = runtime.exec(query.toString());
             response = IOUtils.toString(proc.getInputStream(), "UTF-8");
 
             if (proc.waitFor() != 0) {
                 throw new ExternalErrorException("Failure during execution of Merc@net response binary: " + query.toString() + " - exit value: "
                         + proc.exitValue());
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ExternalErrorException("Failed to execute Merc@net response binary: " + query.toString(), e);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new ExternalErrorException("No luck, you have been hit by a signal !", e);
         }
 

@@ -32,11 +32,11 @@ public class TeamTools {
 
     public static HtmlElement getTeamAvatar(final Team team) {
         final HtmlDiv avatarDiv = new HtmlDiv("avatar_block");
-        if (team.getActivity() != null && team.getAvatar().getMetadata() != null) {
+        if (team.getHistory() != null && team.getAvatar().getMetadata() != null) {
             final FileResourceUrl imageUrl = new FileResourceUrl(team.getAvatar().getMetadata());
             avatarDiv.add(new HtmlImage(imageUrl, tr("Team avatar"), "avatar"));
         } else {
-            avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Team avatar"), "avatar"));
+            avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoTeamAvatar()), tr("Team avatar"), "avatar"));
         }
         return avatarDiv;
     }

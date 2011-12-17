@@ -61,7 +61,8 @@ public final class MemberActivationAction extends ElveosAction {
 
                     // Auto login after activation
                     AuthToken.authenticate(member);
-                    session.notifyGood(new HtmlMixedText(Context.tr("Activation success, you are now logged. You can <0::add an avatar and introduce yourself>."), new ModifyMemberPageUrl().getHtmlLink()));
+                    session.notifyGood(new HtmlMixedText(Context.tr("Activation success, you are now logged. You can <0::add an avatar and introduce yourself>."),
+                                                         new ModifyMemberPageUrl().getHtmlLink()));
 
                 } else {
                     session.notifyWarning(Context.tr("Wrong activation key for this member."));

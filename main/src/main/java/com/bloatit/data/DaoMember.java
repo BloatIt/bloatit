@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
@@ -27,6 +28,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -86,13 +88,13 @@ import com.bloatit.model.ModelConfiguration;
                                       "WHERE receiver = :receiver " +
                                       "AND state = :state  " +
                                       "AND team = :team"),
-                          @NamedQuery(
-                              name = "member.getReceivedInvitations.byStateTeam.size",
-                              query =  "SELECT count(*)" +
-                                          "FROM DaoJoinTeamInvitation " +
-                                       "WHERE receiver = :receiver " +
-                                       "AND state = :state  " +
-                                       "AND team = :team"),
+                      @NamedQuery(
+                          name = "member.getReceivedInvitations.byStateTeam.size",
+                          query =  "SELECT count(*)" +
+                                      "FROM DaoJoinTeamInvitation " +
+                                   "WHERE receiver = :receiver " +
+                                   "AND state = :state  " +
+                                   "AND team = :team"),
 
                        @NamedQuery(
                            name = "member.getReceivedInvitations.byState",
@@ -142,7 +144,7 @@ import com.bloatit.model.ModelConfiguration;
                                    "WHERE m = :member AND g = :team"),
 
                        @NamedQuery(
-                           name = "member.getActivity",
+                           name = "member.getHistory",
                            query = "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
@@ -151,7 +153,7 @@ import com.bloatit.model.ModelConfiguration;
                                    "ORDER BY creationDate DESC"),
 
                        @NamedQuery(
-                           name = "member.getActivity.size",
+                           name = "member.getHistory.size",
                            query = "SELECT COUNT(*)" +
                            		   "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
@@ -170,7 +172,6 @@ import com.bloatit.model.ModelConfiguration;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
-                                    "AND offer_.asTeam = null " +
                                     "AND bs.milestoneState = :state " +
                                     "AND bs.invoices IS EMPTY"),
                         @NamedQuery(
@@ -179,9 +180,24 @@ import com.bloatit.model.ModelConfiguration;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.member = :this " +
-                                    "AND offer_.asTeam = null " +
                                     "AND bs.milestoneState = :state " +
                                     "AND bs.invoices IS EMPTY"),
+                        @NamedQuery(
+                                    name = "member.getMilestoneInvoiced",
+                                    query = "SELECT bs " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS NOT EMPTY"),
+                        @NamedQuery(
+                                    name = "member.getMilestoneInvoiced.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS NOT EMPTY"),
                         @NamedQuery(
                                     name = "member.getMilestones",
                                     query = "SELECT bs " +
@@ -208,6 +224,21 @@ import com.bloatit.model.ModelConfiguration;
                                             "FROM com.bloatit.data.DaoMember " +
                                             "WHERE role != :role " +
                                             "AND karma > :threshold "),
+                        @NamedQuery(
+                                    name =  "member.getFollowedActor.byActor",
+                                    query = "FROM com.bloatit.data.DaoFollowActor " +
+                                            "WHERE follower = :member " +
+                                            "AND followed = :actor "),
+                        @NamedQuery(
+                                    name =  "member.getFollowedSoftware.bySoftware",
+                                    query = "FROM com.bloatit.data.DaoFollowSoftware " +
+                                            "WHERE follower = :member " +
+                                            "AND followed = :software "),
+                        @NamedQuery(
+                                    name =  "member.getFollowedFeature.byFeature",
+                                    query = "FROM com.bloatit.data.DaoFollowFeature " +
+                                            "WHERE follower = :member " +
+                                            "AND followed = :feature"),
                    }
 
              )
@@ -229,6 +260,17 @@ public class DaoMember extends DaoActor {
         MODERATOR,
         /** The ADMIN user can do everything. */
         ADMIN
+    }
+
+    public enum EmailStrategy {
+        /** ~ Every 10 min */
+        VERY_FREQUENTLY,
+        /** ~ Every 1 hour, 3/2 hours */
+        HOURLY,
+        /** ~ Every day */
+        DAILY,
+        /** ~ Every week */
+        WEEKLY,
     }
 
     private String fullname;
@@ -258,13 +300,19 @@ public class DaoMember extends DaoActor {
 
     @Basic(optional = false)
     private Locale locale;
-    
+
     @Basic(optional = false)
     private boolean newsletter;
 
+    @Basic(optional = false)
+    private boolean globalFollow;
+
+    @Basic(optional = false)
+    private boolean globalFollowWithMail;
+
     @Column(length = 1024)
     private String description;
-    
+
     @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoFileMetadata avatar;
@@ -276,6 +324,19 @@ public class DaoMember extends DaoActor {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
     private final List<DaoExternalServiceMembership> authorizedExternalServices = new ArrayList<DaoExternalServiceMembership>();
+
+    // Follow System
+    @OneToMany(mappedBy = "follower")
+    private final List<DaoFollowSoftware> followedSoftware = new ArrayList<DaoFollowSoftware>();
+    @OneToMany(mappedBy = "follower")
+    private final List<DaoFollowActor> followedActors = new ArrayList<DaoFollowActor>();
+    @OneToMany(mappedBy = "follower")
+    private final List<DaoFollowFeature> followedFeatures = new ArrayList<DaoFollowFeature>();
+    @Enumerated(EnumType.STRING)
+    private EmailStrategy emailStrategy;
+
+    @Basic(optional = true)
+    private Date lastWatchedEvents;
 
     // ======================================================================
     // Static HQL requests
@@ -352,7 +413,8 @@ public class DaoMember extends DaoActor {
     }
 
     public static PageIterable<DaoMember> getAllMembersButAdmins() {
-        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN).setInteger("threshold", ModelConfiguration.getKarmaHideThreshold());
+        return new QueryCollection<DaoMember>("members.exceptRole").setParameter("role", Role.ADMIN)
+                                                                   .setInteger("threshold", ModelConfiguration.getKarmaHideThreshold());
     }
 
     // ======================================================================
@@ -416,10 +478,12 @@ public class DaoMember extends DaoActor {
         this.state = ActivationState.VALIDATING;
         this.password = password;
         this.salt = salt;
-        this.karma = ModelConfiguration.getKarmaInitialInitial();
+        this.karma = ModelConfiguration.getKarmaInitialAmount();
         this.fullname = "";
         this.description = "";
         this.newsletter = false;
+        this.globalFollow = false;
+        this.emailStrategy = EmailStrategy.VERY_FREQUENTLY;
     }
 
     /**
@@ -575,7 +639,7 @@ public class DaoMember extends DaoActor {
         this.salt = salt;
     }
 
-    public void setDescription(String userDescription) {
+    public void setDescription(final String userDescription) {
         this.description = userDescription;
     }
 
@@ -584,9 +648,9 @@ public class DaoMember extends DaoActor {
     }
 
     public void addAuthorizedExternalService(final String serviceToken, final String accessToken, final EnumSet<RightLevel> level) {
-        DaoExternalServiceMembership existingService = DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
+        final DaoExternalServiceMembership existingService = DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
         if (existingService == null) {
-            DaoExternalService service = DaoExternalService.getByToken(serviceToken);
+            final DaoExternalService service = DaoExternalService.getByToken(serviceToken);
             if (service != null) {
                 this.authorizedExternalServices.add(DaoExternalServiceMembership.createAndPersist(this, service, accessToken, level));
             }
@@ -594,14 +658,117 @@ public class DaoMember extends DaoActor {
             existingService.reset(accessToken, level);
         }
     }
-    
-    public void acceptNewsLetter(boolean newsletter) {
+
+    public void acceptNewsLetter(final boolean newsletter) {
         this.newsletter = newsletter;
+    }
+
+    public void setGlobalFollow(final boolean globalFollow) {
+        this.globalFollow = globalFollow;
+    }
+
+    public void setGlobalFollowWithMail(final boolean globalFollow) {
+        this.globalFollowWithMail = globalFollow;
+    }
+
+    public DaoFollowActor followOrGetActor(final DaoActor actor) {
+        final Object followed = SessionManager.getNamedQuery("member.getFollowedActor.byActor")
+                                              .setEntity("member", this)
+                                              .setEntity("actor", actor)
+                                              .uniqueResult();
+        if (followed == null) {
+            return follow(actor);
+        }
+        return (DaoFollowActor) followed;
+    }
+
+    public boolean isFollowing(final DaoActor actor) {
+        final Object followed = SessionManager.getNamedQuery("member.getFollowedActor.byActor")
+                                              .setEntity("member", this)
+                                              .setEntity("actor", actor)
+                                              .uniqueResult();
+        return followed != null;
+    }
+
+    public DaoFollowFeature followOrGetFeature(final DaoFeature feature) {
+        final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
+                                                                           .setEntity("member", this)
+                                                                           .setEntity("feature", feature)
+                                                                           .uniqueResult();
+        if (followed == null) {
+            return follow(feature);
+        }
+        return followed;
+    }
+
+    public DaoFollowFeature getFollowFeature(final DaoFeature feature) {
+        final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
+                                                                           .setEntity("member", this)
+                                                                           .setEntity("feature", feature)
+                                                                           .uniqueResult();
+        return followed;
+    }
+
+    public boolean isFollowing(final DaoFeature feature) {
+        final DaoFollowFeature followed = (DaoFollowFeature) SessionManager.getNamedQuery("member.getFollowedFeature.byFeature")
+                                                                           .setEntity("member", this)
+                                                                           .setEntity("feature", feature)
+                                                                           .uniqueResult();
+        return followed != null;
+    }
+
+    public DaoFollowSoftware followOrGetSoftware(final DaoSoftware software) {
+        final DaoFollowSoftware followed = (DaoFollowSoftware) SessionManager.getNamedQuery("member.getFollowedSoftware.bySoftware")
+                                                                             .setEntity("member", this)
+                                                                             .setEntity("software", software)
+                                                                             .uniqueResult();
+        if (followed == null) {
+            return follow(software);
+        }
+        return followed;
+    }
+
+    public boolean isFollowing(final DaoSoftware software) {
+        final DaoFollowSoftware followed = (DaoFollowSoftware) SessionManager.getNamedQuery("member.getFollowedSoftware.bySoftware")
+                                                                             .setEntity("member", this)
+                                                                             .setEntity("software", software)
+                                                                             .uniqueResult();
+        return followed != null;
+    }
+
+    private DaoFollowFeature follow(final DaoFeature feature) {
+        final DaoFollowFeature followed = DaoFollowFeature.createAndPersist(this, feature, false, false, false);
+        followedFeatures.add(followed);
+        return followed;
+    }
+
+    private DaoFollowSoftware follow(final DaoSoftware soft) {
+        final DaoFollowSoftware followed = DaoFollowSoftware.createAndPersist(this, soft, false);
+        followedSoftware.add(followed);
+        return followed;
+    }
+
+    private DaoFollowActor follow(final DaoActor soft) {
+        final DaoFollowActor followed = DaoFollowActor.createAndPersist(this, soft, false);
+        followedActors.add(followed);
+        return followed;
+    }
+
+    public void setEmailStrategy(final EmailStrategy emailStrategy) {
+        this.emailStrategy = emailStrategy;
+    }
+
+    public void setLastWatchedEvents(final Date lastWatchedEvents) {
+        this.lastWatchedEvents = lastWatchedEvents;
     }
 
     // ======================================================================
     // Getters
     // ======================================================================
+
+    public Date getLastWatchedEvents() {
+        return lastWatchedEvents;
+    }
 
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
@@ -614,6 +781,18 @@ public class DaoMember extends DaoActor {
         final Query filter = session.createFilter(getTeamMembership(), "select this.bloatitTeam order by login");
         final Query count = session.createFilter(getTeamMembership(), "select count(*)");
         return new QueryCollection<DaoTeam>(filter, count);
+    }
+
+    public EmailStrategy getEmailStrategy() {
+        return emailStrategy;
+    }
+
+    public boolean isGlobalFollow() {
+        return globalFollow;
+    }
+
+    public boolean isGlobalFollowWithMail() {
+        return globalFollowWithMail;
     }
 
     /**
@@ -800,7 +979,7 @@ public class DaoMember extends DaoActor {
         q.setParameter("state", State.PENDING);
         return (Long) q.uniqueResult();
     }
-    
+
     public boolean getNewsletterAccept() {
         return newsletter;
     }
@@ -852,13 +1031,13 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * Finds the user recent activity.
+     * Finds the user recent history.
      * 
-     * @return the user recent activity
+     * @return the user recent history
      */
-    public PageIterable<DaoUserContent> getActivity() {
-        final Query query = SessionManager.getNamedQuery("member.getActivity");
-        final Query size = SessionManager.getNamedQuery("member.getActivity.size");
+    public PageIterable<DaoUserContent> getHistory() {
+        final Query query = SessionManager.getNamedQuery("member.getHistory");
+        final Query size = SessionManager.getNamedQuery("member.getHistory.size");
 
         final QueryCollection<DaoUserContent> q = new QueryCollection<DaoUserContent>(query, size);
         q.setEntity("member", this);
@@ -898,6 +1077,11 @@ public class DaoMember extends DaoActor {
                                                                                 .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
     }
 
+    public PageIterable<DaoMilestone> getMilestoneInvoiced() {
+        return new QueryCollection<DaoMilestone>("member.getMilestoneInvoiced").setEntity("this", this)
+                                                                               .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
+    }
+
     public PageIterable<DaoMilestone> getMilestones() {
         return new QueryCollection<DaoMilestone>("member.getMilestones").setEntity("this", this);
     }
@@ -928,12 +1112,24 @@ public class DaoMember extends DaoActor {
         return this.emailToActivate;
     }
 
-    public DaoExternalServiceMembership getAuthorizedExternalServices(String serviceToken) {
+    public DaoExternalServiceMembership getAuthorizedExternalServices(final String serviceToken) {
         return DaoExternalServiceMembership.getByServicetokenMember(serviceToken, this);
     }
 
     public PageIterable<DaoExternalServiceMembership> getAuthorizedExternalServices() {
         return new MappedList<DaoExternalServiceMembership>(authorizedExternalServices);
+    }
+
+    public PageIterable<DaoFollowFeature> getFollowedFeatures() {
+        return new MappedList<DaoFollowFeature>(followedFeatures);
+    }
+
+    public PageIterable<DaoFollowActor> getFollowedActors() {
+        return new MappedList<DaoFollowActor>(followedActors);
+    }
+
+    public PageIterable<DaoFollowSoftware> getFollowedSoftware() {
+        return new MappedList<DaoFollowSoftware>(followedSoftware);
     }
 
     public EnumSet<RightLevel> getExternalServiceRights(final String token) {
@@ -974,4 +1170,5 @@ public class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
+
 }

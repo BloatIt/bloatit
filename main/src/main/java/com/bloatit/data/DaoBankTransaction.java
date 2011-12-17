@@ -159,7 +159,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
         public final BigDecimal chargedValueSum;
         public final BigDecimal paidValueSum;
 
-        public DaoBankTransactionSum(Long count, BigDecimal chargedValueSum, BigDecimal paidValueSum) {
+        public DaoBankTransactionSum(final Long count, final BigDecimal chargedValueSum, final BigDecimal paidValueSum) {
             super();
             this.count = count;
             this.chargedValueSum = chargedValueSum;
@@ -167,16 +167,16 @@ public class DaoBankTransaction extends DaoIdentifiable {
         }
     }
 
-    public static DaoBankTransactionSum getBankTransactionSum(Date from, Date to) {
-        Object[] result = (Object[]) SessionManager.getNamedQuery("bankTransaction.sumByDates")
-                                                   .setDate("from", from)
-                                                   .setDate("to", to)
-                                                   .setParameter("state", State.VALIDATED)
-                                                   .uniqueResult();
+    public static DaoBankTransactionSum getBankTransactionSum(final Date from, final Date to) {
+        final Object[] result = (Object[]) SessionManager.getNamedQuery("bankTransaction.sumByDates")
+                                                         .setDate("from", from)
+                                                         .setDate("to", to)
+                                                         .setParameter("state", State.VALIDATED)
+                                                         .uniqueResult();
         return new DaoBankTransactionSum((Long) result[0], (BigDecimal) result[1], (BigDecimal) result[2]);
     }
 
-    public static Long getCount(Date from, Date to) {
+    public static Long getCount(final Date from, final Date to) {
         return (Long) SessionManager.getNamedQuery("bankTransaction.countByDates")
                                     .setDate("from", from)
                                     .setDate("to", to)

@@ -57,7 +57,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int karmaActivationAmount;
     private int karmaHideThreshold;
 
-    private int recentActivityDays;
+    private int recentHistoryDays;
     private String[] administratorMails;
     private BigDecimal linkeosTaxesRate;
     private String linkeosName;
@@ -194,7 +194,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.kudosableStepToGainKarma;
     }
 
-    public static int getKarmaInitialInitial() {
+    public static int getKarmaInitialAmount() {
         return configuration.karmaInitialAmount;
     }
 
@@ -208,8 +208,8 @@ public class ModelConfiguration extends ReloadableConfiguration {
 
     // Others
 
-    protected static int getRecentActivityDays() {
-        return configuration.recentActivityDays;
+    protected static int getRecentHistoryDays() {
+        return configuration.recentHistoryDays;
     }
 
     public static String[] getAdminstratorMails() {
@@ -223,7 +223,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private void load() {
         properties = ConfigurationManager.loadProperties("model.properties");
 
-        recentActivityDays = properties.getInt("recent.activity.days");
+        recentHistoryDays = properties.getInt("recent.history.days");
 
         // Kudosable configuration
         kudosableDefaultTurnValid = properties.getInt("kudosable.default.turn_valid", 5);

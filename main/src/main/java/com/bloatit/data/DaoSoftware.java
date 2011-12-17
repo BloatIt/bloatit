@@ -59,13 +59,13 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "software.byName.size",
                             query = "SELECT count(*) FROM DaoSoftware WHERE name = :name"),
                        @NamedQuery(
-                             name="software.getFeatures.orderByCreationDate", 
+                             name="software.getFeatures.orderByCreationDate",
                              query="FROM com.bloatit.data.DaoFeature " +
                                    "WHERE featureState != :featureState " +
                                    "AND software = :software " +
                                    "ORDER BY creationDate DESC "),
                        @NamedQuery(
-                             name="software.getFeatures.orderByCreationDate.size", 
+                             name="software.getFeatures.orderByCreationDate.size",
                              query="SELECT COUNT(*)" +
                                    "FROM com.bloatit.data.DaoFeature " +
                                    "WHERE featureState != :featureState " +
@@ -93,6 +93,12 @@ public class DaoSoftware extends DaoIdentifiable {
     @OneToMany(mappedBy = "software")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private final List<DaoFeature> features = new ArrayList<DaoFeature>();
+
+    @OneToMany(mappedBy = "followed")
+    private final List<DaoFollowSoftware> followers = new ArrayList<DaoFollowSoftware>();
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "software")
+    private final List<DaoEvent> events = new ArrayList<DaoEvent>();
 
     // ======================================================================
     // Static HQL requests
@@ -216,6 +222,10 @@ public class DaoSoftware extends DaoIdentifiable {
      */
     public String getName() {
         return this.name;
+    }
+
+    public PageIterable<DaoFollowSoftware> getFollowers() {
+        return new MappedList<DaoFollowSoftware>(followers);
     }
 
     // ======================================================================

@@ -17,16 +17,14 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
-import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
@@ -70,52 +68,23 @@ public final class CreateSoftwarePage extends LoggedElveosPage {
 
     private HtmlElement generateFeatureCreationForm() {
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Add a new software"), 1);
-        final CreateSoftwareActionUrl doCreateUrl = new CreateSoftwareActionUrl(getSession().getShortKey());
+        final CreateSoftwareActionUrl targetUrl = new CreateSoftwareActionUrl(getSession().getShortKey());
 
         // Create the form stub
-        final HtmlForm addSoftwareForm = new HtmlForm(doCreateUrl.urlString());
-        addSoftwareForm.enableFileUpload();
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        form.enableFileUpload();
+        createFeatureTitle.add(form);
+        final FormBuilder ftool = new FormBuilder(CreateSoftwareAction.class, targetUrl);
 
-        createFeatureTitle.add(addSoftwareForm);
+        form.addLanguageChooser(targetUrl.getLangParameter().getName(), Context.getLocalizator().getLanguageCode());
+        ftool.add(form, new HtmlTextField(targetUrl.getSoftwareNameParameter().getName()));
+        final MarkdownEditor markdownEdit = new MarkdownEditor(targetUrl.getDescriptionParameter().getName(),
+                                                               DESCRIPTION_INPUT_NB_LINES,
+                                                               DESCRIPTION_INPUT_NB_COLUMNS);
+        ftool.add(form, markdownEdit);
+        ftool.add(form, new HtmlFileInput(CreateSoftwareAction.IMAGE_CODE));
 
-        // Create the field for the name of the software
-        final FieldData softwareNameData = doCreateUrl.getSoftwareNameParameter().pickFieldData();
-        final HtmlTextField softwareNameInput = new HtmlTextField(softwareNameData.getName(), Context.tr("Software name"));
-        softwareNameInput.setDefaultValue(softwareNameData.getSuggestedValue());
-        softwareNameInput.addErrorMessages(softwareNameData.getErrorMessages());
-        softwareNameInput.setComment(Context.tr("The name of the existing software."));
-        addSoftwareForm.add(softwareNameInput);
-
-        // Language
-        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
-        final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
-        languageInput.setDefaultValue(languageData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
-        languageInput.addErrorMessages(languageData.getErrorMessages());
-        languageInput.setComment(Context.tr("Language of the description.  The description can be translated in other language later."));
-        addSoftwareForm.add(languageInput);
-
-        
-        // Description
-        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
-        final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionData.getName(),
-                                                                   Context.tr("Describe the software"),
-                                                                   DESCRIPTION_INPUT_NB_LINES,
-                                                                   DESCRIPTION_INPUT_NB_COLUMNS);
-        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
-        descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
-        descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the project : list all features, add siteweb links, etc."));
-        addSoftwareForm.add(descriptionInput);
-        
-        // Markdown previewer
-        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(descriptionInput);
-        addSoftwareForm.add(mdPreview);
-
-
-        final HtmlFileInput softwareImageInput = new HtmlFileInput(CreateSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
-        softwareImageInput.setComment("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px.");
-        addSoftwareForm.add(softwareImageInput);
-
-        addSoftwareForm.add(new HtmlSubmit(Context.tr("submit")));
+        form.addSubmit(new HtmlSubmit(Context.tr("submit")));
 
         final HtmlDiv group = new HtmlDiv();
         group.add(createFeatureTitle);

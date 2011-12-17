@@ -62,21 +62,21 @@ import com.bloatit.framework.utils.datetime.DateUtils;
                             name = "team.getContributions.size",
                             query = "SELECT count(*) FROM DaoContribution WHERE asTeam = :this "),
                         @NamedQuery(
-                            name = "team.getActivity",
+                            name = "team.getHistory",
                             query = "FROM DaoUserContent as u " +
                                     "WHERE u.asTeam = :team " +
                                     "AND id not in (from DaoKudos) " +
                                     "AND id not in (from DaoTranslation)"  +
                                     "ORDER BY creationDate DESC"),
                         @NamedQuery(
-                            name = "team.getActivity.size",
+                            name = "team.getHistory.size",
                             query = "SELECT COUNT(*)" +
                             		"FROM DaoUserContent as u " +
                                     "WHERE u.asTeam = :team " +
                                     "AND id not in (from DaoKudos) " +
                                     "AND id not in (from DaoTranslation)"),
                         @NamedQuery(
-                            name = "team.getRecentActivity.size",
+                            name = "team.getRecentHistory.size",
                             query = "SELECT COUNT(*)" +
                                     "FROM DaoUserContent as u " +
                                     "WHERE u.asTeam = :team " +
@@ -133,6 +133,22 @@ import com.bloatit.framework.utils.datetime.DateUtils;
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.milestones as bs " +
                                     "WHERE offer_.asTeam = :this "),
+                        @NamedQuery(
+                                    name = "team.getMilestoneInvoiced",
+                                    query = "SELECT bs " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.asTeam = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS NOT EMPTY"),
+                        @NamedQuery(
+                                    name = "team.getMilestoneInvoiced.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.asTeam = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS NOT EMPTY"),
                        }
              )
 // @formatter:on
@@ -288,6 +304,11 @@ public class DaoTeam extends DaoActor {
         return new QueryCollection<DaoMilestone>("team.getMilestones").setEntity("this", this);
     }
 
+    public PageIterable<DaoMilestone> getMilestoneInvoiced() {
+        return new QueryCollection<DaoMilestone>("team.getMilestoneInvoiced").setEntity("this", this)
+                                                                             .setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
+    }
+
     /**
      * @return the avatar
      */
@@ -399,17 +420,17 @@ public class DaoTeam extends DaoActor {
         return this.teamMembership;
     }
 
-    public PageIterable<DaoUserContent> getActivity() {
-        final Query query = SessionManager.getNamedQuery("team.getActivity");
-        final Query size = SessionManager.getNamedQuery("team.getActivity.size");
+    public PageIterable<DaoUserContent> getHistory() {
+        final Query query = SessionManager.getNamedQuery("team.getHistory");
+        final Query size = SessionManager.getNamedQuery("team.getHistory.size");
 
         final QueryCollection<DaoUserContent> q = new QueryCollection<DaoUserContent>(query, size);
         q.setEntity("team", this);
         return q;
     }
 
-    public long getRecentActivityCount(final int numberOfDays) {
-        final Query size = SessionManager.getNamedQuery("team.getRecentActivity.size");
+    public long getRecentHistoryCount(final int numberOfDays) {
+        final Query size = SessionManager.getNamedQuery("team.getRecentHistory.size");
         size.setEntity("team", this);
         size.setDate("date", DateUtils.nowMinusSomeDays(numberOfDays));
         return (Long) size.uniqueResult();

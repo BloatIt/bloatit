@@ -140,6 +140,13 @@ public class WebConfiguration extends ReloadableConfiguration {
     }
 
     /**
+     * @return the imgNoAvatar
+     */
+    public static String getImgNoTeamAvatar() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/avatar_team.png");
+    }
+
+    /**
      * @return the imgValidIcon
      */
     public static String getImgValidIcon() {
@@ -281,12 +288,60 @@ public class WebConfiguration extends ReloadableConfiguration {
         configuration.loadConfiguration();
     }
 
-    private static String find(String resource, String langCode) {
+    private static String find(final String resource, final String langCode) {
         try {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
-        } catch (ExternalErrorException e) {
+        } catch (final ExternalErrorException e) {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
         }
+    }
+
+    public static String getImgIdeaSmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/idea_small.png");
+    }
+
+    public static String getImgManageSmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/settings_small.png");
+    }
+
+    public static String getImgManageNotifSmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/mail_settings_small.png");
+    }
+
+    public static String getImgRssSmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/rss_small.png");
+    }
+
+    public static String getImgIdeaTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/idea_tiny.png");
+    }
+
+    public static String getImgContributionTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/coins_tiny.png");
+    }
+
+    public static String getImgOfferTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/offer_tiny.png");
+    }
+
+    public static String getImgCommentTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/comment_tiny.png");
+    }
+
+    public static String getImgReleaseTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/release_tiny.png");
+    }
+
+    public static String getImgBugTiny() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/bug_tiny.png");
+    }
+
+    public static String getImgLogoSmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/elveos_logo_small.png");
+    }
+
+    public static String getImgActivitySmall() {
+        return configuration.finder.find(FrameworkConfiguration.getCommonsDir() + "/img/activity_small.png");
     }
 
 }

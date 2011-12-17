@@ -33,6 +33,9 @@ import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestFeatureList;
 import com.bloatit.rest.list.RestFeatureListExpanded;
 import com.bloatit.rest.list.RestFileMetadataList;
+import com.bloatit.rest.list.RestFollowActorList;
+import com.bloatit.rest.list.RestFollowFeatureList;
+import com.bloatit.rest.list.RestFollowSoftwareList;
 import com.bloatit.rest.list.RestHighlightFeatureList;
 import com.bloatit.rest.list.RestInternalAccountList;
 import com.bloatit.rest.list.RestJoinTeamInvitationList;
@@ -46,7 +49,6 @@ import com.bloatit.rest.list.RestTeamList;
 import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.rest.list.RestTranslationList;
 import com.bloatit.rest.resources.RestBankTransaction;
-import com.bloatit.rest.resources.RestBankTransactionSum;
 import com.bloatit.rest.resources.RestBug;
 import com.bloatit.rest.resources.RestComment;
 import com.bloatit.rest.resources.RestContribution;
@@ -54,14 +56,19 @@ import com.bloatit.rest.resources.RestDescription;
 import com.bloatit.rest.resources.RestExternalAccount;
 import com.bloatit.rest.resources.RestFeature;
 import com.bloatit.rest.resources.RestFileMetadata;
+import com.bloatit.rest.resources.RestFollowActor;
+import com.bloatit.rest.resources.RestFollowFeature;
+import com.bloatit.rest.resources.RestFollowSoftware;
 import com.bloatit.rest.resources.RestHighlightFeature;
 import com.bloatit.rest.resources.RestInternalAccount;
 import com.bloatit.rest.resources.RestJoinTeamInvitation;
 import com.bloatit.rest.resources.RestKudos;
 import com.bloatit.rest.resources.RestMember;
 import com.bloatit.rest.resources.RestMilestone;
+import com.bloatit.rest.resources.RestMoneyResults;
 import com.bloatit.rest.resources.RestOffer;
 import com.bloatit.rest.resources.RestRelease;
+import com.bloatit.rest.resources.RestSize;
 import com.bloatit.rest.resources.RestSoftware;
 import com.bloatit.rest.resources.RestTeam;
 import com.bloatit.rest.resources.RestTransaction;
@@ -96,6 +103,12 @@ public class BloatitRestServer extends RestServer {
             put("releases", RestRelease.class);
             put("transactions", RestTransaction.class);
             put("translations", RestTranslation.class);
+            put("followfeatures", RestFollowFeature.class);
+            put("followsoftwares", RestFollowSoftware.class);
+            put("followactors", RestFollowActor.class);
+
+            put("size", RestSize.class);
+            put("moneyquery", RestMoneyResults.class);
         }
     };
 
@@ -106,7 +119,7 @@ public class BloatitRestServer extends RestServer {
                                                        // ENTITIES
                                                        RestMember.class,
                                                        RestBankTransaction.class,
-                                                       RestBankTransactionSum.class,
+                                                       RestMoneyResults.class,
                                                        RestMilestone.class,
                                                        RestBug.class,
                                                        RestComment.class,
@@ -125,6 +138,9 @@ public class BloatitRestServer extends RestServer {
                                                        RestRelease.class,
                                                        RestTransaction.class,
                                                        RestTranslation.class,
+                                                       RestFollowFeature.class,
+                                                       RestFollowSoftware.class,
+                                                       RestFollowActor.class,
 
                                                        // LISTS
                                                        RestMemberList.class,
@@ -148,9 +164,17 @@ public class BloatitRestServer extends RestServer {
                                                        RestReleaseList.class,
                                                        RestTransactionList.class,
                                                        RestTranslationList.class,
+                                                       RestFollowFeatureList.class,
+                                                       RestFollowSoftwareList.class,
+                                                       RestFollowActorList.class,
 
                                                        // EXPANDED LISTS
-                                                       RestFeatureListExpanded.class, };
+                                                       RestFeatureListExpanded.class,
+
+                                                       // Utilities
+                                                       RestSize.class,
+                                                       RestMoneyResults.class,
+                                                       };
 
     @Override
     protected Set<String> getResourcesDirectories() {

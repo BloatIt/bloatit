@@ -24,12 +24,16 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
+import com.bloatit.model.Event;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.ExternalService;
 import com.bloatit.model.ExternalServiceMembership;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Follow;
+import com.bloatit.model.FollowActor;
+import com.bloatit.model.FollowFeature;
+import com.bloatit.model.FollowSoftware;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
@@ -193,12 +197,32 @@ public class BreadcrumbTools {
             }
 
             @Override
-            public Breadcrumb visit(ExternalServiceMembership externalService) {
+            public Breadcrumb visit(final ExternalServiceMembership externalService) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Follow model) {
+            public Breadcrumb visit(final Follow model) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(final Event event) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(final FollowFeature model) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(final FollowSoftware model) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(final FollowActor model) {
                 throw new NotImplementedException();
             }
         });

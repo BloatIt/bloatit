@@ -31,6 +31,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
@@ -48,20 +50,28 @@ public class ModifyMemberAction extends LoggedElveosAction {
     @RequestParam(role = Role.POST)
     @Optional
     @MaxConstraint(max = 200, message = @tr("Number of characters for your description has to be inferior to %constraint% but was %valueLength% characters long."))
+    @FormField(label = @tr("Introduce yourself"), isShort = false)
+    @FormComment(@tr("You have 200 characters max."))
     private final String description;
 
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(min = 1, message = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(max = 30, message = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @FormField(label = @tr("Full name"), isShort = false)
+    @FormComment(@tr("If you set a value here, it will be used instead of your login to designate you."))
     private final String fullname;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Delete avatar"))
+    @FormComment(@tr("Checking this box will delete your avatar. If you have a libravatar it will be used instead."))
     private final Boolean deleteAvatar;
 
     @RequestParam(name = "avatar", role = Role.POST)
     @Optional
+    @FormField(label = @tr("Avatar"))
+    @FormComment(@tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"))
     private final String avatar;
 
     @RequestParam(name = "avatar/filename", role = Role.POST)
@@ -72,7 +82,7 @@ public class ModifyMemberAction extends LoggedElveosAction {
     @RequestParam(name = "avatar/contenttype", role = Role.POST)
     @Optional
     private final String avatarContentType;
-    
+
     private final ModifyMemberActionUrl url;
 
     public ModifyMemberAction(final ModifyMemberActionUrl url) {

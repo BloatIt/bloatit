@@ -41,6 +41,9 @@ public class DaoContact {
     @Basic(optional = true)
     public String name;
 
+    @Basic(optional = true)
+    public boolean isCompany;
+
     /**
      * Tax identification, VAT ...
      */
@@ -112,6 +115,14 @@ public class DaoContact {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public boolean isCompany() {
+        return isCompany;
+    }
+
+    public void setIsCompany(final boolean isCompany) {
+        this.isCompany = isCompany;
     }
 
     public String getStreet() {

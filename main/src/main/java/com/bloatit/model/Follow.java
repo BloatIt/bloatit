@@ -25,7 +25,7 @@ public class Follow extends Identifiable<DaoFollow> {
         return new MyCreator().create(dao);
     }
 
-    protected Follow(DaoFollow dao) {
+    protected Follow(final DaoFollow dao) {
         super(dao);
     }
 
@@ -39,7 +39,7 @@ public class Follow extends Identifiable<DaoFollow> {
      * @param toFollow the content to follow
      * @param follower the user than will follow the content
      */
-    public Follow(FeatureImplementation toFollow, Actor<? extends DaoActor> follower) {
+    public Follow(final FeatureImplementation toFollow, final Actor<? extends DaoActor> follower) {
         super(DaoFollow.createAndPersist(follower.getDao(), toFollow.getDao()));
     }
 
@@ -82,7 +82,7 @@ public class Follow extends Identifiable<DaoFollow> {
     // Static getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public static Follow getFollow(FeatureImplementation content, Actor<? extends DaoActor> follower) {
+    public static Follow getFollow(final FeatureImplementation content, final Actor<? extends DaoActor> follower) {
         return new Follow(DaoFollow.getFollow(content.getDao(), follower.getDao()));
     }
 
@@ -91,7 +91,7 @@ public class Follow extends Identifiable<DaoFollow> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public <ReturnType> ReturnType accept(ModelClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 }

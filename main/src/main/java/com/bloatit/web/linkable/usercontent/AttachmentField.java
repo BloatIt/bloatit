@@ -19,7 +19,6 @@ package com.bloatit.web.linkable.usercontent;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
@@ -28,22 +27,15 @@ import com.bloatit.web.url.UserContentActionUrl;
 
 public class AttachmentField extends PlaceHolderElement {
 
-    public AttachmentField(final UserContentActionUrl targetUrl, final String size, final boolean jsAutoHide) {
-        this(targetUrl,
-             Context.tr("Join a file"),
-             Context.tr("Max size {0}. When you join a file, you have to add a description.", size),
-             Context.tr("File description"),
-             Context.tr("Input a short description of the file you want to upload."),
-             jsAutoHide);
+    private final HtmlFileInput attachedFileInput;
+    private final HtmlTextField attachmentDescriptionInput;
+
+    public AttachmentField(final UserContentActionUrl targetUrl, final String size, final boolean multiple) {
+        this(targetUrl, size, multiple, true);
     }
 
     public AttachmentField(final UserContentActionUrl targetUrl, final String size) {
-        this(targetUrl,
-             Context.tr("Join a file"),
-             Context.tr("Max size {0}. When you join a file, you have to add a description.", size),
-             Context.tr("File description"),
-             Context.tr("Input a short description of the file you want to upload."),
-             true);
+        this(targetUrl, size, false, true);
     }
 
     /**
@@ -55,14 +47,8 @@ public class AttachmentField extends PlaceHolderElement {
      * @param descriptionLabel
      * @param descriptionComment
      */
-    private AttachmentField(final UserContentActionUrl targetUrl,
-                            final String attachmentLabel,
-                            final String attachmentComment,
-                            final String descriptionLabel,
-                            final String descriptionComment,
-                            final boolean jsAutoHide) {
+    public AttachmentField(final UserContentActionUrl targetUrl, final String size, final boolean multiple, final boolean jsAutoHide) {
         super();
-
         final JsShowHide showHide = new JsShowHide(this, false);
         showHide.setHasFallback(false);
         if (jsAutoHide) {
@@ -74,25 +60,30 @@ public class AttachmentField extends PlaceHolderElement {
         final HtmlDiv attachmentDiv = new HtmlDiv();
         add(attachmentDiv);
 
-        final FieldData attachedFileData = targetUrl.getAttachmentParameter().pickFieldData();
-        final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), attachmentLabel);
-        attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
-        attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
-        attachedFileInput.setComment(attachmentComment);
+        if (multiple) {
+            final HtmlParagraph multiplePara = new HtmlParagraph(Context.tr("You will be able to add more attachement later."));
+            attachmentDiv.add(multiplePara);
+        }
+
+        attachedFileInput = new HtmlFileInput(targetUrl.getAttachmentParameter().getName());
+        attachedFileInput.addAttribute("size", "10");
+        attachedFileInput.setComment(Context.tr("Max size is {0}.", size));
         attachmentDiv.add(attachedFileInput);
 
-        final FieldData attachmentDescriptiondData = targetUrl.getAttachmentDescriptionParameter().pickFieldData();
-        final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(), descriptionLabel);
-        attachmentDescriptionInput.setDefaultValue(attachmentDescriptiondData.getSuggestedValue());
-        attachmentDescriptionInput.addErrorMessages(attachmentDescriptiondData.getErrorMessages());
-        attachmentDescriptionInput.setComment(descriptionComment);
+        attachmentDescriptionInput = new HtmlTextField(targetUrl.getAttachmentDescriptionParameter().getName());
         attachmentDiv.add(attachmentDescriptionInput);
 
         if (jsAutoHide) {
             showHide.addListener(attachmentDiv);
             showHide.apply();
         }
-
     }
 
+    public HtmlFileInput getFileInput() {
+        return attachedFileInput;
+    }
+
+    public HtmlTextField getTextInput() {
+        return attachmentDescriptionInput;
+    }
 }

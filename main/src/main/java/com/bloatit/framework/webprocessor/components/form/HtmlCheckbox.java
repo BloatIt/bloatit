@@ -22,11 +22,11 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSimpleInput.InputT
  * <b>Note</b>: One shouldn't create much checkboxes directly, but should
  * instead use the beautiful {@link CheckBoxGroup} class
  * </p>
- * 
+ *
  * @see CheckBoxGroup
  * @see CheckBoxGroup#addCheckBox(String, String)
  */
-public final class HtmlCheckbox extends HtmlFormField<Boolean> {
+public final class HtmlCheckbox extends HtmlFormField {
 
     /**
      * <p>
@@ -45,13 +45,14 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
      * <b>NOTE</b>: This method shouldn't be used, a checkbox without label is
      * useless
      * </p>
-     * 
+     *
      * @param name the value of the attribute <code>name</code> of the checkbox
      * @param labelPosition the relative position of the label compared to the
      *            checkbox
      */
     public HtmlCheckbox(final String name, final LabelPosition labelPosition) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), name, labelPosition);
+        addContainerCssClass("one-line-form");
     }
 
     /**
@@ -68,7 +69,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
      * Example of <code>LabelPosition.AFTER</code> :<br />
      * {@code <input type="checkbox" name="nothin" id="anId3" /><label form="anId3">I like nothing</label>}
      * </p>
-     * 
+     *
      * @param name the value of the attribute <code>name</code> of the checkbox
      * @param label the text displayed to explain the use of this checkbox
      * @param position the relative position of the label compared to the
@@ -76,13 +77,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
      */
     public HtmlCheckbox(final String name, final String label, final LabelPosition position) {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), name, label, position);
-    }
-
-    @Override
-    protected void doSetDefaultValue(final Boolean value) {
-        if (value.booleanValue()) {
-            addAttribute("checked", "checked");
-        }
+        addContainerCssClass("one-line-form");
     }
 
     @Override
@@ -91,7 +86,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
             addAttribute("checked", "checked");
         }
     }
-    
+
     public void setDefaultBooleanValue(boolean value){
         setDefaultValue(Boolean.toString(value));
     }

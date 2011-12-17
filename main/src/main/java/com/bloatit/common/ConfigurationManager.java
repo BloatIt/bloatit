@@ -69,8 +69,8 @@ public class ConfigurationManager {
     public static PropertiesRetriever loadProperties(final String name) {
         return loadProperties(name, PropertiesType.ETC);
     }
-    
-    public static String getConfigDir(){
+
+    public static String getConfigDir() {
         return ETC_DIR;
     }
 

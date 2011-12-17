@@ -21,23 +21,21 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Member;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.linkable.release.ReleasePage;
+import com.bloatit.web.linkable.tools.CommentTools;
 import com.bloatit.web.linkable.usercontent.AsTeamField;
-import com.bloatit.web.linkable.usercontent.AttachmentField;
-import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
@@ -78,31 +76,27 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
         final HtmlTitle title = new HtmlTitle(Context.tr("Reply to a comment"), 1);
         final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(getSession().getShortKey(), comment);
-        final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(commentCommentActionUrl.urlString());
+        final FormBuilder ftool = new FormBuilder(CreateCommentAction.class, commentCommentActionUrl);
 
         // as team
-        form.add(new AsTeamField(commentCommentActionUrl,
-                                 loggedUser,
-                                 UserTeamRight.TALK,
-                                 Context.tr("In the name of"),
-                                 Context.tr("Write this comment in the name of this group.")));
+        form.addAsTeamField(new AsTeamField(commentCommentActionUrl,
+                                            loggedUser,
+                                            UserTeamRight.TALK,
+                                            Context.tr("In the name of"),
+                                            Context.tr("Write this comment in the name of this group.")));
 
         // Comment text
-        final FieldData commentData = commentCommentActionUrl.getCommentParameter().pickFieldData();
-        final HtmlTextArea commentInput = new HtmlTextArea(commentData.getName(), Context.tr("Content"), NB_LINES, NB_COLUMNS);
-        commentInput.setDefaultValue(commentData.getSuggestedValue());
-        commentInput.addErrorMessages(commentData.getErrorMessages());
-        form.add(commentInput);
-
-        // as team
-        form.add(new AttachmentField(commentCommentActionUrl, CommentForm.FILE_MAX_SIZE_MIO + " Mio"));
+        ftool.add(form, new HtmlTextArea(commentCommentActionUrl.getCommentParameter().getName(), NB_LINES, NB_COLUMNS));
 
         // submit
-        final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
-        form.add(submit);
+        form.addSubmit(new HtmlSubmit(Context.tr("Comment")));
 
         box.add(title);
         box.add(form);
+
+        layout.addLeft(new HtmlTitle(Context.tr("Previous comments"), 1));
+        layout.addLeft(CommentTools.generateCommentList(comment));
 
         return layout;
     }
@@ -137,9 +131,6 @@ public final class CommentReplyPage extends CreateUserContentPage {
                 break;
             case FEATURE:
                 breadcrumb = FeaturePage.generateBreadcrumb(comment.getRootComment().getParentFeature());
-                break;
-            case RELEASE:
-                breadcrumb = ReleasePage.generateBreadcrumb(comment.getRootComment().getParentRelease());
                 break;
             default:
                 breadcrumb = new Breadcrumb();

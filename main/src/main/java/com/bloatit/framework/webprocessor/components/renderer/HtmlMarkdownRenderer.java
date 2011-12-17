@@ -16,11 +16,9 @@
 //
 package com.bloatit.framework.webprocessor.components.renderer;
 
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.utils.parsers.MarkdownParser;
-import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
+import com.github.rjeschke.txtmark.Processor;
 
 /**
  * <p>
@@ -28,25 +26,23 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlNonEscapedText;
  * </p>
  */
 public class HtmlMarkdownRenderer extends HtmlDiv {
-    private final MarkdownParser parser;
     private String renderered;
 
     /**
      * Creates a new MarkdownRenderer based on markdown or html text
-     * 
+     *
      * @param text the content to display, must be markdown text if
      *            <code>alreadyRenderer</code> is <code>true</code> or html text
      *            if <code>alreadyRenderer</code> is <code>false</code>
      */
     public HtmlMarkdownRenderer(final String text) {
+        this(text, true);
+    }
+
+    public HtmlMarkdownRenderer(final String text, boolean safeMode) {
         super("markdown_block");
-        parser = new MarkdownParser();
-        try {
-            renderered = parser.parse(text);
-            add(new HtmlNonEscapedText(renderered));
-        } catch (final ParsingException e) {
-            throw new BadProgrammerException("An error occured during markdown parsing", e);
-        }
+        renderered = Processor.process(text, safeMode);
+        add(new HtmlNonEscapedText(renderered));
     }
 
     /**

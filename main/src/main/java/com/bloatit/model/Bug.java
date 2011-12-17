@@ -21,6 +21,7 @@ import java.util.Date;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoComment;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.Language;
@@ -153,7 +154,7 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     }
 
     @Override
-    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+    protected void delete(final boolean delOrder) throws UnauthorizedOperationException {
         // Delete all comments from the bug
         for (final Comment comment : getComments()) {
             comment.delete(delOrder);
@@ -289,7 +290,20 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
      * @return true if you can access the <i>ErrorLevel</i> property.
      */
     public final boolean canAccessErrorLevel(final Action action) {
-        return canAccess(new RgtBug.ErrorLevel(), action);
+        if(action == Action.READ) {
+            return true;
+        } else if(!AuthToken.isAuthenticated()) {
+            return false;
+        } else if(this.getAuthor().equals(AuthToken.getMember())) {
+            return true;
+        } else if(this.getFeature().getSelectedOffer().getAuthor().equals(AuthToken.getMember())) {
+            return true;
+        } else if(this.getAsTeam() != null && this.getAsTeam().getUserTeamRight(AuthToken.getMember()).contains(UserTeamRight.TALK)) {
+            return true;
+        } else if(this.getFeature().getSelectedOffer().getAsTeam() != null && this.getFeature().getSelectedOffer().getAsTeam().getUserTeamRight(AuthToken.getMember()).contains(UserTeamRight.TALK)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -300,7 +314,18 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
      * @return true if you can access the <i>Status</i> property.
      */
     public final boolean canAccessStatus(final Action action) {
-        return canAccess(new RgtBug.Status(), action);
+        if(action == Action.READ) {
+            return true;
+        } else if(this.getAuthor().equals(AuthToken.getMember())) {
+            return true;
+        } else if(this.getFeature().getSelectedOffer().getAuthor().equals(AuthToken.getMember())) {
+            return true;
+        } else if(this.getAsTeam() != null && this.getAsTeam().getUserTeamRight(AuthToken.getMember()).contains(UserTeamRight.TALK)) {
+            return true;
+        } else if(this.getFeature().getSelectedOffer().getAsTeam() != null && this.getFeature().getSelectedOffer().getAsTeam().getUserTeamRight(AuthToken.getMember()).contains(UserTeamRight.TALK)) {
+            return true;
+        }
+        return false;
     }
 
     /**

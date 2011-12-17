@@ -64,7 +64,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
             throw new BadProgrammerException(e);
         } catch (final ClassCastException e) {
             throw new BadProgrammerException(e);
-        }   
+        }
         return null;
     }
 
@@ -154,8 +154,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * @return the contributions done by this actor
      * @throws UnauthorizedOperationException
      */
-    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
-        tryAccess(new RgtActor.Contribution(), Action.READ);
+    public PageIterable<Contribution> getContributions() {
         return doGetContributions();
     }
 
@@ -168,7 +167,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         return Contact.create(getDao().getContact());
     }
 
-    public abstract PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException;
+    public abstract PageIterable<Contribution> doGetContributions();
 
     /**
      * Returns the money withdraw done by this actor.
@@ -251,7 +250,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         return hasInvoicingContact(false);
     }
 
-    public boolean hasInvoicingContact(boolean all) throws UnauthorizedPrivateAccessException {
+    public boolean hasInvoicingContact(final boolean all) throws UnauthorizedPrivateAccessException {
         final Contact contact = getContact();
         if (contact.getName() == null) {
             return false;
@@ -274,9 +273,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
                 return false;
             }
             if (contact.getLegalId() == null) {
-                return false;
-            }
-            if (contact.getTaxIdentification() == null) {
                 return false;
             }
             if (contact.getTaxRate() == null) {

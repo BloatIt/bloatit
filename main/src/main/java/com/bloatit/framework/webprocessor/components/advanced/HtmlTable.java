@@ -23,6 +23,7 @@ import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 
 /**
  * This class display an html table using a data model (HtmlTableModel) For the
@@ -67,10 +68,9 @@ public class HtmlTable extends HtmlGenericElement {
                 if (getModel().getId(i) != null) {
                     td.setId(getModel().getId(i));
                 }
-                if(getModel().getTitle(i) != null) {
+                if (getModel().getTitle(i) != null) {
                     td.addAttribute("title", getModel().getTitle(i));
                 }
-                
 
                 if (getModel().getColspan(i) != 1) {
                     td.addAttribute("colspan", String.valueOf(getModel().getColspan(i)));
@@ -89,7 +89,7 @@ public class HtmlTable extends HtmlGenericElement {
             columnCount = getModel().getColumnCount();
             for (int i = 0; i < columnCount; i++) {
                 final HtmlGenericElement th = new HtmlGenericElement("th");
-                if(getModel().getTitle(i) != null) {
+                if (getModel().getTitle(i) != null) {
                     th.addAttribute("title", getModel().getTitle(i));
                 }
                 th.add(getModel().getHeader(i));
@@ -155,6 +155,7 @@ public class HtmlTable extends HtmlGenericElement {
 
         private final List<HtmlTableLine> lines = new ArrayList<HtmlTableLine>();
         int currentLine = -1;
+        private HtmlTableLine headerLine;
 
         public void addLine(final HtmlTableLine line) {
             lines.add(line);
@@ -162,6 +163,11 @@ public class HtmlTable extends HtmlGenericElement {
 
         @Override
         public int getColumnCount() {
+            
+            if(currentLine < 0) {
+                return headerLine.getCells().size();
+            }
+            
             if (lines.size() > currentLine) {
                 return lines.get(currentLine).getCells().size();
             }
@@ -170,7 +176,7 @@ public class HtmlTable extends HtmlGenericElement {
 
         @Override
         public HtmlNode getHeader(final int column) {
-            return null;
+            return headerLine.getCells().get(column).getBody();
         }
 
         @Override
@@ -192,7 +198,11 @@ public class HtmlTable extends HtmlGenericElement {
 
         @Override
         public boolean hasHeader() {
-            return false;
+            return (headerLine != null);
+        }
+
+        public void setHeaderLine(HtmlTableLine headerLine) {
+            this.headerLine = headerLine;
         }
 
         @Override
@@ -240,6 +250,16 @@ public class HtmlTable extends HtmlGenericElement {
 
             final public void addCell(final HtmlTableCell cell) {
                 cells.add(cell);
+            }
+
+            protected void addTextCell(final String text) {
+                addCell(new HtmlTableCell("") {
+
+                    @Override
+                    public HtmlNode getBody() {
+                        return new HtmlText(text);
+                    }
+                });
             }
 
             final public List<HtmlTableCell> getCells() {

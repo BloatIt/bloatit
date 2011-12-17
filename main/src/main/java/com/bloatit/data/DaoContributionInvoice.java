@@ -67,6 +67,7 @@ public class DaoContributionInvoice extends DaoInvoice {
                                    final String receiverExtras,
                                    final String receiverCity,
                                    final String receiverCountry,
+                                   final String receiverTaxIdentification,
                                    final Date invoiceDate,
                                    final String deliveryName,
                                    final BigDecimal priceExcludingTax,
@@ -91,6 +92,7 @@ public class DaoContributionInvoice extends DaoInvoice {
               receiverExtras,
               receiverCity,
               receiverCountry,
+              receiverTaxIdentification,
               invoiceDate,
               deliveryName,
               priceExcludingTax,
@@ -135,6 +137,7 @@ public class DaoContributionInvoice extends DaoInvoice {
                                                           final String receiverExtras,
                                                           final String receiverCity,
                                                           final String receiverCountry,
+                                                          final String receiverTaxIdentification,
                                                           final Date invoiceDate,
                                                           final String deliveryName,
                                                           final BigDecimal priceExcludingTax,
@@ -161,6 +164,7 @@ public class DaoContributionInvoice extends DaoInvoice {
                                                                           receiverExtras,
                                                                           receiverCity,
                                                                           receiverCountry,
+                                                                          receiverTaxIdentification,
                                                                           invoiceDate,
                                                                           deliveryName,
                                                                           priceExcludingTax,
@@ -188,7 +192,7 @@ public class DaoContributionInvoice extends DaoInvoice {
     public DaoMilestone getMilestone() {
         return milestone;
     }
-    
+
     // ======================================================================
     // Visitor.
     // ======================================================================

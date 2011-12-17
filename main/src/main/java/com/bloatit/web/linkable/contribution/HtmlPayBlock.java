@@ -23,7 +23,6 @@ import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -34,6 +33,7 @@ import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Image;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.PaymentProcessUrl;
 
@@ -41,16 +41,16 @@ public class HtmlPayBlock extends HtmlDiv {
     public HtmlPayBlock(final StandardQuotation quotation, final Team team, final PaymentProcessUrl paymentUrl, final Url returnUrl) {
         super("pay_actions");
 
-        HtmlForm form = new HtmlForm(paymentUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(paymentUrl.urlString(), false);
 
-        FieldData pickFieldData = paymentUrl.getPaymentMethodParameter().pickFieldData();
-        HtmlRadioButtonGroup paymentMethodRadioButtonGroup = new HtmlRadioButtonGroup(pickFieldData.getName());
+        final FieldData pickFieldData = paymentUrl.getPaymentMethodParameter().pickFieldData();
+        final HtmlRadioButtonGroup paymentMethodRadioButtonGroup = new HtmlRadioButtonGroup(pickFieldData.getName());
 
-        HtmlImage logoVISA = new HtmlImage(new Image(WebConfiguration.getImgMercanetVISA()), "VISA");
-        HtmlImage logoMastercard = new HtmlImage(new Image(WebConfiguration.getImgMercanetMastercard()), "Mastercard");
-        HtmlImage logoCB = new HtmlImage(new Image(WebConfiguration.getImgMercanetCB()), "CB");
+        final HtmlImage logoVISA = new HtmlImage(new Image(WebConfiguration.getImgMercanetVISA()), "VISA");
+        final HtmlImage logoMastercard = new HtmlImage(new Image(WebConfiguration.getImgMercanetMastercard()), "Mastercard");
+        final HtmlImage logoCB = new HtmlImage(new Image(WebConfiguration.getImgMercanetCB()), "CB");
 
-        HtmlDiv paymentMethodBlock = new HtmlDiv("payment_methods");
+        final HtmlDiv paymentMethodBlock = new HtmlDiv("payment_methods");
         paymentMethodBlock.add(new HtmlParagraph(Context.tr("Choose your payment method:")));
         paymentMethodBlock.add(paymentMethodRadioButtonGroup);
 
@@ -64,9 +64,9 @@ public class HtmlPayBlock extends HtmlDiv {
             add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", team.getLogin()), "use_account"));
         }
 
-        HtmlDiv tosBlock = new HtmlDiv("tos");
-        UrlParameter<Boolean, Boolean> tosParameter = paymentUrl.getTosParameter();
-        HtmlCheckbox tosCheckbox = new HtmlCheckbox(tosParameter.getName(), LabelPosition.AFTER);
+        final HtmlDiv tosBlock = new HtmlDiv("tos");
+        final UrlParameter<Boolean, Boolean> tosParameter = paymentUrl.getTosParameter();
+        final HtmlCheckbox tosCheckbox = new HtmlCheckbox(tosParameter.getName(), LabelPosition.AFTER);
         tosCheckbox.setLabel(new HtmlMixedText(Context.tr("I agree to the Elveos' <0::terms of sales>"),
                                                new DocumentationPageUrl("cgv").getHtmlLink()));
         tosCheckbox.addErrorMessages(tosParameter.getMessages());
@@ -78,8 +78,8 @@ public class HtmlPayBlock extends HtmlDiv {
                                                                                      .getCurrency(quotation.totalTTC.getValue())
                                                                                      .getTwoDecimalEuroString()));
 
-        form.add(payContributionButton);
-        form.add(returnUrl.getHtmlLink(Context.tr("edit")));
+        form.addSubmit(payContributionButton);
+        form.addSubmit(returnUrl.getHtmlLink(Context.tr("edit")));
 
         add(form);
     }

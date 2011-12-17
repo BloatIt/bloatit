@@ -115,6 +115,14 @@ public final class Contact {
         dao.setExtras(extras);
     }
 
+    public void setIsCompany(final boolean isCompany) {
+        dao.setIsCompany(isCompany);
+    }
+
+    public boolean isCompany() {
+        return dao.isCompany();
+    }
+
     /**
      * @return
      * @see com.bloatit.data.DaoContact#getPostalCode()
@@ -249,76 +257,84 @@ public final class Contact {
      */
     public String pickNextInvoiceId() {
 
-        InvoiceIdFormatter formatter = new InvoiceIdFormatter(getInvoiceIdTemplate());
-        String invoiceId = formatter.format(getInvoiceIdNumber());
+        final String invoiceId = getInvoiceId(getInvoiceIdNumber());
 
         setInvoiceIdNumber(getInvoiceIdNumber().add(BigDecimal.ONE));
         return invoiceId;
 
     }
 
+    public String getInvoiceId(final BigDecimal invoiceIdNumber) {
+
+        final InvoiceIdFormatter formatter = new InvoiceIdFormatter(getInvoiceIdTemplate());
+        final String invoiceId = formatter.format(invoiceIdNumber);
+
+        return invoiceId;
+    }
+
     private static class InvoiceIdFormatter {
         private final String template;
         private String output;
 
-        public InvoiceIdFormatter(String template) {
+        public InvoiceIdFormatter(final String template) {
             this.template = template;
 
         }
+
         /*
-        * {ID|x} : id number on x characters
-        * {YEAR} : year on 4 characters
-        * {MONTH} : month on 4 characters
-        * {DAY} : day of the month on 2 characters
-        * {YDAY} : day of the year on 2 characters
-        * {WEEK} : week of the year on 2 characters
-        */
-        public String format(BigDecimal invoiceIdNumber) {
-            
+         * {ID|x} : id number on x characters {YEAR} : year on 4 characters
+         * {MONTH} : month on 4 characters {DAY} : day of the month on 2
+         * characters {YDAY} : day of the year on 2 characters {WEEK} : week of
+         * the year on 2 characters
+         */
+        public String format(final BigDecimal invoiceIdNumber) {
+
             this.output = this.template;
-            
-            GregorianCalendar gregorianCalendar = new GregorianCalendar();
-            
+
+            final GregorianCalendar gregorianCalendar = new GregorianCalendar();
+
             replaceNumber("YEAR", 4, gregorianCalendar.get(Calendar.YEAR));
             replaceNumber("MONTH", 2, gregorianCalendar.get(Calendar.MONTH));
             replaceNumber("DAY", 2, gregorianCalendar.get(Calendar.DAY_OF_MONTH));
             replaceNumber("YDAY", 2, gregorianCalendar.get(Calendar.DAY_OF_YEAR));
             replaceNumber("WEEK", 2, gregorianCalendar.get(Calendar.WEEK_OF_YEAR));
             replaceNumber("ID", 4, invoiceIdNumber.intValue());
-            
+
             return this.output;
         }
 
-        private void replaceNumber(String token, int defaultLength, int value) {
-            
-            Pattern pattern = Pattern.compile("^(.*)(\\{"+token+"(\\|([0-9]+))?\\})(.*)");
+        private void replaceNumber(final String token, final int defaultLength, final int value) {
 
-            Matcher matcher = pattern.matcher(this.output);
-            
+            final Pattern pattern = Pattern.compile("^(.*)(\\{" + token + "(\\|([0-9]+))?\\})(.*)");
+
+            final Matcher matcher = pattern.matcher(this.output);
+
             while (matcher.find()) {
-                
+
                 int length = defaultLength;
-                if(matcher.group(4) != null) {
+                if (matcher.group(4) != null) {
                     length = Integer.parseInt(matcher.group(4));
                 }
-                
-                DecimalFormat df = new DecimalFormat(multiply("0", length));
-                
-                this.output = matcher.group(1)+df.format(value) +matcher.group(5);
+
+                final DecimalFormat df = new DecimalFormat(multiply("0", length));
+
+                final String formated = df.format(value);
+
+                this.output = matcher.group(1) + df.format(value).substring(formated.length() - length, formated.length()) + matcher.group(5);
             }
-            
+
         }
-        
-        private String multiply(String string, int count) {
-            StringBuffer out = new StringBuffer();
-            for(int i=0; i<count; i++) {
+
+        private String multiply(final String string, final int count) {
+            final StringBuffer out = new StringBuffer();
+            for (int i = 0; i < count; i++) {
                 out.append(string);
             }
             return out.toString();
         }
 
     }
-    
+
     // ///////////////////////////
     // Unprotected methods
 
@@ -337,5 +353,4 @@ public final class Contact {
     private DaoContact getDao() {
         return dao;
     }
-
 }

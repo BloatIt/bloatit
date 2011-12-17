@@ -212,7 +212,16 @@ public class Rights {
         public Team visitAbstract(final UserContentInterface model) {
             return model.getAsTeam();
         }
-
+        
+        @Override
+        public Team visitAbstract(final Bug model) {
+            if(model.getAsTeam() != null) {
+                return model.getAsTeam();
+            }
+            return model.getFeature().getSelectedOffer().getAsTeam();
+            
+        }
+        
         @Override
         public Team visitAbstract(final BankTransaction model) {
             return visitAbstract(model.getAuthorUnprotected());
@@ -260,6 +269,12 @@ public class Rights {
 
         @Override
         public Team visit(final ContributionInvoice model) {
+            if (model.getEmitterActorUnprotected().isTeam()) {
+                final Team team = (Team) model.getEmitterActorUnprotected();
+                if (AuthToken.getMember().isInTeam(team)) {
+                    return team;
+                }
+            }
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
@@ -274,12 +289,32 @@ public class Rights {
         }
 
         @Override
-        public Team visit(ExternalServiceMembership externalService) {
+        public Team visit(final ExternalServiceMembership externalService) {
             return null;
         }
 
         @Override
-        public Team visitAbstract(Follow model) {
+        public Team visitAbstract(final Follow model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Team visit(final Event event) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Team visit(final FollowFeature model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Team visit(final FollowSoftware model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Team visit(final FollowActor model) {
             throw new NotImplementedException();
         }
 
@@ -308,6 +343,15 @@ public class Rights {
         @Override
         public Boolean visitAbstract(final UserContentInterface model) {
             return visitAbstract(model.getAuthor());
+        }
+        
+        @Override
+        public Boolean visitAbstract(final Bug model) {
+            if(visitAbstract(model.getAuthor())) {
+                return true;
+            }
+            
+            return visit(model.getFeature().getSelectedOffer());
         }
 
         @Override
@@ -357,7 +401,7 @@ public class Rights {
 
         @Override
         public Boolean visit(final ContributionInvoice model) {
-            return visitAbstract(model.getRecipientActorUnprotected());
+            return visitAbstract(model.getRecipientActorUnprotected()) || visitAbstract(model.getEmitterActorUnprotected());
         }
 
         @Override
@@ -376,7 +420,27 @@ public class Rights {
         }
 
         @Override
-        public Boolean visitAbstract(Follow model) {
+        public Boolean visitAbstract(final Follow model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(final Event event) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(final FollowFeature model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(final FollowSoftware model) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(final FollowActor model) {
             throw new NotImplementedException();
         }
     }
@@ -401,6 +465,15 @@ public class Rights {
         @Override
         public Boolean visitAbstract(final UserContentInterface model) {
             return model.getAuthor().equals(member);
+        }
+        
+        @Override
+        public Boolean visitAbstract(final Bug model) {
+            if(model.getAuthor().equals(member)) {
+                return true;
+            }
+            
+            return visit(model.getFeature().getSelectedOffer());
         }
 
         @Override
@@ -470,37 +543,55 @@ public class Rights {
         }
 
         @Override
-        public Boolean visitAbstract(Follow model) {
+        public Boolean visitAbstract(final Follow model) {
             throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(final Event event) {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public Boolean visit(final FollowFeature model) {
+            return model.getFollower().equals(member);
+        }
+
+        @Override
+        public Boolean visit(final FollowSoftware model) {
+            return model.getFollower().equals(member);
+        }
+
+        @Override
+        public Boolean visit(final FollowActor model) {
+            return model.getFollower().equals(member);
         }
 
     }
 
     // Karma
     public boolean hasKarmaToComment() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToComment();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToComment();
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
-    
+
     public boolean hasKarmaToCreateFeature() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
-    
+
     public boolean hasKarmaToMakeOffer() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
-    
 
     public boolean hasKarmaToVoteUp() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
-    
-    
+
     public boolean hasKarmaToVoteDown() {
-        int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
-        return AuthToken.isAuthenticated() &&  AuthToken.getMember().getKarma() >= karmaNeed;
+        final int karmaNeed = ModelConfiguration.getKudosableMinKarmaToKudos();
+        return AuthToken.isAuthenticated() && AuthToken.getMember().getKarma() >= karmaNeed;
     }
 }

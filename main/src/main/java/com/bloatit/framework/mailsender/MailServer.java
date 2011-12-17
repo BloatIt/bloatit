@@ -167,13 +167,13 @@ public class MailServer extends Thread {
             final Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(FrameworkConfiguration.getMailFrom()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getTo()));
-            Address[] replyTo = {new InternetAddress(FrameworkConfiguration.getMailReplyTo())};
+            final Address[] replyTo = { new InternetAddress(FrameworkConfiguration.getMailReplyTo()) };
             message.setReplyTo(replyTo);
             message.setSubject(mail.getSubject());
 
             if (mail.hasAttachment()) {
                 final MimeBodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setText(mail.getContent());
+                messageBodyPart.setContent(mail.getContent(), mail.getMimeType());
                 final Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
 
@@ -192,7 +192,7 @@ public class MailServer extends Thread {
                 // Put parts in message
                 message.setContent(multipart);
             } else {
-                message.setText(mail.getContent());
+                message.setContent(mail.getContent(), mail.getMimeType());
             }
 
             final UUID uuid = UUID.randomUUID();

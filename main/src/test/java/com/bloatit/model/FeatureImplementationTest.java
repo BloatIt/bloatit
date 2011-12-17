@@ -346,8 +346,6 @@ public class FeatureImplementationTest extends ModelTestUnit {
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
-
-        assertEquals(0, feature.getOffers().size());
     }
 
     @Test

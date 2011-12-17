@@ -64,7 +64,11 @@ public class RestResource {
         m.setProperty("com.sun.xml.bind.xmlDeclaration", false);
 
         final StringWriter sw = new StringWriter();
-        m.marshal(underlying, sw);
+        if (underlying instanceof Boolean) {
+            sw.append(((Boolean) underlying).toString());
+        } else {
+            m.marshal(underlying, sw);
+        }
         return sw.toString();
     }
 

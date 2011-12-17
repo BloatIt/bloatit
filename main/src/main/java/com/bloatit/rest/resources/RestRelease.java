@@ -35,7 +35,6 @@ import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.Release;
 import com.bloatit.model.managers.ReleaseManager;
 import com.bloatit.rest.adapters.DateAdapter;
-import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestReleaseList;
 
@@ -146,14 +145,6 @@ public class RestRelease extends RestElement<Release> {
     @XmlElement
     public String getDescription() {
         return model.getDescription();
-    }
-
-    /**
-     * @see com.bloatit.model.Release#getComments()
-     */
-    @XmlElement
-    public RestCommentList getComments() {
-        return new RestCommentList(model.getComments());
     }
 
     /**

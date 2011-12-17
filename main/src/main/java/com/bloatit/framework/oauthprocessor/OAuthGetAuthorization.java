@@ -28,23 +28,23 @@ public class OAuthGetAuthorization extends OAuthBloatitReponse {
 
     private static final int DEFAULT_EXPIRE_TIME = 3600;
 
-    private OAuthAuthenticator authenticator;
+    private final OAuthAuthenticator authenticator;
 
-    public OAuthGetAuthorization(OAuthAuthenticator authenticator) {
+    public OAuthGetAuthorization(final OAuthAuthenticator authenticator) {
         super();
         this.authenticator = authenticator;
     }
 
     @Override
-    public void process(HttpServletRequest request, HttpResponse response) throws IOException {
+    public void process(final HttpServletRequest request, final HttpResponse response) throws IOException {
         try {
             doProcess(request, response);
-        } catch (OAuthSystemException e) {
+        } catch (final OAuthSystemException e) {
             throw new ExternalErrorException(e);
         }
     }
 
-    private void doProcess(HttpServletRequest request, HttpResponse response) throws OAuthSystemException, IOException {
+    private void doProcess(final HttpServletRequest request, final HttpResponse response) throws OAuthSystemException, IOException {
         OAuthResponse oauthResponse;
         String state = request.getParameter(OAuth.OAUTH_STATE);
         String redirectUri = request.getParameter(OAuth.OAUTH_REDIRECT_URI);
@@ -53,9 +53,9 @@ public class OAuthGetAuthorization extends OAuthBloatitReponse {
             final OAuthAuthzRequest oAuthAuthzRequest = new OAuthAuthzRequest(request);
 
             // Get oauth parameters
-            String clientId = oAuthAuthzRequest.getClientId();
-            String responseType = oAuthAuthzRequest.getParam(OAuth.OAUTH_RESPONSE_TYPE);
-            Set<String> scopes = oAuthAuthzRequest.getScopes();
+            final String clientId = oAuthAuthzRequest.getClientId();
+            final String responseType = oAuthAuthzRequest.getParam(OAuth.OAUTH_RESPONSE_TYPE);
+            final Set<String> scopes = oAuthAuthzRequest.getScopes();
             redirectUri = oAuthAuthzRequest.getRedirectURI();
             state = oAuthAuthzRequest.getState();
 
@@ -68,8 +68,8 @@ public class OAuthGetAuthorization extends OAuthBloatitReponse {
                 redirectUri = "pagenotfound";
             }
 
-            String login = request.getParameter("login");
-            String password = request.getParameter("password");
+            final String login = request.getParameter("login");
+            final String password = request.getParameter("password");
 
             final OAuthASResponse.OAuthAuthorizationResponseBuilder builder = OAuthASResponse.authorizationResponse(HttpServletResponse.SC_FOUND);
 
@@ -107,7 +107,7 @@ public class OAuthGetAuthorization extends OAuthBloatitReponse {
                                          .location(redirectUri)
                                          .buildQueryMessage();
 
-        } catch (AuthorizationException e) {
+        } catch (final AuthorizationException e) {
             oauthResponse = OAuthResponse.errorResponse(HttpServletResponse.SC_FOUND)
                                          .setError("server_error")
                                          .setErrorDescription("Internal error. Please report.")
@@ -116,7 +116,7 @@ public class OAuthGetAuthorization extends OAuthBloatitReponse {
                                          .buildQueryMessage();
 
             Log.framework().error("Cannot found a just added service ...", e);
-        } catch (ElementNotFoundException e) {
+        } catch (final ElementNotFoundException e) {
             response.writeOAuthRedirect(302, "/" + OAuthProcessor.OAUTH_GET_CREDENTIAL_PAGENAME + "?fail=true&" + request.getQueryString());
             return;
         } catch (final OAuthSystemException e) {

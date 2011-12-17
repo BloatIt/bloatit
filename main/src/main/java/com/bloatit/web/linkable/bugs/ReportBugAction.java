@@ -23,6 +23,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -50,15 +52,19 @@ public final class ReportBugAction extends UserContentAction {
     @MaxConstraint(max = 120, message = @tr("The short description must be %constraint% chars length max."))
     @MinConstraint(min = 10, message = @tr("The short description must have at least %constraint% chars."))
     @NonOptional(@tr("You forgot to write a short description"))
+    @FormField(label = @tr("Bug title"), isShort = false)
     private final String title;
 
     @NonOptional(@tr("You must indicate a bug description"))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     @RequestParam(role = Role.POST)
+    @FormField(label = @tr("Describe the bug"), isShort = false)
+    @FormComment(@tr("Enter a precise description of the bug. Minimum 10 character."))
     private final String description;
 
     @NonOptional(@tr("You must indicate a bug level"))
     @RequestParam(suggestedValue = "MINOR", role = Role.POST)
+    @FormField(label = @tr("Bug level"))
     private final BindedLevel level;
 
     private final ReportBugActionUrl url;

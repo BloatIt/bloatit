@@ -7,7 +7,7 @@ import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("index")
 public class IndexPageAlias extends AliasAction {
-    public IndexPageAlias(IndexPageAliasUrl url) {
+    public IndexPageAlias(final IndexPageAliasUrl url) {
         super(url, new IndexPageUrl());
     }
 }

@@ -38,8 +38,8 @@ public class ChangePrepaidAmountAction extends LoggedElveosAction {
     @MaxConstraint(max = 100000, message = @tr("We cannot accept such a generous offer."))
     @MinConstraint(min = 0, message = @tr("You must specify a positive value."))
     @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
-    private BigDecimal preload;
-    
+    private final BigDecimal preload;
+
     @Optional("false")
     @RequestParam
     private Boolean silent;
@@ -49,7 +49,7 @@ public class ChangePrepaidAmountAction extends LoggedElveosAction {
         this.url = url;
         this.process = url.getProcess();
         this.preload = url.getPreload();
-        if(url.getSilent() == null) {
+        if (url.getSilent() == null) {
             this.silent = false;
         } else {
             this.silent = url.getSilent();
@@ -79,8 +79,8 @@ public class ChangePrepaidAmountAction extends LoggedElveosAction {
                 return new CheckContributePageUrl((ContributionProcess) process);
             }
 
-        } catch (IllegalWriteException e) {
-            if(!silent) {
+        } catch (final IllegalWriteException e) {
+            if (!silent) {
                 Context.getSession().notifyWarning(Context.tr("The preload amount is locked during the payment process."));
             }
         }
@@ -96,20 +96,20 @@ public class ChangePrepaidAmountAction extends LoggedElveosAction {
 
     @Override
     protected Url doProcessErrors() {
-        
-        if(silent) {
+
+        if (silent) {
             session.flushNotifications();
         }
-        
+
         if (process == null) {
             return new PageNotFoundUrl();
         }
         if (process instanceof AccountChargingProcess) {
-            return new AccountChargingPageUrl((AccountChargingProcess)process);
+            return new AccountChargingPageUrl((AccountChargingProcess) process);
         } else if (process instanceof ContributionProcess) {
             return new CheckContributePageUrl((ContributionProcess) process);
         }
-        
+
         return new PageNotFoundUrl();
     }
 

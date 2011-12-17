@@ -15,12 +15,15 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -39,12 +42,18 @@ public final class CreateReleaseAction extends UserContentAction {
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a description"))
-    @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
+    @MinConstraint(min = 1, message = @tr("The description must have at least %constraint% chars."))
+    @MaxConstraint(max = 100000, message = @tr("The description cannot have more than %constraint% characters."))
+    @FormField(label = @tr("Comment your release"), isShort = false)
+    @FormComment(@tr("Enter a short comment on your release. The description must have at least 10 chars."))
     private final String description;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a version."))
     @MinConstraint(min = 1, message = @tr("The version should be something like ''1.2.3''."))
+    @MaxConstraint(max = 25, message = @tr("The version cannot have more than %constraint% characters."))
+    @FormField(label = @tr("Version"))
+    @FormComment(@tr("Enter your release version. For example ''1.2.3''."))
     private final String version;
 
     @RequestParam

@@ -11,8 +11,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
@@ -21,6 +20,7 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -62,33 +62,22 @@ public class WithdrawMoneyPage extends LoggedElveosPage {
         master.add(new HtmlTitle(1).addText(tr("Withdraw money")));
 
         final WithdrawMoneyActionUrl targetUrl = new WithdrawMoneyActionUrl(getSession().getShortKey(), actor);
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
         master.add(form);
+        final FormBuilder ftool = new FormBuilder(WithdrawMoneyAction.class, targetUrl);
 
         // Amount
-        final FieldData moneyData = targetUrl.getAmountParameter().pickFieldData();
-        final HtmlMoneyField moneyInput = new HtmlMoneyField(moneyData.getName(), tr("Amount to withdraw: "));
-        if (moneyData.getSuggestedValue() != null && !moneyData.getSuggestedValue().isEmpty()) {
-            moneyInput.setDefaultValue(moneyData.getSuggestedValue());
-        } else {
-            try {
-                final BigDecimal available = actor.getInternalAccount().getAmount();
-                moneyInput.setDefaultValue("" + available.setScale(0).intValue());
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Cannot account amount.");
-            }
+        final HtmlMoneyField money = new HtmlMoneyField(targetUrl.getAmountParameter().getName());
+        ftool.add(form, money);
+        try {
+            final BigDecimal available = actor.getInternalAccount().getAmount();
+            ftool.setDefaultValueIfNeeded(money, String.valueOf(available.setScale(0).intValue()));
+        } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Cannot account amount.");
         }
-        form.add(moneyInput);
 
-        // IBAN
-        final FieldData IBANData = targetUrl.getIBANParameter().pickFieldData();
-        final HtmlTextField ibanInput = new HtmlTextField(IBANData.getName(), tr("IBAN: "));
-        ibanInput.setDefaultStringValue(IBANData.getSuggestedValue());
-        ibanInput.turnOffAutoComplete();
-        form.add(ibanInput);
-
-        form.add(new HtmlSubmit(tr("Submit")));
-
+        ftool.add(form, new HtmlTextField(targetUrl.getIBANParameter().getName()));
+        form.addSubmit(new HtmlSubmit(tr("Submit")));
         return master;
     }
 

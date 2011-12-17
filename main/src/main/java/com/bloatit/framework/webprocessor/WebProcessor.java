@@ -52,17 +52,17 @@ public abstract class WebProcessor implements XcgiProcessor {
             Context.reInitializeContext(httpHeader, session);
 
             try {
-                String pageCode = httpHeader.getPageName();
-                final String requestLanguage = httpHeader.getLanguage();
-                
-                if(requestLanguage.equalsIgnoreCase("default")){
-                    // Redirect to same page but with language code set 
-                    String redirectUrl = createLowerCaseUrl(Context.getLocalizator().getLanguageCode(), httpHeader.getQueryString(), pageCode);
-                    response.writeRedirect(StatusCode.REDIRECTION_307_TEMPORARY_REDIRECT,  redirectUrl);
+                final String pageCode = httpHeader.getPageName();
+                final String requestLanguage = httpHeader.getPageLanguage();
+
+                if (requestLanguage.equalsIgnoreCase(HttpHeader.DEFAULT_LANG)) {
+                    // Redirect to same page but with language code set
+                    final String redirectUrl = createLowerCaseUrl(Context.getLocalizator().getLanguageCode(), httpHeader.getQueryString(), pageCode);
+                    response.writeRedirect(StatusCode.REDIRECTION_307_TEMPORARY_REDIRECT, redirectUrl);
                 } else if (pageCode.matches(".*[A-Z].*")) {
                     // Redirect to same page but in lower case
                     response.writeRedirect(StatusCode.REDIRECTION_300_MULTIPLE_CHOICES,
-                                           createLowerCaseUrl(httpHeader.getLanguage(), httpHeader.getQueryString(), pageCode));
+                                           createLowerCaseUrl(httpHeader.getPageLanguage(), httpHeader.getQueryString(), pageCode));
                 } else {
                     // Normal case !
                     ModelAccessor.authenticate(key);
@@ -76,7 +76,7 @@ public abstract class WebProcessor implements XcgiProcessor {
                     linkable.writeToHttp(response, this);
                 } catch (final RedirectException e1) {
                     throw new ExternalErrorException("Cannot create error page after and error in right management.", e1);
-                } finally { 
+                } finally {
                     try {
                         ModelAccessor.rollback();
                     } catch (final RuntimeException e1) {

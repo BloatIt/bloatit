@@ -27,6 +27,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -42,24 +44,20 @@ public class ModifyPasswordAction extends LoggedElveosAction {
     @Optional
     @MinConstraint(min = 7, message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(max = 255, message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @FormField(label = @tr("New password"), autocomplete = false)
+    @FormComment(@tr("7 characters minimum. Make it strong!"))
     private final String password;
 
     @RequestParam(role = Role.POST)
     @Optional
+    @FormField(label = @tr("Your current password"), autocomplete = false)
     private final String currentPassword;
-
-    @RequestParam(role = Role.POST)
-    @Optional
-    @MinConstraint(min = 7, message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 255, message = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
-    private final String passwordCheck;
 
     private final ModifyPasswordActionUrl url;
 
     public ModifyPasswordAction(final ModifyPasswordActionUrl url) {
         super(url);
         this.password = url.getPassword();
-        this.passwordCheck = url.getPasswordCheck();
         this.currentPassword = url.getCurrentPassword();
         this.url = url;
     }
@@ -82,12 +80,6 @@ public class ModifyPasswordAction extends LoggedElveosAction {
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
-        // Password
-        if (!((isEmpty(password) && isEmpty(passwordCheck)) || (password != null && password.equals(passwordCheck)))) {
-            session.notifyError(Context.tr("New password must be equal to password verification."));
-            url.getPasswordCheckParameter().addErrorMessage(Context.tr("New password must be equal to password verification."));
-            return doProcessErrors();
-        }
         if (!isEmpty(password)) {
             if (isEmpty(currentPassword)) {
                 session.notifyError(Context.tr("You must input your current password to change password."));
@@ -115,11 +107,12 @@ public class ModifyPasswordAction extends LoggedElveosAction {
     @Override
     protected void transmitParameters() {
         if (url.getCurrentPasswordParameter().getValue() != null) {
-            url.getCurrentPasswordParameter().setValue("xxxxxxxx");
+            url.getCurrentPasswordParameter().setValue("", true);
         }
         session.addParameter(url.getCurrentPasswordParameter());
-
+        if (url.getPasswordParameter().getValue() != null) {
+            url.getPasswordParameter().setValue("", true);
+        }
         session.addParameter(url.getPasswordParameter());
-        session.addParameter(url.getPasswordCheckParameter());
     }
 }

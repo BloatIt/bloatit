@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.URLCodec;
+import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.parameters.HttpParameter;
@@ -90,6 +91,12 @@ public class UrlDump extends Url {
     @Override
     public Protocol getProtocol() {
         return protocol;
+    }
+
+    @Override
+    public UrlParameter<?, ?> getParameter(String name) {
+        // FIXME : I should return the right parameter here
+        throw new NotImplementedException();
     }
 
 }

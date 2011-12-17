@@ -109,6 +109,10 @@ public class DaoOffer extends DaoKudosable {
     @Basic(optional = false)
     private String license;
 
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "offer", cascade = { javax.persistence.CascadeType.ALL })
+    private List<DaoEvent> event;
+
     // ======================================================================
     // Construction
     // ======================================================================
@@ -231,7 +235,7 @@ public class DaoOffer extends DaoKudosable {
         return this.isDraft;
     }
 
-    public final String getLicense() {
+    public String getLicense() {
         return license;
     }
 
@@ -247,7 +251,11 @@ public class DaoOffer extends DaoKudosable {
      *         left.
      */
     public DaoMilestone getCurrentMilestone() {
-        return this.milestones.get(this.currentMilestone);
+        if (this.milestones.size() > this.currentMilestone) {
+            return this.milestones.get(this.currentMilestone);
+        } else {
+            return getLastMilestone();
+        }
     }
 
     /**

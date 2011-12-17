@@ -99,33 +99,28 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             return BigDecimal.ZERO;
         }
 
-        try {
-            final Iterator<Contribution> it = contributions.iterator();
-            final List<BigDecimal> list = new ArrayList<BigDecimal>();
+        final Iterator<Contribution> it = contributions.iterator();
+        final List<BigDecimal> list = new ArrayList<BigDecimal>();
 
-            while (it.hasNext()) {
-                list.add(it.next().getAmount());
-            }
-            Collections.sort(list);
-
-            final int middle = list.size() / 2;
-            if (list.size() % 2 == 1) {
-                return list.get(middle);
-            }
-            return list.get(middle - 1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
-
-        } catch (final UnauthorizedOperationException e) {
-            return new BigDecimal(-1);
+        while (it.hasNext()) {
+            list.add(it.next().getAmount());
         }
+        Collections.sort(list);
+
+        final int middle = list.size() / 2;
+        if (list.size() % 2 == 1) {
+            return list.get(middle);
+        }
+        return list.get(middle - 1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
     }
 
     public static class ContributionTableModel extends HtmlTableModel {
         private Iterator<Contribution> it;
         private Contribution contribution;
         private final PageIterable<Contribution> contributions;
-        private Member loggedMember;
+        private final Member loggedMember;
 
-        private ContributionTableModel(final PageIterable<Contribution> contributions, Member loggedMember) {
+        private ContributionTableModel(final PageIterable<Contribution> contributions, final Member loggedMember) {
             this.contributions = contributions;
             this.loggedMember = loggedMember;
         }
@@ -185,16 +180,16 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             try {
                 switch (column) {
                     case 0:
-                            val.add(new HtmlAuthorLink(contribution));
+                        val.add(new HtmlAuthorLink(contribution));
                         break;
                     case 1:
 
                         if (contribution.getAuthor().equals(loggedMember) && contribution.isCancelable()) {
-                            HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink();
-                            HtmlMixedText mixed = new HtmlMixedText(Context.tr("(<0::Cancel contribution>) {0}",
-                                                                               Context.getLocalizator()
-                                                                                      .getCurrency(contribution.getAmount())
-                                                                                      .getSimpleEuroString()), cancelLink);
+                            final HtmlLink cancelLink = new CancelContributionPageUrl(contribution).getHtmlLink();
+                            final HtmlMixedText mixed = new HtmlMixedText(Context.tr("(<0::Cancel contribution>) {0}",
+                                                                                     Context.getLocalizator()
+                                                                                            .getCurrency(contribution.getAmount())
+                                                                                            .getSimpleEuroString()), cancelLink);
                             val.add(mixed);
                         } else {
                             val.addText(Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString());

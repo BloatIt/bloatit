@@ -55,7 +55,7 @@ public class StandardQuotation {
 
         taxesFees = new QuotationPercentEntry(fees, new BigDecimal("0.163879599"));
 
-        QuotationEntry taxesAndBank = new QuotationTotalEntry();
+        final QuotationEntry taxesAndBank = new QuotationTotalEntry();
         taxesAndBank.addEntry(taxesFees);
         taxesAndBank.addEntry(bankFees);
 

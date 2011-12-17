@@ -56,12 +56,12 @@ public final class FeatureTabPane extends HtmlPageComponent {
     @RequestParam(role = Role.PAGENAME)
     @NonOptional(@tr("The tab is not optional."))
     private FeatureTabKey activeTabKey;
- 
+
     // Useful for Url generation Do not delete
     @SuppressWarnings("unused")
     private FeatureContributorsComponent contribution;
 
-
+    @SuppressWarnings("unused")
     private final Feature feature;
 
     protected FeatureTabPane(final FeatureTabPaneUrlComponent url, final Feature feature) {
@@ -124,21 +124,21 @@ public final class FeatureTabPane extends HtmlPageComponent {
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {
             final Locale defaultLocale = new Locale(Context.getLocalizator().getLocale().getLanguage());
-            
-            Description featureDescription = feature.getDescription();
+
+            final Description featureDescription = feature.getDescription();
             final Translation translatedDescription = featureDescription.getTranslationOrDefault(Language.fromLocale(defaultLocale));
-            
-            if(AuthToken.isAuthenticated()) {
-            
+
+            if (AuthToken.isAuthenticated()) {
+
                 final HtmlDiv languageButton = new HtmlDiv("language_button");
                 {
-                    TranslatePageUrl translatePageUrl = new TranslatePageUrl(featureDescription, defaultLocale, DescriptionType.FEATURE);
-                    HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
+                    final TranslatePageUrl translatePageUrl = new TranslatePageUrl(featureDescription, defaultLocale, DescriptionType.FEATURE);
+                    final HtmlLink link = translatePageUrl.getHtmlLink(Context.tr("translate"));
                     languageButton.add(link);
                 }
                 descriptionBlock.add(languageButton);
             }
-            
+
             final HtmlDiv descriptionText = new HtmlDiv("description_text");
             {
                 final HtmlElement description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
@@ -161,7 +161,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
             final HtmlDiv descriptionFooter = new HtmlDiv("description_footer");
             {
                 if (feature.canModify()) {
-                    HtmlDiv modifyFeature = new HtmlDiv("float_right");
+                    final HtmlDiv modifyFeature = new HtmlDiv("float_right");
                     modifyFeature.add(new ModifyFeaturePageUrl(feature).getHtmlLink(Context.tr("Modify the feature")));
                     descriptionFooter.add(modifyFeature);
                 }

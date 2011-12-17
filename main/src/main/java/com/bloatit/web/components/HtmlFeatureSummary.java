@@ -57,7 +57,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     // "feature_summary"
-    public HtmlFeatureSummary(final Feature feature, final Compacity compacity, FeaturesTools.FeatureContext context) {
+    public HtmlFeatureSummary(final Feature feature, final Compacity compacity, final FeaturesTools.FeatureContext context) {
         super(compacity.getCssClass());
         this.feature = feature;
         if (feature == null) {
@@ -92,7 +92,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      * @param userToken
      * @throws UnauthorizedOperationException
      */
-    private void generateCompactStructure(FeaturesTools.FeatureContext context) throws UnauthorizedOperationException {
+    private void generateCompactStructure(final FeaturesTools.FeatureContext context) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             featureSummaryTop.add(generateTitle());
@@ -111,7 +111,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
             final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
             {
                 final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature, context);
-                
+
                 featureummaryProgress.add(FeaturesTools.generateDetails(feature, false));
                 featureSummaryCenter.add(featureummaryProgress);
             }
@@ -123,11 +123,11 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     /**
-     * @param context 
+     * @param context
      * @param me
      * @throws UnauthorizedOperationException
      */
-    private void generateNormalStructure(FeatureContext context) throws UnauthorizedOperationException {
+    private void generateNormalStructure(final FeatureContext context) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
@@ -152,9 +152,9 @@ public final class HtmlFeatureSummary extends HtmlDiv {
             final HtmlDiv featureSummaryBottomCenter = new HtmlDiv("feature_summary_bottom_center");
             {
                 featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature, context));
-                
+
                 featureSummaryBottomCenter.add(FeaturesTools.generateDetails(feature, false));
-                
+
                 featureSummaryBottomCenter.add(FeaturesTools.generateState(feature));
             }
             featureSummaryBottom.add(featureSummaryBottomCenter);
@@ -189,14 +189,15 @@ public final class HtmlFeatureSummary extends HtmlDiv {
 
         if (feature.getSoftware() != null) {
             final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
-            HtmlLink softwareLink = new SoftwarePageUrl(feature.getSoftware()).getHtmlLink(feature.getSoftware().getName());
-//            softwareSpan.addText(feature.getSoftware().getName());
+            final HtmlLink softwareLink = new SoftwarePageUrl(feature.getSoftware()).getHtmlLink(feature.getSoftware().getName());
+            softwareLink.setCssClass("software-link");
+            // softwareSpan.addText(feature.getSoftware().getName());
             softwareSpan.add(softwareLink);
             title.add(softwareSpan);
             title.addText(" – ");
         }
 
-        title.add(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(translatedDescription.getTitle()));
+        title.add(new HtmlSpan("feature-software-title-name").add(new FeaturePageUrl(feature, FeatureTabKey.description).getHtmlLink(translatedDescription.getTitle())));
 
         return title;
     }

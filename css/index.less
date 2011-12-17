@@ -1,5 +1,8 @@
 
-.global_description {
+.global_description, .global_personal_description {
+
+    position: relative;
+        
     .padding_box;
     text-align:center;
     margin-bottom: 20px;
@@ -13,50 +16,132 @@
     h1 {
         font-size: 2em;
     }
+    
+    .three-column {
+    
+        h1 {
+            font-size: 0.9em;
+            margin-left: 00px;
+            margin-bottom: 0px;
+            margin-top: -5px;
+        }
+    
+        ul {
+            margin: 0px;
+        }
+    
+        li {
+            margin: 0px;
+            margin-bottom: 3px;
+        }
+    
+        text-align: left;
+        width: 100%;
+        .left-column {
+            display: table-cell;
+            width: 50%;
+            
+            .index-underline {
+                margin-bottom: 10px;
+                
+            }
+            
+            padding-right: 10px;
+        }
+        
+        /*.center-column {
+            display: table-cell;
+            width: 30%;
+        }*/
+        
+        .right-column {
+            display: table-cell;
+            width: 50%;
+            
+            
+        }
+        
+        .feature-p {
+            margin: 0px;
+            margin-bottom: 3px;
+            font-size: 0.8em;
+        }
+        
+        .index_element {
+            margin-bottom: 0px;
+        }
+        
+        .item_date {
+            padding-left: 10px;
+        }
+        
+        .feed_icons {
+        
+            margin-top: -5px;
+        }
+        
+    
+    }
+    
+    .item_content {
+        font-size: 0.8em;
+    
+        .markdown_block {
+            display: inline;
+            
+            p {
+                margin: 0px;
+                display: inline;
+            }
+        }
+    }
+    
+    .public_index_link {
+        position: absolute;
+        font-size: 0.7em;
+        right: 5px;
+        bottom: 2px;
+    }
+    
+    .index-underline {
+        height: 1px;
+        width: 90%;
+        @activity_border_color: rgb(184,184,184);
+        .vertical-gradient-1-stop(@activity_border_color, @activity_border_color,  @light_background_color);
+    }
+    
+}
+
+.global_personal_description {
+    padding-bottom: 0px;
+    .elveos_summary {
+        font-size: 1.0em;
+        margin-bottom: -2px;
+    }
 }
 
 .feature_list{
     margin-top: 10px;
 }
 
-/*
-.feature_list_left_case, .feature_list_right_case {
+.feature_list_row {
+clear: both;
+    margin-bottom: 20px;
+}
 
-    margin: auto;
-    
-    .compact_feature_summary {
-        
-    }
+.feature_list_left_case, .feature_list_right_case {
+    width: 49%;
 }
 
 .feature_list_left_case {
-    //width: 522px;
-    .index_element {
-    margin-right: 20px;    
-    }
-}*/
-
-
-.feature_list_row {
-    .display-box;
-    .box-orient(horizontal);
-    width:100%;
-    -moz-box-lines: multiple;
-    box-lines: multiple;
-    //-webkit-box-lines: multiple;
-    margin-bottom: 20px;
-    min-width: 800px;
+    float: left;
 }
 
-.feature_list_left_case, .feature_list_right_case {
-    .box-flex;
-    .display-box;
-    .box-pack(center);
+.feature_list_right_case {
+    float: right;
 }
-
 
 .index_element {
-    width: 400px;
     font-size: 0.8em;
     margin-bottom: 20px;
     margin-left: 10px;
@@ -88,7 +173,6 @@
             margin-bottom: 15px;
             font-size: 1.3em;
             font-weight: normal;
-            //font-style: italic;
             height: 35px;
             a {
             font-size: 1.0em;

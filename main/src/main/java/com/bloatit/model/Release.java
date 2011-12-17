@@ -18,10 +18,7 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoRelease;
-import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.visitor.ModelClassVisitor;
 
@@ -68,16 +65,6 @@ public class Release extends UserContent<DaoRelease> {
     }
 
     // no right management: this is public data
-    public Comment getLastComment() {
-        return Comment.create(getDao().getLastComment());
-    }
-
-    // no right management: this is public data
-    public PageIterable<Comment> getComments() {
-        return new ListBinder<Comment, DaoComment>(getDao().getComments());
-    }
-
-    // no right management: this is public data
     public Feature getFeature() {
         return getMilestone().getOffer().getFeature();
     }
@@ -88,12 +75,8 @@ public class Release extends UserContent<DaoRelease> {
     }
 
     @Override
-    protected void delete(boolean delOrder) throws UnauthorizedOperationException {
+    protected void delete(final boolean delOrder) throws UnauthorizedOperationException {
         super.delete(delOrder);
-
-        for (final Comment comment : getComments()) {
-            comment.delete(delOrder);
-        }
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

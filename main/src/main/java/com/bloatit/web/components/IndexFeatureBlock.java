@@ -19,7 +19,6 @@ package com.bloatit.web.components;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
@@ -29,7 +28,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Image;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -52,32 +50,27 @@ public class IndexFeatureBlock extends HtmlDiv {
         floatRight = new PlaceHolderElement();
         indexBodyElement.add(floatRight);
 
-        try {
+        setFloatRight(new SoftwaresTools.Logo(highlightFeature.getFeature().getSoftware()));
 
-            setFloatRight(new SoftwaresTools.Logo(highlightFeature.getFeature().getSoftware()));
+        indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature(), FeatureTabKey.description).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
+                                           3));
 
-            indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature(), FeatureTabKey.description).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
-                                               3));
+        indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(highlightFeature.getFeature().getSoftware())));
 
-            indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(highlightFeature.getFeature().getSoftware())));
+        // Generate progess bar and text
+        indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), FeaturesTools.FeatureContext.INDEX_PAGE));
 
-            // Generate progess bar and text
-            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), FeaturesTools.FeatureContext.INDEX_PAGE));
+        indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 
-            indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
-
-            if (highlightFeature.getFeature().getFeatureState() == FeatureState.FINISHED) {
-                final HtmlImage sucessImage = new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(Context.getLocalizator()
-                                                                                                                        .getLanguageCode())),
-                                                            tr("success"));
-                final HtmlDiv sucessImageBlock = new HtmlDiv("successImageBlock");
-                sucessImageBlock.add(sucessImage);
-                indexBodyElement.add(sucessImageBlock);
-            }
-
-        } catch (final UnauthorizedOperationException e) {
-            throw new ShallNotPassException(e);
+        if (highlightFeature.getFeature().getFeatureState() == FeatureState.FINISHED) {
+            final HtmlImage sucessImage = new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(Context.getLocalizator()
+                                                                                                                    .getLanguageCode())),
+                                                        tr("success"));
+            final HtmlDiv sucessImageBlock = new HtmlDiv("successImageBlock");
+            sucessImageBlock.add(sucessImage);
+            indexBodyElement.add(sucessImageBlock);
         }
+
     }
 
     private final HtmlBranch setFloatRight(final HtmlElement element) {

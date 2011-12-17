@@ -16,28 +16,27 @@
 //
 package com.bloatit.web.linkable.team;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.data.DaoTeam;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
-import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.web.components.HtmlElveosForm;
+import com.bloatit.web.components.SidebarMarkdownHelp;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -61,88 +60,51 @@ public class ModifyTeamPage extends LoggedElveosPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final ModifyTeamActionUrl targetUrl = new ModifyTeamActionUrl(getSession().getShortKey(), team);
-
         final HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Change {0} settings", team.getDisplayName()));
         layout.addLeft(title);
 
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
-        layout.addLeft(form);
-        form.enableFileUpload();
+        final ModifyTeamActionUrl target = new ModifyTeamActionUrl(getSession().getShortKey(), team);
+        final HtmlElveosForm form = new HtmlElveosForm(target.urlString());
+        final FormBuilder ftool = new FormBuilder(ModifyTeamAction.class, target);
 
-        // ///////
-        // Display name
-        final FieldData displayNameFieldData = targetUrl.getDisplayNameParameter().pickFieldData();
-        final HtmlTextField displayNameInput = new HtmlTextField(displayNameFieldData.getName(), tr("Display name"));
-        displayNameInput.addErrorMessages(displayNameFieldData.getErrorMessages());
-        if (displayNameFieldData.getSuggestedValue() != null && !displayNameFieldData.getSuggestedValue().isEmpty()) {
-            displayNameInput.setDefaultValue(displayNameFieldData.getSuggestedValue());
-        } else {
-            displayNameInput.setDefaultValue(team.getDisplayName());
-        }
-        form.add(displayNameInput);
-
-        // ///////
-        // Contact
-        final FieldData contactFieldData = targetUrl.getContactParameter().pickFieldData();
-        final MarkdownEditor contactInput = new MarkdownEditor(contactFieldData.getName(), tr("Contact information"), 10, 80);
-        if (contactFieldData.getSuggestedValue() != null && !contactFieldData.getSuggestedValue().isEmpty()) {
-            contactInput.setDefaultValue(contactFieldData.getSuggestedValue());
-        } else {
-            contactInput.setDefaultValue(team.getPublicContact());
-        }
-        contactInput.addErrorMessages(contactFieldData.getErrorMessages());
-        form.add(contactInput);
-        form.add(new MarkdownPreviewer(contactInput));
-
-        // ///////
-        // Description
-        final FieldData descriptionFieldData = targetUrl.getDescriptionParameter().pickFieldData();
-        final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionFieldData.getName(), tr("Team description"), 5, 80);
-        if (descriptionFieldData.getSuggestedValue() != null && !descriptionFieldData.getSuggestedValue().isEmpty()) {
-            descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        } else {
-            descriptionInput.setDefaultValue(team.getDescription());
-        }
-        descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
-        form.add(descriptionInput);
-        form.add(new MarkdownPreviewer(descriptionInput));
-
-        // ///////
-        // Avatar
-        final FieldData avatarField = targetUrl.getAvatarParameter().pickFieldData();
-        final HtmlFileInput avatarInput = new HtmlFileInput(avatarField.getName(), Context.tr("Avatar image file"));
-        avatarInput.setComment(tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"));
-        form.add(avatarInput);
-
-        // ///////
-        // Delete avatar
-        final FieldData deleteAvatarFieldData = targetUrl.getDeleteAvatarParameter().pickFieldData();
-        final HtmlCheckbox deleteAvatar = new HtmlCheckbox(deleteAvatarFieldData.getName(), Context.tr("Delete avatar"), LabelPosition.BEFORE);
-        if (loggedUser.getAvatar() == null && loggedUser.getAvatar().isNull()) {
-            deleteAvatar.addAttribute("disabled", "disabled");
-        }
-        deleteAvatar.setComment(Context.tr("Checking this box will delete team's avatar."));
-        form.add(deleteAvatar);
+        // name
+        final HtmlTextField name = new HtmlTextField(target.getDisplayNameParameter().getName());
+        ftool.add(form, name);
+        ftool.setDefaultValueIfNeeded(name, team.getLogin());
 
         // PUBLIC / PRIVATE
-        final FieldData rightData = targetUrl.getRightParameter().pickFieldData();
-        final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Team membership: "));
-        rightInput.setDefaultValue(rightData.getSuggestedValue());
-        rightInput.addErrorMessages(rightData.getErrorMessages());
+        final HtmlDropDown rightInput = new HtmlDropDown(target.getRightParameter().getName());
         rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Open to all"));
         rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("By invitation"));
-        rightInput.setComment(Context.tr("\"Open to all\" teams can be joined by anybody without an invitation."));
-        if (rightData.getSuggestedValue() != null) {
-            rightInput.setDefaultStringValue(rightData.getSuggestedValue());
-        }else{
-            rightInput.setDefaultValue(team.getJoinRight().toString());
-        }
-        form.add(rightInput);
+        ftool.setDefaultValueIfNeeded(rightInput, team.getJoinRight().toString());
+        ftool.add(form, rightInput);
 
-        final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
-        form.add(submit);
+        // Contact
+        final HtmlTextArea contact = new HtmlTextArea(target.getContactParameter().getName(), 5, 80);
+        ftool.add(form, contact);
+        ftool.setDefaultValueIfNeeded(contact, team.getPublicContact());
+
+        // Description
+        final HtmlTextArea description = new HtmlTextArea(target.getDescriptionParameter().getName(), 5, 80);
+        ftool.add(form, description);
+        ftool.setDefaultValueIfNeeded(description, team.getDescription());
+
+        // Avatar
+        ftool.add(form, new HtmlFileInput(target.getAvatarParameter().getName()));
+        final HtmlCheckbox deleteAvatar = new HtmlCheckbox(target.getDeleteAvatarParameter().getName(), LabelPosition.BEFORE);
+        ftool.add(form, deleteAvatar);
+        if (team.getAvatar() == null || team.getAvatar().isNull()) {
+            deleteAvatar.addAttribute("disabled", "disabled");
+        }
+
+        form.addSubmit(new HtmlSubmit(Context.tr("Submit")));
+
+        layout.addLeft(form);
+        layout.addRight(new SideBarDocumentationBlock("create_team"));
+        layout.addRight(new SideBarDocumentationBlock("cc_by"));
+        layout.addRight(new SideBarDocumentationBlock("describe_team"));
+        layout.addRight(new SidebarMarkdownHelp());
 
         return layout;
     }

@@ -34,7 +34,6 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.Language;
-import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
@@ -68,6 +67,8 @@ public class BloatitExampleDB { // NO_UCD
     private Software vlc;
     private Software perroquet;
     private Software mageia;
+    private final Team b219;
+    private final Team other;
 
     public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException, UniqueNameExpectedException {
         System.setProperty("log4J.path", ConfigurationManager.SHARE_DIR + "/log");
@@ -85,6 +86,13 @@ public class BloatitExampleDB { // NO_UCD
         cerbere = createMember("cerbere", "Cerbère", Locale.FRANCE);
         hydre = createMember("hydre", "Hydre", Locale.US);
         elephantman = createMember("elephantman", "ElephantMan", Locale.CANADA);
+        AuthToken.authenticate(yoann);
+        yoann.getContact().setName("Babar");
+        yoann.getContact().setStreet("Palais royal");
+        yoann.getContact().setCity("Celesteville");
+        yoann.getContact().setPostalCode("NA");
+        yoann.getContact().setCountry("CA");
+        yoann.getContact().setIsCompany(false);
         celeste = createMember("celeste", "Céleste", Locale.UK);
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
@@ -93,10 +101,29 @@ public class BloatitExampleDB { // NO_UCD
         fred.getContact().setStreet("Le superbe appartement à gauche");
         AuthToken.authenticate(thomas);
         thomas.getContact().setName("Thomas Guyard");
-        thomas.getContact().setStreet("Le superbe appartement à gauche");
+        thomas.getContact().setStreet("Rue Michel Ange");
+        thomas.getContact().setCity("Antony");
+        thomas.getContact().setPostalCode("92160");
+        thomas.getContact().setCountry("FR");
         AuthToken.authenticate(yoann);
         yoann.getContact().setName("Yoann Plénet");
         yoann.getContact().setStreet("Le superbe appartement à gauche");
+        yoann.getContact().setCity("Antony");
+        yoann.getContact().setPostalCode("92160");
+        yoann.getContact().setCountry("DE");
+        yoann.getContact().setIsCompany(true);
+        AuthToken.authenticate(cerbere);
+        cerbere.getContact().setName("Cerbère Le Chien");
+        cerbere.getContact().setStreet("666, quai du Styx");
+        cerbere.getContact().setCity("Tartare");
+        cerbere.getContact().setPostalCode("42666");
+        cerbere.getContact().setCountry("ES");
+        cerbere.getContact().setIsCompany(true);
+        cerbere.getContact().setLegalId("Hades & Fils");
+        cerbere.getContact().setInvoiceIdNumber(new BigDecimal(5));
+        cerbere.getContact().setInvoiceIdTemplate("HADES-{YEAR|2}{MONTH}-{ID|6}");
+        cerbere.getContact().setTaxIdentification("RSC123456");
+        cerbere.getContact().setTaxRate(new BigDecimal("0.196"));
 
         // Add avatar
         AuthToken.authenticate(chogall);
@@ -144,11 +171,12 @@ public class BloatitExampleDB { // NO_UCD
         withdrawMoney(thomas, 5000, State.COMPLETE);
 
         // Add teams
-        final Team other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
+        other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
         AuthToken.authenticate(yoann);
         other.setAvatar(getImage(yoann, "teams/other.png"));
+        giveMoney(other, 2000);
 
-        final Team b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
+        b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
         AuthToken.authenticate(fred);
         b219.setAvatarUnprotected(getImage(fred, "teams/b219.png"));
 
@@ -170,6 +198,7 @@ public class BloatitExampleDB { // NO_UCD
         final Feature libreOfficeFeatureDefaultTemplate = generateLibreOfficeFeatureDefaultTemplate();
         final Feature perroquetFeatureArabicSupport = generatePerroquetFeatureArabicSupport();
         final Feature mageiaFeatureRemoveEmacs = generateMageiaFeatureRemoveEmacs();
+        generateMageiaFeatureRemoveEmacs2();
 
         // Highlight features
         new HighlightFeature(twoSubtitlesInVlcFeature, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
@@ -183,16 +212,21 @@ public class BloatitExampleDB { // NO_UCD
 
     }
 
-    public void generateMageiaSoftware() throws UniqueNameExpectedException {
+    public void generateMageiaSoftware() throws UniqueNameExpectedException, UnauthorizedOperationException {
         // Mageia software
 
         final String mageiaTitle = "Mageia est un fork de Mandriva Linux, reposant sur une association de type 1901 composée de contributeurs reconnus et élus pour leur travail. ";
         final String mageiaDescription = "http://mageia.org/fr/";
         mageia = new Software("Mageia", thomas, Locale.FRANCE, mageiaTitle + mageiaDescription);
         mageia.setImage(getImage(yoann, "mageia.png"));
+
+        AuthToken.authenticate(thomas);
+        thomas.followOrGetSoftware(mageia).setMail(true);
+        AuthToken.authenticate(fred);
+        fred.followOrGetSoftware(mageia).setMail(true);
     }
 
-    public void generateLibreOfficeSoftware() throws UniqueNameExpectedException {
+    public void generateLibreOfficeSoftware() throws UniqueNameExpectedException, UnauthorizedOperationException {
         // LibreOffice software
 
         final String libreOfficeTitle = "LibreOffice (souvent abrégé en LibO) est une suite bureautique, dérivée directement de OpenOffice.org, créée par The Document Foundation. Cet embranchement a eu lieu le 28 septembre 2010, dans la continuité du rachat de Sun Microsystems par Oracle. ";
@@ -200,9 +234,14 @@ public class BloatitExampleDB { // NO_UCD
                 + "\n" + "http://www.libreoffice.org/";
         libreOffice = new Software("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle + libreOfficeDescription);
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
+
+        AuthToken.authenticate(yoann);
+        yoann.followOrGetSoftware(libreOffice).setMail(true);
+        AuthToken.authenticate(fred);
+        fred.followOrGetSoftware(libreOffice).setMail(true);
     }
 
-    public void generatePerroquetSoftware() throws UniqueNameExpectedException {
+    public void generatePerroquetSoftware() throws UniqueNameExpectedException, UnauthorizedOperationException {
         // Perroquet software
 
         final String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères ";
@@ -210,6 +249,9 @@ public class BloatitExampleDB { // NO_UCD
                 + "http://perroquet.b219.org/";
         perroquet = new Software("Perroquet", thomas, Locale.FRANCE, perroquetTitle + perroquetDescription);
         perroquet.setImage(getImage(fred, "perroquet.png"));
+
+        AuthToken.authenticate(fred);
+        fred.followOrGetSoftware(perroquet).setMail(true);
     }
 
     public void generateVlcSoftware() throws UniqueNameExpectedException {
@@ -240,12 +282,16 @@ public class BloatitExampleDB { // NO_UCD
 
         final String twoSubtitlesInVlcFeatureTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
 
+        AuthToken.authenticate(chogall);
         final Feature twoSubtitlesInVlcFeature = FeatureFactory.createFeature(chogall,
                                                                               null,
                                                                               Language.fromLocale(chogall.getLocale()),
                                                                               twoSubtitlesInVlcFeatureTitle,
                                                                               twoSubtitlesInVlcFeatureDescription,
                                                                               vlc);
+
+        AuthToken.authenticate(thomas);
+        thomas.followOrGetFeature(twoSubtitlesInVlcFeature).setMail(true);
 
         AuthToken.authenticate(cerbere);
         final Comment comment1 = twoSubtitlesInVlcFeature.addComment("Super idée !\n"
@@ -323,6 +369,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String addPerroquetInMageiaFeaturetitle = "Make a packet for Mageia for the Perroquet software";
 
+        AuthToken.authenticate(fred);
         final Feature addPerroquetInMageiaFeature = FeatureFactory.createFeature(fred,
                                                                                  null,
                                                                                  Language.fromLocale(fred.getLocale()),
@@ -332,12 +379,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String hydrePerroquetOfferDescription = "Je le fais et j'ajoute le paquet pour la première release.";
         AuthToken.authenticate(hydre);
-        addPerroquetInMageiaFeature.addOffer(new BigDecimal(200),
-                                             hydrePerroquetOfferDescription,
-                                             "GNU GPL V3",
-                                             Language.FR,
-                                             DateUtils.tomorrow(),
-                                             0);
+        addPerroquetInMageiaFeature.addOffer(new BigDecimal(200), hydrePerroquetOfferDescription, "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
         // Contributions
         AuthToken.authenticate(hydre);
         addPerroquetInMageiaFeature.addContribution(new BigDecimal("10"), "");
@@ -366,7 +408,7 @@ public class BloatitExampleDB { // NO_UCD
         return addPerroquetInMageiaFeature;
     }
 
-    public Feature generateLibreOfficeFeatureColorPicker() {
+    public Feature generateLibreOfficeFeatureColorPicker() throws UnauthorizedOperationException {
         // LibreOffice feature
 
         // Feature without offer
@@ -416,6 +458,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String featureTitle = "Support des langues arabe";
 
+        AuthToken.authenticate(yoann);
         final Feature feature = FeatureFactory.createFeature(yoann, null, Language.FR, featureTitle, featureDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
@@ -437,6 +480,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String featureTitle = "Suppression du paquet emacs déprécié";
 
+        AuthToken.authenticate(thomas);
         final Feature feature = FeatureFactory.createFeature(thomas, null, Language.FR, featureTitle, featureDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";
@@ -449,6 +493,44 @@ public class BloatitExampleDB { // NO_UCD
         // Contributions
         AuthToken.authenticate(thomas);
         feature.addContribution(new BigDecimal("400"), "");
+
+        AuthToken.authenticate(yoann);
+        // feature.addContribution(new BigDecimal("300"), "");
+
+        setFeatureInFinishedState(feature);
+
+        return feature;
+    }
+
+    public Feature generateMageiaFeatureRemoveEmacs2() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // LibreOffice feature
+
+        // Feature with offer not validated and not funded
+        final String featureDescription = "Il faut absolument supprimer emacs des paquets disponible dans Mageia. En effet, le successeur d'emacs vim est maintenant mature et le logiciel emacs qui a bien servi est maintenant dépassé et encombre les paquets. Des sources indiquent aussi qu'emacs est dangereux pour la santé et qu'il peut engendrer un Syndrome du Canal Carpien. D'autre part emacs est peu accessible car il est difficilement utilisable par les personnes ne disposant que d'un seul doigt. ";
+
+        final String featureTitle = "Suppression du paquet emacs déprécié 2";
+
+        final Feature feature = FeatureFactory.createFeature(thomas, null, Language.FR, featureTitle, featureDescription, mageia);
+
+        final String offerDescription = "Oui, vive vim !";
+        AuthToken.authenticate(fred);
+        AuthToken.setAsTeam(b219);
+        feature.addOffer(new BigDecimal(500), offerDescription, "GNU GPL V3", Language.FR, DateUtils.tomorrow(), 0);
+
+        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        featureImpl.getDao().setValidationDate(DateUtils.now());
+
+        // Contributions
+        AuthToken.authenticate(thomas);
+        AuthToken.setAsTeam(null);
+        feature.addContribution(new BigDecimal("400"), "");
+
+        AuthToken.authenticate(elephantman);
+        feature.addContribution(new BigDecimal("1"), "C'est symbolique !");
+
+        AuthToken.authenticate(yoann);
+        AuthToken.setAsTeam(other);
+        feature.addContribution(new BigDecimal("300"), "");
 
         setFeatureInFinishedState(feature);
 
@@ -466,8 +548,14 @@ public class BloatitExampleDB { // NO_UCD
     }
 
     private void setFeatureInFinishedState(final Feature feature) {
-        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
-        featureImpl.getDao().setFeatureState(FeatureState.FINISHED);
+        AuthToken.authenticate(admin);
+        try {
+            feature.setFeatureState(FeatureState.DEVELOPPING);
+            feature.getSelectedOffer().getCurrentMilestone().forceValidate();
+        } catch (final UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void withdrawMoney(final Member m, final int amount, final State completion) {
@@ -508,11 +596,23 @@ public class BloatitExampleDB { // NO_UCD
         bankTransaction.getDao().setValidated();
     }
 
+    public void giveMoney(final Team team, final int amount) throws UnauthorizedOperationException {
+
+        final BankTransaction bankTransaction = new BankTransaction("money !!!",
+                                                                    UUID.randomUUID().toString(),
+                                                                    team,
+                                                                    new BigDecimal(amount),
+                                                                    new BigDecimal(amount),
+                                                                    UUID.randomUUID().toString());
+        bankTransaction.getDao().setAuthorized();
+        bankTransaction.getDao().setValidated();
+    }
+
     public Member createMember(final String login, final String name, final Locale locale) throws UnauthorizedOperationException {
         final Member member = new Member(login, "plop", login + "@elveos.org", locale);
         AuthToken.authenticate(member);
         member.setFullname(name);
-        member.getDao().setActivationState(ActivationState.ACTIVE);
+        member.activate(member.getActivationKey());
         return member;
     }
 

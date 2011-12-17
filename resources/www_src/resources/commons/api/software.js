@@ -1,7 +1,6 @@
-//button.js
+//software.js
 
 var elveos_hostname="https://elveos.org"
-//var elveos_hostname="http://127.0.0.1"
 
 function elveos_ajax(url, callback) {
     //var xhr;
@@ -84,12 +83,16 @@ function elveos_getCss() {
 }\
 \
 .elveos-progress-bar-background {\
+    background: rgb(196,196,196);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(230,230,230)), to(rgb(196,196,196)), color-stop(0.2, rgb(230,230,230)));\
     background: -moz-linear-gradient(90deg, rgb(196,196,196), rgb(230,230,230)) repeat scroll 0 0 transparent;\
     margin-bottom: 0;\
     width: 100%;\
 }\
 \
 .elveos-progress-bar-state {\
+    background: rgb(0,0,0);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(73,73,73)), to(rgb(0,0,0)), color-stop(0.2, rgb(73,73,73)));\
     background: -moz-linear-gradient(90deg, rgb(0,0,0), rgb(73,73,73)) repeat scroll 0 0 transparent;\
     margin-top: -16px;\
 }\
@@ -124,6 +127,8 @@ function elveos_getCss() {
 \
 .elveos-button {\
     display: block;\
+    background: rgb(0,0,0);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(73,73,73)), to(rgb(0,0,0)), color-stop(0.2, rgb(73,73,73)));\
     background: -moz-linear-gradient(90deg, rgb(0,0,0), rgb(73,73,73)) repeat scroll 0 0 transparent;\
     border: 1px solid rgb(78,78,78);\
     border-radius: 10px;\
@@ -174,7 +179,117 @@ function elveos_getCss() {
 
 }
 
-function elveos_generateFeature(feature) {
+function elveos_getCompactCss() {
+    return "\
+<style> \
+.elveos-compact-feature-list {\
+    border: 1px solid rgb(127,127,127);\
+    border-radius: 20px;\
+    padding: 10px;\
+    padding-top: 0px;\
+    padding-bottom: 0px;\
+    background: rgb(248,248,248);\
+    max-width: 280px;\
+}\
+.elveos-compact-feature {\
+    margin: 10px;\
+    vertical-align: top;\
+    font-family: Arial,Sans;\
+    color: rgb(51,51,51);\
+    border-bottom: 1px solid rgb(127,127,127);\
+}\
+.elveos-compact-feature:last-child {\
+   border-bottom: none;\
+}\
+.elveos-feature-title {\
+    margin: 0px;\
+    margin-top: 5px;\
+    margin-bottom: 15px;\
+}\
+.elveos-progress-bar-block {\
+    display: inline-block;\
+    margin-left: 0px;\
+    margin-right: 0px;\
+    width: 100%;\
+}\
+.elveos-progress-bar-background, .elveos-progress-bar-state, .elveos-progress-bar-label {\
+    display: block;\
+    height: 16px;\
+    margin: 0;\
+    padding: 0;\
+}\
+.elveos-progress-bar-background {\
+    background: rgb(196,196,196);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(230,230,230)), to(rgb(196,196,196)), color-stop(0.2, rgb(230,230,230)));\
+    background: -moz-linear-gradient(90deg, rgb(196,196,196), rgb(230,230,230)) repeat\ scroll 0 0 transparent;\
+    margin-bottom: 0;\
+    width: 100%;\
+}\
+.elveos-progress-bar-state {\
+    background: rgb(0,0,0);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(73,73,73)), to(rgb(0,0,0)), color-stop(0.2, rgb(73,73,73)));\
+    background: -moz-linear-gradient(90deg, rgb(0,0,0), rgb(73,73,73)) repeat scroll 0 0 transparent;\
+    margin-top: -16px;\
+}\
+.elveos-progress-bar-label {\
+    color: white;\
+    font-size: 11px;\
+    margin-top: -15px;\
+    text-align: center;\
+    width: 100%;\
+}\
+.elveos-feature-title {\
+    font-size: 16px;\
+    color: rgb(51,51,51)\
+}\
+.elveos-progress-text {\
+    color: black;\
+    display: inline-block;\
+    font-size: 11px;\
+    text-align: center;\
+    width: 100%;\
+}\
+.elveos-important {\
+    font-size: 12px;\
+    font-weight: bold;\
+    margin-left: 1em;\
+    margin-right: 1em;\
+}\
+.elveos-compact-button {\
+    display: block;\
+    background: rgb(0,0,0);\
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(73,73,73)), to(rgb(0,0,0)), color-stop(0.2, rgb(73,73,73)));\
+    background: -moz-linear-gradient(90deg, rgb(0,0,0), rgb(73,73,73)) repeat scroll 0 0 transparent;\
+    border: 1px solid rgb(78,78,78);\
+    border-radius: 7px;\
+    color: white;\
+    cursor: pointer;\
+    font-size: 14px;\
+    text-align:center;\
+    padding-top: 3px;\
+    margin-left: 10px;\
+    margin-right: 10px;\
+    padding-bottom: 3px;\
+    text-decoration: none;\
+    width: 100px;\
+}\
+.elveos-compact-more-info {\
+     margin-top: 0px;\
+}\
+.elveos-compact-more-info a {\
+    font-size: 13px;\
+    color: rgb(0,0,168);\
+    text-decoration: none;\
+}\
+.elveos-feature-link-block {\
+    float: right;\
+}\
+</style>\
+ ";
+
+}
+
+function elveos_generateFeature(feature, compact) {
     var contribution = parseFloat(feature.getElementsByTagName('contribution')[0].firstChild.data);
     var progression = parseFloat(feature.getAttribute("progression"));
     var title = feature.getElementsByTagName('title')[0].firstChild.data;
@@ -217,6 +332,7 @@ function elveos_generateFeature(feature) {
     } 
 
     var out ="";
+    if(!compact) {
     out+="\
 <div class=elveos-feature>\
    <div class=elveos-feature-three-column>\
@@ -275,27 +391,76 @@ function elveos_generateFeature(feature) {
    </div>\
 </div>\
 ";
+    } else {
+
+out+="\
+<div class=elveos-compact-feature>\
+            <p class=elveos-feature-title>"+title+"</p>\
+            <div class=elveos-progress-bar-block>\
+                <div class=elveos-progress-bar-background></div>\
+                <div class=elveos-progress-bar-state style=\"width: "+progression+"%;\"></div>";
+    
+     if (state == "success") {
+        out+="\
+                <div class=elveos-progress-bar-label >Funding success</div>";
+    } else if (state == "development") {
+        out+="\
+                <div class=elveos-progress-bar-label >Development ongoing</div>";
+    }
+    
+    out+="\
+            </div>\
+            <p class=elveos-progress-text>";
+    if(offerAmount == null) {
+        out+="\
+                <span class=elveos-important>"+contribution+"&nbsp;€</span>funded</p>";
+    } else {
+        out+="\
+                <span class=elveos-important>"+contribution+"&nbsp;€</span> i.e <span class=elveos-important>"+progress+"&nbsp;%</span> of <span class=elveos-important>"+offerAmount+"&nbsp;€</span> requested</p>";
+    }
+    out+="\
+        <div class=elveos-feature-link-block>";
+    if(state == "funding") {
+        out+="\
+        <a class=elveos-compact-button href=\""+elveos_hostname+"/contribution/process?feature="+id+"\">Finance It</a>";
+    } else if (state == "success") {
+        out+="\
+        <a class=elveos-compact-button href=\""+elveos_hostname+"/features/"+id+"/description\"\">More info</a>";
+    } else if (state == "development") {
+        out+="\
+        <a class=elveos-compact-button href=\""+elveos_hostname+"/features/"+id+"/description\"\">More info</a>";
+    }
+    out+="\
+        </div>";
+    if(state == "funding") {  
+        out+="\
+        <p class=elveos-compact-more-info><a href=\""+elveos_hostname+"/features/"+id+"/description\">More info ...</a></p>";
+    }
+    out+="\
+</div>\
+";
+    }
     return out;
 }
 
-function elveos_startGenerateFeatureList(featureListElement) {
-    var softwareId = featureListElement.getAttribute('data-software-id');
-    newFeatureListElement = document.createElement("div");
-    featureListElement.parentNode.replaceChild(newFeatureListElement, featureListElement);
+
+function elveos_startGenerateFeatureList(featureListElement, compact) {
+    var link = featureListElement.getElementsByTagName('a')[0].getAttribute('href');
+    var softwareId = parseInt(/.*\/softwares\/([0-9]+)/.exec(link)[1]);
 
     elveos_ajax(elveos_hostname + '/rest/features?software='+softwareId, function(xml) {
 
         //Add css
-        var html = elveos_getCss();
+        var html = (compact?elveos_getCompactCss():elveos_getCss());
 
         var features = xml.getElementsByTagName('features')[0].childNodes;
         for(var i = 0; i < features.length; i++) {
             if(features[i].nodeType ==1) {
-                html += elveos_generateFeature(features[i]);
+                html += elveos_generateFeature(features[i],compact);
             }
         }
 
-        newFeatureListElement.innerHTML = html;
+        featureListElement.innerHTML = html;
     }
     );
 }
@@ -307,7 +472,17 @@ function elveos_startGenerateFeatureList(featureListElement) {
         
         if(featureList != undefined  && featureList.getAttribute('data-generated') != 'true') {   
             featureList.setAttribute('data-generated', 'true');
-            elveos_startGenerateFeatureList(featureList);
+            elveos_startGenerateFeatureList(featureList, false);
         }
-    }  
+    }
+
+    var compactFeatureLists = document.getElementsByClassName('elveos-compact-feature-list');
+    var compactFeatureList;
+    for(var i = 0; ((compactFeatureList = compactFeatureLists[i]) != null); i++) {
+        
+        if(compactFeatureList != undefined  && compactFeatureList.getAttribute('data-generated') != 'true') {   
+            compactFeatureList.setAttribute('data-generated', 'true');
+            elveos_startGenerateFeatureList(compactFeatureList, true);
+        }
+    }
 })();

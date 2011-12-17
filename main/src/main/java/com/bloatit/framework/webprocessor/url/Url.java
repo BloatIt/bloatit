@@ -19,19 +19,17 @@ package com.bloatit.framework.webprocessor.url;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Locale;
-import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
-import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.meta.HtmlNode;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.xcgiserver.AvailableLocales;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
@@ -83,6 +81,8 @@ public abstract class Url implements Cloneable {
 
     public abstract Protocol getProtocol();
 
+    public abstract UrlParameter<?, ?> getParameter(String name);
+
     @Override
     public abstract Url clone();
 
@@ -104,25 +104,17 @@ public abstract class Url implements Cloneable {
     private String internalUrlString(boolean multilanguage) {
         return internalUrlString(multilanguage, null);
     }
-    
-    private String internalUrlString(boolean multilanguage, Locale forcedLanguage) {
+
+    public String internalUrlString(boolean multilanguage, Locale forcedLanguage) {
         final StringBuilder sb = new StringBuilder();
         if (Context.getSession() != null && !multilanguage) {
-            Context.getLocalizator();
-            boolean found = false;
             String langCode;
             if(forcedLanguage == null) {
-                langCode = Context.getLocalizator().getCode();
+                langCode = Context.getLocalizator().getLanguageCode();
             } else {
                 langCode = forcedLanguage.getLanguage();
             }
-                
-            for (Entry<String, LanguageDescriptor> lang : Localizator.getAvailableLanguages().entrySet()) {
-                if (lang.getValue().getCode().equals(langCode)) {
-                    found = true;
-                }
-            }
-            if (found) {
+            if (AvailableLocales.getAvailableLangs().containsKey(langCode)) {
                 sb.append('/').append(langCode);
             } else {
                 sb.append("/en");
@@ -155,7 +147,7 @@ public abstract class Url implements Cloneable {
     public final String externalUrlString(Locale forcedLanguage) {
         return externalUrlString(false, forcedLanguage);
     }
-    
+
     public final String externalUrlString() {
         return externalUrlString(false, null);
     }
@@ -163,7 +155,7 @@ public abstract class Url implements Cloneable {
     public final String externalUrlString(boolean multilanguage) {
        return externalUrlString(multilanguage, null);
     }
-    
+
     public final String externalUrlString(boolean multilanguage, Locale forcedLanguage) {
         if (Context.getHeader() != null) {
             final HttpHeader header = Context.getHeader();
@@ -178,7 +170,7 @@ public abstract class Url implements Cloneable {
             Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
             return "http://" + header.getHttpHost() + internalUrlString(multilanguage, forcedLanguage);
         }
-        return "http://elveos.org/" + internalUrlString(multilanguage, forcedLanguage); // FIXME
+        return FrameworkConfiguration.getDefaultBaseUrl() + internalUrlString(multilanguage, forcedLanguage); // FIXME
                                                                         // :
                                                                         // Replace
         // http://elveos.org
@@ -192,9 +184,12 @@ public abstract class Url implements Cloneable {
     public final HtmlLink getHtmlLink() {
         return new HtmlLink(urlString());
     }
+    
+    public final HtmlLink getHtmlExternalLink() {
+        return new HtmlLink(externalUrlString());
+    }
 
     public final HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(urlString(), new HtmlText(text));
     }
-
 }

@@ -45,11 +45,13 @@ public class Menu extends HtmlDiv {
 
         final HtmlLink featureList = new FeatureListPageUrl().getHtmlLink(tr("Feature requests"));
 
-//        final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl("brainstorm");
-//        final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(tr("Brainstorms"));
-        
-        final HtmlLink softwareList = new SoftwareListPageUrl().getHtmlLink(tr("Software"));
-        
+        // final DocumentationPageUrl brainstormDocPage = new
+        // DocumentationPageUrl("brainstorm");
+        // final HtmlLink brainstormList =
+        // brainstormDocPage.getHtmlLink(tr("Brainstorms"));
+
+        final HtmlLink softwareList = new SoftwareListPageUrl().getHtmlLink(Context.trc("Software (list)", "Software"));
+
         final HtmlLink teamList = new TeamsPageUrl().getHtmlLink(tr("Teams"));
         final HtmlLink memberList = new MembersListPageUrl().getHtmlLink(tr("Members"));
 
@@ -60,7 +62,7 @@ public class Menu extends HtmlDiv {
         final HtmlDiv featureAndBrainStormMenu = new HtmlDiv("menu_item");
         featureAndBrainStormMenu.add(featureList);
         featureAndBrainStormMenu.add(separator);
-//        featureAndBrainStormMenu.add(brainstormList);
+        // featureAndBrainStormMenu.add(brainstormList);
         featureAndBrainStormMenu.add(softwareList);
         mainMenu.add(featureAndBrainStormMenu);
 
@@ -75,11 +77,11 @@ public class Menu extends HtmlDiv {
         // Search form
         final FeatureListPageUrl formUrl = new FeatureListPageUrl();
         final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
-        HtmlTextField searchField = new HtmlTextField(formUrl.getSearchStringParameter().getName());
+        final HtmlTextField searchField = new HtmlTextField(formUrl.getSearchStringParameter().getName());
         searchForm.add(searchField);
         searchField.addAttribute("placeholder", Context.tr("Search"));
 
-        HtmlButton searchSubmit = new HtmlButton("Search");
+        final HtmlButton searchSubmit = new HtmlButton("Search");
         searchSubmit.addAttribute("type", "submit");
         searchSubmit.add(new HtmlImage(new Image("/resources/commons/img/magnifying_lense.png"), ""));
 

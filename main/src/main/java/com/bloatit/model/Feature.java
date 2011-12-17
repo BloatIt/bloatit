@@ -160,7 +160,7 @@ public interface Feature extends KudosableInterface, Commentable {
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
      * @throws UnauthorizedOperationException
      */
-    float getMemberProgression(Member author) throws UnauthorizedOperationException;
+    float getMemberProgression(Member author);
 
     /**
      * Return the progression due by the amount in percent. It compare the
@@ -192,6 +192,10 @@ public interface Feature extends KudosableInterface, Commentable {
      * @return the current Description of this feature.
      */
     Description getDescription();
+
+    String getTitle(Locale l);
+
+    String getDescription(Locale l);
 
     /**
      * @return the current associate software of this feature.
@@ -233,7 +237,6 @@ public interface Feature extends KudosableInterface, Commentable {
 
     @Deprecated
     String getTitle();
-    
 
     FeatureState getFeatureState();
 
@@ -254,7 +257,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * @return the sum the contributions made by <code>member</code>
      */
     BigDecimal getContributionOf(Member member);
-    
+
     void setDescription(String newDescription, final Language language) throws UnauthorizedOperationException;
 
     void setSoftware(Software software) throws UnauthorizedOperationException;

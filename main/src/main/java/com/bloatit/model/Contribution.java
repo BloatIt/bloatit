@@ -114,8 +114,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @throws UnauthorizedOperationException if you do not have the right to
      *             access the <code>Amount</code> property.
      */
-    public BigDecimal getAmount() throws UnauthorizedOperationException {
-        tryAccess(new RgtContribution.Amount(), Action.READ);
+    public BigDecimal getAmount() {
         return getDao().getAmount();
     }
 
@@ -148,7 +147,7 @@ public final class Contribution extends UserContent<DaoContribution> {
     public boolean isCancelable() {
         return (getState() == ContributionState.PENDING && (getFeature().getFeatureState() == DaoFeature.FeatureState.PENDING || getFeature().getFeatureState() == DaoFeature.FeatureState.PREPARING));
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////

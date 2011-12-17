@@ -261,18 +261,10 @@ public class ActorTest extends ModelTestUnit {
     @Test
     public final void testGetContributions() {
         final Member tom = Member.create(db.getTom());
-        try {
-            assertEquals(tom.getContributions().size(), db.getTom().getContributions(true).size());
-        } catch (final UnauthorizedOperationException e) {
-            fail();
-        }
+        assertEquals(tom.getContributions().size(), db.getTom().getContributions(true).size());
 
         final Team publicTeam = Team.create(db.getPublicGroup());
-        try {
-            assertEquals(publicTeam.getContributions().size(), db.getPublicGroup().getContributions().size());
-        } catch (final UnauthorizedOperationException e) {
-            fail();
-        }
+        assertEquals(publicTeam.getContributions().size(), db.getPublicGroup().getContributions().size());
     }
 
     @Test

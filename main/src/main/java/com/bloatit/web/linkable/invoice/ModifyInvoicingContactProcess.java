@@ -44,9 +44,9 @@ public class ModifyInvoicingContactProcess extends WebProcess {
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final WebProcess parentProcess;
-    
+
     @RequestParam()
-    @Optional(value="false")
+    @Optional(value = "false")
     private final Boolean needAllInfos;
 
     public ModifyInvoicingContactProcess(final ModifyInvoicingContactProcessUrl url) {
@@ -88,7 +88,5 @@ public class ModifyInvoicingContactProcess extends WebProcess {
     public Boolean getNeedAllInfos() {
         return needAllInfos;
     }
-    
-    
 
 }

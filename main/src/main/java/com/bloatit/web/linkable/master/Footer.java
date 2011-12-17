@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
+import com.bloatit.web.url.ActivityPageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.MetaFeedbackListPageUrl;
@@ -39,8 +40,9 @@ public class Footer extends HtmlDiv {
         {
 
             linkBlock.add(new HtmlDiv("footer_link").add(new SiteMapPageUrl().getHtmlLink(Context.tr("Site map"))));
-            linkBlock.add(new HtmlDiv("footer_link").add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Software"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new SoftwareListPageUrl().getHtmlLink(Context.trc("Software (list)", "Software"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Change language"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new ActivityPageUrl().getHtmlLink(Context.tr("Global activity"))));
             addDocumentationFooterLink(linkBlock, "contribute", Context.tr("Contribute"));
             linkBlock.add(new HtmlDiv("footer_link").add(new MetaFeedbackListPageUrl().getHtmlLink(Context.tr("Report a bug"))));
             addDocumentationFooterLink(linkBlock, "api", Context.tr("APIs"));

@@ -13,17 +13,12 @@ package com.bloatit.web.linkable.features.create;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlHidden;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -34,26 +29,21 @@ import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.ChooseFeatureTypeActionUrl;
 import com.bloatit.web.url.ChooseFeatureTypePageUrl;
+import com.bloatit.web.url.CreateFeatureAndOfferPageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 
 /**
  * Page use to choose if the user want develop the feature
  */
-@ParamContainer("feature/create/%process%/choosetype")
+@ParamContainer("feature/create/choosetype")
 public final class ChooseFeatureTypePage extends LoggedElveosPage {
 
     private final ChooseFeatureTypePageUrl url;
-    
-    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam(role = Role.PAGENAME)
-    CreateFeatureProcess process;
-    
+
     public ChooseFeatureTypePage(final ChooseFeatureTypePageUrl url) {
         super(url);
         this.url = url;
-        this.process = url.getProcess();
     }
 
     @Override
@@ -68,39 +58,28 @@ public final class ChooseFeatureTypePage extends LoggedElveosPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
-        
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-
         final HtmlTitleBlock title = new HtmlTitleBlock(tr("Create a feature"), 1);
-        
-        final ChooseFeatureTypeActionUrl doCreateUrl = new ChooseFeatureTypeActionUrl(getSession().getShortKey(), process);
-
         HtmlDiv chooseFeatureTypeBlock = new HtmlDiv("choose_feature_type");
-        
+
         final HtmlTitleBlock chooseTypeTitle = new HtmlTitleBlock(tr("Do you want to implement the feature yourself ?"), 2);
-        
-        FieldData fieldData = doCreateUrl.getTypeParameter().pickFieldData();
-        // Create the first form 
-        final HtmlForm developForm = new HtmlForm(doCreateUrl.urlString());
-        HtmlHidden developHiddenField = new HtmlHidden(fieldData.getName(), CreateFeatureProcess.FeatureCreationType.CREATE_AND_MAKE_OFFER.toString());
-        developForm.add(developHiddenField);
+
+        // Create the first form
+        final HtmlForm developForm = new HtmlForm(new CreateFeatureAndOfferPageUrl().urlString(), Method.GET);
         developForm.add(new HtmlSubmit(tr("Yes, I want to implement the feature")));
         developForm.add(new HtmlParagraph(Context.tr("You are a developer. You have an idea for your software and you want to fund it.")));
         chooseTypeTitle.add(developForm);
 
-        // Create the seconde form 
-        final HtmlForm dontDevelopForm = new HtmlForm(doCreateUrl.urlString());
-        HtmlHidden dontDevelopHiddenField = new HtmlHidden(fieldData.getName(), CreateFeatureProcess.FeatureCreationType.CREATE.toString());
-        dontDevelopForm.add(dontDevelopHiddenField);
+        // Create the second form
+        final HtmlForm dontDevelopForm = new HtmlForm(new CreateFeaturePageUrl().urlString(), Method.GET);
         dontDevelopForm.add(new HtmlSubmit(tr("No, I just want to submit it")));
         dontDevelopForm.add(new HtmlParagraph(Context.tr("You use a free software and you have an enhancement idea to submit.")));
         chooseTypeTitle.add(dontDevelopForm);
-        
+
         chooseFeatureTypeBlock.add(chooseTypeTitle);
-        
+
         layout.addLeft(title);
         layout.addLeft(chooseFeatureTypeBlock);
-        
 
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));
@@ -116,12 +95,12 @@ public final class ChooseFeatureTypePage extends LoggedElveosPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return ChooseFeatureTypePage.generateBreadcrumb(process);
+        return ChooseFeatureTypePage.generateBreadcrumb();
     }
 
-    private static Breadcrumb generateBreadcrumb(CreateFeatureProcess process) {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-        breadcrumb.pushLink(new CreateFeaturePageUrl(process).getHtmlLink(tr("Create a feature")));
+        breadcrumb.pushLink(new CreateFeaturePageUrl().getHtmlLink(tr("Create a feature")));
         return breadcrumb;
     }
 }

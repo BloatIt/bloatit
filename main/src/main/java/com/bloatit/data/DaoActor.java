@@ -16,7 +16,9 @@
 //
 package com.bloatit.data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
@@ -26,6 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.Criteria;
@@ -94,6 +97,13 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     @Embedded
     private DaoContact contact;
+
+    @OneToMany(mappedBy = "followed")
+    private final List<DaoFollowActor> followers = new ArrayList<DaoFollowActor>();
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "actor")
+    private final List<DaoEvent> events = new ArrayList<DaoEvent>();
+
     // ======================================================================
     // HQL static requests.
     // ======================================================================
@@ -216,8 +226,19 @@ public abstract class DaoActor extends DaoIdentifiable {
     }
 
     public PageIterable<DaoFollow> getFollowedContent() {
-//        return new MappedList<DaoFollow>(followedContents);
+        // return new MappedList<DaoFollow>(followedContents);
         return new QueryCollection<DaoFollow>("actor.getFollowedContent").setEntity("this", this);
+    }
+
+    public DaoContact getContact() {
+        if (contact == null) {
+            contact = new DaoContact();
+        }
+        return contact;
+    }
+
+    public List<DaoFollowActor> getFollowers() {
+        return followers;
     }
 
     // ======================================================================
@@ -273,10 +294,4 @@ public abstract class DaoActor extends DaoIdentifiable {
         return true;
     }
 
-    public DaoContact getContact() {
-        if (contact == null) {
-            contact = new DaoContact();
-        }
-        return contact;
-    }
 }

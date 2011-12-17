@@ -1,3 +1,7 @@
+html {
+ .no_insets;
+}
+
 body {
     color: @default_text_color;
     font-family: @default_fonts;
@@ -198,6 +202,8 @@ body {
     width: 64px;
     height: 64px;
     text-align:center;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .avatar {
@@ -302,7 +308,7 @@ body {
     
     h1 {
         margin-bottom: 5px;
-        font-size: 1.8em;
+        font-size: 1.4em;
         font-weight: normal;
     }
 }

@@ -27,7 +27,7 @@ public class SideBarDocumentationBlock extends SideBarElementLayout {
         add(new HtmlDocumentationRenderer(DocumentationType.FRAME, key));
     }
 
-    public SideBarDocumentationBlock(final String key, String hiddenTitle) {
+    public SideBarDocumentationBlock(final String key, final String hiddenTitle) {
 
         final JsShowHide showHide = new JsShowHide(this, false);
         showHide.setHasFallback(false);
@@ -36,8 +36,8 @@ public class SideBarDocumentationBlock extends SideBarElementLayout {
         add(showHideLink);
         showHide.addActuator(showHideLink);
 
-        HtmlDiv documentationRendererBlock = new HtmlDiv();
-        HtmlDocumentationRenderer documentationRenderer = new HtmlDocumentationRenderer(DocumentationType.FRAME, key);
+        final HtmlDiv documentationRendererBlock = new HtmlDiv();
+        final HtmlDocumentationRenderer documentationRenderer = new HtmlDocumentationRenderer(DocumentationType.FRAME, key);
         documentationRendererBlock.add(documentationRenderer);
         add(documentationRendererBlock);
 

@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Description;
@@ -41,6 +42,7 @@ public final class TranslateAction extends LoggedElveosAction {
     @NonOptional(@tr("You have to specify a description to translate."))
     private final Description description;
 
+    @SuppressWarnings("unused")
     @RequestParam
     @NonOptional(@tr("You have to specify a source language."))
     private final Locale sourceLanguage;
@@ -53,13 +55,15 @@ public final class TranslateAction extends LoggedElveosAction {
     @NonOptional(@tr("You forgot to write a title"))
     @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
     @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
+    @FormField(label = @tr("Title"), isShort = false)
     private final String title;
 
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     @MaxConstraint(max = 800000, message = @tr("The description must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
-    private String content;
+    @FormField(label = @tr("Description"), isShort = false)
+    private final String content;
 
     private final TranslateActionUrl url;
 
@@ -76,7 +80,7 @@ public final class TranslateAction extends LoggedElveosAction {
     @Override
     public Url doProcessRestricted(final Member me) {
 
-        Translation translation = description.getTranslation(targetLanguage);
+        final Translation translation = description.getTranslation(targetLanguage);
         try {
             if (translation == null) {
                 // The translation don't exist
@@ -87,7 +91,7 @@ public final class TranslateAction extends LoggedElveosAction {
                 translation.setText(content, me);
 
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new BadProgrammerException("Fail to update translation");
         }
 
@@ -120,7 +124,7 @@ public final class TranslateAction extends LoggedElveosAction {
         session.addParameter(url.getTitleParameter());
         session.addParameter(url.getContentParameter());
         session.addParameter(url.getSourceLanguageParameter());
-        session.addParameter(url.getTargetLanguageParameter());        
+        session.addParameter(url.getTargetLanguageParameter());
     }
 
 }

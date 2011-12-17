@@ -22,15 +22,15 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.FormBuilder;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Member;
+import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.linkable.master.Breadcrumb;
 import com.bloatit.web.linkable.master.LoggedElveosPage;
 import com.bloatit.web.linkable.master.sidebar.TwoColumnLayout;
@@ -75,55 +75,41 @@ public final class ModifyBugPage extends LoggedElveosPage {
 
     private HtmlElement generateModifyBugForm() {
         final HtmlTitleBlock formTitle = new HtmlTitleBlock(Context.tr("Modify a bug"), 1);
-        final ModifyBugActionUrl doModifyUrl = new ModifyBugActionUrl(bug);
+        final ModifyBugActionUrl targetUrl = new ModifyBugActionUrl(bug);
 
         // Create the form stub
-        final HtmlForm modifyBugForm = new HtmlForm(doModifyUrl.urlString());
-        formTitle.add(modifyBugForm);
+        final HtmlElveosForm form = new HtmlElveosForm(targetUrl.urlString());
+        formTitle.add(form);
+        final FormBuilder ftool = new FormBuilder(ModifyBugAction.class, targetUrl);
 
         // Level
-        final FieldData levelFieldData = doModifyUrl.getLevelParameter().pickFieldData();
-        final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("New Level"));
-        levelInput.addErrorMessages(levelFieldData.getErrorMessages());
+        final HtmlDropDown levelInput = new HtmlDropDown(targetUrl.getLevelParameter().getName());
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
-        final String suggestedLevel = levelFieldData.getSuggestedValue();
-        if (suggestedLevel != null) {
-            levelInput.setDefaultValue(suggestedLevel);
-        } else {
+        ftool.add(form, levelInput);
+        if (!ftool.suggestedValueChanged(levelInput)) {
             levelInput.setDefaultValue(BindedLevel.getBindedLevel(bug.getErrorLevel()).getLevel().toString());
         }
         levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel())
                                                                                                        .getDisplayName()));
-        modifyBugForm.add(levelInput);
+        
 
         // State
-        final FieldData stateFieldData = doModifyUrl.getStateParameter().pickFieldData();
-        final HtmlDropDown stateInput = new HtmlDropDown(stateFieldData.getName(), Context.tr("New state"));
+        final HtmlDropDown stateInput = new HtmlDropDown(targetUrl.getStateParameter().getName());
         stateInput.addDropDownElements(EnumSet.allOf(BindedState.class));
-        stateInput.addErrorMessages(stateFieldData.getErrorMessages());
-        final String suggestedState = stateFieldData.getSuggestedValue();
-        if (suggestedState != null) {
-            stateInput.setDefaultValue(suggestedState);
-        } else {
+        ftool.add(form, stateInput);
+        if (!ftool.suggestedValueChanged(stateInput)) {
             stateInput.setDefaultValue(BindedState.getBindedState(bug.getState()).getState().toString());
         }
-
         stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState())
                                                                                                        .getDisplayName()));
-        modifyBugForm.add(stateInput);
+        
 
         // Create the fields that will describe the reason of bug change
-        final FieldData descriptionFieldData = doModifyUrl.getReasonParameter().pickFieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFieldData.getName(),
-                                                               Context.tr("Reason"),
-                                                               BUG_CHANGE_COMMENT_INPUT_NB_LINES,
-                                                               BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS);
-        descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
-        descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug modification."));
-        modifyBugForm.add(descriptionInput);
+        ftool.add(form, new HtmlTextArea(targetUrl.getReasonParameter().getName(),
+                                         BUG_CHANGE_COMMENT_INPUT_NB_LINES,
+                                         BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS));
 
-        modifyBugForm.add(new HtmlSubmit(Context.tr("Modify the bug")));
+        form.addSubmit(new HtmlSubmit(Context.tr("Modify the bug")));
 
         final HtmlDiv group = new HtmlDiv();
         group.add(formTitle);

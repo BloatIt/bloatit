@@ -98,13 +98,16 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String anonymousUserTokenClass;
     private MicroBlogManager microBlogs;
     private String googleAnalyticId;
-
+    private String defaultBaseUrl;
+    
     private String mercanetApiPath;
     private String mercanetRequestBin;
     private String mercanetResponseBin;
     private String mercanetPatfilePath;
     private String mercanetMerchantId;
     private Boolean mercanetEnabled;
+
+
 
     private FrameworkConfiguration() {
         super();
@@ -376,6 +379,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static Boolean isMercanetEnabled() {
         return configuration.mercanetEnabled;
     }
+    
+    public static String getDefaultBaseUrl() {
+        return configuration.defaultBaseUrl;
+    }
 
     private void loadConfiguration() {
 
@@ -442,6 +449,8 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         anonymousUserTokenClass = properties.getString("bloatit.anonymousUserToken.class");
         microBlogs = new MicroBlogManager(properties.getStringArray("micro.blogs"), properties.getString("micro.blogs.password"));
         googleAnalyticId = properties.getString("bloatit.stats.googleAnalyticId", null);
+        defaultBaseUrl = properties.getString("bloatit.defaultBaseurl", "https://elveos.org");
+        
 
         // Mercanet
         mercanetApiPath = properties.getString("mercanet.api.path");
@@ -468,11 +477,13 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         configuration.loadConfiguration();
     }
 
-    private static String find(String resource, String langCode) {
+    private static String find(final String resource, final String langCode) {
         try {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/" + langCode + resource);
-        } catch (ExternalErrorException e) {
+        } catch (final ExternalErrorException e) {
             return configuration.finder.find(FrameworkConfiguration.getResourcesDir() + "/en" + resource);
         }
     }
+
+    
 }

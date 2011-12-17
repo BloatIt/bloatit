@@ -100,7 +100,7 @@ public abstract class ElveosMail {
         return str;
     }
 
-    protected final void addAttachment(final String uri, final String filename) {
+    public final void addAttachment(final String uri, final String filename) {
         this.attachment = uri;
         this.filename = filename;
     }
@@ -114,6 +114,13 @@ public abstract class ElveosMail {
             addNamedParameter("reference", reference);
             addNamedParameter("total_amount", totalAmount);
             addNamedParameter("credited", credited);
+        }
+    }
+
+    public static class InvoiceGenerated extends ElveosMail {
+        public InvoiceGenerated(final String featureName) {
+            super(new TemplateFile("invoice-generated.mail"), tr("elveos.org: Invoice available"));
+            addNamedParameter("feature_name", featureName);
         }
     }
 
@@ -157,7 +164,7 @@ public abstract class ElveosMail {
      * handle
      */
     public static class WithdrawalAdminMail extends ElveosMail {
-        private DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        private final DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         public WithdrawalAdminMail(final String reference, final String amount, final String iban, final String memberName, final String url) {
             super(new TemplateFile("withdrawal-admin.mail"), "[ELVEOS ADMINISTRATION] New money withdrawal request");

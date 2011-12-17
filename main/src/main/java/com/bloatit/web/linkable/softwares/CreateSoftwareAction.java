@@ -23,6 +23,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.form.FormComment;
+import com.bloatit.framework.webprocessor.components.form.FormField;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
@@ -47,16 +49,21 @@ public final class CreateSoftwareAction extends LoggedElveosAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a description"))
     @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
+    @FormField(label = @tr("Describe the software"), isShort = false)
+    @FormComment(@tr("Minimum 10 character. You can enter a long description of the project : list all features, add siteweb links, etc."))
     private final String description;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("The software name is required."))
     @MinConstraint(min = 3, message = @tr("The software name must have at least %constraint% chars."))
     @MaxConstraint(max = 64, message = @tr("The software name must be %constraint% chars length max."))
+    @FormField(label = @tr("Software name"), isShort = false)
     private final String softwareName;
 
     @Optional
     @RequestParam(name = IMAGE_CODE, role = Role.POST)
+    @FormField(label = @tr("Software logo"))
+    @FormComment(@tr("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px."))
     private final String image;
 
     @Optional
@@ -95,7 +102,7 @@ public final class CreateSoftwareAction extends LoggedElveosAction {
         final Locale langLocale = new Locale(lang);
 
         try {
-            Software p = new Software(softwareName, me, langLocale, description);
+            final Software p = new Software(softwareName, me, langLocale, description);
 
             if (image != null) {
                 final FileConstraintChecker fcc = new FileConstraintChecker(image);
@@ -113,7 +120,7 @@ public final class CreateSoftwareAction extends LoggedElveosAction {
             final SoftwarePageUrl to = new SoftwarePageUrl(p);
 
             return to;
-        } catch (UniqueNameExpectedException e) {
+        } catch (final UniqueNameExpectedException e) {
             Context.getSession().notifyError(Context.tr("A software with the same name already exists."));
             return doProcessErrors();
         }
