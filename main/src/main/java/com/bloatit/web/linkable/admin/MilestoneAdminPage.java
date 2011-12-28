@@ -88,7 +88,6 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
 
         final FieldData stateData = url.getMilestoneStateParameter().pickFieldData();
         final HtmlDropDown stateInput = new HtmlDropDown(stateData.getName());
-        stateInput.setDefaultValue(stateData.getSuggestedValue());
         stateInput.addErrorMessages(stateData.getErrorMessages());
         stateInput.addDropDownElements(EnumSet.allOf(DisplayableMilestoneState.class));
         stateInput.setLabel(tr("Filter by milestone state"));

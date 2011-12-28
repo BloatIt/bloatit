@@ -113,7 +113,6 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     protected void addAsTeamFilter(final HtmlBranch filterForm, final UserContentAdminPageUrl url) {
         final FieldData groupAsTeamData = url.getFilterTeamParameter().pickFieldData();
         final HtmlDropDown groupAsTeam = new HtmlDropDown(groupAsTeamData.getName());
-        groupAsTeam.setDefaultValue(groupAsTeamData.getSuggestedValue());
         groupAsTeam.addErrorMessages(groupAsTeamData.getErrorMessages());
         groupAsTeam.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupAsTeam.setLabel(Context.tr("Filter by Content created as a group"));
@@ -123,7 +122,6 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     protected void addHasFileFilter(final HtmlBranch filterForm, final UserContentAdminPageUrl url) {
         final FieldData groupFileData = url.getFilterFileParameter().pickFieldData();
         final HtmlDropDown groupFile = new HtmlDropDown(groupFileData.getName());
-        groupFile.setDefaultValue(groupFileData.getSuggestedValue());
         groupFile.addErrorMessages(groupFileData.getErrorMessages());
         groupFile.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupFile.setLabel(Context.tr("Filter by Content with file"));
@@ -134,7 +132,6 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         final FieldData groupDeletedData = url.getFilterDeletedParameter().pickFieldData();
         final HtmlDropDown groupDeleted = new HtmlDropDown(groupDeletedData.getName());
         groupDeleted.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
-        groupDeleted.setDefaultValue(groupDeletedData.getSuggestedValue());
         groupDeleted.addErrorMessages(groupDeletedData.getErrorMessages());
         groupDeleted.setLabel(Context.tr("Filter by deleted content"));
         filterForm.add(groupDeleted);

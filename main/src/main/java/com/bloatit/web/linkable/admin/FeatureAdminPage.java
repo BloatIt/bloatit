@@ -122,29 +122,27 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
 
         final FieldData stateData = url.getFilterByStateParameter().pickFieldData();
         final HtmlDropDown stateInput = new HtmlDropDown(stateData.getName());
-        stateInput.setDefaultValue(stateData.getSuggestedValue());
         stateInput.addErrorMessages(stateData.getErrorMessages());
         stateInput.addDropDownElements(EnumSet.allOf(DisplayableFeatureState.class));
         stateInput.setLabel(tr("Filter by feature state"));
 
         final FieldData hasSelectedOfferData = url.getFilterSelectedOfferParameter().pickFieldData();
         final HtmlDropDown hasSelectedOffer = new HtmlDropDown(hasSelectedOfferData.getName());
-        hasSelectedOffer.setDefaultValue(hasSelectedOfferData.getSuggestedValue());
         hasSelectedOffer.addErrorMessages(hasSelectedOfferData.getErrorMessages());
         hasSelectedOffer.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasSelectedOffer.setLabel(tr("Filter by selected offer"));
 
         final FieldData hasOfferData = url.getFilterHasOfferParameter().pickFieldData();
         final HtmlDropDown hasOffer = new HtmlDropDown(hasOfferData.getName());
-        hasOffer.setDefaultValue(hasOfferData.getSuggestedValue());
         hasOffer.addErrorMessages(hasOfferData.getErrorMessages());
         hasOffer.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasOffer.setLabel(tr("Filter by offer"));
 
         final FieldData hasContributionData = url.getFilterHasContributionParameter().pickFieldData();
         final HtmlDropDown hasContribution = new HtmlDropDown(hasContributionData.getName());
-        hasContribution.setDefaultValue(hasContributionData.getSuggestedValue());
         hasContribution.addErrorMessages(hasContributionData.getErrorMessages());
+
+
         hasContribution.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasContribution.setLabel(tr("Filter by contribution"));
 
