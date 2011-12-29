@@ -5,7 +5,6 @@ import java.util.Date;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -25,7 +24,6 @@ import com.bloatit.model.Event.OfferEvent;
 import com.bloatit.model.Event.ReleaseEvent;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.EventManager;
-import com.bloatit.model.managers.EventManager.EventList;
 import com.bloatit.web.linkable.atom.master.ElveosAtomFeed;
 import com.bloatit.web.linkable.features.FeatureTabPane.FeatureTabKey;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -113,7 +111,11 @@ public class ActivityAtomFeed extends ElveosAtomFeed {
                     throw new NotImplementedException();
             }
 
-            return new FeedEntry(title + " – " + event.getFeature().getSoftware().getName() + " – " + FeaturesTools.getTitle(event.getFeature()),
+            String softName = "";
+			if (event.getFeature().getSoftware() != null){
+            	softName = " – " + event.getFeature().getSoftware().getName();
+            }
+			return new FeedEntry(title + " – " + softName + " – " + FeaturesTools.getTitle(event.getFeature()),
                                  new FeaturePageUrl(event.getFeature(), FeatureTabKey.description).externalUrlString(),
                                  "elveos-event-" + event.getDate().toString(),
                                  event.getDate(),

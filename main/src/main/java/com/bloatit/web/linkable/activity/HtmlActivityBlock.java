@@ -43,7 +43,6 @@ import com.bloatit.model.Event;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.EventManager;
-import com.bloatit.model.managers.EventManager.EventList;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.ActivityAtomFeedUrl;
