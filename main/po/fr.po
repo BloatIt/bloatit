@@ -988,7 +988,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/money/PaymentProcess.java:107
 msgid "You must pay at least 1 €."
-msgstr "Vous devez payer au moins 1 €"
+msgstr "Vous devez payer au moins 1 €."
 
 #: com/bloatit/web/linkable/money/PaymentProcess.java:231
 #, java-format
