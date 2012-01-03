@@ -67,7 +67,7 @@ import com.bloatit.framework.utils.PageIterable;
                               "AND (mff.emailStrategy = :strategy OR mff is null) " +
                               "AND (mf.mail = true OR mf is null) "
                               ),
-                              
+
           @NamedQuery(
                       name =  "event.byMember",
                       query = "SELECT e " +
@@ -78,7 +78,7 @@ import com.bloatit.framework.utils.PageIterable;
                               "WHERE NOT (mf.featureComment=false AND e.isFeatureComment=true) " +
                               "AND NOT (mf.bugComment=false AND e.isBugComment=true) " +
                               "AND mff.id = :member "+
-                              "ORDER BY mff.id, e.creationDate "
+                              "ORDER BY e.creationDate DESC "
                               ),
           @NamedQuery(
                       name =  "event.byMember.size",
@@ -96,7 +96,7 @@ import com.bloatit.framework.utils.PageIterable;
                       query = "SELECT e " +
                               "FROM DaoEvent e " +
                               "JOIN e.feature f " +
-                              "ORDER BY e.creationDate "
+                              "ORDER BY e.creationDate DESC "
                               ),
           @NamedQuery(
                       name =  "event.getall.size",
