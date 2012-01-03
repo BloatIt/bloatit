@@ -145,10 +145,10 @@ public class HtmlActivityBlock extends HtmlDiv {
             }
         }
 
-        
+
          PageIterable<Event> events = (member == null ? EventManager.getAllEvents()
                 : EventManager.getAllEventByMember(member));
-         events.setPageSize(100);
+        events.setPageSize(100);
 
         if (events.size() == 0) {
             HtmlDiv alt = new HtmlDiv("alt_activity_block");
@@ -217,7 +217,7 @@ public class HtmlActivityBlock extends HtmlDiv {
 
                 final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
 
-                
+
                 for (Event event : events) {
                     event.getEvent().accept(visitor);
                 }
