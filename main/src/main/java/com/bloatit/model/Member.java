@@ -389,7 +389,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
         // Unfollow all features of the software
         for (final FollowFeature followFeature : getFollowedFeatures()) {
-            if (followFeature.getFollowed().getSoftware().equals(s)) {
+            if (s.equals(followFeature.getFollowed().getSoftware())) {
                 unfollowFeature(followFeature.getFollowed());
             }
         }
