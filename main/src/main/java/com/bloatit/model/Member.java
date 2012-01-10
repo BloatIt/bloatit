@@ -352,14 +352,23 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     public boolean isFollowing(final Feature feature) {
+        if (feature == null) {
+            return false;
+        }
         return getDao().isFollowing(((FeatureImplementation) feature).getDao());
     }
 
     public boolean isFollowing(final Software software) {
+        if (software == null) {
+            return false;
+        }
         return getDao().isFollowing(software.getDao());
     }
 
     public boolean isFollowing(final Actor<?> actor) {
+        if (actor == null) {
+            return false;
+        }
         return getDao().isFollowing(actor.getDao());
     }
 
