@@ -39,7 +39,6 @@ import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdown
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlElveosForm;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;

@@ -25,7 +25,7 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 
 /**
  * An identifiable is the base class for each class that map a dao class.
- * 
+ *
  * @author Thomas Guyard
  * @param <T> is the dao being mapped.
  */
@@ -45,7 +45,7 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
 
     /**
      * Can access.
-     * 
+     *
      * @param accessor the accessor
      * @param action the action
      * @return true, if successful
@@ -56,7 +56,7 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
 
     /**
      * Try access.
-     * 
+     *
      * @param accessor the accessor
      * @param action the action
      * @throws U the unauthorized operation exception

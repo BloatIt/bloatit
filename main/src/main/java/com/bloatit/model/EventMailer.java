@@ -19,7 +19,7 @@ public final class EventMailer {
     }
 
     public static void start() {
-        new RecursiveMailer(11 * 60 *0 +7, EmailStrategy.VERY_FREQUENTLY, DateUtils.now());
+        new RecursiveMailer(11 * 60, EmailStrategy.VERY_FREQUENTLY, DateUtils.now());
         new RecursiveMailer(61 * 60, EmailStrategy.HOURLY, DateUtils.now());
         new RecursiveMailer(24 * 3601, EmailStrategy.DAILY, DateUtils.now());
         new RecursiveMailer(7 * 24 * 3599, EmailStrategy.WEEKLY, DateUtils.now());

@@ -50,7 +50,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
     /**
      * An id = 1 planed task.
-     * 
+     *
      * @param time when the task will be launched
      * @param id a unique identifier of your subclass task.
      */
@@ -83,8 +83,8 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
         } catch (final RuntimeException ex) {
             throw ex;
         } finally {
-            remove(this, this.myId);
             ModelAccessor.close();
+            remove(this, this.myId);
         }
     }
 

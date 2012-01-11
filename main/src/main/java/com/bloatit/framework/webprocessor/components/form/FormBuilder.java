@@ -232,6 +232,9 @@ public class FormBuilder {
                 b.addAttribute("size", data.getLength().toString());
             }
         }
+        if (b instanceof HtmlPasswordField) {
+            b.setDefaultValue("");
+        }
 
         return b;
     }

@@ -43,7 +43,6 @@ import com.bloatit.model.Event;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.EventManager;
-import com.bloatit.model.managers.EventManager.EventList;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.ActivityAtomFeedUrl;
@@ -146,10 +145,10 @@ public class HtmlActivityBlock extends HtmlDiv {
             }
         }
 
-        
+
          PageIterable<Event> events = (member == null ? EventManager.getAllEvents()
                 : EventManager.getAllEventByMember(member));
-         events.setPageSize(100);
+        events.setPageSize(100);
 
         if (events.size() == 0) {
             HtmlDiv alt = new HtmlDiv("alt_activity_block");
@@ -218,7 +217,7 @@ public class HtmlActivityBlock extends HtmlDiv {
 
                 final ActivityEventVisitor visitor = new ActivityEventVisitor(Context.getLocalizator());
 
-                
+
                 for (Event event : events) {
                     event.getEvent().accept(visitor);
                 }

@@ -30,7 +30,6 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtBug;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.model.visitor.ModelClassVisitor;
 
 /**

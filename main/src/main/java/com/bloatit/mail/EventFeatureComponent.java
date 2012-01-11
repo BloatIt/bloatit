@@ -4,8 +4,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.text.NumberFormat;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;

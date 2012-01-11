@@ -45,7 +45,7 @@ public final class FollowSoftwareAction extends LoggedElveosAction {
     public FollowSoftwareAction(final FollowSoftwareActionUrl url) {
         super(url);
         software = url.getSoftware();
-        follow = url.getFollow();
+        follow = url.getFollow() != null && url.getFollow();
         followMail = url.getFollowMail();
     }
 

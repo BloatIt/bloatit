@@ -144,7 +144,6 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     protected void addPopularityStateFilter(final HtmlBranch form) {
         final FieldData stateData = url.getPopularityStateParameter().pickFieldData();
         final HtmlDropDown state = new HtmlDropDown(stateData.getName());
-        state.setDefaultValue(stateData.getSuggestedValue());
         state.addErrorMessages(stateData.getErrorMessages());
         state.addDropDownElements(EnumSet.allOf(DisplayableState.class));
         state.setLabel(tr("Filter by Popularity State"));
@@ -154,11 +153,9 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
 
     protected void addPopularityFilter(final HtmlBranch form) {
         final HtmlTextField popularity = new HtmlTextField(url.getPopularityParameter().getName(), tr("popularity"));
-        popularity.setDefaultValue(url.getPopularityParameter().getStringValue());
 
         final FieldData comparatorData = url.getPopularityComparatorParameter().pickFieldData();
         final HtmlDropDown comparator = new HtmlDropDown(comparatorData.getName());
-        comparator.setDefaultValue(comparatorData.getSuggestedValue());
         comparator.addErrorMessages(comparatorData.getErrorMessages());
         comparator.addDropDownElements(EnumSet.allOf(DisplayableComparator.class));
         form.add(popularity);
